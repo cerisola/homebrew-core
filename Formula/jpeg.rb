@@ -14,6 +14,8 @@ class Jpeg < Formula
     sha256 "931236302e58c53a9728dde5cb93a896b8a39b16d1f195c85381da04ea17c407" => :el_capitan
   end
 
+  keg_only "libjpeg is not linked to prevent conflicts with the standard libjpeg-turbo"
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",

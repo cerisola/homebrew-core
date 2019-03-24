@@ -13,7 +13,7 @@ class Jpegoptim < Formula
     sha256 "cc6c60a27cba7bb5f0e1b4a7c8ae3567db4eeaf1e1384488b818da7a1409f837" => :el_capitan
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     system "./configure", "--disable-debug",

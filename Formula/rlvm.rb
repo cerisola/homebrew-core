@@ -21,7 +21,7 @@ class Rlvm < Formula
   depends_on "freetype"
   depends_on "gettext"
   depends_on "glew"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libogg"
   depends_on "libpng"
   depends_on "libvorbis"

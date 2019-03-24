@@ -16,7 +16,7 @@ class Mame < Formula
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "lua"
   depends_on :macos => :yosemite
   depends_on "portaudio"

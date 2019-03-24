@@ -16,7 +16,7 @@ class Weboob < Formula
 
   depends_on "freetype"
   depends_on "gnupg"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libyaml"
   depends_on "python"
 

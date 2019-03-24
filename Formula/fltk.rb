@@ -13,7 +13,7 @@ class Fltk < Formula
     sha256 "c5b58949cc184e7af5fd44fbfc65a71a37e2fc950bb08971c6fb633d85eccabc" => :sierra
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   # Fix for Mojave issue https://github.com/Homebrew/homebrew-core/issues/33342

@@ -19,7 +19,7 @@ class Vips < Formula
   depends_on "giflib"
   depends_on "glib"
   depends_on "imagemagick"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libgsf"
   depends_on "libpng"

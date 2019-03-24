@@ -21,7 +21,7 @@ class Efl < Formula
   depends_on "giflib"
   depends_on "gst-plugins-good"
   depends_on "gstreamer"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libraw"
   depends_on "librsvg"

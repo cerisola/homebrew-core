@@ -15,7 +15,7 @@ class SwiProlog < Formula
   depends_on "pkg-config" => :build
   depends_on "berkeley-db"
   depends_on "gmp"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libarchive"
   depends_on "libyaml"
   depends_on "openssl"

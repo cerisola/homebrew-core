@@ -12,7 +12,7 @@ class Exiftran < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "pixman"
 

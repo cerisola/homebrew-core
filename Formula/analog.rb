@@ -17,7 +17,7 @@ class Analog < Formula
   end
 
   depends_on "gd"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   def install

@@ -17,7 +17,7 @@ class Qemu < Formula
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gnutls"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libssh2"
   depends_on "libusb"

@@ -24,7 +24,7 @@ class Siril < Formula
   depends_on "gnuplot"
   depends_on "gsl"
   depends_on "gtk-mac-integration"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libconfig"
   depends_on "libomp"
   depends_on "libraw"

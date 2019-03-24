@@ -18,7 +18,7 @@ class Xmoto < Formula
   end
 
   depends_on "gettext"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libxdg-basedir"
   depends_on "libxml2"

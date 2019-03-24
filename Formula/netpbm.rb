@@ -16,7 +16,7 @@ class Netpbm < Formula
   end
 
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

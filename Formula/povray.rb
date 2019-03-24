@@ -16,7 +16,7 @@ class Povray < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "boost"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

@@ -16,7 +16,7 @@ class Vtk < Formula
   depends_on "boost"
   depends_on "fontconfig"
   depends_on "hdf5"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "netcdf"

@@ -24,7 +24,7 @@ class Gdal < Formula
   depends_on "giflib"
   depends_on "hdf5"
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "json-c"
   depends_on "libdap"
   depends_on "libgeotiff"

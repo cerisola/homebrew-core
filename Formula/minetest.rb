@@ -31,7 +31,7 @@ class Minetest < Formula
   depends_on "freetype"
   depends_on "gettext"
   depends_on "irrlicht"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "luajit"

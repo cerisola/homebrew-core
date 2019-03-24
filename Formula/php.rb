@@ -24,7 +24,7 @@ class Php < Formula
   depends_on "glib"
   depends_on "gmp"
   depends_on "icu4c"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libpq"
   depends_on "libsodium"

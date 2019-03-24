@@ -15,7 +15,7 @@ class Mjpegtools < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     system "./configure", "--disable-dependency-tracking",

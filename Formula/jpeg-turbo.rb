@@ -11,8 +11,6 @@ class JpegTurbo < Formula
     sha256 "196facd9c26ebc8cdc98f70c7b14b6b3c2271833fa664dcc1145101e9cb1312f" => :sierra
   end
 
-  keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg"
-
   depends_on "cmake" => :build
   depends_on "nasm" => :build
 

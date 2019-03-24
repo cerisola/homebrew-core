@@ -23,7 +23,7 @@ class Minidlna < Formula
 
   depends_on "ffmpeg"
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libid3tag"
   depends_on "libogg"

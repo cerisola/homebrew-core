@@ -18,7 +18,7 @@ class Residualvm < Formula
   depends_on "flac"
   depends_on "fluid-synth"
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libvorbis"
   depends_on "mad"

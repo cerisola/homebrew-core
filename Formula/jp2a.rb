@@ -14,7 +14,7 @@ class Jp2a < Formula
     sha256 "2a175fef16afed3e74c834ff250f0278eedc60c4deb0296e62f073954605d97d" => :yosemite
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     system "./configure", "--disable-debug",

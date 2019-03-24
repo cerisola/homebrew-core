@@ -17,7 +17,7 @@ class OpenSceneGraph < Formula
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "gtkglext"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "sdl"
 
   # patch necessary to ensure support for gtkglext-quartz

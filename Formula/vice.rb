@@ -17,7 +17,7 @@ class Vice < Formula
   depends_on "ffmpeg"
   depends_on "flac"
   depends_on "giflib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "lame"
   depends_on "libogg"
   depends_on "libpng"

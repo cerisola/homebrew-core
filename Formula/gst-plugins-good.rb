@@ -29,7 +29,7 @@ class GstPluginsGood < Formula
   depends_on "flac"
   depends_on "gettext"
   depends_on "gst-plugins-base"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libshout"
   depends_on "libsoup"

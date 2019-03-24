@@ -17,7 +17,7 @@ class Mpv < Formula
   depends_on "python" => :build
 
   depends_on "ffmpeg"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libarchive"
   depends_on "libass"
   depends_on "little-cms2"

@@ -14,7 +14,7 @@ class Grace < Formula
   end
 
   depends_on "fftw"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "openmotif"
   depends_on "pdflib-lite"

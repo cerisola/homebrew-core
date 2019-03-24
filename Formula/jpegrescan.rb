@@ -7,7 +7,7 @@ class Jpegrescan < Formula
 
   bottle :unneeded
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     bin.install "jpegrescan"

@@ -18,7 +18,7 @@ class Volatility < Formula
   end
 
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "python@2" # does not support Python 3
   depends_on "yara"
 

@@ -14,7 +14,7 @@ class Jpeginfo < Formula
     sha256 "d28d3fcbf355139760d15d1869f57d180940e8114b150446214b18270275dcf8" => :yosemite
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     ENV.deparallelize

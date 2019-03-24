@@ -14,7 +14,7 @@ class Dcraw < Formula
   end
 
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "little-cms2"
 
   def install

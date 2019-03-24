@@ -13,7 +13,7 @@ class Gphoto2 < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libgphoto2"
   depends_on "popt"
   depends_on "readline"

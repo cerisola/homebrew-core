@@ -17,7 +17,7 @@ class Mapnik < Formula
   depends_on "gdal"
   depends_on "harfbuzz"
   depends_on "icu4c"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "postgresql"

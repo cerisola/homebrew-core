@@ -16,7 +16,7 @@ class Fontforge < Formula
   depends_on "fontconfig"
   depends_on "gettext"
   depends_on "giflib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libspiro"
   depends_on "libtiff"

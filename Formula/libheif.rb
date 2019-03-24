@@ -13,7 +13,7 @@ class Libheif < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libde265"
   depends_on "libpng"
   depends_on "shared-mime-info"

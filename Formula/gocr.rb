@@ -13,7 +13,7 @@ class Gocr < Formula
     sha256 "6f7abd6d0e1d71e456bfef7320cb60f267a3b09881e3eaeada72a99c773a69f3" => :el_capitan
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "netpbm"
 
   # Edit makefile to install libs per developer documentation

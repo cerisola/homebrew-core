@@ -14,7 +14,7 @@ class Wxmac < Formula
     sha256 "6acfa572e370c0f9c2f48f89ab8807a42d81726151e8ebddccca48aa634514de" => :el_capitan
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

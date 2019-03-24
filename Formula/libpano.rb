@@ -15,7 +15,7 @@ class Libpano < Formula
     sha256 "d78f4a20ee2b3a55e91cb04f9655f719631fe8b3ac9ffed162e88a337a6e3a08" => :yosemite
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

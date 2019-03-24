@@ -14,7 +14,7 @@ class Blastem < Formula
   end
 
   depends_on "freetype" => :build
-  depends_on "jpeg" => :build
+  depends_on "jpeg-turbo" => :build
   depends_on "libpng" => :build # for xcftools
   depends_on "pkg-config" => :build
   depends_on "glew"

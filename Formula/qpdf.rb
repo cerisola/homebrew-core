@@ -11,7 +11,7 @@ class Qpdf < Formula
     sha256 "b0ff316e39641eb15a5eb18b1cff52bcdab343cb92b37de57adeb56c7e8efd73" => :sierra
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     system "./configure", "--prefix=#{prefix}"

@@ -21,7 +21,7 @@ class Openimageio < Formula
   depends_on "freetype"
   depends_on "giflib"
   depends_on "ilmbase"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libraw"
   depends_on "libtiff"

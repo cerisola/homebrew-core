@@ -18,7 +18,7 @@ class Epeg < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
 
   def install

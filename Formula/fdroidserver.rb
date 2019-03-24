@@ -15,7 +15,7 @@ class Fdroidserver < Formula
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
   depends_on "openssl"
   depends_on "python"

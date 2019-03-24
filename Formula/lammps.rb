@@ -18,7 +18,7 @@ class Lammps < Formula
 
   depends_on "fftw"
   depends_on "gcc" # for gfortran
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "open-mpi"
 

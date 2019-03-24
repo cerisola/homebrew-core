@@ -34,7 +34,7 @@ class Zbar < Formula
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "imagemagick"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtool"
   depends_on "ufraw"
   depends_on "xz"

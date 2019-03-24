@@ -36,7 +36,7 @@ class Devil < Formula
 
   depends_on "cmake" => :build
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "little-cms2"

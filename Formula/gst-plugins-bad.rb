@@ -25,7 +25,7 @@ class GstPluginsBad < Formula
   depends_on "faad2"
   depends_on "gettext"
   depends_on "gst-plugins-base"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libmms"
   depends_on "openssl"
   depends_on "opus"

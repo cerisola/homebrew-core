@@ -12,7 +12,7 @@ class Jasper < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     mkdir "build" do

@@ -14,7 +14,7 @@ class Dlib < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on :macos => :el_capitan # needs thread-local storage
   depends_on "openblas"

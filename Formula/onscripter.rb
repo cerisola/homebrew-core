@@ -12,7 +12,7 @@ class Onscripter < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "lua"
   depends_on "sdl"
   depends_on "sdl_image"

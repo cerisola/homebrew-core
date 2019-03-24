@@ -14,7 +14,7 @@ class LittleCms < Formula
     sha256 "bc02c8267bf616ef0dcfc27db97a849b0f79e8211164ea4a955482b964255a7e" => :yosemite
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
 
   def install

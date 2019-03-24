@@ -18,7 +18,7 @@ class Libgeotiff < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
   depends_on "proj"
 

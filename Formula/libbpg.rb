@@ -14,7 +14,7 @@ class Libbpg < Formula
 
   depends_on "cmake" => :build
   depends_on "yasm" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   def install

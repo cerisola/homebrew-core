@@ -30,7 +30,7 @@ class Geeqie < Formula
   depends_on "glib"
   depends_on "gtk+3"
   depends_on "imagemagick"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libtiff"
   depends_on "little-cms2"
   depends_on "pango"

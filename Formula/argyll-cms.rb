@@ -14,7 +14,7 @@ class ArgyllCms < Formula
   end
 
   depends_on "jam" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

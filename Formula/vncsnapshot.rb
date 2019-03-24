@@ -14,7 +14,7 @@ class Vncsnapshot < Formula
     sha256 "efd8f3255029bcb16a554855f3f3fdb7ea59604df888aec6380da1d7330e3094" => :yosemite
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   patch :DATA # remove old PPC __APPLE__ ifdef from sockets.cxx
 

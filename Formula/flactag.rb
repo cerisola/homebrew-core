@@ -18,7 +18,7 @@ class Flactag < Formula
   depends_on "docbook-xsl" => :build
   depends_on "pkg-config" => :build
   depends_on "flac"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libdiscid"
   depends_on "libmusicbrainz"
   depends_on "neon"

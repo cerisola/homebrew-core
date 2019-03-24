@@ -22,7 +22,7 @@ class MonoLibgdiplus < Formula
   depends_on "gettext"
   depends_on "giflib"
   depends_on "glib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libexif"
   depends_on "libpng"
   depends_on "libtiff"

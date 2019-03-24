@@ -23,7 +23,7 @@ class Pdf2htmlex < Formula
   depends_on "giflib" # for fontforge
   depends_on "glib" # for fontforge
   depends_on "gnu-getopt"
-  depends_on "jpeg" # for fontforge
+  depends_on "jpeg-turbo" # for fontforge
   depends_on "libpng" # for fontforge
   depends_on "libtiff" # for fontforge
   depends_on "libtool" # for fontforge

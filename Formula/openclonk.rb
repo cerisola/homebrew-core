@@ -20,7 +20,7 @@ class Openclonk < Formula
   depends_on "freealut"
   depends_on "freetype"
   depends_on "glew"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libogg"
   depends_on "libpng"
   depends_on "libvorbis"

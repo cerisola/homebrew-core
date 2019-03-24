@@ -13,7 +13,7 @@ class Visp < Formula
   depends_on "cmake" => :build
   depends_on "eigen"
   depends_on "gsl"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libdc1394"
   depends_on "libpng"
   depends_on "opencv"

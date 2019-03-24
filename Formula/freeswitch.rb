@@ -19,7 +19,7 @@ class Freeswitch < Formula
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libsndfile"
   depends_on "lua"
   depends_on "openssl"

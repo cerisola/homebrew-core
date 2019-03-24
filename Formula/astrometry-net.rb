@@ -19,7 +19,7 @@ class AstrometryNet < Formula
   depends_on "cairo"
   depends_on "cfitsio"
   depends_on "gsl"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "netpbm"
   depends_on "numpy"

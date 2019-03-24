@@ -24,7 +24,7 @@ class Gegl < Formula
   depends_on "babl"
   depends_on "gettext"
   depends_on "glib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "json-glib"
   depends_on "libpng"
 

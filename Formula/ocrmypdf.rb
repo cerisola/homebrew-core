@@ -18,7 +18,7 @@ class Ocrmypdf < Formula
   depends_on "freetype"
   depends_on "ghostscript"
   depends_on "jbig2enc"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "leptonica"
   depends_on "libpng"
   depends_on "pngquant"

@@ -12,7 +12,7 @@ class Links < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "librsvg"
   depends_on "libtiff"
   depends_on "openssl"
