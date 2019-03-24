@@ -25,7 +25,7 @@ class OpencvAT2 < Formula
   depends_on "python@2" # does not support Python 3
 
   def install
-    jpeg = Formula["jpeg"]
+    jpeg = Formula["jpeg-turbo"]
 
     args = std_cmake_args + %W[
       -DCMAKE_OSX_DEPLOYMENT_TARGET=

@@ -131,7 +131,7 @@ class PhpAT71 < Formula
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-iconv#{headers_path}
       --with-icu-dir=#{Formula["icu4c"].opt_prefix}
-      --with-jpeg-dir=#{Formula["jpeg"].opt_prefix}
+      --with-jpeg-dir=#{Formula["jpeg-turbo"].opt_prefix}
       --with-kerberos#{headers_path}
       --with-layout=GNU
       --with-ldap=#{Formula["openldap"].opt_prefix}

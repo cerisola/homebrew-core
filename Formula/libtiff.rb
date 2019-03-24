@@ -29,8 +29,8 @@ class Libtiff < Formula
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-lzma
-      --with-jpeg-include-dir=#{Formula["jpeg"].opt_include}
-      --with-jpeg-lib-dir=#{Formula["jpeg"].opt_lib}
+      --with-jpeg-include-dir=#{Formula["jpeg-turbo"].opt_include}
+      --with-jpeg-lib-dir=#{Formula["jpeg-turbo"].opt_lib}
       --without-x
     ]
     system "./configure", *args

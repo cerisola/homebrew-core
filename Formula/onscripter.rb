@@ -24,7 +24,7 @@ class Onscripter < Formula
     incs = [
       `pkg-config --cflags sdl SDL_ttf SDL_image SDL_mixer`.chomp,
       `smpeg-config --cflags`.chomp,
-      "-I#{Formula["jpeg"].include}",
+      "-I#{Formula["jpeg-turbo"].include}",
       "-I#{Formula["lua"].opt_include}/lua",
     ]
 

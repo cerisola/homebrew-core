@@ -41,7 +41,7 @@ class Mapnik < Formula
     freetype = Formula["freetype"].opt_prefix
     harfbuzz = Formula["harfbuzz"].opt_prefix
     icu = Formula["icu4c"].opt_prefix
-    jpeg = Formula["jpeg"].opt_prefix
+    jpeg = Formula["jpeg-turbo"].opt_prefix
     libpng = Formula["libpng"].opt_prefix
     libtiff = Formula["libtiff"].opt_prefix
     proj = Formula["proj"].opt_prefix

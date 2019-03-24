@@ -39,9 +39,9 @@ class Lammps < Formula
                        "FFT_INC=-DFFT_FFTW3 -I#{Formula["fftw"].opt_include}",
                        "FFT_PATH=-L#{Formula["fftw"].opt_lib}",
                        "FFT_LIB=-lfftw3",
-                       "JPG_INC=-DLAMMPS_JPEG -I#{Formula["jpeg"].opt_include} " \
+                       "JPG_INC=-DLAMMPS_JPEG -I#{Formula["jpeg-turbo"].opt_include} " \
                        "-DLAMMPS_PNG -I#{Formula["libpng"].opt_include}",
-                       "JPG_PATH=-L#{Formula["jpeg"].opt_lib} -L#{Formula["libpng"].opt_lib}",
+                       "JPG_PATH=-L#{Formula["jpeg-turbo"].opt_lib} -L#{Formula["libpng"].opt_lib}",
                        "JPG_LIB=-ljpeg -lpng"
 
         bin.install "lmp_#{variant}"

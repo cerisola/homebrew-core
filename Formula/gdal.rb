@@ -73,7 +73,7 @@ class Gdal < Formula
       "--with-geos=#{Formula["geos"].opt_prefix}/bin/geos-config",
       "--with-geotiff=#{Formula["libgeotiff"].opt_prefix}",
       "--with-gif=#{Formula["giflib"].opt_prefix}",
-      "--with-jpeg=#{Formula["jpeg"].opt_prefix}",
+      "--with-jpeg=#{Formula["jpeg-turbo"].opt_prefix}",
       "--with-libjson-c=#{Formula["json-c"].opt_prefix}",
       "--with-libtiff=#{Formula["libtiff"].opt_prefix}",
       "--with-pg=#{Formula["libpq"].opt_prefix}/bin/pg_config",
