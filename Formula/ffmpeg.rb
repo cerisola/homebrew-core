@@ -85,6 +85,7 @@ class Ffmpeg < Formula
       --disable-indev=jack
       --enable-libaom
       --enable-libsoxr
+      --enable-nonfree
     ]
 
     system "./configure", *args
