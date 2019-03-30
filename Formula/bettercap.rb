@@ -1,14 +1,14 @@
 class Bettercap < Formula
   desc "Swiss army knife for network attacks and monitoring"
   homepage "https://www.bettercap.org/"
-  url "https://github.com/bettercap/bettercap/archive/v2.19.tar.gz"
-  sha256 "dda2111d97db29bdb2e4411aebd1cf37dc3aadfeb63b1e127899079c562cb818"
+  url "https://github.com/bettercap/bettercap/archive/v2.21.1.tar.gz"
+  sha256 "8b38d177024f2e77b32b35682627f5889f0650c69ab6d602472bdc65a16d8b07"
 
   bottle do
     cellar :any
-    sha256 "90257901fbfee927260143eda7143008b8ea50525aada58a8e13beb50e3db05f" => :mojave
-    sha256 "079e692cd9f19f9a378dcc4996d30a1793362fdfb1b11ad393573760f063d7fe" => :high_sierra
-    sha256 "0e6dda6ff0d456b3aded49c04783bd6871932b620433ec0456eaf5c08bf2f28d" => :sierra
+    sha256 "98165640dc5801948563a211ce3c271cec737539d404a6c8ef0ce2e03cefc332" => :mojave
+    sha256 "e21cc18cc1c0bf84d1e3736bd4d8a78e28a5d98134707cee768344b9044ce0e4" => :high_sierra
+    sha256 "aef6994094164fc1aaee47eeb54f608dd4949a852fdc8a7bedf751ecaf43735d" => :sierra
   end
 
   depends_on "dep" => :build

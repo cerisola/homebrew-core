@@ -2,14 +2,14 @@ class Pulumi < Formula
   desc "Cloud native development platform"
   homepage "https://pulumi.io/"
   url "https://github.com/pulumi/pulumi.git",
-      :tag      => "v0.17.2",
-      :revision => "b774917e57ed877b0e1d5df6505cbd72677386a7"
+      :tag      => "v0.17.4",
+      :revision => "992952b54f231c766b51c0fbf884763e0958f6ec"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "af140359331934f80fca92e991b05816dbc337320f6609a6dbef6bb157bcbad6" => :mojave
-    sha256 "e145a9a5d8e7d11db3ff9bad010954b508d40f3026b7f1852a3d78decf9fe92a" => :high_sierra
-    sha256 "6555ff4845daf5704ab1d444e39457a866c3f7a8a0b99175e2c3cff95ba87971" => :sierra
+    sha256 "d6aa677e66f988da073ce0a398a856fa831afeb17c0272c10111ef62a806e71c" => :mojave
+    sha256 "f523b59cd8e4811763f2e6eb40aebc3f9d3de07618da58f2851a76200f46dae4" => :high_sierra
+    sha256 "0142993ecde24aaf31c864a7fcba2078b00cc2efaa4786b97d94f270e68ed5e8" => :sierra
   end
 
   depends_on "dep" => :build
