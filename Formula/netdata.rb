@@ -1,26 +1,28 @@
 class Netdata < Formula
   desc "Distributed real-time performance and health monitoring"
   homepage "https://my-netdata.io/"
-  url "https://github.com/netdata/netdata/releases/download/v1.13.0/netdata-v1.13.0.tar.gz"
-  sha256 "258e64a945bf80e91c4bffab35e7f2d8930025246814038f541ff0ac403a666c"
+  url "https://github.com/netdata/netdata/releases/download/v1.14.0/netdata-v1.14.0.tar.gz"
+  sha256 "f3768f6927e3712dce73794c6943a12f4454410c872eb3dfd19af4f52296187a"
+  revision 1
 
   bottle do
-    sha256 "8b0ef1f317402901ba1189b03d9c27bd682748573dd40cb934254574dd512515" => :mojave
-    sha256 "02bbea4b989f9a6276532ccbc98241deddb13f531348261fbdf150b8faa0ba1a" => :high_sierra
-    sha256 "bacd3e8d0f19d34231114eb40523e7790a7d96e179331e8aad012e742ecf41b9" => :sierra
+    sha256 "41b7ad105a34c6d08504b519fdd831083f2e5eafae50e56dbb5f2764bf42fb3e" => :mojave
+    sha256 "c299b09c4c8d92b12ccce72ed891b45d639929c3f47f016578feaeb7a1018dc2" => :high_sierra
+    sha256 "cb8bade65cc8b64db20560f5e1ef9b74656a8e04f9ca520fbc029f6ee816f2a7" => :sierra
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on "ossp-uuid"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}"
+                          "--localstatedir=#{var}",
+                          "UUID_CFLAGS=-I/usr/include",
+                          "UUID_LIBS=-lc"
     system "make", "install"
 
     (etc/"netdata").install "system/netdata.conf"

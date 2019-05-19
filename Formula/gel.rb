@@ -1,14 +1,23 @@
 class Gel < Formula
   desc "Modern gem manager"
   homepage "https://gel.dev"
-  url "https://github.com/gel-rb/gel/archive/v0.2.0.tar.gz"
-  sha256 "7d69f745986c9c33272f080496aea53719d69d4f465993c740f432ef5f0a3bd3"
+  url "https://github.com/gel-rb/gel/archive/v0.3.0.tar.gz"
+  sha256 "fe7c4bd67a2ea857b85b754f5b4d336e26640eda7199bc99b9a1570043362551"
 
-  bottle :unneeded
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "7b08b9ca28185ab4ae1befb9f62d3d3a0d094f72629c0742b7135a521eac3381" => :mojave
+    sha256 "7b08b9ca28185ab4ae1befb9f62d3d3a0d094f72629c0742b7135a521eac3381" => :high_sierra
+    sha256 "a4a5e3f1b6eb3ea8511adbf12f9b22482c392616bdd37c801be2fd100a1b886f" => :sierra
+  end
 
   def install
-    prefix.install "bin", "exe", "lib"
-    share.install "man"
+    ENV["PATH"] = "bin:#{ENV["HOME"]}/.local/gel/bin:#{ENV["PATH"]}"
+    system "gel", "install"
+    system "rake", "man"
+    bin.install "exe/gel"
+    prefix.install "lib"
+    man1.install Pathname.glob("man/man1/*.1")
   end
 
   test do

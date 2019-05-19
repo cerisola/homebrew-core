@@ -3,14 +3,14 @@ require "language/node"
 class Terrahub < Formula
   desc "Terraform automation and orchestration tool"
   homepage "https://docs.terrahub.io"
-  url "https://registry.npmjs.org/terrahub/-/terrahub-0.2.33.tgz"
-  sha256 "9e8a86fc30ad96661af749cd82df353f05d4d7a74cef3ef9a295bb112c7604f6"
+  url "https://registry.npmjs.org/terrahub/-/terrahub-0.2.56.tgz"
+  sha256 "2cf927dbad6f326ba89dad2dd4b62eb3938fe18289a76f7252dc19c117359130"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fc80b9a46d6deac64fdcc86a87b9d38d3b1e73c8a3b44cb93e45ddfa9abfc0f1" => :mojave
-    sha256 "25a6d4749df950ae84102c85c68dee1b13cc2af348a12423d75ec70fac9817fe" => :high_sierra
-    sha256 "7356fb544504557ecb253a6d3b4243e4ca2f7b28c8d13bf067b81e4ca540dba5" => :sierra
+    sha256 "9f93672f3526a5595c65a6be492b7bddf4bc3b4848ee3a911d7c732f1b07ec1d" => :mojave
+    sha256 "63f5818063a0f10aca8baa8d01b82cf95553a7f1fafc9ddcf6a3ca017493ada4" => :high_sierra
+    sha256 "e7d2f7bd2a44a6265f9f0e86f6b45d957432a3f3e072b17f1e9ad2561ed6941f" => :sierra
   end
 
   depends_on "node"
@@ -31,8 +31,6 @@ class Terrahub < Formula
       subnet_component:
         name: subnet
         root: ./subnet
-        dependsOn:
-          - ./vpc
     EOF
     output = shell_output("#{bin}/terrahub graph")
     assert_match "Project: terrahub-demo", output

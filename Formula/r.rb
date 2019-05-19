@@ -1,13 +1,14 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-3/R-3.5.3.tar.gz"
-  sha256 "2bfa37b7bd709f003d6b8a172ddfb6d03ddd2d672d6096439523039f7a8e678c"
+  url "https://cran.r-project.org/src/base/R-3/R-3.6.0.tar.gz"
+  sha256 "36fcac3e452666158e62459c6fc810adc247c7109ed71c5b6c3ad5fc2bf57509"
+  revision 2
 
   bottle do
-    sha256 "8d1c5161ae03b34d8ed55bd7aa60c708b196b39929cd867bf80973640915f86e" => :mojave
-    sha256 "e1d29ef3229094d533527fa8caaf1d747548b06ef03260dbda3b490f8ee85904" => :high_sierra
-    sha256 "e3da4551f917e2846fb7c887c1bffdd923fcd8abab3f035d69c592ef74d9a18a" => :sierra
+    sha256 "97a94e973e7e47203e0892f175c6da61e4ec210e17472458067c04a0f605c59b" => :mojave
+    sha256 "e214d025cc499062c8f7eafdcb8cd82b75dcef7aa2b3d181bf0d87f7eb506bde" => :high_sierra
+    sha256 "345978973e9d942bfd23d1ba583ced2cfde65aff52fc8a400ea74b278aa5ca58" => :sierra
   end
 
   depends_on "pkg-config" => :build

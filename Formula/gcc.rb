@@ -1,16 +1,15 @@
 class Gcc < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
-  url "https://ftp.gnu.org/gnu/gcc/gcc-8.3.0/gcc-8.3.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gcc/gcc-8.3.0/gcc-8.3.0.tar.xz"
-  sha256 "64baadfe6cc0f4947a84cb12d7f0dfaf45bb58b7e92461639596c21e02d97d2c"
-  revision 1
+  url "https://ftp.gnu.org/gnu/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gcc/gcc-9.1.0/gcc-9.1.0.tar.xz"
+  sha256 "79a66834e96a6050d8fe78db2c3b32fb285b230b855d0a66288235bc04b327a0"
   head "https://gcc.gnu.org/git/gcc.git"
 
   bottle do
-    sha256 "3a8d6a86c2ae4593ed5520b875fad3f2ebc9a30a1677d2fc1e6a6271ac88776b" => :mojave
-    sha256 "4dedbb6d2bcef7eaf6fd30ceaf594eb5a9c73650119e488d61035abaeab5a146" => :high_sierra
-    sha256 "69b367c9dfee83dd62aff1e0b9814404df40c68b6bc43b3a4f87d1331562ea41" => :sierra
+    sha256 "1af51e1a8c5394297c13b85548203a84279a2e24e6ab982fb299c526bdde3079" => :mojave
+    sha256 "be85387a2c7c9313da23e258013ff6de215cf1f0cb997b2edf72fb1af725d72f" => :high_sierra
+    sha256 "ca1bf59a0726ea16f4fe22ad98532e4ac0171bbb518154929d71d7f2032657ee" => :sierra
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -27,15 +26,6 @@ class Gcc < Formula
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
-
-  # Patch for Xcode bug, taken from https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89864#c43
-  # This should be removed in the next release of GCC; this is an xcode bug, but
-  # this patch is a work around committed to trunk and planned to backport to
-  # 6, 7, 8 branches
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/master/gcc/8.3.0-xcode-bug-_Atomic-fix.patch"
-    sha256 "33ee92bf678586357ee8ab9d2faddf807e671ad37b97afdd102d5d153d03ca84"
-  end
 
   def version_suffix
     if build.head?
@@ -55,7 +45,7 @@ class Gcc < Formula
     #  - BRIG
     languages = %w[c c++ objc obj-c++ fortran]
 
-    osmajor = `uname -r`.chomp
+    osmajor = `uname -r`.split(".").first
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
 
     args = %W[

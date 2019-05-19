@@ -3,21 +3,23 @@ class Visp < Formula
   homepage "https://visp.inria.fr/"
   url "https://gforge.inria.fr/frs/download.php/latestfile/475/visp-3.2.0.tar.gz"
   sha256 "072237ed5c6fcbc6a87300fa036014ec574fd081724907e41ae2d6fb5a222fbc"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 "a757a056b336ec61af0a4fff50e4450e34b7ae9a0a58898cf57b8de2ac672a85" => :mojave
-    sha256 "0c618abe1e923b8063e4a09ebc02120a659cf6b376380061d87f2c751ae3e5ab" => :high_sierra
-    sha256 "22dcf5e1add32b7838adccc9da76d2132c7fd9d0ce600b3c649824ccabbf72e7" => :sierra
+    sha256 "ec3b6c3daf0b521e9913aa82269acd90cb6a343c4b1cf8199586a60357207b91" => :mojave
+    sha256 "efad0ce8037486f2dfb4de39f6ff0d3f7566f67543527f0005f6623312265bf8" => :high_sierra
+    sha256 "de6f90719e322885bc03c6ba0d5c8c58b2ccea6fa2fd042b2a54a60284c65b4e" => :sierra
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "eigen"
   depends_on "gsl"
   depends_on "jpeg-turbo"
   depends_on "libdc1394"
   depends_on "libpng"
   depends_on "opencv"
+  depends_on "pcl"
   depends_on "zbar"
 
   def install
@@ -45,7 +47,7 @@ class Visp < Formula
                          "-DUSE_LIBUSB_1=OFF",
                          "-DUSE_OPENCV=ON",
                          "-DOpenCV_DIR=#{Formula["opencv"].opt_share}/OpenCV",
-                         "-DUSE_PCL=OFF",
+                         "-DUSE_PCL=ON",
                          "-DUSE_PNG=ON",
                          "-DPNG_PNG_INCLUDE_DIR=#{Formula["libpng"].opt_include}",
                          "-DPNG_LIBRARY_RELEASE=#{Formula["libpng"].opt_lib}/libpng.dylib",

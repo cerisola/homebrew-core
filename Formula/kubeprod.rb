@@ -1,14 +1,14 @@
 class Kubeprod < Formula
   desc "Installer for the Bitnami Kubernetes Production Runtime (BKPR)"
   homepage "https://kubeprod.io"
-  url "https://github.com/bitnami/kube-prod-runtime/archive/v1.2.0.tar.gz"
-  sha256 "8d458c8c4bf818a06fb802e191f97f1124188d07edf1d12e15868831f44ab392"
+  url "https://github.com/bitnami/kube-prod-runtime/archive/v1.3.1.tar.gz"
+  sha256 "ef900b80c79ab4b2028a6ce99ff225a7301d7985becaf289f479c2edf35bf605"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9cdb73d130c9443eabf6d4ae362cbe9aa252465b786bcece8f8b3cbd69c81e46" => :mojave
-    sha256 "3d96877ec020557916ef129f56ec6d34337cc62fec21b9fd431037521ee1a8a3" => :high_sierra
-    sha256 "939870405708627b1ddd53bffcb1c9982d176fe5ee51c07298d25e8cb0360aa4" => :sierra
+    sha256 "06478b462a749351cafbd1f47c540dc91e8a9e6c5799fe460c35d811ef78331e" => :mojave
+    sha256 "57ad033200c4cf92e86444a27b17eadd37b0212529b438b38e2e16ea0a7abb82" => :high_sierra
+    sha256 "6902c7f647cbc0700132db5512559dbf725a1f37783b8b58f6f95f41e9d2a616" => :sierra
   end
 
   depends_on "go" => :build
