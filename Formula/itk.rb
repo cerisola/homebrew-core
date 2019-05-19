@@ -15,7 +15,7 @@ class Itk < Formula
   depends_on "fftw"
   depends_on "gdcm"
   depends_on "hdf5"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "vtk"
