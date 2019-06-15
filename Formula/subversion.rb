@@ -4,11 +4,13 @@ class Subversion < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.12.0.tar.bz2"
   mirror "https://archive.apache.org/dist/subversion/subversion-1.12.0.tar.bz2"
   sha256 "7fae7c73d8a007c107c0ae5eb372bc0bb013dbfe966fcd5c59cd5a195a5e2edf"
+  revision 2
 
   bottle do
-    sha256 "9fd5dbe51db910462158ec335367ad051e808e8e09915a1dee090bab4483bd6e" => :mojave
-    sha256 "d93fbb37e55fd694e79d049b544be3cf48e0c0a69199447377eb027496b66a54" => :high_sierra
-    sha256 "9e905cca66cfca6706e0b0d06aef3c1515cbefd1b7e43f91d9c35d650cd8664b" => :sierra
+    rebuild 1
+    sha256 "f99b4392f0acebf4e61a5b8747d19fdae652add9b910f060ed1a8a95f9d0ad2c" => :mojave
+    sha256 "dea97ac9eec8be1aa78cf4e8670c0c21db55fff756778e2b31021a508fb86707" => :high_sierra
+    sha256 "ed8c961d325cba194b76059a6f498bbc1af89375f1b10e3e98117f2d0b43b1b4" => :sierra
   end
 
   head do
@@ -22,7 +24,7 @@ class Subversion < Formula
   depends_on :java => ["1.8+", :build]
   depends_on "pkg-config" => :build
   depends_on "scons" => :build # For Serf
-  depends_on "swig" => :build
+  depends_on "swig@3" => :build # https://issues.apache.org/jira/browse/SVN-4818
   depends_on "apr"
   depends_on "apr-util"
 

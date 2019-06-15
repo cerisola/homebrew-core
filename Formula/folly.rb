@@ -1,15 +1,14 @@
 class Folly < Formula
   desc "Collection of reusable C++ library artifacts developed at Facebook"
   homepage "https://github.com/facebook/folly"
-  url "https://github.com/facebook/folly/archive/v2019.03.18.00.tar.gz"
-  sha256 "45b47d5d0ee5652bcb87bde6b03cf5a3232b04b3750056831b9e72ea4e1871db"
-  revision 2
+  url "https://github.com/facebook/folly/archive/v2019.06.10.00.tar.gz"
+  sha256 "afecd68815a83865d95a3a6b861abe8096beefae45c89566e0d510279b631b57"
   head "https://github.com/facebook/folly.git"
 
   bottle do
     cellar :any
-    sha256 "34403daae605becd5da491a2354f903498bbc9309e5b7e8847ecc83fe310f9ad" => :mojave
-    sha256 "f86f5dffe2a308e6b9ad5a46da71cc5e015fe5eb76fc914ca111c745c7d0908a" => :high_sierra
+    sha256 "194913cab7e2ba929633026f2e3d14cc1160b8d797ae0fc561df769ddb15b114" => :mojave
+    sha256 "10febb13ae5d61cebc336e536b2bd3f92c7e8f4f9c184742bc1a2d9d9ee6d183" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -33,23 +32,11 @@ class Folly < Formula
   # https://github.com/facebook/folly/pull/445
   fails_with :gcc => "6"
 
-  # patch for pclmul compiler flags to fix mojave build
-  patch do
-    url "https://github.com/facebook/folly/commit/964ca3c4979f72115ebfec58056e968a69d5942c.diff?full_index=1"
-    sha256 "b719dd8783f655f0d98cd0e2339ef66753a8d2503c82d334456a86763b0b889f"
-  end
-
   def install
-    ENV.cxx11
-
     mkdir "_build" do
       args = std_cmake_args + %w[
         -DFOLLY_USE_JEMALLOC=OFF
       ]
-
-      # Upstream issue 10 Jun 2018 "Build fails on macOS Sierra"
-      # See https://github.com/facebook/folly/issues/864
-      args << "-DCOMPILER_HAS_F_ALIGNED_NEW=OFF" if MacOS.version == :sierra
 
       system "cmake", "..", *args, "-DBUILD_SHARED_LIBS=ON"
       system "make"
@@ -75,7 +62,7 @@ class Folly < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-std=c++11", "test.cc", "-I#{include}", "-L#{lib}",
+    system ENV.cxx, "-std=c++14", "test.cc", "-I#{include}", "-L#{lib}",
                     "-lfolly", "-o", "test"
     system "./test"
   end

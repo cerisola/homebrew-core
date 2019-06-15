@@ -1,10 +1,11 @@
 # Comment that will be sent if an issue is judged to be closed
-comment: >
-From the issue template:
+comment: |
+  From the issue template:
 
-\> **Please note we will close your issue without comment if you delete, do not read or do not fill out the issue checklist below and provide ALL the requested information. If you repeatedly fail to use the issue template, we will block you from ever submitting issues to Homebrew again.**
+  > **Please note we will close your issue without comment if you delete, do not read or do not fill out the issue checklist below and provide ALL the requested information. If you repeatedly fail to use the issue template, we will block you from ever submitting issues to Homebrew again.**
 
-If you add the necessary information to this issue (don't create a new one, please) then this issue may be reopened.
+  If you add the necessary information to this issue (don't create a new one, please) then this issue may be reopened.
+issueConfigs:
 # There can be several configs for different kind of issues.
 - content:
 # reproducible bug report
@@ -15,10 +16,6 @@ If you add the necessary information to this issue (don't create a new one, plea
   - "brew gist-logs"
   - "brew config"
   - "brew doctor"
-  - "What you were trying to do (and why)"
-  - "What happened (include command output)"
-  - "What you expected to happen"
-  - "Step-by-step reproduction instructions (by running `brew install` commands)"
 # Optional configuration:
 #
 # whether the keywords are case-insensitive

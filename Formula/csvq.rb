@@ -1,14 +1,14 @@
 class Csvq < Formula
   desc "SQL-like query language for csv"
   homepage "https://mithrandie.github.io/csvq"
-  url "https://github.com/mithrandie/csvq/archive/v1.11.1.tar.gz"
-  sha256 "e6423098bc9ef4bd54d482331a3a8a88dc90b15ed2978ba7860fffba46765c68"
+  url "https://github.com/mithrandie/csvq/archive/v1.11.4.tar.gz"
+  sha256 "facde7668ab90d879e1159d84909b7e52988880b7e999eaf1664cb4baa4440fd"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "accfa2b74f9979c47efc859d61b68ea51fdc157b6ab7e90822947d165e4989f3" => :mojave
-    sha256 "e31fa0fa47e97c22c26016b1da891de17af1c460a9e0605a394369f8b8644c43" => :high_sierra
-    sha256 "ffbe532cd043b30ce29362dc00f6cd29ce2470237e1cb275b8059f7b8a4097dd" => :sierra
+    sha256 "292deba5ee3673dc8cfbbd417e46b5bf928f55d14eb3f308021298b71fb7cab7" => :mojave
+    sha256 "e95262c8361a9aef8f5dec67e2509af4ebe8fc2ee4bb3cf900e706a63d94f266" => :high_sierra
+    sha256 "623f76dd524ab045d2e1582e6bcc6d41d9b18e06ec81f3fb1ddca255fac3eb46" => :sierra
   end
 
   depends_on "go" => :build
