@@ -1,15 +1,15 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.28.4.tar.gz"
-  sha256 "bab1cabb0542ce2bd4b41a15b84a8d81c8dc3332162705ded6f311dd898656ca"
+  url "https://notmuchmail.org/releases/notmuch-0.29.1.tar.xz"
+  sha256 "9846fc8e32d415cee41f6644581a4de7b0d2e6bc98e1ba86db918f061fcfe365"
   head "https://git.notmuchmail.org/git/notmuch", :using => :git
 
   bottle do
     cellar :any
-    sha256 "7a28cc4dc79666ee4a026d7b14cbf1f4ecfd533beca9b74f41b00bf83fb281a4" => :mojave
-    sha256 "f47dc47e3cb0dccc48ad57e07bafbe7303189f98fe4f772fd7c1684cc71ac978" => :high_sierra
-    sha256 "0c1426a919d84933ea3d0c95466bf7119eb42a1c1e4485bb76de05d63c675f2f" => :sierra
+    sha256 "1d456d008be57a9c621467edfa2ba9d7ce376f2ea26cd2892309c1fb127fe602" => :mojave
+    sha256 "4d1b00b5f7751b2ecdd5b9d5db5c5638fcd3cd21ed03d18dd150f703c53b3392" => :high_sierra
+    sha256 "7474e52c2648d5cb1499edb6980f3caa0d5e7274d2e32574512ab95ce7eb225e" => :sierra
   end
 
   depends_on "doxygen" => :build
@@ -19,7 +19,7 @@ class Notmuch < Formula
   depends_on "emacs"
   depends_on "glib"
   depends_on "gmime"
-  depends_on "python@2"
+  depends_on "python"
   depends_on "talloc"
   depends_on "xapian"
   depends_on "zlib"
@@ -41,7 +41,7 @@ class Notmuch < Formula
     system "make", "V=1", "install"
 
     cd "bindings/python" do
-      system "python2.7", *Language::Python.setup_install_args(prefix)
+      system "python3", *Language::Python.setup_install_args(prefix)
     end
   end
 

@@ -1,13 +1,13 @@
 class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.60/glib-2.60.4.tar.xz"
-  sha256 "2b941ec5dcb92e5ea83fe42f9eb55a827bc8a12c153ad2489d551c31d04733dd"
+  url "https://download.gnome.org/sources/glib/2.62/glib-2.62.0.tar.xz"
+  sha256 "6c257205a0a343b662c9961a58bb4ba1f1e31c82f5c6b909ec741194abc3da10"
 
   bottle do
-    sha256 "037cfa913d974cb0257deeb8575a6e9d7b000634aa1339581b7b12d2369d91c0" => :mojave
-    sha256 "f236c2ada6727a674e02db25e5dd7a81ffa75975f59cb4ff376c82794591191b" => :high_sierra
-    sha256 "fe164e352e12e8a39e1382891d64851776932a4e132b0804352088d78044c6dc" => :sierra
+    sha256 "de1bacf18d547a429b058ce9fd3e98befe04158ac757d5e6de46a2589ab8b74f" => :mojave
+    sha256 "527dc608bd9204c39a54c2558d522ef392138950c1676a61100aef1bdc18170a" => :high_sierra
+    sha256 "e9aa21523883246876506367c7d40fd2badcaaa70296fe56695859ad0fd5b3ab" => :sierra
   end
 
   depends_on "meson" => :build
@@ -17,6 +17,9 @@ class Glib < Formula
   depends_on "libffi"
   depends_on "pcre"
   depends_on "python"
+  uses_from_macos "util-linux" # for libmount.so
+
+  patch :DATA
 
   # https://bugzilla.gnome.org/show_bug.cgi?id=673135 Resolved as wontfix,
   # but needed to fix an assumption about the location of the d-bus machine
@@ -32,7 +35,7 @@ class Glib < Formula
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
-      -Diconv=native
+      -Diconv=auto
       -Dgio_module_dir=#{HOMEBREW_PREFIX}/lib/gio/modules
       -Dbsymbolic_functions=false
       -Ddtrace=false
@@ -87,3 +90,24 @@ class Glib < Formula
     system "./test"
   end
 end
+
+__END__
+diff --git a/gmodule/meson.build b/gmodule/meson.build
+index d38ad2d..5fce96d 100644
+--- a/gmodule/meson.build
++++ b/gmodule/meson.build
+@@ -13,12 +13,12 @@ if host_system == 'windows'
+ # dlopen() filepath must be of the form /path/libname.a(libname.so)
+ elif host_system == 'aix'
+   g_module_impl = 'G_MODULE_IMPL_AR'
++elif have_dlopen_dlsym
++  g_module_impl = 'G_MODULE_IMPL_DL'
+ # NSLinkModule (dyld) in system libraries (Darwin)
+ elif cc.has_function('NSLinkModule')
+   g_module_impl = 'G_MODULE_IMPL_DYLD'
+   g_module_need_uscore = 1
+-elif have_dlopen_dlsym
+-  g_module_impl = 'G_MODULE_IMPL_DL'
+ endif
+
+ # additional checks for G_MODULE_IMPL_DL

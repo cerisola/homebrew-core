@@ -1,14 +1,14 @@
 class Gnunet < Formula
   desc "Framework for distributed, secure and privacy-preserving applications"
   homepage "https://gnunet.org/"
-  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.11.5.tar.gz"
-  sha256 "98e0355ff0627bf88112b3b92a7522e98c0ae6071fc45efda5a33daed28199b3"
+  url "https://ftp.gnu.org/gnu/gnunet/gnunet-0.11.6.tar.gz"
+  sha256 "f8a07063b1e0890a1386fed2313a967f58f5495c075a25725aba200469c857bf"
 
   bottle do
     cellar :any
-    sha256 "3c2971584ed0a709b5c59c3f844e5966049b90461043af93ba10e167c134a284" => :mojave
-    sha256 "81e3f400e41674f919a2656217bd4e1ce825505d9e3939acdc0b3efcfa8949d4" => :high_sierra
-    sha256 "0d5a57bacf57f3a78b2a96e1c0b9d22db5385255211b5bd9b8334ffe57925136" => :sierra
+    sha256 "88e4b7b5b5e022db9e02d4eaa0784aca48971fea93b16043bc7ae8326927431e" => :mojave
+    sha256 "c2c95aa8b1b3c17d164863ec853ea7e109072cbdeee61904e6eff7121a931f15" => :high_sierra
+    sha256 "ae1fa4e8cb8ccc335c2170f7ca180e2b5685836a869409e4774180319f53d9d4" => :sierra
   end
 
   depends_on "pkg-config" => :build

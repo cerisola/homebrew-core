@@ -1,13 +1,13 @@
 class Nghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/nghttp2/nghttp2/releases/download/v1.38.0/nghttp2-1.38.0.tar.xz"
-  sha256 "ef75c761858241c6b4372fa6397aa0481a984b84b7b07c4ec7dc2d7b9eee87f8"
+  url "https://github.com/nghttp2/nghttp2/releases/download/v1.39.2/nghttp2-1.39.2.tar.xz"
+  sha256 "a2d216450abd2beaf4e200c168957968e89d602ca4119338b9d7ab059fd4ce8b"
 
   bottle do
-    sha256 "aebb18502b1abd48b42022d09c37eff0486bdecd250e15e2cc98ca265f06e03a" => :mojave
-    sha256 "20703302a2bd99bc0580c5b76fcaec062e65a6f40d356ff9f1e2d2134d92f117" => :high_sierra
-    sha256 "b373c7c7f0df4e544a19fb623169bc3387515eb5aa53ca4a059624c20a5dec54" => :sierra
+    sha256 "6d1d1e137cdb97927bb16ebdd26436b0ac7dfcb07bf8d095f1b122a2936113b2" => :mojave
+    sha256 "693ba460b5d7d0d8105f99954f88fa3a172feb71cb5a7e81fbf9d9709e77be63" => :high_sierra
+    sha256 "0dae885aa1c533925fe717d0ee888e200e2a697c7ac3f9bf0963255a22261c37" => :sierra
   end
 
   head do

@@ -2,14 +2,14 @@ class Inlets < Formula
   desc "Expose your local endpoints to the Internet"
   homepage "https://github.com/alexellis/inlets"
   url "https://github.com/alexellis/inlets.git",
-      :tag      => "2.1.0",
-      :revision => "c23f6993892a1b4e398e8acf61e3dc7bfcb7c6ed"
+      :tag      => "2.4.1",
+      :revision => "5d9330c259b84d6957c6a5b291e5622263ec876d"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f36a039f4d97ec6cae1aba8a5ae6a5668a3f1e2a9396a2cfa0abfad911d68e4a" => :mojave
-    sha256 "493df8865a9548712b824ca241631e43affcb5526e1a8b91fc45e85e27acae49" => :high_sierra
-    sha256 "ebef63a47bc27736fce3fdd52d34ae5c3db585f06494f85550de9fa16904981d" => :sierra
+    sha256 "b4dfcad89dd0354b982d4fb5c0b192fbaa418e3d38a603e10b84cbe7a1c80f63" => :mojave
+    sha256 "f1472991e2ac36c97e549792fadd8278837124fc951c0ac5332beb3890342f47" => :high_sierra
+    sha256 "0ee845f5292c5eb1334a606299d479059fc4ed644166d2fb798476ab7d26be01" => :sierra
   end
 
   depends_on "go" => :build
@@ -91,7 +91,7 @@ class Inlets < Formula
       commit = stable_resource.instance_variable_get(:@specs)[:revision]
 
       # Basic --version test
-      inlets_version = shell_output("#{bin}/inlets --version")
+      inlets_version = shell_output("#{bin}/inlets version")
       assert_match /\s#{commit}$/, inlets_version
       assert_match /\s#{version}$/, inlets_version
 

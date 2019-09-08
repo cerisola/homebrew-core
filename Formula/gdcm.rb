@@ -1,13 +1,14 @@
 class Gdcm < Formula
   desc "Grassroots DICOM library and utilities for medical files"
   homepage "https://sourceforge.net/projects/gdcm/"
-  url "https://github.com/malaterre/GDCM/archive/v3.0.0.tar.gz"
-  sha256 "3de524690102bfa3e9c3a81ff3f17733138183f76b7a5f7d072b20024a255680"
+  url "https://github.com/malaterre/GDCM/archive/v3.0.1.tar.gz"
+  sha256 "f1ee8ebda7a465281abada329b4dbca6e036a42ead6ad58070ff4f94da7819d9"
+  revision 1
 
   bottle do
-    sha256 "214d4be15b09fe8657cd0a8ec4fb5356bce7d8b96948f60eee5f1989eaa15c59" => :mojave
-    sha256 "21fc5ac113f00a5485c39cc8d5a93b33a194ad773038f5ef31321153b4438b9a" => :high_sierra
-    sha256 "abee457c7b024fa8a8b935b4c282d6835ff2ba158144fa8c6f2f9c1671287fc6" => :sierra
+    sha256 "ec1b971f84394205c21b0f1cd98cab36b2102213bed48ba562c539af6de920dc" => :mojave
+    sha256 "07b3e828a22110657f1c85d5816b7c520ad0acd6a4624910ab2d13198319aaeb" => :high_sierra
+    sha256 "b006365070186fa9e147dc5c2acf12670c4eadabc5fbc43c03dde36c31e62060" => :sierra
   end
 
   depends_on "cmake" => :build
@@ -28,7 +29,7 @@ class Gdcm < Formula
 
     args = std_cmake_args + %W[
       -GNinja
-      -DGDCM_BUILD_APPLICATIONS=OFF
+      -DGDCM_BUILD_APPLICATIONS=ON
       -DGDCM_BUILD_SHARED_LIBS=ON
       -DGDCM_BUILD_TESTING=OFF
       -DGDCM_BUILD_EXAMPLES=OFF

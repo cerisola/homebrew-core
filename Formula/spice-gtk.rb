@@ -3,11 +3,12 @@ class SpiceGtk < Formula
   homepage "https://www.spice-space.org"
   url "https://www.spice-space.org/download/gtk/spice-gtk-0.37.tar.bz2"
   sha256 "1f28b706472ad391cda79a93fd7b4c7a03e84b88fc46ddb35dddbe323c923bb7"
+  revision 1
 
   bottle do
-    sha256 "2af8aeb54caf808c2714911e21645804e97c2e4e483188285349a5fb1db90f62" => :mojave
-    sha256 "3b8016d7bbe6a3d92b1da5c4783b527fda4e8070782ec32eaeb74af31945ad4d" => :high_sierra
-    sha256 "a0b7ef075bbbc7d4b67b8e6462b55717ac97703d3456a3ccdb599f1b5892b3a8" => :sierra
+    sha256 "3647ef369e2b0127fb99ab5913bb78036b2a81826f3959cbf4e6cd6f34d85fd3" => :mojave
+    sha256 "38267e5848baca8df9eb7672cd4b6bef6864535f652d5c57db98e7bd795ab696" => :high_sierra
+    sha256 "97908bc3c4a2c2884a9f5b04a5ec3a205e56d09b7a26420a50523d0342fbe458" => :sierra
   end
 
   depends_on "autoconf" => :build
@@ -82,6 +83,7 @@ class SpiceGtk < Formula
                    "-I#{Formula["glib"].include}/glib-2.0",
                    "-I#{Formula["glib"].lib}/glib-2.0/include",
                    "-I#{Formula["gtk+3"].include}/gtk-3.0",
+                   "-I#{Formula["harfbuzz"].opt_include}/harfbuzz",
                    "-I#{Formula["pango"].include}/pango-1.0",
                    "-I#{Formula["spice-protocol"].include}/spice-1",
                    "-I#{include}/spice-client-glib-2.0",

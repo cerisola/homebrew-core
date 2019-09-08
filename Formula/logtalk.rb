@@ -1,15 +1,15 @@
 class Logtalk < Formula
   desc "Object-oriented logic programming language"
   homepage "https://logtalk.org/"
-  url "https://github.com/LogtalkDotOrg/logtalk3/archive/lgt3260stable.tar.gz"
-  version "3.26.0"
-  sha256 "d35ee92f0ac8341e926fd5eaf758e3df650b4c2482f1ad31c28d553ace025d9f"
+  url "https://github.com/LogtalkDotOrg/logtalk3/archive/lgt3290stable.tar.gz"
+  version "3.29.0"
+  sha256 "0db447b891b1081e100cacff5cc61af2e1ecc0a210fa875191462c42864d9597"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e2b3806d7686cafa339f363caffece517acf321dbc60b9627586b31df0c4cc8e" => :mojave
-    sha256 "eef75b51b61a30c79acf0f8784590b0d9015d15cbbb8ec180ecce28008c15782" => :high_sierra
-    sha256 "15d9b812979a71bb876483a01e906a8ccf1b279968848416cf19dd7e39aed503" => :sierra
+    sha256 "27a19c93a86a8b714362b76d15a34fc387bbe82c045f0b609b55cf5980bba7fd" => :mojave
+    sha256 "7225b829e36b52369860a9dbdf26d81c35072a87fb18d648b414e17aed81afd7" => :high_sierra
+    sha256 "a85858ecdc7dc82c069e4768dadaab8cc70e100fc396095b3ab76b5397bceae2" => :sierra
   end
 
   depends_on "gnu-prolog"

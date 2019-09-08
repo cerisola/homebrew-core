@@ -3,12 +3,13 @@ class Axel < Formula
   homepage "https://github.com/eribertomota/axel"
   url "https://github.com/axel-download-accelerator/axel/archive/v2.17.3.tar.gz"
   sha256 "13cc30194a2d52cdb87b0deca6e472ac75fbb2d8af72d554ba3936f1e2a416a7"
+  revision 2
   head "https://github.com/eribertomota/axel.git"
 
   bottle do
-    sha256 "ee8290a5bebdc8dd004a01dc7ab79ddce852bc4ac116d2628eccd0233c6145a1" => :mojave
-    sha256 "5653614b55d9ed7e0340ddf16bfea60934af1146d403eed4f7d54a3a7ab58501" => :high_sierra
-    sha256 "7210f4ac81aa0689a2471ca5989bd03525bac13133ba25ebed7b234883cefd42" => :sierra
+    sha256 "3a8739384fae93ad6e50c385c4d59741ef1e69683800ccc113f2da454928724e" => :mojave
+    sha256 "d336f8022358b2988ffae7836a6cd0b7d7fe87c9f234fee18e571a81d05a0ac7" => :high_sierra
+    sha256 "2e1536b5844d888daa112c9f19290da1bdeb305a57c66bff0188251ec8856df2" => :sierra
   end
 
   depends_on "autoconf" => :build
@@ -16,7 +17,7 @@ class Axel < Formula
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
 
   def install
     # Fixes the macOS build by esuring some _POSIX_C_SOURCE

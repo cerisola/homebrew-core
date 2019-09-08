@@ -2,15 +2,15 @@ class Minio < Formula
   desc "Amazon S3 compatible object storage server"
   homepage "https://github.com/minio/minio"
   url "https://github.com/minio/minio.git",
-      :tag      => "RELEASE.2019-06-11T00-44-33Z",
-      :revision => "002a205c9ce5005d3c39b2842b450d51f1cd941f"
-  version "20190611004433"
+      :tag      => "RELEASE.2019-08-29T00-25-01Z",
+      :revision => "eb18c82976251d9a0c0730df27e10204c89beae2"
+  version "20190829002501"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ee37e2f6186d767011a7db2836b4e50d50681f3add9069805b2da35f02d6999c" => :mojave
-    sha256 "6061d0aa4164fb37c9c5540f6c0caa884ecf7cdbac8f251162e90a2a27866860" => :high_sierra
-    sha256 "05077713c8aea557c655b120c4aa368bbbc00945cf94cb3ae0d27caa01a8480e" => :sierra
+    sha256 "fff2da8cec5959ecd7c3a5e3c8b796f1c60539f7ad0ac0dd87b7e631fa9ca604" => :mojave
+    sha256 "4087e5bd650645204c8f303f2e5845079436ad2f4fe2eff135198c144f21c9cb" => :high_sierra
+    sha256 "18ca5c1f8c4705ab82c3c57f08ebf1aa17b6c5eea7b8cf91acae7e611221b3b6" => :sierra
   end
 
   depends_on "go" => :build
@@ -63,7 +63,7 @@ class Minio < Formula
             <string>#{opt_bin}/minio</string>
             <string>server</string>
             <string>--config-dir=#{etc}/minio</string>
-            <string>--address :9000</string>
+            <string>--address=:9000</string>
             <string>#{var}/minio</string>
           </array>
           <key>RunAtLoad</key>
@@ -73,9 +73,9 @@ class Minio < Formula
           <key>WorkingDirectory</key>
           <string>#{HOMEBREW_PREFIX}</string>
           <key>StandardErrorPath</key>
-          <string>#{var}/log/minio/output.log</string>
+          <string>#{var}/log/minio.log</string>
           <key>StandardOutPath</key>
-          <string>#{var}/log/minio/output.log</string>
+          <string>#{var}/log/minio.log</string>
           <key>RunAtLoad</key>
           <true/>
         </dict>
