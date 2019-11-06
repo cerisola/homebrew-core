@@ -14,7 +14,7 @@ class Wxpython < Formula
   end
 
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "numpy"

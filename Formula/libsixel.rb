@@ -12,7 +12,7 @@ class Libsixel < Formula
     sha256 "0847829121008f75c987d932ef91866d4d201fabe6533953a476f17be2379714" => :sierra
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
 
   def install
     system "./configure", "--disable-debug",

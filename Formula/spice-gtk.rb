@@ -32,7 +32,7 @@ class SpiceGtk < Formula
   depends_on "gst-plugins-ugly"
   depends_on "gstreamer"
   depends_on "gtk+3"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "json-glib"
   depends_on "libusb"
   depends_on "lz4"
