@@ -5,10 +5,9 @@ class Bash < Formula
 
   stable do
     url "https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz"
-    mirror "https://deb.debian.org/gnu/bash/bash-5.0.tar.gz"
     mirror "https://ftpmirror.gnu.org/bash/bash-5.0.tar.gz"
-    mirror "https://gnu.cu.be/bash/bash-5.0.tar.gz"
-    mirror "https://mirror.unicorncloud.org/gnu/bash/bash-5.0.tar.gz"
+    mirror "https://mirrors.kernel.org/gnu/bash/bash-5.0.tar.gz"
+    mirror "https://mirrors.ocf.berkeley.edu/gnu/bash/bash-5.0.tar.gz"
     sha256 "b4a80f2ac66170b2913efbfb9f2594f1f76c7b1afd11f799e22035d63077fb4d"
     version "5.0.11"
 
@@ -27,17 +26,16 @@ class Bash < Formula
     ].each_slice(2) do |p, checksum|
       patch :p0 do
         url "https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-#{p}"
-        mirror "https://mirrors.ocf.berkeley.edu/gnu/bash/bash-5.0-patches/bash50-#{p}"
-        mirror "https://deb.debian.org/gnu/bash/bash-5.0-patches/bash50-#{p}"
         mirror "https://ftpmirror.gnu.org/bash/bash-5.0-patches/bash50-#{p}"
-        mirror "https://gnu.cu.be/bash/bash-5.0-patches/bash50-#{p}"
-        mirror "https://mirror.unicorncloud.org/gnu/bash/bash-5.0-patches/bash50-#{p}"
+        mirror "https://mirrors.ocf.berkeley.edu/gnu/bash/bash-5.0-patches/bash50-#{p}"
+        mirror "https://mirrors.kernel.org/gnu/bash/bash-5.0-patches/bash50-#{p}"
         sha256 checksum
       end
     end
   end
 
   bottle do
+    sha256 "c20c5b4c9864c58fd5347301bd8e8f78c4e0e8d3ba1ff109e200ff2612d30f11" => :catalina
     sha256 "01d371ab4c7069858cbc660c18c8722dbc397a4fc85c66a5723d06c82a13e150" => :mojave
     sha256 "d53c1b8ce452eef490b301a7afadaec97aa6942e4d921b0f39a46108edeb2a22" => :high_sierra
     sha256 "0002727c12bd2d1fa059f5cd70045fd5b3bcbc654b82559429ac64fe37b41ac8" => :sierra

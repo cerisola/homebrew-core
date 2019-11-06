@@ -5,19 +5,19 @@ class DhallBash < Formula
 
   desc "Compile Dhall to Bash"
   homepage "https://github.com/dhall-lang/dhall-haskell/tree/master/dhall-bash"
-  url "https://hackage.haskell.org/package/dhall-bash-1.0.22/dhall-bash-1.0.22.tar.gz"
-  sha256 "f2148c390613edc90fad8ddb3598d6e0bd8b1fcd91c135b9fd200d85dc70ace3"
+  url "https://hackage.haskell.org/package/dhall-bash-1.0.24/dhall-bash-1.0.24.tar.gz"
+  sha256 "2f7d025f98ba3b06d5e3b23198541eee76dd305d4115cedb8799662c86408c52"
   head "https://github.com/dhall-lang/dhall-haskell.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "15014515c7e6150f3f1bc9378b3c243a9dfbefc30f997c45b3d53fd194eb94b8" => :mojave
-    sha256 "b7215a16b30d55df079994f26198b9219a88d8caa7258588c2949f898d235ca8" => :high_sierra
-    sha256 "0bb33ee9115e73dfd71ce59ad5edeca554d15c41b23f6ab7d23da18e8cd96e6c" => :sierra
+    sha256 "87f050684d32d9fb8ae66ff0d5107af841afc086e73adeb084d016cfbf8033fe" => :catalina
+    sha256 "ce348f4902e29064800ae838e3685bf18fb3f4575f046c7a6398e3b7e493f748" => :mojave
+    sha256 "5c99eb69cf75b888f2a1414b0caf4ec567f72883e3606ad5a32c7d5d253603bd" => :high_sierra
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc" => :build
+  depends_on "ghc@8.6" => :build
 
   def install
     install_cabal_package

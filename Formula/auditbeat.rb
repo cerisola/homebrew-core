@@ -2,16 +2,15 @@ class Auditbeat < Formula
   desc "Lightweight Shipper for Audit Data"
   homepage "https://www.elastic.co/products/beats/auditbeat"
   url "https://github.com/elastic/beats.git",
-      :tag      => "v6.8.2",
-      :revision => "0ffbeab5a52fa93586e4178becf1252e6a837028"
+      :tag      => "v6.8.4",
+      :revision => "fa5b03454e25d60fbcd857a5839d16db59507b82"
   head "https://github.com/elastic/beats.git"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "1517d2d3b54ae1c740eb2d36acc64be215481ff1f4c74e9cb642a87b9a135237" => :mojave
-    sha256 "3bbe69fa343a08d84ee7b966f8bc3714d6f983f7b6b6a2bc8d9bba44820194d3" => :high_sierra
-    sha256 "fd0c3ff9941675ea662a79232fdbbb0ddc0ee5e9a4272f247c3387608fa67631" => :sierra
+    sha256 "4bcf0b79801b0a29f4146dfec8bf69ddefd05e9624b201c07d98c35a05148f0d" => :catalina
+    sha256 "8923796487cbd5c4f093973caf03055e30117c015eeb0a27d4ac142a550451dc" => :mojave
+    sha256 "987382ed60010313648f0d7dc934aebf65b0242354eb3a9d40108315c05d30f4" => :high_sierra
   end
 
   depends_on "go" => :build

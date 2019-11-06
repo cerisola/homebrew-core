@@ -1,14 +1,13 @@
 class Collectd < Formula
   desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
-  url "https://collectd.org/files/collectd-5.9.0.tar.bz2"
-  sha256 "7b220f8898a061f6e7f29a8c16697d1a198277f813da69474a67911097c0626b"
-  revision 3
+  url "https://collectd.org/files/collectd-5.9.2.tar.bz2"
+  sha256 "dfcb2a2fa7de0ab02c9e6c1457bee2069957d4ffc9b428851661e9c5e5fc35b7"
 
   bottle do
-    sha256 "1699b212dc7bf7b1d9110770a4e055e76004db767c79b757020c1282a526d812" => :mojave
-    sha256 "fb01f2cc9c57ed324acf4fc2ef0476abc5401d8ab69b007f28438235f6dc7550" => :high_sierra
-    sha256 "e822cfb01127050d22f7300df8343571245e6f40ca9f91c7a0fd3207c43829df" => :sierra
+    sha256 "4c4b4c34332287378e9b7f5fb4bd4a64b95716371c4aa90de9af3c31b992aeff" => :catalina
+    sha256 "ca86a75db509fffc8f70ce9e3b4bfe56dab5c7458955dcab91fbea615310cb50" => :mojave
+    sha256 "359ed8272530b34be21aee41b17b9ac93c65ccab30a6f8a11df19cda33089cd7" => :high_sierra
   end
 
   head do

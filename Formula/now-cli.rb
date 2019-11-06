@@ -3,14 +3,14 @@ require "language/node"
 class NowCli < Formula
   desc "The command-line interface for Now"
   homepage "https://zeit.co/now"
-  url "https://registry.npmjs.org/now/-/now-16.1.2.tgz"
-  sha256 "c4e2c599e99918b2e7cf1e71ae4ff06888264fb13d6656c4c0407e3608575bfc"
+  url "https://registry.npmjs.org/now/-/now-16.4.1.tgz"
+  sha256 "8eee26ccae7eded0833026640a8775907f792e33dfc38b3f631e7260c6724122"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "457ef16dba6645113a5d732b7a7f7e7c9b9e9350a215aa9e8fe57cbe255affcd" => :mojave
-    sha256 "33f697ab7963497b1c75e98276ba75a9fe90eb3df2612d1aa4435ba1db32bb7c" => :high_sierra
-    sha256 "d663d46344af392335d8e6161e75fb837d00af0eb450f35350bd58341ec17304" => :sierra
+    sha256 "90b5cf119eee772be637acb3e0000df6ae6851e0721ec3021c1d3330c6fae115" => :catalina
+    sha256 "0b4d1bddd5e4f0b67478c4d4251bfa07e82cb0e45d8479dada60fad648d935f8" => :mojave
+    sha256 "0a6512f9eec2ba909b1f43f417a96150b63a19e73f73692935b6623f8413c428" => :high_sierra
   end
 
   depends_on "node"

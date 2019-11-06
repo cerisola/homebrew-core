@@ -3,11 +3,14 @@ class Irssi < Formula
   homepage "https://irssi.org/"
   url "https://github.com/irssi/irssi/releases/download/1.2.2/irssi-1.2.2.tar.xz"
   sha256 "6727060c918568ba2ff4295ad736128dba0b995d7b20491bca11f593bd857578"
+  revision 1
 
   bottle do
-    sha256 "c8dda1f1cd62fc666406f3db68a9a34cd16ce4acce1082db45d7b575af5860be" => :mojave
-    sha256 "de978c2c68c4254d5fea004006201743cfcf686c76a56cba62ab72a7bf0d9936" => :high_sierra
-    sha256 "b0ea780071ba74669e4f31db648ca4b5de95d3372cb0fc73d41a90e2b6c6947a" => :sierra
+    rebuild 1
+    sha256 "a8d0caa726da8abaa3942e154ea6d6501df46ea3ae7c24d3583d3a229fd92727" => :catalina
+    sha256 "e25efab5dc0b20925d920aca182f713fa54b3d781bbea7ff0ff98606a29e8553" => :mojave
+    sha256 "92ce3e102445bc1248daf5404b9045088dde6a8f4e185c5f2a98982e692b4b26" => :high_sierra
+    sha256 "5f2f66c2581189d52bab585f5a1731f2382a29d7125d782856b6b0944515b1bd" => :sierra
   end
 
   head do

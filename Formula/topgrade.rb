@@ -1,20 +1,21 @@
 class Topgrade < Formula
   desc "Upgrade all the things"
   homepage "https://github.com/r-darwish/topgrade"
-  url "https://github.com/r-darwish/topgrade/archive/v3.0.0.tar.gz"
-  sha256 "3000febe4f52091db3a057188c805a3f03d25a2ab8babfa8a2af93d94c1afed4"
+  url "https://github.com/r-darwish/topgrade/archive/v3.2.0.tar.gz"
+  sha256 "2e336f3ce56297a2eb7c225bc905a3b1e275d64c7db72e68d80834978a304ebd"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "065e33f3281ab962f2d302cc378a31ba5fd8b1220f5f75e2e68b33f3501e961e" => :mojave
-    sha256 "1a89fce00330f284d9e530179b49e43a8f5a6c92699d6380866b2d76caab0d9a" => :high_sierra
-    sha256 "7b12a483671cd4f3f9ca7646b531df055fff7df7c6369143c8b175f77379d44c" => :sierra
+    rebuild 1
+    sha256 "cf9bedbabe700a3e3569f3b8abd350d7580a09c71c14c6008179022536cda8b8" => :catalina
+    sha256 "fe4edeba7017eeb5dd11abc43428b5a10a09fde684f053377d34756167294462" => :mojave
+    sha256 "d5c5ddb284bd5b9525a04aeb095bdf921aa441233ae3b9418d8f152820e069f8" => :high_sierra
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", "--root", prefix, "--path", "."
+    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
   end
 
   test do

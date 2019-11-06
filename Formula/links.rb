@@ -1,14 +1,14 @@
 class Links < Formula
   desc "Lynx-like WWW browser that supports tables, menus, etc."
   homepage "http://links.twibright.com/"
-  url "http://links.twibright.com/download/links-2.20.tar.bz2"
-  sha256 "3bddcd4cb2f7647e50e12a59d1c9bda61076f15cde5f5dca6288b58314e6902d"
+  url "http://links.twibright.com/download/links-2.20.2.tar.bz2"
+  sha256 "4b4f07d0e6261118d1365a5a5bfa31e1eafdbd280cfae6f0e9eedfea51a2f424"
 
   bottle do
     cellar :any
-    sha256 "187e68bd2c25a81e2b383cb5ba1f8d633ded7fffb7bfe42984dc0ccf2a170467" => :mojave
-    sha256 "b360bbfcbfed62643ac781c7f90d93bcfaea694f99ee27061f46b1ee7e006af0" => :high_sierra
-    sha256 "3577ede16b0d1d591205841a9ed7044fa831eae9992830b5d4c066847fc92dce" => :sierra
+    sha256 "0a3c7483bcee4795978c8db90bdf2f07a46baa09cb6258a620f7d89e4724a466" => :catalina
+    sha256 "82b66ce4fc6e261197ad6d00110a6963620772b4e1e0b553c4c982e39c363fa5" => :mojave
+    sha256 "8c04e068acff9290a354b2c244638ca27056a086b67b90fac90e6bbfc1a7215b" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

@@ -3,20 +3,24 @@ class OpencvAT3 < Formula
   homepage "https://opencv.org/"
   url "https://github.com/opencv/opencv/archive/3.4.5.tar.gz"
   sha256 "0c57d9dd6d30cbffe68a09b03f4bebe773ee44dc8ff5cd6eaeb7f4d5ef3b428e"
-  revision 4
+  revision 6
 
   bottle do
-    sha256 "33c0f558345f18b37eaef8ad70ab31275defbc85425eae49ced63437c3f182d6" => :mojave
-    sha256 "92561e5f3aca20491a4a547211fd71a07cf69610ce45884144f0d85ab0c70a32" => :high_sierra
-    sha256 "d12b47538ea07d6873ea3f42f02480db4ea68797eca741b44eee68800865895e" => :sierra
+    sha256 "7460fa876f5d1a8b9b5ac08f74b8e69468141ae793b8e3dbdf835627318e656d" => :catalina
+    sha256 "69c61e101739083a8d812a92761d7a5123ede956b1178991cbfa299b539d01dd" => :mojave
+    sha256 "29480517515710bbcdb8cfd6f6ad89fe11bfc8c7995005dee0efe5d2b6722df4" => :high_sierra
+    sha256 "f234b5a7bc3a1eeeff60dbc83b90c05b47235712b30787550321ed0dfd750b5f" => :sierra
   end
 
   keg_only :versioned_formula
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "ceres-solver"
   depends_on "eigen"
   depends_on "ffmpeg"
+  depends_on "gflags"
+  depends_on "glog"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"

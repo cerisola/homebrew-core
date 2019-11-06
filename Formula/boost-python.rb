@@ -3,13 +3,14 @@ class BoostPython < Formula
   homepage "https://www.boost.org/"
   url "https://dl.bintray.com/boostorg/release/1.71.0/source/boost_1_71_0.tar.bz2"
   sha256 "d73a8da01e8bf8c7eda40b4c84915071a8c8a0df4a6734537ddde4a8580524ee"
+  revision 1
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "007c36bd83c74a8337de124730544b5ea145ddaed5708451d1fb0e1f8dfa75cb" => :mojave
-    sha256 "2851b897d46a0f84ad4561050804edc361b954c8987da71a0374aa3eab1c8966" => :high_sierra
-    sha256 "bbfedf505fa8c0068acba3bd2b6d45910fc6fc21ce7975f06d19412621e3ea87" => :sierra
+    sha256 "b24f1fe5df7656855e939a546c4232849ecb766a5e18a717e46d05a5c2de23a7" => :catalina
+    sha256 "59e9bbab32ea0f35503e2add7d99873c53cc406331b7e488e39d84f1270b8bc2" => :mojave
+    sha256 "c158a1f9bf5fbd14c726f3b6e7440353d2aeab11876e095969e9d429ecc844a2" => :high_sierra
   end
 
   depends_on "boost"
@@ -17,11 +18,10 @@ class BoostPython < Formula
   def install
     # "layout" should be synchronized with boost
     args = %W[
-      --prefix=#{prefix}
-      --libdir=#{lib}
       -d2
       -j#{ENV.make_jobs}
       --layout=tagged-1.66
+      install
       threading=multi,single
       link=shared,static
     ]
@@ -38,11 +38,24 @@ class BoostPython < Formula
     system "./bootstrap.sh", "--prefix=#{prefix}", "--libdir=#{lib}",
                              "--with-libraries=python", "--with-python=python"
 
-    system "./b2", "--build-dir=build-python", "--stagedir=stage-python",
-                   "python=#{pyver}", *args
+    system "./b2", "--build-dir=build-python",
+                   "--stagedir=stage-python",
+                   "--libdir=install-python/lib",
+                   "--prefix=install-python",
+                   "python=#{pyver}",
+                   *args
 
+    lib.install Dir["install-python/lib/*.*"]
     lib.install Dir["stage-python/lib/*py*"]
     doc.install Dir["libs/python/doc/*"]
+  end
+
+  def caveats; <<~EOS
+    This formula provides Boost.Python for Python 2. Due to a
+    collision with boost-python3, the CMake Config files are not
+    available. Please use -DBoost_NO_BOOST_CMAKE=ON when building
+    with CMake or switch to Python 3.
+  EOS
   end
 
   test do

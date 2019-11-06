@@ -1,14 +1,14 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.4.tar.xz"
-  sha256 "df593cd4c017de19adf5d0154b8391bb057cef1b72ecdd4a8ee30d3235c65f09"
-  revision 2
+  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.5.tar.xz"
+  sha256 "d5d6da717fd48524596f9b78ac5a2eeb9691753da5c06923a6c31190abe01a62"
 
   bottle do
-    sha256 "77bed3b9c96c9ece896a92d93c42e4b1e4f1b307bfd3803a8a48b2f44bca7383" => :mojave
-    sha256 "130eecb8561af78e5c5291d00b30eb0a620808300be537448a17c46cd5b13ec9" => :high_sierra
-    sha256 "69ae584b1a7213f9a148617dd602facc20c8f40f2a651ca80cc3f37537558d4a" => :sierra
+    rebuild 1
+    sha256 "74304ae76b81629a80edb0655c34883b00ab674fa10e0db4bd5336015acc5e17" => :catalina
+    sha256 "da318a12d35502d95a8bea49f735bb74af72cdb38b687b2f565d75b139941736" => :mojave
+    sha256 "9416860e0cd56aa45bfce03801a81eefcb0a25e0ccb123a82c51f5f1b6911abb" => :high_sierra
   end
 
   head do
@@ -27,8 +27,8 @@ class Ruby < Formula
   # The exception is Rubygem security fixes, which mandate updating this
   # formula & the versioned equivalents and bumping the revisions.
   resource "rubygems" do
-    url "https://rubygems.org/rubygems/rubygems-3.0.3.tgz"
-    sha256 "be3a7abc31e91de667406e84cd15265b73fc502268a1dd09404214a49b4acb2c"
+    url "https://rubygems.org/rubygems/rubygems-3.0.6.tgz"
+    sha256 "fd6785ac24728bd5bf8f0883d197fe0cea4df37d485c5353c93fbe573b8941b1"
   end
 
   def api_version
@@ -141,7 +141,7 @@ class Ruby < Formula
           "#{api_version}"
         ]
 
-        @default_dir ||= File.join(*path)
+        @homebrew_path ||= File.join(*path)
       end
 
       def self.private_dir
@@ -171,9 +171,9 @@ class Ruby < Formula
 
       def self.default_path
         if Gem.user_home && File.exist?(Gem.user_home)
-          [user_dir, default_dir, private_dir]
+          [user_dir, default_dir, old_default_dir, private_dir]
         else
-          [default_dir, private_dir]
+          [default_dir, old_default_dir, private_dir]
         end
       end
 
@@ -183,6 +183,13 @@ class Ruby < Formula
 
       def self.ruby
         "#{opt_bin}/ruby"
+      end
+
+      # https://github.com/Homebrew/homebrew-core/issues/40872#issuecomment-542092547
+      class BasicSpecification
+        def self.default_specifications_dir
+          File.join(Gem.old_default_dir, "specifications", "default")
+        end
       end
     end
   EOS

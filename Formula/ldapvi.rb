@@ -4,13 +4,14 @@ class Ldapvi < Formula
   url "http://www.lichteblau.com/download/ldapvi-1.7.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/l/ldapvi/ldapvi_1.7.orig.tar.gz"
   sha256 "6f62e92d20ff2ac0d06125024a914b8622e5b8a0a0c2d390bf3e7990cbd2e153"
-  revision 6
+  revision 7
 
   bottle do
     cellar :any
-    sha256 "41d982e4bf4b81d4f025debd1a3e096ac1d7d46a654b30ddc7e02b0ef5d7797a" => :mojave
-    sha256 "59a6373262c3b092402be12344e187429d863fed012658daf0b9671cf4af025e" => :high_sierra
-    sha256 "f66feb77dedf8ec574174fd32b9a3be9c3e7971dec96774f63ad1717b9978324" => :sierra
+    sha256 "945ba55247fff673cc497f0ef27761790044f9cd337df3d395ca0043ef2ee651" => :catalina
+    sha256 "b227a947ef652d2f335f7ccc7a1334efa2db1fc3a3a6666b35e91310c17548f0" => :mojave
+    sha256 "4da9e2cc356624f5b6ad3e6b1c36e934329d80f385d31ac712693d4e8734a4c1" => :high_sierra
+    sha256 "e6babe3042fee412c0ad7cf89dd95a13d2530d9cd8f6d02c7380bae408ed0040" => :sierra
   end
 
   depends_on "pkg-config" => :build

@@ -1,14 +1,13 @@
 class Gdcm < Formula
   desc "Grassroots DICOM library and utilities for medical files"
   homepage "https://sourceforge.net/projects/gdcm/"
-  url "https://github.com/malaterre/GDCM/archive/v3.0.1.tar.gz"
-  sha256 "f1ee8ebda7a465281abada329b4dbca6e036a42ead6ad58070ff4f94da7819d9"
-  revision 1
+  url "https://github.com/malaterre/GDCM/archive/v3.0.4.tar.gz"
+  sha256 "9e460e5aae0082e5bb0cb4e6cb1293f4ea902394406e2260cc92674f7bd481b2"
 
   bottle do
-    sha256 "ec1b971f84394205c21b0f1cd98cab36b2102213bed48ba562c539af6de920dc" => :mojave
-    sha256 "07b3e828a22110657f1c85d5816b7c520ad0acd6a4624910ab2d13198319aaeb" => :high_sierra
-    sha256 "b006365070186fa9e147dc5c2acf12670c4eadabc5fbc43c03dde36c31e62060" => :sierra
+    sha256 "5b92530d4439ac74e2062b585a460fc23848d785b88d4a989674a6a328fde3bc" => :catalina
+    sha256 "207d41bd1d20bafb0a1f34b06154228421db2a5f47d0d45a93e1433c0a2cf735" => :mojave
+    sha256 "2c2fc983a6177da77c736754762788c2b665a0c83b73b1e5e257398581279afe" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -16,7 +15,7 @@ class Gdcm < Formula
   depends_on "pkg-config" => :build
   depends_on "swig" => :build
   depends_on "openjpeg"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "python"
   depends_on "vtk"
 

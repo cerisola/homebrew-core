@@ -1,14 +1,14 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/4.1.1.tar.gz"
-  sha256 "5de5d96bdfb9dad6e6061d70f47a0a91cee96bb35afb9afb9ecb3d43e243d217"
-  revision 1
+  url "https://github.com/opencv/opencv/archive/4.1.2.tar.gz"
+  sha256 "385dd0a9c25e67ef0dd60e022d2a2d7b17e2f36819cf3cb46aa8cdff5c5282c9"
 
   bottle do
-    sha256 "94205c7016c6120af906554efe775cb91418853af96ba00d58ebac66245fd762" => :mojave
-    sha256 "0c5a36acf01cc23afb76f0546e8f621b5ed76a9317f45e112be264338bb51220" => :high_sierra
-    sha256 "01f58395051cdec07bc6c11070c3d17ba038cfdaeae39b670d9924d5c6a304bd" => :sierra
+    rebuild 1
+    sha256 "5f6821416988e413bcc9bd4ef5169a66e8458c4b55495286850bea7c6b6d34ee" => :catalina
+    sha256 "a5ff3b325dda09989870c0ff910b4ca4e639962b605ee95e9d2a01627d93da07" => :mojave
+    sha256 "d028ff3f01a4548e402659bf2291030d98a8ef6ec3ad54cbf18e2b7782899dec" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -27,8 +27,8 @@ class Opencv < Formula
   depends_on "tbb"
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/4.1.1.tar.gz"
-    sha256 "9f85d380758498d800fec26307e389620cde8b1a2e86ab51cddc5200fbe37102"
+    url "https://github.com/opencv/opencv_contrib/archive/4.1.2.tar.gz"
+    sha256 "0f6c3d30baa39e3e7611afb481ee86dea45dafb182cac87d570c95dccd83eb8b"
   end
 
   def install

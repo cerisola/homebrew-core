@@ -1,13 +1,13 @@
 class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.3.9.tar.xz"
-  sha256 "4007f24a39822bef2805b75c625551d30be9eeed329d52eb0838fa5c1b91c1fd"
+  url "https://www.php.net/distributions/php-7.3.11.tar.xz"
+  sha256 "657cf6464bac28e9490c59c07a2cf7bb76c200f09cfadf6e44ea64e95fa01021"
 
   bottle do
-    sha256 "15d3d7caec038605cbc6abfb6692b03f59571443c76cfc7bd35f21bbc6c0baf3" => :mojave
-    sha256 "3c250c361aff4d9c97450cf9b7c8883e1b480d515808347f0fd983b63dc60aeb" => :high_sierra
-    sha256 "ed7c916c3c13dda6ddc0fe2bf951cbe7802a1ac8701409df3f87bf120fca09a9" => :sierra
+    sha256 "c09396d2fc055d74f0f915c475ded38e8f7afac70ca5cc05546629e42fc654f1" => :catalina
+    sha256 "1278858c1b7ea78072aa855d2a2de19d6185d000b583787632fb364a4c37157a" => :mojave
+    sha256 "98e546809812298562e7059cb2eb6b169672451f809fee53b4cd9cc53b3127ec" => :high_sierra
   end
 
   depends_on "httpd" => [:build, :test]
@@ -30,7 +30,7 @@ class Php < Formula
   depends_on "libsodium"
   depends_on "libzip"
   depends_on "openldap"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -138,7 +138,7 @@ class Php < Formula
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
-      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --with-password-argon2=#{Formula["argon2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
@@ -172,9 +172,9 @@ class Php < Formula
 
     # Use OpenSSL cert bundle
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{HOMEBREW_PREFIX}/etc/openssl/cert.pem\""
+      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{HOMEBREW_PREFIX}/etc/openssl/certs\""
+      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
 
     # php 7.3 known bug
     # SO discussion: https://stackoverflow.com/a/53709484/791609
@@ -240,7 +240,7 @@ class Php < Formula
       "test_dir" => pear_path/"test",
       "php_bin"  => opt_bin/"php",
     }.each do |key, value|
-      value.mkpath if key =~ /(?<!bin|man)_dir$/
+      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
       system bin/"pear", "config-set", key, value, "system"
     end
 

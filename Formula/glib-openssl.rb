@@ -3,12 +3,14 @@ class GlibOpenssl < Formula
   homepage "https://launchpad.net/glib-networking"
   url "https://download.gnome.org/sources/glib-openssl/2.50/glib-openssl-2.50.8.tar.xz"
   sha256 "869f08e4e9a719c1df411c2fb5554400f6b24a9db0cb94c4359db8dad18d185f"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "171ff3da6a7005ed1ea4b7a91c4c5e9e40d2734f16fcb5f59a6e1e61121e0b96" => :mojave
-    sha256 "d1e80772b47e7a091ec67ac2d109c38bffdb7ab3b1c7ca0e66b8d021174abdba" => :high_sierra
-    sha256 "364b2a93210cae83e7b59798dbda1459ff35d26477e814ec5a9630b14b7340c7" => :sierra
+    cellar :any
+    rebuild 1
+    sha256 "b2e75859c8bb44299d9a871d3193508fe5ea41c0ef0204fc570ea4d809a00513" => :catalina
+    sha256 "8eefefc726dbee8d4c50bf5302a1f318ac1a79e27f5a5a182ee56a137cd35088" => :mojave
+    sha256 "e96140eb3a6066a9256dfe771b8d35aa80961313034f0a20e5414d17061da051" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

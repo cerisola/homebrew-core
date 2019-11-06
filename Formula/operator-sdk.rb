@@ -2,16 +2,14 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://coreos.com/operators/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      :tag      => "v0.10.0",
-      :revision => "ff80b17737a6a0aade663e4827e8af3ab5a21170"
-  revision 1
+      :tag      => "v0.12.0",
+      :revision => "2445fcda834ca4b7cf0d6c38fba6317fb219b469"
   head "https://github.com/operator-framework/operator-sdk.git"
 
   bottle do
-    rebuild 1
-    sha256 "367dd7a981cb77114e40b25bfb413c862b9931cf90bf5cbccdad60cc32165eae" => :mojave
-    sha256 "91a932437b54fbc5e8730a84a21c2cc865e6ad81c23cd25f5b3a592aaf1a1976" => :high_sierra
-    sha256 "60b8a7947caf489ce3429d87991905fc781b67fa5b552bd8b662abefdbe2bde4" => :sierra
+    sha256 "3c1a3096fa626aaad7d10ad6a93fe467141a33959814e70e51628965ed2f2e97" => :catalina
+    sha256 "be37a061411e49e92b16970dcbc2e6a418e3fedc090aadffe88dc6c2818dfb58" => :mojave
+    sha256 "d866ecd94c8ccc81fed99c2402f1ec3d49ea6d0933fbe4917786f9ead396c68c" => :high_sierra
   end
 
   depends_on "go"
@@ -22,7 +20,6 @@ class OperatorSdk < Formula
     ENV["GOROOT"] = Formula["go"].opt_libexec
 
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
 
     dir = buildpath/"src/github.com/operator-framework/operator-sdk"
     dir.install buildpath.children - [buildpath/".brew_home"]
@@ -44,16 +41,13 @@ class OperatorSdk < Formula
   end
 
   test do
-    # Use go modules when generating an operator
-    ENV["GO111MODULE"] = "on"
-
     # Use the offical golang module cache to prevent network flakes and allow
     # this test to complete before timing out.
     ENV["GOPROXY"] = "https://proxy.golang.org"
 
     if build.stable?
       version_output = shell_output("#{bin}/operator-sdk version")
-      assert_match "version: v#{version}", version_output
+      assert_match "version: \"v#{version}\"", version_output
       assert_match stable.specs[:revision], version_output
     end
 

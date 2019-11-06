@@ -1,15 +1,15 @@
 class Ethereum < Formula
   desc "Official Go implementation of the Ethereum protocol"
   homepage "https://ethereum.github.io/go-ethereum/"
-  url "https://github.com/ethereum/go-ethereum/archive/v1.9.3.tar.gz"
-  sha256 "d16e8b42b37a23b448775f27f0d2018425e6a1e6fc215f764aad3665a20bf493"
+  url "https://github.com/ethereum/go-ethereum/archive/v1.9.6.tar.gz"
+  sha256 "3000f787735ee302088d17d406eafc2ec26eaffc083d876b2fa07ec7dfbb94f9"
   head "https://github.com/ethereum/go-ethereum.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ff6330010cc5feb2dbe25643d40f0583492d505aed2ffc48f7cfcacb41960479" => :mojave
-    sha256 "a40f31cee8d384ca6998038b05fc01d1406aa789014532314b7a385c741e66ed" => :high_sierra
-    sha256 "25a26b82dfeec47c29b538a280d6baf70c9191b80ab20353253a98448641370b" => :sierra
+    sha256 "47c6bfeceafa4f7f944783eb770f17a2b4458498ff9dc832cd688fc241a32b76" => :catalina
+    sha256 "3b514c9fd14068836f8b3b5e23b7073da14d7e37ac3165abebdd6b4c909d67c2" => :mojave
+    sha256 "340197f0771e3839ba584f6c7b34ce6d33ad7f084af4b54ab028d24628c649d4" => :high_sierra
   end
 
   depends_on "go" => :build

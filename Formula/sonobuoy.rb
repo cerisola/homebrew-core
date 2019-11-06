@@ -1,14 +1,14 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/heptio/sonobuoy"
-  url "https://github.com/heptio/sonobuoy/archive/v0.15.3.tar.gz"
-  sha256 "4b224f16f320dbd66994087e408597f4d3d9b685390def030112fae957e86168"
+  url "https://github.com/heptio/sonobuoy/archive/v0.16.3.tar.gz"
+  sha256 "d9d47709fa23b670e931586683c71d842761aba3155eff146bd2d41c5a60ce51"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f60c3c40d5e061d6c045fca78146110b268373ee68dcbd27f89fc487087998a8" => :mojave
-    sha256 "e3a780dae5cdc66eeb932b3362d86bd4cfd2c0c0a9e76e12f5b5a7687414b2ca" => :high_sierra
-    sha256 "c0f03b30c15ed881a1e8086fdab15e12da2d252db9fbbe18cb1ff41081faf85b" => :sierra
+    sha256 "dd6c9dd3de6869fac6f313b14d5103da84f62dbbd64a25b7e956318272d466e9" => :catalina
+    sha256 "ef8ef736e1aff7a9c2fa23a0934246901fe0bf4552cf25b48aa292c5e96d8c53" => :mojave
+    sha256 "42d58ef91b2be40c08800bb5a445a75d0eed8aaa772d832c936b4f3d19e5cf2e" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -35,8 +35,10 @@ class Sonobuoy < Formula
     output = shell_output("#{bin}/sonobuoy 2>&1")
     assert_match "Sonobuoy is an introspective kubernetes component that generates reports on cluster conformance", output
     assert_match version.to_s, shell_output("#{bin}/sonobuoy version 2>&1")
-    output = shell_output("#{bin}/sonobuoy gen --kube-conformance-image-version=v1.12 2>&1")
-    assert_match "name: heptio-sonobuoy", output
+
+    output = shell_output("#{bin}/sonobuoy gen --kube-conformance-image-version=v1.14 2>&1")
+    assert_match "name: sonobuoy", output
+
     output = shell_output("#{bin}/sonobuoy e2e --show=all " + resource("sonobuoyresults").cached_download + " 2>&1")
     assert_match "all tests", output
   end

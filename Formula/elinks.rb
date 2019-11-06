@@ -3,13 +3,13 @@ class Elinks < Formula
   homepage "http://elinks.or.cz/"
   url "http://elinks.or.cz/download/elinks-0.11.7.tar.bz2"
   sha256 "456db6f704c591b1298b0cd80105f459ff8a1fc07a0ec1156a36c4da6f898979"
-  revision 2
+  revision 3
 
   bottle do
-    rebuild 3
-    sha256 "16c9911afafae0c541fc2e004db9dd6666c8f4401aaeb26c25875d8de2082f99" => :mojave
-    sha256 "d467cc8c41448e3e2a88b4796eb318bc9dabb30c46ec9b73db023ca83fcbee9b" => :high_sierra
-    sha256 "4b9ce9f2668471292e159b1e2c2590f71b783c1d6debfa73c92dadbc96b57fba" => :sierra
+    rebuild 1
+    sha256 "67ab168d9d6d5bb65791d4c432e7e1e0109a09076039d4d6b2addec9219bef43" => :catalina
+    sha256 "c48e70700c0ad0c4b66a376e6634417cd84c84de064bad74d384469d8f7597ab" => :mojave
+    sha256 "219f12e44db5b6e966e2f8999fc1d5553c834b58645531f5167e6031aaa6e89b" => :high_sierra
   end
 
   head do
@@ -20,13 +20,26 @@ class Elinks < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "openssl" # no OpenSSL 1.1 support
+  depends_on "openssl@1.1"
+
+  # Two patches for compatibility with OpenSSL 1.1, from FreeBSD:
+  # https://www.freshports.org/www/elinks/
+  patch :p0 do
+    url "https://svnweb.freebsd.org/ports/head/www/elinks/files/patch-src_network_ssl_socket.c?revision=485945&view=co"
+    sha256 "a4f199f6ce48989743d585b80a47bc6e0ff7a4fa8113d120e2732a3ffa4f58cc"
+  end
+
+  patch :p0 do
+    url "https://svnweb.freebsd.org/ports/head/www/elinks/files/patch-src_network_ssl_ssl.c?revision=494026&view=co"
+    sha256 "45c140d5db26fc0d98f4d715f5f355e56c12f8009a8dd9bf20b05812a886c348"
+  end
 
   def install
     ENV.deparallelize
     ENV.delete("LD")
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--without-spidermonkey",
+    system "./configure", "--prefix=#{prefix}",
+                          "--without-spidermonkey",
                           "--enable-256-colors"
     system "make", "install"
   end

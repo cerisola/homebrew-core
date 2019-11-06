@@ -3,13 +3,14 @@ class Getdns < Formula
   homepage "https://getdnsapi.net"
   url "https://getdnsapi.net/releases/getdns-1-5-2/getdns-1.5.2.tar.gz"
   sha256 "1826a6a221ea9e9301f2c1f5d25f6f5588e841f08b967645bf50c53b970694c0"
-  revision 2
+  revision 3
 
   bottle do
     cellar :any
-    sha256 "27bea6f7711aa783163a2ffd47c4873c93d672dc1cbdbd7f01b385661d11744d" => :mojave
-    sha256 "766ae31c35d1a5ffef4e9f5d265836cf8fe598faf92e171e060a88e312b4c8da" => :high_sierra
-    sha256 "29d0abb2070668dbeee55839b16556cdd0f65d66d5fe06835a1cbed322811566" => :sierra
+    sha256 "e9d55e0441197296fb86a1b1799d7a3774648b65578ea78231da2a50ad5161b8" => :catalina
+    sha256 "c7cde9c6422419585abaf6b30b14d1213ee728d6298527689714f61e1003dfcd" => :mojave
+    sha256 "b105523ee31c31dd16484babf53659e82a2950f095f5949d811733b481f1d84b" => :high_sierra
+    sha256 "aab96082494eadf2d8806211a3597fdd3356938181e39b8c77a6146a8767ce97" => :sierra
   end
 
   head do
@@ -22,7 +23,7 @@ class Getdns < Formula
 
   depends_on "libevent"
   depends_on "libidn2"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "unbound"
 
   def install
@@ -33,7 +34,7 @@ class Getdns < Formula
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-libevent",
-                          "--with-ssl=#{Formula["openssl"].opt_prefix}",
+                          "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
                           "--with-trust-anchor=#{etc}/getdns-root.key",
                           "--without-stubby"
     system "make"

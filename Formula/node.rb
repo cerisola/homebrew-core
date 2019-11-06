@@ -1,15 +1,15 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v12.10.0/node-v12.10.0.tar.gz"
-  sha256 "371a3e39f1a14adbd7b37dee57641075ccfa240bd990630ff213298f16ad49b4"
+  url "https://nodejs.org/dist/v12.12.0/node-v12.12.0.tar.gz"
+  sha256 "6ce681625c09bc2b2b5757165580e648579e4bc7bce5e246fa6339270eec8bde"
   head "https://github.com/nodejs/node.git"
 
   bottle do
     cellar :any
-    sha256 "e230187b694d98b4419de13f66b56a13d0330226b6125d341c2170b364714de7" => :mojave
-    sha256 "e4ad2465c13b8ecd669f4d9e34ff4ca62aa2a2b3ac3b4f79d181c3becc13b470" => :high_sierra
-    sha256 "c310d9d4924f813c3b4ff2d2d5c5ed10e8b11c7a5e08a176a007fba0061b21cf" => :sierra
+    sha256 "9838182b0d60364c5339b1c114d238544e3206232762060c299072ecf62feefa" => :catalina
+    sha256 "eb0c3475ab27846d730168a2d2d63eb1802254203c34141cf3ae22f65801228d" => :mojave
+    sha256 "0f35e88be5a84c808dba472d053af25639b300c095392f63e85d9ae94cf12b20" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

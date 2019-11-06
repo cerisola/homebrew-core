@@ -2,21 +2,20 @@ class Goreleaser < Formula
   desc "Deliver Go binaries as fast and easily as possible"
   homepage "https://goreleaser.com/"
   url "https://github.com/goreleaser/goreleaser.git",
-      :tag      => "v0.117.1",
-      :revision => "ebe510a894357f7e5d8895a934d5db5dd3c7ecb4"
+      :tag      => "v0.120.8",
+      :revision => "333d834b496fa5da99fc88d4db0c5889f785a4d6"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "277eec4f91d832f7866e4f4301f3415213e23db3a7e0099e99f3984e947d6107" => :mojave
-    sha256 "d9c87ed8a8e70af624181baf2a10555c32eab1500542ca38f0ce656a5ea41582" => :high_sierra
-    sha256 "fd81544342d78c0f6033dd02b166ac66facece3bb6a99ee684fd3d0dbdaff78a" => :sierra
+    sha256 "85d8fc409f3316be16ac231d4b0abcf86cc15e0a26157f9894eca087ff5b5337" => :catalina
+    sha256 "7898295f727837318a3d196c7208a1a1d90e5b8e1b1434a7eeed1e98f315fdb2" => :mojave
+    sha256 "e9bd12ae06d61703529e3db01814048f7f7c812c1be788686999dd7dbb750561" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
 
     dir = buildpath/"src/github.com/goreleaser/goreleaser"
     dir.install buildpath.children

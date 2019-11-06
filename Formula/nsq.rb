@@ -7,6 +7,7 @@ class Nsq < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "9cda7f1ff6361ba961adc79886f0d369419ed811e91f22b4b01a692d419a4a39" => :catalina
     sha256 "dfff1005e1c48d1669aafb79cb903ade485ceb9ebbb748d8a6f85f9f71a6ce7b" => :mojave
     sha256 "54c31bf18fcb185ca5a4dd0192ed846df8d5e6dccf5564d99252d3960555fe11" => :high_sierra
     sha256 "bcfcd2d5b6ef1bb767631be70ee5aa72bd5987ba3cc75df1043b24aaa08eac8e" => :sierra
@@ -16,7 +17,6 @@ class Nsq < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
 
     (buildpath/"src/github.com/nsqio/nsq").install buildpath.children
     cd "src/github.com/nsqio/nsq" do
@@ -60,39 +60,37 @@ class Nsq < Formula
   end
 
   test do
-    begin
-      lookupd = fork do
-        exec bin/"nsqlookupd"
-      end
-      sleep 2
-      d = fork do
-        exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
-      end
-      sleep 2
-      admin = fork do
-        exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
-      end
-      sleep 2
-      to_file = fork do
-        exec bin/"nsq_to_file", "--lookupd-http-address=127.0.0.1:4161",
-                                "--output-dir=#{testpath}",
-                                "--topic=test"
-      end
-      sleep 2
-      system "curl", "-d", "hello", "http://127.0.0.1:4151/pub?topic=test"
-      sleep 2
-      dat = File.read(Dir["*.dat"].first)
-      assert_match "test", dat
-      assert_match version.to_s, dat
-    ensure
-      Process.kill(15, lookupd)
-      Process.kill(15, d)
-      Process.kill(15, admin)
-      Process.kill(15, to_file)
-      Process.wait lookupd
-      Process.wait d
-      Process.wait admin
-      Process.wait to_file
+    lookupd = fork do
+      exec bin/"nsqlookupd"
     end
+    sleep 2
+    d = fork do
+      exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+    end
+    sleep 2
+    admin = fork do
+      exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+    end
+    sleep 2
+    to_file = fork do
+      exec bin/"nsq_to_file", "--lookupd-http-address=127.0.0.1:4161",
+                              "--output-dir=#{testpath}",
+                              "--topic=test"
+    end
+    sleep 2
+    system "curl", "-d", "hello", "http://127.0.0.1:4151/pub?topic=test"
+    sleep 2
+    dat = File.read(Dir["*.dat"].first)
+    assert_match "test", dat
+    assert_match version.to_s, dat
+  ensure
+    Process.kill(15, lookupd)
+    Process.kill(15, d)
+    Process.kill(15, admin)
+    Process.kill(15, to_file)
+    Process.wait lookupd
+    Process.wait d
+    Process.wait admin
+    Process.wait to_file
   end
 end

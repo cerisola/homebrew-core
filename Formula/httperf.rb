@@ -3,17 +3,16 @@ class Httperf < Formula
   homepage "https://github.com/httperf/httperf"
   url "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/httperf/httperf-0.9.0.tar.gz"
   sha256 "e1a0bf56bcb746c04674c47b6cfa531fad24e45e9c6de02aea0d1c5f85a2bf1c"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "464f6bb62b9981873d450cafc2495742672824eb04afbd40a9b1396a83cfb486" => :mojave
-    sha256 "05ec93942b088eeb3bcbad50c6a79dc85525dc48a001c524fcd9216b0791ee49" => :high_sierra
-    sha256 "c2b62dd37efe18f1018e2481e674ef9f8273c55e246bd58515dd26250db13f0d" => :sierra
+    sha256 "80a2634adda8fe39ebda84ccdf6cbbb0357668da3615067b6f9714229801d085" => :catalina
+    sha256 "390d46278c9e7bd0f58003ba49bc1a0ab110ab24864029d6ae9fd8d3f491b57c" => :mojave
+    sha256 "5c049e4bfc272313e7c1051da7430bc09e712d5a70f1593c5ecf08ac94b3b238" => :high_sierra
+    sha256 "015d2ce99b57fa808ae284f44904ca209e11603bf66085bf64a8270c45203490" => :sierra
   end
 
-  # Upstream actually recommend using head over stable now.
   head do
     url "https://github.com/httperf/httperf.git"
 
@@ -22,7 +21,14 @@ class Httperf < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "openssl" # no OpenSSL 1.1 support
+  depends_on "openssl@1.1"
+
+  # Upstream patch for OpenSSL 1.1 compatibility
+  # https://github.com/httperf/httperf/pull/48
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/httperf/openssl-1.1.diff"
+    sha256 "69d5003f60f5e46d25813775bbf861366fb751da4e0e4d2fe7530d7bb3f3660a"
+  end
 
   def install
     system "autoreconf", "-fvi" if build.head?

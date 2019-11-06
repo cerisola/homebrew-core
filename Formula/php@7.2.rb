@@ -1,13 +1,13 @@
 class PhpAT72 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
-  url "https://www.php.net/distributions/php-7.2.22.tar.xz"
-  sha256 "eb597fcf8dc0a6211a42a6346de4f63ee166829a6df6d8ed767fe14be8d1c3a3"
+  url "https://www.php.net/distributions/php-7.2.24.tar.xz"
+  sha256 "a6a6cc03388060aa5f8f9e45799b72bce1c7ed7b9d7b3f1187787202aad91d25"
 
   bottle do
-    sha256 "c2298d92f8ca24ba4ddbaff885329774a44f6e4bf6751c4505a7211a4a2cc232" => :mojave
-    sha256 "975cc2b596478d1d2fe4bfc775980b83e34449b6f749a244344399910f60837b" => :high_sierra
-    sha256 "630b5152a3ba26ddf5efda31034b79df8439d952b134898d227c135f16aa1efb" => :sierra
+    sha256 "bac76357c733ebd8b1a868186e8e010df40aca599c5ddf11ce13f72f6da4ea1f" => :catalina
+    sha256 "355718067c034e9d0638c2e75b93eed85c7a0300ca484c45d6c6c86dc66f315f" => :mojave
+    sha256 "ca5b16131d65250a51c901b377ea9002f64c896b7640b86719158e6e7b547ddb" => :high_sierra
   end
 
   keg_only :versioned_formula
@@ -32,7 +32,7 @@ class PhpAT72 < Formula
   depends_on "libsodium"
   depends_on "libzip"
   depends_on "openldap"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "sqlite"
   depends_on "tidy-html5"
   depends_on "unixodbc"
@@ -144,7 +144,7 @@ class PhpAT72 < Formula
       --with-mysql-sock=/tmp/mysql.sock
       --with-mysqli=mysqlnd
       --with-ndbm#{headers_path}
-      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --with-password-argon2=#{Formula["argon2"].opt_prefix}
       --with-pdo-dblib=#{Formula["freetds"].opt_prefix}
       --with-pdo-mysql=mysqlnd
@@ -178,9 +178,9 @@ class PhpAT72 < Formula
 
     # Use OpenSSL cert bundle
     inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{HOMEBREW_PREFIX}/etc/openssl/cert.pem\""
+      "openssl.cafile = \"#{etc}/openssl@1.1/cert.pem\""
     inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{HOMEBREW_PREFIX}/etc/openssl/certs\""
+      "openssl.capath = \"#{etc}/openssl@1.1/certs\""
 
     config_files = {
       "php.ini-development"   => "php.ini",
@@ -241,7 +241,7 @@ class PhpAT72 < Formula
       "test_dir" => pear_path/"test",
       "php_bin"  => opt_bin/"php",
     }.each do |key, value|
-      value.mkpath if key =~ /(?<!bin|man)_dir$/
+      value.mkpath if /(?<!bin|man)_dir$/.match?(key)
       system bin/"pear", "config-set", key, value, "system"
     end
 

@@ -3,12 +3,13 @@ class Libheif < Formula
   homepage "https://www.libde265.org/"
   url "https://github.com/strukturag/libheif/releases/download/v1.5.1/libheif-1.5.1.tar.gz"
   sha256 "b134d0219dd2639cc13b8a8bcb8f264834593dd0417da1973fbe96e810918a8b"
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "09b000d29523544e6ebbaabce1550b6e51575d3b61522621e01efd7a8fab1622" => :mojave
-    sha256 "2d1831b3668450da2d30befc0caa18916cdd429a1c9f22557ec03e3e584549db" => :high_sierra
-    sha256 "9bee18eba422e4c23bf6260321d9a1680a7ba795e9d983e5c628ac0bf1d108e0" => :sierra
+    sha256 "2a4e77094ff9668002f1344d51574538641384ab376e754c306d516bf95fdf81" => :catalina
+    sha256 "243b22036e7de68c6e344422796e0229e8663c732d3891cead5e766823d1f939" => :mojave
+    sha256 "f799050ed2c5a052a39506f65ba248557cd0b8dec6a816efbdf28aabacfd80de" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

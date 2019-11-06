@@ -2,30 +2,21 @@ class Wtfutil < Formula
   desc "The personal information dashboard for your terminal"
   homepage "https://wtfutil.com"
   url "https://github.com/wtfutil/wtf.git",
-    :tag      => "v0.21.0",
-    :revision => "2612194f464b93dd06c17e299dfef54b8be45471"
+    :tag      => "v0.23.0",
+    :revision => "e98b15ca2cefddb285ad9d73b4fd2b35ca2c1d32"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8400e4e33198f4a87f54553ceb87cb8972ee7f3c1a83467fe4f19ecdb2658ebc" => :mojave
-    sha256 "f204d69304a8abcbcea3d55f14df92f183f90d291c31d31e7dfa80b6acca9b81" => :high_sierra
-    sha256 "95b5005a738cf2b78c410f0f04757865849ffb3dfacc9954bb129d22d4db3299" => :sierra
+    sha256 "ac07538f6d6aca1cdcba7af5fe5f5a788671566cdc4d173483e352db0f935b73" => :catalina
+    sha256 "c0aca34e02f80f79d4b00fd65d01af6e84d7b6be616420f551be068e94495c11" => :mojave
+    sha256 "44279429caa2cc05d6af048268ed471aefa67846e1a1fd47ef1f6dd70dfbff44" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GO111MODULE"] = "on"
-    ENV["GOPATH"] = buildpath
     ENV["GOPROXY"] = "https://gocenter.io"
-
-    dir = buildpath/"src/github.com/wtfutil/wtf"
-    dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", bin/"wtfutil"
-      prefix.install_metafiles
-    end
+    system "go", "build", "-o", bin/"wtfutil"
   end
 
   test do

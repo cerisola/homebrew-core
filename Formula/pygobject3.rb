@@ -1,22 +1,21 @@
 class Pygobject3 < Formula
   desc "GNOME Python bindings (based on GObject Introspection)"
   homepage "https://wiki.gnome.org/Projects/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.32/pygobject-3.32.2.tar.xz"
-  sha256 "c39ca2a28364b57fa00549c6e836346031e6b886c3ceabfd8ab4b4fed0a83611"
-  revision 1
+  url "https://download.gnome.org/sources/pygobject/3.34/pygobject-3.34.0.tar.xz"
+  sha256 "87e2c9aa785f352ef111dcc5f63df9b85cf6e05e52ff04f803ffbebdacf5271a"
 
   bottle do
     cellar :any
-    sha256 "317f268db3b2855d3a0118dcbdeff0179db2145431c015f84dde5659e9871718" => :mojave
-    sha256 "17c8690c188b566a9f19845248555c9eca847d3f228d4fd95be1d625f97eb446" => :high_sierra
-    sha256 "604a18cbaf1fadb1d9960f537ae34b3f566f8c43319aa1e73f0838ec9e9b3cf1" => :sierra
+    rebuild 1
+    sha256 "19438d4f683d7c240842f9ae4793ac7628b2e412e1fc9ece7f11bb7ae6cfa2a1" => :catalina
+    sha256 "bc8b4c3b891a179d532e2ef4352d6c6f767472d37f2d800ce2042c83b11c482f" => :mojave
+    sha256 "7c7b94ec1114c60af7d943b3d5230b1986515a6eeb057905940711084b43d14b" => :high_sierra
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "gobject-introspection"
-  depends_on "py2cairo"
   depends_on "py3cairo"
   depends_on "python"
 

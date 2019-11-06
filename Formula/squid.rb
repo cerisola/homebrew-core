@@ -1,13 +1,13 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v4/squid-4.8.tar.xz"
-  sha256 "78cdb324d93341d36d09d5f791060f6e8aaa5ff3179f7c949cd910d023a86210"
+  url "http://www.squid-cache.org/Versions/v4/squid-4.9.tar.xz"
+  sha256 "1cb1838c6683b0568a3a4050f4ea2fc1eaa5cbba6bdf7d57f7258c7cd7b41fa1"
 
   bottle do
-    sha256 "ac56304ff9094551025952da4883eb7ea48ec4be7eb6cd6baa1033ad5b464587" => :mojave
-    sha256 "13c5b1b1ad8f2af56eadeeeed20054a9bf85357c00be6815cf38caab76f66ef7" => :high_sierra
-    sha256 "c4cd78e4b38786fc7fa42ba2276e1bf9f09b01face3f4532042bec2d856c3b21" => :sierra
+    sha256 "eb88a0963a5793de409259e8cb913b9e24bd3d3b536112142426ad1fcef7428f" => :catalina
+    sha256 "ee3a1e05ca15a5505baef58f33ad86d109cf104edeec514de69310a2532eafeb" => :mojave
+    sha256 "6e4b5b7033c57b70fb6f9de126bc5526c4bad7a153151bf80569ec31d77ffc24" => :high_sierra
   end
 
   head do
@@ -18,7 +18,7 @@ class Squid < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "openssl" # no OpenSSL 1.1 support
+  depends_on "openssl@1.1"
 
   def install
     # https://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks

@@ -1,19 +1,18 @@
 class Slowhttptest < Formula
   desc "Simulates application layer denial of service attacks"
   homepage "https://github.com/shekyan/slowhttptest"
-  url "https://github.com/shekyan/slowhttptest/archive/v1.7.tar.gz"
-  sha256 "9fd3ce4b0a7dda2e96210b1e438c0c8ec924a13e6699410ac8530224b29cfb8e"
+  url "https://github.com/shekyan/slowhttptest/archive/v1.8.tar.gz"
+  sha256 "31f7f1779c3d8e6f095ab19559ea515b5397b5c021573ade9cdba2ee31aaef11"
   head "https://github.com/shekyan/slowhttptest.git"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "b84fca08c90ba37dac5cbd4ae65167e123afdb5227d0436ed1a730adf0e66cb9" => :mojave
-    sha256 "481816cb9bea3e72408030b2d537cc3900f2b48695b0fc7eba0c4bc4d43ecd25" => :high_sierra
-    sha256 "91b6302e0725b70d6eb6fb56ff8a8a9e6f7daff71b8de5a01e9c3a1062381db7" => :sierra
+    sha256 "ae6bf1d79b73492cf552f1c070f66c8589596ca68cb1dfd0fbacb1aec703d77a" => :catalina
+    sha256 "f9911a5ba4c428db816eed4e97a15f5163fecbb018e66fa6c95f45a0f61e8db2" => :mojave
+    sha256 "9df930c2bcfc3b447cfde2b4f106e6ecb2adb7ddc33c73b484f997395bdb45f0" => :high_sierra
   end
 
-  depends_on "openssl" # no OpenSSL 1.1 support
+  depends_on "openssl@1.1"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

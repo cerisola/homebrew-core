@@ -1,20 +1,20 @@
 class MysqlConnectorCxx < Formula
   desc "MySQL database connector for C++ applications"
   homepage "https://dev.mysql.com/downloads/connector/cpp/"
-  url "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.17-src.tar.gz"
-  sha256 "69de69f373a7c5ddf291c15c52af83d634e0b900cb1204eddb3834836afe7dbe"
+  url "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.0.18-src.tar.gz"
+  sha256 "63b20e446c0aadeddbbc5cef36db8222d602793e6f1e6de511bdf7bcb2181f86"
 
   bottle do
     cellar :any
-    sha256 "5fdaa61ec06aad39c52b1638baf5c062a1ae9b1ae86726c3f3421c19ab1b9ef6" => :mojave
-    sha256 "72940532ebac56878aed409ed1d9de49e581ce4f322610d29a24980ce1f0c45f" => :high_sierra
-    sha256 "826e77eaf68079bcee9c6ad167276f0c8dcbca4bd488fca56ed84dc35029593f" => :sierra
+    sha256 "d2f10b3cf8427392875384a867ec170eebe6fbea36006f3d3e74a5f5a62120d9" => :catalina
+    sha256 "88d27cf897808cf89158469faf309c1771522e0e6e07632c46a38c9c84873dad" => :mojave
+    sha256 "cf8f23c86220e60cde4efab54cfc046d3895c517504f4b76d6f371a1a66d997f" => :high_sierra
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "mysql-client"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
 
   def install
     system "cmake", ".", *std_cmake_args,

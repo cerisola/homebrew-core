@@ -3,12 +3,12 @@ class SpiceGtk < Formula
   homepage "https://www.spice-space.org"
   url "https://www.spice-space.org/download/gtk/spice-gtk-0.37.tar.bz2"
   sha256 "1f28b706472ad391cda79a93fd7b4c7a03e84b88fc46ddb35dddbe323c923bb7"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 "3647ef369e2b0127fb99ab5913bb78036b2a81826f3959cbf4e6cd6f34d85fd3" => :mojave
-    sha256 "38267e5848baca8df9eb7672cd4b6bef6864535f652d5c57db98e7bd795ab696" => :high_sierra
-    sha256 "97908bc3c4a2c2884a9f5b04a5ec3a205e56d09b7a26420a50523d0342fbe458" => :sierra
+    sha256 "c1ff4c17afdcb6dbd3e6dcaa35ef019b2ead8ee11828a289fb0ac9fd15df7139" => :catalina
+    sha256 "f9a70f655db941e5af6458ab80377ade6ad75d98d77293424fb5d62a2e770bef" => :mojave
+    sha256 "d1f17b78feeecfcd9f86bf0ee5f2918e81033fce629a3f2b3a9ad00300bf0ec6" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -36,7 +36,7 @@ class SpiceGtk < Formula
   depends_on "json-glib"
   depends_on "libusb"
   depends_on "lz4"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "opus"
   depends_on "pango"
   depends_on "pixman"

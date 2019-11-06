@@ -2,15 +2,15 @@ class Octant < Formula
   desc "Kubernetes introspection tool for developers"
   homepage "https://github.com/vmware/octant"
   url "https://github.com/vmware/octant.git",
-      :tag      => "v0.6.0",
-      :revision => "a14f6a25a9d1cfa369652f0d237954122f680ca3"
+      :tag      => "v0.8.0",
+      :revision => "e37e7f6c6c797ef215fdbeedb91c709c88193522"
   head "https://github.com/vmware/octant.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0b1affc640b7554ebc5ee2b6bcf02f12130f711021e1f5f2ab16bf17169a7410" => :mojave
-    sha256 "71d32a4a152bd00db76c0998fd11357655b784d8fd5fae173f6eee40eabbdd96" => :high_sierra
-    sha256 "0a300db48fe21c65128dee5b45ae9a18350a8216e48f658c7b68698c58ab3ffe" => :sierra
+    sha256 "8769013488fe3dfbef05505433ac47efdfacd9c190e5da616a74bb643b9a86c1" => :catalina
+    sha256 "a9984601336d64877fa6430087e4ba47f52482c8687915af11d2610ed478b007" => :mojave
+    sha256 "807f721c89c7222a8f1c514fe061d58155bfeea40d619b89131cdfa7bac19115" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -19,7 +19,6 @@ class Octant < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "on"
     ENV["GOFLAGS"] = "-mod=vendor"
 
     dir = buildpath/"src/github.com/vmware/octant"

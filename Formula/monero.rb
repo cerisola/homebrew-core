@@ -8,16 +8,17 @@ class Monero < Formula
 
   bottle do
     cellar :any
-    sha256 "b7614e10691f817a0b983f2e12a29cbb3ffe8b7ce33318da09d8f2630a934af8" => :mojave
-    sha256 "5e57d7bdc9fd3b2184f70a01c65fd1e0b3327f77c7944acc84835b1a5041c9cc" => :high_sierra
-    sha256 "85e3fef2733965c41330c4a46d54d0217045b03975d298ced8089ab173efc76c" => :sierra
+    rebuild 2
+    sha256 "08b723e312ce9d8dff7a20f984c693a6e565139ab4120725a9cff2749b7a2848" => :catalina
+    sha256 "81532b17051681e22899872df6313bc218eed7660605418b25d87751f3b62c57" => :mojave
+    sha256 "863ea40becab7aa44ebd1a67ed70bf9c0574164dddd03f2aafb14923da40bf9d" => :high_sierra
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "libsodium"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
   depends_on "readline"
   depends_on "unbound"
   depends_on "zeromq"
