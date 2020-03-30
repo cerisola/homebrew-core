@@ -17,7 +17,7 @@ class Libsixel < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--with-jpeg=#{Formula["jpeg"].prefix}",
+                          "--with-jpeg=#{Formula["jpeg-turbo"].prefix}",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
