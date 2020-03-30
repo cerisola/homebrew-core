@@ -1,15 +1,24 @@
 class Vtk < Formula
   desc "Toolkit for 3D computer graphics, image processing, and visualization"
   homepage "https://www.vtk.org/"
-  url "https://www.vtk.org/files/release/8.2/VTK-8.2.0.tar.gz"
-  sha256 "34c3dc775261be5e45a8049155f7228b6bd668106c72a3c435d95730d17d57bb"
-  revision 3
+  revision 8
   head "https://github.com/Kitware/VTK.git"
 
+  stable do
+    url "https://www.vtk.org/files/release/8.2/VTK-8.2.0.tar.gz"
+    sha256 "34c3dc775261be5e45a8049155f7228b6bd668106c72a3c435d95730d17d57bb"
+
+    # Fix compile issues on Mojave and later
+    patch do
+      url "https://gitlab.kitware.com/vtk/vtk/commit/ca3b5a50d945b6e65f0e764b3138cad17bd7eb8d.diff"
+      sha256 "b9f7a3ebf3c29f3cad4327eb15844ac0ee849755b148b60fef006314de8e822e"
+    end
+  end
+
   bottle do
-    sha256 "b82c5276ce784af50cb6cddc8355b69239a51ea724849375207fff1518990be1" => :mojave
-    sha256 "1e2f7885e7502b654db20733c675d432549aba8d454567ec38fcb7a5975b9f24" => :high_sierra
-    sha256 "416159f7f88c72a0aec2eb5fb8d68feb99053cd025fc5c3b1f8b41e81cb8df1c" => :sierra
+    sha256 "f599579a67dd14daf7021338888a149f8953d4753ee2583993eb31d71bb131d3" => :catalina
+    sha256 "82e6bb1ddd01bcec0487ebe917f8b35504bd5a44f715502b83309115c8a581dc" => :mojave
+    sha256 "3943bb648fbd484dec3a0dea7ba49644336fb957172aa308217af49234c685df" => :high_sierra
   end
 
   depends_on "cmake" => :build

@@ -5,17 +5,19 @@ class Remarshal < Formula
   homepage "https://github.com/dbohdan/remarshal"
   url "https://github.com/dbohdan/remarshal/archive/v0.11.2.tar.gz"
   sha256 "3f383e48f59722a4d93ef2b5e417b6a8c152f382a1faad416099ffcde5c87a66"
+  revision 3
   head "https://github.com/dbohdan/remarshal.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "09d9250297513d0e3b4e32ec13f84f3289b4fccec3f7d47ceb646854881703cd" => :catalina
-    sha256 "5a74936a60c2a6242cfafde7aef7c07c2c311c88c114cba85ca927bb54e9346f" => :mojave
-    sha256 "757a22523a68e47fbfc372d84c44d840bd61c212fb02d5e1f17fccdfd870d62a" => :high_sierra
-    sha256 "645c1cbaa4ff1fa317b2ca3cfdf2ccd8763bd2a11b69b3ffe9bb39e0ee4b8669" => :sierra
+    sha256 "2e239a6f7fed381016f36bffa0e287731b5e2bcb61334b8f2d9efa88b88918f1" => :catalina
+    sha256 "eea1d2b51cc88366a1da55464cf58545286f9d26a74c9e93fca775dab47db006" => :mojave
+    sha256 "8fa23a4540ddb0cc04b0f25ce5faa83ca0dc31a456cb6da28a94e8a7365cde2a" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
+
+  conflicts_with "msgpack-tools", :because => "both install 'json2msgpack' binary"
 
   resource "PyYAML" do
     url "https://files.pythonhosted.org/packages/a3/65/837fefac7475963d1eccf4aa684c23b95aa6c1d033a2c5965ccb11e22623/PyYAML-5.1.1.tar.gz"
@@ -70,6 +72,7 @@ class Remarshal < Formula
     assert_equal toml, pipe_output("#{bin}/yaml2toml", yaml)
     assert_equal json, pipe_output("#{bin}/remarshal -if=toml -of=json", toml).chomp
     assert_equal json, pipe_output("#{bin}/toml2json", toml).chomp
-    assert_equal pipe_output("#{bin}/remarshal -if=yaml -of=msgpack", yaml), pipe_output("#{bin}/remarshal -if=json -of=msgpack", json)
+    assert_equal pipe_output("#{bin}/remarshal -if=yaml -of=msgpack", yaml),
+      pipe_output("#{bin}/remarshal -if=json -of=msgpack", json)
   end
 end

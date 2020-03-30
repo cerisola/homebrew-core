@@ -10,9 +10,10 @@ class Allureofthestars < Formula
   head "https://github.com/AllureOfTheStars/Allure.git"
 
   bottle do
-    sha256 "26fff57df9c461c021711d86d823b0d55789878063686dba5c303f24e02f43a9" => :mojave
-    sha256 "eee43f8b33142a2734dc474175f579d5e747470f8f3049f4e38433dbea30aa31" => :high_sierra
-    sha256 "f6235d97b2935adcd24d130a27337d40ef16b9051b066a896471273d3c7aa1d3" => :sierra
+    rebuild 1
+    sha256 "d568c44d9f158ac188d690a0366950923b565aebf3c82a6b718c52d8584b29e5" => :catalina
+    sha256 "81f6960b26c310bea1b253768edfc00c8c38b84d2651a6d3b9e0dc3434b7cd04" => :mojave
+    sha256 "893be6de189e97cb416e0e0f8ee8b73ce663a57fa4593a32c76ac69f987f64ab" => :high_sierra
   end
 
   depends_on "cabal-install" => :build
@@ -25,9 +26,10 @@ class Allureofthestars < Formula
   end
 
   test do
-    non_debug_args = "--logPriority 0 --newGame 3 --maxFps 100000 --stopAfterFrames 50 --automateAll --keepAutomated --gameMode battle --setDungeonRng 7 --setMainRng 7"
-    output = shell_output("#{bin}/Allure --dbgMsgSer --dbgMsgCli #{non_debug_args}")
-    assert_equal "", output
+    assert_equal "",
+      shell_output("#{bin}/Allure --dbgMsgSer --dbgMsgCli --logPriority 0 --newGame 3 --maxFps 100000 " \
+                                 "--stopAfterFrames 50 --automateAll --keepAutomated --gameMode battle " \
+                                 "--setDungeonRng 7 --setMainRng 7")
     assert_equal "", shell_output("cat ~/.Allure/stderr.txt")
     assert_match "UI client FactionId 1 stopped", shell_output("cat ~/.Allure/stdout.txt")
   end

@@ -1,15 +1,14 @@
 class DiffPdf < Formula
   desc "Visually compare two PDF files"
   homepage "https://vslavik.github.io/diff-pdf/"
-  url "https://github.com/vslavik/diff-pdf/releases/download/v0.3/diff-pdf-0.3.tar.gz"
-  sha256 "8f1beb45d48fecfb09c802e95154ad9b8d4b73e90796eaf7ab835f107b495da0"
-  revision 7
+  url "https://github.com/vslavik/diff-pdf/releases/download/v0.4.1/diff-pdf-0.4.1.tar.gz"
+  sha256 "0eb81af6b06593488acdc5924a199f74fe3df6ecf2a0f1be208823c021682686"
 
   bottle do
     cellar :any
-    sha256 "889d4938538d254d0b6e4d1438d8b361e038da3b92b00377686ab599f042accc" => :catalina
-    sha256 "5cf188696cd121f90dc5ea99796bd993718c058f6827aaa17d11356486378779" => :mojave
-    sha256 "44aa69f3298817c949621ea5af607bf08e8699c2f973e71fcf20fa5979c81d35" => :high_sierra
+    sha256 "607cf96d3f4badae3caf1f7d0175630b22efcdde6b2ccd60cb918c430de9d2db" => :catalina
+    sha256 "5849ecb01adc1810856721c652ad300f089d83697e225facf7f6dcea41da8004" => :mojave
+    sha256 "9dd3244618fa964a3bf8940bb4031c19a40d0a9dadb9ba206918990519c3c4a7" => :high_sierra
   end
 
   depends_on "autoconf" => :build

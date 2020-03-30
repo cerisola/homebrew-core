@@ -1,35 +1,36 @@
 class Octant < Formula
   desc "Kubernetes introspection tool for developers"
-  homepage "https://github.com/vmware/octant"
-  url "https://github.com/vmware/octant.git",
-      :tag      => "v0.8.0",
-      :revision => "e37e7f6c6c797ef215fdbeedb91c709c88193522"
-  head "https://github.com/vmware/octant.git"
+  homepage "https://octant.dev"
+  url "https://github.com/vmware-tanzu/octant.git",
+      :tag      => "v0.11.0",
+      :revision => "20fbb90b767ff78983c034656e56b50d5ed1c5dd"
+  head "https://github.com/vmware-tanzu/octant.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8769013488fe3dfbef05505433ac47efdfacd9c190e5da616a74bb643b9a86c1" => :catalina
-    sha256 "a9984601336d64877fa6430087e4ba47f52482c8687915af11d2610ed478b007" => :mojave
-    sha256 "807f721c89c7222a8f1c514fe061d58155bfeea40d619b89131cdfa7bac19115" => :high_sierra
+    sha256 "85c7f159ca072efb57e35c99dc1e5a0dedd3184b0ea7b0b63954d8614f9fedee" => :catalina
+    sha256 "4dafb4e1124c58682d5922718699466fc6fb2a6cf92a5ccfdbee62b5c3d9681e" => :mojave
+    sha256 "273d873e44b79308bdb8c5d348eac20db84186520a08bcb3576053ca51ab977f" => :high_sierra
   end
 
   depends_on "go" => :build
-  depends_on "node@10" => :build
-  depends_on "protoc-gen-go" => :build
+  depends_on "node" => :build
 
   def install
     ENV["GOPATH"] = buildpath
     ENV["GOFLAGS"] = "-mod=vendor"
 
-    dir = buildpath/"src/github.com/vmware/octant"
+    ENV.append_path "PATH", HOMEBREW_PREFIX/"bin"
+
+    dir = buildpath/"src/github.com/vmware-tanzu/octant"
     dir.install buildpath.children
 
-    cd "src/github.com/vmware/octant" do
-      system "make", "go-install"
+    cd "src/github.com/vmware-tanzu/octant" do
+      system "go", "run", "build.go", "go-install"
       ENV.prepend_path "PATH", buildpath/"bin"
 
-      system "make", "web-build"
-      system "make", "generate"
+      system "go", "generate", "./pkg/icon"
+      system "go", "run", "build.go", "web-build"
 
       commit = Utils.popen_read("git rev-parse HEAD").chomp
       build_time = Utils.popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp

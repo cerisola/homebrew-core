@@ -1,15 +1,13 @@
 class Octomap < Formula
   desc "Efficient probabilistic 3D mapping framework based on octrees"
   homepage "https://octomap.github.io/"
-  url "https://github.com/OctoMap/octomap/archive/v1.9.0.tar.gz"
-  sha256 "5f81c9a8cbc9526b2e725251cd3a829e5222a28201b394314002146d8b9214dd"
+  url "https://github.com/OctoMap/octomap/archive/v1.9.3.tar.gz"
+  sha256 "8488de97ed2c8f4757bfbaf3225e82a9e36783dce1f573b3bde1cf968aa89696"
 
   bottle do
-    sha256 "8482f30379e429ef1822883a6a1c73de91852b22b0b7a584c58b433ff486e624" => :catalina
-    sha256 "ebcc39c4935eea656d1c9b3f4f8e4360b2cf559255cec9d84c8cf22d0ac6f661" => :mojave
-    sha256 "3e72d0af26510eb79310138dc80a2b2dea541e90ac58a953e5294251bca14728" => :high_sierra
-    sha256 "eb292c0c7005c2fd75b65f50bc2a361181ee7c3c5113f6da56f80b4f03bf75fc" => :sierra
-    sha256 "d29abe7987fdb2901996e8e6c4aaf2c8a0daeb98b6cee2a585f048769082a4ad" => :el_capitan
+    sha256 "d1c5e967c2074d4d19292553da0cdfb360052c1c8c8b63da13ad06100abcfce5" => :catalina
+    sha256 "c4f130c4a9c0e9d877b5936c38d77a3129949209074f30971a5a6ea044ab0ed6" => :mojave
+    sha256 "c1b06b47e85f000ba6a6c2f3fd745fd9859422b7fc261ec8209a788913fbfe47" => :high_sierra
   end
 
   depends_on "cmake" => :build

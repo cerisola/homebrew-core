@@ -1,16 +1,15 @@
 class Sundials < Formula
   desc "Nonlinear and differential/algebraic equations solver"
   homepage "https://computation.llnl.gov/casc/sundials/main.html"
-  url "https://computation.llnl.gov/projects/sundials/download/sundials-4.1.0.tar.gz"
-  sha256 "280de1c27b2360170a6f46cb3799b2aee9dff3bddbafc8b08c291a47ab258aa5"
+  url "https://computation.llnl.gov/projects/sundials/download/sundials-5.1.0.tar.gz"
+  sha256 "fb22d14fad42203809dc46d046b001149ec4e901b23882bd4a80619157fd9b21"
   revision 2
 
   bottle do
     cellar :any
-    sha256 "de1b2b9fa513d372b7f53a9354b1d0ff4675b6055f9bf0d42a4dad0a693064ac" => :catalina
-    sha256 "da83304cfc31d4b07693b64271dcceb940446616551aaf3ccd82945be923116c" => :mojave
-    sha256 "15e9971b298bfaf56193a982e161e3011f7af31717486343892a1186f56466d3" => :high_sierra
-    sha256 "93bdbe8c2cef3dbd89358a3c92ad19f4ed51e9060dafb2d04196c4333ebd8da3" => :sierra
+    sha256 "ab5532fa4c5e2d26db2ffa858d21372d45f8732b4b0be423625d94db607c14a0" => :catalina
+    sha256 "016a3fec880d65d7dc3f7f27add0c669c51031d0344e42249d3239a700e7fbdf" => :mojave
+    sha256 "f82167f380abc2a54596529c8c549ab0730213e1da42374962d7a4f4f3ff6ee9" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -18,6 +17,9 @@ class Sundials < Formula
   depends_on "open-mpi"
   depends_on "openblas"
   depends_on "suite-sparse"
+
+  uses_from_macos "libpcap"
+  uses_from_macos "m4"
 
   def install
     blas = "-L#{Formula["openblas"].opt_lib} -lopenblas"

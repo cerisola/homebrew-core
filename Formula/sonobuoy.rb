@@ -1,14 +1,14 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/heptio/sonobuoy"
-  url "https://github.com/heptio/sonobuoy/archive/v0.16.3.tar.gz"
-  sha256 "d9d47709fa23b670e931586683c71d842761aba3155eff146bd2d41c5a60ce51"
+  url "https://github.com/heptio/sonobuoy/archive/v0.17.2.tar.gz"
+  sha256 "fc6623156840c9a518d0820d2a857f7476fd6085c9f0f747fcddd896bf333219"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dd6c9dd3de6869fac6f313b14d5103da84f62dbbd64a25b7e956318272d466e9" => :catalina
-    sha256 "ef8ef736e1aff7a9c2fa23a0934246901fe0bf4552cf25b48aa292c5e96d8c53" => :mojave
-    sha256 "42d58ef91b2be40c08800bb5a445a75d0eed8aaa772d832c936b4f3d19e5cf2e" => :high_sierra
+    sha256 "785670def8b6bfc3255498ebaa401f825e4e02c5d8e6d5bc8d296ef090a7624e" => :catalina
+    sha256 "2510e45a45090aadc0489074ba46e5e22ea4035596f12fc38e3682972150d1fc" => :mojave
+    sha256 "a316e566aaf947ab97681e0dfce1c48b64c83330cc4cb73689cf61ff6f208d57" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -32,14 +32,14 @@ class Sonobuoy < Formula
   end
 
   test do
-    output = shell_output("#{bin}/sonobuoy 2>&1")
-    assert_match "Sonobuoy is an introspective kubernetes component that generates reports on cluster conformance", output
-    assert_match version.to_s, shell_output("#{bin}/sonobuoy version 2>&1")
-
-    output = shell_output("#{bin}/sonobuoy gen --kube-conformance-image-version=v1.14 2>&1")
-    assert_match "name: sonobuoy", output
-
-    output = shell_output("#{bin}/sonobuoy e2e --show=all " + resource("sonobuoyresults").cached_download + " 2>&1")
-    assert_match "all tests", output
+    resources.each { |r| r.verify_download_integrity(r.fetch) }
+    assert_match "Sonobuoy is an introspective kubernetes component that generates reports on cluster conformance",
+      shell_output("#{bin}/sonobuoy 2>&1")
+    assert_match version.to_s,
+      shell_output("#{bin}/sonobuoy version 2>&1")
+    assert_match "name: sonobuoy",
+      shell_output("#{bin}/sonobuoy gen --kube-conformance-image-version=v1.14 2>&1")
+    assert_match "all tests",
+      shell_output("#{bin}/sonobuoy e2e --show=all " + resource("sonobuoyresults").cached_download + " 2>&1")
   end
 end

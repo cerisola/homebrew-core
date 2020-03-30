@@ -1,13 +1,14 @@
 class Gdcm < Formula
   desc "Grassroots DICOM library and utilities for medical files"
   homepage "https://sourceforge.net/projects/gdcm/"
-  url "https://github.com/malaterre/GDCM/archive/v3.0.4.tar.gz"
-  sha256 "9e460e5aae0082e5bb0cb4e6cb1293f4ea902394406e2260cc92674f7bd481b2"
+  url "https://github.com/malaterre/GDCM/archive/v3.0.5.tar.gz"
+  sha256 "5cc175d9b845db91143f972e505680e766ab814a147b16abbb34acd88dacdb5a"
+  revision 1
 
   bottle do
-    sha256 "5b92530d4439ac74e2062b585a460fc23848d785b88d4a989674a6a328fde3bc" => :catalina
-    sha256 "207d41bd1d20bafb0a1f34b06154228421db2a5f47d0d45a93e1433c0a2cf735" => :mojave
-    sha256 "2c2fc983a6177da77c736754762788c2b665a0c83b73b1e5e257398581279afe" => :high_sierra
+    sha256 "c10202e17aa57c391d38bfe06e6b33eae64f2659f85c88e2be9a0ea1e040dbfd" => :catalina
+    sha256 "3d54af3add1be6cc7c608d403ba626c78542f19fff125cc8db063934cac33fe8" => :mojave
+    sha256 "f72b23f1bcddb9a2824d45543de68175e5664d730047bd4f01841287acbf67e8" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -23,7 +24,8 @@ class Gdcm < Formula
     ENV.cxx11
 
     xy = Language::Python.major_minor_version "python3"
-    python_include = Utils.popen_read("python3 -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
+    python_include =
+      Utils.popen_read("python3 -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
     python_executable = Utils.popen_read("python3 -c 'import sys;print(sys.executable)'").chomp
 
     args = std_cmake_args + %W[

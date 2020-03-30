@@ -1,15 +1,15 @@
 class AngleGrinder < Formula
   desc "Slice and dice log files on the command-line"
   homepage "https://github.com/rcoh/angle-grinder"
-  url "https://github.com/rcoh/angle-grinder/archive/v0.12.0.tar.gz"
-  sha256 "a27d8776684ac704114ef9f721c55eb9d41926907985132f2ecb7db15f3932c9"
+  url "https://github.com/rcoh/angle-grinder/archive/v0.13.0.tar.gz"
+  sha256 "b257b9869f5350bc75754ecdd883341a7ede74bde05dd1e934dfd3b40d962d7c"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "cd030afe0fdd2879bdf9db6e060a0d003cab1fcd017ee9900f49155e99b24ee0" => :catalina
-    sha256 "59333e0ccb022eba3f3f2b8e448e658533636665632e0368386c4e15e7713804" => :mojave
-    sha256 "9450f13f39e8a57a55634625f654594d7c1be801530b785d4ff9a1e6df92f316" => :high_sierra
+    sha256 "ab4027c863beaa9da3593844c89465ec95ba88d829ef76b4eb0b6c648d01af9a" => :catalina
+    sha256 "5d1c7560b7a8e0437d7534253ad360d9d5d0560d2d8f2e092461691faf0e30fa" => :mojave
+    sha256 "4aedebd2abddc24893f849fd86830efc1247739782fdf239ea04ef6cf25fcd2b" => :high_sierra
   end
 
   depends_on "rust" => :build

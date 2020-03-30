@@ -1,28 +1,20 @@
 class Atlantis < Formula
   desc "Terraform Pull Request Automation tool"
   homepage "https://www.runatlantis.io/"
-  url "https://github.com/runatlantis/atlantis/archive/v0.10.1.tar.gz"
-  sha256 "98a1dae80acfa1c322007d4a2e29a28733edc386d74b9b3b07608fe64820a843"
+  url "https://github.com/runatlantis/atlantis/archive/v0.11.1.tar.gz"
+  sha256 "62e1ceeb1aee75f7be82b4158c44eed06e17ce896dd47879e93550d10f05e330"
   bottle do
     cellar :any_skip_relocation
-    sha256 "6a7ecd37325d562a499a19b4080fd56bc19146e363e3c536538928b48dad11c0" => :catalina
-    sha256 "c8dab2be57c47e361cbadc2b5e61d4292d6a440bc7adcfd03371e9510ca38625" => :mojave
-    sha256 "a430e649cbb7b4780f875f874254444f59d9f5094be0761d1e8010c510f14525" => :high_sierra
+    sha256 "fe8ad0c5f2bc948ea025f68af0969e7880b00b7223f76744fc2007251137ef4d" => :catalina
+    sha256 "efb339eba2e9d7dd3088ea781498491df10472971027b0414014aab687f716ac" => :mojave
+    sha256 "49f3c99cc8e528d3d31e6dae17c47ef54ebc9ab0cf32119d2b44fae201327891" => :high_sierra
   end
 
   depends_on "go" => :build
   depends_on "terraform"
 
   def install
-    ENV["GOPATH"] = buildpath
-    dir = "src/github.com/runatlantis/atlantis"
-    build_dir = buildpath/dir
-    build_dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", "atlantis"
-      bin.install "atlantis"
-    end
+    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"atlantis"
   end
 
   test do

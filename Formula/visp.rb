@@ -1,14 +1,14 @@
 class Visp < Formula
   desc "Visual Servoing Platform library"
   homepage "https://visp.inria.fr/"
-  url "https://gforge.inria.fr/frs/download.php/latestfile/475/visp-3.2.0.tar.gz"
-  sha256 "072237ed5c6fcbc6a87300fa036014ec574fd081724907e41ae2d6fb5a222fbc"
-  revision 5
+  url "https://gforge.inria.fr/frs/download.php/latestfile/475/visp-3.3.0.tar.gz"
+  sha256 "f2ed11f8fee52c89487e6e24ba6a31fa604b326e08fb0f561a22c877ebdb640d"
+  revision 2
 
   bottle do
-    sha256 "8dad266d9554bbf185ff11f87c2ab09d57d99fba6d512f38238e7c2f55ebbe42" => :mojave
-    sha256 "abe3a3879f23184466001c69b261932f15ecd88cf1337c3c310d98e6c7b3fedc" => :high_sierra
-    sha256 "e06a3f6810a11b733278d6e4ede15473a21fb37a89ce665943b578afbd7b4748" => :sierra
+    sha256 "98a4bd39c93b0f398a20064073126b8231beaf72826a9ca5b447e1cca3cd90c0" => :catalina
+    sha256 "50b7fbdd5ceb9aa1debda7949481dcac60964666da769a730d31da5c327cb9ff" => :mojave
+    sha256 "8e5d38d0d3d56b4122a34bd12ee6fb21311dee4bf66bd229a3f6d25b7b6eac46" => :high_sierra
   end
 
   depends_on "cmake" => :build

@@ -3,22 +3,30 @@ class PreCommit < Formula
 
   desc "Framework for managing multi-language pre-commit hooks"
   homepage "https://pre-commit.com/"
-  url "https://github.com/pre-commit/pre-commit/archive/v1.20.0.tar.gz"
-  sha256 "eb7d75eb07be0557455cad16968746ed5fa609e04a0dccf83c446bfa3477bf45"
+  url "https://github.com/pre-commit/pre-commit/archive/v2.2.0.tar.gz"
+  sha256 "53a5d39e8b2063a004ecdabd4b459ae826cfe47eca449720e4fdde06a7d43cc0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "219f8120fd41745a33a99b9fd3e41743d2f12b1c1af03c5eea486d3a50f14cb3" => :catalina
-    sha256 "f55108ee2b68b82490d850a7f12c512dd7b7e58ead9d1ded9814de076625f5a2" => :mojave
-    sha256 "e77c9db9f0ef18af49adfe12d8f0de736ad1833f7ca9ca305ed861e9d99db55c" => :high_sierra
+    sha256 "1a7f0335e863020359410ccffc9c4272751b041b99017c3b870ee24c57b05fae" => :catalina
+    sha256 "7c00f08c4571d9b956f192b974c5a64ce458636a80c6723b0f6af354c6db9f8c" => :mojave
+    sha256 "ed68993f6703cccc5766c87a346a40131f429a55a4f1587c3acee1c7a6c07ab1" => :high_sierra
   end
 
+  # To avoid breaking existing git hooks when we update Python,
+  # we should never depend on a versioned Python formula and
+  # always use the "default".
   depends_on "python"
 
   def install
+    # Make sure we are actually using Homebrew's Python
+    inreplace "pre_commit/commands/install_uninstall.py",
+              "f'#!/usr/bin/env {py}'",
+              "'#!#{Formula["python"].opt_bin}/python3'"
+
     venv = virtualenv_create(libexec, "python3")
     system libexec/"bin/pip", "install", "-v", "--no-binary", ":all:",
-                              "--ignore-installed", "PyYAML==3.13b1", buildpath
+                              "--ignore-installed", buildpath
     system libexec/"bin/pip", "uninstall", "-y", "pre-commit"
     venv.pip_install_and_link buildpath
   end
@@ -33,8 +41,6 @@ class PreCommit < Formula
       rm f
       ln_s realpath, f
     end
-    inreplace lib_python_path/"orig-prefix.txt",
-              Formula["python3"].opt_prefix, Formula["python3"].prefix.realpath
   end
 
   test do

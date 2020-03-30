@@ -17,6 +17,8 @@ class Gitless < Formula
   depends_on "libgit2"
   depends_on "python"
 
+  uses_from_macos "libffi"
+
   resource "args" do
     url "https://files.pythonhosted.org/packages/e5/1c/b701b3f4bd8d3667df8342f311b3efaeab86078a840fb826bd204118cc6b/args-0.1.0.tar.gz"
     sha256 "a785b8d837625e9b61c39108532d95b85274acd679693b71ebb5156848fcf814"
@@ -57,9 +59,9 @@ class Gitless < Formula
   end
 
   test do
+    system "git", "config", "--global", "user.email", '"test@example.com"'
+    system "git", "config", "--global", "user.name", '"Test"'
     system bin/"gl", "init"
-    system "git", "config", "user.name", "Gitless Install"
-    system "git", "config", "user.email", "Gitless@Install"
     %w[haunted house].each { |f| touch testpath/f }
     system bin/"gl", "track", "haunted", "house"
     system bin/"gl", "commit", "-m", "Initial Commit"

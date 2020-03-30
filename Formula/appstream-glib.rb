@@ -1,15 +1,14 @@
 class AppstreamGlib < Formula
   desc "Helper library for reading and writing AppStream metadata"
   homepage "https://github.com/hughsie/appstream-glib"
-  url "https://github.com/hughsie/appstream-glib/archive/appstream_glib_0_7_15.tar.gz"
-  sha256 "ad4463e96870accc9a179849555f5c5c4146ec412ec3ecf3c594dce85e027d59"
+  url "https://github.com/hughsie/appstream-glib/archive/appstream_glib_0_7_17.tar.gz"
+  sha256 "cb612c9e634275e574fa639737cf63711358cd10b9d0d377f70025653fefdd16"
 
   bottle do
     cellar :any
-    sha256 "bfd14ae728275b151a4cc79c3e6754ab974ef732118f43e47f7a3a4dc29c28ac" => :catalina
-    sha256 "567caa84b4a6d0ffcffed0b0fdb78bbb0d04529e49acd34753c7f0181439e7f8" => :mojave
-    sha256 "4b2514928e260215f3a6258167e0544f587f73a9ab3f202bebafc4c66765752e" => :high_sierra
-    sha256 "d11c16c5b3300d4933b83af64cf68ecc4ee77a3f93dd6b8b4c5c459b37d2cc79" => :sierra
+    sha256 "de7a46f58e307acdfded481babf14370554a37a8f502f8122fa1f789946b04b4" => :catalina
+    sha256 "5086642d95908eedcc2e6e1433f43398cf127fa3745ee40ccd6c9c9e081e30ef" => :mojave
+    sha256 "5c8dfa2d33a90c0b574aa3f4943a74b665019d165cc7493380775addb2cc6545" => :high_sierra
   end
 
   depends_on "docbook" => :build

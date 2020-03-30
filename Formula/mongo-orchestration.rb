@@ -5,18 +5,17 @@ class MongoOrchestration < Formula
   homepage "https://github.com/10gen/mongo-orchestration"
   url "https://files.pythonhosted.org/packages/6d/b5/624a02d5f6cbfa8eb3c6554f5387c4739ad283bac7efb27ee99434a4d314/mongo-orchestration-0.6.11.tar.gz"
   sha256 "7a09706d36e94ae767e90646fed98a52b426a4d14b0f4f724b185e292ac8f425"
-  revision 1
+  revision 3
   head "https://github.com/10gen/mongo-orchestration.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9add4c3759ff3e592fe95fd44b553f9399a8602dcb797986b256118e0368ffc7" => :catalina
-    sha256 "62a628de657e8aa22e0cb020d77cdd67c9d790e96774b5f656890373ce931c1b" => :mojave
-    sha256 "a4b022019d2017e3294cac234a396b7f6ff358eae48745191b43c4fcc115991b" => :high_sierra
-    sha256 "8a463e718a50549325ae910fa944f4fa1761cbc4050d271c16d285b22402685e" => :sierra
+    sha256 "ca2f1aa5e42d7034892714d40e880b55c2c600c41340469a0c7920f5745ee318" => :catalina
+    sha256 "74f0f48ec48f2e52b4ce7787ba03b4dd67673bc434f90ab0f209eea1cae05a57" => :mojave
+    sha256 "fbb1f7ae46b230e912072383e54150c2a48ded086fa25f3f5a4c030dd92458d4" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   resource "bottle" do
     url "https://files.pythonhosted.org/packages/bd/99/04dc59ced52a8261ee0f965a8968717a255ea84a36013e527944dbf3468c/bottle-0.12.13.tar.gz"
@@ -44,28 +43,29 @@ class MongoOrchestration < Formula
 
   plist_options :startup => true, :manual => "#{HOMEBREW_PREFIX}/opt/mongo-orchestration/bin/mongo-orchestration -b 127.0.0.1 -p 8889 --no-fork start"
 
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>mongo-orchestration</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/mongo-orchestration</string>
-          <string>-b</string>
-          <string>127.0.0.1</string>
-          <string>-p</string>
-          <string>8889</string>
-          <string>--no-fork</string>
-          <string>start</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-      </dict>
-    </plist>
-  EOS
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>mongo-orchestration</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/mongo-orchestration</string>
+            <string>-b</string>
+            <string>127.0.0.1</string>
+            <string>-p</string>
+            <string>8889</string>
+            <string>--no-fork</string>
+            <string>start</string>
+          </array>
+          <key>RunAtLoad</key>
+          <true/>
+        </dict>
+      </plist>
+    EOS
   end
 
   test do

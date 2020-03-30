@@ -3,18 +3,20 @@ require "language/node"
 class FirebaseCli < Formula
   desc "Firebase command-line tools"
   homepage "https://firebase.google.com/docs/cli/"
-  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-7.6.2.tgz"
-  sha256 "5973136a596738b2528307815b6fbedcc4cb25a663ffdd292c66146e0fcdc8cd"
+  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-7.16.1.tgz"
+  sha256 "4c974bbc3abcef7947c43fa14a1247941d7d947da51aa8f375cca105c67871c1"
   head "https://github.com/firebase/firebase-tools.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "87301fd6888652c0ba0f762726e46285b6c0947781b390e6e1e83d9784220f6c" => :catalina
-    sha256 "68a28e525fe774b52bd0f824515dc9c40cd50154366be231f097a4114c05101d" => :mojave
-    sha256 "b49ad6db093996a7f2f7041919fe864f19d41b913ed839531425e7b92a8a8e4a" => :high_sierra
+    sha256 "a21980b4924e5ae363826ac6c62f7bad89be356d84ffed747cec9b30650c6b31" => :catalina
+    sha256 "451a53146d660823072b6e052360a814b6f4fc2551a4e6666ec214e44cab584a" => :mojave
+    sha256 "7c7344cfabd2987f284e50b9e2c4aa487ecb247c1ee900d3a835972cccb9aca7" => :high_sierra
   end
 
   depends_on "node"
+
+  uses_from_macos "expect" => :test
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)

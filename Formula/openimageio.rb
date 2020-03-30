@@ -1,14 +1,15 @@
 class Openimageio < Formula
   desc "Library for reading, processing and writing images"
   homepage "https://openimageio.org/"
-  url "https://github.com/OpenImageIO/oiio/archive/Release-2.0.12.tar.gz"
-  sha256 "930a142c9cabbbc3b249577083c97e9f0407cc8cbf933144f3a3ed0f3ec9cfe0"
+  url "https://github.com/OpenImageIO/oiio/archive/Release-2.1.11.2.tar.gz"
+  version "2.1.11"
+  sha256 "0982f46a6a3107045c06ca825cc1637e023d7e7f16075523a85b10de9acedf55"
   head "https://github.com/OpenImageIO/oiio.git"
 
   bottle do
-    sha256 "798bc65a71cee292a58f4333144e16a296ffe06c2899d19884fde69465b376c9" => :catalina
-    sha256 "de61ca1fb9fa5cb5213d511aad78736f89e5f288d18d14e614bc69bcc2f076ac" => :mojave
-    sha256 "31475017de99c5cb27faa64bbdd0fb436fc715e0190eed3248740e5f764c38f5" => :high_sierra
+    sha256 "5862ca53604ed40fc670cc003361c29a9a7e2338f0ad6309573a395d2458761d" => :catalina
+    sha256 "09d75bd3f959c2f948921542249892dac3b47df4612e397729611aee6301fd45" => :mojave
+    sha256 "b903ed19e0cf028704d11f1ce99856d37c48fc1366c45d8efbb148a30164ff9e" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -54,7 +55,9 @@ class Openimageio < Formula
 
     # CMake picks up boost-python instead of boost-python3
     args << "-DBOOST_ROOT=#{Formula["boost"].opt_prefix}"
-    args << "-DBoost_PYTHON_LIBRARIES=#{Formula["boost-python3"].opt_lib}/libboost_python#{py3ver.to_s.delete(".")}-mt.dylib"
+    boost_lib = Formula["boost-python3"].opt_lib
+    py3ver_without_dots = py3ver.to_s.delete(".")
+    args << "-DBoost_PYTHON_LIBRARIES=#{boost_lib}/libboost_python#{py3ver_without_dots}-mt.dylib"
 
     # This is strange, but must be set to make the hack above work
     args << "-DBoost_PYTHON_LIBRARY_DEBUG=''"

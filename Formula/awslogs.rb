@@ -5,17 +5,19 @@ class Awslogs < Formula
   homepage "https://github.com/jorgebastida/awslogs"
   url "https://github.com/jorgebastida/awslogs/archive/0.11.0.tar.gz"
   sha256 "6258a121629cb872ee61fe78bf112753c8782c971524f0943a0e21f74d5e28bd"
+  revision 2
   head "https://github.com/jorgebastida/awslogs.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7e6479682950ec93198d7664be5948d095f28e01c5364d29df0a6f955983f968" => :catalina
-    sha256 "a2cb26fb8da13bd1198f918e69c412f06fc1a98a97622b4daac09ff49b11bad6" => :mojave
-    sha256 "e85c038b6472ea984b2dc6ed56f2b06274abb6848a4077bf269f20d79424e90b" => :high_sierra
-    sha256 "7abb54b867eaa110ef231718f22452cd663188037176de08ada4519835420282" => :sierra
+    sha256 "7918feeb3d8bd6ff0944c55afae7864eaf5cea516029b33647aa2ce87288ce86" => :catalina
+    sha256 "5079a8ee7893316f2febeb41caf7afe6a0a2efad9f553f04dcfb80be9109e1d0" => :mojave
+    sha256 "04e319b2b99b8c62ce50d8c4cce6804aac585d063ac4da9ec8459dc9a8719512" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
+
+  uses_from_macos "zlib"
 
   resource "boto3" do
     url "https://files.pythonhosted.org/packages/fd/50/3868735fae36e0f93216019551ca0f75b6cf9f933a55891244efefdcc3bd/boto3-1.9.62.tar.gz"

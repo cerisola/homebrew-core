@@ -1,16 +1,16 @@
 class Weaver < Formula
   desc "Command-line tool for Weaver"
   homepage "https://github.com/scribd/Weaver"
-  url "https://github.com/scribd/Weaver/archive/0.12.3.tar.gz"
-  sha256 "638a08e996ac1fc5b8d945870a4f8af7548a9c59f8b2164c4f766f049a512033"
+  url "https://github.com/scribd/Weaver/archive/1.0.3.tar.gz"
+  sha256 "c58d28721f04b1bd294a67a49f4fddb269ca75a5af9af88ff371da1356928062"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ee9b039b758ae1a7cdd182887b450c985ca37fb839ef9c486bda859af0df5f6c" => :catalina
-    sha256 "8158b3c36bb668c361660b7d433779faf10f3eb8038528b5f26cda4f4966e238" => :mojave
+    sha256 "1a80593ac401257a8bd6abd50960f93d53404bc707032b8e970602db262cdd5a" => :catalina
+    sha256 "3d31464ea37e9dd2421c19cbb4d36292a8cdb4d384a6910257e22536cd569c59" => :mojave
   end
 
-  depends_on :xcode => ["10.2", :build]
+  depends_on :xcode => ["11.2", :build]
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
@@ -20,6 +20,6 @@ class Weaver < Formula
     # Weaver uses Sourcekitten and thus, has the same sandbox issues.
     # Rewrite test after sandbox issues investigated.
     # https://github.com/Homebrew/homebrew/pull/50211
-    system "#{bin}/weaver", "--version"
+    system "#{bin}/weaver", "version"
   end
 end

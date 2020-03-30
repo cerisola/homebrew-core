@@ -1,21 +1,22 @@
 class PerconaToolkit < Formula
   desc "Percona Toolkit for MySQL"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.0.13/source/tarball/percona-toolkit-3.0.13.tar.gz"
-  sha256 "21f68d1c5204a9cad7be716fd1e53f0fe6ff7d995292b56dbc7c55e3979432b1"
-  revision 1
+  url "https://www.percona.com/downloads/percona-toolkit/3.1.0/source/tarball/percona-toolkit-3.1.0.tar.gz"
+  sha256 "722593773825efe7626ff0b74de6a2133483c9c89fd7812bfe440edaacaec9cc"
+  revision 2
   head "lp:percona-toolkit", :using => :bzr
 
   bottle do
     cellar :any
-    sha256 "1a4d81c900166778aaacd7d3229f44ee50b0fa459c29de79b46b623041ba3bd6" => :catalina
-    sha256 "a4bad18fddbba29c052142b2f2ab78b4172915ec3ce6ccdd25f37e417d4e3b55" => :mojave
-    sha256 "9825bfde46b669fd79a189ce075d34b5654fdc1743c3cac0fd7366288db7a007" => :high_sierra
-    sha256 "86253e327592de79373eb010fc134dfdbc2e68ab2a222dbdb3ed176e65243cbd" => :sierra
+    sha256 "0fb82a067b4e7c0e2f2f289d190a530bf3e8f92501f12f77d9661142d1cad2b1" => :catalina
+    sha256 "f2e6a4ae25951283fd83a182091eebbd563590ef0142a14a0b9c64a2d7eb6cc4" => :mojave
+    sha256 "31a7a1201d51ba09551381560eade7ecb2a238712608fb09c8eb29871a78af67" => :high_sierra
   end
 
   depends_on "mysql-client"
   depends_on "openssl@1.1"
+
+  uses_from_macos "perl"
 
   # In Mojave, this is not part of the system Perl anymore
   if MacOS.version >= :mojave
@@ -37,6 +38,7 @@ class PerconaToolkit < Formula
 
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
+
     resources.each do |r|
       r.stage do
         system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
@@ -45,8 +47,19 @@ class PerconaToolkit < Formula
     end
 
     system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
-    system "make", "test", "install"
+    system "make", "install"
     share.install prefix/"man"
+
+    # Disable dynamic selection of perl which may cause segfault when an
+    # incompatible perl is picked up.
+    # https://github.com/Homebrew/homebrew-core/issues/4936
+    bin.find do |f|
+      next unless f.file?
+      next unless f.read("#!/usr/bin/env perl".length) == "#!/usr/bin/env perl"
+
+      inreplace f, "#!/usr/bin/env perl", "#!/usr/bin/perl"
+    end
+
     bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 

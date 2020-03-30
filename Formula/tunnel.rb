@@ -1,17 +1,17 @@
 class Tunnel < Formula
   desc "Expose local servers to the internet securely"
   homepage "https://tunnel.labstack.com/docs"
-  url "https://github.com/labstack/tunnel-client/archive/v0.5.1.tar.gz"
-  sha256 "2547bd5c4c7dceb1d46c2a52cf1f9a52f6b31cb3797d94e74809b83e903e236f"
+  url "https://github.com/labstack/tunnel-client/archive/v0.5.14.tar.gz"
+  sha256 "83f7d63520171f052ff50d2e3f56675545350b0aa812b3634397c8d6916292fb"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "10c575c457a65d15218563406284d435dd04211e6ac2357031b7f72b124a2691" => :catalina
-    sha256 "dbacc9ba404152f9dcdb61d37a45f91773166a7b9695e8fbaeab8f9d5b51a53c" => :mojave
-    sha256 "dc81e6a2509d8f936c9ea0e0027450d35f8bfa1961b52e98af6e43eeeb6b3926" => :high_sierra
+    sha256 "2ebbd50a674366bb3dc57632b5aa9a95886cf13ef69a1ecdcb2f9074bb4c6ada" => :catalina
+    sha256 "02b1728c7b8f973e0bec3dea0944f591e00c511179cc1c50f2483833c83d94cd" => :mojave
+    sha256 "94fe0f4a2841c10c8f1031cd9083d0c683b52ed8f94c8d657eefc2de76e7c5c2" => :high_sierra
   end
 
-  depends_on "go" => :build
+  depends_on "go@1.13" => :build
 
   def install
     system "go", "build", "-o", bin/"tunnel", "./cmd/tunnel"

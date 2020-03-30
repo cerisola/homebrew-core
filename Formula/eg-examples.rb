@@ -5,16 +5,16 @@ class EgExamples < Formula
   homepage "https://github.com/srsudar/eg"
   url "https://files.pythonhosted.org/packages/a6/93/38075713a7968a9e8484e894f604f99a68e443e0f9db0ed48063b1241969/eg-1.1.1.tar.gz"
   sha256 "3faa5fb453d8ba113975a1f31e37ace94867539ba9d46a40af4cea90028a04e4"
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c5ec2c63ae6c73ef6717dc6012ce7b5198b9b679e13dce6e0547edaa870133d9" => :catalina
-    sha256 "876d92f8a25f1c00a95d52f2e72e63c91e0cc963852be31968700bc620b5d338" => :mojave
-    sha256 "784192ef1d7a869c81793333bc1cb20b0ec53380c7fe8e6f0c1b2e68e71f69a7" => :high_sierra
-    sha256 "b97620b249f6b74425c157c068b415b4368245f7ce6d2a20d92b9a2db7230547" => :sierra
+    sha256 "46a9ac200202e3701ced8127521ef3d717675d8460453b4c4280990381e4f4b7" => :catalina
+    sha256 "882c95a2e4ff16639e596869fab1459acc2b40326ad85d1a2e22352933522cb7" => :mojave
+    sha256 "1e806034a1d7ec1f50654e33e71e72670237ffa33358c7e7490af5d703ec4d62" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   def install
     virtualenv_install_with_resources

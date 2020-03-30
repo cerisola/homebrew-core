@@ -14,6 +14,8 @@ class Libtiff < Formula
 
   depends_on "jpeg-turbo"
 
+  uses_from_macos "zlib"
+
   def install
     args = %W[
       --prefix=#{prefix}

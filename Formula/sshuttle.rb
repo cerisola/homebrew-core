@@ -6,17 +6,17 @@ class Sshuttle < Formula
   url "https://github.com/sshuttle/sshuttle.git",
       :tag      => "v0.78.5",
       :revision => "752a95310198886515577463a4a7e36d7f218018"
+  revision 2
   head "https://github.com/sshuttle/sshuttle.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "107aecff3f7504b0eab9d370aca884bc13f24df4ff6b55a2b8e4d8664ba985a2" => :catalina
-    sha256 "dff7259d647fd392e53de03660ece7be96452882938f387c199938f8054f4c2b" => :mojave
-    sha256 "28f3d7fc8858779cb6020908302fb185810d574e8023e935b8410d0660973d49" => :high_sierra
-    sha256 "04e8f60acb5131f58a0fbe66d7c8d847c4d423db3edb2671ff1319fc499a2c5f" => :sierra
+    sha256 "a28c54b3fa4e1c98b4d94e04366841e031e55a85ee0f161cdea37e17dd145830" => :catalina
+    sha256 "ca553c22200e1c4a502750d2d50efcfbd689546ae2abca5fc80653bc9916d103" => :mojave
+    sha256 "ca1764f22635b38fa2b66a3aae9677c42ce896d0b58a88be82c2f24e4b1ef592" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   def install
     # Building the docs requires installing

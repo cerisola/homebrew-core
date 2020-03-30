@@ -16,6 +16,8 @@ class Stoken < Formula
   depends_on "pkg-config" => :build
   depends_on "nettle"
 
+  uses_from_macos "libxml2"
+
   def install
     args = %W[
       --disable-dependency-tracking

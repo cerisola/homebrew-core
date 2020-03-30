@@ -1,12 +1,14 @@
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.1/rabbitmq-server-generic-unix-3.8.1.tar.xz"
-  sha256 "a21f012ba71dfe192763aad1384388b8dd0d9907ae61ce6d0b3055d47dcf336e"
+  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v3.8.3/rabbitmq-server-generic-unix-3.8.3.tar.xz"
+  sha256 "5a2739ed1dba77f88316b4c63393d8037fc4acf51881ba922470453e891875b6"
 
   bottle :unneeded
 
   depends_on "erlang"
+
+  uses_from_macos "unzip" => :build
 
   def install
     # Install the base files
@@ -36,7 +38,9 @@ class Rabbitmq < Formula
 
     # Enable plugins - management web UI; STOMP, MQTT, AMQP 1.0 protocols
     enabled_plugins_path = etc/"rabbitmq/enabled_plugins"
-    enabled_plugins_path.write "[rabbitmq_management,rabbitmq_stomp,rabbitmq_amqp1_0,rabbitmq_mqtt]." unless enabled_plugins_path.exist?
+    unless enabled_plugins_path.exist?
+      enabled_plugins_path.write "[rabbitmq_management,rabbitmq_stomp,rabbitmq_amqp1_0,rabbitmq_mqtt]."
+    end
 
     # Extract rabbitmqadmin and install to sbin
     # use it to generate, then install the bash completion file
@@ -49,49 +53,52 @@ class Rabbitmq < Formula
     (bash_completion/"rabbitmqadmin.bash").write Utils.popen_read("#{sbin}/rabbitmqadmin --bash-completion")
   end
 
-  def caveats; <<~EOS
-    Management Plugin enabled by default at http://localhost:15672
-  EOS
+  def caveats
+    <<~EOS
+      Management Plugin enabled by default at http://localhost:15672
+    EOS
   end
 
-  def rabbitmq_env; <<~EOS
-    CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
-    NODE_IP_ADDRESS=127.0.0.1
-    NODENAME=rabbit@localhost
-    RABBITMQ_LOG_BASE=#{var}/log/rabbitmq
-  EOS
+  def rabbitmq_env
+    <<~EOS
+      CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
+      NODE_IP_ADDRESS=127.0.0.1
+      NODENAME=rabbit@localhost
+      RABBITMQ_LOG_BASE=#{var}/log/rabbitmq
+    EOS
   end
 
   plist_options :manual => "rabbitmq-server"
 
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>Program</key>
-        <string>#{opt_sbin}/rabbitmq-server</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>EnvironmentVariables</key>
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
         <dict>
-          <!-- need erl in the path -->
-          <key>PATH</key>
-          <string>#{HOMEBREW_PREFIX}/sbin:/usr/sbin:/usr/bin:/bin:#{HOMEBREW_PREFIX}/bin</string>
-          <!-- specify the path to the rabbitmq-env.conf file -->
-          <key>CONF_ENV_FILE</key>
-          <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>Program</key>
+          <string>#{opt_sbin}/rabbitmq-server</string>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>EnvironmentVariables</key>
+          <dict>
+            <!-- need erl in the path -->
+            <key>PATH</key>
+            <string>#{HOMEBREW_PREFIX}/sbin:/usr/sbin:/usr/bin:/bin:#{HOMEBREW_PREFIX}/bin</string>
+            <!-- specify the path to the rabbitmq-env.conf file -->
+            <key>CONF_ENV_FILE</key>
+            <string>#{etc}/rabbitmq/rabbitmq-env.conf</string>
+          </dict>
+          <key>StandardErrorPath</key>
+          <string>#{var}/log/rabbitmq/std_error.log</string>
+          <key>StandardOutPath</key>
+          <string>#{var}/log/rabbitmq/std_out.log</string>
         </dict>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/rabbitmq/std_error.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/rabbitmq/std_out.log</string>
-      </dict>
-    </plist>
-  EOS
+      </plist>
+    EOS
   end
 
   test do

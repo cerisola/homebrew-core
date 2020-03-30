@@ -26,6 +26,8 @@ class Libbluray < Formula
   depends_on "fontconfig"
   depends_on "freetype"
 
+  uses_from_macos "libxml2"
+
   def install
     # Need to set JAVA_HOME manually since ant overrides 1.8 with 1.8+
     cmd = Language::Java.java_home_cmd("1.8")
@@ -33,10 +35,6 @@ class Libbluray < Formula
 
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
     ENV.append_to_cflags "-D_DARWIN_C_SOURCE"
-
-    # Work around Xcode 11 clang bug
-    # https://code.videolan.org/videolan/libbluray/issues/20
-    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
 

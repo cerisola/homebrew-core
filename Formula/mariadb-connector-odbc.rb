@@ -1,16 +1,14 @@
 class MariadbConnectorOdbc < Formula
   desc "Database driver using the industry standard ODBC API"
   homepage "https://downloads.mariadb.org/connector-odbc/"
-  url "https://downloads.mariadb.org/f/connector-odbc-3.0.2/mariadb-connector-odbc-3.0.2-ga-src.tar.gz"
-  mirror "http://archive.mariadb.org/connector-odbc-3.0.2/mariadb-connector-odbc-3.0.2-ga-src.tar.gz"
-  sha256 "eba4fbda21ae9d50c94d2cd152f0ec14dde3989522f41ef7d22aa0948882ff93"
-  revision 1
+  url "https://downloads.mariadb.org/f/connector-odbc-3.1.6/mariadb-connector-odbc-3.1.6-ga-src.tar.gz"
+  sha256 "fbad8430cc728609f4c6b0aac5acb27d0b0a1315be45fb697f9e16919b3cbb71"
 
   bottle do
-    sha256 "1c830919c8e1db83042f7cab13e21c8a09bdc754ae1acb2374eaa6ed75ce7267" => :catalina
-    sha256 "931fc3d945d3b431944d4efc88558b9cb161860ba4c0bcb2e9ed7d5c57a92eed" => :mojave
-    sha256 "c9f38fdfe0cc72c8e752ef232201b4b50f587bf587dd748fce4acb5c0724330d" => :high_sierra
-    sha256 "e87b4cff0c23a18b93df69748d04fab4e2e04a38a39f9fdefbe72c556f3d5cfe" => :sierra
+    cellar :any
+    sha256 "5fd19dc3d304d20bfe9c20e57880eb07d5a687206c3ac02828bb6dc42f29b2a0" => :catalina
+    sha256 "31c692b9b55d557f35c9d543b8ff9d40bc1b7e251d03de00f0797cadb2d9cd9f" => :mojave
+    sha256 "641e2bd8da691dfa203fa925a3d89feaca715d724bd4cf75323b76a0675b1828" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -19,11 +17,19 @@ class MariadbConnectorOdbc < Formula
   depends_on "unixodbc"
 
   def install
-    system "cmake", ".", "-DMARIADB_FOUND=1",
-                         "-DWITH_OPENSSL=1",
-                         "-DOPENSSL_INCLUDE_DIR=#{Formula["openssl@1.1"].opt_include}",
+    ENV.append_to_cflags "-I#{Formula["mariadb-connector-c"].opt_include}/mariadb"
+    ENV.append "LDFLAGS", "-L#{Formula["mariadb-connector-c"].opt_lib}/mariadb"
+    system "cmake", ".", "-DMARIADB_LINK_DYNAMIC=1",
+                         "-DWITH_SSL=OPENSSL",
+                         "-DOPENSSL_ROOT_DIR=#{Formula["openssl@1.1"].opt_prefix}",
+                         "-DWITH_IODBC=0",
                          *std_cmake_args
-    system "make", "install"
+
+    # By default, the installer pkg is built - we don't want that.
+    # maodbc limits the build to just the connector itself.
+    # install/fast prevents an "all" build being invoked that a regular "install" would do.
+    system "make", "maodbc"
+    system "make", "install/fast"
   end
 
   test do

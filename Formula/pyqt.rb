@@ -1,28 +1,19 @@
 class Pyqt < Formula
   desc "Python bindings for v5 of Qt"
   homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
-  url "https://dl.bintray.com/homebrew/mirror/pyqt-5.10.1.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.10.1/PyQt5_gpl-5.10.1.tar.gz"
-  sha256 "9932e971e825ece4ea08f84ad95017837fa8f3f29c6b0496985fa1093661e9ef"
-  revision 2
+  url "https://files.pythonhosted.org/packages/7c/5b/e760ec4f868cb77cee45b4554bf15d3fe6972176e89c4e3faac941213694/PyQt5-5.14.0.tar.gz"
+  sha256 "0145a6b7de15756366decb736c349a0cb510d706c83fda5b8cd9e0557bc1da72"
 
   bottle do
     cellar :any
-    sha256 "2e2535d179edae8c6097337432c8f7f4b3ef674fde3bb44cf1ef2545f28b296d" => :mojave
-    sha256 "814c28f94e026eb94186b787a45cf1e82f59f1d9ba15c70c0950f5c70cf894d1" => :high_sierra
-    sha256 "e225e01bcf22a4246548148b102c7cef0aaa9ffd9e8ac7f6419b7b964baf25db" => :sierra
+    sha256 "e2abbfd19a3b2e9c52f2c1c4fb84cc752f832b616a89c1138ab74cad96d95584" => :catalina
+    sha256 "5026dd96d99bb8866d2a2b3bf1bc55d66f9ddbd39e9180ee7c921481b49f39b9" => :mojave
+    sha256 "32f1de6e98558bbf79e31771cfa6bce4206bac12108f384324006c1a18209dfc" => :high_sierra
   end
 
   depends_on "python"
   depends_on "qt"
   depends_on "sip"
-
-  # Patch from openSUSE for compatibility with Qt 5.11.0
-  # https://build.opensuse.org/package/show/home:cgiboudeaux:branches:KDE:Qt5/python-qt5
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/4f563668/pyqt/qt-5.11.diff"
-    sha256 "34bba97f87615ea072312bfc03c4d3fb0a1cf7a4cd9d6907857c1dca6cc89200"
-  end
 
   def install
     version = Language::Python.major_minor_version "python3"
@@ -36,13 +27,13 @@ class Pyqt < Formula
             "--qmake=#{Formula["qt"].bin}/qmake",
             # Force deployment target to avoid libc++ issues
             "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+            "--designer-plugindir=#{pkgshare}/plugins",
             "--qml-plugindir=#{pkgshare}/plugins",
             "--verbose"]
 
     system "python3", "configure.py", *args
     system "make"
-    system "make", "install"
-    system "make", "clean"
+    ENV.deparallelize { system "make", "install" }
   end
 
   test do
@@ -57,7 +48,6 @@ class Pyqt < Formula
       Network
       Quick
       Svg
-      WebEngineWidgets
       Widgets
       Xml
     ].each { |mod| system "python3", "-c", "import PyQt5.Qt#{mod}" }

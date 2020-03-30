@@ -3,14 +3,13 @@ class Pcl < Formula
   homepage "http://www.pointclouds.org/"
   url "https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz"
   sha256 "0add34d53cd27f8c468a59b8e931a636ad3174b60581c0387abb98a9fc9cddb6"
-  revision 4
+  revision 6
   head "https://github.com/PointCloudLibrary/pcl.git"
 
   bottle do
-    rebuild 1
-    sha256 "5da061dd836baffd99b01afeec969793d4df2e1f1c7ea764de9317974723de46" => :mojave
-    sha256 "7b9941caff2bd52be9eb15db1ede5f31529a6f77082ad99bcbd49b0b19e08eee" => :high_sierra
-    sha256 "05b133c4e3e03ae77a84fe70bc1fbec2fc91f64516534c521a72e09772c034f2" => :sierra
+    sha256 "fd83edf5799fe877047a8a566bf741e8ada701332845c8efa6f16ec1c3d6020a" => :catalina
+    sha256 "96db828e46c37b2fc1de201db8123c9b2e6712285726a8f9a9a549b01e955fff" => :mojave
+    sha256 "d23eacbc3d2ec17015d0c52218c190f5fc9605cf78366205de2e0d7980e9e565" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -50,10 +49,10 @@ class Pcl < Formula
       -DWITH_TUTORIALS:BOOL=OFF
     ]
 
-    if build.head?
-      args << "-DBUILD_apps_modeler=AUTO_OFF"
+    args << if build.head?
+      "-DBUILD_apps_modeler=AUTO_OFF"
     else
-      args << "-DBUILD_apps_modeler:BOOL=OFF"
+      "-DBUILD_apps_modeler:BOOL=OFF"
     end
 
     mkdir "build" do

@@ -3,12 +3,12 @@ class GerbilScheme < Formula
   homepage "https://cons.io"
   url "https://github.com/vyzo/gerbil/archive/v0.15.1.tar.gz"
   sha256 "3d29eecdaa845b073bf8413cd54e420b3f48c79c25e43fab5a379dde029d0cde"
-  revision 4
+  revision 5
 
   bottle do
-    sha256 "cee68143a4d8bb472e85f053f01b7093a357977796cdfb13a996a68011a0b7c6" => :mojave
-    sha256 "5bb66072a98aea792244409f27d2a9f0e00921d2e1990fd38dfac982b9f3581e" => :high_sierra
-    sha256 "f31e458288a9c332efb8038418ecfea4a2b999aeacf3adc0e1e87bbc77bd5cc0" => :sierra
+    sha256 "0add37e8d09b169414d5d2bcee92b7a538627736bcbf645e2fd98d4192564951" => :catalina
+    sha256 "a13389f810deb336907262afd0fcc2ff16dc76d84b3f1c3f34a4ed2420345231" => :mojave
+    sha256 "2f666385e995ad74108f9e2477f080a1544c6cbd6a796a014d325190722052d6" => :high_sierra
   end
 
   depends_on "gambit-scheme"
@@ -26,6 +26,11 @@ class GerbilScheme < Formula
       gxprof
       gxtags
     ]
+
+    inreplace ["src/gerbil/gxi", "src/gerbil/gxi-build-script"] do |s|
+      s.gsub! /GERBIL_HOME=[^\n]*/, "GERBIL_HOME=#{libexec}"
+      s.gsub! /\bgsi\b/, "#{Formula["gambit-scheme"].opt_prefix}/current/bin/gsi"
+    end
 
     cd "src" do
       ENV.append_path "PATH", "#{Formula["gambit-scheme"].opt_prefix}/current/bin"
@@ -49,7 +54,6 @@ class GerbilScheme < Formula
   end
 
   test do
-    ENV.append_path "PATH", "#{Formula["gambit-scheme"].opt_prefix}/current/bin"
-    assert_equal "0123456789", shell_output("#{libexec}/bin/gxi -e \"(for-each write '(0 1 2 3 4 5 6 7 8 9))\"")
+    assert_equal "0123456789", shell_output("gxi -e \"(for-each write '(0 1 2 3 4 5 6 7 8 9))\"")
   end
 end

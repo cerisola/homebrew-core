@@ -3,15 +3,14 @@ class Termtosvg < Formula
 
   desc "Record terminal sessions as SVG animations"
   homepage "https://nbedos.github.io/termtosvg"
-  url "https://github.com/nbedos/termtosvg/archive/0.9.0.tar.gz"
-  sha256 "156d92b3a186d075bf42677135053dc28460f097de45c9388f31911b3e8b17b2"
+  url "https://github.com/nbedos/termtosvg/archive/1.1.0.tar.gz"
+  sha256 "53e9ad5976978684699d14b83cac37bf173d76c787f1b849859ad8aef55f22d2"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "502385b85d0131489cebbb61173838d7446d76473792e6123b8bbaa9e3ccbe83" => :catalina
-    sha256 "076380fe41bc75f28e04d869c3f76c0442d82905cf3c2f18338cf5f652fc5a73" => :mojave
-    sha256 "04b4c4e370b2bc7faa1c2d86a9e4761b33ffb6c82697dc11ea4fbba55412d290" => :high_sierra
-    sha256 "934f9f91a9c23a5a7c44dab7ac3dab89a0d4377cfe006e2f12724d000ae73134" => :sierra
+    sha256 "98353f1a6df1675441bd9fbd7f7015905b654cdce008582072d6b7e8c8fdde42" => :catalina
+    sha256 "94ec2cd77e154ba2314aeff68ce68ad7614c9a5c8be8bcf0830bc02b3f5b37a5" => :mojave
+    sha256 "24b342f95d1700df9485dba70ef456a7f8bb64391a3b58502ca4c651e330f494" => :high_sierra
   end
 
   depends_on "python"

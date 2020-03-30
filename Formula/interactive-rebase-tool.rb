@@ -1,18 +1,20 @@
 class InteractiveRebaseTool < Formula
   desc "Native sequence editor for Git interactive rebase"
   homepage "https://gitrebasetool.mitmaro.ca/"
-  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/1.1.0.tar.gz"
-  sha256 "c4fa28f864f84e24e7d6253074e5409f49362a99e40f481f2187b5e6a79285f7"
+  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/1.2.1.tar.gz"
+  sha256 "8df32f209d481580c3365a065882e40343ecc42d9e4ed593838092bb6746a197"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "29c07ab1c4efc97c65213815a8e770dec18574435135ce515f1701ce9e989cdc" => :catalina
-    sha256 "7633dcbb333d144ff73119623b6d181b864a87ea124048e64d26465fdc99fba7" => :mojave
-    sha256 "01edbef9fae206778e3e0e14c1612869a4490a054910f5181ee6537150e3767a" => :high_sierra
+    sha256 "2a8d8d62c2b236884b25b0c43bfda93365501a80f807cabb071c7a682a2ea86b" => :catalina
+    sha256 "5be78d2011eb211939a6d4632f279477315c0bffd321c1aa303910756e966a48" => :mojave
+    sha256 "d28ef2f9af69ce2374eae1ad39591a575b5bc743e208b2cb023b8b432a4a231c" => :high_sierra
   end
 
   depends_on "rust" => :build
+
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   def install
     system "cargo", "install", "--locked", "--root", prefix, "--path", "."
@@ -24,10 +26,14 @@ class InteractiveRebaseTool < Formula
       system "git", "init"
       touch "FILE1"
       system "git", "add", "FILE1"
-      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'", "--author='Test <test@example.com>'", "--message='File 1'"
+      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'",
+                              "--author='Test <test@example.com>'",
+                              "--message='File 1'"
       touch "FILE2"
       system "git", "add", "FILE2"
-      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'", "--author='Test <test@example.com>'", "--message='File 2'"
+      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'",
+                              "--author='Test <test@example.com>'",
+                              "--message='File 2'"
     end
 
     (testpath/"repo/.git/rebase-merge/git-rebase-todo").write <<~EOS
@@ -40,7 +46,10 @@ class InteractiveRebaseTool < Formula
       pick 32bd1bb File 2
     EOS
 
-    PTY.spawn({ "GIT_DIR" => testpath/"repo/.git/" }, bin/"interactive-rebase-tool", testpath/"repo/.git/rebase-merge/git-rebase-todo") do |stdout, stdin, _pid|
+    env = { "GIT_DIR" => testpath/"repo/.git/" }
+    executable = bin/"interactive-rebase-tool"
+    file = testpath/"repo/.git/rebase-merge/git-rebase-todo"
+    PTY.spawn(env, executable, file) do |stdout, stdin, _pid|
       # simulate user input
       stdin.putc "d"
       stdin.putc "W"

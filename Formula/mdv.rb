@@ -5,17 +5,16 @@ class Mdv < Formula
   homepage "https://github.com/axiros/terminal_markdown_viewer"
   url "https://github.com/axiros/terminal_markdown_viewer/archive/1.6.3.tar.gz"
   sha256 "58dbdf8c051a2d7f8c00e4dc13c655c335cbc2bc96851dd0388d73a21c4507b6"
-  revision 1
+  revision 3
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "f2dc6604fde13b069933de3bb8e266f9f7fb36a728d5a23fc229eef8726d76c4" => :catalina
-    sha256 "ef2eb47ab28960cd133635203010471e6d7fa60314de900c6d4e6fd6f1fee2a5" => :mojave
-    sha256 "c93b5842e994a1127706c1856a73ec8062f78f62fd5f3cbe5bf7d670962f6234" => :high_sierra
-    sha256 "d4a980db5be1cb783cb85c4f769b8e47f3ed09be8539ca7b02c8ea4c80e8e43d" => :sierra
+    cellar :any
+    sha256 "890a4b74e721fb435e1d4ef0ff0c8f5b6e3571bf36e0d57562d720ef197524ef" => :catalina
+    sha256 "b9570e94bcc659b48b3c3629e16e03f12f484f0d9212108ebae958c5464294ab" => :mojave
+    sha256 "89ca2ef413cebd689db91754227919ebbc28934558fadd81dde681bccabe99a7" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   resource "docopt" do
     url "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz"

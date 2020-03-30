@@ -1,16 +1,14 @@
 class Dar < Formula
   desc "Backup directory tree and files"
   homepage "http://dar.linux.free.fr/doc/index.html"
-  url "https://downloads.sourceforge.net/project/dar/dar/2.5.16/dar-2.5.16.tar.gz"
-  sha256 "e957c97101a17dc91dca00078457f225d2fa375d0db0ead7a64035378d4fc33b"
+  url "https://downloads.sourceforge.net/project/dar/dar/2.6.9/dar-2.6.9.tar.gz"
+  sha256 "db48f5beb0671afc4443730910e010d7ba846f4b1912491b163db6c049c1f8cb"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "6d643ec441c9ed7da176da5ce56413c918b7cad23d5ae6cd995766698461aa26" => :catalina
-    sha256 "3009db4f526f3657c3008475df42b5e1759ad9964c513f541de3c3c05e971ffb" => :mojave
-    sha256 "b872b6741e38ea818e1836fd218733331219c15acfb84a638dc213eec8925f6e" => :high_sierra
-    sha256 "263659de5c6418cadae4d2bbe71c4b45c14d7d5e91ae1fa62a8e2c7e8b3a2fd5" => :sierra
+    sha256 "f05679ced5d121523f008a3a2eb9dc0b1da35f09a1443d6233577343d26dfd02" => :catalina
+    sha256 "9f4b02440b3711787ca24c5bf9901654093f7c4364bfd2c9f9c45413c6880cd7" => :mojave
+    sha256 "d372eb12e3b783c910d4fc31d834e4dd61104dadc6e63dd273829951af66fd55" => :high_sierra
   end
 
   depends_on "upx" => :build

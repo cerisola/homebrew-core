@@ -1,8 +1,8 @@
 class Ansiweather < Formula
   desc "Weather in your terminal, with ANSI colors and Unicode symbols"
   homepage "https://github.com/fcambus/ansiweather"
-  url "https://github.com/fcambus/ansiweather/archive/1.14.0.tar.gz"
-  sha256 "8b7d456c657e3240b14821b3819f2d2279d9a914e397058ee25b98b4783f9ad3"
+  url "https://github.com/fcambus/ansiweather/archive/1.16.0.tar.gz"
+  sha256 "9ed6c8651413a300cbcfb0d3d353c48fd7a472df896366ff25dd5dfa06fea7f4"
   head "https://github.com/fcambus/ansiweather.git"
 
   bottle :unneeded

@@ -1,15 +1,15 @@
 class Libpulsar < Formula
   desc "Apache Pulsar C++ library"
   homepage "https://pulsar.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=pulsar/pulsar-2.4.1/apache-pulsar-2.4.1-src.tar.gz"
-  sha256 "6fb764b0d15506884905b781cfd2f678ad6a819f2c8d60cc34f78966b4676d40"
-  revision 1
+  url "https://www.apache.org/dyn/closer.lua?path=pulsar/pulsar-2.5.0/apache-pulsar-2.5.0-src.tar.gz"
+  mirror "https://archive.apache.org/dist/pulsar/pulsar-2.5.0/apache-pulsar-2.5.0-src.tar.gz"
+  sha256 "87ffe8aa9456d1143e2436f83d3ba220f12246a90f03c6b51ed5dad0df489a3b"
 
   bottle do
     cellar :any
-    sha256 "5512ea72365cd415f5ae87ac87a22a2dc29b4f26fcef90417aba2c5274a674f7" => :catalina
-    sha256 "16712826987ae1daf5c87afde07b1f064a9915f2cc955b65cdef4b02d95528b5" => :mojave
-    sha256 "87595a0547694e1e02b838b29d4522a77f403807642f7898a1bfb8db7c96d64e" => :high_sierra
+    sha256 "ad91738dd0677d31cfe7a87f759e170d40a45792cc81912ce318ca5f3bc71471" => :catalina
+    sha256 "d4be8b7fa676375fa31d74d85f4aea290858226bb3dae10f57f5b03447a35093" => :mojave
+    sha256 "c7b65b329b9d018e5aa373078a4a437b7d530dd87e34d30858d122c52e308027" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -17,16 +17,11 @@ class Libpulsar < Formula
   depends_on "boost"
   depends_on "openssl@1.1"
   depends_on "protobuf"
+  depends_on "snappy"
   depends_on "zstd"
 
   def install
     cd "pulsar-client-cpp" do
-      # Stop opportunistic linking to snappy
-      # (Snappy was broken in 2.4.0 - could be added now)
-      inreplace "CMakeLists.txt",
-                "HAS_SNAPPY 1",
-                "HAS_SNAPPY 0"
-
       system "cmake", ".", *std_cmake_args,
                       "-DBUILD_TESTS=OFF",
                       "-DBUILD_PYTHON_WRAPPER=OFF",

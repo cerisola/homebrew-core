@@ -1,14 +1,13 @@
 class Gedit < Formula
   desc "The GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/3.34/gedit-3.34.0.tar.xz"
-  sha256 "3e95e51d3ccb495a9ac95aa3ed7fe8fe37ccde7c678f37fa3cea684bc71d507e"
-  revision 1
+  url "https://download.gnome.org/sources/gedit/3.36/gedit-3.36.1.tar.xz"
+  sha256 "6dc38eda227d1c368e039e9bff485d0bee9a49d5f9560c387ee08f5818a4e387"
 
   bottle do
-    sha256 "188f873c298e9e29cfa99ae292023da5eb93d5dc91b22ea4dcf215dd7fdccfbb" => :catalina
-    sha256 "2e6ca747f2ea550481b6d6c86dbd13bba3d19695d904ae25784b205124e5b9cd" => :mojave
-    sha256 "c356ea924bfae4ca4e938566b9dce2d3de2467c180c1b0270e0e163f5af2ef61" => :high_sierra
+    sha256 "6c19428d04cc675a778f3fec056ca5275ebbf4efd3ff5fd3ed86bd22defe8585" => :catalina
+    sha256 "55192cacaac7d6bb990bd7d40c8182e9dc44b421e2ae4c562b8fe9c384e80597" => :mojave
+    sha256 "95fac8e5c87b702c88fba9f3d927b92faa349b903193c75b94b4b8e0d2280580" => :high_sierra
   end
 
   depends_on "itstool" => :build
@@ -26,12 +25,12 @@ class Gedit < Formula
   depends_on "gsettings-desktop-schemas"
   depends_on "gspell"
   depends_on "gtk+3"
-  depends_on "gtk-mac-integration"
   depends_on "gtksourceview4"
   depends_on "libpeas"
   depends_on "libsoup"
   depends_on "libxml2"
   depends_on "pango"
+  depends_on "tepl"
 
   def install
     ENV["DESTDIR"] = "/"
@@ -92,7 +91,7 @@ class Gedit < Formula
       -I#{gtksourceview4.opt_include}/gtksourceview-4
       -I#{gtkx3.opt_include}/gtk-3.0
       -I#{harfbuzz.opt_include}/harfbuzz
-      -I#{include}/gedit-3.14
+      -I#{include}/gedit-3.36
       -I#{libepoxy.opt_include}
       -I#{libffi.opt_lib}/libffi-3.0.13/include
       -I#{libpeas.opt_include}/libpeas-1.0
@@ -117,7 +116,7 @@ class Gedit < Formula
       -lcairo-gobject
       -lgdk-3
       -lgdk_pixbuf-2.0
-      -lgedit-3.14
+      -lgedit-3.36
       -lgio-2.0
       -lgirepository-1.0
       -lglib-2.0

@@ -1,18 +1,19 @@
 class Prestosql < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestosql.io"
-  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/324/presto-server-324.tar.gz"
-  sha256 "8da91ac7bb43c537831dd80ce56a3a4bbe468f998a05ef0bdad51c0406195b3e"
+  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/329/presto-server-329.tar.gz"
+  sha256 "50bbf9863c8ac8080b024966feb5bae6be26651802f2deab33a5ec4e333c9f89"
+  revision 1
 
   bottle :unneeded
 
-  depends_on :java => "1.8+"
+  depends_on "openjdk"
 
   conflicts_with "prestodb", :because => "both install `presto` and `presto-server` binaries"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/324/presto-cli-324-executable.jar"
-    sha256 "a078b8664486566ce4fc353bbc4612e1767ffe367fea8fd51bfad7f0b86d9f47"
+    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/329/presto-cli-329-executable.jar"
+    sha256 "99ea87ea5fda17757297d4ea3298927377ef51a81832a424af9cfd6aec605c1d"
   end
 
   def install
@@ -52,11 +53,16 @@ class Prestosql < Formula
 
     (bin/"presto-server").write <<~EOS
       #!/bin/bash
+      export JAVA_HOME="#{Formula["openjdk"].opt_prefix}"
       exec "#{libexec}/bin/launcher" "$@"
     EOS
 
     resource("presto-cli").stage do
-      bin.install "presto-cli-#{version}-executable.jar" => "presto"
+      libexec.install "presto-cli-#{version}-executable.jar"
+      (bin/"presto").write <<~EOS
+        #!/bin/bash
+        exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/presto-cli-#{version}-executable.jar" "$@"
+      EOS
     end
   end
 
@@ -64,36 +70,38 @@ class Prestosql < Formula
     (var/"presto/data").mkpath
   end
 
-  def caveats; <<~EOS
-    Add connectors to #{opt_libexec}/etc/catalog/. See:
-    https://prestosql.io/docs/current/connector.html
-  EOS
+  def caveats
+    <<~EOS
+      Add connectors to #{opt_libexec}/etc/catalog/. See:
+      https://prestosql.io/docs/current/connector.html
+    EOS
   end
 
   plist_options :manual => "presto-server run"
 
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>AbandonProcessGroup</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{opt_libexec}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/presto-server</string>
-          <string>run</string>
-        </array>
-      </dict>
-    </plist>
-  EOS
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>RunAtLoad</key>
+          <true/>
+          <key>AbandonProcessGroup</key>
+          <true/>
+          <key>WorkingDirectory</key>
+          <string>#{opt_libexec}</string>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/presto-server</string>
+            <string>run</string>
+          </array>
+        </dict>
+      </plist>
+    EOS
   end
 
   test do

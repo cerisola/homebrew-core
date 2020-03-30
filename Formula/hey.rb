@@ -2,29 +2,21 @@ class Hey < Formula
   desc "HTTP load generator, ApacheBench (ab) replacement"
   homepage "https://github.com/rakyll/hey"
   url "https://github.com/rakyll/hey.git",
-    :tag      => "v0.1.2",
-    :revision => "01803349acd49d756dafa2cb6ac5b5bfc141fc3b"
+    :tag      => "v0.1.3",
+    :revision => "36f181ad99713ffd70c09a021ea8a689b8fb43d3"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "32e5c3a7dca7b7f63892f0891d4301f4acbf2d90034445321d348dcdaeb47bcf" => :catalina
-    sha256 "c65e3a95c59f8263d5f38a3e605ecdda801511095e54009aaaa2c362a1bfa07e" => :mojave
-    sha256 "8de8655664bfa9ad639e113db3b21d517b2bd35a7d6efa0796cc74eb594451a3" => :high_sierra
-    sha256 "901cfcb578352c650a3e7ecb77e5102effdea8e6c8bcd76e4b14021e57d3a189" => :sierra
+    sha256 "833f09f5322dd41cc3438f9880d557941652073d02acc2971181aa1c5b4f6a7d" => :catalina
+    sha256 "902d975f8dbc7f27890d56eed1a377bd880225b6860e2e7db6fed4f03e58c077" => :mojave
+    sha256 "2111023b9742683d7beb4c1383f59daff60fe019ffcf5fbc91d9e3f68386dc5f" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-
-    dir = buildpath/"src/github.com/rakyll/hey"
-    dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", bin/"hey"
-      prefix.install_metafiles
-    end
+    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"hey"
+    prefix.install_metafiles
   end
 
   test do

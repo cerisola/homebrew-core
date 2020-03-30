@@ -1,26 +1,25 @@
 class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
   homepage "https://www.groovy-lang.org/"
-  url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.5.8.zip"
-  sha256 "37e030bbb14746869e822702db1c6dd57d7d077ceef4c12938b1c6c4d341f459"
+  url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-3.0.2.zip"
+  sha256 "eff67194e868d822998460a322689bad82ca1154d6e2bc8f7c8b9ed6cc6a8709"
 
   bottle :unneeded
 
-  # Groovy 2.5 requires JDK8+ to build and JDK7 is the minimum version of the JRE that we support.
-  depends_on :java => "1.7+"
+  depends_on "openjdk"
 
   conflicts_with "groovy", :because => "both install the same binaries"
 
   def install
-    ENV["GROOVY_HOME"] = libexec
-
     # We don't need Windows' files.
     rm_f Dir["bin/*.bat"]
 
     prefix.install_metafiles
     bin.install Dir["bin/*"]
     libexec.install "conf", "lib", "src", "doc"
-    bin.env_script_all_files(libexec+"bin", :GROOVY_HOME => ENV["GROOVY_HOME"])
+    bin.env_script_all_files libexec/"bin",
+                             :GROOVY_HOME => libexec,
+                             :JAVA_HOME   => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
   end
 
   test do

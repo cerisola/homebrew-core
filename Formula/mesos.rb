@@ -1,40 +1,26 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/1.8.1/mesos-1.8.1.tar.gz"
+  url "https://www.apache.org/dyn/closer.lua?path=mesos/1.8.1/mesos-1.8.1.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/1.8.1/mesos-1.8.1.tar.gz"
   sha256 "583f2ad0de36c3e3ce08609a6df1a3ef1145e84f453b3d56fd8332767c3a84e7"
+  revision 1
 
   bottle do
-    sha256 "b5d4c1be465ac092856a0bd587eedffc1f2fa4627410a4f7fb3ec2eedec36bef" => :catalina
-    sha256 "f3ad80347eda8b915ad3d10da9a5ed6c7d27c0cc489d05a9a87741c1e8b03ad3" => :mojave
-    sha256 "7159fdf18c7d074c0c78b0f840317c77414da66e7b559180f4e3c88ddedf90d3" => :high_sierra
-    sha256 "545a5649305fb8bcc6b6d9827f760a68436a3fe1b433a6eeca0a2b92bcddb36e" => :sierra
+    sha256 "c128f8863bce7aa677dd4a5702c7133637336c9c8761c915e34a1eb3351e2cf1" => :catalina
+    sha256 "8c2bd9e66b055b83b6acbfcde4664b06387691fccc35fdd46974fb68bc863163" => :mojave
+    sha256 "b58e9a2208f2f018c4e54cd573ff43494bf653a72dd5bde269a5f84301d7369c" => :high_sierra
   end
 
   depends_on "maven" => :build
   depends_on "apr-util"
   depends_on :java => "1.8"
-
-  depends_on "python@2"
   depends_on "subversion"
+
+  uses_from_macos "python@2"
 
   conflicts_with "nanopb-generator", :because => "they depend on an incompatible version of protobuf"
   conflicts_with "rapidjson", :because => "mesos installs a copy of rapidjson headers"
-
-  if DevelopmentTools.clang_build_version >= 802 # does not affect < Xcode 8.3
-    # _scheduler.so segfault when Mesos is built with Xcode 8.3.2
-    # Reported 29 May 2017 https://issues.apache.org/jira/browse/MESOS-7583
-    # The issue does not occur with Xcode 9 beta 3.
-    fails_with :clang do
-      build 802
-      cause "Segmentation fault in _scheduler.so"
-    end
-  end
-
-  # error: 'Megabytes(32).Megabytes::<anonymous>' is not a constant expression
-  # because it refers to an incompletely initialized variable
-  fails_with :gcc => "7"
 
   resource "protobuf" do
     url "https://files.pythonhosted.org/packages/1b/90/f531329e628ff34aee79b0b9523196eb7b5b6b398f112bb0c03b24ab1973/protobuf-3.6.1.tar.gz"
@@ -79,9 +65,7 @@ class Mesos < Formula
     ENV.O0 unless DevelopmentTools.clang_build_version >= 900
 
     # work around to avoid `_clock_gettime` symbol not found error.
-    if MacOS.version == "10.11" && MacOS::Xcode.version >= "8.0"
-      ENV["ac_have_clock_syscall"] = "no"
-    end
+    ENV["ac_have_clock_syscall"] = "no" if MacOS.version == "10.11" && MacOS::Xcode.version >= "8.0"
 
     # work around distutils abusing CC instead of using CXX
     # https://issues.apache.org/jira/browse/MESOS-799
@@ -154,9 +138,7 @@ class Mesos < Formula
     ENV.prepend_create_path "PYTHONPATH", protobuf_path
     %w[six protobuf].each do |r|
       resource(r).stage do
-        if r == "protobuf"
-          ln_s buildpath/"protobuf/lib/python2.7/site-packages/google/apputils", "google/apputils"
-        end
+        ln_s buildpath/"protobuf/lib/python2.7/site-packages/google/apputils", "google/apputils" if r == "protobuf"
         system "python", *Language::Python.setup_install_args(libexec/"protobuf")
       end
     end

@@ -2,14 +2,14 @@ class Frpc < Formula
   desc "Client app of fast reverse proxy to expose a local server to the internet"
   homepage "https://github.com/fatedier/frp"
   url "https://github.com/fatedier/frp.git",
-      :tag      => "v0.29.1",
-      :revision => "adc3adc13bf3a2bc43354377b842944f9cfc6a25"
+      :tag      => "v0.32.0",
+      :revision => "ea62bc5a3448e574618f45d7f764e3c09465f81f"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e9b4a4ff0a56bb43695235354fe217b3823d82c9c18370e8921e3d439f31fd74" => :catalina
-    sha256 "fcfafdb2d5208a4047bdf15c969f8c304e8d359d9ee20fddacb7bba72d693b86" => :mojave
-    sha256 "d4b27c07645c96fb829c89fdc226ca2021c4be90a0c48b9c8c67ab57e807db2a" => :high_sierra
+    sha256 "f6b2a9dff97bb9c15c68d39dd95b147b95de6696db3d39bb0bb91749e38db6cf" => :catalina
+    sha256 "3646283ae689b7413134a760a10d68e4b9d747d6114b19e1e2d21ec7bb05295a" => :mojave
+    sha256 "7987ffb69cd7e14d918c2f2184ded4cec080f799276189e7228c5f92ff4d8b6d" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -33,28 +33,29 @@ class Frpc < Formula
 
   plist_options :manual => "frpc -c #{HOMEBREW_PREFIX}/etc/frp/frpc.ini"
 
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>KeepAlive</key>
-        <true/>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/frpc</string>
-          <string>-c</string>
-          <string>#{etc}/frp/frpc.ini</string>
-        </array>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/frpc.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/frpc.log</string>
-      </dict>
-    </plist>
-  EOS
+  def plist
+    <<~EOS
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+        <dict>
+          <key>Label</key>
+          <string>#{plist_name}</string>
+          <key>KeepAlive</key>
+          <true/>
+          <key>ProgramArguments</key>
+          <array>
+            <string>#{opt_bin}/frpc</string>
+            <string>-c</string>
+            <string>#{etc}/frp/frpc.ini</string>
+          </array>
+          <key>StandardErrorPath</key>
+          <string>#{var}/log/frpc.log</string>
+          <key>StandardOutPath</key>
+          <string>#{var}/log/frpc.log</string>
+        </dict>
+      </plist>
+    EOS
   end
 
   test do

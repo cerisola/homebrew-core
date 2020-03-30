@@ -1,21 +1,28 @@
 class Lftp < Formula
   desc "Sophisticated file transfer program"
   homepage "https://lftp.yar.ru/"
-  url "https://lftp.yar.ru/ftp/lftp-4.8.4.tar.xz"
-  sha256 "4ebc271e9e5cea84a683375a0f7e91086e5dac90c5d51bb3f169f75386107a62"
-  revision 2
+  url "https://lftp.yar.ru/ftp/lftp-4.9.1.tar.xz"
+  sha256 "5969fcaefd102955dd882f3bcd8962198bc537224749ed92f206f415207a024b"
 
   bottle do
-    sha256 "ae15b85b1e7cd7d8f42eacb78f9a231427a4374371c62d5a82ac899b72eeee0e" => :catalina
-    sha256 "6861fecd8432bb8877144bf61df25f052509d1ffd692b9f72e2bb9d86b542750" => :mojave
-    sha256 "b45767d676b23b29eab6b820057820adcac582304ea44ac7926060407c63d072" => :sierra
+    sha256 "88341463e443203acace85f22c68bfecc1e374e97c3bc61a4d55992a7894dbdc" => :catalina
+    sha256 "7fb04159e36521d586e023c99ac6f63d3a695e6043ae62645c68da964776eebc" => :mojave
+    sha256 "54a5bfc00d589ffec053ceb367cb1acee8ad1d13a5549eeda097f9b3fb5c92e2" => :high_sierra
   end
 
   depends_on "libidn"
   depends_on "openssl@1.1"
   depends_on "readline"
 
+  uses_from_macos "zlib"
+
   def install
+    # Work around "error: no member named 'fpclassify' in the global namespace"
+    if MacOS.version == :high_sierra
+      ENV.delete("HOMEBREW_SDKROOT")
+      ENV.delete("SDKROOT")
+    end
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",

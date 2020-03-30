@@ -1,14 +1,15 @@
 class Wal2json < Formula
   desc "Convert PostgreSQL changesets to JSON format"
   homepage "https://github.com/eulerto/wal2json"
-  url "https://github.com/eulerto/wal2json/archive/wal2json_1_0.tar.gz"
-  sha256 "d8c1b774bc2d41747ae4266280f798b26e8e72e8ea46a58b71764edb98cf2ef4"
+  url "https://github.com/eulerto/wal2json/archive/wal2json_2_2.tar.gz"
+  sha256 "e2cb764ee1fccb86ba38dbc8a5e2acd2d272e96172203db67fd9c102be0ae3b5"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6cb12fd590ee07b9332a7773aab25e11383b1be025c88793f87c9ee14cfda2de" => :catalina
-    sha256 "1d977057ae9d6ccd4591a971d955f6db12f14f5b0463e5769d133dbadda53192" => :mojave
-    sha256 "151da57db18a026d55b652c2bc15859289b93fcb7e20ac38aa2745d4785fb857" => :high_sierra
+    rebuild 1
+    sha256 "f8d15f5d13d6e4942ccd4baa3ec633a39cd62337224eb1a165689cd2aebcbe51" => :catalina
+    sha256 "9f7218381271a905d4da6a943599cc1db3bbe92965dadc49ac2ae94a35350003" => :mojave
+    sha256 "18182f272c0ada8069adc54d65b3607c51c12e144b0cbe2620ee8fb3fb09c00f" => :high_sierra
   end
 
   depends_on "postgresql"
@@ -20,6 +21,8 @@ class Wal2json < Formula
   end
 
   test do
+    return if ENV["CI"]
+
     system "initdb", testpath/"datadir"
     mkdir testpath/"socket"
     File.open(testpath/"datadir"/"postgresql.conf", "a") do |f|
@@ -64,65 +67,65 @@ class Wal2json < Formula
       expected_output = <<~EOS
         init
         {
-		"change": [
-			{
-				"kind": "insert",
-				"schema": "public",
-				"table": "table2_with_pk",
-				"columnnames": ["a", "b", "c"],
-				"columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
-				"columnvalues": [1, "Backup and Restore", "2019-10-08 12:00:00"]
-			}
-			,{
-				"kind": "insert",
-				"schema": "public",
-				"table": "table2_with_pk",
-				"columnnames": ["a", "b", "c"],
-				"columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
-				"columnvalues": [2, "Tuning", "2019-10-08 12:00:00"]
-			}
-			,{
-				"kind": "insert",
-				"schema": "public",
-				"table": "table2_with_pk",
-				"columnnames": ["a", "b", "c"],
-				"columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
-				"columnvalues": [3, "Replication", "2019-10-08 12:00:00"]
-			}
-			,{
-				"kind": "delete",
-				"schema": "public",
-				"table": "table2_with_pk",
-				"oldkeys": {
-					"keynames": ["a", "c"],
-					"keytypes": ["integer", "timestamp without time zone"],
-					"keyvalues": [1, "2019-10-08 12:00:00"]
-				}
-			}
-			,{
-				"kind": "delete",
-				"schema": "public",
-				"table": "table2_with_pk",
-				"oldkeys": {
-					"keynames": ["a", "c"],
-					"keytypes": ["integer", "timestamp without time zone"],
-					"keyvalues": [2, "2019-10-08 12:00:00"]
-				}
-			}
-			,{
-				"kind": "insert",
-				"schema": "public",
-				"table": "table2_without_pk",
-				"columnnames": ["a", "b", "c"],
-				"columntypes": ["integer", "numeric(5,2)", "text"],
-				"columnvalues": [1, 2.34, "Tapir"]
-			}
-		]
+          "change": [
+            {
+              "kind": "insert",
+              "schema": "public",
+              "table": "table2_with_pk",
+              "columnnames": ["a", "b", "c"],
+              "columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
+              "columnvalues": [1, "Backup and Restore", "2019-10-08 12:00:00"]
+            }
+            ,{
+              "kind": "insert",
+              "schema": "public",
+              "table": "table2_with_pk",
+              "columnnames": ["a", "b", "c"],
+              "columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
+              "columnvalues": [2, "Tuning", "2019-10-08 12:00:00"]
+            }
+            ,{
+              "kind": "insert",
+              "schema": "public",
+              "table": "table2_with_pk",
+              "columnnames": ["a", "b", "c"],
+              "columntypes": ["integer", "character varying(30)", "timestamp without time zone"],
+              "columnvalues": [3, "Replication", "2019-10-08 12:00:00"]
+            }
+            ,{
+              "kind": "delete",
+              "schema": "public",
+              "table": "table2_with_pk",
+              "oldkeys": {
+                "keynames": ["a", "c"],
+                "keytypes": ["integer", "timestamp without time zone"],
+                "keyvalues": [1, "2019-10-08 12:00:00"]
+              }
+            }
+            ,{
+              "kind": "delete",
+              "schema": "public",
+              "table": "table2_with_pk",
+              "oldkeys": {
+                "keynames": ["a", "c"],
+                "keytypes": ["integer", "timestamp without time zone"],
+                "keyvalues": [2, "2019-10-08 12:00:00"]
+              }
+            }
+            ,{
+              "kind": "insert",
+              "schema": "public",
+              "table": "table2_without_pk",
+              "columnnames": ["a", "b", "c"],
+              "columntypes": ["integer", "numeric(5,2)", "text"],
+              "columnvalues": [1, 2.34, "Tapir"]
+            }
+          ]
         }
         stop
       EOS
 
-      assert_equal(expected_output.strip, actual_output.strip)
+      assert_equal(expected_output.gsub(/\s+/, ""), actual_output.gsub(/\s+/, ""))
     ensure
       Process.kill 9, pid
       Process.wait pid

@@ -3,21 +3,22 @@ class AnycableGo < Formula
   homepage "https://github.com/anycable/anycable-go"
   url "https://github.com/anycable/anycable-go/archive/v0.6.4.tar.gz"
   sha256 "dbcfccdedc7d28d2d70e12a6c2aff77be28a65dcaa27386d3b65465849fff162"
+  head "https://github.com/anycable/anycable-go.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ab783dacc5e7118d049c7b0edb4840c5c0e8e63566a82d977e421426887da412" => :catalina
-    sha256 "a65ac740e2d0ce092b84c958334418b206f725cf2e6fca77be68f146817a5a88" => :mojave
-    sha256 "a9e268c4eb4e313e6fd3b3e6e3508039fb8abb7c0f3ce17f5ce952efc7a5fadc" => :high_sierra
-    sha256 "eec5c786934d53b6260727f73f7a08ed29626aef25782687b0f7251b47f42497" => :sierra
+    rebuild 2
+    sha256 "2d37c08d9889afb6475b800b11f428860c1609ca4d4bcab7f98bef2aeee06578" => :catalina
+    sha256 "4ea94e2657ed7d593601ceee6d499debb3b91a22c5af1f63ddb0dfa0e8aff288" => :mojave
+    sha256 "63b38c851a6bff06de8d7e229c4d91e0b775f47d76c48517ce6be33cf1c095c5" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/anycable/anycable-go/").install Dir["*"]
-    system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", "-o", "#{bin}/anycable-go", "-v", "github.com/anycable/anycable-go/cmd/anycable-go"
+    system "go", "build", "-mod=vendor", "-ldflags", "-s -w -X main.version=#{version}",
+                          "-trimpath", "-o", "#{bin}/anycable-go",
+                          "-v", "github.com/anycable/anycable-go/cmd/anycable-go"
   end
 
   test do

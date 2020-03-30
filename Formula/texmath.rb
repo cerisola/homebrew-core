@@ -5,14 +5,14 @@ class Texmath < Formula
 
   desc "Haskell library for converting LaTeX math to MathML"
   homepage "https://johnmacfarlane.net/texmath.html"
-  url "https://hackage.haskell.org/package/texmath-0.11.2.2/texmath-0.11.2.2.tar.gz"
-  sha256 "fe4e24af001104ed3c95ee44076e6819ffad67684efdabee5ae07cf8ceb81087"
+  url "https://hackage.haskell.org/package/texmath-0.12.0.1/texmath-0.12.0.1.tar.gz"
+  sha256 "ba6b3bbddd46f91a7fe56e1f168060b6843c6f5eaebb2147f5640c6177b854c1"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ef810c923e8a459cc4d18ab596c348e4e8610b177c642242b4bf07915eab7e16" => :mojave
-    sha256 "1782096bfc10752b5916f16aa188a37e57609f101f334be92b1abf23bf8ed59d" => :high_sierra
-    sha256 "45e18931b08c56b33ec7610ebeae791d5acf496d1e3cfe949dca28162e10c15e" => :sierra
+    sha256 "f78d7ac53e087522f2a8dbd1baa05f1f40c462e75185e19e9930aae1f9efefbb" => :catalina
+    sha256 "bd0c24bbe1f43ffbe9ecd672a639605cc65a6e6c0799bf9f8428a44b0e13e4bf" => :mojave
+    sha256 "416ce61d13a1490a5914eed52fb6f92c441a765ec492ba0a65ce81e22770139d" => :high_sierra
   end
 
   depends_on "cabal-install" => :build

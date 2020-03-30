@@ -1,20 +1,20 @@
 class Mat2 < Formula
   desc "Metadata anonymization toolkit"
   homepage "https://0xacab.org/jvoisin/mat2"
-  url "https://0xacab.org/jvoisin/mat2/-/archive/0.9.0/mat2-0.9.0.tar.gz"
-  sha256 "cc2265458dda0b65f488d4d97c4e1b9f99feda88398fc146e844cbd3a357d2af"
+  url "https://0xacab.org/jvoisin/mat2/-/archive/0.10.1/mat2-0.10.1.tar.gz"
+  sha256 "5ed3d9c945d1475479a42e87879821440c66c2881db157aa480ccdcefc13d202"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b87da5bff7f8d6a3367fdf5b37afd88262f91feb12a2c20471aedeeb8d4f4d09" => :catalina
-    sha256 "470fd51397533523d45b551280fc01ad7ae364ef052e4f0553981fa36fd6cc8e" => :mojave
-    sha256 "470fd51397533523d45b551280fc01ad7ae364ef052e4f0553981fa36fd6cc8e" => :high_sierra
-    sha256 "071c6610fec37271928aefb32c831b102769d1482067b7ac4734556f8c062d9a" => :sierra
+    sha256 "e42bced3778dbd1a24daf17a0d2fa29f2f9ccd7230375e8a596c44b4b4480df3" => :catalina
+    sha256 "e42bced3778dbd1a24daf17a0d2fa29f2f9ccd7230375e8a596c44b4b4480df3" => :mojave
+    sha256 "e42bced3778dbd1a24daf17a0d2fa29f2f9ccd7230375e8a596c44b4b4480df3" => :high_sierra
   end
 
   depends_on "exiftool"
   depends_on "ffmpeg"
   depends_on "gdk-pixbuf"
+  depends_on "librsvg"
   depends_on "poppler"
   depends_on "py3cairo"
   depends_on "pygobject3"

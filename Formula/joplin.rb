@@ -3,19 +3,24 @@ require "language/node"
 class Joplin < Formula
   desc "Note taking and to-do application with synchronisation capabilities"
   homepage "https://joplin.cozic.net/"
-  url "https://registry.npmjs.org/joplin/-/joplin-1.0.149.tgz"
-  sha256 "26b1c4b80db58148e934852016687ced1c617f1841afc9b1e5eea00e10e20c8e"
+  url "https://registry.npmjs.org/joplin/-/joplin-1.0.161.tgz"
+  sha256 "e5a277075d672fcb0a6d22e8de4794dc14f2602d460c35a51e69d0ff7ecbfac1"
+  revision 1
 
   bottle do
-    sha256 "d5c541119dc009ea3aab6743365b6bd5f2618e3f2417aa13415520ad316a7434" => :catalina
-    sha256 "3ccf9eab20cc4060a365b0fdb4db8cce99ad70760a020babfd49e43352e3e806" => :mojave
-    sha256 "3485137bfee6a3fb88ce5ed4ca27616a1cf016b44ccfdb87c0cc82f996bd0566" => :high_sierra
+    sha256 "a104ee7d47df75774ce8e89d2146ab8fe2c23b835b436def294e29846090c495" => :catalina
+    sha256 "23d043a12ce27d0afad2c3d9d1e8979f6bb499d3d073be2e39702f411d72b479" => :mojave
+    sha256 "5aec579f667bcbcb7d9eec4939cdb657312f236fb99bb8ce8088cf27f7f5de4d" => :high_sierra
   end
 
+  depends_on "pkg-config" => :build
   depends_on "node"
+  depends_on "sqlite"
+  depends_on "vips"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *Language::Node.std_npm_install_args(libexec),
+                             "--sqlite=#{Formula["sqlite"].opt_prefix}"
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

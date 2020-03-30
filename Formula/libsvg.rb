@@ -21,6 +21,8 @@ class Libsvg < Formula
   depends_on "jpeg-turbo"
   depends_on "libpng"
 
+  uses_from_macos "libxml2"
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

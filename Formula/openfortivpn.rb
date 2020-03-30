@@ -1,15 +1,13 @@
 class Openfortivpn < Formula
   desc "Open Fortinet client for PPP+SSL VPN tunnel services"
   homepage "https://github.com/adrienverge/openfortivpn"
-  url "https://github.com/adrienverge/openfortivpn/archive/v1.10.0.tar.gz"
-  sha256 "d6ea0c84c0cf811530073fa19865334bb42ab10a780157fe95c4efb3476ad58d"
-  revision 1
+  url "https://github.com/adrienverge/openfortivpn/archive/v1.13.2.tar.gz"
+  sha256 "998fb2b071cdfe3255c2f953cafc6e1496778f9a71dd5aa560b924a44636df87"
 
   bottle do
-    sha256 "396009d63b652565101cc5dc0e2c6fddcb69ddb6440d728c94952cd0f16f15a4" => :catalina
-    sha256 "4ba2c3ca99e7f799a74e4e0fdf9b755681309297bd1dd6237d076ea4a0caeb59" => :mojave
-    sha256 "9ad39cc736a5eb30e3d6cc077deb5a5fbe3edca01b16d6f50fee87740dce2bf8" => :high_sierra
-    sha256 "7914365ffec1cdb05e19c776557d5cbde976f2930dae3397428e8c254103d781" => :sierra
+    sha256 "091cc01925175a4dd27b020331b4d07065f8d5e643a62fafeec604fafb6b4df4" => :catalina
+    sha256 "4ca89b43c5e2297d199621b2dcb5fc4a2a0cacdb8d15e3f75257585b5be794b0" => :mojave
+    sha256 "18edf8df18ffbac38c2f88a795ff1c77c272082562f3be6b0b63f78ef6ebf900" => :high_sierra
   end
 
   depends_on "autoconf" => :build

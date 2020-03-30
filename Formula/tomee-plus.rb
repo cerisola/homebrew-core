@@ -1,8 +1,9 @@
 class TomeePlus < Formula
   desc "Everything in TomEE Web Profile and JAX-RS, plus more"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-7.1.1/apache-tomee-7.1.1-plus.tar.gz"
-  sha256 "c62def2a1453d7cc7f549e651232341d750518e512ba271c3e2666377e442409"
+  url "https://www.apache.org/dyn/closer.lua?path=tomee/tomee-8.0.1/apache-tomee-8.0.1-plus.tar.gz"
+  mirror "https://archive.apache.org/dist/tomee/tomee-8.0.1/apache-tomee-8.0.1-plus.tar.gz"
+  sha256 "617ee5c490886f4fdde7cbd42cae004e73542f5e34370d8a63396f297ce12ed2"
 
   bottle :unneeded
 
@@ -18,12 +19,13 @@ class TomeePlus < Formula
     bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plus-startup"
   end
 
-  def caveats; <<~EOS
-    The home of Apache TomEE Plus is:
-      #{opt_libexec}
-    To run Apache TomEE:
-      #{opt_libexec}/bin/tomee-plus-startup
-  EOS
+  def caveats
+    <<~EOS
+      The home of Apache TomEE Plus is:
+        #{opt_libexec}
+      To run Apache TomEE:
+        #{opt_libexec}/bin/tomee-plus-startup
+    EOS
   end
 
   test do

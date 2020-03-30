@@ -2,14 +2,14 @@ class Terraformer < Formula
   desc "CLI tool to generate terraform files from existing infrastructure"
   homepage "https://github.com/GoogleCloudPlatform/terraformer"
   url "https://github.com/GoogleCloudPlatform/terraformer.git",
-    :tag      => "0.8.4",
-    :revision => "3df9db7f4811e89d2633e78c3fd4743ec0062d4f"
+    :tag      => "0.8.7",
+    :revision => "9b154ac3d2237fb623c80eadbac17f1d3956bd7e"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7197e3ecc256aff6efb2e8d186a5507270431f4d0f37735e24aa3d29c76a9bb5" => :catalina
-    sha256 "0a9c047c5429ff44af7b0f8451b38f8b966f193ddb073e9c6ca3105d84498f0c" => :mojave
-    sha256 "7174d86df23c114fd2e3d92fc8d0172631011e4e725334e32e8fe3ec04245749" => :high_sierra
+    sha256 "535df4b5e6cff30a332591370f4369398557b2c8c0a5f3217e54018bdd1f26a8" => :catalina
+    sha256 "d96f59a3eadc4c6ec1c1a825ccc9a806f8a3398987018a691cc67d5515f45464" => :mojave
+    sha256 "2d33a7d2395698fab431d79fc63268341fa7aaea14f5d6cd89d64962ba7feb5e" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -27,12 +27,13 @@ class Terraformer < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/terraformer version")
+    assert_match version.to_s,
+      shell_output("#{bin}/terraformer version")
 
-    help_output = "Available Commands"
-    assert_match help_output.to_s, shell_output("#{bin}/terraformer -h")
+    assert_match "Available Commands",
+      shell_output("#{bin}/terraformer -h")
 
-    import_error = "aaa"
-    assert_match import_error.to_s, shell_output("#{bin}/terraformer import google --resources=gcs --projects=aaa 2>&1", 1)
+    assert_match "aaa",
+      shell_output("#{bin}/terraformer import google --resources=gcs --projects=aaa 2>&1", 1)
   end
 end

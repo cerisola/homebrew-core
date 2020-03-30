@@ -1,14 +1,15 @@
 class Armadillo < Formula
   desc "C++ linear algebra library"
   homepage "https://arma.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/arma/armadillo-9.800.1.tar.xz"
-  sha256 "ebcf57e031465848d2110d2d9f0b09a3bfd31d7e117327e6142935f2e783daee"
+  url "https://downloads.sourceforge.net/project/arma/armadillo-9.850.1.tar.xz"
+  sha256 "d4c389b9597a5731500ad7a2656c11a6031757aaaadbcafdea5cc8ac0fd2c01f"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "53dc9c33c0a55c973b0b37387283c6e71e1d70a96abcb4ba9d45c66e5a104e6c" => :catalina
-    sha256 "f651056e53d7889711562b6662f00cc61f97b0abb548e654acbedbe5870aacff" => :mojave
-    sha256 "3632a4b74ec698b8a8d455e9392e728183b68c484adc4c08eb81a55a5cc87014" => :high_sierra
+    sha256 "399cf48dfdf7e0a5d580003c438eda5931201b258ea2c8bd248bf2191c30dad6" => :catalina
+    sha256 "03d912ade55e81fc1691751543435f0dbee3edb2d12ac7edb32f2fee6fff163f" => :mojave
+    sha256 "4b3c8bd9e1d57a331dedb35dcbb401c16b700e97dc94c4c2a459acf108561577" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -18,6 +19,8 @@ class Armadillo < Formula
   depends_on "szip"
 
   def install
+    ENV.prepend "CXXFLAGS", "-DH5_USE_110_API -DH5Ovisit_vers=1"
+
     system "cmake", ".", "-DDETECT_HDF5=ON", *std_cmake_args
     system "make", "install"
   end

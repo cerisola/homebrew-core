@@ -1,27 +1,33 @@
 class Buildkit < Formula
   desc "Сoncurrent, cache-efficient, and Dockerfile-agnostic builder toolkit"
   homepage "https://github.com/moby/buildkit"
-  url "https://github.com/moby/buildkit/archive/v0.6.2.tar.gz"
-  sha256 "1eaf2c85c20d8da283e48548954484883354df66c6a4c2dc87bba7514a7ba99e"
+  url "https://github.com/moby/buildkit.git",
+      :tag      => "v0.7.0",
+      :revision => "c60a1eb215d795a12e43ceff6a5ed67ce1ad958d"
+  head "https://github.com/moby/buildkit.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2919c138a4e31b0559dbbe6e8726a97b2b85e8c4385372eb037a7261b0330c5d" => :catalina
-    sha256 "8b2ab85aad03d95ab7b3ed555ff7b7aa0622ccec01ddfc4b0040b3b3eabc3f4f" => :mojave
-    sha256 "0b46243086892d27bc10c58eb8d3a193e614f38da65b58b25b2038382135d2db" => :high_sierra
+    sha256 "2366e2aff20896e75b862e054eace8f08b6df35b91874f6bb72e16d05d8ddb9a" => :catalina
+    sha256 "d3ef111b9494b03c7c3dff185f59b9d2299e6d2502c0959baa1b7cdd1807c6ae" => :mojave
+    sha256 "fe0166769a3ba14f3d307c5b363563e88898455022efe8432acf6210afa2e750" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    doc.install %w[README.md] + Dir["docs/*.md"]
+    revision = Utils.popen_read("git rev-parse HEAD").chomp
+    ldflags = %W[
+      -s -w
+      -X github.com/moby/buildkit/version.Version=#{version}
+      -X github.com/moby/buildkit/version.Revision=#{revision}
+      -X github.com/moby/buildkit/version.Package=github.com/moby/buildkit
+    ]
 
-    (buildpath/"src/github.com/moby/buildkit/").install Dir["*"]
+    system "go", "build", "-mod=vendor", "-trimpath",
+      "-ldflags", ldflags.join(" "), "-o", bin/"buildctl", "./cmd/buildctl"
 
-    ldflags = ["-X github.com/moby/buildkit/version.Version=#{version}",
-               "-X github.com/moby/buildkit/version.Package=github.com/moby/buildkit"]
-    system "go", "build", "-o", bin/"buildctl", "-ldflags", ldflags.join(" "), "github.com/moby/buildkit/cmd/buildctl"
+    doc.install Dir["docs/*.md"]
   end
 
   test do

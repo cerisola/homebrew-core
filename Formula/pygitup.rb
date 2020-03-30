@@ -5,16 +5,16 @@ class Pygitup < Formula
   homepage "https://github.com/msiemens/PyGitUp"
   url "https://files.pythonhosted.org/packages/46/45/32dc0bf07c620644a8ed899e381309f4f25b50f20a91e555285522592833/git-up-1.6.1.tar.gz"
   sha256 "ea83441e7ab05011624e2e7333ef875c263124db5eed74507acd32b07c48473f"
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "827103ed2b7d4bed1fa778edf4edc404f7c7a70fdb999a8843564a1274d90cb1" => :catalina
-    sha256 "a5234c02ac78373479e0158a18da087750f30da501ddae29899ec0e8e2b93a54" => :mojave
-    sha256 "be1a8770fa5fe2ad6b06ad090bf5ef490d6df59afb802703799fa4c99ef08955" => :high_sierra
-    sha256 "3ca5dc9d6443ec789e54686ee3d71662e69db2da877749bbb1e5ba7b562279ff" => :sierra
+    sha256 "8dff3146af82b507e97ba0305f76d4aa6296b53b1a094e6cb3ed8b5cd8a4608c" => :catalina
+    sha256 "bb4c2a88b4063544712c1f8a9704d7af97b11fb76d18ff9c6150a63d9bd59c5b" => :mojave
+    sha256 "9ca0aeb55d9722c77c77616f2b95d8d53a8c685f5a9c515ddce380b2ae5ad672" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   resource "click" do
     url "https://files.pythonhosted.org/packages/f8/5c/f60e9d8a1e77005f664b76ff8aeaee5bc05d0a91798afd7f53fc998dbc47/Click-7.0.tar.gz"

@@ -1,14 +1,14 @@
 class Clamav < Formula
   desc "Anti-virus software"
   homepage "https://www.clamav.net/"
-  url "https://www.clamav.net/downloads/production/clamav-0.102.0.tar.gz"
-  mirror "https://fossies.org/linux/misc/clamav-0.102.0.tar.gz"
-  sha256 "48fe188c46c793c2d0cb5c81c106e4690251aff6dc8aa6575dc688343291bee1"
+  url "https://www.clamav.net/downloads/production/clamav-0.102.2.tar.gz"
+  mirror "https://fossies.org/linux/misc/clamav-0.102.2.tar.gz"
+  sha256 "89fcdcc0eba329ca84d270df09d2bb89ae55f5024b0c3bddb817512fb2c907d3"
 
   bottle do
-    sha256 "4e78b3649f40ff746343f6593074cca1df281d480323e31e9d08e6cdda77e48a" => :catalina
-    sha256 "e0ca454c1ef225dcaf647a3f709819b73b28c66861256159b6718c80098f8a70" => :mojave
-    sha256 "887186bdbadcb1c2aec51a4152c8a244b4ee767fd162786f4625d2017fc97d2f" => :high_sierra
+    sha256 "544f511ddd1c68b88a93f017617c968a4e5d34fc6a010af15e047a76c5b16a9f" => :catalina
+    sha256 "a92959f8a348642739db5e023e4302809c8272da1bea75336635267e449aacdf" => :mojave
+    sha256 "252446ee2509c9653fc9ab160811232d228f9995fcd7d4e9378c128bccd5ecaa" => :high_sierra
   end
 
   head do
@@ -24,6 +24,9 @@ class Clamav < Formula
   depends_on "openssl@1.1"
   depends_on "pcre"
   depends_on "yara"
+
+  uses_from_macos "curl"
+  uses_from_macos "zlib"
 
   skip_clean "share/clamav"
 
@@ -48,10 +51,11 @@ class Clamav < Formula
     system "make", "install"
   end
 
-  def caveats; <<~EOS
-    To finish installation & run clamav you will need to edit
-    the example conf files at #{etc}/clamav/
-  EOS
+  def caveats
+    <<~EOS
+      To finish installation & run clamav you will need to edit
+      the example conf files at #{etc}/clamav/
+    EOS
   end
 
   test do

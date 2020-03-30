@@ -3,20 +3,21 @@ class Statik < Formula
 
   desc "Python-based, generic static web site generator aimed at developers"
   homepage "https://getstatik.com"
-  url "https://github.com/thanethomson/statik/archive/v0.22.2.tar.gz"
-  sha256 "27aeda86c40ba2a489d2d8e85b7b38200e8f5763310003294c135ab2cf09975b"
-  revision 1
+  url "https://github.com/thanethomson/statik/archive/v0.23.0.tar.gz"
+  sha256 "6159066f486811e5773da318d6e8d1b1dd4c99ac140f1a3c660ef1c1f5e7124f"
   head "https://github.com/thanethomson/statik.git"
 
   bottle do
     cellar :any
-    sha256 "9a929bed838eac7299d6db3cabac93ddf475c1a7d5100f1d8d0dc522d1867471" => :catalina
-    sha256 "0b670112d5c2e9c8166c264ba33a5bd7c01e7cbcb99abe030f2c7923a6e09f5f" => :mojave
-    sha256 "06551895c3028af13b050ccc738afe4643ac782ca02dc9c9a0de68b04c5a8e5c" => :high_sierra
-    sha256 "44b40f63c9d8de054cb52ce509347eec87f2ac53afa613bb15d66f3c5b3317f7" => :sierra
+    sha256 "28905bc1096c08ebe04410557de4b7a0c1c6ef4b016d5ef636cf04a37313bc11" => :catalina
+    sha256 "88b425b5e8fdb8f42bebed953096761034d21a6da5511be73384fd11a14c6d1b" => :mojave
+    sha256 "45fa0c5eb8cc013f7637d0f319c3c2a7d19e2360572fcda47fd1873157d77b74" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "libpq"
+  depends_on "python@3.8"
+
+  uses_from_macos "libffi"
 
   conflicts_with "go-statik", :because => "both install `statik` binaries"
 

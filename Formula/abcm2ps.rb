@@ -1,14 +1,13 @@
 class Abcm2ps < Formula
   desc "ABC music notation software"
   homepage "http://moinejf.free.fr"
-  url "https://github.com/leesavide/abcm2ps/archive/v8.14.5.tar.gz"
-  sha256 "09bc9d6df221521ae4ad70a5721552a6d443ab1df29193c732f45854f88ad7c0"
+  url "https://github.com/leesavide/abcm2ps/archive/v8.14.7.tar.gz"
+  sha256 "2ebc81cabb5303da3d9a172b87005c42e88933e7e7378d84ce8f1a2463760249"
 
   bottle do
-    sha256 "3a19c545dd083dfec931155ff9e329df904ceed365cb0d3e99d1f3115200d664" => :catalina
-    sha256 "18f4f1bf474fb2e9c928143748adbe006039eb19ca1f5c10c813724266259c59" => :mojave
-    sha256 "b44fecce969653acece26c73ce21ac0f81592ce7435c6413d3c5b260cc58cf88" => :high_sierra
-    sha256 "0ee03d6f973cc74b0611ae7867f94fa24168ba236422728342ab2bd60b9231bd" => :sierra
+    sha256 "3e16acc319f2d471a82e0b4bb07842c9a9113524226a992c51a8f10cfb344f5c" => :catalina
+    sha256 "feb024e14f10d29958ec8e885ef918077fc4cccd7ea69375cdf4e31449927e28" => :mojave
+    sha256 "565722bcc3c695e47cd6c3e595f4d2774a4eefdb20a668c9a1553312450786fa" => :high_sierra
   end
 
   depends_on "pkg-config" => :build

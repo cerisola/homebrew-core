@@ -1,14 +1,14 @@
 class Minizip2 < Formula
   desc "Zip file manipulation library with minizip 1.x compatibility layer"
   homepage "https://github.com/nmoinvaz/minizip"
-  url "https://github.com/nmoinvaz/minizip/archive/2.9.0.tar.gz"
-  sha256 "d9501b1048064855222a42264ce773eebc29bbad5bcadbbeb22db2c3e65ae447"
+  url "https://github.com/nmoinvaz/minizip/archive/2.9.2.tar.gz"
+  sha256 "8425399277d9d5e39454e655cfd3eb004607960c8358a3e732f5e741a6b5df0a"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8da088dfc8380733a9ec95e35ac80bcc6c7142fc0c6de075a792cce3e288240b" => :catalina
-    sha256 "fc53e475c3b6d8e78f7e8e6e9c746f52d13549ca851d0c4efc28aea9767742fc" => :mojave
-    sha256 "3d67c6a0cdb7290c69b193cb341397f7cd5d5706068db6bd37f10070c79b97b4" => :high_sierra
+    sha256 "eea2dd5c11351eafe018f1cd12dc2a053e4d158950242d311cb68e53868bc1de" => :catalina
+    sha256 "5f0f8b2d128a4bf04746be75c549b877b29a365028c86c8cb2382206796ed73e" => :mojave
+    sha256 "a6fc8a8620a239b63f8321a4fbd291d20be07db71ba327e72d496de2bdbf9979" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -35,7 +35,8 @@ class Minizip2 < Formula
         return hZip != NULL && mz_zip_close(NULL) == MZ_PARAM_ERROR ? 0 : 1;
       }
     EOS
-    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lminizip", "-lz", "-lbz2", "-framework", "CoreFoundation", "-framework", "Security", "-o", "test"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lminizip", "-lz", "-lbz2",
+                   "-framework", "CoreFoundation", "-framework", "Security", "-o", "test"
     system "./test"
   end
 end

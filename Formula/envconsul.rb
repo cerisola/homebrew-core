@@ -2,30 +2,22 @@ class Envconsul < Formula
   desc "Launch process with environment variables from Consul and Vault"
   homepage "https://github.com/hashicorp/envconsul"
   url "https://github.com/hashicorp/envconsul.git",
-    :tag      => "v0.9.0",
-    :revision => "d14ed8fe00c38009eca840d89896af1a70060ae1"
+    :tag      => "v0.9.2",
+    :revision => "e00ce74043ac1204566ece60f12919c8b56467f3"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f68d42716c4a89681b27f91ec83fd07c5d2ba63f67417564cc1fb1aa6796826a" => :catalina
-    sha256 "47d081464b930c4dd6774d010b5611fe8b012c1e37f1e700bdb51df40b6eed04" => :mojave
-    sha256 "7ff8101ec5df97e299533ec309b8c2b79775a0b836c834fc5688049ab180f0ae" => :high_sierra
-    sha256 "d381724b4b26753c6f00edf7b5bd107e1571c6f9b33d30931393603f7f56566f" => :sierra
+    sha256 "4c6124368ea055ecca7e5b75484ed0da40b3de0c86c43e9188c0b00447e9b52b" => :catalina
+    sha256 "a0488492fac09bc1f89a224264602505e3fa7fda8747614ba8a40df5566cd77a" => :mojave
+    sha256 "418b4cc14d268c77074fb118cafe2165a1d4eab9b74489647328328b97d5327d" => :high_sierra
   end
 
   depends_on "go" => :build
   depends_on "consul" => :test
 
   def install
-    ENV["GOPATH"] = buildpath
-
-    dir = buildpath/"src/github.com/hashicorp/envconsul"
-    dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", bin/"envconsul"
-      prefix.install_metafiles
-    end
+    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"envconsul"
+    prefix.install_metafiles
   end
 
   test do

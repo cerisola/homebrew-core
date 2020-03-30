@@ -1,13 +1,12 @@
 class Groovy < Formula
   desc "Java-based scripting language"
   homepage "https://www.groovy-lang.org/"
-  url "https://dl.bintray.com/groovy/maven/apache-groovy-binary-2.5.8.zip"
-  sha256 "49fb14b98f9fed1744781e4383cf8bff76440032f58eb5fabdc9e67a5daa8742"
+  url "https://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.2.zip"
+  sha256 "3ce9d9097f3bc42cc23b80cb5bd7e3790c5ca12493bd6ebee104f29ab11bbcb5"
 
   bottle :unneeded
 
-  # Groovy 2.5 requires JDK8+ to build and JDK7 is the minimum version of the JRE that we support.
-  depends_on :java => "1.7+"
+  depends_on "openjdk"
 
   conflicts_with "groovysdk", :because => "both install the same binaries"
 
@@ -16,7 +15,8 @@ class Groovy < Formula
     rm_f Dir["bin/*.bat"]
 
     libexec.install "bin", "conf", "lib"
-    bin.install_symlink Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/groovy.ico"]
+    bin.install Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/groovy.ico"]
+    bin.env_script_all_files libexec/"bin", :JAVA_HOME => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
   end
 
   def caveats

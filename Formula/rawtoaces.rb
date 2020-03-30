@@ -3,13 +3,12 @@ class Rawtoaces < Formula
   homepage "https://github.com/ampas/rawtoaces"
   url "https://github.com/ampas/rawtoaces/archive/v1.0.tar.gz"
   sha256 "9d15e7e30c4fe97baedfdafb5fddf95534eee26392002b23e81649bbe6e501e9"
-  revision 6
+  revision 8
 
   bottle do
-    sha256 "4f2fef8030ff9f13f7df562996dfb18fead52c082d9c8746278ba4badd486d7d" => :catalina
-    sha256 "924faea950781e51e7677fb8f691161002ff786873562408bf810d5b5891ba4b" => :mojave
-    sha256 "321d3c34d1b7366f816667cb2196c83a8d6c202107290febac0aeffd5442ddc7" => :high_sierra
-    sha256 "168866987a9e150a929ecca2678b6a601220235146d62d2eb18ebd2b89e7afd3" => :sierra
+    sha256 "0607222bd4bf6bce0928a654d019bb43a64e2c858246e5ff696a2ccdeb39e046" => :catalina
+    sha256 "9a23404887ca9a6655be8bd8aeaa8cb42552bcdc90e964baff3e95168a9d4f63" => :mojave
+    sha256 "ae2981d11430b7f54d25f4a5add70af39816d01969dd6120f65cbca503bf957f" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -20,6 +19,7 @@ class Rawtoaces < Formula
   depends_on "libraw"
 
   def install
+    ENV.cxx11
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"

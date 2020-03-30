@@ -1,16 +1,19 @@
 class Clojure < Formula
   desc "The Clojure Programming Language"
   homepage "https://clojure.org"
-  url "https://download.clojure.org/install/clojure-tools-1.10.1.483.tar.gz"
-  sha256 "0962e4e9ee05a0cc92f10eb56e6194d238f0b65b3cf0c1491d02ae98e3eca183"
+  url "https://download.clojure.org/install/clojure-tools-1.10.1.536.tar.gz"
+  sha256 "b7c5b0cdeb750275ddd98095a1959657b95569b624da7c6163adce5a7d5f7119"
 
   bottle :unneeded
 
-  depends_on :java => "1.8+"
+  depends_on "openjdk"
   depends_on "rlwrap"
+
+  uses_from_macos "ruby" => :build
 
   def install
     system "./install.sh", prefix
+    bin.env_script_all_files libexec/"bin", :JAVA_HOME => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
   end
 
   test do

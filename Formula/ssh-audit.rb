@@ -1,8 +1,8 @@
 class SshAudit < Formula
-  desc "SSH server auditing"
+  desc "SSH server & client auditing"
   homepage "https://github.com/jtesta/ssh-audit"
-  url "https://github.com/jtesta/ssh-audit/releases/download/v2.0.0/ssh-audit-v2.0.0.tar.gz"
-  sha256 "9ae7db82c343fc2d3af20994e750fbe69da8bed7ecde14e3fd8607d23b758c75"
+  url "https://github.com/jtesta/ssh-audit/releases/download/v2.2.0/ssh-audit-2.2.0.tar.gz"
+  sha256 "a8f4f01122234bd84c01440bfd3b7a6026c50c1a06f3044846a8503c94f94cfb"
   head "https://github.com/jtesta/ssh-audit.git"
 
   bottle :unneeded

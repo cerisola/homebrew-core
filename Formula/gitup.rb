@@ -6,15 +6,16 @@ class Gitup < Formula
   url "https://github.com/earwig/git-repo-updater.git",
       :tag      => "v0.5.1",
       :revision => "b502b2eaa46a6a10d9db228209f984bb235444a7"
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a66375c90ccd31c676aeff3e17a40a4993e77f4701702cc68361bf490581e406" => :catalina
-    sha256 "52286e039d13246b140d4d3c922d269965a6db1f14ff5e8331ffad51790ce14e" => :mojave
-    sha256 "b550170bcff2cb60d1af74abcea941c54f433003b084010ea2b73bd7d34f947e" => :high_sierra
+    sha256 "61b9abe9e481e9fa3a86074756d065f48f92cf71420e6855e95ad1ecdc92cecb" => :catalina
+    sha256 "2e1fb0d6519682a80737b73136fd6cf1c81928d993e88e835cb053725ff40bf2" => :mojave
+    sha256 "63c2169d68aed5aca9a91bba014cdb96238b61316267691dd7c63ef566b89fc8" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   resource "colorama" do
     url "https://files.pythonhosted.org/packages/e6/76/257b53926889e2835355d74fec73d82662100135293e17d382e2b74d1669/colorama-0.3.9.tar.gz"

@@ -1,15 +1,13 @@
 class Skopeo < Formula
   desc "Work with remote images registries"
   homepage "https://github.com/containers/skopeo"
-  url "https://github.com/containers/skopeo/archive/v0.1.40.tar.gz"
-  sha256 "ee1e33245938fcb622f5864fac860e2d8bfa2fa907af4b5ffc3704ed0db46bbf"
-  revision 1
+  url "https://github.com/containers/skopeo/archive/v0.1.41.tar.gz"
+  sha256 "d9f4a0dcf4a43469768dbf16865d5bc98e5434fadd65af35051edb36767c9c70"
 
   bottle do
-    cellar :any
-    sha256 "6d6e5ef0e8de608b30b3c455aae169ff63139d3442c20ea6fb966b602c7892c7" => :catalina
-    sha256 "24136b664d634af98856d4d57ba8000410f056555ded3f7ac805bb9928a4cf56" => :mojave
-    sha256 "962f951f12aee1b7130ad47bd6fc9955e3735b09043a50f44460d69676ba63a0" => :high_sierra
+    sha256 "ac2a94aa69c27200495cb48638ad9a3eff4909cde798849d0ee079776869a34f" => :catalina
+    sha256 "55ff7bdfe1db38e9016ba45057cf95e44cdc4c05843c507b02c8df1b5d27099f" => :mojave
+    sha256 "91c57b7acf8d0ee159fc83cdc48b2e1bc88af2f88a63d33dfd11502ebf2d8c18" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -33,16 +31,19 @@ class Skopeo < Formula
 
       ldflags = [
         "-X main.gitCommit=",
-        "-X github.com/containers/image/docker.systemRegistriesDirPath=#{etc/"containers/registries.d"}",
-        "-X github.com/containers/image/internal/tmpdir.unixTempDirForBigFiles=#{ENV["TEMPDIR"]}",
-        "-X github.com/containers/image/signature.systemDefaultPolicyPath=#{etc/"containers/policy.json"}",
-        "-X github.com/containers/image/pkg/sysregistriesv2.systemRegistriesConfPath=#{etc/"containers/registries.conf"}",
+        "-X github.com/containers/image/v5/docker.systemRegistriesDirPath=#{etc/"containers/registries.d"}",
+        "-X github.com/containers/image/v5/internal/tmpdir.unixTempDirForBigFiles=/var/tmp",
+        "-X github.com/containers/image/v5/signature.systemDefaultPolicyPath=#{etc/"containers/policy.json"}",
+        "-X github.com/containers/image/v5/pkg/sysregistriesv2.systemRegistriesConfPath=" \
+                                              "#{etc/"containers/registries.conf"}",
       ].join(" ")
 
       system "go", "build", "-v", "-x", "-tags", buildtags, "-ldflags", ldflags, "-o", bin/"skopeo", "./cmd/skopeo"
 
       (etc/"containers").install "default-policy.json" => "policy.json"
       (etc/"containers/registries.d").install "default.yaml"
+
+      bash_completion.install "completions/bash/skopeo"
 
       prefix.install_metafiles
     end

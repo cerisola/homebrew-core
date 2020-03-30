@@ -1,16 +1,15 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch/"
-  url "https://root.cern.ch/download/root_v6.18.04.source.tar.gz"
-  version "6.18.04"
-  sha256 "315a85fc8363f8eb1bffa0decbf126121258f79bd273513ed64795675485cfa4"
+  url "https://root.cern.ch/download/root_v6.20.02.source.tar.gz"
+  version "6.20.02"
+  sha256 "0997586bf097c0afbc6f08edbffcebf5eb6a4237262216114ba3f5c8087dcba6"
   head "https://github.com/root-project/root.git"
 
   bottle do
-    sha256 "83090dd063a5cde66bf587f6000b798fda756476fee3651b6f660e1b39cff4bb" => :catalina
-    sha256 "9ce760ff961b29b382d8373c6fbe72808e025b9a3e6113deb64df8586b0a853d" => :mojave
-    sha256 "acbac57657964414945706d499bab86ad7ac6367c78493a5e47de2eba111e0f1" => :high_sierra
-    sha256 "82e6f8dc5048f3977c9a942c2fd62671423f95bfe77e6d5abd9f53b6ac141b13" => :sierra
+    sha256 "7039d454dd5f7b05048e5e91ce89b09e9f89f50ccee9eb33e4c3ddc1b654f1dd" => :catalina
+    sha256 "7b4a332b4c1c9d0093d6a47fa0d82eafdf1e491159c65c6008af2b2ff0cd5489" => :mojave
+    sha256 "15d70277f4afd728de9f16ce02fd69a6c2af1cb4c247f63e267f5537d14fff63" => :high_sierra
   end
 
   # https://github.com/Homebrew/homebrew-core/issues/30726
@@ -26,6 +25,7 @@ class Root < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "cfitsio"
   depends_on "davix"
   depends_on "fftw"
   depends_on "gcc" # for gfortran
@@ -35,12 +35,14 @@ class Root < Formula
   # https://github.com/Homebrew/brew/issues/5068
   depends_on "libxml2" if MacOS.version >= :mojave
   depends_on "lz4"
+  depends_on "numpy" # for tmva
   depends_on "openssl@1.1"
   depends_on "pcre"
   depends_on "python"
   depends_on "tbb"
   depends_on "xrootd"
   depends_on "xz" # for LZMA
+  depends_on "zstd"
 
   skip_clean "bin"
 
@@ -58,7 +60,8 @@ class Root < Formula
 
     py_exe = Utils.popen_read("which python3").strip
     py_prefix = Utils.popen_read("python3 -c 'import sys;print(sys.prefix)'").chomp
-    py_inc = Utils.popen_read("python3 -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
+    py_inc =
+      Utils.popen_read("python3 -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
 
     args = std_cmake_args + %W[
       -DCLING_CXX_PATH=clang++
@@ -70,7 +73,7 @@ class Root < Formula
       -Dbuiltin_freetype=ON
       -Ddavix=ON
       -Dfftw3=ON
-      -Dfitsio=OFF
+      -Dfitsio=ON
       -Dfortran=ON
       -Dgdml=ON
       -Dgnuinstall=ON
@@ -105,22 +108,23 @@ class Root < Formula
     end
   end
 
-  def caveats; <<~EOS
-    Because ROOT depends on several installation-dependent
-    environment variables to function properly, you should
-    add the following commands to your shell initialization
-    script (.bashrc/.profile/etc.), or call them directly
-    before using ROOT.
+  def caveats
+    <<~EOS
+      Because ROOT depends on several installation-dependent
+      environment variables to function properly, you should
+      add the following commands to your shell initialization
+      script (.bashrc/.profile/etc.), or call them directly
+      before using ROOT.
 
-    For bash users:
-      . #{HOMEBREW_PREFIX}/bin/thisroot.sh
-    For zsh users:
-      pushd #{HOMEBREW_PREFIX} >/dev/null; . bin/thisroot.sh; popd >/dev/null
-    For csh/tcsh users:
-      source #{HOMEBREW_PREFIX}/bin/thisroot.csh
-    For fish users:
-      . #{HOMEBREW_PREFIX}/bin/thisroot.fish
-  EOS
+      For bash users:
+        . #{HOMEBREW_PREFIX}/bin/thisroot.sh
+      For zsh users:
+        pushd #{HOMEBREW_PREFIX} >/dev/null; . bin/thisroot.sh; popd >/dev/null
+      For csh/tcsh users:
+        source #{HOMEBREW_PREFIX}/bin/thisroot.csh
+      For fish users:
+        . #{HOMEBREW_PREFIX}/bin/thisroot.fish
+    EOS
   end
 
   test do
