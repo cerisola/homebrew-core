@@ -1,39 +1,30 @@
 class Convox < Formula
-  desc "Command-line interface for the Rack PaaS on AWS"
+  desc "Command-line interface for the Convox PaaS"
   homepage "https://convox.com/"
-  url "https://github.com/convox/rack/archive/20200302115619.tar.gz"
-  sha256 "850c2e468273bb2b9b42a144b97477d777e31c1554ab514606072c3cf64b3536"
+  url "https://github.com/convox/convox/archive/3.0.38.tar.gz"
+  sha256 "5ab341efe1b0277e8c911132d69275f0c16cbd8f0662c3f78c596ec9d7a5d73c"
+  license "Apache-2.0"
+  version_scheme 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d14ea503227afd3e9d282da425cdbf05a0f6ffcd35b64e32ac8c0eae811015dd" => :catalina
-    sha256 "1dda147d1c038555e10980ae23a89ef9c639827420c9a1b4645992d5786ac893" => :mojave
-    sha256 "20bd6147a0bff746304784a96539aaa06cb5458ddfe41990d5be68b7c759f93a" => :high_sierra
+    sha256 "ac3a83694bc173fda6a606dfea636e81502fbd7c157b86caad08832089ce1476" => :catalina
+    sha256 "820a0875da7eb54163538565619afbd685580c7b8a55c956b6deebb9c5dbcbae" => :mojave
+    sha256 "df658e99deb12cd108d4ec2bfdae0418c3f224554bcf0b5913fa6c04104e803e" => :high_sierra
   end
 
   depends_on "go" => :build
 
-  resource "packr" do
-    url "https://github.com/gobuffalo/packr/archive/v2.0.1.tar.gz"
-    sha256 "cc0488e99faeda4cf56631666175335e1cce021746972ce84b8a3083aa88622f"
-  end
-
   def install
-    ENV["GOPATH"] = buildpath
+    ldflags = %W[
+      -X main.version=#{version}
+    ].join(" ")
 
-    (buildpath/"src/github.com/convox/rack").install Dir["*"]
-
-    resource("packr").stage { system "go", "install", "./packr" }
-    cd buildpath/"src/github.com/convox/rack" do
-      system buildpath/"bin/packr"
-    end
-
-    system "go", "build", "-ldflags=-X main.version=#{version}",
-           "-o", bin/"convox", "-v", "github.com/convox/rack/cmd/convox"
-    prefix.install_metafiles
+    system "go", "build", *std_go_args, "-mod=vendor", "-ldflags", ldflags, "./cmd/convox"
   end
 
   test do
-    system bin/"convox"
+    assert_equal "Authenticating with localhost... ERROR: invalid login\n",
+      shell_output("#{bin}/convox login -t invalid localhost 2>&1", 1)
   end
 end

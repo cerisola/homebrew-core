@@ -1,13 +1,14 @@
 class Netdata < Formula
-  desc "Distributed real-time performance and health monitoring"
-  homepage "https://my-netdata.io/"
-  url "https://github.com/netdata/netdata/releases/download/v1.20.0/netdata-v1.20.0.tar.gz"
-  sha256 "dc51869e3e541ca569e75d601133a413a8e56ce2b606dbfe84b35b1d7806216e"
+  desc "Diagnose infrastructure problems with metrics, visualizations & alarms"
+  homepage "https://netdata.cloud/"
+  url "https://github.com/netdata/netdata/releases/download/v1.23.2/netdata-v1.23.2.tar.gz"
+  sha256 "761aec15901e09f963361752c6e5b5cb723e342a3c5bf6b0624067fceb2ccdfd"
+  license "GPL-3.0"
 
   bottle do
-    sha256 "11269705756d55fc3dffeab2c08b283180382a3111be2682fd7e189476317a63" => :catalina
-    sha256 "7f7c7090ee9efec5e62ddb7f9450abf385d7efc39216a261de8b2dda16c58a29" => :mojave
-    sha256 "62c4263ee9ecf4bfe2bfdfc29fb03704f57fd168e8ea5fdf19dab2879774901f" => :high_sierra
+    sha256 "b4080d267775bc62f01d18fc4c6dc0b9d38a3eeb8da84175ed6ccd26f4475018" => :catalina
+    sha256 "ebc0d753c80938968f05979485a3974302e9136959de31d6dff0145dfed10283" => :mojave
+    sha256 "259aad4b0d234de4265e2ef95239d47fdf46271f7c269a0548c72adb442bf69c" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -73,7 +74,7 @@ class Netdata < Formula
     (var/"netdata").mkpath
   end
 
-  plist_options :manual => "#{HOMEBREW_PREFIX}/sbin/netdata -D"
+  plist_options manual: "#{HOMEBREW_PREFIX}/sbin/netdata -D"
 
   def plist
     <<~EOS
@@ -101,7 +102,6 @@ class Netdata < Formula
     system "#{sbin}/netdata", "-W", "set", "registry", "netdata unique id file",
                               "#{testpath}/netdata.unittest.unique.id",
                               "-W", "set", "registry", "netdata management api key file",
-                              "#{testpath}/netdata.api.key",
-                              "-W", "unittest"
+                              "#{testpath}/netdata.api.key"
   end
 end

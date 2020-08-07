@@ -3,15 +3,16 @@ require "language/node"
 class Appium < Formula
   desc "Automation for Apps"
   homepage "https://appium.io/"
-  url "https://registry.npmjs.org/appium/-/appium-1.17.0.tgz"
-  sha256 "62daf1dd25ef284db26d6c5b99a8f46dc6c5b8c01730a2bd4e8c87322324772d"
+  url "https://registry.npmjs.org/appium/-/appium-1.18.0.tgz"
+  sha256 "7c2ace86435147fe3d961199d5bac542ed159aefa8ab1d5b58c7b88cd273ed3c"
+  license "Apache-2.0"
   head "https://github.com/appium/appium.git"
 
   bottle do
     cellar :any
-    sha256 "4b0eeb09e38fb06cd3401f4a95c70b08e2d9748edfbc55ceec2f483771d540bc" => :catalina
-    sha256 "86ae515d092cea8edcbfeee53a4544bbcf65a2ff17b1ed4e4cf40df031e0a0e7" => :mojave
-    sha256 "ee63e2d9fc264b568cff21ad3e448af5f5741fae4859b8eb4d0fa2eebf8247c2" => :high_sierra
+    sha256 "d6d0adf1f5b4380cf09ad9571e708f51e7d3f5c99307eafd5411dc7318ee03b9" => :catalina
+    sha256 "6e1fc2e7528234ec093d77933030e796accdd927e58fed2869e9b91f9951590f" => :mojave
+    sha256 "cc6f096c1464b401f52b6808eb8fe3d71975bb9c83594fcc7a0dc67551abb5e8" => :high_sierra
   end
 
   depends_on "node"
@@ -24,13 +25,15 @@ class Appium < Formula
   test do
     output = shell_output("#{bin}/appium --show-config 2>&1")
     assert_match version.to_str, output
+
+    port = free_port
     begin
       pid = fork do
-        exec bin/"appium &>appium-start.out"
+        exec bin/"appium --port #{port} &>appium-start.out"
       end
       sleep 3
 
-      assert_match "The URL '/' did not map to a valid resource", shell_output("curl -s 127.0.0.1:4723")
+      assert_match "The URL '/' did not map to a valid resource", shell_output("curl -s 127.0.0.1:#{port}")
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

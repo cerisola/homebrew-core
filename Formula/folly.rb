@@ -1,15 +1,16 @@
 class Folly < Formula
   desc "Collection of reusable C++ library artifacts developed at Facebook"
   homepage "https://github.com/facebook/folly"
-  url "https://github.com/facebook/folly/archive/v2020.03.23.00.tar.gz"
-  sha256 "2991019a03efdc911e5bc55689ff437fe469d95596e55cb095a5aa306d4e8d45"
+  url "https://github.com/facebook/folly/archive/v2020.08.03.00.tar.gz"
+  sha256 "30ec5103725703ce28377b087f12501a4bcaf632a46a079c88ecf0bcd34db114"
+  license "Apache-2.0"
   head "https://github.com/facebook/folly.git"
 
   bottle do
     cellar :any
-    sha256 "0b3f9ae953aa80813dc4c0c75f729ba43c6dabf298c75f794997adcbf1a20a4d" => :catalina
-    sha256 "d4aeb4640426d325b8e16a4a5aa84faea22d68ea7850e114a63bf69551d947bf" => :mojave
-    sha256 "b140f07c0917454ce639b373b297cf7f4a014ec6f4ac90de6344f6d10a68719d" => :high_sierra
+    sha256 "acbab8d6042f87a05015bec5f9a67b175a1e579f576b577057e8800e07e027c4" => :catalina
+    sha256 "c2a186ab5b67ea87ac2370273557b9936268aa9fc073531474b1be99e428d3a7" => :mojave
+    sha256 "f5555fcd892f2a477df052b2f669de3cc9f30c2324f110922a57f905f9c1f5c8" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -22,7 +23,7 @@ class Folly < Formula
   depends_on "libevent"
   depends_on "lz4"
   # https://github.com/facebook/folly/issues/966
-  depends_on :macos => :high_sierra
+  depends_on macos: :high_sierra
   depends_on "openssl@1.1"
   depends_on "snappy"
   depends_on "xz"

@@ -8,22 +8,22 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.16.1/bind-9.16.1.tar.xz"
-  sha256 "a913d7e78135b9123d233215b58102fa0f18130fb1e158465a1c2b6f3bd75e91"
+  url "https://downloads.isc.org/isc/bind9/9.16.5/bind-9.16.5.tar.xz"
+  sha256 "6378b3e51fef11a8be4794dc48e8111ba92d211c0dfd129a0c296ed06a3dc075"
   version_scheme 1
   head "https://gitlab.isc.org/isc-projects/bind9.git"
 
   bottle do
-    sha256 "0e6a63b7868105f659f4bc6642471e38e6b93635b129e92a9acc40bde6442e6b" => :catalina
-    sha256 "ed118b5f61519dab1f66da208121c6125f2e557652dd752800ef63fd3c9967f2" => :mojave
-    sha256 "8cff3d6ff5a9b5814ab056e697e49bbc31b6f850c0b33bcf20b9334cc5372350" => :high_sierra
+    sha256 "1fefd0e2f062786cdfd9a3bdf6b81839430032d1c62b7f7b0a65e58b2160c21d" => :catalina
+    sha256 "a308059d7b9d14e00460d2982cdd487d8884e9a458a2e7000aa6b67dddc13ae8" => :mojave
+    sha256 "6be976d462e67dc8d545006af4cb51230cb7ac702fc87f8877f1da7614db0851" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
   depends_on "json-c"
   depends_on "libuv"
   depends_on "openssl@1.1"
-  depends_on "python"
+  depends_on "python@3.8"
 
   resource "ply" do
     url "https://files.pythonhosted.org/packages/e5/69/882ee5c9d017149285cab114ebeab373308ef0f874fcdac9beb90e0ac4da/ply-3.11.tar.gz"
@@ -31,12 +31,12 @@ class Bind < Formula
   end
 
   def install
-    xy = Language::Python.major_minor_version "python3"
+    xy = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
     vendor_site_packages = libexec/"vendor/lib/python#{xy}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", vendor_site_packages
     resources.each do |r|
       r.stage do
-        system "python3", *Language::Python.setup_install_args(libexec/"vendor")
+        system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
@@ -46,8 +46,9 @@ class Bind < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--with-json-c",
                           "--with-openssl=#{Formula["openssl@1.1"].opt_prefix}",
+                          "--with-libjson=#{Formula["json-c"].opt_prefix}",
                           "--with-python-install-dir=#{vendor_site_packages}",
-                          "--with-python=#{Formula["python"].opt_bin}/python3",
+                          "--with-python=#{Formula["python@3.8"].opt_bin}/python3",
                           "--without-lmdb"
 
     system "make"
@@ -162,7 +163,7 @@ class Bind < Formula
     EOS
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   def plist
     <<~EOS

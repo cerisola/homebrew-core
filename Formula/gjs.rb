@@ -1,16 +1,15 @@
 class Gjs < Formula
   desc "JavaScript Bindings for GNOME"
   homepage "https://gitlab.gnome.org/GNOME/gjs/wikis/Home"
-  url "https://download.gnome.org/sources/gjs/1.64/gjs-1.64.1.tar.xz"
-  sha256 "55af83893e99ba2962eca46f47340a4cf8cba5b1966ab00a0f8b9c3034e9987c"
+  url "https://download.gnome.org/sources/gjs/1.64/gjs-1.64.4.tar.xz"
+  sha256 "a3cc3a8eda87074b2c363ffe28b29a5202d7f12914b6973f199acf2d1816d44c"
 
   bottle do
-    sha256 "44435c559ec592e03cb5b29039c5cae9fdf935f3eea10ab4e2c2a60d24e126e0" => :catalina
-    sha256 "35a77106b673b6b615a9d56b48078e11a8e33960326f5a37e9c5fc3ecfdb3659" => :mojave
-    sha256 "62125121215aac4e71de2369723668b8b40e5426522f753ab68235fbe1e9c527" => :high_sierra
+    sha256 "48ab51876b8cb4b93914f6ec9f97134d19883a3aecdf0fceeb39ba4565820c84" => :catalina
+    sha256 "3605114b6a6168aac10d3544cb44a8c543b94d1938f22edfe3b898e1f967136c" => :mojave
+    sha256 "37212a55eeac304e95953c4681c42a6eddf82eb62eca40bedc459c943ce55580" => :high_sierra
   end
 
-  depends_on "autoconf@2.13" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
@@ -21,14 +20,29 @@ class Gjs < Formula
   depends_on "nspr"
   depends_on "readline"
 
+  resource "autoconf@213" do
+    url "https://ftp.gnu.org/gnu/autoconf/autoconf-2.13.tar.gz"
+    mirror "https://ftpmirror.gnu.org/autoconf/autoconf-2.13.tar.gz"
+    sha256 "f0611136bee505811e9ca11ca7ac188ef5323a8e2ef19cffd3edb3cf08fd791e"
+  end
+
   resource "mozjs68" do
-    url "https://archive.mozilla.org/pub/firefox/releases/68.5.0esr/source/firefox-68.5.0esr.source.tar.xz"
-    sha256 "52e784f98a37624e8b207f1b23289c2c88f66dd923798cae891a586a6d94a6d1"
+    url "https://archive.mozilla.org/pub/firefox/releases/68.8.0esr/source/firefox-68.8.0esr.source.tar.xz"
+    sha256 "fa5b2266d225878d4b35694678f79fd7e7a6d3c62759a40326129bd90f63e842"
   end
 
   def install
     ENV.cxx11
-    ENV["_MACOSX_DEPLOYMENT_TARGET"] = ENV["MACOSX_DEPLOYMENT_TARGET"]
+
+    resource("autoconf@213").stage do
+      system "./configure", "--disable-debug",
+                            "--disable-dependency-tracking",
+                            "--program-suffix=213",
+                            "--prefix=#{buildpath}/autoconf",
+                            "--infodir=#{buildpath}/autoconf/share/info",
+                            "--datadir=#{buildpath}/autoconf/share"
+      system "make", "install"
+    end
 
     resource("mozjs68").stage do
       inreplace "config/rules.mk",
@@ -41,6 +55,10 @@ class Gjs < Formula
 
       mkdir("build") do
         ENV["PYTHON"] = "python"
+        ENV["_MACOSX_DEPLOYMENT_TARGET"] = ENV["MACOSX_DEPLOYMENT_TARGET"]
+        ENV["CC"] = Formula["llvm"].opt_bin/"clang"
+        ENV["CXX"] = Formula["llvm"].opt_bin/"clang++"
+        ENV.prepend_path "PATH", buildpath/"autoconf/bin"
         system "../js/src/configure", "--prefix=#{prefix}",
                               "--with-system-nspr",
                               "--with-system-zlib",
@@ -71,8 +89,7 @@ class Gjs < Formula
     # ensure that we don't run the meson post install script
     ENV["DESTDIR"] = "/"
 
-    args = %W[
-      --prefix=#{prefix}
+    args = std_meson_args + %w[
       -Dprofiler=disabled
       -Dinstalled_tests=false
       -Dbsymbolic_functions=false

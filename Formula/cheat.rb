@@ -1,17 +1,20 @@
 class Cheat < Formula
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/cheat/cheat"
-  url "https://github.com/cheat/cheat/archive/3.8.0.tar.gz"
-  sha256 "daa183b9328704bbd00fc423144ce29652b1750e895dbf9c99b131d98b7f01ec"
+  url "https://github.com/cheat/cheat/archive/4.0.2.tar.gz"
+  sha256 "87c832b25794d7acac2fa4bd3389c81819535f32242d5e99284da76a1a86f1f3"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "18edf4066c081f71bebe977b79b76254cbda30c00c075a299fb8f117d5eba52e" => :catalina
-    sha256 "2e36284e2c7fed7290151a4c1eb056e0113c95219de7b79604eccd4332a5f5c8" => :mojave
-    sha256 "7be1ba84ca206fcc9178a1afb216f1b43d3e2575f1ad53bacf52b355262cee56" => :high_sierra
+    sha256 "1b49b821d246cb6d14ee07a15e78220a94840eed6ed0e69f61a6e22546c05ca9" => :catalina
+    sha256 "ef318fc3e0335589b1ad5aa1c61b50907510b5cae4e58dd027d8bed8ec927f6e" => :mojave
+    sha256 "e05440e9dc3e6e9002442dd6c3bd1e2126e253de85ef2591219ce43f0d7eac2a" => :high_sierra
   end
 
   depends_on "go" => :build
+
+  conflicts_with "bash-snippets", because: "both install a `cheat` executable"
 
   def install
     system "go", "build", "-mod", "vendor", "-o", bin/"cheat", "./cmd/cheat"

@@ -3,6 +3,7 @@ class Neovim < Formula
   homepage "https://neovim.io/"
   url "https://github.com/neovim/neovim/archive/v0.4.3.tar.gz"
   sha256 "91a0b5d32204a821bf414690e6b48cf69224d1961d37158c2b383f6a6cf854d2"
+  license "Apache-2.0"
 
   bottle do
     sha256 "389ab254794ea04df8a106bf281c227c4fdee27c609d52951f32b9a0239031d6" => :catalina
@@ -68,7 +69,7 @@ class Neovim < Formula
       ].each do |rock|
         dir, rock = rock.split("/")
         cd "build/src/#{dir}" do
-          output = Utils.popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
+          output = Utils.safe_popen_read("luarocks", "unpack", lua_path, rock, "--tree=#{buildpath}/deps-build")
           unpack_dir = output.split("\n")[-2]
           cd unpack_dir do
             system "luarocks", "make", lua_path, "--tree=#{buildpath}/deps-build"

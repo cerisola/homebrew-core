@@ -1,14 +1,15 @@
 class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
-  url "https://github.com/sharkdp/bat/archive/v0.13.0.tar.gz"
-  sha256 "f4aee370013e2a3bc84c405738ed0ab6e334d3a9f22c18031a7ea008cd5abd2a"
+  url "https://github.com/sharkdp/bat/archive/v0.15.4.tar.gz"
+  sha256 "03b7c8ad6221ca87cecd71f9e3e2167f04f750401e2d3dcc574183aabeb76a8b"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7a3940396b74afc976f97c19194dbbdcbe93268f6eb657fd4b3422ce60f03e8f" => :catalina
-    sha256 "67a235ef3a22a87d17333d44f547146b2d0c13fc1ec9b076133770b565176f51" => :mojave
-    sha256 "1dc30e4059defc1475a2969236fc058a218561d930ef3d7253f53f271d0f4c40" => :high_sierra
+    sha256 "ae2c26d25a0dac35bd839a091f89201b5d9eee32ef613325426c7e8b8812d1a9" => :catalina
+    sha256 "40dea8577c06a08d3e3bd20a949245ff02ea85153d25f72a65cee03c1b1e1cf9" => :mojave
+    sha256 "59bed16f8a4741a9d92f62cb7c9965d1abe40dc5dd2323bc4f37e71330b1abf2" => :high_sierra
   end
 
   depends_on "rust" => :build
@@ -17,15 +18,12 @@ class Bat < Formula
 
   def install
     ENV["SHELL_COMPLETIONS_DIR"] = buildpath
-    system "cargo", "install", "--locked", "--root", prefix, "--path", "."
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+    system "cargo", "install", *std_cargo_args
 
-    # In https://github.com/sharkdp/bat/pull/673,
-    # documentation and fish autocompletion got parameterized
-    inreplace "assets/manual/bat.1.in", "{{PROJECT_EXECUTABLE | upcase}}", "bat"
-    inreplace "assets/manual/bat.1.in", "{{PROJECT_EXECUTABLE}}", "bat"
-    inreplace "assets/completions/bat.fish.in", "{{PROJECT_EXECUTABLE}}", "bat"
-    man1.install "assets/manual/bat.1.in" => "bat.1"
-    fish_completion.install "assets/completions/bat.fish.in" => "bat.fish"
+    assets_dir = Dir["target/release/build/bat-*/out/assets"].first
+    man1.install "#{assets_dir}/manual/bat.1"
+    fish_completion.install "#{assets_dir}/completions/bat.fish"
   end
 
   test do

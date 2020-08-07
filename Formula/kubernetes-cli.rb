@@ -2,18 +2,21 @@ class KubernetesCli < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      :tag      => "v1.18.0",
-      :revision => "9e991415386e4cf155a24b1da15becaa390438d8"
+      tag:      "v1.18.6",
+      revision: "dff82dc0de47299ab66c83c626e08b245ab19037"
+  license "Apache-2.0"
   head "https://github.com/kubernetes/kubernetes.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "061548196115c50d1e4b0923d1c5401adb62626feb59a0ed81aa6517477219ec" => :catalina
-    sha256 "0c47011e194e620777708ed29f243199aa9aa59b00f11ad70b21da6c2bc7db1e" => :mojave
-    sha256 "23e85356412bed6d80af7b27c8c5a7db9427d8983d30cfc9d48a7d9595a40fae" => :high_sierra
+    sha256 "edd1688fe0f1d752df1d71e559839e50bf6b6ef78cd03ceac197c079c2465c8e" => :catalina
+    sha256 "f0da1d2a1f7bd4d687055aca461785107185b86e69dab008fc76dcf3d6cec170" => :mojave
+    sha256 "9e7cb0b726f65efa71868ce23541fefde252715fcfd36679f9fd0cb6bb0d411b" => :high_sierra
   end
 
   depends_on "go" => :build
+
+  uses_from_macos "rsync" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -30,11 +33,11 @@ class KubernetesCli < Formula
       bin.install "_output/local/bin/darwin/amd64/kubectl"
 
       # Install bash completion
-      output = Utils.popen_read("#{bin}/kubectl completion bash")
+      output = Utils.safe_popen_read("#{bin}/kubectl", "completion", "bash")
       (bash_completion/"kubectl").write output
 
       # Install zsh completion
-      output = Utils.popen_read("#{bin}/kubectl completion zsh")
+      output = Utils.safe_popen_read("#{bin}/kubectl", "completion", "zsh")
       (zsh_completion/"_kubectl").write output
 
       prefix.install_metafiles

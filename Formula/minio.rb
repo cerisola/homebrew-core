@@ -1,37 +1,37 @@
 class Minio < Formula
-  desc "Amazon S3 compatible object storage server"
-  homepage "https://github.com/minio/minio"
+  desc "High Performance, Kubernetes Native Object Storage"
+  homepage "https://min.io"
   url "https://github.com/minio/minio.git",
-      :tag      => "RELEASE.2020-03-25T07-03-04Z",
-      :revision => "ef6304c5c2f0e962c4f75cf83aae6ac7b1073b5f"
-  version "20200325070304"
+      tag:      "RELEASE.2020-08-04T23-10-51Z",
+      revision: "0b8255529a6f74df81f975869b6f2b93ff4b4dda"
+  version "20200804231051"
+  license "Apache-2.0"
+  head "https://github.com/minio/minio.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1c597349e9ae11594e7a688a46b51788d8170e94beeaec68e1faefdea11ae34e" => :catalina
-    sha256 "c8f178fcbc8b950ad498e50857936b4baee64c26e8a27d2627163efa5bbd0bda" => :mojave
-    sha256 "0841c8aa44052cbb26222dd68ab995e4194caa5aacac80f95c835581fadf412e" => :high_sierra
+    sha256 "9a0d24a53cbeba9c61f042e9f5584f04c191209e719ce96b925c7bb08980cc5c" => :catalina
+    sha256 "d7959d2405070f25c22c08e946367490db17ae414206334e588a9368b7d5dde3" => :mojave
+    sha256 "344bc6c6f3f970f0b11ce1a104cdf947055f6de5b9ba54a392dd238d12f6c3b2" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
     if build.head?
-      system "go", "build", "-trimpath", "-o", bin/"minio"
+      system "go", "build", *std_go_args
     else
       release = `git tag --points-at HEAD`.chomp
-      version = release.gsub(/RELEASE\./, "").chomp.gsub(/T(\d+)\-(\d+)\-(\d+)Z/, 'T\1:\2:\3Z')
+      version = release.gsub(/RELEASE\./, "").chomp.gsub(/T(\d+)-(\d+)-(\d+)Z/, 'T\1:\2:\3Z')
       commit = `git rev-parse HEAD`.chomp
       proj = "github.com/minio/minio"
 
-      system "go", "build", "-trimpath", "-o", bin/"minio", "-ldflags", <<~EOS
+      system "go", "build", *std_go_args, "-ldflags", <<~EOS
         -X #{proj}/cmd.Version=#{version}
         -X #{proj}/cmd.ReleaseTag=#{release}
         -X #{proj}/cmd.CommitID=#{commit}
       EOS
     end
-
-    prefix.install_metafiles
   end
 
   def post_install
@@ -39,7 +39,7 @@ class Minio < Formula
     (etc/"minio").mkpath
   end
 
-  plist_options :manual => "minio server"
+  plist_options manual: "minio server"
 
   def plist
     <<~EOS

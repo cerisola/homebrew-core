@@ -2,22 +2,22 @@ class Devspace < Formula
   desc "CLI helps develop/deploy/debug apps with Docker and k8s"
   homepage "https://devspace.cloud/docs"
   url "https://github.com/devspace-cloud/devspace.git",
-    :tag      => "v4.9.1",
-    :revision => "4e25a2c1beb11ed8988529f4e72c1d096f5e1b90"
+    tag:      "v4.14.0",
+    revision: "c62fc7e1531aadafaecd418cd6f2c260934244e6"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "51d9f1197eb45dfbef3916e5da3148d03ab02774beccf3ad2fb878f5a764f919" => :catalina
-    sha256 "528c8dd8508fdbc03246541dbba40bd6af0a88dc955f23000bf16ba189f81ade" => :mojave
-    sha256 "3e1ef04440136709f3426e8273828d4d4fc1d169a792c8760ba38dda6e4f8296" => :high_sierra
+    sha256 "09545e263d88a5cce5129d58b7cecc2b4f609266bb2f7280c911bb6320304e6e" => :catalina
+    sha256 "85629be8d03222a334b32ddd61dc9b599bd86a8644295faf4ea050020568eeba" => :mojave
+    sha256 "2a8e26bec72882dd303856c7960b664f558967382e82a2285cc871075f9639a3" => :high_sierra
   end
 
   depends_on "go" => :build
   depends_on "kubernetes-cli"
 
   def install
-    system "go", "build", "-trimpath", "-o", bin/"devspace"
-    prefix.install_metafiles
+    system "go", "build", *std_go_args
   end
 
   test do

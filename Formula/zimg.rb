@@ -3,6 +3,7 @@ class Zimg < Formula
   homepage "https://github.com/sekrit-twc/zimg"
   url "https://github.com/sekrit-twc/zimg/archive/release-2.9.3.tar.gz"
   sha256 "a15c0483fbe945ffe695a1a989bc43b3381c8bf33e2d1760464ec21d32cdf30b"
+  license "WTFPL"
   head "https://github.com/sekrit-twc/zimg.git"
 
   bottle do
@@ -17,7 +18,7 @@ class Zimg < Formula
   depends_on "libtool" => :build
 
   # Upstream has decided not to fix https://github.com/sekrit-twc/zimg/issues/52
-  depends_on :macos => :el_capitan
+  depends_on macos: :el_capitan
 
   def install
     system "./autogen.sh"

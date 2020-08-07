@@ -13,11 +13,15 @@ class Sdl2 < Formula
   end
 
   head do
-    url "https://hg.libsdl.org/SDL", :using => :hg
+    url "https://hg.libsdl.org/SDL", using: :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+  end
+
+  on_linux do
+    depends_on "pkg-config" => :build
   end
 
   # Fix library extension in CMake config file.

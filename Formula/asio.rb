@@ -1,15 +1,16 @@
 class Asio < Formula
   desc "Cross-platform C++ Library for asynchronous programming"
   homepage "https://think-async.com/Asio"
-  url "https://downloads.sourceforge.net/project/asio/asio/1.14.0%20%28Stable%29/asio-1.14.0.tar.bz2"
-  sha256 "2e1be1a518a568525f79b5734d13731b6b4e4399ec576a0961db6e2d86112973"
+  url "https://downloads.sourceforge.net/project/asio/asio/1.16.1%20%28Stable%29/asio-1.16.1.tar.bz2"
+  sha256 "e271db76dbbcda9835ed1c9c94deb2ba3f4589c3ebcaa71d99ac694b8d62638c"
+  license "BSL-1.0"
   head "https://github.com/chriskohlhoff/asio.git"
 
   bottle do
     cellar :any
-    sha256 "3f2c8ab0aadadda4d4707b834787d0c02841a31cec763b4c4d32ca3f859bd314" => :catalina
-    sha256 "7be9a1e39bbd3fa59059fc9d8d98f7f43520da052cf245f195bbdd325ec1a8ec" => :mojave
-    sha256 "ea18bc6cca19d15ff019a98be7a9c31c34e477b5daac54ce7379f02a6635247f" => :high_sierra
+    sha256 "1c2a224aa3c62fdf4d6f80b54c3297e38992c53a25f977b2492c4de37848c34f" => :catalina
+    sha256 "aac238cdd1c834dace440c7dd42cd410bfc1908a62b0710ec54ef4e3b1100a40" => :mojave
+    sha256 "a25de24a946f9e0a28a4ed33271bb577a356997052ece5eaa46036f7f5863c1a" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -35,16 +36,16 @@ class Asio < Formula
   end
 
   test do
-    found = [pkgshare/"examples/cpp11/http/server/http_server",
-             pkgshare/"examples/cpp03/http/server/http_server"].select(&:exist?)
+    found = Dir[pkgshare/"examples/cpp{11,03}/http/server/http_server"]
     raise "no http_server example file found" if found.empty?
 
+    port = free_port
     pid = fork do
-      exec found.first, "127.0.0.1", "8080", "."
+      exec found.first, "127.0.0.1", port.to_s, "."
     end
     sleep 1
     begin
-      assert_match /404 Not Found/, shell_output("curl http://127.0.0.1:8080")
+      assert_match /404 Not Found/, shell_output("curl http://127.0.0.1:#{port}")
     ensure
       Process.kill 9, pid
       Process.wait pid

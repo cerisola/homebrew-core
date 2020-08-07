@@ -1,27 +1,32 @@
 class Kubeaudit < Formula
   desc "Helps audit your Kubernetes clusters against common security controls"
   homepage "https://github.com/Shopify/kubeaudit"
-  url "https://github.com/Shopify/kubeaudit/archive/v0.7.0.tar.gz"
-  sha256 "b8f97a42fe617ec9cf07931f4b74f02b31676e8b8e8930c0d5f8db380b27e670"
+  url "https://github.com/Shopify/kubeaudit/archive/v0.9.1.tar.gz"
+  sha256 "e5a3b73780ed90660e45e268669fc648bc90bbba59713b1594dbbde76646970a"
+  license "MIT"
   head "https://github.com/Shopify/kubeaudit.git"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "759aa4ad288b11224b5d8b4594df793e4c625768bfae76e39b81c36f84983d82" => :catalina
-    sha256 "2339bb6cd8f87632ab29b7938507fb971e15ec30c5a297c2708f186a52ef2af6" => :mojave
-    sha256 "696663bd106d38390d12bbf41731ed7e3cf2b2b31d8e1515eb164ccce9381aab" => :high_sierra
+    sha256 "aebd09d884ebbfcede48b59fd74b7796d5210ae573c1f1f12e080c3f0317c722" => :catalina
+    sha256 "9c55b9b53e3c8467813a212cc10151819553ba9628cd6a4c8d2803fa9d4374e3" => :mojave
+    sha256 "118faff8f6a7887e090b032cf6a61e0f48b3e864d931462b43535642d179b1f8" => :high_sierra
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"kubeaudit"
-    prefix.install_metafiles
+    ldflags = %W[
+      -s -w
+      -X github.com/Shopify/kubeaudit/cmd.Version=#{version}
+      -X github.com/Shopify/kubeaudit/cmd.BuildDate=#{Date.today}
+    ]
+
+    system "go", "build", "-ldflags", ldflags.join(" "), *std_go_args, "./cmd"
   end
 
   test do
-    output = shell_output(bin/"kubeaudit -c /some-file-that-does-not-exist all 2>&1").chomp
-    assert_match "Unable to load kubeconfig. Could not open file /some-file-that-does-not-exist.", output
+    output = shell_output(bin/"kubeaudit -c /some-file-that-does-not-exist all 2>&1", 1).chomp
+    assert_match "failed to open kubeconfig file /some-file-that-does-not-exist", output
   end
 end

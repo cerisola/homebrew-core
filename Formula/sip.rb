@@ -1,21 +1,21 @@
 class Sip < Formula
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "https://www.riverbankcomputing.com/software/sip/intro"
-  url "https://www.riverbankcomputing.com/static/Downloads/sip/4.19.21/sip-4.19.21.tar.gz"
-  sha256 "6af9979ab41590e8311b8cc94356718429ef96ba0e3592bdd630da01211200ae"
-  head "https://www.riverbankcomputing.com/hg/sip", :using => :hg
+  url "https://www.riverbankcomputing.com/static/Downloads/sip/4.19.23/sip-4.19.23.tar.gz"
+  sha256 "22ca9bcec5388114e40d4aafd7ccd0c4fe072297b628d0c5cdfa2f010c0bc7e7"
+  head "https://www.riverbankcomputing.com/hg/sip", using: :hg
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b75958d96502b096517bdda7250408f5aa5167537aed418b9431f6535391e6ef" => :catalina
-    sha256 "86ea5c0090c9901d435cb82986dc25ed43a65f39c1fd41fa81d23631f261b278" => :mojave
-    sha256 "aa8a6c4122d15687e8f279ad342d1a1a232aa658e0179ac38f67c1a2e0a26f8c" => :high_sierra
+    sha256 "b2dcfcc119e157da7aa3865e90f4f7a083129b2a4e4a30523570aa54ca3db47f" => :catalina
+    sha256 "6a092e82f96e2898713e83aca3ee9d9782fc2a9baa1d6a4ac665cb784fdef5a1" => :mojave
+    sha256 "85cfd373309794850293defa3921a23d010b2ef011bb4a93851fd45349bf2a27" => :high_sierra
   end
 
-  depends_on "python"
+  depends_on "python@3.8"
 
   def install
-    ENV.prepend_path "PATH", Formula["python"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.8"].opt_bin
     ENV.delete("SDKROOT") # Avoid picking up /Application/Xcode.app paths
 
     if build.head?

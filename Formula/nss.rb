@@ -1,20 +1,23 @@
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_51_RTM/src/nss-3.51.tar.gz"
-  sha256 "75348b3b3229362486c57a880db917da1f96ef4eb639dc9cc2ff17d72268459c"
+  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_55_RTM/src/nss-3.55.tar.gz"
+  sha256 "fc692e3db45a082ee6328cd989e795c171a00df9c518df090937f7604f850004"
+  license "MPL-2.0"
 
   bottle do
     cellar :any
-    sha256 "c74cf67fba4746d8d81b24df9c0925305554aa9c683f3384eef982ffc0b8f9a2" => :catalina
-    sha256 "0719815761ef04a23548bdbb050bb5dc2a477e5894f0b7905c32e6a451ff892f" => :mojave
-    sha256 "9073c84211c184ed1952e3c8960236a89eff1dfdde963c2755f450222e5c2166" => :high_sierra
+    sha256 "4eeac799c7c64280aad53b5e773edb9d1f071a0a25b784e36f4e7091377c5709" => :catalina
+    sha256 "0b6b8048c6e9126fbe80cd47001aa1e42659a163b9d0805d1b69905789c478e3" => :mojave
+    sha256 "0605ee3d39875c3447887d38fea27efb50924a2251c18a97f577bcedba4b8917" => :high_sierra
   end
 
   depends_on "nspr"
 
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
+
+  conflicts_with "resty", because: "both install `pp` binaries"
 
   def install
     ENV.deparallelize

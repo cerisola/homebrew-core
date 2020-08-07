@@ -3,14 +3,15 @@ require "language/node"
 class Ungit < Formula
   desc "The easiest way to use git. On any platform. Anywhere"
   homepage "https://github.com/FredrikNoren/ungit"
-  url "https://registry.npmjs.org/ungit/-/ungit-1.5.6.tgz"
-  sha256 "f105bcd9db7d498a7c472e807836820dca3a86ffc06ba5207e9c28f50761222b"
+  url "https://registry.npmjs.org/ungit/-/ungit-1.5.9.tgz"
+  sha256 "788102743a3766554d2a820d3aaf5cb7d88759199942e61e8ff7db6cb15e8dad"
+  license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "df95d903830745c30847bb392c132d1ae7f7153dc93fa0907ae0476b23259fdb" => :catalina
-    sha256 "cdc3fb0e814a174f6638f89ea71883898256e08a10bd550fea0055046ec3fe19" => :mojave
-    sha256 "5159c2c7cd97a7de351b8121c93b57a5cdebd59287cab7ff24ad668256ca180f" => :high_sierra
+    sha256 "7dd44ea62872b6b74da4a37c831226621642dae6c6df9fe22023541807efe4ba" => :catalina
+    sha256 "de93814870e37281df7262938f7a7342d4af8fa587eec8e32dd154089d0bc418" => :mojave
+    sha256 "71672f7b2e885d612d4590dafb8cc11b84a47e77e0d89de85879974b77c4a649" => :high_sierra
   end
 
   depends_on "node"
@@ -21,22 +22,13 @@ class Ungit < Formula
   end
 
   test do
-    server = TCPServer.new(0)
-    port = server.addr[1]
-    server.close
+    port = free_port
 
-    ppid = fork do
-      exec bin/"ungit", "--no-launchBrowser", "--port=#{port}", "--autoShutdownTimeout=6000"
+    fork do
+      exec bin/"ungit", "--no-launchBrowser", "--port=#{port}"
     end
-    sleep 5
+    sleep 8
+
     assert_includes shell_output("curl -s 127.0.0.1:#{port}/"), "<title>ungit</title>"
-  ensure
-    if ppid
-      Process.kill("TERM", ppid)
-      # ensure that there are no spawned child processes left
-      child_p = pipe_output("ps -o pid,ppid").scan(/^(\d+)\s+#{ppid}\s*$/).map { |p| p[0].to_i }
-      child_p.each { |pid| Process.kill("TERM", pid) }
-      Process.wait(ppid)
-    end
   end
 end

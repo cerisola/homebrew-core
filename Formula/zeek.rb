@@ -2,14 +2,15 @@ class Zeek < Formula
   desc "Network security monitor"
   homepage "https://www.zeek.org"
   url "https://github.com/zeek/zeek.git",
-      :tag      => "v3.1.1",
-      :revision => "2c8d2af0e7b9456ee5e2fe1d20673be245818f62"
+      tag:      "v3.1.5",
+      revision: "468ede389827cbe68505ce36c08d7fd4eb869111"
+  revision 1
   head "https://github.com/zeek/zeek.git"
 
   bottle do
-    sha256 "5927d057913571c249e400ad3b9829489ade2cfca49919ef75fe65cc628c9d52" => :catalina
-    sha256 "c0b510e132f50c089e6d2c302b00e17b7bd0771efbc8aed154890785379bcb28" => :mojave
-    sha256 "0cbd50046531824910c501d10d9cbc7137f31c4f1657fd2c0882260ec2fb4845" => :high_sierra
+    sha256 "8cebfc7ff014e94454d5bbf3890c08203766f63b5b739ff5c2fa26d0b10aa8d1" => :catalina
+    sha256 "7ae189863fc53a17cceaadb251004f6790947566596495c8601dc72dfad26096" => :mojave
+    sha256 "6a1b7eeb62e992b2fdd2ea85dfc6ec4245e026a433d67ce7da72e7db29b902a2" => :high_sierra
   end
 
   depends_on "bison" => :build
@@ -17,11 +18,11 @@ class Zeek < Formula
   depends_on "swig" => :build
   depends_on "caf"
   depends_on "geoip"
+  depends_on :macos # Due to Python 2 (https://github.com/zeek/zeek/issues/706)
   depends_on "openssl@1.1"
 
   uses_from_macos "flex"
   uses_from_macos "libpcap"
-  uses_from_macos "python@2" # See https://github.com/zeek/zeek/issues/706
 
   def install
     mkdir "build" do

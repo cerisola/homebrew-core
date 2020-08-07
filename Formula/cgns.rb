@@ -3,12 +3,15 @@ class Cgns < Formula
   homepage "http://cgns.org/"
   url "https://github.com/CGNS/CGNS/archive/v4.1.1.tar.gz"
   sha256 "055d345c3569df3ae832fb2611cd7e0bc61d56da41b2be1533407e949581e226"
+  license "BSD-3-Clause"
+  revision 2
+  head "https://github.com/CGNS/CGNS.git"
 
   bottle do
     cellar :any
-    sha256 "58d72a07332c405794ad894f3660915603cf68a0a113c2ef7a53be90ddbb1c45" => :catalina
-    sha256 "3061b10281a14b48f51e896acafb793cd2f6acbf2881a260a22a0dfcf3d83cf2" => :mojave
-    sha256 "d7a8544d2c0c29019874097d8f70cdc68e46e5f635201130f91020d1b0af73a0" => :high_sierra
+    sha256 "ac5ed0dcdfd12f7e07c483d355b26d46f8380cfadb069b60d7bee21c12f6d31a" => :catalina
+    sha256 "e9bcc9d1af96b8ebc5ecb0d5ba16165edf750f75e53b6b81997bb5078b718c68" => :mojave
+    sha256 "cd64974956ac61d5574db91ceba7bcf99e17981be478864ef7b368340e993025" => :high_sierra
   end
 
   depends_on "cmake" => :build
@@ -29,6 +32,9 @@ class Cgns < Formula
       system "make"
       system "make", "install"
     end
+
+    # Avoid references to Homebrew shims
+    inreplace include/"cgnsBuild.defs", HOMEBREW_LIBRARY/"Homebrew/shims/mac/super/clang", "/usr/bin/clang"
   end
 
   test do

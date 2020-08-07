@@ -1,18 +1,27 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/12/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v12.2/postgresql-12.2.tar.bz2"
-  sha256 "ad1dcc4c4fc500786b745635a9e1eba950195ce20b8913f50345bb7d5369b5de"
+  url "https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
+  sha256 "94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41"
+  license "PostgreSQL"
 
   bottle do
-    sha256 "64bab543c341a2e26246aa434c8ef27c48985f397996a975751f2c5ea91cd3c3" => :catalina
-    sha256 "a5018ed3a4e60e321d1d5d10eb87616243e80c81673b4e59bbff294a24f5cef9" => :mojave
-    sha256 "9ac9a6f2272f22ae16855337288b156b70ae327624cdf8ddfb73cabd78fe783f" => :high_sierra
+    sha256 "2278f4c6e51a0be17b8fe91667c2bda6318c2dabe39c120be1afa374ee68d4a5" => :catalina
+    sha256 "d8e3e4541a895293cdf7f081747bcac80fe2a85665ca8165b69e8c6e7061acca" => :mojave
+    sha256 "98289d8fe1c54cd352e0c216607f5097107e96552df6f01d4d5842bd0d3aae28" => :high_sierra
   end
 
   keg_only "conflicts with postgres formula"
 
+  # GSSAPI provided by Kerberos.framework crashes when forked.
+  # See https://github.com/Homebrew/homebrew-core/issues/47494.
+  depends_on "krb5"
+
   depends_on "openssl@1.1"
+
+  on_linux do
+    depends_on "readline"
+  end
 
   def install
     system "./configure", "--disable-debug",

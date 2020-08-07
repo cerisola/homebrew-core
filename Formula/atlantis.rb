@@ -1,13 +1,15 @@
 class Atlantis < Formula
   desc "Terraform Pull Request Automation tool"
   homepage "https://www.runatlantis.io/"
-  url "https://github.com/runatlantis/atlantis/archive/v0.11.1.tar.gz"
-  sha256 "62e1ceeb1aee75f7be82b4158c44eed06e17ce896dd47879e93550d10f05e330"
+  url "https://github.com/runatlantis/atlantis/archive/v0.14.0.tar.gz"
+  sha256 "32e24f4d341be578137f74385c9c97dd10461d260e23c77ed84298c578ec39e6"
+  license "Apache-2.0"
+
   bottle do
     cellar :any_skip_relocation
-    sha256 "fe8ad0c5f2bc948ea025f68af0969e7880b00b7223f76744fc2007251137ef4d" => :catalina
-    sha256 "efb339eba2e9d7dd3088ea781498491df10472971027b0414014aab687f716ac" => :mojave
-    sha256 "49f3c99cc8e528d3d31e6dae17c47ef54ebc9ab0cf32119d2b44fae201327891" => :high_sierra
+    sha256 "f7ffb292c19d036fe0d8768b2e7954d7d4b7b3511065bb1673db626c0fe06107" => :catalina
+    sha256 "5e4c66b514ff450a0161a5e3792b4a1ba0498b29c4fcaf9422f246f454955030" => :mojave
+    sha256 "b8d781f0ae4913a2a7b84ffc01c524528c536547bc219fd55a11b4db49ffe898" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -19,14 +21,14 @@ class Atlantis < Formula
 
   test do
     system bin/"atlantis", "version"
-    port = 4141
+    port = free_port
     loglevel = "info"
     gh_args = "--gh-user INVALID --gh-token INVALID --gh-webhook-secret INVALID --repo-whitelist INVALID"
     command = bin/"atlantis server --atlantis-url http://invalid/ --port #{port} #{gh_args} --log-level #{loglevel}"
     pid = Process.spawn(command)
     system "sleep", "5"
     output = `curl -vk# 'http://localhost:#{port}/' 2>&1`
-    assert_match %r{HTTP\/1.1 200 OK}m, output
+    assert_match %r{HTTP/1.1 200 OK}m, output
     assert_match "atlantis", output
     Process.kill("TERM", pid)
   end

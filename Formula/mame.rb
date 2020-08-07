@@ -1,16 +1,17 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0219.tar.gz"
-  version "0.219"
-  sha256 "9513c046033e451d86adfdd297da8a2ad9b6642a2f3ef669e1443d0acc2c2e0b"
+  url "https://github.com/mamedev/mame/archive/mame0222.tar.gz"
+  version "0.222"
+  sha256 "3380b86d1bc5bc09f5bb4099f3833b6fba924a8bd189aac4dab149afba799ce7"
+  license "GPL-2.0"
   head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
-    sha256 "d7117f326fd3b009a92ed2ee11f35ffe8eb076f2f121106756b090fc1bdd93ad" => :catalina
-    sha256 "baae3e489fb6025d9d984d1746a76e1e79615e522d6adbb57bc2787a02b15ff8" => :mojave
-    sha256 "a02f22733af9275e3c4d1b83dda0fc14a0b1543fc78be646933aa3260c0c44b6" => :high_sierra
+    sha256 "000191564dea106488133ae2ea461996a9c8cd8b8b3a3997374d98e09ddefc3d" => :catalina
+    sha256 "c0235ae12cd2635ae685b54b29b7d8417790788a2b9c4103abde25dff289d546" => :mojave
+    sha256 "51713083e7f08faacfb9aa5dc9a758a43915b6466109ccfe994498c83b5b3311" => :high_sierra
   end
 
   depends_on "glm" => :build
@@ -24,7 +25,7 @@ class Mame < Formula
   # Need C++ compiler and standard library support C++14.
   # Build failure on Sierra, see:
   # https://github.com/Homebrew/homebrew-core/pull/39388
-  depends_on :macos => :high_sierra
+  depends_on macos: :high_sierra
   depends_on "portaudio"
   depends_on "portmidi"
   depends_on "sdl2"

@@ -10,13 +10,14 @@
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "https://bitbucket.org/mutt/mutt/downloads/mutt-1.13.5.tar.gz"
-  sha256 "6cd71b5b3e6b255afef6bed3b5e1e8ee9819b3d7c9839fd95e798045882aa653"
+  url "https://bitbucket.org/mutt/mutt/downloads/mutt-1.14.6.tar.gz"
+  sha256 "47972a0152b81b9f67ff322a0a6682b914c15545bfdeac6bcc2f2c0bf9361844"
+  license "GPL-2.0"
 
   bottle do
-    sha256 "3bcdd2904f7a76d195020188134d9b4566a3d905f43e70a2041c684e6fa9bce3" => :catalina
-    sha256 "64fcaf845a5dc2500e73cc6ae1988679ce139b1573d07b6d899a804d4033382a" => :mojave
-    sha256 "0bdcaa2f901111df911aeebb4b69b67f8907a614b3187d12f82aca17c07bd744" => :high_sierra
+    sha256 "082daa6e0a39f0571b6d4ed96319783ea3bd0c466dec391161bd77bac602ff25" => :catalina
+    sha256 "308286b170d87edf5e453641c3c749d7aefa0ec2c6d602ae883949ba09b6c2fe" => :mojave
+    sha256 "f6189decba76d0f635165027bdf71cd76d388ef4244bacb69d53f6da38570f93" => :high_sierra
   end
 
   head do
@@ -38,7 +39,7 @@ class Mutt < Formula
   uses_from_macos "zlib"
 
   conflicts_with "tin",
-    :because => "both install mmdf.5 and mbox.5 man pages"
+    because: "both install mmdf.5 and mbox.5 man pages"
 
   def install
     user_in_mail_group = Etc.getgrnam("mail").mem.include?(ENV["USER"])

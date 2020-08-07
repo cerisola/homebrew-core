@@ -1,15 +1,15 @@
 class Fping < Formula
   desc "Scriptable ping program for checking if multiple hosts are up"
   homepage "https://fping.org/"
-  url "https://fping.org/dist/fping-4.2.tar.gz"
-  sha256 "7d339674b6a95aae1d8ad487ff5056fd95b474c3650938268f6a905c3771b64a"
+  url "https://fping.org/dist/fping-4.4.tar.gz"
+  sha256 "9f854b65a52dc7b1749d6743e35d0a6268179d1a724267339fc9a066b2b72d11"
+  license "BSD-3-Clause"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bdd460be7f04a61f6f39f6c01eae2b6c00b60ce81038099a3f2006c72ff5d92f" => :catalina
-    sha256 "9c4a6b8e45092ee0d3d85950b8b2e6bd1826622c2d0fbd34f7128dc521b9db28" => :mojave
-    sha256 "2f29dd826dd9c11a5d3be999d12e1728280d6fcea8a5b4d1cdd3cbc076bb9640" => :high_sierra
-    sha256 "7f3cf105d16e65ee1911babd08cab37faf69cc29bdcf55c38221102fa52d7a6d" => :sierra
+    sha256 "140901f23d87023cc0234ee3ba14dfd46abaac8a0f3846c0c0a33010a74ffe1b" => :catalina
+    sha256 "93d10806350b4f718d37ec248901d2b0572943501f604a0c4021af0b48117a43" => :mojave
+    sha256 "d10f894fc890a3e4625b7dd603d84c407e3ec1a15902e09a6395f2df6216aa31" => :high_sierra
   end
 
   head do

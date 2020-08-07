@@ -3,6 +3,7 @@ class Glances < Formula
   homepage "https://nicolargo.github.io/glances/"
   url "https://github.com/nicolargo/glances/archive/v3.1.4.1.tar.gz"
   sha256 "0347a0b949451fd0022c0f22e54092fe526120a776af1f2bde1ea7ba61d6b792"
+  license "LGPL-3.0"
 
   bottle do
     cellar :any_skip_relocation
@@ -228,11 +229,6 @@ class Glances < Formula
     sha256 "893a841445663e0c4c20d1111ce41484bd62d58f59d653d0485187343368ef4a"
   end
 
-  resource "bernhard" do
-    url "https://files.pythonhosted.org/packages/51/d4/b2701097f9062321262c4d4e3488fdf127887502b2619e8fd1ae13955a36/bernhard-0.2.6.tar.gz"
-    sha256 "7efafa3ae1221a465fcbd74c4f78e5ad4a1841b9fa70c95eb38ba103a71bdb9b"
-  end
-
   def install
     xy = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
@@ -246,7 +242,7 @@ class Glances < Formula
     system "python3", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
 
     prefix.install libexec/"share"
   end
@@ -254,7 +250,7 @@ class Glances < Formula
   test do
     read, write = IO.pipe
     pid = fork do
-      exec bin/"glances", "-q", "--export", "csv", "--export-csv-file", "/dev/stdout", :out => write
+      exec bin/"glances", "-q", "--export", "csv", "--export-csv-file", "/dev/stdout", out: write
     end
     header = read.gets
     assert_match "timestamp", header

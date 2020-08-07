@@ -1,15 +1,16 @@
 class Nushell < Formula
   desc "Modern shell for the GitHub era"
   homepage "https://www.nushell.sh"
-  url "https://github.com/nushell/nushell/archive/0.11.0.tar.gz"
-  sha256 "75f4c3785c863db75c7f6d49e479c69e50c51daacb0bb76527fd632d7bd362f1"
+  url "https://github.com/nushell/nushell/archive/0.17.0.tar.gz"
+  sha256 "85203e8f5531a8a362d25a1b9ae0135a605b70770cb249e268f17dc5bd794249"
+  license "MIT"
   head "https://github.com/nushell/nushell.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "11b4716e3fec8d185bf81278b4be3e5c997b9cf5ee08b186416dc6818b09fef0" => :catalina
-    sha256 "9365cc66a4775a8cf9e861ac32de03a572ee59c47e45bb66faeafb7d6ce33630" => :mojave
-    sha256 "c64edd2d9e4bf9b6de9b933fbb9111d5012f8bceeb945d7d13103ade89751402" => :high_sierra
+    sha256 "1ddc25f761961433af26fd2fae2ce1e62313c83f963b3a1336364fd6740f63f1" => :catalina
+    sha256 "15e98d6a0d37f3ceb3997ae2881bd6195b764f98efbcaddee6805437066a55dd" => :mojave
+    sha256 "6ca2256eff4dbc529559bc8bb5ef0f1f2db9632f776e91f3a5d1ada096c5501c" => :high_sierra
   end
 
   depends_on "rust" => :build
@@ -17,12 +18,16 @@ class Nushell < Formula
 
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "pkg-config" => :build
+  end
+
   def install
-    system "cargo", "install", "--features", "stable", "--locked", "--root", prefix, "--path", "."
+    system "cargo", "install", "--features", "stable", *std_cargo_args
   end
 
   test do
-    assert_equal pipe_output("#{bin}/nu", 'echo \'{"foo":1, "bar":2}\' | from-json | get bar | echo $it'),
-    "Welcome to Nushell #{version} (type 'help' for more info)\n~ \n❯ 2~ \n❯ "
+    assert_match "homebrew_test",
+      pipe_output("#{bin}/nu", 'echo \'{"foo":1, "bar" : "homebrew_test"}\' | from json | get bar')
   end
 end

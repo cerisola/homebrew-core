@@ -1,8 +1,8 @@
 class Gradle < Formula
   desc "Open-source build automation tool based on the Groovy and Kotlin DSL"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-6.3-all.zip"
-  sha256 "0f316a67b971b7b571dac7215dcf2591a30994b3450e0629925ffcfe2c68cc5c"
+  url "https://services.gradle.org/distributions/gradle-6.5.1-all.zip"
+  sha256 "143a28f54f1ae93ef4f72d862dbc3c438050d81bb45b4601eb7076e998362920"
 
   bottle :unneeded
 
@@ -12,12 +12,13 @@ class Gradle < Formula
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin docs lib src]
     (bin/"gradle").write_env_script libexec/"bin/gradle",
-      :JAVA_HOME => "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+      JAVA_HOME: "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/gradle --version")
 
+    (testpath/"settings.gradle").write ""
     (testpath/"build.gradle").write <<~EOS
       println "gradle works!"
     EOS

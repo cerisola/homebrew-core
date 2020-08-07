@@ -2,15 +2,16 @@ class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
   url "https://github.com/syncthing/syncthing.git",
-      :tag      => "v1.4.0",
-      :revision => "db02545ef32b309a01fd465422226ca8c517c4e4"
+      tag:      "v1.7.1",
+      revision: "d57694dc042ee24d7f76a3ed9743ea02f01e456d"
+  license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6a6fbe1c0385d3a8a01b5e7458d783e9d845d21866595098c5e300db6f1979ae" => :catalina
-    sha256 "4f15171d0237c7082b569b936c199c05e92515ad262eb7e4c0d224ae5a962037" => :mojave
-    sha256 "508bb4a04bf7d7b3eaeedcea83a58cedb7da7939d3bd6b0297582643807a85b1" => :high_sierra
+    sha256 "9657d870ad1cf368da003095c071a2d665d71a5822889072a3ae1be4a7eeb280" => :catalina
+    sha256 "204fd8fcfc45e69ffabfe8542d75d3236654dc074f2d54ba2c5133adafdf097f" => :mojave
+    sha256 "ea8479ac5feb98c108a42391f16347346e6a21226932a35f14857745d492fb97" => :high_sierra
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Syncthing < Formula
     src = buildpath/"src/github.com/syncthing/syncthing"
     src.install buildpath.children
     src.cd do
-      system "./build.sh", "noupgrade"
+      system "go", "run", "build.go", "--no-upgrade", "tar"
       bin.install "syncthing"
       man1.install Dir["man/*.1"]
       man5.install Dir["man/*.5"]
@@ -30,7 +31,7 @@ class Syncthing < Formula
     end
   end
 
-  plist_options :manual => "syncthing"
+  plist_options manual: "syncthing"
 
   def plist
     <<~EOS

@@ -2,18 +2,18 @@ class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
   url "https://github.com/influxdata/influxdb.git",
-      :tag      => "v1.7.9",
-      :revision => "23bc63d43a8dc05f53afa46e3526ebb5578f3d88"
+      tag:      "v1.8.1",
+      revision: "af0237819ab9c5997c1c0144862dc762b9d8fc25"
+  license "MIT"
   head "https://github.com/influxdata/influxdb.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "43172c67fa138aaed080a19dca1311ad8b4beccc0b70bce8bf10703328806f10" => :catalina
-    sha256 "68d9383fb468504f40c8d9992cae8f4ec8dbda502ca4073f0249daa6cfde9a87" => :mojave
-    sha256 "fd216a7b67395f3a7ab19affcc51a3dcb71e978f5295daeda871933601dfe6be" => :high_sierra
+    sha256 "d50e7041e46022550eba06f94b7e74cbe4e3588b949fdd2c6f5176031fa48ad5" => :catalina
+    sha256 "587e60b562d2c0a259819b6f1e6a34a6f81a8f309dede1342c76c974b7d68437" => :mojave
+    sha256 "dde76db5fcdf733eb7ad2359b49d6db631e2d8d543d688f676e781d0478ca7f2" => :high_sierra
   end
 
-  depends_on "dep" => :build
   depends_on "go" => :build
 
   def install
@@ -24,9 +24,8 @@ class Influxdb < Formula
     version = `git describe --tags`.strip
 
     cd influxdb_path do
-      system "dep", "ensure", "-vendor-only"
       system "go", "install",
-             "-ldflags", "-X main.version=#{version} -X main.commit=#{revision} -X main.branch=master",
+             "-ldflags", "-X main.version=#{version} -X main.commit=#{revision} -X main.branch=master-1.x",
              "./..."
     end
 
@@ -48,7 +47,7 @@ class Influxdb < Formula
     (var/"influxdb/wal").mkpath
   end
 
-  plist_options :manual => "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"
+  plist_options manual: "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"
 
   def plist
     <<~EOS
@@ -103,7 +102,7 @@ class Influxdb < Formula
       output = shell_output("curl -Is localhost:8086/ping")
       assert_match /X-Influxdb-Version:/, output
     ensure
-      Process.kill("SIGINT", pid)
+      Process.kill("SIGTERM", pid)
       Process.wait(pid)
     end
   end

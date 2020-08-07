@@ -1,49 +1,68 @@
 class Rsync < Formula
   desc "Utility that provides fast incremental file transfer"
   homepage "https://rsync.samba.org/"
-  url "https://rsync.samba.org/ftp/rsync/rsync-3.1.3.tar.gz"
-  mirror "https://mirrors.kernel.org/gentoo/distfiles/rsync-3.1.3.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/rsync.samba.org/rsync-3.1.3.tar.gz"
-  sha256 "55cc554efec5fdaad70de921cd5a5eeb6c29a95524c715f3bbf849235b0800c0"
-  revision 1
+  url "https://rsync.samba.org/ftp/rsync/rsync-3.2.2.tar.gz"
+  mirror "https://mirrors.kernel.org/gentoo/distfiles/rsync-3.2.2.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/rsync.samba.org/rsync-3.2.2.tar.gz"
+  sha256 "644bd3841779507665211fd7db8359c8a10670c57e305b4aab61b4e40037afa8"
+  license "GPL-3.0"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "3e390c696ea20bad8bff15a1df7abc895e3fa2f2e4a11a055982799c21f8f19c" => :catalina
-    sha256 "3eec6f49103c3d69ea6d6e85131f35814af318d11db02d04272ba4a842a52a55" => :mojave
-    sha256 "cc355e9492df6bab4952e835dd8575de86fa169f6451218c5d2c777c4d9462a5" => :high_sierra
+    cellar :any
+    sha256 "59d1aa1da62690c00e1aef7d608fcbecc814e875692c8ed0196f43aa58317510" => :catalina
+    sha256 "5d06d2f36dfee165d1f5487a6bfb1bc0522214cb36b05c1f5fe79570b03973fc" => :mojave
+    sha256 "daf1a3c8d3ecf743f605f1c0a4066b6e71910493b161504260b1d0841c00adfb" => :high_sierra
   end
 
-  depends_on "autoconf" => :build
+  depends_on "lz4"
+  depends_on "openssl@1.1"
+  depends_on "popt"
+  depends_on "xxhash"
+  depends_on "zstd"
 
-  # hfs-compression.diff is marked by upstream as broken as of 3.1.3
+  uses_from_macos "zlib"
+
+  # hfs-compression.diff has been marked by upstream as broken since 3.1.3
+  # and has not been reported fixed as of 3.2.2
   patch do
-    url "https://download.samba.org/pub/rsync/src/rsync-patches-3.1.3.tar.gz"
-    mirror "https://www.mirrorservice.org/sites/rsync.samba.org/rsync-patches-3.1.3.tar.gz"
-    mirror "https://launchpad.net/rsync/main/3.1.2/+download/rsync-patches-3.1.3.tar.gz"
-    sha256 "0dc2848f20ca75c07a30c3237ccf8d61b61082ae7de94758a27dac350c99fb98"
+    url "https://download.samba.org/pub/rsync/src/rsync-patches-3.2.2.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/rsync.samba.org/rsync-patches-3.2.2.tar.gz"
+    sha256 "eeccf4c7f178c936e451b679e64b670f707b989b7a40e2d22286407f8987ae9a"
     apply "patches/fileflags.diff",
           "patches/crtimes.diff"
   end
 
-  # Fix "error: too few arguments to function call, expected 4, have 2"
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/344bf3b/rsync/fix-crtimes-patch-3.1.3.diff"
-    sha256 "1a3c9043e19b55290bd6a6bc480544fe79a155c2c7ed003de185521f7516ecc3"
-  end
-
   def install
-    system "./prepare-source"
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-rsyncd-conf=#{etc}/rsyncd.conf",
-                          "--enable-ipv6"
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --with-rsyncd-conf=#{etc}/rsyncd.conf
+      --with-included-popt=no
+      --with-included-zlib=no
+      --enable-ipv6
+    ]
+
+    # SIMD code throws ICE or is outright unsupported due to lack of support for
+    # function multiversioning on older verions of macOS
+    args << "--disable-simd" if MacOS.version < :catalina
+
+    system "./configure", *args
     system "make"
     system "make", "install"
   end
 
   test do
-    system bin/"rsync", "--version"
+    mkdir "a"
+    mkdir "b"
+
+    ["foo\n", "bar\n", "baz\n"].map.with_index do |s, i|
+      (testpath/"a/#{i + 1}.txt").write s
+    end
+
+    system bin/"rsync", "-artv", testpath/"a/", testpath/"b/"
+
+    (1..3).each do |i|
+      assert_equal (testpath/"a/#{i}.txt").read, (testpath/"b/#{i}.txt").read
+    end
   end
 end

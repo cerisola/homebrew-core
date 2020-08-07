@@ -2,14 +2,15 @@ class HelmAT2 < Formula
   desc "The Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/helm/helm.git",
-      :tag      => "v2.16.5",
-      :revision => "89bd14c1541fa93a09492010030fd3699ca65a97"
+      tag:      "v2.16.9",
+      revision: "8ad7037828e5a0fca1009dabe290130da6368e39"
+  license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bde48a20c099114118e3c41c2bd1273ff1676375899c24ce26d12a695c45cbf7" => :catalina
-    sha256 "36d8479ab5013f3e736c9e51d3b3f80851d9c6abde490d423c3d18090896ce5d" => :mojave
-    sha256 "322938ad3e773e54b609d6815b059061521676bef15b119537597f2ec4e08dc4" => :high_sierra
+    sha256 "949b1de3c0b2a99db03e6836cd58e8747c8114ff8d2c051ddb8dccfd86365bcc" => :catalina
+    sha256 "8a527e486b748d271e08f5de2a11ba3d00e431c84c11972cb05da025dad6df2d" => :mojave
+    sha256 "2a03856a9bc1736b0ebb5c9d274519c330870c5fc36d6e1bc34aa1aecc61d15d" => :high_sierra
   end
 
   keg_only :versioned_formula
@@ -33,10 +34,10 @@ class HelmAT2 < Formula
       bin.install "bin/tiller"
       man1.install Dir["docs/man/man1/*"]
 
-      output = Utils.popen_read("SHELL=bash #{bin}/helm completion bash")
+      output = Utils.safe_popen_read({ "SHELL" => "bash" }, bin/"helm", "completion", "bash")
       (bash_completion/"helm").write output
 
-      output = Utils.popen_read("SHELL=zsh #{bin}/helm completion zsh")
+      output = Utils.safe_popen_read({ "SHELL" => "zsh" }, bin/"helm", "completion", "zsh")
       (zsh_completion/"_helm").write output
 
       prefix.install_metafiles

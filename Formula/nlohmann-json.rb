@@ -1,15 +1,16 @@
 class NlohmannJson < Formula
   desc "JSON for modern C++"
   homepage "https://github.com/nlohmann/json"
-  url "https://github.com/nlohmann/json/archive/v3.7.3.tar.gz"
-  sha256 "249548f4867417d66ae46b338dfe0a2805f3323e81c9e9b83c89f3adbfde6f31"
-  head "https://github.com/nlohmann/json.git", :branch => "develop"
+  url "https://github.com/nlohmann/json/archive/v3.9.0.tar.gz"
+  sha256 "9943db11eeaa5b23e58a88fbc26c453faccef7b546e55063ad00e7caaaf76d0b"
+  license "MIT"
+  head "https://github.com/nlohmann/json.git", branch: "develop"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fce41a929a18c6d2f11d7991d41cbea065896b7bd33340d00246f134f267181b" => :catalina
-    sha256 "fce41a929a18c6d2f11d7991d41cbea065896b7bd33340d00246f134f267181b" => :mojave
-    sha256 "fce41a929a18c6d2f11d7991d41cbea065896b7bd33340d00246f134f267181b" => :high_sierra
+    sha256 "e85ad4d705eeb69b1d4b49a5fceea83ac7965aab137028422f97ad5a5889f6ac" => :catalina
+    sha256 "02d729ed211ff251135b13c81fe4847e74a699e3560ef1b204164f5a4b10ac95" => :mojave
+    sha256 "02d729ed211ff251135b13c81fe4847e74a699e3560ef1b204164f5a4b10ac95" => :high_sierra
   end
 
   depends_on "cmake" => :build

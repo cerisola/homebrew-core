@@ -1,14 +1,15 @@
 class Weechat < Formula
   desc "Extensible IRC client"
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-2.8.tar.xz"
-  sha256 "553ea295edad3b03cf88e6029c21e7bde32ff1cc026d35386ba9da3e56a6018c"
+  url "https://weechat.org/files/src/weechat-2.9.tar.xz"
+  sha256 "eab406c385c3a10d0107ddc3aac6596ae8c59af99e9158c6d769e90ec9adfa0e"
+  license "GPL-3.0"
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha256 "60b72321ee167483c30f4b8f41b30f3da8a36ae02fc58bd35fc55a265d2725d7" => :catalina
-    sha256 "f8a9685d17d5d8a0bb32af3d0625a33fa8003251859aa8ab0c73fa81da9d4a65" => :mojave
-    sha256 "01c768ce156a997b6d6d6fbd93c95ebd389f32682d2988f11eba04e93bf8dde5" => :high_sierra
+    sha256 "27597527a70b72960498c972a98837be24b8b7e2751e6b9cdacaf436eacea671" => :catalina
+    sha256 "cdd18f140fe07c6244beea285942e6e507dea191e55bda661dcff3b12ec5c46a" => :mojave
+    sha256 "a6db2ccf286b42557ca86fed6927f87053ed9c083090bd8a25bfbc68e7fa63cd" => :high_sierra
   end
 
   depends_on "asciidoctor" => :build
@@ -22,7 +23,7 @@ class Weechat < Formula
   depends_on "lua"
   depends_on "ncurses"
   depends_on "perl"
-  depends_on "python"
+  depends_on "python@3.8"
   depends_on "ruby"
 
   uses_from_macos "curl"
@@ -32,14 +33,13 @@ class Weechat < Formula
     args = std_cmake_args + %W[
       -DENABLE_MAN=ON
       -DENABLE_GUILE=OFF
-      -DCA_FILE=#{etc}/openssl/cert.pem
+      -DCA_FILE=#{Formula["gnutls"].pkgetc}/cert.pem
       -DENABLE_JAVASCRIPT=OFF
       -DENABLE_PHP=OFF
     ]
 
-    if MacOS.version >= :mojave && MacOS::CLT.installed?
-      ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version)
-    end
+    # Fix system gem on Mojave
+    ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"]
 
     mkdir "build" do
       system "cmake", "..", *args

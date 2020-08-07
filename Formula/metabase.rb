@@ -1,8 +1,9 @@
 class Metabase < Formula
   desc "Business intelligence report server"
   homepage "https://www.metabase.com/"
-  url "https://downloads.metabase.com/v0.34.3/metabase.jar"
-  sha256 "cf8bd7fa27bae5337a80a22b65cabdd687a3514f636135052b66fd947fc3724f"
+  url "https://downloads.metabase.com/v0.36.3/metabase.jar"
+  sha256 "122fd1364271a1dabbbbe95b40950a9de5306b88a2a1237e3d858e714f5296bb"
+  license "AGPL-3.0"
 
   head do
     url "https://github.com/metabase/metabase.git"
@@ -14,7 +15,7 @@ class Metabase < Formula
 
   bottle :unneeded
 
-  depends_on :java => "1.8"
+  depends_on "openjdk"
 
   def install
     if build.head?
@@ -26,12 +27,12 @@ class Metabase < Formula
 
     (bin/"metabase").write <<~EOS
       #!/bin/bash
-      export JAVA_HOME="$(#{Language::Java.java_home_cmd("1.8")})"
-      exec java -jar "#{libexec}/metabase.jar" "$@"
+      export JAVA_HOME="${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+      exec "${JAVA_HOME}/bin/java" -jar "#{libexec}/metabase.jar" "$@"
     EOS
   end
 
-  plist_options :startup => true, :manual => "metabase"
+  plist_options startup: true, manual: "metabase"
 
   def plist
     <<~EOS

@@ -1,16 +1,17 @@
 class RomTools < Formula
   desc "Tools for Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0219.tar.gz"
-  version "0.219"
-  sha256 "9513c046033e451d86adfdd297da8a2ad9b6642a2f3ef669e1443d0acc2c2e0b"
+  url "https://github.com/mamedev/mame/archive/mame0222.tar.gz"
+  version "0.222"
+  sha256 "3380b86d1bc5bc09f5bb4099f3833b6fba924a8bd189aac4dab149afba799ce7"
+  license "GPL-2.0"
   head "https://github.com/mamedev/mame.git"
 
   bottle do
     cellar :any
-    sha256 "1c601dc2f8866b0d276d83f6bec253b41a73ef410a31ae56e04f87402472ef4f" => :catalina
-    sha256 "2d89d434fdd989d2f73ff3c8b8e8c183990ff8e2193a17ebbe8c9e7a69d68a5b" => :mojave
-    sha256 "25fe7ce48ba40b71fcf65fda3b417b18e1df973675d5a1fc604839563fad2530" => :high_sierra
+    sha256 "e0c8c80f0844a58de81334a8ce0d65bb92134d9941a21a07137c99dfcc348236" => :catalina
+    sha256 "180c4629cee72f5ff6ecd6dbf03c96d161129e74b348f0ccb99300a786f17226" => :mojave
+    sha256 "0965eb18c1272ae4ebbbe7113c184d18243f899b22b9b986ea9091c7eec99b44" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -18,7 +19,7 @@ class RomTools < Formula
   # Need C++ compiler and standard library support C++14.
   # Build failure on Sierra, see:
   # https://github.com/Homebrew/homebrew-core/pull/39388
-  depends_on :macos => :high_sierra
+  depends_on macos: :high_sierra
   depends_on "sdl2"
   depends_on "utf8proc"
 
@@ -33,7 +34,7 @@ class RomTools < Formula
                    "USE_SYSTEM_LIB_UTF8PROC=1"
     bin.install %w[
       aueffectutil castool chdman floptool imgtool jedutil ldresample ldverify
-      nltool nlwav pngcmp regrep romcmp src2html srcclean testkeys unidasm
+      nltool nlwav pngcmp regrep romcmp srcclean testkeys unidasm
     ]
     bin.install "split" => "rom-split"
     man1.install Dir["docs/man/*.1"]
@@ -55,7 +56,6 @@ class RomTools < Formula
     assert_match "summary", shell_output("#{bin}/regrep 2>&1", 1)
     system "#{bin}/romcmp"
     system "#{bin}/rom-split"
-    assert_match "template", shell_output("#{bin}/src2html 2>&1", 1)
     system "#{bin}/srcclean"
     assert_match "architecture", shell_output("#{bin}/unidasm", 1)
   end

@@ -1,15 +1,20 @@
 class Xmake < Formula
   desc "Cross-platform build utility based on Lua"
   homepage "https://xmake.io/"
-  url "https://github.com/xmake-io/xmake/releases/download/v2.3.2/xmake-v2.3.2.tar.gz"
-  sha256 "b189074320ce1b215f85f8f20142fe173d981eb17c2c157f0fa6756fc00dac4e"
+  url "https://github.com/xmake-io/xmake/releases/download/v2.3.6/xmake-v2.3.6.tar.gz"
+  sha256 "5d9b9dd8b357fab9e426a667a47381b5db54622cd2c5452584e4b960b410272d"
+  license "Apache-2.0"
   head "https://github.com/xmake-io/xmake.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "559737626a485e267995fa648059adff6de109837fa0510219e3354e2884d909" => :catalina
-    sha256 "bb8ccdd2d63eea78a4e6cd6cce7f1569c9cb17a1b895a0f141dcbe21fa60ccd6" => :mojave
-    sha256 "64b7f43e8db1406158be9939f33d102578bbd18b01c9f5a94285e51bd244de83" => :high_sierra
+    sha256 "6782ee9186733d04854a208191c297a9b4587629293741ff566c37da44eefabb" => :catalina
+    sha256 "6455cd31e4dc464b1b62f9d91fdcf95404d138ba1675c673e1b44caa09ae5a89" => :mojave
+    sha256 "b760c23959906c23df696f6315c802bd1401eecfc1f3379fca9e00c4d9409f41" => :high_sierra
+  end
+
+  on_linux do
+    depends_on "readline"
   end
 
   def install

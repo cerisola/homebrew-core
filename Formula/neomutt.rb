@@ -1,20 +1,23 @@
 class Neomutt < Formula
   desc "E-mail reader with support for Notmuch, NNTP and much more"
   homepage "https://neomutt.org/"
-  url "https://github.com/neomutt/neomutt/archive/20200320.tar.gz"
-  sha256 "69daf2e0633dee7e8bdba74ab714adfa70e8f078028b56d612228c2aa836aafa"
+  url "https://github.com/neomutt/neomutt/archive/20200626.tar.gz"
+  sha256 "94b2e59667a080cb9d531050c3ad320f9951ba7ba09eb7eda15427899627f89e"
+  license "GPL-2.0"
   head "https://github.com/neomutt/neomutt.git"
 
   bottle do
-    sha256 "d94a815731036b63fbafd703c9db76e16d242e0217fad9ba4483ee65d37c3dd6" => :catalina
-    sha256 "e0b0f137b739258e461e27956866eb37ae787d942f6b82685da5b9f01e880a2b" => :mojave
-    sha256 "3423fe201ef33bb8d77644aa40773c9d5d7c93cd4c228a4b52b772d2fcbc5aae" => :high_sierra
+    sha256 "d1f6edf36d492185a4f8fa35296c9176862641939bef9335d00773c69359b242" => :catalina
+    sha256 "03ca3d480c10bc301cd37b58d88700129d747be4250333b10654280af6602b8b" => :mojave
+    sha256 "d7834ff5bcf0b475d2794e8b83ec16de4e4ba25981afc98a78143b3cd7696e18" => :high_sierra
   end
 
+  depends_on "docbook-xsl" => :build
   depends_on "gettext"
   depends_on "gpgme"
   depends_on "libidn"
   depends_on "lmdb"
+  depends_on "lua"
   depends_on "notmuch"
   depends_on "openssl@1.1"
   depends_on "tokyo-cabinet"
@@ -22,7 +25,6 @@ class Neomutt < Formula
   def install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "./configure", "--prefix=#{prefix}",
-                          "--disable-doc",
                           "--enable-gpgme",
                           "--with-gpgme=#{Formula["gpgme"].opt_prefix}",
                           "--gss",
@@ -31,7 +33,9 @@ class Neomutt < Formula
                           "--sasl",
                           "--tokyocabinet",
                           "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
-                          "--with-ui=ncurses"
+                          "--with-ui=ncurses",
+                          "--lua",
+                          "--with-lua=#{Formula["lua"].prefix}"
     system "make", "install"
   end
 

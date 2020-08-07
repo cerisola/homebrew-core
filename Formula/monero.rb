@@ -2,21 +2,25 @@ class Monero < Formula
   desc "Official Monero wallet and CPU miner"
   homepage "https://getmonero.org/"
   url "https://github.com/monero-project/monero.git",
-      :tag      => "v0.15.0.5",
-      :revision => "17ec003c06eb95207c91f0e9186889f83266e461"
+      tag:      "v0.16.0.1",
+      revision: "a498a1b4ce432941dee47d74c7e05bf87acd3ad6"
+  license "BSD-3-Clause"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "f3888c20b3b6073832c847a87ba7f33e172cef9d538afcc6633d6dd1a6cd3579" => :catalina
-    sha256 "e149f5bb01755714798d57fb03ac22e1b80a0e7f38382941c0173ae44d5f28db" => :mojave
-    sha256 "79fc30f96c6f3dd715f8ec8c3a7b5673840b71fe47bb2b45fbecd592d053c977" => :high_sierra
+    sha256 "5bafb43d2a8249a630f82abf163241d296ff651bca57c06e2a2547edf8ad1a0e" => :catalina
+    sha256 "a32d0b627d34ea3eef6ff0e63a23de9afb6d47f7bd3b6698bdec479e07b9ce1b" => :mojave
+    sha256 "c697bc214735aab967bf408ecbf4e059899285e93107b2722dcd4134167eaba8" => :high_sierra
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
+  depends_on "hidapi"
   depends_on "libsodium"
   depends_on "openssl@1.1"
+  depends_on "protobuf"
   depends_on "readline"
   depends_on "unbound"
   depends_on "zeromq"
@@ -24,9 +28,13 @@ class Monero < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+
+    # Fix conflict with miniupnpc.
+    # This has been reported at https://github.com/monero-project/monero/issues/3862
+    rm lib/"libminiupnpc.a"
   end
 
-  plist_options :manual => "monerod"
+  plist_options manual: "monerod"
 
   def plist
     <<~EOS

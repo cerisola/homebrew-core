@@ -1,15 +1,17 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v12.2/postgresql-12.2.tar.bz2"
-  sha256 "ad1dcc4c4fc500786b745635a9e1eba950195ce20b8913f50345bb7d5369b5de"
+  url "https://ftp.postgresql.org/pub/source/v12.3/postgresql-12.3.tar.bz2"
+  sha256 "94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41"
+  license "PostgreSQL"
+  revision 4
   head "https://github.com/postgres/postgres.git"
 
   bottle do
     rebuild 1
-    sha256 "13fe70aba68cf707af9a1f712041f1c8561ea1e212c7fd8e4085b2fd722b920c" => :catalina
-    sha256 "932f4425a9c5d61cac12be30cf61a63cc67abcb7dc351ccedeef95960d6bc0a5" => :mojave
-    sha256 "fc28e88981c6450561a9ee89ef0bf9aea604f15fd88f462408ad83935d40e0bb" => :high_sierra
+    sha256 "04bc235fe7f8c459dec8fc0bac18ef002207ae41f087b8609f0ba0a6e903d187" => :catalina
+    sha256 "1c5b0d008d9c9f7deeae50686544aeac817072c1fb34d464f42ad557f1c74d8d" => :mojave
+    sha256 "08ee9da0e2e6346902797443604132d7fcc3c613f87f3940fed2844cd7f1c0e5" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -26,10 +28,11 @@ class Postgresql < Formula
   uses_from_macos "libxslt"
   uses_from_macos "perl"
 
-  def install
-    # avoid adding the SDK library directory to the linker search path
-    ENV["XML2_CONFIG"] = "xml2-config --exec-prefix=/usr"
+  on_linux do
+    depends_on "util-linux"
+  end
 
+  def install
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@1.1"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@1.1"].opt_include} -I#{Formula["readline"].opt_include}"
 
@@ -51,15 +54,13 @@ class Postgresql < Formula
       --with-openssl
       --with-pam
       --with-perl
+      --with-tcl
       --with-uuid=e2fs
     ]
 
-    # The CLT is required to build Tcl support on 10.7 and 10.8 because
-    # tclConfig.sh is not part of the SDK
-    args << "--with-tcl"
-    if File.exist?("#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework/tclConfig.sh")
-      args << "--with-tclconfig=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework"
-    end
+    # PostgreSQL by default uses xcodebuild internally to determine this,
+    # which does not work on CLT-only installs.
+    args << "PG_SYSROOT=#{MacOS.sdk_path}" if MacOS.sdk_root_needed?
 
     system "./configure", *args
     system "make"
@@ -86,10 +87,15 @@ class Postgresql < Formula
     <<~EOS
       To migrate existing data from a previous major version of PostgreSQL run:
         brew postgresql-upgrade-database
+
+      This formula has created a default database cluster with:
+        initdb --locale=C -E UTF-8 #{var}/postgres
+      For more details, read:
+        https://www.postgresql.org/docs/#{version.to_s.slice(/\d+/)}/app-initdb.html
     EOS
   end
 
-  plist_options :manual => "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres start"
+  plist_options manual: "pg_ctl -D #{HOMEBREW_PREFIX}/var/postgres start"
 
   def plist
     <<~EOS

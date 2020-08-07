@@ -1,19 +1,18 @@
 class Prestosql < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestosql.io"
-  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/329/presto-server-329.tar.gz"
-  sha256 "50bbf9863c8ac8080b024966feb5bae6be26651802f2deab33a5ec4e333c9f89"
-  revision 1
+  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/338/presto-server-338.tar.gz"
+  sha256 "d07e29c3a24b317a0c37694e36e1c57effd2325502873aeb84eaf98d51c6691c"
 
   bottle :unneeded
 
   depends_on "openjdk"
 
-  conflicts_with "prestodb", :because => "both install `presto` and `presto-server` binaries"
+  conflicts_with "prestodb", because: "both install `presto` and `presto-server` binaries"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/329/presto-cli-329-executable.jar"
-    sha256 "99ea87ea5fda17757297d4ea3298927377ef51a81832a424af9cfd6aec605c1d"
+    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/338/presto-cli-338-executable.jar"
+    sha256 "ef1c2254de73f70e1402e1854838f630438bd99b9004a630d34b50817fade7bc"
   end
 
   def install
@@ -77,7 +76,7 @@ class Prestosql < Formula
     EOS
   end
 
-  plist_options :manual => "presto-server run"
+  plist_options manual: "presto-server run"
 
   def plist
     <<~EOS

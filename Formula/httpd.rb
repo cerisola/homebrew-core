@@ -1,16 +1,15 @@
 class Httpd < Formula
   desc "Apache HTTP server"
   homepage "https://httpd.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=httpd/httpd-2.4.41.tar.bz2"
-  mirror "https://archive.apache.org/dist/httpd/httpd-2.4.41.tar.bz2"
-  sha256 "133d48298fe5315ae9366a0ec66282fa4040efa5d566174481077ade7d18ea40"
-  revision 1
+  url "https://www.apache.org/dyn/closer.lua?path=httpd/httpd-2.4.43.tar.bz2"
+  mirror "https://archive.apache.org/dist/httpd/httpd-2.4.43.tar.bz2"
+  sha256 "a497652ab3fc81318cdc2a203090a999150d86461acff97c1065dc910fe10f43"
+  license "Apache-2.0"
 
   bottle do
-    sha256 "c532f46853817d18cfaeadecf1ec4e7b47a57b80eee3d01272aaa99a16c93bf6" => :catalina
-    sha256 "9f9969abde4a61949b0279f68d6fcc616d1546dd2c1b4fd61012bde1f5d27ee8" => :mojave
-    sha256 "143af690fd1f26f07e79009da6e674a0cb56c190f6fb486f9e61f82a5ab36a0a" => :high_sierra
-    sha256 "9a085a0b728b5bc75bda265d7d4c5360187038eb339c43a681d789599b814dcf" => :sierra
+    sha256 "016ec294067375e0a0080d1c06812e4323b9d834452e937057e3c84387c44f02" => :catalina
+    sha256 "628617d2cc60534dc6cb78cc971de32b9724757498f194dc900ad5e5d1e6f56a" => :mojave
+    sha256 "71ab239430eb1709ff16ecc0a991e6e10f8bdd320889515f5ba88cf018f91255" => :high_sierra
   end
 
   depends_on "apr"
@@ -122,7 +121,7 @@ class Httpd < Formula
     EOS
   end
 
-  plist_options :manual => "apachectl start"
+  plist_options manual: "apachectl start"
 
   def plist
     <<~EOS
@@ -152,11 +151,7 @@ class Httpd < Formula
     assert_predicate lib/"httpd/modules/mod_xml2enc.so", :exist?
 
     begin
-      require "socket"
-
-      server = TCPServer.new(0)
-      port = server.addr[1]
-      server.close
+      port = free_port
 
       expected_output = "Hello world!"
       (testpath/"index.html").write expected_output

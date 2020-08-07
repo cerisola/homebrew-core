@@ -3,6 +3,7 @@ class Gxml < Formula
   homepage "https://wiki.gnome.org/GXml"
   url "https://download.gnome.org/sources/gxml/0.18/gxml-0.18.1.tar.xz"
   sha256 "bac5bc82c39423c1dbbfd89235f4a9b03b69cfcd3188905359ce81747b6400ed"
+  license "LGPL-2.1"
 
   bottle do
     sha256 "4eb68617f73471be697746b879fe118fb3e116a1e911a2f95541982a77cd4714" => :catalina
@@ -22,7 +23,7 @@ class Gxml < Formula
 
   def install
     mkdir "build" do
-      system "meson", "--prefix=#{prefix}", "-Dintrospection=true", ".."
+      system "meson", *std_meson_args, "-Dintrospection=true", ".."
       system "ninja", "-v"
       system "ninja", "install", "-v"
     end

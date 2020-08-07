@@ -1,15 +1,16 @@
 class Openttd < Formula
   desc "Simulation game based upon Transport Tycoon Deluxe"
   homepage "https://www.openttd.org/"
-  url "https://proxy.binaries.openttd.org/openttd-releases/1.9.3/openttd-1.9.3-source.tar.xz"
-  sha256 "1988e17f5b6f4b8f423c849ef1c579c21f678722ae4440f87b27a5fea6385846"
+  url "https://cdn.openttd.org/openttd-releases/1.10.2/openttd-1.10.2-source.tar.xz"
+  sha256 "939c55d259fb13cb47dfb3244e8f7b9e2f723883ebb2119410d8a282724eb6f5"
+  license "GPL-2.0"
   head "https://github.com/OpenTTD/OpenTTD.git"
 
   bottle do
     cellar :any
-    sha256 "3b35f09093139d3d7ea20f306ec456fe593fe3af9cbe7c877293494d25602bb5" => :catalina
-    sha256 "c225e23880d9ff76ce890180247590f9f9762a61d75ae7cce9785a0a6fe55ead" => :mojave
-    sha256 "e176e4b9047426b5bc1ff28a6ba8d979cca9c5f04c5364e1ee59795bec32c1d4" => :high_sierra
+    sha256 "8acdc3d403b125fad2fc1ae5c59e37528fe98d47beb79cb0509a49ddbebce636" => :catalina
+    sha256 "1d6f2b4a6df282fbd53aa8a88ef3a722e3d5d3b4a8f82b306b3ad6851038fc1b" => :mojave
+    sha256 "4ea9ad94978b8f40c35e60ddca64de7795dc0faf36fb4967a676879ca8221444" => :high_sierra
   end
 
   depends_on "pkg-config" => :build
@@ -17,21 +18,23 @@ class Openttd < Formula
   depends_on "xz"
 
   resource "opengfx" do
-    url "https://binaries.openttd.org/extra/opengfx/0.5.5/opengfx-0.5.5-all.zip"
-    sha256 "c648d56c41641f04e48873d83f13f089135909cc55342a91ed27c5c1683f0dfe"
+    url "https://cdn.openttd.org/opengfx-releases/0.6.0/opengfx-0.6.0-all.zip"
+    sha256 "d419c0f5f22131de15f66ebefde464df3b34eb10e0645fe218c59cbc26c20774"
   end
 
   resource "opensfx" do
-    url "https://binaries.openttd.org/extra/opensfx/0.2.3/opensfx-0.2.3-all.zip"
+    url "https://cdn.openttd.org/opensfx-releases/0.2.3/opensfx-0.2.3-all.zip"
     sha256 "6831b651b3dc8b494026f7277989a1d757961b67c17b75d3c2e097451f75af02"
   end
 
   resource "openmsx" do
-    url "https://binaries.openttd.org/extra/openmsx/0.3.1/openmsx-0.3.1-all.zip"
+    url "https://cdn.openttd.org/openmsx-releases/0.3.1/openmsx-0.3.1-all.zip"
     sha256 "92e293ae89f13ad679f43185e83fb81fb8cad47fe63f4af3d3d9f955130460f5"
   end
 
   def install
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     system "./configure", "--prefix-dir=#{prefix}"
     system "make", "bundle"
 
@@ -52,6 +55,6 @@ class Openttd < Formula
   end
 
   test do
-    assert_match /OpenTTD #{version}\n/, shell_output("#{bin}/openttd -h")
+    assert_match "OpenTTD #{version}\n", shell_output("#{bin}/openttd -h")
   end
 end

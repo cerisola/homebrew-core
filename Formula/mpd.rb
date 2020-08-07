@@ -1,15 +1,16 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.21/mpd-0.21.21.tar.xz"
-  sha256 "e1bdb15f0e3b62c18e91257a7b41530dc36eb91cc03eabc6e6bffd947ec168ce"
+  url "https://www.musicpd.org/download/mpd/0.21/mpd-0.21.25.tar.xz"
+  sha256 "20a0ad01bf327b2dbeb6ae8e1af952cb0de83d2d63fab0fa4b7183a74765c201"
+  license "GPL-2.0"
   head "https://github.com/MusicPlayerDaemon/MPD.git"
 
   bottle do
     cellar :any
-    sha256 "1faaa406844c026e954dbf0e21006894e9a15deb71730b4d164ff60c870f5e33" => :catalina
-    sha256 "26b6a86cbd8c9bf7e54bc402bf7b983bef3aab474419d4a690d6dc704898f7c3" => :mojave
-    sha256 "bbcd4374c9e042d48dd4742b9518733614063fed9323a970d26e79ef2c82d332" => :high_sierra
+    sha256 "e0f7ce87e92b540230d05c111f5571a568d6b75562b2d4b5abcc2975dde45a7a" => :catalina
+    sha256 "f21a70a4d1c8ebcc7c72caa6d7284c1a549c6c630290a9b4c7cc1b5ced1415ea" => :mojave
+    sha256 "b2ac7ec06cd9dd81f63f1bd1ce0bd6eff8171d2c5b0f79e385a05d01ddad2db2" => :high_sierra
   end
 
   depends_on "boost" => :build
@@ -30,6 +31,7 @@ class Mpd < Formula
   depends_on "libmpdclient"
   depends_on "libnfs"
   depends_on "libsamplerate"
+  depends_on "libshout"
   depends_on "libupnp"
   depends_on "libvorbis"
   depends_on "opus"
@@ -41,8 +43,7 @@ class Mpd < Formula
     # The build is fine with G++.
     ENV.libcxx
 
-    args = %W[
-      --prefix=#{prefix}
+    args = std_meson_args + %W[
       --sysconfdir=#{etc}
       -Dlibwrap=disabled
       -Dmad=disabled
@@ -54,6 +55,7 @@ class Mpd < Formula
       -Dffmpeg=enabled
       -Dfluidsynth=enabled
       -Dnfs=enabled
+      -Dshout=enabled
       -Dupnp=enabled
       -Dvorbisenc=enabled
     ]
@@ -76,7 +78,7 @@ class Mpd < Formula
     EOS
   end
 
-  plist_options :manual => "mpd"
+  plist_options manual: "mpd"
 
   def plist
     <<~EOS
@@ -105,14 +107,21 @@ class Mpd < Formula
   end
 
   test do
+    port = free_port
+
+    (testpath/"mpd.conf").write <<~EOS
+      bind_to_address "127.0.0.1"
+      port "#{port}"
+    EOS
+
     pid = fork do
-      exec "#{bin}/mpd --stdout --no-daemon --no-config"
+      exec "#{bin}/mpd --stdout --no-daemon #{testpath}/mpd.conf"
     end
-    sleep 2
+    sleep 5
 
     begin
-      ohai "Connect to MPD command (localhost:6600)"
-      TCPSocket.open("localhost", 6600) do |sock|
+      ohai "Connect to MPD command (localhost:#{port})"
+      TCPSocket.open("localhost", port) do |sock|
         assert_match "OK MPD", sock.gets
         ohai "Ping server"
         sock.puts("ping")

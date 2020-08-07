@@ -2,8 +2,9 @@ class Deheader < Formula
   desc "Analyze C/C++ files for unnecessary headers"
   homepage "http://www.catb.org/~esr/deheader"
   url "http://www.catb.org/~esr/deheader/deheader-1.6.tar.gz",
-      :using => :nounzip
+      using: :nounzip
   sha256 "3b99665c4f0dfda31d200bf2528540d6898cb846499ee91effa2e8f72aff3a60"
+  license "BSD-2-Clause"
   head "https://gitlab.com/esr/deheader.git"
 
   bottle do
@@ -17,6 +18,10 @@ class Deheader < Formula
   end
 
   depends_on "xmlto" => :build
+
+  on_linux do
+    depends_on "libarchive" => :build
+  end
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"

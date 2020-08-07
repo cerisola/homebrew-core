@@ -4,6 +4,7 @@ class Mmseqs2 < Formula
   url "https://github.com/soedinglab/MMseqs2/archive/11-e1a1c.tar.gz"
   version "11-e1a1c"
   sha256 "ffe1ae300dbe1a0e3d72fc9e947356a4807f07951cb56316f36974d8d5875cbb"
+  license "GPL-3.0"
   revision 1
   head "https://github.com/soedinglab/MMseqs2.git"
 
@@ -19,12 +20,11 @@ class Mmseqs2 < Formula
   depends_on "wget"
 
   uses_from_macos "bzip2"
-  uses_from_macos "gawk"
   uses_from_macos "zlib"
 
   resource "documentation" do
     url "https://github.com/soedinglab/MMseqs2.wiki.git",
-        :revision => "c77918c9cebb24075f3c102a73fb1d413017a1a5"
+        revision: "c77918c9cebb24075f3c102a73fb1d413017a1a5"
   end
 
   def install
