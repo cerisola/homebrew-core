@@ -14,7 +14,7 @@ class Frotz < Formula
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libao"
   depends_on "libmodplug"
   depends_on "libpng"

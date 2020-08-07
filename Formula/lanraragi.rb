@@ -20,7 +20,7 @@ class Lanraragi < Formula
   depends_on "ghostscript"
   depends_on "giflib"
   depends_on "imagemagick@6"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "node"
   depends_on "openssl@1.1"
