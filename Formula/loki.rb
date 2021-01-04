@@ -1,15 +1,17 @@
 class Loki < Formula
   desc "Horizontally-scalable, highly-available log aggregation system"
   homepage "https://grafana.com/loki"
-  url "https://github.com/grafana/loki/archive/v1.5.0.tar.gz"
-  sha256 "bd32bb96db1f8d90fa8c7f5473fbff4048364b8b8a0c9fdcd21155f6a062689d"
+  url "https://github.com/grafana/loki/archive/v2.0.0.tar.gz"
+  sha256 "e7ab246d98be52caf7b475245f5ea2cf62fb00f61d6e5377f31423414847556b"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7b78d2ef8029eb8e2eab32e64c037117b85e43168e7be63d831d7c8bce3c663f" => :catalina
-    sha256 "42b11227b46d0ca2a063cb661a54f7772f82c9758cb4ce313cc9802db60ed9fc" => :mojave
-    sha256 "794ac7093a0abe7310a49c35f101e407d94433d35b70495a50d8ebee596bfe1c" => :high_sierra
+    sha256 "f57e122a4f478e15a804faa21fa582282663ef79f1ec1c57bda8dab95fdef241" => :big_sur
+    sha256 "b495d1239adcec769d1980888e62d7ab5f525184a1f5526e8e7349bd7f710e98" => :arm64_big_sur
+    sha256 "cdafcfbd3692972dfbb0830e3c57f4cfbd325292783d7f96fde9894c9983c2ec" => :catalina
+    sha256 "c9e1ad411938e2f224d5b6c6b68c93c9b8405eece3a9fd2e29e3628f03c09708" => :mojave
+    sha256 "0177decc1efb4cb56c78a5aa8cc91405800c3e428fead5a53afe18cde8553994" => :high_sierra
   end
 
   depends_on "go" => :build

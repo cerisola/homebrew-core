@@ -3,7 +3,12 @@ class Mvnvm < Formula
   homepage "https://mvnvm.org/"
   url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.14.tar.gz"
   sha256 "09c61a1a7aa0b7e94db122d0b705267f22dce429d3bbcf2345b08ee7a92564c7"
+  license "Apache-2.0"
   head "https://bitbucket.org/mjensen/mvnvm.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle :unneeded
 
@@ -14,7 +19,7 @@ class Mvnvm < Formula
   def install
     bin.install "mvn"
     bin.install "mvnDebug"
-    bin.env_script_all_files libexec/"bin", JAVA_HOME: "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
   end
 
   test do

@@ -4,12 +4,18 @@ class Theora < Formula
   url "https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2"
   sha256 "b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc"
 
+  livecheck do
+    url "https://www.theora.org/downloads/"
+    regex(/href=.*?libtheora[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
-    rebuild 3
-    sha256 "69f9b7922ddae2c007ad5329d53067838e2208051f3a54926f8cb46a7753b1a3" => :catalina
-    sha256 "243d34cb232ae0f7b45d7e2973c247ae68a57d8a4c50a2ee9e2bc7aeeabe5c78" => :mojave
-    sha256 "4b5021649d047cbd556387ca6a8bd535cd8f9129be0a48f2d21bde8fb957a3b1" => :high_sierra
+    rebuild 4
+    sha256 "7ba57255df2c2f4563767031c6b9ead9a93883217644e9e64b5523e26d7b1088" => :big_sur
+    sha256 "1e5271cb88e3dad8eb5f06460e7f3f2cec0129679c7f7fb4f84db1d09664b827" => :arm64_big_sur
+    sha256 "1fcbd50039f580bd85554af2d831c28f83613b5d26969f577f7fe87b3c55db67" => :catalina
+    sha256 "6fdb09d75fc6e64b266a185e711c2964e803d8f10c0d40ccb8d572c536c24d3a" => :mojave
   end
 
   head do
@@ -54,7 +60,7 @@ class Theora < Formula
           return 0;
       }
     EOS
-    system ENV.cc, "-L#{lib}", "-ltheora", "test.c", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-ltheora", "-o", "test"
     system "./test"
   end
 end

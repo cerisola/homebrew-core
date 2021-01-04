@@ -1,30 +1,23 @@
 class Terraformer < Formula
   desc "CLI tool to generate terraform files from existing infrastructure"
   homepage "https://github.com/GoogleCloudPlatform/terraformer"
-  url "https://github.com/GoogleCloudPlatform/terraformer/archive/0.8.8.tar.gz"
-  sha256 "a9cabe0889ebf823abb552f6e24276a8bf7667923918814623fe5129c34f47f0"
+  url "https://github.com/GoogleCloudPlatform/terraformer/archive/0.8.10.tar.gz"
+  sha256 "29b99429792542e9911bf49d03545abbcadfba4676ee93e3005a436daab787c2"
   license "Apache-2.0"
   head "https://github.com/GoogleCloudPlatform/terraformer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e8df5d868473fa864a82e2c643257317565b4329472e1e3f1abd5d57c370eef6" => :catalina
-    sha256 "1f2329c2ab0200adadb0a83e1073ff6e38984cbbee74450f62649c61734cf618" => :mojave
-    sha256 "b9fbd65c0319b54db123e71062ab23d85c01c9200e0cf7d8b460302a78565660" => :high_sierra
+    sha256 "ceace1a3c90353281ba125f08dbf856b3432c3ad53b451f4ce44f7403391a48a" => :big_sur
+    sha256 "8085eba94b70c7ff060955579506bc2a78d8bc8d09c9a321116962f119282936" => :arm64_big_sur
+    sha256 "edd0bab50df8cb29b97413468318add8f44f09ad1a762725100f7db167c44fab" => :catalina
+    sha256 "f0ba34a3a112418298bd25e9e4011b32a7b5fedd7e6b489a44635341c619b04a" => :mojave
   end
 
   depends_on "go" => :build
 
-  # fix version check, remove in next release
-  # https://github.com/GoogleCloudPlatform/terraformer/pull/535
-  patch do
-    url "https://github.com/GoogleCloudPlatform/terraformer/commit/3f75098f9e85e9630af5c4e0baa6529e52b0efb5.patch?full_index=1"
-    sha256 "477581bc9a3be36427e181d2ccdcefcbf13b9230b8ddf5e9eea64de9357a6274"
-  end
-
   def install
     system "go", "build", *std_go_args
-    prefix.install_metafiles
   end
 
   test do

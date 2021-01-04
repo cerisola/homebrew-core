@@ -5,8 +5,15 @@ class Jansson < Formula
   sha256 "f4f377da17b10201a60c1108613e78ee15df6b12016b116b6de42209f47a474f"
   license "MIT"
 
+  livecheck do
+    url "https://digip.org/jansson/releases/"
+    regex(/href=.*?jansson[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "7f9717b979d7d66db054be03cfebb72e088e413b5d6125c7cd735db064897671" => :big_sur
+    sha256 "8e2f0225f8aa78bf75a1c61c8ee85e7dbd0292ca0aa9f186c9da960cdeb2b85a" => :arm64_big_sur
     sha256 "e6a942f77821fd65810d4bc20e6938364a5e40cd7c8510c4b090731573bd0088" => :catalina
     sha256 "587acdadd1ea8bcf22c316f55a32084f530280a7e24f0864e0e420718d0d1b7f" => :mojave
     sha256 "38085c147eb40d58df8a91a44e7544d4ceb248aa25f54bdd8a3b10c1a214d9e9" => :high_sierra

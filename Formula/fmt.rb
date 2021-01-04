@@ -1,15 +1,16 @@
 class Fmt < Formula
   desc "Open-source formatting library for C++"
   homepage "https://fmt.dev/"
-  url "https://github.com/fmtlib/fmt/archive/7.0.2.tar.gz"
-  sha256 "7697e022f9cdc4f90b5e0a409643faa2cde0a6312f85e575c8388a1913374de5"
+  url "https://github.com/fmtlib/fmt/archive/7.1.3.tar.gz"
+  sha256 "5cae7072042b3043e12d53d50ef404bbb76949dad1de368d7f993a15c8c05ecc"
   license "MIT"
 
   bottle do
     cellar :any
-    sha256 "bb369479df40316b16565f935c091bbab2ba98e55be60ddec2528a6cdee72673" => :catalina
-    sha256 "a46bd7e95d7ed4d8b54dc5c3badbd07c4863896dcf21774381bf6de9d6e12bfc" => :mojave
-    sha256 "f2afe856eacf88c61b33299bbea2776b8317271b24f2d0a2e72a7aadb6e13da9" => :high_sierra
+    sha256 "030400184b37be2dbefd79244622b6ba1db79a7a082063c9731422d67c1ec689" => :big_sur
+    sha256 "ca7feb7f642cd97750e7df4a46229c5c8bf5948673a5b2be5cec24a4e4981ec3" => :arm64_big_sur
+    sha256 "bc10923606cbc09de72d80d4fa35f2834cd3661791b493936a8d2853e571ef9d" => :catalina
+    sha256 "9ff67f083520e388e629e37267b87099e2335ff8bedecd7662779f3042f11f3e" => :mojave
   end
 
   depends_on "cmake" => :build

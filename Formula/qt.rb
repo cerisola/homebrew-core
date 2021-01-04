@@ -3,18 +3,25 @@
 class Qt < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz"
-  mirror "https://mirrors.dotsrc.org/qtproject/archive/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/qt/archive/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz"
-  sha256 "22b63d7a7a45183865cc4141124f12b673e7a17b1fe2b91e433f6547c5d548c3"
+  url "https://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
+  mirror "https://mirrors.dotsrc.org/qtproject/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/qt/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
+  sha256 "3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240"
+  license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
 
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
     cellar :any
-    sha256 "c1094fb3e2c5efa2580f4ad36f240a83b08a5118aa8f12a526f08fca27e6d6c7" => :catalina
-    sha256 "86674d9e61e1f75a20029974a01804a9fa0e6ea2fdc8fe10cb964ab8aea2a4e4" => :mojave
-    sha256 "c579327b288cfe0f23d6bd41e6e3b672538b6f19fbc0379322ce5c0ba422e794" => :high_sierra
+    sha256 "ac22ab5828d894518e42f00e254f1e36d5be4e5f3f1c08b3cd49b57819daaf2d" => :big_sur
+    sha256 "049a78d3f84586a28d9d035bc5ff1a677b0dd9bd8c81b5775919591cde99f258" => :arm64_big_sur
+    sha256 "51ab78a99ff3498a236d15d9bed92962ddd2499c4020356469f7ab1090cf6825" => :catalina
+    sha256 "25c4a693c787860b090685ac5cbeea18128d4d6361eed5b1bfed1b16ff6e4494" => :mojave
   end
 
   keg_only "Qt 5 has CMake issues when linked"
@@ -27,12 +34,21 @@ class Qt < Formula
   uses_from_macos "flex"
   uses_from_macos "sqlite"
 
-  # Fix build on Linux when the build system has AVX2
-  # Patch submitted at https://codereview.qt-project.org/c/qt/qt3d/+/303993
+  # Find SDK for 11.x macOS
+  # Upstreamed, remove when Qt updates Chromium
   patch do
-    url "https://codereview.qt-project.org/gitweb?p=qt/qt3d.git;a=patch;h=b456a7d47a36dc3429a5e7bac7665b12d257efea"
-    sha256 "e47071f5feb6f24958b3670d83071502fe87243456b29fdc731c6eba677d9a59"
-    directory "qt3d"
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/92d4cf/qt/5.15.2.diff"
+    sha256 "fa99c7ffb8a510d140c02694a11e6c321930f43797dbf2fe8f2476680db4c2b2"
+  end
+
+  # Patch for qmake on ARM
+  # https://codereview.qt-project.org/c/qt/qtbase/+/327649
+  if Hardware::CPU.arm?
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/9dc732/qt/qt-split-arch.patch"
+      sha256 "36915fde68093af9a147d76f88a4e205b789eec38c0c6f422c21ae1e576d45c0"
+      directory "qtbase"
+    end
   end
 
   def install
@@ -51,8 +67,15 @@ class Qt < Formula
       -no-rpath
       -pkg-config
       -dbus-runtime
-      -proprietary-codecs
     ]
+
+    if Hardware::CPU.arch == :arm64
+      # Temporarily fixes for Apple Silicon
+      args << "-skip" << "qtwebengine" << "-no-assimp"
+    else
+      # Should be reenabled unconditionnaly once it is fixed on Apple Silicon
+      args << "-proprietary-codecs"
+    end
 
     system "./configure", *args
 
@@ -83,10 +106,19 @@ class Qt < Formula
   end
 
   def caveats
-    <<~EOS
+    s = <<~EOS
       We agreed to the Qt open source license for you.
       If this is unacceptable you should uninstall.
     EOS
+
+    if Hardware::CPU.arm?
+      s += <<~EOS
+
+        This version of Qt on Apple Silicon does not include QtWebEngine
+      EOS
+    end
+
+    s
   end
 
   test do
@@ -111,6 +143,9 @@ class Qt < Formula
         return 0;
       }
     EOS
+
+    # Work around "error: no member named 'signbit' in the global namespace"
+    ENV.delete "CPATH"
 
     system bin/"qmake", testpath/"hello.pro"
     system "make"

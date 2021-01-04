@@ -8,12 +8,13 @@ class MacosTrash < Formula
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "6b0b3fd96b400200bd92f734643501247fe2d3c5b2e063017c0d6aeebd337567" => :big_sur
+    sha256 "8d9db5fd2a2fcc20b593473a91f34b21fb7df149fbbd1075497aba0922118e51" => :arm64_big_sur
     sha256 "5962bfd5851549b6a251dc4b9632794622af126175faec6a4d97468d45de22c6" => :catalina
     sha256 "030b17bc67400a3f0873bd6983954fe0b55166b26c764e77b1d8cd1adc1bc1b7" => :mojave
   end
 
   depends_on xcode: ["11.0", :build]
-  depends_on macos: :yosemite
 
   conflicts_with "trash", because: "both install a `trash` binary"
   conflicts_with "trash-cli", because: "both install a `trash` binary"

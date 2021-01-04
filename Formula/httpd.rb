@@ -1,15 +1,21 @@
 class Httpd < Formula
   desc "Apache HTTP server"
   homepage "https://httpd.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=httpd/httpd-2.4.43.tar.bz2"
-  mirror "https://archive.apache.org/dist/httpd/httpd-2.4.43.tar.bz2"
-  sha256 "a497652ab3fc81318cdc2a203090a999150d86461acff97c1065dc910fe10f43"
+  url "https://www.apache.org/dyn/closer.lua?path=httpd/httpd-2.4.46.tar.bz2"
+  mirror "https://archive.apache.org/dist/httpd/httpd-2.4.46.tar.bz2"
+  sha256 "740eddf6e1c641992b22359cabc66e6325868c3c5e2e3f98faf349b61ecf41ea"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
-    sha256 "016ec294067375e0a0080d1c06812e4323b9d834452e937057e3c84387c44f02" => :catalina
-    sha256 "628617d2cc60534dc6cb78cc971de32b9724757498f194dc900ad5e5d1e6f56a" => :mojave
-    sha256 "71ab239430eb1709ff16ecc0a991e6e10f8bdd320889515f5ba88cf018f91255" => :high_sierra
+    rebuild 1
+    sha256 "52044b82ea97ef07416b50c9a5a4814d01826f216aacaed18b421fe8dcdacf3f" => :big_sur
+    sha256 "6aae607116448980a05419c497ae3fb04aa9822251e8f869835f9e3e85cf6ac5" => :arm64_big_sur
+    sha256 "a927b3b0661465316615333e7ae7836b14188691b36d7ede06fb30ac1fe00aee" => :catalina
+    sha256 "c31ed64fef5c5a063ac3d973533d1e71d01baa4f342e9811191ca65f7ad57a6e" => :mojave
   end
 
   depends_on "apr"
@@ -137,6 +143,11 @@ class Httpd < Formula
           <string>-D</string>
           <string>FOREGROUND</string>
         </array>
+        <key>EnvironmentVariables</key>
+        <dict>
+          <key>PATH</key>
+          <string>#{HOMEBREW_PREFIX}/bin:#{HOMEBREW_PREFIX}/sbin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        </dict>
         <key>RunAtLoad</key>
         <true/>
       </dict>

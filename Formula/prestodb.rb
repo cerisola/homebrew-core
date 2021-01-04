@@ -1,9 +1,20 @@
 class Prestodb < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.235.1/presto-server-0.235.1.tar.gz"
-  sha256 "862871609b14eb5259530de04f1a1ed69e3bb3b172490f2a1585f8f31fd9453e"
-  revision 1
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.245/presto-server-0.245.tar.gz"
+  sha256 "c1d86c7cfd6c3677740efd0d466601b90fdcd26b5c7137b69496a52265f2653a"
+  license "Apache-2.0"
+
+  # The source of the Presto download page at https://prestodb.io/download.html
+  # contains old version information. The current version information is loaded
+  # from the JavaScript file below, so we check that instead. We don't check
+  # Maven because sometimes the directory listing page contains a newer version
+  # that hasn't been released yet and we probably don't want to upgrade until
+  # it's official on the first-party website, etc.
+  livecheck do
+    url "https://prestodb.io/static/js/version.js"
+    regex(/latest_presto_version.*?(\d+(?:\.\d+)+)/i)
+  end
 
   bottle :unneeded
 
@@ -12,8 +23,8 @@ class Prestodb < Formula
   conflicts_with "prestosql", because: "both install `presto` and `presto-server` binaries"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.235.1/presto-cli-0.235.1-executable.jar"
-    sha256 "22deb730fd593eef83f3204d1b9a925eded2a6fb8a06e88b11a5e1e3d82855a8"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.245/presto-cli-0.245-executable.jar"
+    sha256 "2e7f48dbe2421a77784191a5b6f80e71fd0b28c527bf7a00f2a7417b156d6fc9"
   end
 
   def install
@@ -51,18 +62,11 @@ class Prestodb < Formula
 
     (libexec/"etc/catalog/jmx.properties").write "connector.name=jmx"
 
-    (bin/"presto-server").write <<~EOS
-      #!/bin/bash
-      export JAVA_HOME="#{Formula["openjdk"].opt_prefix}"
-      exec "#{libexec}/bin/launcher" "$@"
-    EOS
+    (bin/"presto-server").write_env_script libexec/"bin/launcher", Language::Java.overridable_java_home_env
 
     resource("presto-cli").stage do
       libexec.install "presto-cli-#{version}-executable.jar"
-      (bin/"presto").write <<~EOS
-        #!/bin/bash
-        exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/presto-cli-#{version}-executable.jar" "$@"
-      EOS
+      bin.write_jar_script libexec/"presto-cli-#{version}-executable.jar", "presto"
     end
   end
 

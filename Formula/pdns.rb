@@ -1,14 +1,20 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.3.0.tar.bz2"
-  sha256 "6be2e70f100df6f32cb431d5f57ca0aabde1fba6c11d947eccc86d44bdf95d08"
-  license "GPL-2.0"
+  url "https://downloads.powerdns.com/releases/pdns-4.4.0.tar.bz2"
+  sha256 "40cb81d9e0d34edcc7c95435a06125bde0bd1a51692e1db52413e31d7ede0b39"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url "https://downloads.powerdns.com/releases/"
+    regex(/href=.*?pdns[._-]v?(\d+(?:\.\d+)*)\.t/i)
+  end
 
   bottle do
-    sha256 "abda262260fff1178494b353f70b32087e48c934001d15eb92418360a4111ea5" => :catalina
-    sha256 "b3dfd65d42e150a2ce1da416507a975f72cd28bbd9092497c933796afa172e04" => :mojave
-    sha256 "2647076a193298b4cd3db2701a027fcb4e583b556400b13e282e81be5538c24c" => :high_sierra
+    sha256 "3bcdd4ecf99f973dfc4f228e429eb0aa61f51b1d237383709d8224528f4c8c6b" => :big_sur
+    sha256 "f3fe8ff82dcfb910ceee21d2a58a93c34c8e8b2b4dcdb626a3c3a126d0fbf33f" => :arm64_big_sur
+    sha256 "7e011f3e8ef5765023f9c9a2f37e623d793879a68289f7efd19f044b9067a9ff" => :catalina
+    sha256 "bc758310a198a7339455d1727270283019189a9c3e08db9d76d00734c8f79bf5" => :mojave
   end
 
   head do
@@ -29,9 +35,6 @@ class Pdns < Formula
   uses_from_macos "curl"
 
   def install
-    # Fix "configure: error: cannot find boost/program_options.hpp"
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra
-
     args = %W[
       --prefix=#{prefix}
       --sysconfdir=#{etc}/powerdns
@@ -60,7 +63,7 @@ class Pdns < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_bin}/pdns_server</string>
+          <string>#{sbin}/pdns_server</string>
         </array>
         <key>EnvironmentVariables</key>
         <key>KeepAlive</key>

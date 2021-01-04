@@ -1,19 +1,21 @@
 class Gegl < Formula
   desc "Graph based image processing framework"
-  homepage "http://www.gegl.org/"
-  url "https://download.gimp.org/pub/gegl/0.4/gegl-0.4.26.tar.xz"
-  sha256 "0f371e2ed2b92162fefd3dde743e648ca08a6a1b2b05004867fbddc7e211e424"
-  license "LGPL-3.0"
+  homepage "https://www.gegl.org/"
+  url "https://download.gimp.org/pub/gegl/0.4/gegl-0.4.28.tar.xz"
+  sha256 "1d110d8577d54cca3b34239315bd37c57ccb27dd4355655074a2d2b3fd897900"
+  license all_of: ["LGPL-3.0-or-later", "GPL-3.0-or-later", "BSD-3-Clause", "MIT"]
+  head "https://gitlab.gnome.org/GNOME/gegl.git"
 
-  bottle do
-    sha256 "31cbb2a6960a6f2a1d48d30a8facd05c378ec29545eb8ba88b385b95c56f4e60" => :catalina
-    sha256 "e40645711d7f5e2b2c511fb3c05981b99c4191faf2385dde53cbf20eed9f4319" => :mojave
-    sha256 "ed58d1d1d9c5f388c24276436f03497ba59d33b34a14541b21df8887af9d4bcf" => :high_sierra
+  livecheck do
+    url "https://download.gimp.org/pub/gegl/0.4/"
+    regex(/href=.*?gegl[._-]v?(\d+(?:\.\d+)*)\.t/i)
   end
 
-  head do
-    # Use the Github mirror because official git unreliable.
-    url "https://github.com/GNOME/gegl.git"
+  bottle do
+    sha256 "859bd53d054e26fcfa4dd3aa9a66a7d6c5227df0e86c4c4b7ee4f2941b04b13c" => :big_sur
+    sha256 "4bac67fd6373cdfa8b8d733146b66ec8d8250133468bef537188486c8f6a29d4" => :arm64_big_sur
+    sha256 "e9e37ccb4f1704c03acad379e62c33fb022edb93340d34f75c07e965b5396f39" => :catalina
+    sha256 "eb0a0d104a4654a73ab1a4c109afbe4f2b4c10f340d9df7b54e5f175446df455" => :mojave
   end
 
   depends_on "glib" => :build
@@ -41,6 +43,7 @@ class Gegl < Formula
       -Dwith-jasper=false
       -Dwith-umfpack=false
       -Dwith-libspiro=false
+      --force-fallback-for=libnsgif,poly2tri-c
     ]
 
     ### Temporary Fix ###

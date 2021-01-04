@@ -1,17 +1,16 @@
 class Traefik < Formula
   desc "Modern reverse proxy"
   homepage "https://traefik.io/"
-  url "https://github.com/containous/traefik/releases/download/v2.2.8/traefik-v2.2.8.src.tar.gz"
-  version "2.2.8"
-  sha256 "d457da29b178db3d9245fdd94753f9fc4e33a503691a0ee4e32daf8103cac71d"
+  url "https://github.com/traefik/traefik/releases/download/v2.3.6/traefik-v2.3.6.src.tar.gz"
+  sha256 "189861a13f7d61a30f4a9c1c272e1054fd95af44a83586d641623e8caf226069"
   license "MIT"
   head "https://github.com/containous/traefik.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b76d12d989c08cc30fce5b65e7cc31da120220c3516ca3b0f6713cb3d161a28a" => :catalina
-    sha256 "d292b4014d2ba8abbcc5e8932fab52af59abd14c373b979f3b110bd9a320e710" => :mojave
-    sha256 "8ac864d9b85a02fceb8fb9a1ca237a068ee46b707d0b055437b0cb8ed79b6b95" => :high_sierra
+    sha256 "695f6282ace620d247522e607364a7346bfdf099c4e74ecb697106c7c8454c04" => :big_sur
+    sha256 "62a6bcc01771e7a5206c9843741de042334489f1d39522f01c33ca576607b878" => :catalina
+    sha256 "9338fa20c6a82996368d0d15cee8faf08795bb4954477a4b6dd5d10d90e3842c" => :mojave
   end
 
   depends_on "go" => :build
@@ -20,9 +19,8 @@ class Traefik < Formula
   def install
     system "go", "generate"
     system "go", "build",
-      "-ldflags", "-s -w -X github.com/containous/traefik/v2/pkg/version.Version=#{version}",
+      "-ldflags", "-s -w -X github.com/traefik/traefik/v#{version.major}/pkg/version.Version=#{version}",
       "-trimpath", "-o", bin/"traefik", "./cmd/traefik"
-    prefix.install_metafiles
   end
 
   plist_options manual: "traefik"

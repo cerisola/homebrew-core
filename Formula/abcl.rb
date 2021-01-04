@@ -1,30 +1,41 @@
 class Abcl < Formula
   desc "Armed Bear Common Lisp: a full implementation of Common Lisp"
   homepage "https://abcl.org/"
-  url "https://abcl.org/releases/1.7.1/abcl-src-1.7.1.tar.gz"
-  sha256 "d51014b2be6ecb5bcaaacda0adf4607a995dd4b6e9e509c8a1f5a998b7649227"
+  url "https://abcl.org/releases/1.8.0/abcl-src-1.8.0.tar.gz"
+  sha256 "1d871ee2f6bcf991d5a6eff7ea5105ef808610db882604d4df0411e971ad257f"
+  license "GPL-2.0-or-later" => {
+    with: "Classpath-exception-2.0",
+  }
   head "https://abcl.org/svn/trunk/abcl/", using: :svn
+
+  livecheck do
+    url "https://abcl.org/releases/"
+    regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dbc8cab34a0b85cecce84c864f1d5dd74ef8c2198a3fad8bb2af9d4c7ddc2fcd" => :catalina
-    sha256 "45bc3d5c2c85d573b80f2c25f5768db473a1c6d33ae21174a86d3b74b5b9de6f" => :mojave
-    sha256 "4fbe880deca89206aa02449714952524ee6399381233ad029d6ed119412831b4" => :high_sierra
+    rebuild 1
+    sha256 "48a45fe17949a01e3164abecfe77a30849cd280faac0233f11a38a216194146a" => :big_sur
+    sha256 "a289f1940cf66e136607417d82ea29ab1df61523f5e6bc6608989c683eba509f" => :catalina
+    sha256 "69eae372ce01d3e1844747e79ea2dd68763e3997d5bcdbaaf8641fc6f398a23c" => :mojave
+    sha256 "a420b36787e573ecb71a14c9b45780881a25ba7d7897eb79ae74595eab21853d" => :high_sierra
   end
 
   depends_on "ant"
-  depends_on java: "1.8"
+  depends_on "openjdk"
   depends_on "rlwrap"
 
   def install
-    ENV["JAVA_HOME"] = Language::Java.java_home("1.8")
+    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
 
+    system "ant", "abcl.properties.autoconfigure.openjdk.8"
     system "ant"
 
     libexec.install "dist/abcl.jar", "dist/abcl-contrib.jar"
     (bin/"abcl").write_env_script "rlwrap",
-                                  "java -cp #{libexec}/abcl.jar:\"$CLASSPATH\" org.armedbear.lisp.Main \"$@\"",
-                                  Language::Java.overridable_java_home_env("1.8")
+                                  "java -cp #{libexec}/abcl.jar:\"$CLASSPATH\" org.armedbear.lisp.Main",
+                                  Language::Java.overridable_java_home_env
   end
 
   test do

@@ -5,6 +5,11 @@ class Asuka < Formula
   sha256 "06b03e9595b5b84e46e860ea2cf1103b244b3908fabf30337fcdf1db2a06281e"
   license "MIT"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "6c71e20910385795758563119bf66206b6507fc83a6ed70f39872e45acc47415" => :catalina

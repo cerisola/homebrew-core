@@ -1,28 +1,24 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python2 interoperability"
   homepage "https://www.boost.org/"
-  url "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.bz2"
-  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_73_0.tar.bz2"
-  sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  url "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_74_0.tar.bz2"
+  sha256 "83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "04fb7370e7cae6e4fda40545eaf8624576253ba72d6ed405debc0d48da4e6821" => :catalina
-    sha256 "9709be9548489de159a5a756fee04b8a3807a7f135c08b1ebce82ae363f49269" => :mojave
-    sha256 "b0773fe6e6125e6a45966aa5ef9e078a02c77c86d16f3fd6f7c50df4c23d7c78" => :high_sierra
+    rebuild 1
+    sha256 "773bf09629cf60599cb4118827d40b81ef792efbe24796ac5a756e4c173ba889" => :big_sur
+    sha256 "6fb5b45ffb117fa0a996a24f6ccf8041685ebbe65b8a5cea26d92028eeff09e4" => :catalina
+    sha256 "f17e33b10753adb4d49cd1d9daf46ba28552953e53069025b84393cb5db89223" => :mojave
   end
+
+  deprecate! date: "2020-01-01", because: "uses Python 2, which is no longer supported"
 
   depends_on "boost"
   depends_on :macos # Due to Python 2
-
-  # Fix build on Xcode 11.4
-  patch do
-    url "https://github.com/boostorg/build/commit/b3a59d265929a213f02a451bb63cea75d668a4d9.patch?full_index=1"
-    sha256 "04a4df38ed9c5a4346fbb50ae4ccc948a1440328beac03cb3586c8e2e241be08"
-    directory "tools/build"
-  end
 
   def install
     # "layout" should be synchronized with boost
@@ -79,8 +75,8 @@ class BoostPython < Formula
     EOS
 
     pyprefix = `python-config --prefix`.chomp
-    pyincludes = Utils.popen_read("python-config", "--includes").chomp.split(" ")
-    pylib = Utils.popen_read("python-config", "--ldflags").chomp.split(" ")
+    pyincludes = Utils.popen_read("python-config", "--includes").chomp.split
+    pylib = Utils.popen_read("python-config", "--ldflags").chomp.split
 
     system ENV.cxx, "-shared", "hello.cpp", "-L#{lib}", "-lboost_python27",
                     "-o", "hello.so", "-I#{pyprefix}/include/python2.7",

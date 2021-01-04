@@ -1,17 +1,16 @@
 class Idris2 < Formula
   desc "Pure functional programming language with dependent types"
   homepage "https://www.idris-lang.org/"
-  url "https://github.com/idris-lang/Idris2/archive/v0.2.0.tar.gz"
-  sha256 "cc7c48d3fbaa55e536890c9eb4701755081d2b5df9a65f0ecc3e00ee5ccf0a0f"
+  url "https://github.com/idris-lang/Idris2/archive/v0.2.2.tar.gz"
+  sha256 "e6eef9010a9ccd4859135d548f1b6803a80b5aa9da88b69075712bb3c0acd09b"
   license "BSD-3-Clause"
   head "https://github.com/idris-lang/Idris2.git"
 
   bottle do
     cellar :any
-    rebuild 1
-    sha256 "3dd1bbee7fae182553f34b89bf5c3049a8b8bfcd4206c7c7b904ad6b0672259b" => :catalina
-    sha256 "48268ef2985009712a46469b3ec7f849ba91f640d17e8f0b86b24f9e0477c267" => :mojave
-    sha256 "4f0a8f3c3ef289309fe2b02ff6f5b395e3b71fee94de1dbc0b9a70589788b1bd" => :high_sierra
+    sha256 "3ae7fb814b623c3f84cbacbd49e68214aeeed3042befe5016c81760338798a40" => :big_sur
+    sha256 "10109489da074ad0cf45b0772452a67d5c5ba8f1b311913c68270ba49c577c5e" => :catalina
+    sha256 "c467c0d4b91db800840586a0786363e2b5f13c4f3be69bc59648d0b9d94c4752" => :mojave
   end
 
   depends_on "coreutils" => :build

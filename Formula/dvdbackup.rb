@@ -1,12 +1,18 @@
 class Dvdbackup < Formula
   desc "Rip DVD's from the command-line"
   homepage "https://dvdbackup.sourceforge.io"
-  url "https://downloads.sourceforge.net/dvdbackup/dvdbackup-0.4.2.tar.gz"
+  url "https://downloads.sourceforge.net/project/dvdbackup/dvdbackup/dvdbackup-0.4.2/dvdbackup-0.4.2.tar.gz"
   sha256 "0a37c31cc6f2d3c146ec57064bda8a06cf5f2ec90455366cb250506bab964550"
   revision 2
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
+    sha256 "661efc5b452ba9650bf9f5a5cd5cbf081b7f11cbef0b4d22f5271c8cd2e39da5" => :big_sur
+    sha256 "9ba4e29a4b06beac2b905b2ad54850a5e24678cc53e8d1775db1461e4748306c" => :arm64_big_sur
     sha256 "d5f189809e233c9bd3aa990d2757bab405fa0f65edc4af1691477c74decd95b8" => :catalina
     sha256 "3afb7620bb4e51971831f6e39bba1567b5dd6c6ee33867472ba30beb2d18293f" => :mojave
     sha256 "514cdfb7d0d8324df9eea3e978e30d450cab58365153a51f5a47404648369378" => :high_sierra

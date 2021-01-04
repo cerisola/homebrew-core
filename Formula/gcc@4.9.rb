@@ -1,14 +1,15 @@
 class GccAT49 < Formula
-  def osmajor
-    `uname -r`.chomp
-  end
-
-  desc "The GNU Compiler Collection"
+  desc "GNU Compiler Collection"
   homepage "https://gcc.gnu.org/"
   url "https://ftp.gnu.org/gnu/gcc/gcc-4.9.4/gcc-4.9.4.tar.bz2"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-4.9.4/gcc-4.9.4.tar.bz2"
   sha256 "6c11d292cd01b294f9f84c9a59c230d80e9e4a47e5c6355f046bb36d4f358092"
   revision 2
+
+  livecheck do
+    url :stable
+    regex(%r{href=.*?gcc[._-]v?(4\.9(?:\.\d+)*)(?:/?["' >]|\.t)}i)
+  end
 
   bottle do
     sha256 "cb153d98245bcbe4809dc19adf688f642285154b19fe907c7de3cb71652b0ec6" => :high_sierra
@@ -86,10 +87,10 @@ class GccAT49 < Formula
     # Build dependencies in-tree, to avoid having versioned formulas
     resources.each { |r| r.stage(buildpath/r.name) }
 
-    version_suffix = version.to_s.slice(/\d\.\d/)
+    version_suffix = version.major_minor.to_s
 
     args = [
-      "--build=x86_64-apple-darwin#{osmajor}",
+      "--build=x86_64-apple-darwin#{OS.kernel_version}",
       "--prefix=#{prefix}",
       "--libdir=#{lib}/gcc/#{version_suffix}",
       "--enable-languages=c,c++,fortran,objc,obj-c++",
@@ -162,7 +163,7 @@ class GccAT49 < Formula
         return 0;
       }
     EOS
-    system bin/"gcc-4.9", "-o", "hello-c", "hello-c.c"
+    system bin/"gcc-#{version.major_minor}", "-o", "hello-c", "hello-c.c"
     assert_equal "Hello, world!\n", `./hello-c`
   end
 end

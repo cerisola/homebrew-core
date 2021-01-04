@@ -2,15 +2,15 @@ class Envconsul < Formula
   desc "Launch process with environment variables from Consul and Vault"
   homepage "https://github.com/hashicorp/envconsul"
   url "https://github.com/hashicorp/envconsul.git",
-    tag:      "v0.9.3",
-    revision: "1729aafafcc96929db40400eaf10bc0d70840480"
+      tag:      "v0.11.0",
+      revision: "c3eeb0d39addb0ceb81cca91d4202cfc667fddd7"
   license "MPL-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "54aca2b7ad236dfadfe9b2c8db6df755ba16de8c458f74dd71e994f6aab976ca" => :catalina
-    sha256 "a27ce0e1775134b40891dc746ff36c2f046a96e3ab57a6aed20f805ba7d88db2" => :mojave
-    sha256 "f92ba9326c7ac451e91b35bc692ffb461691ade89df336afb1ef1931d4de644f" => :high_sierra
+    sha256 "e377dbb6afa6b25649a4b4bbfc382a9a6b5a44f5f91ce7d41bbb154be102d746" => :big_sur
+    sha256 "179a94430ca555ec57a15d21e6b470616ed741a7ae8d636e4e3e72ea1b8f9b7b" => :catalina
+    sha256 "2bfcec63fd169c27ffc12ee5acea1da314de51a5be0a6185ef111655c3b79d9c" => :mojave
   end
 
   depends_on "go" => :build
@@ -18,7 +18,6 @@ class Envconsul < Formula
 
   def install
     system "go", "build", "-ldflags", "-s -w", *std_go_args
-    prefix.install_metafiles
   end
 
   test do

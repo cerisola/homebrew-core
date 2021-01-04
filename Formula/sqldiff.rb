@@ -1,16 +1,22 @@
 class Sqldiff < Formula
   desc "Displays the differences between SQLite databases"
   homepage "https://www.sqlite.org/sqldiff.html"
-  url "https://sqlite.org/2020/sqlite-src-3320300.zip"
-  version "3.32.3"
-  sha256 "9312f0865d3692384d466048f746d18f88e7ffd1758b77d4f07904e03ed5f5b9"
+  url "https://www.sqlite.org/2020/sqlite-src-3340000.zip"
+  version "3.34.0"
+  sha256 "a5c2000ece56d2de13c474658b9cdba6b7f2608a4d711e245518ea02a2a2333e"
   license "blessing"
+
+  livecheck do
+    url "https://sqlite.org/news.html"
+    regex(%r{v?(\d+(?:\.\d+)+)</h3>}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "505cf291b499c91daa6613435ed54e1d19f6d84fa3bd7a664c8b60d2040125d0" => :catalina
-    sha256 "430b27651e0dcdff06eae788c238b42a7ec4b2779eb3aaa7987287b6269e686f" => :mojave
-    sha256 "29e1767b313f6983f2481077710ffbff2ebc71e48f31b855df12376df9b4bf6a" => :high_sierra
+    sha256 "bc9c5f75179eebb911074c3ee03c3b569bcf78fd2b86638426cf80fcc0545ccb" => :big_sur
+    sha256 "9604fef23b34f1867541a51fbfbaa562f0c124933243958524c77412cce309b4" => :arm64_big_sur
+    sha256 "90f82a12f8b463d6ae92da105788e8a855968250f6ae2ea971e3945d3b3a5cc7" => :catalina
+    sha256 "8461ed8c4664c0c026fac15277fa6d2e18586f6be60e0ea71fd6eaaffa27e8d1" => :mojave
   end
 
   uses_from_macos "tcl-tk" => :build

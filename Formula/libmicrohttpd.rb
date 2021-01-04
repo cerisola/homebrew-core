@@ -1,15 +1,20 @@
 class Libmicrohttpd < Formula
   desc "Light HTTP/1.1 server library"
   homepage "https://www.gnu.org/software/libmicrohttpd/"
-  url "https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.71.tar.gz"
-  mirror "https://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.71.tar.gz"
-  sha256 "e8f445e85faf727b89e9f9590daea4473ae00ead38b237cf1eda55172b89b182"
+  url "https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.72.tar.gz"
+  mirror "https://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.72.tar.gz"
+  sha256 "0ae825f8e0d7f41201fd44a0df1cf454c1cb0bc50fe9d59c26552260264c2ff8"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "4b726d32231d5178a6e9fb1eff7a4a2e27776fe434fb5e40ecff377ac300719c" => :catalina
-    sha256 "03c40981973ceca4b9efbe13d28254378fceba98b45470492a9d677595ce1d0c" => :mojave
-    sha256 "87f16499f102b9bf25d31bce38bd396d0d09a8517b036ba2ad57bf9ace7709a5" => :high_sierra
+    sha256 "8077a7455cced7a3aa3da7d3f9a2cbf5626e7ff52f18e0f9518646a224b5d049" => :big_sur
+    sha256 "100b76ee0927bbc78ef71edf61a5f1df115aeac0dd37ec22169f2b4c83b65451" => :arm64_big_sur
+    sha256 "1d4ef28fe8b92ca4243f35c7caa5d586c7b4cb7d2eac7f6d408b50f58478d5c4" => :catalina
+    sha256 "0880e89689cbda10d2586d4c0c46ab405dfcfc3b569ad69e855cd238f5772a89" => :mojave
   end
 
   depends_on "gnutls"

@@ -1,16 +1,23 @@
 class Asio < Formula
   desc "Cross-platform C++ Library for asynchronous programming"
   homepage "https://think-async.com/Asio"
-  url "https://downloads.sourceforge.net/project/asio/asio/1.16.1%20%28Stable%29/asio-1.16.1.tar.bz2"
-  sha256 "e271db76dbbcda9835ed1c9c94deb2ba3f4589c3ebcaa71d99ac694b8d62638c"
+  url "https://downloads.sourceforge.net/project/asio/asio/1.18.1%20%28Stable%29/asio-1.18.1.tar.bz2"
+  sha256 "4af9875df5497fdd507231f4b7346e17d96fc06fe10fd30e2b3750715a329113"
   license "BSL-1.0"
   head "https://github.com/chriskohlhoff/asio.git"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?Stable.*?/asio[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
   bottle do
     cellar :any
-    sha256 "1c2a224aa3c62fdf4d6f80b54c3297e38992c53a25f977b2492c4de37848c34f" => :catalina
-    sha256 "aac238cdd1c834dace440c7dd42cd410bfc1908a62b0710ec54ef4e3b1100a40" => :mojave
-    sha256 "a25de24a946f9e0a28a4ed33271bb577a356997052ece5eaa46036f7f5863c1a" => :high_sierra
+    rebuild 1
+    sha256 "9cf6b9d1a1cc605977a853af92d5fd65a21f20a6128126ad19d8cceabc766a4b" => :big_sur
+    sha256 "f335dcfcae4e9345a6510d06cafe8884a8368a43368d52e53f95e1ca6bb8699c" => :arm64_big_sur
+    sha256 "a3eec5329a66d0e7017f407d653adc6234f09f20de691cb4290a5f1ca16c6c94" => :catalina
+    sha256 "1cbf161c11f1f4863d39d190d61a6c8efc0cdb2932c3763df7ff1111c480aaae" => :mojave
   end
 
   depends_on "autoconf" => :build

@@ -5,7 +5,14 @@ class Dnsmasq < Formula
   sha256 "62f33bfac1a1b4a5dab8461b4664e414f7d6ced1d2cf141e9cdf9c3c2a424f65"
   license "GPL-2.0"
 
+  livecheck do
+    url "http://www.thekelleys.org.uk/dnsmasq/"
+    regex(/href=.*?dnsmasq[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
+    sha256 "d452e2a6562538d398ffa39c7a1761d222d613b2cbcadf5796a7dc2a25697d55" => :big_sur
+    sha256 "fa45a739d36bf76d47b35d72ab36d8282abab1c7d5c920350f4532fa2fa970a3" => :arm64_big_sur
     sha256 "0cab9dbb88d09946faed36b09a1f0919141b3e56eea45e5f77969619e00796e0" => :catalina
     sha256 "c70c3fe42cdabac2497377e6718678eb5c433658ce1ea92e4193d6877d81c628" => :mojave
     sha256 "77e52871d7bd6af6f4f1e7b1d55bae2fa235c1d6cafc14b290758b741bc19f95" => :high_sierra

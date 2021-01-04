@@ -1,12 +1,13 @@
 class RedisAT32 < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "https://redis.io/"
-  url "http://download.redis.io/releases/redis-3.2.13.tar.gz"
+  url "https://download.redis.io/releases/redis-3.2.13.tar.gz"
   sha256 "862979c9853fdb1d275d9eb9077f34621596fec1843e3e7f2e2f09ce09a387ba"
   revision 1
 
   bottle do
     cellar :any_skip_relocation
+    sha256 "d016b698688c41f3a1157f61aaa44e4686cab2806ba8bb6b09a2d1f46eed255c" => :big_sur
     sha256 "e557bee10881f773cfb59d593a874f628b4f7d7239acea2d9cfc1ab394619fba" => :catalina
     sha256 "b61b4867149efc9201c51c984a55edcd0809e8a045b372c4bbf00c3b119afea4" => :mojave
     sha256 "78a359ac74a02868ba481ae740d1d5046a89fc2e07020ddee6c73e491a162247" => :high_sierra
@@ -14,7 +15,7 @@ class RedisAT32 < Formula
 
   keg_only :versioned_formula
 
-  deprecate!
+  deprecate! date: "2020-04-30", because: :versioned_formula
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"

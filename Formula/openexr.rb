@@ -1,14 +1,16 @@
 class Openexr < Formula
   desc "High dynamic-range image file format"
   homepage "https://www.openexr.com/"
-  url "https://github.com/openexr/openexr/archive/v2.5.2.tar.gz"
-  sha256 "5da8dff448d0c4a529e52c97daf238a461d01cd233944f75095668d6d7528761"
+  # NOTE: Please keep these values in sync with ilmbase.rb when updating.
+  url "https://github.com/openexr/openexr/archive/v2.5.4.tar.gz"
+  sha256 "dba19e9c6720c6f64fbc8b9d1867eaa75da6438109b941eefdc75ed141b6576d"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 "cd7b32d91f6e70711a4010f2027be140189d8fc92f5fcdb12331228a9e762817" => :catalina
-    sha256 "057ebb08dfa17cefc33121b6fe39af3ac43b59b4c197abba473a0e4724f07802" => :mojave
-    sha256 "a5d9520a67acdb84ac3593290d2d65d3f4dd0c4db4ed4fe9f5c07c4b5a441ae2" => :high_sierra
+    sha256 "eb633be8c992dbfa2bb4406cd397abfe16aad0bf75f252e02e8ff7d720a9f93c" => :big_sur
+    sha256 "f23f4e7523ae27fbc1885360cc99dc60b35cca395b6f8f46d45c1d7c275f0e90" => :arm64_big_sur
+    sha256 "8f146ff213eda72a32613ba36649a865848786c0e843fc6a39e58bdeafebcb31" => :catalina
+    sha256 "b9f0b513b60da938425fd93805835cfaaa916db9406687a7aa11112ec152a6f7" => :mojave
   end
 
   depends_on "cmake" => :build

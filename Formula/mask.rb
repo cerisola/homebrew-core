@@ -1,15 +1,16 @@
 class Mask < Formula
   desc "CLI task runner defined by a simple markdown file"
   homepage "https://github.com/jakedeichert/mask/"
-  url "https://github.com/jakedeichert/mask/archive/v0.8.0.tar.gz"
-  sha256 "cbf660b083d162d0b8edd99fd320b56838dd7444099cf1988104d5b96d4c681b"
+  url "https://github.com/jakedeichert/mask/archive/v0.10.0.tar.gz"
+  sha256 "264ebdde63794046b2f79d3a3d87873563a75ef7bcc2ddc3c962670b313a4bf8"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bb0ac6320fe9f43f1730324ff10cad256b92540790aa06b86d992d21d445359d" => :catalina
-    sha256 "0dc267ba57be2e1bd11ddcb294bbc8561020b8a420cd2178f0e13b65835cc77c" => :mojave
-    sha256 "278e1f1da1694e4248777f00d8b8270169c1401d99deac0a2344a05fb24f2e30" => :high_sierra
+    sha256 "95563975f0b87651a58c01845c098b93d6d0f7dfed889bebf4364e8fdfe2ffa6" => :big_sur
+    sha256 "f41f306180943b68451ecbdafacab47f497ccfa00d95baf592c58d0068ee6295" => :arm64_big_sur
+    sha256 "80a869d6a62e065235ca7057e1a0df2b5045232cd897bfc5ee7b924098d8ac99" => :catalina
+    sha256 "a4caf4f75c456b398325a2dc24d4a9b7681559fc53a55bac2b590a179bc5cde3" => :mojave
   end
 
   depends_on "rust" => :build

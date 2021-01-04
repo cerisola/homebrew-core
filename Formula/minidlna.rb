@@ -3,13 +3,18 @@ class Minidlna < Formula
   homepage "https://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.2.1/minidlna-1.2.1.tar.gz"
   sha256 "67388ba23ab0c7033557a32084804f796aa2a796db7bb2b770fb76ac2a742eec"
-  revision 3
+  license "GPL-2.0-only"
+  revision 5
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "200ede8d7a76a0ddf22978ec19f464e7716ae1e33c0c01b17877de7fcf0a0ea9" => :catalina
-    sha256 "c8b56b111f9625c1baaf66e9f06f6e7df6b039e1ebb188995edb16c2e264830c" => :mojave
-    sha256 "09e2127980deb0e8ed824e72bfa575f110b737ed4fa653ef0edb629faa815369" => :high_sierra
+    sha256 "0f008dfaac0220cdd26995d5f5fa00560328a6a30dd6d2ab8b78e23efd559337" => :catalina
+    sha256 "befb568924df8d3b17095d864b84c11733b40e4860a7aecd65f1f4d19f9c343b" => :mojave
+    sha256 "cfaad3159ef845f063cbe32262a59d98d0e0415f15d0ce41321993c2767972cf" => :high_sierra
   end
 
   head do
@@ -104,8 +109,9 @@ class Minidlna < Formula
 
     port = free_port
 
-    system sbin/"minidlnad", "-f", "minidlna.conf", "-p", port.to_s, "-P",
-                             testpath/"minidlna.pid"
+    fork do
+      exec "#{sbin}/minidlnad", "-d", "-f", "minidlna.conf", "-p", port.to_s, "-P", testpath/"minidlna.pid"
+    end
     sleep 2
 
     assert_match /MiniDLNA #{version}/, shell_output("curl localhost:#{port}")

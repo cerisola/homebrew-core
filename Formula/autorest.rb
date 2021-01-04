@@ -3,15 +3,19 @@ require "language/node"
 class Autorest < Formula
   desc "Swagger (OpenAPI) Specification code generator"
   homepage "https://github.com/Azure/autorest"
-  url "https://registry.npmjs.org/autorest/-/autorest-3.0.6187.tgz"
-  sha256 "57b243a0dc543d55085503d33679f662a3cc3ea050ec502f155381d9cf61163f"
+  url "https://registry.npmjs.org/autorest/-/autorest-3.0.6322.tgz"
+  sha256 "5ff0066889b5695a7711ca935d5123adbb60cbc861a4b736cb027a16f0bc9b07"
   license "MIT"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "57c6f4f501c99c24ca7b35a09ef21663ab437470386c1c90033f0ef9e0612500" => :catalina
-    sha256 "c94c2dca6cb5bf911f854b3f0f104096cdebb85f7ae481c480354d7f2ca01308" => :mojave
-    sha256 "e875bf8bee3b62577f260233d0a5c841c2f83f9ca770f2070e4ace0e07a0062f" => :high_sierra
+    sha256 "eff9b827066f26c4e710fa9abe24a480c1cd868c189453d86404dcd73076fb0c" => :big_sur
+    sha256 "6059b02cd613e0fb8e6a822f0a8e4e3f634a594155cb7a088b798197211f5993" => :catalina
+    sha256 "2c7f9212e6af7f2d2323c9cc0dc396ae9cbfa66b00a6b11328ec7d3d5c9fdfec" => :mojave
   end
 
   depends_on "node"

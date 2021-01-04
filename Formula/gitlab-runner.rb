@@ -1,17 +1,23 @@
 class GitlabRunner < Formula
-  desc "The official GitLab CI runner written in Go"
+  desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v13.2.2",
-      revision: "a998cacdcee3e1b21cbb23526f5e7da54e53e047"
+      tag:      "v13.7.0",
+      revision: "943fc2521df7d18aacd73ab211c35546ace47c27"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git"
 
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
     cellar :any_skip_relocation
-    sha256 "d9de7290a1c3e62e34a9e897af4605548890fe40bdc44f1b52ee9d8a3064fd01" => :catalina
-    sha256 "d4b47740a9b6fa74b0f1cce2f28c5593c64c842acc035929799765e53564fb90" => :mojave
-    sha256 "0e51ab0b8da4296107535a021f6df449bf2cc6197271de3f82d8dff3904b4f80" => :high_sierra
+    sha256 "fa7fb8c6e9aa870c6f99ea9b7c900f8e26c0959ca2dd4db272b82eb80564be9b" => :big_sur
+    sha256 "66e7158a51e584ad2cc7f587b2146b5841ce1e1e30e5dc3353f6f00818ba86ac" => :arm64_big_sur
+    sha256 "1b22b36fa6d32ce822eef5164e510a1580d242eb830f9e90111ecb5ad16a17b5" => :catalina
+    sha256 "163e0e10323ec2e18e62b58773a5b45179db0d0f737aae7b636f2814738c4854" => :mojave
   end
 
   depends_on "go" => :build
@@ -23,7 +29,7 @@ class GitlabRunner < Formula
     cd dir do
       proj = "gitlab.com/gitlab-org/gitlab-runner"
       commit = Utils.safe_popen_read("git", "rev-parse", "--short=8", "HEAD").chomp
-      branch = version.to_s.split(".")[0..1].join("-") + "-stable"
+      branch = "#{version.major}-#{version.minor}-stable"
       built = Time.new.strftime("%Y-%m-%dT%H:%M:%S%:z")
       system "go", "build", "-ldflags", <<~EOS
         -X #{proj}/common.NAME=gitlab-runner

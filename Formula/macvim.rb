@@ -2,30 +2,34 @@
 class Macvim < Formula
   desc "GUI for vim, made for macOS"
   homepage "https://github.com/macvim-dev/macvim"
-  url "https://github.com/macvim-dev/macvim/archive/snapshot-163.tar.gz"
-  version "8.2-163"
-  sha256 "3af72f22b25cf4f94b1b6e27a74d74bdefa8ed1529fe6edec59ae2756b3ca209"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-169.tar.gz"
+  version "8.2-169"
+  sha256 "3b5bd8631ada8566d7d575696fbe2e0df760f3cdd31c09b47980e3d62e523cc7"
   license "Vim"
   revision 2
   head "https://github.com/macvim-dev/macvim.git"
 
   bottle do
-    cellar :any
-    sha256 "316de5c66d247961309a072307784c1073f650b5fac87af32c67ca80bf62b0c1" => :catalina
-    sha256 "56c860f1dd98ebe374cf0721bac29e830dfc9665a5fe4f2dd26697d58713f9e1" => :mojave
-    sha256 "4b67795ddfcf1018ac1f260231f8a534072edbcb7b4ff060296667fd965a0abb" => :high_sierra
+    sha256 "9016642d7b60229617dee39cb75b3385e4980859cc23e09c6d77275a5aa904db" => :big_sur
+    sha256 "e6f2475157275a9f8a7cedc26108c31ee388506fee5c45120527b01249865e5a" => :arm64_big_sur
+    sha256 "d04cb82219fb8f8f746a61d5b7087e29c14c9058e838206fca1308592d9cd25c" => :catalina
+    sha256 "020114123f6107a9f97921a5c148603d2b0c9e40ced1c626a1afa5269fa705de" => :mojave
   end
 
   depends_on xcode: :build
   depends_on "cscope"
+  depends_on "gettext"
   depends_on "lua"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "ruby"
 
   conflicts_with "vim",
     because: "vim and macvim both install vi* binaries"
 
   def install
+    # Fix error: '__declspec' attributes are not enabled
+    ENV.append_to_cflags "-fdeclspec"
+
     # Avoid issues finding Ruby headers
     ENV.delete("SDKROOT")
 
@@ -49,7 +53,8 @@ class Macvim < Formula
                           "--with-lua-prefix=#{Formula["lua"].opt_prefix}",
                           "--enable-luainterp",
                           "--enable-python3interp",
-                          "--disable-sparkle"
+                          "--disable-sparkle",
+                          "--with-macarchs=#{Hardware::CPU.arch}"
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"
@@ -64,9 +69,10 @@ class Macvim < Formula
   test do
     output = shell_output("#{bin}/mvim --version")
     assert_match "+ruby", output
+    assert_match "+gettext", output
 
     # Simple test to check if MacVim was linked to Homebrew's Python 3
-    py3_exec_prefix = shell_output(Formula["python@3.8"].opt_bin/"python3-config --exec-prefix")
+    py3_exec_prefix = shell_output(Formula["python@3.9"].opt_bin/"python3-config --exec-prefix")
     assert_match py3_exec_prefix.chomp, output
     (testpath/"commands.vim").write <<~EOS
       :python3 import vim; vim.current.buffer[0] = 'hello python3'

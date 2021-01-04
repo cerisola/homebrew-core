@@ -2,15 +2,20 @@ class ErlangAT22 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-22.3.4.5.tar.gz"
-  sha256 "6117318970bf5d83d52aa1d782078f78803279f4a46a390adcbd29dc0bc617bc"
+  url "https://github.com/erlang/otp/archive/OTP-22.3.4.12.tar.gz"
+  sha256 "5607b27169edb2c02806f21330a3d430c55f21580292743d25b29b678e951aaf"
   license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    regex(/^OTP[._-]v?(22(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "b21d74b8d25223473b67eb1ba86173f5a153ae403d3b995006e752ebc7507096" => :catalina
-    sha256 "91ef24eac6105765eb4158313113f50b10b64c0bb2571bf115a36ec3fa1731a2" => :mojave
-    sha256 "4912b360aa0b80ca526e72cf3e4827fd06ae6c6fe7fb3629b07a2cf7b8e6a47c" => :high_sierra
+    sha256 "488de36e1f6532a07a505effc1b85ea33ae25d1251be58734b8bf1eb1c7a695c" => :catalina
+    sha256 "980895c1e851c7a7a82be51ca2c1ea24e3b8a9aad63f72e4721d83de3d6121e2" => :mojave
+    sha256 "ba000ca6cd9a086630cc930cd3059238fb54dba5ccb74a4a8dce4e739261db80" => :high_sierra
   end
 
   keg_only :versioned_formula
@@ -18,6 +23,7 @@ class ErlangAT22 < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+  depends_on arch: :x86_64
   depends_on "openssl@1.1"
   depends_on "wxmac" # for GUI apps like observer
 
@@ -35,9 +41,15 @@ class ErlangAT22 < Formula
     sha256 "9b01c61f2898235e7f6643c66215d6419f8706c8fdd7c3e0123e68960a388c34"
   end
 
+  # Fix build on Xcode 12
+  patch do
+    url "https://github.com/erlang/otp/commit/388622e9b626039c1e403b4952c2c905af364a96.patch?full_index=1"
+    sha256 "85d3611fc071f06d421b9c7fae00b656fde054586bf69551aec38930d4086780"
+  end
+
   def install
     # Unset these so that building wx, kernel, compiler and
-    # other modules doesn't fail with an unintelligable error.
+    # other modules doesn't fail with an unintelligible error.
     %w[LIBS FLAGS AFLAGS ZFLAGS].each { |k| ENV.delete("ERL_#{k}") }
 
     # Do this if building from a checkout to generate configure
@@ -56,11 +68,13 @@ class ErlangAT22 < Formula
       --enable-wx
       --with-ssl=#{Formula["openssl@1.1"].opt_prefix}
       --without-javac
-      --enable-darwin-64bit
     ]
 
-    args << "--enable-kernel-poll" if MacOS.version > :el_capitan
-    args << "--with-dynamic-trace=dtrace" if MacOS::CLT.installed?
+    on_macos do
+      args << "--enable-darwin-64bit"
+      args << "--enable-kernel-poll" if MacOS.version > :el_capitan
+      args << "--with-dynamic-trace=dtrace" if MacOS::CLT.installed?
+    end
 
     system "./configure", *args
     system "make"
@@ -96,10 +110,10 @@ class ErlangAT22 < Formula
           end;
       main(_) ->
           usage().
-      
+
       usage() ->
           io:format("usage: factorial integer\n").
-      
+
       fac(0) -> 1;
       fac(N) -> N * fac(N-1).
     EOS

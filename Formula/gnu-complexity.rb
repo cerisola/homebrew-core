@@ -6,8 +6,14 @@ class GnuComplexity < Formula
   sha256 "6d378a3ef9d68938ada2610ce32f63292677d3b5c427983e8d72702167a22053"
   license "GPL-3.0"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
+    sha256 "260cd84aa3d6cf2395aff51aaea06bfb6d1729b5a9c8423ad4c9de1a7ec0c195" => :big_sur
+    sha256 "ae738fac097e00b3fec0355072eab9622f5d29f78ae465b25bee554916e07fec" => :arm64_big_sur
     sha256 "8a83c1ada362279b8fbe66addd9fb0d646cb90f8c936959c7923a546f9cd0770" => :catalina
     sha256 "25474f8be313534736f5ccbe1c707969606ca3fa7360079df0cc8879cde0fbbb" => :mojave
     sha256 "94558c250d55d6d1c83e682d38481b0d75b12850d46e00dacdf81744be288229" => :high_sierra

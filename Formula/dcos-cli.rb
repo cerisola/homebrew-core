@@ -1,15 +1,23 @@
 class DcosCli < Formula
-  desc "The DC/OS command-line interface"
+  desc "Command-line interface for managing DC/OS clusters"
   homepage "https://docs.d2iq.com/mesosphere/dcos/latest/cli"
-  url "https://github.com/dcos/dcos-cli/archive/1.1.3.tar.gz"
-  sha256 "cc423272e08a15d30e13c60b2245350c0b7d027649a6a01d44a58596a5ed8b20"
+  url "https://github.com/dcos/dcos-cli/archive/1.2.0.tar.gz"
+  sha256 "d75c4aae6571a7d3f5a2dad0331fe3adab05a79e2966c0715409d6a2be2c6105"
   license "Apache-2.0"
+  head "https://github.com/dcos/dcos-cli.git"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1f98490af0a9ce9a22e7de6f764d887342e11bbd25ca70131e2987a93131170f" => :catalina
-    sha256 "d38aab9ff56007a19cc5a6e16546ac852b10a08d9b951c32dc36fd10642a15c0" => :mojave
-    sha256 "a44dadc1335fa9f20ef25f10cd6a6ef826b7d34cf20de7261b3e67d5c86f3474" => :high_sierra
+    sha256 "b5badc96ebf2b3b474d05e9899e9d9538e3818913a6cb707ad5896d8158e5716" => :big_sur
+    sha256 "99caaf98328dbb1e3a0c4ed325e49f5c63b8bd1b4a1af2f7091d82f915dc2b3b" => :arm64_big_sur
+    sha256 "f761361ad67f93ddb2e437ba807522ed6b6216f8bbc317d6eaa04981900019cd" => :catalina
+    sha256 "6e93ffb09f31d29705faf1b2296cf4559514460e2231c23e871f43c1e87b569f" => :mojave
+    sha256 "54d43e8f4b694bf552454fec21ca9aae5408416729d5d1c21be61108c7ddd1d9" => :high_sierra
   end
 
   depends_on "go" => :build

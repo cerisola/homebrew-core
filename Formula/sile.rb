@@ -1,15 +1,16 @@
 class Sile < Formula
   desc "Modern typesetting system inspired by TeX"
   homepage "https://www.sile-typesetter.org"
-  url "https://github.com/sile-typesetter/sile/releases/download/v0.10.9/sile-0.10.9.tar.xz"
-  sha256 "44eaaf286b059b46eb51f28ef813d149538b06f4541c1eb7fb6faef26d60a564"
+  url "https://github.com/sile-typesetter/sile/releases/download/v0.10.13/sile-0.10.13.tar.xz"
+  sha256 "d207d0ee9749a6da16fa2db217f51d3586955387a132c45423b47eedf8c964a6"
   license "MIT"
+  revision 2
   head "https://github.com/sile-typesetter/sile.git", shallow: false
 
   bottle do
-    sha256 "da79266a0ae28efab9e34eba745beff0a8fe5c7e9756ddcb56538e9bab0b46de" => :catalina
-    sha256 "94d9b2d884f07f593da6fd31a656e1997db9b661f1b6d7f0147603cc4ad5d041" => :mojave
-    sha256 "d01b305462816ca2d9bc48abe62e30b86f10c7febb1d8e2c6f82adf41d4fb418" => :high_sierra
+    sha256 "d791ab6a480aabc66efede6487b6c8199527d0d9874249f510f18bf50fdb8443" => :big_sur
+    sha256 "cb965e298eeb6f23de84f65c97b6537c2ae5ad1fc55224c3355f77eb28113bb7" => :catalina
+    sha256 "f1707b37213ffda7234761238e10a8abb8179c86c3f9b6e02c6d8dd71ffbecc0" => :mojave
   end
 
   if build.head?
@@ -28,6 +29,11 @@ class Sile < Formula
   depends_on "lua"
   depends_on "openssl@1.1"
   depends_on "zlib"
+
+  resource "bit32" do
+    url "https://github.com/keplerproject/lua-compat-5.3/archive/v0.10.tar.gz"
+    sha256 "d1ed32f091856f6fffab06232da79c48b437afd4cd89e5c1fc85d7905b011430"
+  end
 
   resource "cassowary" do
     url "https://github.com/sile-typesetter/cassowary.lua/archive/v2.2.tar.gz"
@@ -90,8 +96,8 @@ class Sile < Formula
   end
 
   resource "penlight" do
-    url "https://github.com/Tieske/Penlight/archive/1.7.0.tar.gz"
-    sha256 "5b793fc93fa7227190e191e5b24a8f0ce9dd5958ccebe7a53842a58b5d46057f"
+    url "https://github.com/Tieske/Penlight/archive/1.8.0.tar.gz"
+    sha256 "a1a41c5ec82c0459bc0508a0fb1cb56dfaa83a1dd7754d7174b336ad65420d3d"
   end
 
   resource "stdlib" do
@@ -105,25 +111,64 @@ class Sile < Formula
   end
 
   def install
+    lua = Formula["lua"]
+    luaprefix = lua.opt_prefix
+    luaversion = lua.version.major_minor
     luapath = libexec/"vendor"
-    ENV["LUA_PATH"] =
-      "#{luapath}/share/lua/5.3/?.lua;#{luapath}/share/lua/5.3/?/init.lua;#{luapath}/share/lua/5.3/lxp/?.lua"
-    ENV["LUA_CPATH"] = "#{luapath}/lib/lua/5.3/?.so"
+
+    paths = %W[
+      #{luapath}/share/lua/#{luaversion}/?.lua
+      #{luapath}/share/lua/#{luaversion}/?/init.lua
+      #{luapath}/share/lua/#{luaversion}/lxp/?.lua
+    ]
+
+    ENV["LUA_PATH"] = paths.join(";")
+    ENV["LUA_CPATH"] = "#{luapath}/lib/lua/#{luaversion}/?.so"
+
+    ENV.prepend "CPPFLAGS", "-I#{lua.opt_include}/lua"
+    ENV.prepend "LDFLAGS", "-L#{lua.opt_lib}"
 
     resources.each do |r|
       r.stage do
         case r.name
         when "lua-zlib"
           # https://github.com/brimworks/lua-zlib/commit/08d6251700965
-          mv "lua-zlib-1.1-0.rockspec", "lua-zlib-1.2-0.rockspec"
-          system "luarocks", "make", "#{r.name}-#{r.version}-0.rockspec", "--tree=#{luapath}",
-                             "ZLIB_DIR=#{Formula["zlib"].opt_prefix}"
+          # https://github.com/brimworks/lua-zlib/issues/49
+          mv "lua-zlib-1.1-0.rockspec", "lua-zlib-1.2-1.rockspec"
+
+          # rockspec needs to be updated to accommodate lua5.4:
+          # https://github.com/brimworks/lua-zlib/pull/50
+          # Note that the maintainer prefers the upper bound of `<= 5.4`,
+          # so this may lead to subtle breakage if lua5.5 is ever released.
+          # https://github.com/brimworks/lua-zlib/pull/51
+          # Remove this when `lua-zlib` is updated.
+          inreplace "lua-zlib-1.2-1.rockspec" do |s|
+            s.gsub! "1.2-0", "1.2-1"
+            s.gsub! ", <= 5.3", ""
+          end
+
+          system "luarocks", "make",
+                             "#{r.name}-#{r.version}-1.rockspec",
+                             "ZLIB_DIR=#{Formula["zlib"].opt_prefix}",
+                             "--tree=#{luapath}",
+                             "--lua-dir=#{luaprefix}"
         when "luaexpat"
-          system "luarocks", "build", r.name, "--tree=#{luapath}", "EXPAT_DIR=#{Formula["expat"].opt_prefix}"
+          system "luarocks", "build",
+                             r.name,
+                             "EXPAT_DIR=#{Formula["expat"].opt_prefix}",
+                             "--tree=#{luapath}",
+                             "--lua-dir=#{luaprefix}"
         when "luasec"
-          system "luarocks", "build", r.name, "--tree=#{luapath}", "OPENSSL_DIR=#{Formula["openssl@1.1"].opt_prefix}"
+          system "luarocks", "build",
+                             r.name,
+                             "OPENSSL_DIR=#{Formula["openssl@1.1"].opt_prefix}",
+                             "--tree=#{luapath}",
+                             "--lua-dir=#{luaprefix}"
         else
-          system "luarocks", "build", r.name, "--tree=#{luapath}"
+          system "luarocks", "build",
+                             r.name,
+                             "--tree=#{luapath}",
+                             "--lua-dir=#{luaprefix}"
         end
       end
     end

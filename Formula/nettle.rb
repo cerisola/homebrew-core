@@ -4,11 +4,16 @@ class Nettle < Formula
   url "https://ftp.gnu.org/gnu/nettle/nettle-3.6.tar.gz"
   mirror "https://ftpmirror.gnu.org/nettle/nettle-3.6.tar.gz"
   sha256 "d24c0d0f2abffbc8f4f34dcf114b0f131ec3774895f3555922fe2f40f3d5e3f1"
-  # license ["GPL-2.0", "GPL-3.0", "LGPL-3.0"] - pending https://github.com/Homebrew/brew/pull/7953
-  license "GPL-2.0"
+  license any_of: ["GPL-2.0-or-later", "LGPL-3.0-or-later"]
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
+    sha256 "5119f665e058b08045462a2ddfe8371cf20e1e2a7256e97df1c6741af7289b1c" => :big_sur
+    sha256 "a0ef6e7fce016174df9b20e42d04f02c525e081df2bc4b9f893773649df4e349" => :arm64_big_sur
     sha256 "7ac7677ba653dbef81dd83ed8cde3dfcb7b464d04442886c396179932f4f9faa" => :catalina
     sha256 "d378b026725d8d449ca6497ce2158b93c991a0e0326921a5f914bc4847da3a92" => :mojave
     sha256 "07c65cb4d172b05065dcceb702b41ca3408b31b6154690c7a4cfa430b2de074d" => :high_sierra
@@ -29,7 +34,7 @@ class Nettle < Formula
     end
 
     args = []
-    args << "--build=aarch64-apple-darwin#{`uname -r`.chomp}" if Hardware::CPU.arm?
+    args << "--build=aarch64-apple-darwin#{OS.kernel_version}" if Hardware::CPU.arm?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",

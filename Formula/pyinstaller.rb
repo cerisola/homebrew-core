@@ -3,21 +3,24 @@ class Pyinstaller < Formula
 
   desc "Bundle a Python application and all its dependencies"
   homepage "https://www.pyinstaller.org"
-  url "https://files.pythonhosted.org/packages/3c/c9/c3f9bc64eb11eee6a824686deba6129884c8cbdf70e750661773b9865ee0/PyInstaller-3.6.tar.gz"
-  sha256 "3730fa80d088f8bb7084d32480eb87cbb4ddb64123363763cf8f2a1378c1c4b7"
+  url "https://files.pythonhosted.org/packages/9e/ed/fbdad7f5d8f794c901076b814b8e9f5ce31d32c0bc3b63ddd27b61db9530/pyinstaller-4.1.tar.gz"
+  sha256 "954ae81de9a4bc096ff02433b3e245b9272fe53f27cac319e71fe7540952bd3d"
   license "GPL-2.0"
-  revision 1
-
   head "https://github.com/pyinstaller/pyinstaller.git", branch: "develop"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f5b5c872f6ed44dee85485f97743f066aaba0de5a7ef5a1817330ae9ac3ae502" => :catalina
-    sha256 "d169b298d3b87b48d0e53591deb6b794128705850a7b9a064786ea323953dda4" => :mojave
-    sha256 "5ab59b261f6a112da5e0423e7fb08912d421ab2c0ff27f4f477f262e8c55a0f0" => :high_sierra
+    sha256 "6518b7fb92db54abc227d3be74530c65d08ef75b79d7d8e5aa3655a31bfb8a31" => :big_sur
+    sha256 "671d6256453d2f38e4481e83ed88443108fcc28869fe1f5e288ca5fd3e0d60ed" => :arm64_big_sur
+    sha256 "4bccc73cc20b297d0ce9f8133c0fac8b7366323785fa83d3f7001cc136fd4918" => :catalina
+    sha256 "4fbfb39966796c5fd73366fa0799b7e9260b3fcc8863838695516b922c237c02" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "altgraph" do
     url "https://files.pythonhosted.org/packages/22/5a/ac50b52581bbf0d8f6fd50ad77d20faac19a2263b43c60e7f3af8d1ec880/altgraph-0.17.tar.gz"
@@ -29,12 +32,17 @@ class Pyinstaller < Formula
     sha256 "0c436bc847e7b1d9bda0560351bf76d7caf930fb585a828d13608839ef42c432"
   end
 
+  resource "pyinstaller-hooks-contrib" do
+    url "https://files.pythonhosted.org/packages/a3/a9/ea55eba430824703625d37a01ff8a219643f3174a4afea1a4073ce5a0db0/pyinstaller-hooks-contrib-2020.10.tar.gz"
+    sha256 "bf4543a16c9c6e9dd2d70ea3fee78b81d3357a68f706df471d990213892259d9"
+  end
+
   def install
     virtualenv_install_with_resources
   end
 
   test do
-    xy = Language::Python.major_minor_version "python3.8"
+    xy = Language::Python.major_minor_version "python3.9"
     system bin/"pyinstaller", "-F", "--distpath=#{testpath}/dist", "--workpath=#{testpath}/build",
                               libexec/"lib/python#{xy}/site-packages/easy_install.py"
     assert_predicate testpath/"dist/easy_install", :exist?

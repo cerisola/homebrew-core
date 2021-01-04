@@ -1,15 +1,22 @@
 class Ncmpc < Formula
   desc "Curses Music Player Daemon (MPD) client"
   homepage "https://www.musicpd.org/clients/ncmpc/"
-  url "https://www.musicpd.org/download/ncmpc/0/ncmpc-0.38.tar.xz"
-  sha256 "2bc1aa38aacd23131895cd9aa3abd9d1ca5700857034d9f35209e13e061e27a2"
-  license "GPL-2.0"
+  url "https://www.musicpd.org/download/ncmpc/0/ncmpc-0.42.tar.xz"
+  sha256 "a5f7471d766a71c222374efa4aa17ef6ee0e42ad48d15528edd935d1f0f6cd4d"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url "https://www.musicpd.org/download/ncmpc/0/"
+    regex(/href=.*?ncmpc[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "ca880e781bb617e6fbbcfb70168ac8939b8b5a04bbc24128d68bb9450b4af498" => :catalina
-    sha256 "aacbb298f4ceb0911d117babf04e5ce7e2dc17f8999805bc40cd784c256814be" => :mojave
-    sha256 "7891f4939522591774bdeab323a49c53f3f0742f64eed19389ece06762b2beec" => :high_sierra
+    rebuild 1
+    sha256 "dcaf0d0af1cff22c8e2913fd55fef28a0205ca0ef88d38955e7dabaa06e3e241" => :big_sur
+    sha256 "812169b73cb47055ee1574ff7278afa59ea92b70cafead63992052e7b193f4c0" => :arm64_big_sur
+    sha256 "b94f6244a29cbc00d222d8b938fc44a550c2779490b1323c0d2df65eda0585c6" => :catalina
+    sha256 "ada5b8151c3e9801a270cb9c5c20cc5d24770b0d6afb71ab6ac773eccdb221d2" => :mojave
   end
 
   depends_on "boost" => :build
@@ -26,6 +33,10 @@ class Ncmpc < Formula
     cause "error: no matching constructor for initialization of 'value_type'"
   end
 
+  # remove in next release
+  # commit reference, https://github.com/MusicPlayerDaemon/ncmpc/commit/1a45eab
+  patch :DATA
+
   def install
     mkdir "build" do
       system "meson", *std_meson_args, "-Dcolors=false", "-Dnls=disabled", ".."
@@ -37,3 +48,29 @@ class Ncmpc < Formula
     system bin/"ncmpc", "--help"
   end
 end
+
+__END__
+diff --git a/src/screen_utils.cxx b/src/screen_utils.cxx
+index 95de70e..e85061f 100644
+--- a/src/screen_utils.cxx
++++ b/src/screen_utils.cxx
+@@ -29,6 +29,7 @@
+
+ #ifndef _WIN32
+ #include "WaitUserInput.hxx"
++#include <cerrno>
+ #endif
+
+ #include <string.h>
+diff --git a/src/signals.cxx b/src/signals.cxx
+index 4c005aa..9f3eb72 100644
+--- a/src/signals.cxx
++++ b/src/signals.cxx
+@@ -17,6 +17,7 @@
+  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+  */
+
++#include <signal.h>
+ #include "Instance.hxx"
+
+ void

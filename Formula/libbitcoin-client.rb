@@ -4,13 +4,13 @@ class LibbitcoinClient < Formula
   url "https://github.com/libbitcoin/libbitcoin-client/archive/v3.6.0.tar.gz"
   sha256 "75969ac0a358458491b101cae784de90452883b5684199d3e3df619707802420"
   license "AGPL-3.0"
-  revision 4
+  revision 6
 
   bottle do
     cellar :any
-    sha256 "b30c1fd90b3ba80f002950486891a669eaf5418e763cbb15f2d58f406775563d" => :catalina
-    sha256 "310d8bb305ce06cde2354fa1b93c89b037ec166892b8386aa9b130a6366e6a46" => :mojave
-    sha256 "4a3d2184f8e7b81fb4262b2f3fcae060dc42eabb46b5ea24011be070e65ac2bd" => :high_sierra
+    sha256 "2e6b9c76aa995bb275d841a8b895032e75153edada35ee349602083b5cec3c4e" => :big_sur
+    sha256 "90a8577e21703dc41fa58ea17f57692aba40afad1d8290add9b7fa8363e4c79f" => :catalina
+    sha256 "24e5312ba815627a47853ef4024b9a41c4ad145657fee7c9ad0023b57600f5cf" => :mojave
   end
 
   depends_on "autoconf" => :build

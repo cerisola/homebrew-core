@@ -4,10 +4,11 @@ class Solarus < Formula
   url "https://gitlab.com/solarus-games/solarus.git",
       tag:      "v1.6.4",
       revision: "6d2a11ddd1d07d21695ab7304c3ddd462fd37c26"
-  sha256 "d800fdf388f860732f2d40c8dd635c34fd1c452857f75bf9b3a421e3ef5ee751"
+  license "GPL-3.0-or-later"
 
   bottle do
     cellar :any
+    sha256 "80970673e8217a282440a21de4e4db8fa4435f9743e94c74f300fa55f2963014" => :big_sur
     sha256 "23c646e9a69c966e0f2930ac225661dab3d8b97fbb9e34c12cb49cdfe1e56d67" => :catalina
     sha256 "6d02a298994633961ed83feb34471cf743059aa9daf90d9b5153f2613337e8d2" => :mojave
     sha256 "dedfe91badd887dfdcf0e0d55b662fde86890c1f8e287dddd224b29b0339f4b9" => :high_sierra

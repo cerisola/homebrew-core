@@ -1,17 +1,18 @@
 class Doxygen < Formula
   desc "Generate documentation for several programming languages"
   homepage "https://www.doxygen.org/"
-  url "https://doxygen.nl/files/doxygen-1.8.18.src.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.8.18/doxygen-1.8.18.src.tar.gz"
-  sha256 "18173d9edc46d2d116c1f92a95d683ec76b6b4b45b817ac4f245bb1073d00656"
-  license "GPL-2.0"
+  url "https://doxygen.nl/files/doxygen-1.9.0.src.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/doxygen/rel-1.9.0/doxygen-1.9.0.src.tar.gz"
+  sha256 "636bab2c3c85603302600ed9b95425717aee776e56a3215325fcce15bbfdaef6"
+  license "GPL-2.0-only"
   head "https://github.com/doxygen/doxygen.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7a9d0dcd889aba7e0e96fc62b1e5cce048adacbab03d3b924f9940b50c7b2d3c" => :catalina
-    sha256 "ac54e6ace4d6167a03b7c0c8dbb956f696921eb32a5507e842227220852385df" => :mojave
-    sha256 "630a2c57c428c9ae42d5d6f6f5986a08292db010c51f407c1bbb6224c4d9ddf7" => :high_sierra
+    sha256 "0cb195e145b8f948f5bda842f1cfd75a12227f65c10380ba8fc4b4ab7410215c" => :big_sur
+    sha256 "4190e7abd2b204272ef6b87cf3fb3f1b346e6bfd13d6e0e67c73f68b8ead8f1c" => :arm64_big_sur
+    sha256 "d3e48b2eecd43fde1d0f3c2b599e429dc6fc0ad04b2da0586aef340c32c69c0c" => :catalina
+    sha256 "4cc20518427bf8126923fb324451c82c70e052ecadc212242f54db41f563fc08" => :mojave
   end
 
   depends_on "bison" => :build

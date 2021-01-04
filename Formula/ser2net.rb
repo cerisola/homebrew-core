@@ -1,24 +1,29 @@
 class Ser2net < Formula
   desc "Allow network connections to serial ports"
   homepage "https://ser2net.sourceforge.io"
-  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.2.0.tar.gz"
-  sha256 "1d895f005896e8c5bcff4fe573e2fec3611bf4feee1247857e476b74323d916c"
-  license "GPL-2.0"
-  revision 1
+  url "https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-4.2.3.tar.gz"
+  sha256 "d63448d10064419f1783fbb04d0a95461d54d6b17cf50c9d33a63cbf0c732f37"
+  license "GPL-2.0-only"
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/ser2net[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
 
   bottle do
     cellar :any
-    sha256 "1f72aa5bda0313aab823ee8afbb91ea46a39d021b5e38872864481e2b5555a7a" => :catalina
-    sha256 "33e6a1c897ab0af156af1554be2391fdfbb3a9bd3cc29fc8be34ab44e2de8595" => :mojave
-    sha256 "217b9ded1b3e0a8566db9cf67e15112f5aebffbe74b429f75b22581f19046fa8" => :high_sierra
+    sha256 "daff205c7e62f7a0ad6ce064b5005f80f4e8362b17a2cb3ad87676174d683ba7" => :big_sur
+    sha256 "61d93dbd74a72555d27f9f24e567f5c8a586e63ff348f429573d9f1246f02c63" => :arm64_big_sur
+    sha256 "3477841d573b2612fff98a0dd1fa8ac46e3d43fdc110ddfd3767f6b433b344a4" => :catalina
+    sha256 "822c56bfd75eccbdcc8a447236c996ca146e5efe324eea471dbbc212611dc0be" => :mojave
+    sha256 "b11cef34c33d9f40ac677c034ff1557444d69735f3d5c88e8eaaffd135237d7d" => :high_sierra
   end
 
   depends_on "libyaml"
-  depends_on macos: :sierra # needs clock_gettime
 
   resource "gensio" do
-    url "https://downloads.sourceforge.net/project/ser2net/ser2net/gensio-2.1.2.tar.gz"
-    sha256 "4b84c81376bcc557818d771a995fc0dddf77f146365a836c70c3d4c55f503dbc"
+    url "https://downloads.sourceforge.net/project/ser2net/ser2net/gensio-2.1.4.tar.gz"
+    sha256 "1f5a29aabfb35886893cfda5cd78192db67e96de796dbf9758dbecd4077a3fd8"
   end
 
   def install

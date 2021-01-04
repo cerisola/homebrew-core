@@ -1,61 +1,83 @@
 class Mesa < Formula
+  include Language::Python::Virtualenv
+
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://mesa.freedesktop.org/archive/mesa-20.1.5.tar.xz"
-  sha256 "fac1861e6e0bf1aec893f8d86dbfb9d8a0f426ff06b05256df10e3ad7e02c69b"
+  url "https://mesa.freedesktop.org/archive/mesa-20.3.2.tar.xz"
+  sha256 "cce001b685d23afb976b04138714906abcf7e7f996da6355e6a43e5ca486533d"
+  license "MIT"
   head "https://gitlab.freedesktop.org/mesa/mesa.git"
 
-  bottle do
-    cellar :any
-    sha256 "f6f85ba2e12c63e2a8e3107eee1f2f3058214f742100079c5cac8f55cbadaf30" => :catalina
-    sha256 "e91fd8f33ac0808aee5c6bf2d784b818362a08bc6c12a48a1e2d90788539bebf" => :mojave
-    sha256 "6bd906354d1b187e1858d520f9b87d00e55f6646fd998545c364ef726b5b839f" => :high_sierra
+  livecheck do
+    url :stable
   end
 
-  depends_on "meson-internal" => :build
+  bottle do
+    sha256 "118d01556e5a7410cc01527da2087cd82e557ddf85c6f39bb53bdb80b9e21879" => :big_sur
+    sha256 "fd0368e10f736aebc0709ada911ad45d28cfd73e75f63e3197868c4715364f33" => :arm64_big_sur
+    sha256 "72afadeb2d338adb20f2d2b20c473355e2f4128091d1ce14650a0d57533971a0" => :catalina
+    sha256 "8456a4b58b0288bfed4756410475fc3cb5894d74a895d19d9b4733fd4df4360d" => :mojave
+  end
+
+  depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.8" => :build
-  depends_on "freeglut" => :test
+  depends_on "python@3.9" => :build
   depends_on "expat"
   depends_on "gettext"
+  depends_on "libx11"
+  depends_on "libxcb"
+  depends_on "libxdamage"
+  depends_on "libxext"
 
   resource "Mako" do
     url "https://files.pythonhosted.org/packages/72/89/402d2b4589e120ca76a6aed8fee906a0f5ae204b50e455edd36eda6e778d/Mako-1.1.3.tar.gz"
     sha256 "8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27"
   end
 
-  resource "gears.c" do
-    url "https://www.opengl.org/archives/resources/code/samples/glut_examples/mesademos/gears.c"
-    sha256 "7df9d8cda1af9d0a1f64cc028df7556705d98471fdf3d0830282d4dcfb7a78cc"
+  resource "glxgears.c" do
+    url "https://gitlab.freedesktop.org/mesa/demos/-/raw/faaa319d704ac677c3a93caadedeb91a4a74b7a7/src/xdemos/glxgears.c"
+    sha256 "3873db84d708b5d8b3cac39270926ba46d812c2f6362da8e6cd0a1bff6628ae6"
+  end
+
+  resource "gl_wrap.h" do
+    url "https://gitlab.freedesktop.org/mesa/demos/-/raw/faaa319d704ac677c3a93caadedeb91a4a74b7a7/src/util/gl_wrap.h"
+    sha256 "c727b2341d81c2a1b8a0b31e46d24f9702a1ec55c8be3f455ddc8d72120ada72"
+  end
+
+  patch do
+    url "https://gitlab.freedesktop.org/mesa/mesa/-/commit/50064ad367449afad03c927f7e572c138b05c5d4.patch"
+    sha256 "aa3fa361a8626d442aefdac922a7193612b77cab2410452acee40b6dbc10a800"
   end
 
   def install
-    python3 = Formula["python@3.8"].opt_bin/"python3"
-    xy = Language::Python.major_minor_version python3
-    ENV.prepend_create_path "PYTHONPATH", buildpath/"vendor/lib/python#{xy}/site-packages"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
 
-    resource("Mako").stage do
-      system python3, *Language::Python.setup_install_args(buildpath/"vendor")
-    end
+    venv_root = libexec/"venv"
+    venv = virtualenv_create(venv_root, "python3")
+    venv.pip_install resource("Mako")
 
-    resource("gears.c").stage(pkgshare.to_s)
+    ENV.prepend_path "PATH", "#{venv_root}/bin"
 
     mkdir "build" do
-      system "meson", *std_meson_args, "..", "-Db_ndebug=true",
-                      "-Dplatforms=surfaceless", "-Dglx=disabled"
+      system "meson", *std_meson_args, "..", "-Db_ndebug=true"
       system "ninja"
       system "ninja", "install"
     end
   end
 
   test do
+    %w[glxgears.c gl_wrap.h].each { |r| resource(r).stage(testpath) }
     flags = %W[
-      -framework OpenGL
-      -I#{Formula["freeglut"].opt_include}
-      -L#{Formula["freeglut"].opt_lib}
-      -lglut
+      -I#{include}
+      -L#{lib}
+      -L#{Formula["libx11"].lib}
+      -L#{Formula["libxext"].lib}
+      -lGL
+      -lX11
+      -lXext
+      -lm
     ]
-    system ENV.cc, "#{pkgshare}/gears.c", "-o", "gears", *flags
+    system ENV.cc, "glxgears.c", "-o", "gears", *flags
   end
 end

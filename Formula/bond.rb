@@ -1,25 +1,29 @@
 class Bond < Formula
   desc "Cross-platform framework for working with schematized data"
   homepage "https://github.com/microsoft/bond"
-  url "https://github.com/microsoft/bond/archive/9.0.2.tar.gz"
-  sha256 "1745d9d1fc5abf804d0d2b37ab722e1ba318dc0f89a6f2f158437d142710c0f4"
+  url "https://github.com/microsoft/bond/archive/9.0.4.tar.gz"
+  sha256 "59392145dbe271c3f1fd4b784958a08cf5c9e38c1a769af007ce6ac7100daf01"
   license "MIT"
 
   bottle do
     cellar :any
-    sha256 "5535b65ad5e7ba72b0e671e43c915f051603ad58f3f876892ceb655ac610fba2" => :catalina
-    sha256 "f0b6dbc5afaf0b4a49dd240cdcafb08254632b1894737d2d2ad6faef8c13054d" => :mojave
-    sha256 "6bd7cd9569089318223d6897fb3232aca500988a351aa674bb4e71de87b0b662" => :high_sierra
+    sha256 "b777ee788ae5d9ee234cc7dea3f671d4d8e50edafdd2b48ecd990c6643ffcacb" => :big_sur
+    sha256 "c4677d09cbf02e66671d9760ca64fcfbab1127b778c70719d9db58daca9b7c7e" => :catalina
+    sha256 "432c38ccaa1931fb8320cbbc8692d3982ce225732f70cdb5c7f3b8596c487f31" => :mojave
   end
 
   depends_on "cmake" => :build
+  depends_on "ghc@8.6" => :build
   depends_on "haskell-stack" => :build
   depends_on "boost"
   depends_on "rapidjson"
 
   def install
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DBOND_ENABLE_GRPC=FALSE", "-DBOND_FIND_RAPIDJSON=TRUE"
+      system "cmake", "..", *std_cmake_args,
+                            "-DBOND_ENABLE_GRPC=FALSE",
+                            "-DBOND_FIND_RAPIDJSON=TRUE",
+                            "-DBOND_STACK_OPTIONS=--system-ghc;--no-install-ghc"
       system "make"
       system "make", "install"
     end

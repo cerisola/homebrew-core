@@ -1,17 +1,17 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  url "https://github.com/docker/docker-ce.git",
-      tag:      "v19.03.12",
-      revision: "48a66213fe1747e8873f849862ff3fb981899fc6"
+  url "https://github.com/docker/cli.git",
+      tag:      "v20.10.1",
+      revision: "831ebeae967552edf2e19980b628fc7b8e92b59f"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "ce26e2a26692cd22ad6c37edbae304e2349f98682f51fc8e5c1ae074fa9573fc" => :catalina
-    sha256 "be8241ad433dd7c8a5c9b73344f4e24f0bc4b4808f4a33b99811ea403d0d0159" => :mojave
-    sha256 "ac92b86b4f792d61be6c0d90549a3633e071c4a6833d696b8a285b3be90962f7" => :high_sierra
+    sha256 "8be588aa23896f190a6e0b29c059ede59c5583733d86a874f571cd02503e810c" => :big_sur
+    sha256 "dce52f026637389455b177396869b8839df923160faee02f86b109c0ee6a2446" => :arm64_big_sur
+    sha256 "debb0a1b01bca6f0bd13c4737a18d0f7ca58dfedb6e898fc0d3c103598bbc0e6" => :catalina
+    sha256 "c7a5c40881826afedd31a6ee28920af9d08ed41137f0aa585ac5e4206766990e" => :mojave
   end
 
   depends_on "go" => :build
@@ -19,8 +19,9 @@ class Docker < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO111MODULE"] = "auto"
     dir = buildpath/"src/github.com/docker/cli"
-    dir.install (buildpath/"components/cli").children
+    dir.install (buildpath/"").children
     cd dir do
       commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
       build_time = Utils.safe_popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp

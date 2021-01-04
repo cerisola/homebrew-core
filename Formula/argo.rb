@@ -2,19 +2,19 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo.git",
-      tag:      "v2.9.4",
-      revision: "20d2ace3d5344db68ce1bc2a250bbb1ba9862613"
+      tag:      "v2.12.2",
+      revision: "7868e723704bcfe1b943bc076c2e0b83777d6267"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bd3ec57664e6a9febeb2b46ed1819538f074219d9f91956a74617dc4326c7e4c" => :catalina
-    sha256 "14526db90cf7076b4c365279e1f1ec31804bd7a18122008836f4ddf1fb72941c" => :mojave
-    sha256 "a5d57bb86d96062ff009e4b179b253bd79f83fc79b4d64e93fe95d99b1f49ca9" => :high_sierra
+    sha256 "6cd220e313e089a39215c043e58f0bf3ad92dd687269a2408aa01ca92cace752" => :big_sur
+    sha256 "59ec4a973bcfbe35d044212ec53d97d43cc1bad7fbd9eae55dbae54b823a362e" => :catalina
+    sha256 "e594c49c8e0af1abf873b5ae8ca12c92af866ab5f93dd2f4ab3fc5893ce0bcfe" => :mojave
   end
 
   depends_on "go" => :build
-  depends_on "node" => :build
+  depends_on "node@14" => :build
   depends_on "yarn" => :build
 
   def install
@@ -22,11 +22,16 @@ class Argo < Formula
     inreplace "Makefile", "CGO_ENABLED=0", ""
     system "make", "dist/argo"
     bin.install "dist/argo"
+
+    output = Utils.safe_popen_read("#{bin}/argo", "completion", "bash")
+    (bash_completion/"argo").write output
+    output = Utils.safe_popen_read("#{bin}/argo", "completion", "zsh")
+    (zsh_completion/"_argo").write output
   end
 
   test do
-    assert_match "argo is the command line interface to Argo",
-      shell_output("#{bin}/argo --help")
+    assert_match "argo:",
+      shell_output("#{bin}/argo version")
 
     # argo consumes the Kubernetes configuration with the `--kubeconfig` flag
     # Since it is an empty file we expect it to be invalid

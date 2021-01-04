@@ -1,15 +1,16 @@
 class Cheat < Formula
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/cheat/cheat"
-  url "https://github.com/cheat/cheat/archive/4.0.2.tar.gz"
-  sha256 "87c832b25794d7acac2fa4bd3389c81819535f32242d5e99284da76a1a86f1f3"
+  url "https://github.com/cheat/cheat/archive/4.2.0.tar.gz"
+  sha256 "23c3c30fe1ad63916718eef534dcef22c0ae607695f74860180304c5cde3ea49"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1b49b821d246cb6d14ee07a15e78220a94840eed6ed0e69f61a6e22546c05ca9" => :catalina
-    sha256 "ef318fc3e0335589b1ad5aa1c61b50907510b5cae4e58dd027d8bed8ec927f6e" => :mojave
-    sha256 "e05440e9dc3e6e9002442dd6c3bd1e2126e253de85ef2591219ce43f0d7eac2a" => :high_sierra
+    sha256 "dbfd6636a4b40dd7b94a400c7888f45ddd87427e855b00dc8119dd7200c49b14" => :big_sur
+    sha256 "0616a7b0ce9a9fd33919390fb29f042eb997d3462917514b283385a9f05fe977" => :arm64_big_sur
+    sha256 "74c8c4a8fc13f0484628ed56dc6d54507f605d271faf844683119f6f46adfa2a" => :catalina
+    sha256 "540de221f3d25e9aaa697a078c51f36964d219a565701e06ed5492a02b6d876d" => :mojave
   end
 
   depends_on "go" => :build
@@ -21,6 +22,7 @@ class Cheat < Formula
 
     bash_completion.install "scripts/cheat.bash"
     fish_completion.install "scripts/cheat.fish"
+    zsh_completion.install "scripts/cheat.zsh"
   end
 
   test do

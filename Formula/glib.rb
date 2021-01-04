@@ -3,15 +3,20 @@ class Glib < Formula
 
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.64/glib-2.64.4.tar.xz"
-  sha256 "f7e0b325b272281f0462e0f7fff25a833820cac19911ff677251daf6d87bce50"
-  license "LGPL-2.1"
-  revision 2
+  url "https://download.gnome.org/sources/glib/2.66/glib-2.66.4.tar.xz"
+  sha256 "97df8670e32f9fd4f7392b0980e661dd625012015d58350da1e58e343f4af984"
+  license "LGPL-2.1-or-later"
+  revision 1
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
-    sha256 "288fc814fdcc2b48b4296d700ce59468ae3a79bc11fa7978ca4de715afe88619" => :catalina
-    sha256 "0f0caafe83c71689fadef8bfd71339bbec3647101dfa623e98e566b0bda33b00" => :mojave
-    sha256 "60d204b976de73876d740a691f00e4c3d6af0255d5e8ee4787a93bf523ff84b4" => :high_sierra
+    sha256 "4f48567977f08be9d02920f54fc3a31d0ceb106e733d7e5e7fde44fcf7a59990" => :big_sur
+    sha256 "c81fcd1d7973f90f2923a0a569d8e748107da9fcc0e283c62c281bdda8bca059" => :arm64_big_sur
+    sha256 "56681d90bb716b6a7c28825a3e014571bae6e06b94325e434d4845d7b4502a34" => :catalina
+    sha256 "3a742af0366177f75672fd24839fa9c98e021cf677f2b94318a0207730886939" => :mojave
   end
 
   depends_on "meson" => :build
@@ -20,7 +25,7 @@ class Glib < Formula
   depends_on "gettext"
   depends_on "libffi"
   depends_on "pcre"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   on_linux do
     depends_on "util-linux"
@@ -34,20 +39,11 @@ class Glib < Formula
     sha256 "a57fec9e85758896ff5ec1ad483050651b59b7b77e0217459ea650704b7d422b"
   end
 
-  # Fixes a runtime error on ARM and PowerPC Macs.
-  # Can be removed in the next release.
-  # https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1566
+  # required for gtk+4
+  # see discussion at https://gitlab.gnome.org/GNOME/gtk/-/issues/3477
   patch do
-    url "https://gitlab.gnome.org/GNOME/glib/-/commit/c60d6599c9182ce44fdfaa8dde2955f55fc0d628.patch"
-    sha256 "9e3de41571edaa4bce03959abf885aad4edd069a622a5b642bf40294d748792e"
-  end
-
-  # Enables G_GNUC_FALLTHROUGH on clang.
-  # Necessary for pango to build on recent versions of clang.
-  # Will be in the next release.
-  patch do
-    url "https://gitlab.gnome.org/GNOME/glib/-/commit/5f38ae5ffca3213addc5b279a46d537792d031db.patch"
-    sha256 "12128966a693dd45d2e20286437aea13b1fe554aed0907cbc33131d3b76be890"
+    url "https://gitlab.gnome.org/GNOME/glib/-/commit/8c76bec77985be7f4c81a052ec649232341369f6.patch"
+    sha256 "333aa937d87431d6fd01bd3ca1cc684a9562dd1c2c327a7c0f0c463b6a384e25"
   end
 
   def install
@@ -56,6 +52,7 @@ class Glib < Formula
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = std_meson_args + %W[
+      --default-library=both
       -Diconv=auto
       -Dgio_module_dir=#{HOMEBREW_PREFIX}/lib/gio/modules
       -Dbsymbolic_functions=false

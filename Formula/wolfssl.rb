@@ -2,16 +2,24 @@ class Wolfssl < Formula
   desc "Embedded SSL Library written in C"
   homepage "https://www.wolfssl.com"
   url "https://github.com/wolfSSL/wolfssl.git",
-      tag:      "v4.4.0-stable",
-      revision: "e116c89a58af750421d82ece13f80516d2bde02e"
-  license "GPL-2.0"
+      tag:      "v4.6.0-stable",
+      revision: "9c87f979a7f1d3a6d786b260653d566c1d31a1c4"
+  license "GPL-2.0-or-later"
   head "https://github.com/wolfSSL/wolfssl.git"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/v?(\d+(?:\.\d+)+)[._-]stable["' >]}i)
+  end
 
   bottle do
     cellar :any
-    sha256 "0be0aa725d9cd9d9a127d574a3e63548ad7176d03613913e714175af1a91eae9" => :catalina
-    sha256 "44add33b67e8f1d4e48f5130e9f0c73cbeda7277f8c43aa5fddbd8e9dccba657" => :mojave
-    sha256 "e3220ea7176729c24f817900a45002a8502defeba7ef4a1001cff1b342b3c487" => :high_sierra
+    rebuild 1
+    sha256 "f13c349fb385458f97d803ef508be2e65b9503f2136c6e082bb84c33b573036b" => :big_sur
+    sha256 "29563b41dec13425249513e2a651370bc7795b96961e218c7f27699f76834219" => :arm64_big_sur
+    sha256 "7a5517bed7942b4877c9869eb352f13d473a3315b022a0c33393522fe478b341" => :catalina
+    sha256 "17fbc436533b6f449e661cecc23c4a0abeae870a2f1988e3d45323d69713eae7" => :mojave
   end
 
   depends_on "autoconf" => :build

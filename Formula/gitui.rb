@@ -1,15 +1,16 @@
 class Gitui < Formula
   desc "Blazing fast terminal-ui for git written in rust"
   homepage "https://github.com/extrawurst/gitui"
-  url "https://github.com/extrawurst/gitui/archive/v0.9.1.tar.gz"
-  sha256 "2112575a5ec65f744572d38df9f4f79e7547fc2139093a6c9cf2e9ad85bdf547"
+  url "https://github.com/extrawurst/gitui/archive/v0.11.0.tar.gz"
+  sha256 "ba32583bb6afc3adac8fe78d8ce10fd127b2fe4f62bc24b301d1ffbfb838bf98"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3be65a8a965a8cb4643641c63119afc27221e1dae3e227e2ee49b4943c55ef75" => :catalina
-    sha256 "a9d7d94a1a6de1e61c526b828d63a60b6526b0bd93942d69bc4f86ddfb07034a" => :mojave
-    sha256 "d9763fde6296904449114c083f8f79728da805418443aad002647157f6fb70a2" => :high_sierra
+    sha256 "60db2601c6791f28adfa590269af2216b644c0aec57c7b76760fdbd2782c9b4c" => :big_sur
+    sha256 "90607a35df37269e87bf2f023a53d6fb70fda7902320b957cca080b286e2f058" => :arm64_big_sur
+    sha256 "58b881c6404ef201a9f386285cad4be06eed6f9da934895d9feb6e813cd9448d" => :catalina
+    sha256 "724c0c2e5055cea5d49c376c2b6c8681847cf9f0a45079a3fff103f2e5641028" => :mojave
   end
 
   depends_on "rust" => :build
@@ -47,7 +48,7 @@ class Gitui < Formula
     screenlog.gsub! /\e\[([;\d]+)?m/, ""
     assert_match "Author: Stephan Dilly", screenlog
     assert_match "Date: 2020-06-15", screenlog
-    assert_match "SHA: 9c2a31846c417d8775a346ceaf38e77b710d3aab", screenlog
+    assert_match "Sha: 9c2a31846c417d8775a346ceaf38e77b710d3aab", screenlog
   ensure
     Process.kill("TERM", wait_thr.pid)
   end

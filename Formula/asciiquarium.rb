@@ -6,6 +6,11 @@ class Asciiquarium < Formula
   license "GPL-2.0"
   revision 1
 
+  livecheck do
+    url "https://robobunny.com/projects/asciiquarium/"
+    regex(/href=.*?asciiquarium[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "9bf092861aad33c28e8f753d79032eb9af48521508dbee0a5ec6dc3646e6cc89" => :catalina
@@ -15,6 +20,8 @@ class Asciiquarium < Formula
     sha256 "9120f02b70c63672af2752de536aeaeac5ef57bc2b3a388afe1ab9e12d40a59b" => :el_capitan
     sha256 "6b20abf264f40c7123e40f0f34cfc11f0c12a03b1a74a324e3f3a7ae75e94f3f" => :yosemite
   end
+
+  uses_from_macos "perl"
 
   resource "Curses" do
     url "https://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-1.34.tar.gz"

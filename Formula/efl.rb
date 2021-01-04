@@ -1,13 +1,21 @@
 class Efl < Formula
   desc "Enlightenment Foundation Libraries"
   homepage "https://www.enlightenment.org"
-  url "https://download.enlightenment.org/rel/libs/efl/efl-1.24.3.tar.xz"
-  sha256 "de95c6e673c170c1e21382918b122417c091c643e7dcaced89aa785529625c2a"
+  url "https://download.enlightenment.org/rel/libs/efl/efl-1.25.1.tar.xz"
+  sha256 "351ca0211ca000234527a503585f039f985607ec9439e34b49d8b8bbf35a7e6b"
+  license all_of: ["GPL-2.0-only", "LGPL-2.1-only", "BSD-2-Clause", "FTL", "zlib-acknowledgement"]
+  revision 2
+
+  livecheck do
+    url "https://download.enlightenment.org/rel/libs/efl/"
+    regex(/href=.*?efl[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 "39569bcce1747db9a7d620c439675e63e1a5283934775d0ebf73971029b0062f" => :catalina
-    sha256 "38168d23647dca449b81d779560e7591a39fb5f7214278fa5a5e8fbf25fe4af3" => :mojave
-    sha256 "d0c11a5353b2b352e73ea08280e244c48d050d32340a882270e31dd25aa0c3d8" => :high_sierra
+    rebuild 1
+    sha256 "f766369d2b57930065ab0212d2f42fe70eafcac40ff2f2f81b7a26122362fb34" => :big_sur
+    sha256 "236808836f14291b3257770ffcda4facdb9c357b856ca0d0feffd9fbb7d88417" => :catalina
+    sha256 "e23fa6f70de8f3008688a27d56f02543839d37f6f2e21fcbb595207366528929" => :mojave
   end
 
   depends_on "meson" => :build

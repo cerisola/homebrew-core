@@ -4,16 +4,22 @@ class ImagemagickAT6 < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406-6.9.11-25.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-6.9.11-25.tar.xz"
-  sha256 "3372075771cdaccea6dafd44dda5dc98560f3b8a4d062475e60d7cf52e3f9622"
+  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406-6.9.11-54.tar.xz"
+  mirror "https://www.imagemagick.org/download/releases/ImageMagick-6.9.11-54.tar.xz"
+  sha256 "d48d0d6710c02b821aa89338bcbcb5e83a4883ac4aafbc98b357bb9228d2e820"
   license "ImageMagick"
   head "https://github.com/imagemagick/imagemagick6.git"
 
+  livecheck do
+    url "https://www.imagemagick.org/download/"
+    regex(/href=.*?ImageMagick[._-]v?(6(?:\.\d+)+(?:-\d+)?)\.t/i)
+  end
+
   bottle do
-    sha256 "7ce74001783b34e588007b47f01e78bdd94ccf11d6fcdbc6c60b3c0b53bb66fe" => :catalina
-    sha256 "b41f3a91be9386cf93ba97dce1da4017ec4d341a92aae9b7e476fe1c8dba9def" => :mojave
-    sha256 "568611b807d935b1c31b5235a83d58bac11408699033603150c0bea0055458c0" => :high_sierra
+    sha256 "b0a72d572fbfba8492b8a98609b1d5dc886a143e9de2d22f6d0b701c59b080a2" => :big_sur
+    sha256 "1422843654f1cde9f15a419a77ae334ccb84fe70a5f3c1585a384c616e4963c2" => :arm64_big_sur
+    sha256 "e264f830468e3e791d6822df06c5813c6b1f27556c598acac2554080cd5aa5a5" => :catalina
+    sha256 "3406b0a04bc95946d293f816e55e2c7168d3a6d7582fc268a6475ac283440f13" => :mojave
   end
 
   keg_only :versioned_formula
@@ -21,6 +27,7 @@ class ImagemagickAT6 < Formula
   depends_on "pkg-config" => :build
 
   depends_on "freetype"
+  depends_on "ghostscript"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
@@ -37,7 +44,7 @@ class ImagemagickAT6 < Formula
     inreplace Dir["**/*-config.in"], "@PKG_CONFIG@", Formula["pkg-config"].opt_bin/"pkg-config"
 
     args = %W[
-      --disable-osx-universal-binary
+      --enable-osx-universal-binary=no
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-silent-rules
@@ -49,7 +56,7 @@ class ImagemagickAT6 < Formula
       --with-modules
       --with-webp=yes
       --with-openjp2
-      --without-gslib
+      --with-gslib
       --with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts
       --without-fftw
       --without-pango

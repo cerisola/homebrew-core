@@ -2,29 +2,27 @@ class CartridgeCli < Formula
   desc "Tarantool Cartridge command-line utility"
   homepage "https://tarantool.org/"
   url "https://github.com/tarantool/cartridge-cli.git",
-      tag:      "2.1.0",
-      revision: "52f3f6837ea4896d9b476169813aa48de8e1e659"
+      tag:      "2.5.0",
+      revision: "98f361c2a44bc003ff2838fc9b20bd5fa2b4a876"
   license "BSD-2-Clause"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4c8b2341f80eb3a9c66e84cfa74892e489627663d63cb79db2a147aeac8e6718" => :catalina
-    sha256 "9c5ec77dff83e767202cd587f985d62f1562242e62b26ce6e6db6625e0d57b3d" => :mojave
-    sha256 "c4d1b6f7ef9560bca26cf6880f9cc531bbe4188994cd82716ea8b74431d7fd32" => :high_sierra
+    sha256 "eef624f8c6e2e685a6ebc1701b49379649d18aa286aca8c0850ee81a9bad3e87" => :big_sur
+    sha256 "d35447ff5b2f525b2efb04374efb5192b500793476c1ed6350c695c0555d8fc2" => :catalina
+    sha256 "8491a54e283498d46b9959e668d57933b5737ec1a40672f44522cc044f9248a5" => :mojave
   end
 
   depends_on "go" => :build
+  depends_on "mage" => :build
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
+    system "mage", "build"
+    bin.install "cartridge"
+    system bin/"cartridge", "gen", "completion"
 
-    ldflags = %W[
-      -s -w
-      -X github.com/tarantool/cartridge-cli/cli/version.gitTag=#{version}
-      -X github.com/tarantool/cartridge-cli/cli/version.gitCommit=#{commit}
-    ]
-
-    system "go", "build", "-o", bin/"cartridge", "-ldflags", ldflags.join(" "), "cli/main.go"
+    bash_completion.install "completion/bash/cartridge"
+    zsh_completion.install "completion/zsh/_cartridge"
   end
 
   test do

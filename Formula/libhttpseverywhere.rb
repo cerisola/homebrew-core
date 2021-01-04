@@ -3,18 +3,24 @@ class Libhttpseverywhere < Formula
   homepage "https://github.com/gnome/libhttpseverywhere"
   url "https://download.gnome.org/sources/libhttpseverywhere/0.8/libhttpseverywhere-0.8.3.tar.xz"
   sha256 "1c006f5633842a2b131c1cf644ab929556fc27968a60da55c00955bd4934b6ca"
-  license "LGPL-3.0"
-  revision 3
+  license "LGPL-3.0-or-later"
+  revision 4
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "0f7bd135303104c5c99fce5d6a215b7e8ec14430fe083b7f31cf187d31318a76" => :catalina
-    sha256 "8f2bffc0b7677ca274a7db722d0c206094283492453dff52276a35d3c0539887" => :mojave
-    sha256 "423d5b3f578db02af3da3498d0970eee3a6d26add491949f59927723503385d3" => :high_sierra
+    sha256 "459d83997d7d69966ddee1e7a94e8583b4de8570ee1a796273a64a3d7845b8cd" => :big_sur
+    sha256 "006bf3748d65067509e5b2e6d506f3b0a9a52c5eaab54780850b70b7f82ff249" => :arm64_big_sur
+    sha256 "c8cc1d294949af9676e54f9a32c4dbe782dfc5d103f92bbee68acd2ccb5ff728" => :catalina
+    sha256 "2835c48e21e0a96730893f96319736e55d29d8b224fcc0915e319bcbc3b521c2" => :mojave
+    sha256 "9c7c9397a0ebe56b82ffa6d8daeb9e645e94d14ed4fd25aedbe313c603e0b9b5" => :high_sierra
   end
 
   depends_on "gobject-introspection" => :build
-  depends_on "meson-internal" => :build
+  depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
@@ -27,8 +33,8 @@ class Libhttpseverywhere < Formula
   # see https://gitlab.gnome.org/GNOME/libhttpseverywhere/issues/1
   # remove when next version is released
   patch do
-    url "https://gitlab.gnome.org/GNOME/libhttpseverywhere/commit/6da08ef1ade9ea267cecf14dd5cb2c3e6e5e50cb.diff"
-    sha256 "e5499c290c5b48b243f67763a2c710acc5bd52b90541eb8da3f8b24b516f7430"
+    url "https://gitlab.gnome.org/GNOME/libhttpseverywhere/commit/6da08ef1ade9ea267cecf14dd5cb2c3e6e5e50cb.patch"
+    sha256 "511c5aa10f466e879e04e794e09716de6bb18413bd23a72cffb323be5a982919"
   end
 
   def install

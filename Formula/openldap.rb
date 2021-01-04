@@ -1,14 +1,21 @@
 class Openldap < Formula
   desc "Open source suite of directory software"
   homepage "https://www.openldap.org/software/"
-  url "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.50.tgz"
-  sha256 "5cb57d958bf5c55a678c6a0f06821e0e5504d5a92e6a33240841fbca1db586b8"
+  url "https://www.openldap.org/software/download/OpenLDAP/openldap-release/openldap-2.4.56.tgz"
+  sha256 "25520e0363c93f3bcb89802a4aa3db33046206039436e0c7c9262db5a61115e0"
   license "OLDAP-2.8"
 
+  livecheck do
+    url "https://www.openldap.org/software/download/OpenLDAP/openldap-release/"
+    regex(/href=.*?openldap[._-]v?(\d+(?:\.\d+)*)\.t/i)
+  end
+
   bottle do
-    sha256 "c0f1fe7a472cba83a584bd574ba2a4d8e04b73fac95259855ee8697359f7e117" => :catalina
-    sha256 "b4273ace070b3f6afb965b0f2c9d43524a38d1521b55febe84833586a5d773fb" => :mojave
-    sha256 "fe64b6a62c8fddfa647f8e48ad233ee09514cc0bc7ba43058b85b0809e4cfab2" => :high_sierra
+    sha256 "345810c84de13512ecf41b3ff0b606d8e59b093ab6bb3532e2cc3488a76c77fe" => :big_sur
+    sha256 "8b395311cd3ab9e08fec534f6d8f21dab159089aed7e73d636e63943da8df41a" => :arm64_big_sur
+    sha256 "c51d24181e4291ece30b4ff8504f864bc4e0432a0dc85b64d6f4cac68b4f43dd" => :catalina
+    sha256 "8a9151d93ef5d9fe13aefe74b9cbba128524cfa5646d3bafa84b44180ffcba22" => :mojave
+    sha256 "517c23bda49065c883a38d4d2ea0b1816860913c0b30013be170a01d3518a824" => :high_sierra
   end
 
   keg_only :provided_by_macos
@@ -16,6 +23,7 @@ class Openldap < Formula
   depends_on "openssl@1.1"
 
   on_linux do
+    depends_on "groff" => :build
     depends_on "util-linux"
   end
 

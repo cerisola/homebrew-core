@@ -1,8 +1,14 @@
 class DependencyCheck < Formula
   desc "OWASP dependency-check"
   homepage "https://owasp.org/www-project-dependency-check/"
-  url "https://dl.bintray.com/jeremy-long/owasp/dependency-check-5.3.2-release.zip"
-  sha256 "4c6f40cb596e335fd0cd816bd6c25773e1e029c3109979ce4c429f3b49850252"
+  url "https://github.com/jeremylong/DependencyCheck/releases/download/v6.0.4/dependency-check-6.0.4-release.zip"
+  sha256 "18b2a408aae5ff5fc9c00e471451e604fa0338cc8f8b535aba36b9dbce48426e"
+  license "Apache-2.0"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?dependency-check[._-]v?(\d+(?:\.\d+)+)-release\.zip/i)
+  end
 
   bottle :unneeded
 

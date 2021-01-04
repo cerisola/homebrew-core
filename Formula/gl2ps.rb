@@ -5,8 +5,15 @@ class Gl2ps < Formula
   sha256 "8d1c00c1018f96b4b97655482e57dcb0ce42ae2f1d349cd6d4191e7848d9ffe9"
   license "GL2PS"
 
+  livecheck do
+    url "https://geuz.org/gl2ps/src/"
+    regex(/href=.*?gl2ps[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "4ad3d5fcf0a8393e77881e4ea73c160200f6573aa05f6db84e452d920a5f7185" => :big_sur
+    sha256 "02cad33d0c39773c7a0c0983f125fc04fe86d265b31cac034be45379265e65be" => :arm64_big_sur
     sha256 "dbdfe5d8458e1224941d6e5707b725ab6872333112dc408dbf35202eddbc8d15" => :catalina
     sha256 "bc857ec44c73448acf748dea7a699e1018a874196dec19659a63aa70a7b5e970" => :mojave
     sha256 "6c36dc780b0579f44057cadddb9e1a2e369e2ba9205b68d6c81ebd79defc45b4" => :high_sierra

@@ -1,16 +1,17 @@
 class Blogc < Formula
   desc "Blog compiler with template engine and markup language"
   homepage "https://blogc.rgm.io/"
-  url "https://github.com/blogc/blogc/releases/download/v0.19.0/blogc-0.19.0.tar.xz"
-  sha256 "b409deede82513448fac460c27dbfa96093c6974cf324eaf8e6ab21dc53924ef"
+  url "https://github.com/blogc/blogc/releases/download/v0.20.1/blogc-0.20.1.tar.xz"
+  sha256 "d1289367362b7b11b438670fe703ff2c751e795393c06e1999d6b9a6e438fdd8"
   license "BSD-3-Clause"
   head "https://github.com/blogc/blogc.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "118c986799974ccef116ab3b0d2cf192c0f7cdef07fceb74e3ab7b90e86b1bea" => :catalina
-    sha256 "415db1c2d7555a0047940c1e7f208f1f2a9a3710bcad8a7500ba4e75b829b7ed" => :mojave
-    sha256 "654dc424fae6c319b824ee1ab7beb95982ce85439ed1a90e267c2ce909aaa290" => :high_sierra
+    sha256 "ff83c11472e9295479779c6e27d5ae59efb77bdb216ba4d4efb30ae88f847981" => :big_sur
+    sha256 "f51d0d693775155a5eb1199a7ee90abb00e35a00a7469e02f3a31c074aff57cf" => :arm64_big_sur
+    sha256 "16c4393bd90b76d031af46bcd959705ef627e49823912c543f5a76683b5b48e2" => :catalina
+    sha256 "f1409e887cc77c191a561e71c497d95dffd281cdf673a5b474003902aaa44099" => :mojave
   end
 
   def install

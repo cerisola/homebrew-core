@@ -5,9 +5,15 @@ class Irrlicht < Formula
   sha256 "f42b280bc608e545b820206fe2a999c55f290de5c7509a02bdbeeccc1bf9e433"
   head "https://svn.code.sf.net/p/irrlicht/code/trunk"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/irrlicht[._-]v?(\d+(?:\.\d+)+)\.(?:t|zip)}i)
+  end
+
   bottle do
     cellar :any_skip_relocation
     rebuild 1
+    sha256 "611abae20f145f6026ddb16b24564fd11599f7ca7e4f59b0971b3b2304fad466" => :big_sur
     sha256 "665031602d338528055bfb7dba5c1a4c94c0deaea6c3db8d4d4cddb061a54e7d" => :catalina
     sha256 "e5b9b3d8b58f26c138b9dcd421fad9769e6ab7833bbf668cdeac909fd204a601" => :mojave
     sha256 "508d300a52f1f1d5b1d5193f07559ca3da5aa3286181ae88b415bf5468c521bc" => :high_sierra

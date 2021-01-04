@@ -1,4 +1,4 @@
-# Note: Mutt has a large number of non-upstream patches available for
+# NOTE: Mutt has a large number of non-upstream patches available for
 # it, some of which conflict with each other. These patches are also
 # not kept up-to-date when new versions of mutt (occasionally) come
 # out.
@@ -10,14 +10,19 @@
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "https://bitbucket.org/mutt/mutt/downloads/mutt-1.14.6.tar.gz"
-  sha256 "47972a0152b81b9f67ff322a0a6682b914c15545bfdeac6bcc2f2c0bf9361844"
-  license "GPL-2.0"
+  url "https://bitbucket.org/mutt/mutt/downloads/mutt-2.0.4.tar.gz"
+  sha256 "45087e78105e9abc7cc37827865d319081587cb53a94412aa4e3118e937991d4"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
-    sha256 "082daa6e0a39f0571b6d4ed96319783ea3bd0c466dec391161bd77bac602ff25" => :catalina
-    sha256 "308286b170d87edf5e453641c3c749d7aefa0ec2c6d602ae883949ba09b6c2fe" => :mojave
-    sha256 "f6189decba76d0f635165027bdf71cd76d388ef4244bacb69d53f6da38570f93" => :high_sierra
+    sha256 "f181150fcf0ff74b00b3d00cc39d355685ad90a5e8e065837f2d3bd3cb42d937" => :big_sur
+    sha256 "3733169f300075cfec18105ad60b125760540e61d7c0ca7151fb9d0bac0d735f" => :arm64_big_sur
+    sha256 "23f79a29d228e21cf3d93225c9b73517bd06c0fefefb258f7780e8e8bd17bb1d" => :catalina
+    sha256 "d0e7a3f48da84a0f718e36a3027874bfa8cf150ec1e637b7d8bc0746cd42c86c" => :mojave
   end
 
   head do
@@ -35,6 +40,7 @@ class Mutt < Formula
   depends_on "tokyo-cabinet"
 
   uses_from_macos "bzip2"
+  uses_from_macos "krb5"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
@@ -76,7 +82,7 @@ class Mutt < Formula
 
   def caveats
     <<~EOS
-      mutt_dotlock(1) has been installed, but does not have the permissions lock
+      mutt_dotlock(1) has been installed, but does not have the permissions to lock
       spool files in /var/mail. To grant the necessary permissions, run
 
         sudo chgrp mail #{bin}/mutt_dotlock

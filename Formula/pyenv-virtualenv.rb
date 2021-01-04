@@ -7,6 +7,11 @@ class PyenvVirtualenv < Formula
   version_scheme 1
   head "https://github.com/pyenv/pyenv-virtualenv.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle :unneeded
 
   depends_on "pyenv"

@@ -3,23 +3,27 @@ class Gdbgui < Formula
 
   desc "Modern, browser-based frontend to gdb (gnu debugger)"
   homepage "https://www.gdbgui.com/"
-  url "https://files.pythonhosted.org/packages/86/de/8ed396df4cdd1d8d103d90fe138fb0f5f20491e0316fb35dd8a4c6f2f8b1/gdbgui-0.13.2.1.tar.gz"
-  sha256 "305003b719cf5c850e027d75fffb8dd6c38da1f7999cd2ab22f6a27a48e4c57e"
-  license "GPL-3.0"
+  url "https://files.pythonhosted.org/packages/1c/e8/98be1d2150d6625dbc53b4f7daf76850bee90c503794897156727483aa66/gdbgui-0.14.0.2.tar.gz"
+  sha256 "4d80a9baa66ef90f1a99b7b859be75743928ca65bfea77587914dac7ace6dcec"
+  license "GPL-3.0-only"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8cdc12a15e59b0803b5b5edb9b24c31ec57f7fdbffa957e7d3d87c69079645f1" => :catalina
-    sha256 "08573261e4fac10e85bef49e95c04fcaed34d612810497fac809cd81e660fe5e" => :mojave
-    sha256 "eb0fc3b2a948ec2b0d4454a5ba5dd8abad223379cfb205e6d1b525a8b5addfdf" => :high_sierra
+    sha256 "01ab2720fb16cd45b07f7f64cacc395122ed74002914a7e49501a86676ccd12f" => :big_sur
+    sha256 "083fcf08771cf6fffe1a2dd0a11ab0aaa2b430dee8f89a38bc67abbc4ee92b40" => :catalina
+    sha256 "2e142057b5aac7280b532045372a1c3f86d9af8e18aa3f9461be23ac6a2afef9" => :mojave
   end
 
   depends_on "gdb"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "Brotli" do
-    url "https://files.pythonhosted.org/packages/cd/9c/7955895f5672ecc85270244582c6b53ff95bb4c24bf77bd9271d42351635/Brotli-1.0.7.zip"
-    sha256 "0538dc1744fd17c314d2adc409ea7d1b779783b89fd95bcfb0c2acc93a6ea5a7"
+    url "https://files.pythonhosted.org/packages/2a/18/70c32fe9357f3eea18598b23aa9ed29b1711c3001835f7cf99a9818985d0/Brotli-1.0.9.zip"
+    sha256 "4d1b810aa0ed773f81dceda2cc7b403d01057458730e309856356d4ef4188438"
   end
 
   resource "click" do
@@ -43,8 +47,8 @@ class Gdbgui < Formula
   end
 
   resource "Flask-Compress" do
-    url "https://files.pythonhosted.org/packages/a0/96/cd684c1ffe97b513303b5bfd4bbfb4114c5f4a5ea8a737af6fd813273df8/Flask-Compress-1.5.0.tar.gz"
-    sha256 "f367b2b46003dd62be34f7fb1379938032656dca56377a9bc90e7188e4289a7c"
+    url "https://files.pythonhosted.org/packages/eb/33/7bcfc1d240bf4cf701cc742716a3af95b9df5b26d605559ea029b6ffa04f/Flask-Compress-1.8.0.tar.gz"
+    sha256 "c132590e7c948877a96d675c13cbfa64edec0faafa2381678dea6f36aa49a552"
   end
 
   resource "Flask-SocketIO" do
@@ -88,23 +92,23 @@ class Gdbgui < Formula
   end
 
   resource "pygdbmi" do
-    url "https://files.pythonhosted.org/packages/b1/06/f60cce2f9acb5ac4278cb1eedb7bb1a7bb52777b7ae74cd222c0068302fd/pygdbmi-0.9.0.3.tar.gz"
-    sha256 "5bdf2f072e8f2f6471f19f8dcd87d6425c5d8069d47c0a5ffe8d0eff48cb171e"
+    url "https://files.pythonhosted.org/packages/30/01/9523d5ed7bccf7f94927b3dc7a616c9b4a8dfe57df89e67571d32d87717a/pygdbmi-0.10.0.0.tar.gz"
+    sha256 "0706b81404a77f78f8b51db43205e94a7ac8fd7ce87b6eac2681baadeff85826"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/6e/4d/4d2fe93a35dfba417311a4ff627489a947b01dc0cc377a3673c00cf7e4b2/Pygments-2.6.1.tar.gz"
-    sha256 "647344a061c249a3b74e230c739f434d7ea4d8b1d5f3721bc0f3558049b38f44"
+    url "https://files.pythonhosted.org/packages/29/60/8ff9dcb5eac7f4da327ba9ecb74e1ad783b2d32423c06ef599e48c79b1e1/Pygments-2.7.3.tar.gz"
+    sha256 "ccf3acacf3782cbed4a989426012f1c535c9a90d3a7fc3f16d231b9372d2b716"
   end
 
   resource "python-engineio" do
-    url "https://files.pythonhosted.org/packages/88/31/5b57e795c509f7312ea2b24ee23812981dbac616a5a8e41a2e48e5137ec7/python-engineio-3.13.1.tar.gz"
-    sha256 "133bdb5fb89f43a53f8612fb1ddbb3a453318713dea18a9ecf5346ed0c0f793c"
+    url "https://files.pythonhosted.org/packages/7d/a3/9491c16fae684011c51cc94513e17153bacfb5509c71c68dde6c5abd51fc/python-engineio-3.14.2.tar.gz"
+    sha256 "eab4553f2804c1ce97054c8b22cf0d5a9ab23128075248b97e1a5b2f29553085"
   end
 
   resource "python-socketio" do
-    url "https://files.pythonhosted.org/packages/6e/e2/515be319ec39bdf9d3344fb591b60f787b52e413fbb0cb3b5362d83bf037/python-socketio-4.6.0.tar.gz"
-    sha256 "358d8fbbc029c4538ea25bcaa283e47f375be0017fcba829de8a3a731c9df25a"
+    url "https://files.pythonhosted.org/packages/6e/6c/b899d7a34503d5e4b6967ee3fec996acee75d0cd087c22963134c88f8ca1/python-socketio-4.6.1.tar.gz"
+    sha256 "cd1f5aa492c1eb2be77838e837a495f117e17f686029ebc03d62c09e33f4fa10"
   end
 
   resource "six" do
@@ -118,7 +122,6 @@ class Gdbgui < Formula
   end
 
   def install
-    virtualenv_create(libexec, "python3")
     virtualenv_install_with_resources
   end
 
@@ -127,6 +130,9 @@ class Gdbgui < Formula
     port = free_port
 
     fork do
+      # Work around a gevent/greenlet bug
+      # https://github.com/cs01/gdbgui/issues/359
+      ENV["PURE_PYTHON"] = "1"
       exec bin/"gdbgui", "-n", "-p", port.to_s
     end
     sleep 3

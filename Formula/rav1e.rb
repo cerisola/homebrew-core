@@ -1,15 +1,22 @@
 class Rav1e < Formula
-  desc "The fastest and safest AV1 encoder"
+  desc "Fastest and safest AV1 video encoder"
   homepage "https://github.com/xiph/rav1e"
-  url "https://github.com/xiph/rav1e/archive/v0.3.3.tar.gz"
-  sha256 "a091f3387055e472b6e028aa013cf0f37fb5acce9f4db2605d929bbffb448d01"
+  url "https://github.com/xiph/rav1e/archive/v0.3.5.tar.gz"
+  sha256 "ab97209f52695dce740cffb61b0f53b53db5682bfbdd1dfbaf8c93ee36a69a84"
   license "BSD-2-Clause"
+  head "https://github.com/xiph/rav1e.git"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "b8c0b0614f67553f771f709f0849479a9aa86883d5b7c5d59df60fc6544a9a11" => :catalina
-    sha256 "fec7ae58dbdc997241a5337381d6523388e8e09b19e5e8e3db509aa5052df2fa" => :mojave
-    sha256 "fe29e3982e41708784f0597c2f4a15ea217843a18b95f88e83f5d0f76a039ab6" => :high_sierra
+    sha256 "e6329616d64e121aa50928e2c3af36227cb510a7495abd1f74c134e8bdd25922" => :big_sur
+    sha256 "1c974d467b6bf507aad84d05afff9b4622a774dd5fa69e5da873212fdf776ab9" => :arm64_big_sur
+    sha256 "5364867cd28ec604b94f9eea1f861be71ef7e0cc99bc0bc67cb1b4abeff15cb8" => :catalina
+    sha256 "9dfb724ec01ed6f2b1fdafb924ac883f6d64abaecb8482c904e92c3160553f4d" => :mojave
   end
 
   depends_on "cargo-c" => :build

@@ -2,7 +2,7 @@ class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
   license "Apache-2.0"
-  revision 4
+  revision 5
   head "https://github.com/facebook/watchman.git"
 
   stable do
@@ -11,15 +11,24 @@ class Watchman < Formula
 
     # Upstream commit from 1 Sep 2017: "Have bin scripts use iter() method for python3"
     patch do
-      url "https://github.com/facebook/watchman/commit/17958f7d.diff?full_index=1"
-      sha256 "edad4971fceed2aecfa2b9c3e8e22c455bfa073732a3a0c77b030e506ee860af"
+      url "https://github.com/facebook/watchman/commit/17958f7d.patch?full_index=1"
+      sha256 "73990f0c7bd434d04fd5f1310b97c5f8599793007bd31ae438c2ba0211fb2c43"
     end
   end
 
+  # The Git repo contains a few tags like `2020.05.18.00`, so we have to
+  # restrict matching to versions with two to three parts (e.g., 1.2, 1.2.3).
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+){,2})$/i)
+  end
+
   bottle do
-    sha256 "7840f564c11d33425c9eb8985f9156e782e66ef2a3578329dba83ee15a9bf0be" => :catalina
-    sha256 "ba2338b0f23c8b8817fd7bfa92466b7a97ab416e93ec6c3a400041aef013de86" => :mojave
-    sha256 "150468653b5c5a8e4eb92a3ecf420f157ed0e4772513ee93425bb3f635964dad" => :high_sierra
+    sha256 "f03c91e17cd7595f98106ee4a27f28433ecc2fd6dde8cc1b7e279bd60b730051" => :big_sur
+    sha256 "4a44a39cfd719b34d146043aa5afcc6ac304ebbd2ff4ff0fb2e37e22871f38ac" => :arm64_big_sur
+    sha256 "30ed7115aa2a2534f5255508915f827c2e6f3100fcd7842415db64e31eabac30" => :catalina
+    sha256 "135eb0a8f098417a8e4d67bf8d732a19bad1932eee085497877e93982e91074f" => :mojave
+    sha256 "e872c3aae64c3b78197de9f12e272bebd5d20c316a120916f59a5f1cd2fac039" => :high_sierra
   end
 
   depends_on "autoconf" => :build
@@ -28,7 +37,7 @@ class Watchman < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl@1.1"
   depends_on "pcre"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   def install
     system "./autogen.sh"
@@ -42,7 +51,7 @@ class Watchman < Formula
     system "make", "install"
 
     # Homebrew specific python application installation
-    python3 = Formula["python@3.8"].opt_bin/"python3"
+    python3 = Formula["python@3.9"].opt_bin/"python3"
     xy = Language::Python.major_minor_version python3
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
     cd "python" do

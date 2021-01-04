@@ -4,14 +4,13 @@ class Shogun < Formula
   url "https://github.com/shogun-toolbox/shogun.git",
       tag:      "shogun_6.1.4",
       revision: "ab274e7ab6bf24dd598c1daf1e626cb686d6e1cc"
-  sha256 "57169dc8c05b216771c567b2ee2988f14488dd13f7d191ebc9d0703bead4c9e6"
   license "BSD-3-Clause"
-  revision 7
+  revision 9
 
   bottle do
-    sha256 "8c607b82b6ae66098c5bbdfb899cd9016e29396cff31bfd4c08e74729915e425" => :catalina
-    sha256 "faf548b5905695701a0b326c617563454b7d507ac94741457bf17f3f3bfc8337" => :mojave
-    sha256 "fa5a267302c7a17cef53ac419fddda4df941abd0537e259b831af0ec16abc68a" => :high_sierra
+    sha256 "49ac9da60471784899b9b0196fa61a4c39207a394390c6378aa277353ea04a8f" => :big_sur
+    sha256 "fe1fc1cf9ba0258878ca5de58d0cae01316c251aba845dccc9d9c3210ee7662d" => :catalina
+    sha256 "9ca5f6e9705d9774ef7954e40af5ad47dbc0434b1dc51e2bff2823add0445052" => :mojave
   end
 
   depends_on "cmake" => :build

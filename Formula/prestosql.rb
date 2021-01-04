@@ -1,8 +1,9 @@
 class Prestosql < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestosql.io"
-  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/338/presto-server-338.tar.gz"
-  sha256 "d07e29c3a24b317a0c37694e36e1c57effd2325502873aeb84eaf98d51c6691c"
+  url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-server/344/presto-server-344.tar.gz"
+  sha256 "9ae950f2901efd5cb1ca7d1bbd8a4cbb01d16dfe9c4fe702db2ee147ab841a8b"
+  license "Apache-2.0"
 
   bottle :unneeded
 
@@ -11,8 +12,8 @@ class Prestosql < Formula
   conflicts_with "prestodb", because: "both install `presto` and `presto-server` binaries"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/338/presto-cli-338-executable.jar"
-    sha256 "ef1c2254de73f70e1402e1854838f630438bd99b9004a630d34b50817fade7bc"
+    url "https://search.maven.org/remotecontent?filepath=io/prestosql/presto-cli/344/presto-cli-344-executable.jar"
+    sha256 "92de6ce3afa29acea4e9527a1f2e20889008d72ee94cdd34b55c072fd805503e"
   end
 
   def install
@@ -50,18 +51,11 @@ class Prestosql < Formula
       connector.name=jmx
     EOS
 
-    (bin/"presto-server").write <<~EOS
-      #!/bin/bash
-      export JAVA_HOME="#{Formula["openjdk"].opt_prefix}"
-      exec "#{libexec}/bin/launcher" "$@"
-    EOS
+    (bin/"presto-server").write_env_script libexec/"bin/launcher", Language::Java.overridable_java_home_env
 
     resource("presto-cli").stage do
       libexec.install "presto-cli-#{version}-executable.jar"
-      (bin/"presto").write <<~EOS
-        #!/bin/bash
-        exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{libexec}/presto-cli-#{version}-executable.jar" "$@"
-      EOS
+      bin.write_jar_script libexec/"presto-cli-#{version}-executable.jar", "presto"
     end
   end
 

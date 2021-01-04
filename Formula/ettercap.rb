@@ -1,16 +1,17 @@
 class Ettercap < Formula
   desc "Multipurpose sniffer/interceptor/logger for switched LAN"
   homepage "https://ettercap.github.io/ettercap/"
-  url "https://github.com/Ettercap/ettercap/archive/v0.8.3.tar.gz"
-  sha256 "d561a554562e447f4d7387a9878ba745e1aa8c4690cc4e9faaa779cfdaa61fbb"
-  license "GPL-2.0"
-  revision 4
+  url "https://github.com/Ettercap/ettercap/archive/v0.8.3.1.tar.gz"
+  sha256 "d0c3ef88dfc284b61d3d5b64d946c1160fd04276b448519c1ae4438a9cdffaf3"
+  license "GPL-2.0-or-later"
   head "https://github.com/Ettercap/ettercap.git"
 
   bottle do
-    sha256 "bf0ff6a7811739607b89238cf506127b07f778a9324ec29c26ef653eb1f0308a" => :catalina
-    sha256 "49f51aa40ed1a82102bcdaeb5255de50f3f0683cb7f17606b7a4c8ea49fc1aa2" => :mojave
-    sha256 "63b7e5b4c73d5f4606bf98d5e4b11a8231c2aa700cbfd4b832c75a405e7ed69b" => :high_sierra
+    rebuild 1
+    sha256 "471e0a6f6fb68103bc56ccf90b873cd86c235c34e88972828b6ba69dd2fd9f44" => :big_sur
+    sha256 "e52f75a8579926652f5c53ef77db1eeab39f0ff388ad77fbbe70a17a52554c2b" => :catalina
+    sha256 "c49b5293922b69715b05c1bc1374cec3cfe72a63750ab0fb08d559683d253afc" => :mojave
+    sha256 "3ab1aa27eef60cb9099bdd95ca330c0fd63dad10c169c968672bb44d97ae32e1" => :high_sierra
   end
 
   depends_on "cmake" => :build

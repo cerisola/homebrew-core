@@ -1,27 +1,23 @@
 class BoostMpi < Formula
   desc "C++ library for C++/MPI interoperability"
   homepage "https://www.boost.org/"
-  url "https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.bz2"
-  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_73_0.tar.bz2"
-  sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  url "https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_75_0.tar.bz2"
+  sha256 "953db31e016db7bb207f11432bef7df100516eeb746843fa0486a222e3fd49cb"
   license "BSL-1.0"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
-    sha256 "c9f768e84953960f029ca0e4742169492ce7f78f63b70c9262efd6f483014006" => :catalina
-    sha256 "23ea2a6c362ba43697d1d583b90c56446030faadf5878cdd12a0a369a2cb872f" => :mojave
-    sha256 "2d02ebd7d916d416d0921b58b454e1f7e214450f0f61b1823bc49eafcbf98f38" => :high_sierra
+    sha256 "e26c78b7b79809c2011c4cdfd11affa1c67c7f11ea3bb48a2ed36b23438b3430" => :big_sur
+    sha256 "9e8f6567030032ca400b8c4efa109cbdb43f7e0736638db6255ae8c1c194b505" => :catalina
+    sha256 "18c0d683a25e9ec0e7bf24a5d0a1fa8fae728719fa14d7b236656be1dc56d15c" => :mojave
   end
 
+  # Test with cmake to avoid issues like:
+  # https://github.com/Homebrew/homebrew-core/issues/67285
+  depends_on "cmake" => :test
   depends_on "boost"
   depends_on "open-mpi"
-
-  # Fix build on Xcode 11.4
-  patch do
-    url "https://github.com/boostorg/build/commit/b3a59d265929a213f02a451bb63cea75d668a4d9.patch?full_index=1"
-    sha256 "04a4df38ed9c5a4346fbb50ae4ccc948a1440328beac03cb3586c8e2e241be08"
-    directory "tools/build"
-  end
 
   def install
     # "layout" should be synchronized with boost
@@ -96,5 +92,8 @@ class BoostMpi < Formula
     boost = Formula["boost"]
     system "mpic++", "test.cpp", "-L#{lib}", "-L#{boost.lib}", "-lboost_mpi", "-lboost_serialization", "-o", "test"
     system "mpirun", "-np", "2", "./test"
+
+    (testpath/"CMakeLists.txt").write "find_package(Boost COMPONENTS mpi REQUIRED)"
+    system "cmake", ".", "-Wno-dev"
   end
 end

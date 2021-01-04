@@ -7,8 +7,14 @@ class GulpCli < Formula
   sha256 "0a5a76e5be9856edf019fb5be0ed8501a8d815da1beeb9c6effca07a93873ba4"
   license "MIT"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any_skip_relocation
+    sha256 "e011832e0a4186df90c8b6131b1ec39e60540de336bd557879351011246cfcdf" => :big_sur
+    sha256 "fc2ba1fab80c6b58a6f916e317141e155369834a16526ce271758f46384813a5" => :arm64_big_sur
     sha256 "231b635ddf8a704a3be4a6ba34611248ece69ed1de04fb82adfa6a20ac83fddb" => :catalina
     sha256 "29ec2f9cf132be84c577ff6d6ea02845ee96d995e1affdea8961903f9fec616a" => :mojave
     sha256 "e4d363c9d5035fc814ca6a6820b9c8c35a320cd507067cad5eb0c0e6c337c36e" => :high_sierra
@@ -33,7 +39,7 @@ class GulpCli < Formula
       function defaultTask(cb) {
         cb();
       }
-      exports.default = defaultTask    
+      exports.default = defaultTask
     EOS
     assert_match "Finished 'default' after ", shell_output("#{bin}/gulp")
   end

@@ -17,7 +17,7 @@ class Ooniprobe < Formula
 
   # Unmaintained. Last PyPI release on 2018-02-18
   # Use https://github.com/ooni/probe-cli instead
-  deprecate! date: "2018-02-18"
+  deprecate! date: "2018-02-18", because: :unsupported
 
   depends_on "geoip"
   depends_on "libdnet"

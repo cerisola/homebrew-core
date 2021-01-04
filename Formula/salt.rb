@@ -3,22 +3,26 @@ class Salt < Formula
 
   desc "Dynamic infrastructure communication bus"
   homepage "https://s.saltstack.com/community/"
-  url "https://files.pythonhosted.org/packages/cc/03/a66a65209aa867c6f8414e5f99a52428400ecc93ab1657102284914a5d52/salt-3001.tar.gz"
-  sha256 "5ca60d1b2cc8e63db50995bd8b117914eeaf57c48ce2b3a3731ee57163adf154"
+  url "https://files.pythonhosted.org/packages/b5/45/a20ff8a3cad48b50a924ee9c65f2df0e214de4fa282c4feef2e1d6a0b886/salt-3002.2.tar.gz"
+  sha256 "bd6d29621ce8e099412777cd396af35474aa112bb0999b5da804387d87290075"
   license "Apache-2.0"
   head "https://github.com/saltstack/salt.git", branch: "develop", shallow: false
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
-    sha256 "138cea32de23b64acb9467ab2fe8d9783d47d4a1a947ff83c30effa8aca9aa0b" => :catalina
-    sha256 "048bd03fcb35fe5c027c8698bb3f303adc134ba72b529252f12a372ac05940ad" => :mojave
-    sha256 "a05afcb8b6a34f2c6e35edc547cacd928bdba93e2843278882f85cd805308c65" => :high_sierra
+    sha256 "3b8936ee7fc3a11051f131b8c665320c37b06b4487797c1e3b6980f871d02fa9" => :big_sur
+    sha256 "c669635717b6bd34e3540d97d71e6eeaa357eab209b7a8857b0190da73d193f6" => :catalina
+    sha256 "bbc802eb5097a9f2d02b182215ca73eb37bdd841972e321bcaac219c2b530431" => :mojave
   end
 
   depends_on "swig" => :build
   depends_on "libgit2"
   depends_on "libyaml"
   depends_on "openssl@1.1"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "zeromq"
 
   on_linux do
@@ -28,18 +32,18 @@ class Salt < Formula
   # Homebrew installs optional dependencies: M2Crypto, pygit2
 
   resource "cached-property" do
-    url "https://files.pythonhosted.org/packages/57/8e/0698e10350a57d46b3bcfe8eff1d4181642fd1724073336079cb13c5cf7f/cached-property-1.5.1.tar.gz"
-    sha256 "9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"
+    url "https://files.pythonhosted.org/packages/61/2c/d21c1c23c2895c091fa7a91a54b6872098fea913526932d21902088a7c41/cached-property-1.5.2.tar.gz"
+    sha256 "9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/05/54/3324b0c46340c31b909fcec598696aaec7ddc8c18a63f2db352562d3354c/cffi-1.14.0.tar.gz"
-    sha256 "2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"
+    url "https://files.pythonhosted.org/packages/cb/ae/380e33d621ae301770358eb11a896a34c34f30db188847a561e8e39ee866/cffi-1.14.3.tar.gz"
+    sha256 "f92f789e4f9241cd262ad7a555ca2c648a98178a953af117ef7fad46aa1d5591"
   end
 
   resource "M2Crypto" do
-    url "https://files.pythonhosted.org/packages/74/18/3beedd4ac48b52d1a4d12f2a8c5cf0ae342ce974859fba838cbbc1580249/M2Crypto-0.35.2.tar.gz"
-    sha256 "4c6ad45ffb88670c590233683074f2440d96aaccb05b831371869fc387cbd127"
+    url "https://files.pythonhosted.org/packages/ff/df/84609ed874b5e6fcd3061a517bf4b6e4d0301f553baf9fa37bef2b509797/M2Crypto-0.36.0.tar.gz"
+    sha256 "1542c18e3ee5c01db5031d0b594677536963e3f54ecdf5315aeecb3a595b4dc1"
   end
 
   resource "pycparser" do
@@ -48,21 +52,22 @@ class Salt < Formula
   end
 
   resource "pygit2" do
-    url "https://files.pythonhosted.org/packages/d0/c6/33e2df5722e3adf49adc6a2d3c2cdb5a5247236fd8f2063a0c4d058116a1/pygit2-1.2.1.tar.gz"
-    sha256 "de9421118a99c79cbba1e512d60e5caed1d63273ce30a0e8d4edef4a2e500387"
+    url "https://files.pythonhosted.org/packages/3a/42/f69de8c7a1e33f365a91fa39093f4e7a64609c2bd127203536edc813cbf7/pygit2-1.4.0.tar.gz"
+    sha256 "cbeb38ab1df9b5d8896548a11e63aae8a064763ab5f1eabe4475e6b8a78ee1c8"
   end
 
   def install
+    python = Formula["python@3.9"].bin/"python3.9"
+    xy = Language::Python.major_minor_version python
+
     ENV["SWIG_FEATURES"]="-I#{Formula["openssl@1.1"].opt_include}"
 
-    # Fix building of M2Crypto on High Sierra https://github.com/Homebrew/homebrew-core/pull/45895
-    ENV.delete("HOMEBREW_SDKROOT") if MacOS.version == :high_sierra
-
+    ENV["USE_STATIC_REQUIREMENTS"] = "1"
     # Do not install PyObjC since it causes broken linkage
     # https://github.com/Homebrew/homebrew-core/pull/52835#issuecomment-617502578
-    File.write(buildpath/"pkg/osx/req_pyobjc.txt", "")
+    inreplace buildpath/"requirements/static/pkg/py#{xy}/darwin.txt", /^pyobjc.*$/, ""
 
-    venv = virtualenv_create(libexec, Formula["python@3.8"].bin/"python3.8")
+    venv = virtualenv_create(libexec, python)
     venv.pip_install resources
 
     system libexec/"bin/pip", "install", "-v", "--ignore-installed", buildpath

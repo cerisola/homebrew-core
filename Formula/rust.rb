@@ -1,25 +1,31 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
   homepage "https://www.rust-lang.org/"
-  # license ["Apache-2.0", "MIT"] - pending https://github.com/Homebrew/brew/pull/7953
-  license "Apache-2.0"
+  license any_of: ["Apache-2.0", "MIT"]
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.45.2-src.tar.gz"
-    sha256 "b7a3fc1e3ee367260ef945da867da0957f8983705f011ba2a73715375e50e308"
+    if Hardware::CPU.arm?
+      url "https://static.rust-lang.org/dist/rustc-beta-src.tar.gz#1.49.0-beta"
+      sha256 "364fc8350d30f104595e458e51599369ffc5f796bb91b893372ba2631229963e"
+      version "1.48.0"
+    else
+      url "https://static.rust-lang.org/dist/rustc-1.48.0-src.tar.gz"
+      sha256 "0e763e6db47d5d6f91583284d2f989eacc49b84794d1443355b85c58d67ae43b"
+    end
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git",
-          tag:      "0.46.1",
-          revision: "f242df6edb897f6f69d393a22bb257f5af0f52d0"
+          tag:      "0.49.0",
+          revision: "65cbdd2dc0b7e877577474b98b7d071308d0bb6f"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "5c7983be67e13ea795d651c5268109cac23fd05c54e30bf0f6581ea124fcc6a8" => :catalina
-    sha256 "f7e9f667d371dff2adf49e5d2a7faf4a7509d1672e6523d01ad0645231e8bfee" => :mojave
-    sha256 "b6c65cebb30e0370cff74ef0d4bd1556ce7843db0e969cb9bb130d3fe50ee065" => :high_sierra
+    sha256 "da85eda34441caa60b6a639e5fc4dd23705c8716b4c9c6384b84305e96e4bd8c" => :big_sur
+    sha256 "89d3f5672025a3b3004979f996f1c00b00a021e891fece6ec424dc65710485db" => :arm64_big_sur
+    sha256 "52aa819637578a4ee9c75fdbc4c449b4d78c932294970d1e2480827d8c07dff0" => :catalina
+    sha256 "edc2eff4e9253ddf0d3f7b5058ee1065d6db584849fe2fdee42930fe77e0a5ca" => :mojave
   end
 
   head do
@@ -31,7 +37,8 @@ class Rust < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.8" => :build
+  depends_on "ninja" => :build
+  depends_on "python@3.9" => :build
   depends_on "libssh2"
   depends_on "openssl@1.1"
   depends_on "pkg-config"
@@ -42,19 +49,24 @@ class Rust < Formula
   resource "cargobootstrap" do
     on_macos do
       # From https://github.com/rust-lang/rust/blob/#{version}/src/stage0.txt
-      url "https://static.rust-lang.org/dist/2020-06-04/cargo-0.45.0-x86_64-apple-darwin.tar.gz"
-      sha256 "3a618459c8a22773a299d683e4ea0355e615372ae573300933caf6d00019bdd3"
+      if Hardware::CPU.arch == :arm64
+        url "https://static.rust-lang.org/dist/2020-12-23/cargo-beta-aarch64-apple-darwin.tar.gz"
+        sha256 "efbc0e72533d4ca7def9a985feef4b3e43d24f1f6792815bdba9125af1f8ecdf"
+      else
+        url "https://static.rust-lang.org/dist/2020-11-19/cargo-1.48.0-x86_64-apple-darwin.tar.gz"
+        sha256 "ce00d796cf5a9ac8d88d9df94c408e5d7ccd3541932a829eae833cc8e57efb15"
+      end
     end
 
     on_linux do
       # From: https://github.com/rust-lang/rust/blob/#{version}/src/stage0.txt
-      url "https://static.rust-lang.org/dist/2020-06-04/cargo-0.45.0-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "f9dec7c4f5af57e400cc90bb791e7dcf4dd8d11c65336ffe27a6e2516c6f371f"
+      url "https://static.rust-lang.org/dist/2020-11-19/cargo-1.48.0-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "52bf632e337a5e7464cb961766638e30dfa28edb3036428296678d1aaf7d8ede"
     end
   end
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.8"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
 
     # Fix build failure for compiler_builtins "error: invalid deployment target
     # for -stdlib=libc++ (requires OS X 10.7 or later)"
@@ -78,6 +90,13 @@ class Rust < Formula
     else
       args << "--release-channel=stable"
     end
+
+    if Hardware::CPU.arm?
+      # Fix for 1.49.0-beta, remove when the stable version is released
+      inreplace "src/stage0.txt", "1.48.0", "beta"
+      inreplace "src/stage0.txt", "2020-11-19", "2020-12-23"
+    end
+
     system "./configure", *args
     system "make"
     system "make", "install"
@@ -106,6 +125,19 @@ class Rust < Formula
       MachO::Tools.change_dylib_id(dylib, "@rpath/#{File.basename(dylib)}")
       chmod 0444, dylib
     end
+  end
+
+  def caveats
+    s = ""
+
+    if Hardware::CPU.arm?
+      s += <<~EOS
+        This is a beta version of the Rust compiler for Apple Silicon
+        (rust 1.49.0-beta).
+      EOS
+    end
+
+    s
   end
 
   test do

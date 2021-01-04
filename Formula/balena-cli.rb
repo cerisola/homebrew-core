@@ -1,17 +1,21 @@
 require "language/node"
 
 class BalenaCli < Formula
-  desc "The official balena CLI tool"
+  desc "Command-line tool for interacting with the balenaCloud and balena API"
   homepage "https://www.balena.io/docs/reference/cli/"
   # balena-cli should only be updated every 10 releases on multiples of 10
-  url "https://registry.npmjs.org/balena-cli/-/balena-cli-12.12.0.tgz"
-  sha256 "91cc56907d6c77295e1e4628e52fa272d46a9cfdd8b8db364edbdb8840128c80"
+  url "https://registry.npmjs.org/balena-cli/-/balena-cli-12.25.0.tgz"
+  sha256 "af78b891de5492e567d731dee62369b3d1247c262acf94d2bf4e2379790a947e"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
-    sha256 "988699fb14a192cd4c4a34f57323a72ab74e5fbb2eb89e8aacf6b8cbfe5cfd53" => :catalina
-    sha256 "0c3ba3d0ae7ff4440d0653638b24e8a7c536ff9c8b5f7ed2da51a9722b0fefb6" => :mojave
-    sha256 "ea4ded2cbba1e571ffab3a365a676f8cb47addad1a44d81953cc45a48c447150" => :high_sierra
+    sha256 "1d68785ff12ddc57c8a6e93a0b83d3613e29ccf0ae8331dc8197a06bd1f47336" => :catalina
+    sha256 "c2e8432c28bb7875f42d7815befa98001dbc72a65cffc121fb8dd6bf2d75290e" => :mojave
+    sha256 "0e670f3cc482565ddc1a166316407fab2fd008f12128a06f7f73c3bcf07a641d" => :high_sierra
   end
 
   depends_on "node"

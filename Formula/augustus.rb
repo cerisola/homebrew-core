@@ -7,8 +7,14 @@ class Augustus < Formula
   revision 1
   head "https://github.com/Gaius-Augustus/Augustus.git"
 
+  livecheck do
+    url "https://bioinf.uni-greifswald.de/augustus/binaries/"
+    regex(/href=.*?augustus[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     cellar :any
+    sha256 "03665ee18df08813482e9ad6b91ff670ea332f828f6a0873ceef68dc0d574048" => :arm64_big_sur
     sha256 "9e6fc1d57f48cf314fa418059a9d619a8451d7e65ed8234225e52f311673cf6d" => :catalina
     sha256 "476eeca3de3f98c4e539cee89078a3f37f667ae7f47ef375115439154bc23e3c" => :mojave
     sha256 "b5077e94d1ee68864ed0d89bfc892ad80dcd37b89e149b23733bd9280d54771b" => :high_sierra
@@ -40,7 +46,8 @@ class Augustus < Formula
     # to upstream in 2016 (see https://github.com/nextgenusfs/funannotate/issues/3).
     # See also https://github.com/Gaius-Augustus/Augustus/issues/64
     cd "src" do
-      with_env("HOMEBREW_CC" => Formula["gcc"].opt_bin/"gcc-#{Formula["gcc"].linked_version.to_s.slice(/\d+/)}") do
+      gcc_major_ver = Formula["gcc"].any_installed_version.major
+      with_env("HOMEBREW_CC" => Formula["gcc"].opt_bin/"gcc-#{gcc_major_ver}") do
         system "make"
       end
     end

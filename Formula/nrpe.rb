@@ -5,8 +5,14 @@ class Nrpe < Formula
   sha256 "f907ba15381adfc6eef211508abd027f8e1973116080faa4534a1191211c0340"
   license "GPL-2.0"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/nrpe[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
   bottle do
     cellar :any
+    sha256 "f51a26831737214a41367dd9332df6a333ee07a7e8e6e0ac75061dc161b5c82b" => :big_sur
     sha256 "6ef7387202f3b9afda335fd77f16a268a82bed7a9f6ef856faa83741b308d8f2" => :catalina
     sha256 "90463f41b64e1ac2149dd917d536e406ed22ba9cef8a27e06618bab53c4e673e" => :mojave
     sha256 "e109e63ca7f6f5386eae058d19e510c5d3a5deb2633f8ef014df1ac24d414cb9" => :high_sierra

@@ -1,15 +1,17 @@
 class Chrony < Formula
   desc "Versatile implementation of the Network Time Protocol (NTP)"
   homepage "https://chrony.tuxfamily.org"
-  url "https://download.tuxfamily.org/chrony/chrony-3.5.tar.gz"
-  sha256 "4e02795b1260a4ec51e6ace84149036305cc9fc340e65edb9f8452aa611339b5"
-  license "GPL-2.0"
+  url "https://download.tuxfamily.org/chrony/chrony-4.0.tar.gz"
+  sha256 "be27ea14c55e7a4434b2fa51d53018c7051c42fa6a3198c9aa6a1658bae0c625"
+  license "GPL-2.0-only"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c9dcac360bb8b69012e963df7dcf34fa50b944bd419ce4d9c28d729cc6787ce4" => :catalina
-    sha256 "946bc4e955230a22006204b3bea76ae4f5b3bd186f94fad91e3fc4d5c10b7a02" => :mojave
-    sha256 "856b8ccc137b877687e7054b28e160b0ecd7b5b94a76b6d4a6978258dbf619e4" => :high_sierra
+    sha256 "66ae96878def0abda5c946891877604bae3490d5d5f98d9f31a234c77f705bf0" => :big_sur
+    sha256 "9b985414e3e8987475a318069ef5c23817e1a9cb824c25f361ba815d708fcb5f" => :arm64_big_sur
+    sha256 "18080256097344abcf595e69bc8e0b15faefbe5e9d5e36f1326e0bae8e089d5d" => :catalina
+    sha256 "5227442d8a26057125ac087fb30520dc65d65ee287ce56362d08b2f12e5e6f7c" => :mojave
+    sha256 "c92b075e3cfd4419cf2339b2bfd779e2df4479ab58c23b19b396c4e85bdeb300" => :high_sierra
   end
 
   depends_on "nettle"

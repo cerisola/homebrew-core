@@ -4,16 +4,21 @@ class Semgrep < Formula
   desc "Easily detect and prevent bugs and anti-patterns in your codebase"
   homepage "https://semgrep.dev"
   url "https://github.com/returntocorp/semgrep.git",
-    tag:      "v0.18.0",
-    revision: "959717c226f2ca23ce42c4c7a4dada808bbe7c05"
-  license "LGPL-2.1"
+      tag:      "v0.35.0",
+      revision: "1f5c79ceea37d6679ad3bd6c8549de199f557020"
+  license "LGPL-2.1-only"
   head "https://github.com/returntocorp/semgrep.git", branch: "develop"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "c8396745dd6248f3318fcec5cc1e036657d8b8c41b27ff33ab9026b36fc9432f" => :catalina
-    sha256 "1c48eddc8027a3e8c8fca46f208ced85f9b6c953e0e095b5601bd54f1b70eec8" => :mojave
-    sha256 "fe57010998baa185487a3624c685a2bfc595b32b531d8552767a2b619295307c" => :high_sierra
+    sha256 "0e1ba8602ba4c3863a8348b4cd1559b0ff9c02a5981b6bfa7ca2bf93a43886a7" => :big_sur
+    sha256 "37d1ce42e24f42e03e37010e5c73fdb6a39451ab05c82ce486292ade5c019000" => :catalina
+    sha256 "a60e9cd547b249c7ab0ea448c0532e0c63f0cb20aa385341ae51b096f95ddeb0" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -22,16 +27,16 @@ class Semgrep < Formula
   depends_on "ocaml" => :build
   depends_on "opam" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/98/c3/2c227e66b5e896e15ccdae2e00bbc69aa46e9a8ce8869cc5fa96310bf612/attrs-19.3.0.tar.gz"
-    sha256 "f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"
+    url "https://files.pythonhosted.org/packages/f0/cb/80a4a274df7da7b8baf083249b0890a0579374c3d74b5ac0ee9291f912dc/attrs-20.3.0.tar.gz"
+    sha256 "832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/40/a7/ded59fa294b85ca206082306bba75469a38ea1c7d44ea7e1d64f5443d67a/certifi-2020.6.20.tar.gz"
-    sha256 "5930595817496dd21bb8dc35dad090f1c2cd0adfaf21204bf6732ca5d8ee34d3"
+    url "https://files.pythonhosted.org/packages/e6/de/879cf857ae6f890dfa23c3d6239814c5471936b618c8fb0c8732ad5da885/certifi-2020.11.8.tar.gz"
+    sha256 "f05def092c44fbf25834a51509ef6e631dc19765ab8a57b4e7ab85531f0a9cf4"
   end
 
   resource "chardet" do
@@ -40,13 +45,24 @@ class Semgrep < Formula
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/82/75/f2a4c0c94c85e2693c229142eb448840fba0f9230111faa889d1f541d12d/colorama-0.4.3.tar.gz"
-    sha256 "e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
+    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
+    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
   end
 
   resource "idna" do
     url "https://files.pythonhosted.org/packages/ea/b7/e0e3c1c467636186c39925827be42f16fee389dc404ac29e930e9136be70/idna-2.10.tar.gz"
     sha256 "b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"
+  end
+
+  resource "jsonschema" do
+    url "https://files.pythonhosted.org/packages/69/11/a69e2a3c01b324a77d3a7c0570faa372e8448b666300c4117a516f8b1212/jsonschema-3.2.0.tar.gz"
+    sha256 "c8a85b28d377cc7737e46e2d9f2b4f44ee3c0e1deac6bf46ddefc7187d30797a"
+  end
+
+  # only doing this because junit-xml source is not available in PyPI for v1.9
+  resource "junit-xml" do
+    url "https://github.com/kyrus/python-junit-xml.git",
+        revision: "4bd08a272f059998cedf9b7779f944d49eba13a6"
   end
 
   resource "packaging" do
@@ -59,9 +75,14 @@ class Semgrep < Formula
     sha256 "c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"
   end
 
+  resource "pyrsistent" do
+    url "https://files.pythonhosted.org/packages/4d/70/fd441df751ba8b620e03fd2d2d9ca902103119616f0f6cc42e6405035062/pyrsistent-0.17.3.tar.gz"
+    sha256 "2e636185d9eb976a18a8a8e96efce62f2905fea90041958d8cc2a189756ebf3e"
+  end
+
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/da/67/672b422d9daf07365259958912ba533a0ecab839d4084c487a5fe9a5405f/requests-2.24.0.tar.gz"
-    sha256 "b3559a131db72c33ee969480840fff4bb6dd111de7dd27c8ee1f820f4f00231b"
+    url "https://files.pythonhosted.org/packages/9f/14/4a6542a078773957aa83101336375c9597e6fe5889d20abda9c38f9f3ff2/requests-2.25.0.tar.gz"
+    sha256 "7f1a0b932f4a60a1a65caa4263921bb7d9ee911957e0ae4a23a6dd08185ad5f8"
   end
 
   resource "ruamel.yaml" do
@@ -70,8 +91,8 @@ class Semgrep < Formula
   end
 
   resource "ruamel.yaml.clib" do
-    url "https://files.pythonhosted.org/packages/92/28/612085de3fae9f82d62d80255d9f4cf05b1b341db1e180adcf28c1bf748d/ruamel.yaml.clib-0.2.0.tar.gz"
-    sha256 "b66832ea8077d9b3f6e311c4a53d06273db5dc2db6e8a908550f3c14d67e718c"
+    url "https://files.pythonhosted.org/packages/fa/a1/f9c009a633fce3609e314294c7963abe64934d972abea257dce16a15666f/ruamel.yaml.clib-0.2.2.tar.gz"
+    sha256 "2d24bd98af676f4990c4d715bcdc2a60b19c56a3fb3a763164d2d8ca0e806ba7"
   end
 
   resource "six" do
@@ -80,20 +101,16 @@ class Semgrep < Formula
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/71/6c/6530032ec26dddd47bb9e052781bcbbcaa560f05d10cdaf365ecb990d220/tqdm-4.48.0.tar.gz"
-    sha256 "6baa75a88582b1db6d34ce4690da5501d2a1cb65c34664840a456b2c9f794d29"
+    url "https://files.pythonhosted.org/packages/9f/30/8c8015735a54e13444a3d4982a7a9538bde27f8b3bd35203f9e920f0d78c/tqdm-4.52.0.tar.gz"
+    sha256 "18d6a615aedd09ec8456d9524489dab330af4bd5c2a14a76eb3f9a0e14471afe"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/81/f4/87467aeb3afc4a6056e1fe86626d259ab97e1213b1dfec14c7cb5f538bf0/urllib3-1.25.10.tar.gz"
-    sha256 "91056c15fa70756691db97756772bb1eb9678fa585d9184f24534b100dc60f4a"
+    url "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz"
+    sha256 "19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"
   end
 
   def install
-    # Remove Sudo Command in install script. Safe to remove patch on 0.18.0
-    # https://github.com/returntocorp/ocaml-tree-sitter/pull/83
-    inreplace "ocaml-tree-sitter/scripts/install-tree-sitter-lib", "sudo make install", "make install"
-
     ENV.deparallelize
     Dir.mktmpdir("opamroot") do |opamroot|
       ENV["OPAMROOT"] = opamroot
@@ -101,6 +118,11 @@ class Semgrep < Formula
 
       # Used by semgrep-core for clang to find libtree-sitter.a
       ENV["LIBRARY_PATH"] = lib
+
+      # Officially suggested workaround for breaking change in setuptools v50.0.0
+      # See: https://sourceforge.net/p/ruamel-yaml/tickets/356/
+      # Relevant Issue: https://github.com/pypa/setuptools/issues/2355
+      ENV["SETUPTOOLS_USE_DISTUTILS"] = "stdlib"
 
       # Used by ocaml-tree-sitter to find tree-sitter/*.h headers
       ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
@@ -113,7 +135,14 @@ class Semgrep < Formula
       ENV.deparallelize { system "opam", "switch", "create", "ocaml-base-compiler.4.10.0" }
 
       system "opam", "exec", "--", "make", "setup"
-      system "opam", "install", "./pfff"
+
+      # Install spacegrep
+      cd "spacegrep" do
+        system "opam", "install", "--deps-only", "-y", "."
+        system "opam", "exec", "--", "make"
+        system "opam", "exec", "--", "make", "install"
+        bin.install "_build/default/src/bin/Space_main.exe" => "spacegrep"
+      end
 
       # Install tree-sitter
       cd "ocaml-tree-sitter" do
@@ -129,13 +158,13 @@ class Semgrep < Formula
         system "opam", "install", "--deps-only", "-y", "."
         system "opam", "exec", "--", "make", "all"
         system "opam", "exec", "--", "make", "install"
-        bin.install "_build/default/bin/Main.exe" => "semgrep-core"
+        bin.install "_build/default/cli/Main.exe" => "semgrep-core"
       end
     end
 
     python_path = "semgrep"
     cd python_path do
-      venv = virtualenv_create(libexec, Formula["python@3.8"].bin/"python3.8")
+      venv = virtualenv_create(libexec, Formula["python@3.9"].bin/"python3.9")
       venv.pip_install resources
       venv.pip_install_and_link buildpath/python_path
     end

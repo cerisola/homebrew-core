@@ -1,23 +1,24 @@
 class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
-  url "https://github.com/cwida/duckdb/archive/v0.2.0.tar.gz"
-  sha256 "5ed30486f7f9877f5e5d2fd7047347b86fa9ca105e1ed41e53e1fcb4b3f7bc0c"
+  url "https://github.com/cwida/duckdb.git",
+      tag:      "v0.2.3",
+      revision: "436f6455f6e48b571bf5ba0812332f08d0bd65f4"
   license "MIT"
 
   bottle do
     cellar :any
-    sha256 "ac85f387cef72b578652256af88e96a959413e537f0b06ed21ea83cf04c62733" => :catalina
-    sha256 "038284bb668179934e71572118c0e06140418bf6cac2318ba0a9c5d7374c59ae" => :mojave
-    sha256 "1298a14fca854438e7e2c8882c986a8e7805dfd359ae021d2441e39b52e32a00" => :high_sierra
+    sha256 "f3cae9c32ad042433dd66119d71b2b344d41af36fa1ce1329fcf285d917605e5" => :big_sur
+    sha256 "a082aa7db3bf77040788cc6265f57cc0df1d62844de59cabc20460d9968a0941" => :catalina
+    sha256 "14910bb5cebfda1f37a44c76f0ec20d58eda17a02370a8baac926920ffd5485b" => :mojave
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.8" => :build
+  depends_on "python@3.9" => :build
 
   def install
     mkdir "build/amalgamation"
-    system Formula["python@3.8"].opt_bin/"python3", "scripts/amalgamation.py"
+    system Formula["python@3.9"].opt_bin/"python3", "scripts/amalgamation.py"
     cd "build/amalgamation" do
       system "cmake", "../..", *std_cmake_args, "-DAMALGAMATION_BUILD=ON"
       system "make"
@@ -36,6 +37,15 @@ class Duckdb < Formula
       INSERT INTO weather (temp) VALUES (40), (45), (50);
       SELECT AVG(temp) FROM weather;
     EOS
-    assert_equal "45.0", shell_output("#{bin}/duckdb_cli < #{path}").strip
+
+    expected_output = <<~EOS
+      ┌───────────┐
+      │ avg(temp) │
+      ├───────────┤
+      │ 45.0      │
+      └───────────┘
+    EOS
+
+    assert_equal expected_output, shell_output("#{bin}/duckdb_cli < #{path}")
   end
 end

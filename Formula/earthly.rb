@@ -1,36 +1,45 @@
 class Earthly < Formula
   desc "Build automation tool for the post-container era"
   homepage "https://earthly.dev/"
-  url "https://github.com/earthly/earthly/archive/v0.2.2.tar.gz"
-  sha256 "2b09408f60572d70df83cdc2f6fc6805d19f2fbe852c54360a7a37eae55f8076"
+  url "https://github.com/earthly/earthly/archive/v0.4.3.tar.gz"
+  sha256 "e24abf410ec5b262ae6f0fa0e14966325b1c5bd0558c6b15bdb38d878bd4cbdb"
   license "MPL-2.0"
   head "https://github.com/earthly/earthly.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8af948a11c9acc34927450d5d6a8cc5ee95972cfb41d963ed5f236d3351b5725" => :catalina
-    sha256 "246bf88d1fca5fff6fed8bb837653261661faabaf112507020673c7414521ed3" => :mojave
-    sha256 "f051918f8bc439e6fcc02622097e0b4147dc2c68ef4147fa54eea7f041f7bb8d" => :high_sierra
+    sha256 "81afc3261307f8439b6f37d76a4a9f250dbfe2bb82f851675d2a28e930f47d96" => :big_sur
+    sha256 "81cf11cf0f5269a2d553d425a0538e273754e9ed9fdce37f3a8ddbb6879ff3b4" => :arm64_big_sur
+    sha256 "8b6035a2d78d2923ddda672bef20980232419fb11c4fd1b4497fa4b94f392815" => :catalina
+    sha256 "9b747abf15f58696e545b63e78214e6d61d8cb288eefea7ddb0ced416effd234" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags",
-        "-X main.DefaultBuildkitdImage=earthly/buildkitd:v#{version} -X main.Version=v#{version}",
+    ldflags = "-X main.DefaultBuildkitdImage=earthly/buildkitd:v#{version} -X main.Version=v#{version} -X" \
+              " main.GitSha=c4dea6862daae118bbac676f9a6093d998af9376 "
+    tags = "dfrunmount dfrunsecurity dfsecrets dfssh dfrunnetwork"
+    system "go", "build",
+        "-tags", tags,
+        "-ldflags", ldflags,
         *std_go_args,
-        "-o", bin/"earth",
-        "./cmd/earth/main.go"
+        "./cmd/earthly/main.go"
+
+    bash_output = Utils.safe_popen_read("#{bin}/earthly", "bootstrap", "--source", "bash")
+    (bash_completion/"earthly").write bash_output
+    zsh_output = Utils.safe_popen_read("#{bin}/earthly", "bootstrap", "--source", "zsh")
+    (zsh_completion/"_earthly").write zsh_output
   end
 
   test do
-    (testpath/"build.earth").write <<~EOS
+    (testpath/"build.earthly").write <<~EOS
 
       default:
       \tRUN echo Homebrew
     EOS
 
-    output = shell_output("#{bin}/earth --buildkit-host 127.0.0.1 +default 2>&1", 1).strip
+    output = shell_output("#{bin}/earthly --buildkit-host 127.0.0.1 +default 2>&1", 1).strip
     assert_match "Error while dialing invalid address 127.0.0.1", output
   end
 end

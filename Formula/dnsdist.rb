@@ -1,13 +1,19 @@
 class Dnsdist < Formula
   desc "Highly DNS-, DoS- and abuse-aware loadbalancer"
   homepage "https://www.dnsdist.org/"
-  url "https://downloads.powerdns.com/releases/dnsdist-1.5.0.tar.bz2"
-  sha256 "2c07c4ef0c497f5223909ff181fe3ba7c6016962a2855cffe26b7f3609f27b58"
+  url "https://downloads.powerdns.com/releases/dnsdist-1.5.1.tar.bz2"
+  sha256 "cae759729a87703f4d09b0ed4227cb224aaaa252fa92f2432fd7116f560afbf1"
+  revision 1
+
+  livecheck do
+    url "https://downloads.powerdns.com/releases/"
+    regex(/href=.*?dnsdist[._-]v?(\d+(?:\.\d+)*)\.t/i)
+  end
 
   bottle do
-    sha256 "429a2fa58a37422c55327836955e4a0e96b57f47c529a6f862fe22e8019364da" => :catalina
-    sha256 "02f8e6a1004c3617838d91a382f95ea39e7e3d5fb389fc7e473fa50f74a15995" => :mojave
-    sha256 "cae01620842cdb63f4a34b5031ad98cc0f192e351b64c3b92d60a399cbfeed13" => :high_sierra
+    sha256 "85f26051fea25986ed2510c18ab9dcc29178c7a6acc4cdd01aa2fc3bf086c88a" => :big_sur
+    sha256 "61ec7c2d3aa37965c54474ba50f739658679d2dac84e46854e0ca6fbdf9b0058" => :catalina
+    sha256 "821cb52f93b00d1f596e40a9d905f2d7a01fbd26e44bbf48299b5123ed5bc7d6" => :mojave
   end
 
   depends_on "boost" => :build

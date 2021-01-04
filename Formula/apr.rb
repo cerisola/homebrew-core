@@ -6,8 +6,14 @@ class Apr < Formula
   sha256 "e2e148f0b2e99b8e5c6caa09f6d4fb4dd3e83f744aa72a952f94f5a14436f7ea"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
     cellar :any
+    sha256 "405f8351e003635d34d2a460188e564e70524a842378d793e160d971980e9a1c" => :big_sur
+    sha256 "13bfd93603e48f2f0481125c2ff3dce32f37ad4b1b9c7313a05a41e8571265e6" => :arm64_big_sur
     sha256 "277c42fcf2f5ca298a14279d1325f58da89ee4ec2132b3ccca9bf8dfdc354c48" => :catalina
     sha256 "3a245185ed7280d1a19e7c639786b4c21dd0088878be8ac87ca58510eb5c9cc1" => :mojave
     sha256 "4d01f24009ea389e2c8771c5c0bc069ae09c0f5812d7fdb0d0079106c3fc0838" => :high_sierra

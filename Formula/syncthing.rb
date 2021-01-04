@@ -1,34 +1,33 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing.git",
-      tag:      "v1.7.1",
-      revision: "d57694dc042ee24d7f76a3ed9743ea02f01e456d"
+  url "https://github.com/syncthing/syncthing/archive/v1.12.0.tar.gz"
+  sha256 "38782a448868a4bcbb4b9761b467e3c059b4b0f9896b432090526940f28117c7"
   license "MPL-2.0"
-  head "https://github.com/syncthing/syncthing.git"
+  head "https://github.com/syncthing/syncthing.git", branch: "main"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9657d870ad1cf368da003095c071a2d665d71a5822889072a3ae1be4a7eeb280" => :catalina
-    sha256 "204fd8fcfc45e69ffabfe8542d75d3236654dc074f2d54ba2c5133adafdf097f" => :mojave
-    sha256 "ea8479ac5feb98c108a42391f16347346e6a21226932a35f14857745d492fb97" => :high_sierra
+    sha256 "d5804f9a459dd71dd369e77a48908ece40cc35eed2b07aab2363b9cadad7a7ff" => :big_sur
+    sha256 "a26ccea6025a9b053ec010c2c6bfff38352e1384faca334483e5f5ad2c0e090f" => :catalina
+    sha256 "773451a4a5678859ee336410e88e3af7aae5dbd91d4fb4038138b4525eca32ae" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
+    build_version = build.head? ? "v0.0.0-#{version}" : "v#{version}"
+    system "go", "run", "build.go", "--version", build_version, "--no-upgrade", "tar"
+    bin.install "syncthing"
 
-    src = buildpath/"src/github.com/syncthing/syncthing"
-    src.install buildpath.children
-    src.cd do
-      system "go", "run", "build.go", "--no-upgrade", "tar"
-      bin.install "syncthing"
-      man1.install Dir["man/*.1"]
-      man5.install Dir["man/*.5"]
-      man7.install Dir["man/*.7"]
-      prefix.install_metafiles
-    end
+    man1.install Dir["man/*.1"]
+    man5.install Dir["man/*.5"]
+    man7.install Dir["man/*.7"]
   end
 
   plist_options manual: "syncthing"
@@ -66,6 +65,8 @@ class Syncthing < Formula
   end
 
   test do
+    build_version = build.head? ? "v0.0.0-#{version}" : "v#{version}"
+    assert_match "syncthing #{build_version} ", shell_output("#{bin}/syncthing --version")
     system bin/"syncthing", "-generate", "./"
   end
 end

@@ -7,8 +7,7 @@ class Giter8 < Formula
 
   bottle :unneeded
 
-  # Pulls in unversioned dependencies at runtime
-  disable!
+  disable! date: "2020-07-30", because: "fetches unversioned dependencies at runtime"
 
   depends_on "openjdk"
 

@@ -1,16 +1,19 @@
 class Vcpkg < Formula
   desc "C++ Library Manager"
   homepage "https://github.com/microsoft/vcpkg"
-  url "https://github.com/microsoft/vcpkg/archive/2020.06.tar.gz"
-  sha256 "cfaecee6f18b6e2763f41c4257b6d6a1d2ef536a2018a6c7f579df0b6ad42e56"
-  revision 1
+  url "https://github.com/microsoft/vcpkg/archive/2020.11-1.tar.gz"
+  version "2020.11-1"
+  sha256 "dcae747fddfc1540b57d576afd2ad5191611013cce0bf30f184a1535c3d90fbe"
+  license "MIT"
   head "https://github.com/microsoft/vcpkg.git"
 
   bottle do
     cellar :any
-    sha256 "e4b51bd648a112d77dc6f16f7e702f1edbd3f14a3dfe9bc29dc46ca996f26670" => :catalina
-    sha256 "db0dc9240c0c62ad995b56cbb19bb7089a6463fd41fe01cf3d5cb860d408f564" => :mojave
-    sha256 "e8b701d7a51ed48a27f93f6ac6e16f1f38118f5a9bfd15360594c5db6c19b881" => :high_sierra
+    rebuild 1
+    sha256 "b0eeafb5709891c77ab0b05e8b6ce6977b72d30651869dfba98f6b501048fbc3" => :big_sur
+    sha256 "9dcff0e796b3e9b34dd365e79e114a862bc297b289a64703698badf5a9b84cac" => :arm64_big_sur
+    sha256 "37195113f690360e2e6efd0f4657f5b0e60f4a65e2c37ee25558bf8488d1aeb8" => :catalina
+    sha256 "f1c8ef840126a72be1ed20a9f032bcfe25fdf4c30f3adb1da0e0905d7075a8d7" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -21,6 +24,13 @@ class Vcpkg < Formula
     fails_with :clang do
       cause "'file_status' is unavailable: introduced in macOS 10.15"
     end
+  end
+
+  # build fix for arm
+  # remove in next release
+  patch do
+    url "https://github.com/microsoft/vcpkg/commit/7f328aa.patch?full_index=1"
+    sha256 "afe40ee3c294b85f062dc1598ff0cd7ae4f550336ac0b13f2a4f0226c50c501e"
   end
 
   def install

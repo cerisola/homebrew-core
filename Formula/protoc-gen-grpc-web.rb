@@ -3,15 +3,17 @@ require "language/node"
 class ProtocGenGrpcWeb < Formula
   desc "Protoc plugin that generates code for gRPC-Web clients"
   homepage "https://github.com/grpc/grpc-web"
-  url "https://github.com/grpc/grpc-web/archive/1.2.0.tar.gz"
-  sha256 "8d9b1e9b839a5254aa79cb4068b05fdb6e1de5637c1b8551f95144159a4801f2"
+  url "https://github.com/grpc/grpc-web/archive/1.2.1.tar.gz"
+  sha256 "23cf98fbcb69743b8ba036728b56dfafb9e16b887a9735c12eafa7669862ec7b"
   license "Apache-2.0"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "6f73cc972d706c31d5f5a18aad3f7a0cc8568b2804dd9c713eed59bebb69aa39" => :catalina
-    sha256 "296f7f6501fef507feb8e54243221cfa4212c90149efa11afcbccd1ba2b417a3" => :mojave
-    sha256 "244fbadefd710b79f73f32fa08680053833d651e8ee57c924f6913f9f06f91d0" => :high_sierra
+    sha256 "0ad66a3cf6e5132dc51920722e2213f50ebc57c843d7120dd07636896ac09a03" => :big_sur
+    sha256 "ab78bbc2a63768bd68930eccdb773a18d77a456f84162f5d14260a67e4df333c" => :arm64_big_sur
+    sha256 "26bc7c5c83a68b2fdd4b031807b410bffc9ce03619a0b75e228ddbcd058c467e" => :catalina
+    sha256 "b8b91ccdca4ea4d0014ea5ef890391c1e3ec88d10f1abcfa04cb0fabd99733c9" => :mojave
   end
 
   depends_on "cmake" => :build

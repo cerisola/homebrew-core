@@ -1,14 +1,23 @@
 class Acme < Formula
   desc "Crossassembler for multiple environments"
   homepage "https://sourceforge.net/projects/acme-crossass/"
-  url "https://svn.code.sf.net/p/acme-crossass/code-0/trunk", revision: "121"
-  version "0.96.5"
+  url "https://svn.code.sf.net/p/acme-crossass/code-0/trunk", revision: "266"
+  version "0.97"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url "https://sourceforge.net/p/acme-crossass/code-0/HEAD/tree/trunk/docs/Changes.txt?format=raw"
+    strategy :page_match
+    regex(/New in release v?(\d+(?:\.\d+)+)/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fcf29880657324af51e378076ea9db3759aca5b443e84c77a81e91f56dc3bc78" => :catalina
-    sha256 "484c4e81c9bd8e8440cf1eac1e704985b261fe2b08007cc25b482c528afff427" => :mojave
-    sha256 "5adddcafac8c43eb3b287dc33f132e44e8c4e953a786fbb0b35343c4a9c0aa5d" => :high_sierra
+    sha256 "7890b8c1a32b202ab913553d534db373de3d61bb274a564fb9304cd4de043736" => :big_sur
+    sha256 "eed2df7b934a52ca875e02a7b89588ac602cfa0cfbde0e795bbcdaff72bb5201" => :arm64_big_sur
+    sha256 "54080f9a08a3f958c5a024fd536c2308c392521a4a4092afb115f368b3256fd2" => :catalina
+    sha256 "53ddd3c05dea30a12436e997a68ab50670bd9dbe771e3c3a6d7216c0240c6e07" => :mojave
+    sha256 "8ed3df0ed73b3f995ca33b357c00f54b03f16ec2effd61eca985b04a82eb40b6" => :high_sierra
   end
 
   def install

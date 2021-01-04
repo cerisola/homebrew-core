@@ -2,16 +2,21 @@ class Csound < Formula
   desc "Sound and music computing system"
   homepage "https://csound.com"
   url "https://github.com/csound/csound.git",
-    tag:      "6.14.0",
-    revision: "1073b4d1bc2304a1e06defd266781a9c441a5be0"
-  license "LGPL-2.1"
-  revision 5
+      tag:      "6.15.0",
+      revision: "18c2c7897425f462b9a7743cee157cb410c88198"
+  license "LGPL-2.1-or-later"
+  revision 4
   head "https://github.com/csound/csound.git", branch: "develop"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 "e6927a4fd4a1acc821bb5820318d2a0bca389d504271115a46b16f36c1cee642" => :catalina
-    sha256 "eaf9b0c29d23473d6f6f1c854e0c7ab95accbdd177d0377dc67294bd41ec6dde" => :mojave
-    sha256 "785dacc76af2fbedfb3e8f6cb83850735b2efdb505e7464972af3ae0312e4a5d" => :high_sierra
+    sha256 "cd7229bcb6dd8b392641af2cf3590a75b98c1f37d6b48c46cdcb06b5508b10f6" => :big_sur
+    sha256 "0376c79adfaa8db7ea5ae58ae1b7a46c03bf1243fa04ec944f8b8699d57872be" => :catalina
+    sha256 "f2fcfd3dcb10ac3e02920f006b4c09e39365ea4da09c7322b825a766c0e5ec8a" => :mojave
   end
 
   depends_on "asio" => :build
@@ -45,8 +50,8 @@ class Csound < Formula
   conflicts_with "pkcrack", because: "both install `extract` binaries"
 
   resource "ableton-link" do
-    url "https://github.com/Ableton/link/archive/Link-3.0.2.tar.gz"
-    sha256 "2716e916a9dd9445b2a4de1f2325da818b7f097ec7004d453c83b10205167100"
+    url "https://github.com/Ableton/link/archive/Link-3.0.3.tar.gz"
+    sha256 "195b46f7a33bb88800de19bb08065ec0235e5a920d203a4b2c644c18fbcaff11"
   end
 
   resource "getfem" do
@@ -56,7 +61,6 @@ class Csound < Formula
 
   def install
     ENV["JAVA_HOME"] = Formula["openjdk"].libexec/"openjdk.jdk/Contents/Home"
-    ENV.prepend "CFLAGS", "-DH5_USE_110_API -DH5Oget_info_vers=1"
 
     resource("ableton-link").stage { cp_r "include/ableton", buildpath }
     resource("getfem").stage { cp_r "src/gmm", buildpath }
@@ -84,7 +88,7 @@ class Csound < Formula
 
     libexec.install buildpath/"interfaces/ctcsound.py"
 
-    python_version = Language::Python.major_minor_version Formula["python@3.8"].bin/"python3"
+    python_version = Language::Python.major_minor_version Formula["python@3.9"].bin/"python3"
     (lib/"python#{python_version}/site-packages/homebrew-csound.pth").write <<~EOS
       import site; site.addsitedir('#{libexec}')
     EOS
@@ -117,6 +121,7 @@ class Csound < Formula
       instr 1
           a_, a_, a_ chuap 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
           a_signal STKPlucked 440, 1
+          a_, a_ hrtfstat a_signal, 0, 0, sprintf("hrtf-%d-left.dat", sr), sprintf("hrtf-%d-right.dat", sr), 9, sr
           hdf5write "test.h5", a_signal
           out a_signal
       endin
@@ -129,6 +134,7 @@ class Csound < Formula
 
     ENV["OPCODE6DIR64"] = frameworks/"CsoundLib64.framework/Resources/Opcodes64"
     ENV["RAWWAVE_PATH"] = Formula["stk"].pkgshare/"rawwaves"
+    ENV["SADIR"] = frameworks/"CsoundLib64.framework/Versions/Current/samples"
 
     output = shell_output "#{bin}/csound test.orc test.sco 2>&1"
     assert_match /^hello, world$/, output
@@ -147,7 +153,7 @@ class Csound < Formula
     system bin/"csound", "--orc", "--syntax-check-only", "opcode-existence.orc"
 
     with_env("DYLD_FRAMEWORK_PATH" => frameworks) do
-      system Formula["python@3.8"].bin/"python3", "-c", "import ctcsound"
+      system Formula["python@3.9"].bin/"python3", "-c", "import ctcsound"
     end
 
     (testpath/"test.java").write <<~EOS

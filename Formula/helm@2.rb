@@ -1,19 +1,23 @@
 class HelmAT2 < Formula
-  desc "The Kubernetes package manager"
+  desc "Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/helm/helm.git",
-      tag:      "v2.16.9",
-      revision: "8ad7037828e5a0fca1009dabe290130da6368e39"
+      tag:      "v2.17.0",
+      revision: "a690bad98af45b015bd3da1a41f6218b1a451dbe"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "949b1de3c0b2a99db03e6836cd58e8747c8114ff8d2c051ddb8dccfd86365bcc" => :catalina
-    sha256 "8a527e486b748d271e08f5de2a11ba3d00e431c84c11972cb05da025dad6df2d" => :mojave
-    sha256 "2a03856a9bc1736b0ebb5c9d274519c330870c5fc36d6e1bc34aa1aecc61d15d" => :high_sierra
+    sha256 "432e81bffefbb026bd50058e920a424b1805b84efc634d78c93dfedb9fec3d5a" => :big_sur
+    sha256 "831c4f5b7cf7fc1ab53364eeb2eeb6eff8babdbc51817b406b65a948ac6258c2" => :catalina
+    sha256 "ab7ef44ce55c8b3597a2cb6dfe0ef93b74b389e6a4d6ab09c9a1ebe8dce5e594" => :mojave
+    sha256 "a1c5cb86cce4fe2941c94309c8c75cd00ed9fae2e6edc6ea67aacadcf2f13c9e" => :high_sierra
   end
 
   keg_only :versioned_formula
+
+  # See: https://helm.sh/blog/helm-v2-deprecation-timeline/
+  deprecate! date: "2020-11-13", because: :deprecated_upstream
 
   depends_on "glide" => :build
   depends_on "go" => :build

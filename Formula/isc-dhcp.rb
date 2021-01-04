@@ -5,7 +5,14 @@ class IscDhcp < Formula
   sha256 "1a7ccd64a16e5e68f7b5e0f527fd07240a2892ea53fe245620f4f5f607004521"
   license "MPL-2.0"
 
+  livecheck do
+    url "https://www.isc.org/downloads/"
+    regex(%r{href=.*?/dhcp[._-]v?(\d+(?:\.\d+)+(?:-P\d+)?)\.t}i)
+  end
+
   bottle do
+    sha256 "d5e8627307133d4039211383156348ffdd1c343e2d4246f024e773e69531ed64" => :big_sur
+    sha256 "57e20694baa6af4bc0858faca8d937ac50629a9e9d34d35c367ee154511cfe4c" => :arm64_big_sur
     sha256 "26591c29130891dfe5a7ebe686c800bda76fdf5113885a801c3a30730a119130" => :catalina
     sha256 "0d61b17cc0bbac751ded99a66948e880c64fe6ba47a8d1613c470ee6c4e54fec" => :mojave
     sha256 "b0894db278d509c8615da4df71e26bce91daf300bba6380095f291bd2daa642c" => :high_sierra

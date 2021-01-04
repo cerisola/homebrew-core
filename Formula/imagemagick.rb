@@ -1,16 +1,22 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://www.imagemagick.org/"
-  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.10-25.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.10-25.tar.xz"
-  sha256 "0a125992e63b2a7f13fb966718304fe5f8142192c275d55b497a3bfe1f554ae6"
+  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.10-54.tar.xz"
+  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.10-54.tar.xz"
+  sha256 "bea0eca1c6818e12e7e8f0338e70dce6f1231a7284a79674610f3ffae2b7c799"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git"
 
+  livecheck do
+    url "https://www.imagemagick.org/download/"
+    regex(/href=.*?ImageMagick[._-]v?(\d+(?:\.\d+)+-\d+)\.t/i)
+  end
+
   bottle do
-    sha256 "d61106e1611c7c285d8b562d69e84fe55293d3104ca578a60e9f8293c96325fd" => :catalina
-    sha256 "eea1d413c394d708e8b649336c1591fa7647f16fc9a45809a714fa9fcced41a8" => :mojave
-    sha256 "fc24076d091df606e3be1faaf85cd2ba0959558ffeb30391e36454287ed23244" => :high_sierra
+    sha256 "5d6f874e3c67a4e2bfd0975536f01594a17d3dc8a4aa3f8cd345ef773957b770" => :big_sur
+    sha256 "98fcb233bb404f2f2d992e5ee4e39b6d381f9e6afe571d98e9afbd518fd919da" => :arm64_big_sur
+    sha256 "229acba2e32ac93fe9635e6f39f2a12b2decc6b3d7899c1223f64cfacc784eaa" => :catalina
+    sha256 "23b7b3b0226111cd540c2aa8b700bf3979f330260d9d75cc734a3a4548435e23" => :mojave
   end
 
   depends_on "pkg-config" => :build
@@ -31,6 +37,11 @@ class Imagemagick < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "libxml2"
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "libx11"
+  end
 
   skip_clean :la
 
@@ -39,7 +50,7 @@ class Imagemagick < Formula
     inreplace Dir["**/*-config.in"], "@PKG_CONFIG@", Formula["pkg-config"].opt_bin/"pkg-config"
 
     args = %W[
-      --disable-osx-universal-binary
+      --enable-osx-universal-binary=no
       --prefix=#{prefix}
       --disable-dependency-tracking
       --disable-silent-rules
@@ -57,13 +68,16 @@ class Imagemagick < Formula
       --with-lqr
       --without-fftw
       --without-pango
-      --without-x
       --without-wmf
       --enable-openmp
       ac_cv_prog_c_openmp=-Xpreprocessor\ -fopenmp
       ac_cv_prog_cxx_openmp=-Xpreprocessor\ -fopenmp
-      LDFLAGS=-lomp
+      LDFLAGS=-lomp\ -lz
     ]
+
+    on_macos do
+      args << "--without-x"
+    end
 
     # versioned stuff in main tree is pointless for us
     inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"

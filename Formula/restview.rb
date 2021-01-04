@@ -3,19 +3,25 @@ class Restview < Formula
 
   desc "Viewer for ReStructuredText documents that renders them on the fly"
   homepage "https://mg.pov.lt/restview/"
-  url "https://github.com/mgedmin/restview/archive/2.9.2.tar.gz"
-  sha256 "155a5744111d3d1f9e7903f4445ff41c04b42c0be29705f57fb98b3d33b283bd"
+  url "https://files.pythonhosted.org/packages/e6/40/b4ef5c90297b9d37248090b9fde3a9aa1ef25e87ebd17b363760fec39a78/restview-2.9.2.tar.gz"
+  sha256 "790097eb587c0465126dde73ca06c7a22c5007ce1be4a1de449a13c0767b32dc"
   license "GPL-3.0"
-  revision 2
+  revision 3
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5ffb757282d3542b8a7b1059e56f3bbf0a952c43c4a630a4aec43050cdf35285" => :catalina
-    sha256 "126c2097c8981aba77b79069e90803191677fc894f78664eaab9926603766931" => :mojave
-    sha256 "d91b7a7a04bd5bac8b29cb581bab4929488d0b1f3cbb084ceaf9b49996913099" => :high_sierra
+    rebuild 2
+    sha256 "9470d4f0e710da0bda1cb188f6a26ea8300fad4273c67d8362b95655a3131436" => :big_sur
+    sha256 "cb2eeee507bc57c0b8ea4daaa09beb5953ed23c6368279e0965d5db83da851d6" => :arm64_big_sur
+    sha256 "51774d5ba45376854bbccc90a94252cedc5c7e22efbe933305aa55c077a755ed" => :catalina
+    sha256 "9afe08d8d8f8f4cd5a64e2de7af17eff2de637442feccdedb36320afb8a0deb7" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "bleach" do
     url "https://files.pythonhosted.org/packages/a9/ac/dc881fca3ac66d6f2c4c3ac46633af4e9c05ed5a0aa2e7e36dc096687dd7/bleach-3.1.5.tar.gz"
@@ -63,7 +69,7 @@ class Restview < Formula
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3.8")
+    venv = virtualenv_create(libexec, "python3.9")
 
     res = resources.reject { |r| r.name == "sample" }
     venv.pip_install res

@@ -1,16 +1,17 @@
 class NewrelicCli < Formula
-  desc "The New Relic Command-line Interface"
+  desc "Command-line interface for New Relic"
   homepage "https://github.com/newrelic/newrelic-cli"
-  url "https://github.com/newrelic/newrelic-cli/archive/v0.12.0.tar.gz"
-  sha256 "fe87598a93e857af501ffc038f3bf4aca4fea13b4208554185721b10c073b2a5"
+  url "https://github.com/newrelic/newrelic-cli/archive/v0.18.9.tar.gz"
+  sha256 "fc55baa87eb93f6121166bb23023ddd98dc89cc3b21ee0e0efe84b5a7f0cb0c9"
   license "Apache-2.0"
   head "https://github.com/newrelic/newrelic-cli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b9c69ab98f5c912d6452b40731340910b8ffd0312fe29d2cf8477de00360aeae" => :catalina
-    sha256 "6763c28db1f6338be252b6254810bf48185af9a60a0e8f72faaa0c190cb0ccf9" => :mojave
-    sha256 "08ec8c9e2cb7c1b9f42ee6ee838107fd315e83526208bcfbc94fd789a06ca491" => :high_sierra
+    sha256 "dc541a08eaa2fe9d5ec031fb9bb23b476e360a69a5538cb68ff4da75e60adb0c" => :big_sur
+    sha256 "f1a1320499ffe06872cc6ea8ca090da29920a9a74f5c74b7bc67f8fcfb9c1038" => :arm64_big_sur
+    sha256 "a2774e8e942b15b84833fa85d15c00e3d99ec7d4ea5a512f55fde01854efaf6c" => :catalina
+    sha256 "164f1be779026e6db5a1a47a4abbc71a836d1e521194addf78542f392c19f4d1" => :mojave
   end
 
   depends_on "go" => :build

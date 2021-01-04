@@ -1,16 +1,17 @@
 class DosboxStaging < Formula
   desc "Modernized DOSBox soft-fork"
   homepage "https://dosbox-staging.github.io/"
-  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.75.0.tar.gz"
-  sha256 "6279690a05b9cc134484b8c7d11e9c1cb53b50bdb9bf32bdf683bd66770b6658"
-  license "GPL-2.0"
+  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.76.0.tar.gz"
+  sha256 "7df53c22f7ce78c70afb60b26b06742b90193b56c510219979bf12e0bb2dc6c7"
+  license "GPL-2.0-or-later"
   head "https://github.com/dosbox-staging/dosbox-staging.git"
 
   bottle do
     cellar :any
-    sha256 "9a09801ea7b4699eff48acfe05adc51015ef4d0c5baf192d0e52ea1a153c785a" => :catalina
-    sha256 "cbb2dcd04d78c41f098c99e72ec52f466ed73ef38b54b2286fe790aabf02a3b0" => :mojave
-    sha256 "a32107574d134e7b8cdeda5717307656a086929b2291ea647042beb26e771d0e" => :high_sierra
+    sha256 "b37ecd076e7c70fbf4b4937901c75d689ee1a0112d9b25666e59a371ffa94c46" => :big_sur
+    sha256 "623009fa09278f6cc329b5f4bbc81e755ad154a8e1e17bc9add655277a68f2ac" => :arm64_big_sur
+    sha256 "d2d1289f2495e0c566ff470b6d4996762fc4a73be6d7ce8c11aa5417c3832be3" => :catalina
+    sha256 "92c576540030e27e47f6295f2b0477632301492862dcf8303b5bf2b71ffe8229" => :mojave
   end
 
   depends_on "autoconf" => :build
@@ -25,6 +26,7 @@ class DosboxStaging < Formula
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
+      --disable-fluidsynth
       --disable-sdltest
       --enable-core-inline
     ]

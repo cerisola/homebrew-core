@@ -1,32 +1,33 @@
 class Htop < Formula
   desc "Improved top (interactive process viewer)"
-  homepage "https://hisham.hm/htop/"
-  url "https://hisham.hm/htop/releases/2.2.0/htop-2.2.0.tar.gz"
-  sha256 "d9d6826f10ce3887950d709b53ee1d8c1849a70fa38e91d5896ad8cbc6ba3c57"
-  license "GPL-2.0"
-  revision 1
+  homepage "https://htop.dev/"
+  url "https://github.com/htop-dev/htop/archive/3.0.4.tar.gz"
+  sha256 "d8a0536ce95e3d59f8e292e73ee037033a74a8cc118fd10d22048bd4aeb61324"
+  license "GPL-2.0-or-later"
+  head "https://github.com/htop-dev/htop.git"
+
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "c06ff60960f64f5c8395f53d7419cbcce2a22ee87f0cb0138352c8a88111d21c" => :catalina
-    sha256 "77aa302765353b4085dcad52356d3264183e06310dda8d5bac64642299ea2902" => :mojave
-    sha256 "0ebfb655b91566ba31f8effc94d642a43305ff95bdc9b30b46fadc132e2ced0c" => :high_sierra
-    sha256 "ed93b86f011de155c5d261b8c9cc9cb81fd0017667bf3ebe26ee090716bcd650" => :sierra
+    sha256 "5b426171d65d806dd20cb54ebc86bba7f3f3093242de8a3a88492a90f07c14c7" => :big_sur
+    sha256 "57b9e6f3528fa3ffa0b1bfb64c18c42e4bc2cd8dfdb20d0373b97fe1dc805016" => :arm64_big_sur
+    sha256 "f2d386785f45508a062701ce936e316daf8c312d73da02cb3c58ef79393e3a53" => :catalina
+    sha256 "94975a5e046d3a4ee564c7a8d75355f91138f818e6782dcc8ca07e08fb18bf8e" => :mojave
   end
 
-  head do
-    url "https://github.com/hishamhm/htop.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "python@3.9" => :build
   depends_on "ncurses" # enables mouse scroll
 
   def install
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

@@ -7,6 +7,10 @@ class Maven < Formula
   license "Apache-2.0"
   revision 1
 
+  livecheck do
+    url :stable
+  end
+
   bottle :unneeded
 
   depends_on "openjdk"
@@ -30,7 +34,7 @@ class Maven < Formula
       basename = file.basename
       next if basename.to_s == "m2.conf"
 
-      (bin/basename).write_env_script file, JAVA_HOME: "${JAVA_HOME:-#{Formula["openjdk"].opt_prefix}}"
+      (bin/basename).write_env_script file, Language::Java.overridable_java_home_env
     end
   end
 

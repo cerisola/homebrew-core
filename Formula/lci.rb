@@ -5,7 +5,13 @@ class Lci < Formula
   sha256 "204f1ca5e2f56247d71ab320246811c220ed511bf08c9cb7f305cf180a93948e"
   license "GPL-2.0"
 
+  livecheck do
+    url :stable
+  end
+
   bottle do
+    sha256 "bcdd98bead994b6b6c4551bb89575bfd154dcfff597d94da15a1f6158ca42f11" => :big_sur
+    sha256 "10cf9d298c08ffd7dbc86b99853c79013027b0f6e8598f9687d679a312ce3f66" => :arm64_big_sur
     sha256 "a666107791ca81169da0ef403abeb77f5081baa97347d589c49c41c36650db7e" => :catalina
     sha256 "b2bf5e93bb4fdf90b6169b03fe046500fbc196c6d13068160bc92585e66384b3" => :mojave
     sha256 "f6a6d06cb581a5b3c00b05f8785ee33b2c9b69d5b920e8a7234aab3374ca988b" => :high_sierra

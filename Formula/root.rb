@@ -1,17 +1,21 @@
 class Root < Formula
   desc "Object oriented framework for large scale data analysis"
   homepage "https://root.cern.ch/"
-  url "https://root.cern.ch/download/root_v6.22.00.source.tar.gz"
-  version "6.22.00"
-  sha256 "efd961211c0f9cd76cf4a486e4f89badbcf1d08e7535bba556862b3c1a80beed"
-  license "LGPL-2.1"
-  revision 1
+  url "https://root.cern.ch/download/root_v6.22.06.source.tar.gz"
+  sha256 "c4688784a7e946cd10b311040b6cf0b2f75125a7520e04d1af0b746505911b57"
+  license "LGPL-2.1-or-later"
+  revision 2
   head "https://github.com/root-project/root.git"
 
+  livecheck do
+    url "https://root.cern.ch/download/"
+    regex(/href=.*?root[._-]v?(\d+(?:\.\d*[02468])+)\.source\.t/i)
+  end
+
   bottle do
-    sha256 "22f63d109ebc3d2a831df49744a404a8794aa8f55c55f2f2ecfe63f8f081b1c0" => :catalina
-    sha256 "572b4654f5514d888c97609c36c4409f5c0a82ad9a9d8046b99abd05759b04da" => :mojave
-    sha256 "e77cccf4df06bb140b3b7ec38832b0edd6097a6f8fd24cd025b5b7178f077d1a" => :high_sierra
+    sha256 "b3789e14153fb1ff967322a6fab0ce3f2248103e6d50d04ba7da1326411935a9" => :big_sur
+    sha256 "3d01849d366be92882668a7c0a270371d50fa803c782d8ea4020800f37b7504d" => :catalina
+    sha256 "7d9440901fb0440771ea3ca6906f53f8f3bba6610564fb47962890f955d40d40" => :mojave
   end
 
   # https://github.com/Homebrew/homebrew-core/issues/30726
@@ -27,6 +31,7 @@ class Root < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "ninja" => :build
   depends_on "cfitsio"
   depends_on "davix"
   depends_on "fftw"
@@ -41,7 +46,7 @@ class Root < Formula
   depends_on "numpy" # for tmva
   depends_on "openssl@1.1"
   depends_on "pcre"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "tbb"
   depends_on "xrootd"
   depends_on "xz" # for LZMA
@@ -66,7 +71,7 @@ class Root < Formula
     args = std_cmake_args + %W[
       -DCLING_CXX_PATH=clang++
       -DCMAKE_INSTALL_ELISPDIR=#{elisp}
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.8"].opt_bin}/python3
+      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
       -Dbuiltin_cfitsio=OFF
       -Dbuiltin_freetype=ON
       -Dbuiltin_glew=ON
@@ -86,10 +91,15 @@ class Root < Formula
       -Dssl=ON
       -Dtmva=ON
       -Dxrootd=ON
+      -GNinja
     ]
 
     cxx_version = (MacOS.version < :mojave) ? 14 : 17
     args << "-DCMAKE_CXX_STANDARD=#{cxx_version}"
+
+    # Homebrew now sets CMAKE_INSTALL_LIBDIR to /lib, which is incorrect
+    # for ROOT with gnuinstall, so we set it back here.
+    args << "-DCMAKE_INSTALL_LIBDIR=lib/root"
 
     # Workaround the shim directory being embedded into the output
     inreplace "build/unix/compiledata.sh", "`type -path $CXX`", ENV.cxx
@@ -97,11 +107,11 @@ class Root < Formula
     mkdir "builddir" do
       system "cmake", "..", *args
 
-      system "make", "install"
+      system "ninja", "install"
 
       chmod 0755, Dir[bin/"*.*sh"]
 
-      version = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+      version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
       pth_contents = "import site; site.addsitedir('#{lib}/root')\n"
       (prefix/"lib/python#{version}/site-packages/homebrew-root.pth").write pth_contents
     end
@@ -155,6 +165,6 @@ class Root < Formula
                  shell_output("/bin/bash test_compile.bash")
 
     # Test Python module
-    system Formula["python@3.8"].opt_bin/"python3", "-c", "import ROOT; ROOT.gSystem.LoadAllLibraries()"
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import ROOT; ROOT.gSystem.LoadAllLibraries()"
   end
 end

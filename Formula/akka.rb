@@ -8,9 +8,8 @@ class Akka < Formula
 
   bottle :unneeded
 
-  # Recommended to use Akka with a build tool
   # https://github.com/akka/akka/issues/25046
-  deprecate!
+  deprecate! date: "2020-07-09", because: "is recommended to use Akka with a build tool"
 
   depends_on "openjdk"
 

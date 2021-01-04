@@ -3,20 +3,19 @@ class Awscli < Formula
 
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://github.com/aws/aws-cli/archive/2.0.37.tar.gz"
-  sha256 "18d7cd1e21e52c7f6683eebbd1dc709dc0b343a308a64871cb6e73ad72b5a8b5"
+  url "https://github.com/aws/aws-cli/archive/2.1.15.tar.gz"
+  sha256 "47e581d78fb6b1fef6bc077f41dc8865c34bb9ccab548d1e457ca055f4e054a6"
   license "Apache-2.0"
   head "https://github.com/aws/aws-cli.git", branch: "v2"
 
   bottle do
-    sha256 "3c3a7aa64145a4cc0de7c5b488d98c82f4e8a4f0d0d6cf8740f740f66eee6471" => :catalina
-    sha256 "5bf8403ae7e0d77ebffff17be21d97b8bcab15b849664fea81416dea7c051938" => :mojave
-    sha256 "f0d0fc4ea5cffc4b0faa36346f077ffaa5ea5b41334cd681c5b515d219baea6a" => :high_sierra
+    sha256 "db192f087799f929eae2dba5833c5d0561b86167c7ac0cc317d334155086e2e1" => :big_sur
+    sha256 "aeb7d0dbff7de73e051ab77a048f665bd7e7fdfa9d4e6ab10f41f7a194cb04cc" => :arm64_big_sur
+    sha256 "20bf5b01ac0b5047410e8dcc2aa39c4c62be49b0c39194126e138273d9d6fa0e" => :catalina
+    sha256 "9d47b4b127c64e6afbf5dfd4dd6cf985cf38d778f015ecff5ed0612b5af385f6" => :mojave
   end
 
-  # Some AWS APIs require TLS1.2, which system Python doesn't have before High
-  # Sierra
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "groff"
 
@@ -30,6 +29,7 @@ class Awscli < Formula
                               "--ignore-installed", buildpath
     system libexec/"bin/pip", "uninstall", "-y", "awscli"
     venv.pip_install_and_link buildpath
+    system libexec/"bin/pip", "uninstall", "-y", "pyinstaller"
     pkgshare.install "awscli/examples"
 
     rm Dir["#{bin}/{aws.cmd,aws_bash_completer,aws_zsh_completer.sh}"]
@@ -56,7 +56,7 @@ class Awscli < Formula
 
   test do
     assert_match "topics", shell_output("#{bin}/aws help")
-    assert_include Dir["#{libexec}/lib/python3.8/site-packages/awscli/data/*"],
-                   "#{libexec}/lib/python3.8/site-packages/awscli/data/ac.index"
+    assert_include Dir["#{libexec}/lib/python3.9/site-packages/awscli/data/*"],
+                   "#{libexec}/lib/python3.9/site-packages/awscli/data/ac.index"
   end
 end

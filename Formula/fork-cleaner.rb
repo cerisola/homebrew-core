@@ -1,15 +1,16 @@
 class ForkCleaner < Formula
   desc "Cleans up old and inactive forks on your GitHub account"
   homepage "https://github.com/caarlos0/fork-cleaner"
-  url "https://github.com/caarlos0/fork-cleaner/archive/v1.7.0.tar.gz"
-  sha256 "f95140760f79e33456372161a402b7b94d6309f8b69d21fc6430289bab340b5f"
+  url "https://github.com/caarlos0/fork-cleaner/archive/v1.9.0.tar.gz"
+  sha256 "81a035274ef44a84232144a3a284c9707050f43ff57260ea8b73670b13e347c8"
   license "MIT"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3764b433f450ce49be8d8e002c5ec457fd75850a300b9e0868ced294b78fca42" => :catalina
-    sha256 "6f1cd16063670084e17628102f5dced6d0d4fb15d2a8ae80c00e531a35377135" => :mojave
-    sha256 "51d4939c1f7139ecf9eee2783ca15a5e40142fbeee8f85b426c96e9fc424df03" => :high_sierra
+    sha256 "035bfa99ac3f594f52b61b7e498d167852560beb119a4d13c4251e79e985df7b" => :big_sur
+    sha256 "1955e4d5ef9f60ad01e6993b4e5f6468ee8c1dad1c7dfb7c5320403a6ca67214" => :arm64_big_sur
+    sha256 "804504b766150b80ef28f17ac3afaa06dea6a5467a821cb83ce7b3bc199f87a2" => :catalina
+    sha256 "d0f57e4cb456de17297f3b1f91824d29b976e7264547cc5ad384508aa6ff2021" => :mojave
   end
 
   depends_on "go" => :build

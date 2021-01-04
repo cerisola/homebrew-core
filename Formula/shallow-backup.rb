@@ -3,19 +3,26 @@ class ShallowBackup < Formula
 
   desc "Git-integrated backup tool for macOS and Linux devs"
   homepage "https://github.com/alichtman/shallow-backup"
-  url "https://github.com/alichtman/shallow-backup/archive/v5.0.1.tar.gz"
-  sha256 "a4f2e2702ca656d43852b26a85e7ae0056f7c89297b1288b11c0526449c62f8e"
+  url "https://files.pythonhosted.org/packages/42/fc/4ecead7b7539b0fd29ef97fb6c3134327d1702936bb38797352862d0a924/shallow-backup-5.0.1.tar.gz"
+  sha256 "8c0a57e6a5004cf3dbc74a54da1a254e685077c973266e7198aca62441c72a0b"
   license "MIT"
+  revision 1
   head "https://github.com/alichtman/shallow-backup.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "229b33c4ec8ca8298b4a6fdf88161d2cb7023399af7adeaf445516557e9dea8c" => :catalina
-    sha256 "d5e2a09b5c4cf1da508b1e18f44d1509f70313e7b831f38424db2e67367907fd" => :mojave
-    sha256 "bf8b92d72f9e051d036ad04386ecf753191732342f92618b7b80238c8f00738b" => :high_sierra
+    rebuild 2
+    sha256 "e1ad3d711a2c18d700033fc80c16f21ebf40a1a0ba40d41352fe5c3e13339a5a" => :big_sur
+    sha256 "54e0db13cd94663dc668a6a219d4eb82146ee203b7734362c25e9d73f3f2b33e" => :arm64_big_sur
+    sha256 "180c2239489893d858f7a12d729d07c47d0eed52bb77b0fc31dedba920697672" => :catalina
+    sha256 "84fe6770d371202f7f6bda5e55b7dc1d54744faa38a25ed498d36eab4ef8be5f" => :mojave
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "blessed" do
     url "https://files.pythonhosted.org/packages/20/6b/80d2704532134a0acf513a2804d342686a66a779d28822eb48346dc2a861/blessed-1.17.6.tar.gz"

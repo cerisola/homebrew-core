@@ -3,18 +3,25 @@ require "language/perl"
 class PerconaToolkit < Formula
   include Language::Perl::Shebang
 
-  desc "Percona Toolkit for MySQL"
+  desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.2.0/source/tarball/percona-toolkit-3.2.0.tar.gz"
-  sha256 "e7c7028631d5b1c66ba21841c55919537bd4ed2f3a5975f989fa4abd7d9d753d"
-  license "GPL-2.0"
+  url "https://www.percona.com/downloads/percona-toolkit/3.2.1/source/tarball/percona-toolkit-3.2.1.tar.gz"
+  sha256 "92da0d3712533205f283515ff47ce68521fc2de20989c45b4c65a9743d0f7487"
+  license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
   head "lp:percona-toolkit", using: :bzr
+
+  livecheck do
+    url "https://www.percona.com/downloads/percona-toolkit/LATEST/"
+    regex(%r{value=.*?percona-toolkit/v?(\d+(?:\.\d+)+)["' >]}i)
+  end
 
   bottle do
     cellar :any
-    sha256 "3f64220a3fb90ee0bfe3be99d0590aa42098accd6126440dee3782c9b286161d" => :catalina
-    sha256 "48322255f937dabee1a5666d206d99a67f36919268dce0090551461fc7cc176f" => :mojave
-    sha256 "f1952ce63f2c1dc0705aba15741c6afccf0c97f27ea722e24718142a6abcb7e4" => :high_sierra
+    sha256 "f820253f505c8fb7315a17a50cf56f2080bfb6f6b16cec9228f0de24883e42a9" => :big_sur
+    sha256 "189e3936cf6b7b37359881b7fa5cb7caf52a56d2752fd23f52dfc5792a240ef0" => :arm64_big_sur
+    sha256 "9cb6acc2c62ea3d71fe9d5974fea8da69141226411a41cab50bd0e490e7fb6ca" => :catalina
+    sha256 "0437a080ee4992e95c9190328cca148cf713e471f0e47e525f591c5e98eca8fb" => :mojave
+    sha256 "3f8e07375c1bee4faca1cac8db893ba7e30b1fefc4f1712f61164d067535012b" => :high_sierra
   end
 
   depends_on "mysql-client"

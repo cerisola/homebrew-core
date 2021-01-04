@@ -5,8 +5,14 @@ class Tta < Formula
   sha256 "1723424d75b3cda907ff68abf727bb9bc0c23982ea8f91ed1cc045804c1435c4"
   license "LGPL-3.0"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/libtta[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
+
   bottle do
     cellar :any_skip_relocation
+    sha256 "7f2b84e5f849d0903006aa3550ec718c31130b4d50271efef0ffe37c1a29e0d2" => :big_sur
     sha256 "af41c210ceddaa4957dc8bc4fec9dedb839157914c3d2d9fbb4bed63239cd9f1" => :catalina
     sha256 "898e75423e5f2a1f872b7ce2e2258db686f09ea04edf56555b15c113f04e9141" => :mojave
     sha256 "10ec40111e20f5168d67b02c52b464065e72fa48060c37a5fd86907062e8a997" => :high_sierra

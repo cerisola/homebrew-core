@@ -1,23 +1,29 @@
 class Bullet < Formula
   desc "Physics SDK"
   homepage "https://bulletphysics.org/"
-  url "https://github.com/bulletphysics/bullet3/archive/2.89.tar.gz"
-  sha256 "621b36e91c0371933f3c2156db22c083383164881d2a6b84636759dc4cbb0bb8"
+  url "https://github.com/bulletphysics/bullet3/archive/3.08.tar.gz"
+  sha256 "05826c104b842bcdd1339b86894cb44c84ac2525ac296689d34b38a14bbba0dd"
   license "Zlib"
+  revision 1
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
-    sha256 "38cdb6c948cb2c75ad2d6640629f1cf72b7901b54483f9bc25ba0fd307b90b55" => :catalina
-    sha256 "e4a628878c9358b5a986ffddc682795f13a0a3d04f11f8bbf753e98827d4fdbf" => :mojave
-    sha256 "ddfb705ac9e42845d9d357131add82eea36bdceee95118a970cf4830a4be1878" => :high_sierra
+    sha256 "c24a6a53450090dbccc161dd17f2555b8988934771019809c4c5e33aca9864b5" => :big_sur
+    sha256 "565e712684c82a288a59d47bc9bbde23ff076fb6b48f85433b1997516b014b72" => :arm64_big_sur
+    sha256 "c6fdc1cb6d9d45e68ed4c2ed841edacfc0d7d1b44ffc05c77869329260f2c266" => :catalina
+    sha256 "8c66500f251d89ee7ae7e9c282984fe81f43c21dd9566024e47132ec78a1322a" => :mojave
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "python@3.9" => :build
 
   def install
     args = std_cmake_args + %W[
-      -DBUILD_BULLET2_DEMOS=OFF
-      -DBUILD_PYBULLET=OFF
+      -DBUILD_PYBULLET=ON
+      -DBUILD_PYBULLET_NUMPY=ON
+      -DUSE_DOUBLE_PRECISION=ON
+      -DBT_USE_EGL=ON
       -DBUILD_UNIT_TESTS=OFF
       -DCMAKE_INSTALL_RPATH=#{lib}
       -DINSTALL_EXTRA_LIBS=ON

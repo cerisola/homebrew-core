@@ -9,6 +9,8 @@ class Libffi < Formula
 
   bottle do
     cellar :any
+    sha256 "76e28c8fbcddd000f371ce146ee3ca980b7feb54596d649e9309a1edc3225a99" => :big_sur
+    sha256 "337709900b0392483dc42c2c3c67ad6e4b9afb0885c7a409deadd2b0129c7c11" => :arm64_big_sur
     sha256 "dd94d39946f53a8f11f78e998f22e46be9666bb265f80bb4714d5d63c1e16a68" => :catalina
     sha256 "d6e5efd7521676dfc58fcba567514b898091c8580df4d6253f5dd40a7ee67c82" => :mojave
     sha256 "7065f0d426921fa069c2494beded9de61e8720954f3f346103c8f871daa4ff8b" => :high_sierra
@@ -24,14 +26,16 @@ class Libffi < Formula
   keg_only :provided_by_macos
 
   def install
-    # This can be removed in the future when libffi properly detects the CPU on ARM.
-    # https://github.com/libffi/libffi/issues/571#issuecomment-655223391
-    extra_args = []
-    extra_args << "--build=aarch64-apple-darwin#{`uname -r`.chomp}" if Hardware::CPU.arm?
+    args = std_configure_args
+
+    on_macos do
+      # This can be removed in the future when libffi properly detects the CPU on ARM.
+      # https://github.com/libffi/libffi/issues/571#issuecomment-655223391
+      args << "--build=aarch64-apple-darwin#{OS.kernel_version}" if Hardware::CPU.arm?
+    end
 
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", *extra_args
+    system "./configure", *args
     system "make", "install"
   end
 

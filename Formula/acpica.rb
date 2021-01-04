@@ -1,15 +1,22 @@
 class Acpica < Formula
   desc "OS-independent implementation of the ACPI specification"
   homepage "https://www.acpica.org/"
-  url "https://acpica.org/sites/acpica/files/acpica-unix-20200528.tar.gz"
-  sha256 "e69f81c6924c8d30f9b9005bb002307f07b5a1538e13c909bea2f8a44e0d8610"
+  url "https://acpica.org/sites/acpica/files/acpica-unix-20201217.tar.gz"
+  sha256 "df6bb667c60577c89df5abe3270539c1b9716b69409d1074d6a7fc5c2fea087b"
+  license any_of: ["Intel-ACPI", "GPL-2.0-only", "BSD-3-Clause"]
   head "https://github.com/acpica/acpica.git"
+
+  livecheck do
+    url "https://acpica.org/downloads"
+    regex(/current release of ACPICA is version <strong>v?(\d{6,8}) </i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "cd77c7ab262dccd3cb56bb5685ef94aabb63a0f3bffb1834504a12fb910bf0ed" => :catalina
-    sha256 "d5be4c0ca5c62d26063618cd358b552f13bde291c68792016b8d3ec3e74579ef" => :mojave
-    sha256 "b6b6ae7b98a9450ac248d85bee082743f749a95320550028198af6f2c6e0681f" => :high_sierra
+    sha256 "615e2c2548792f1620e7e0fe6e5b8232a7460b9483c66f539345b2dfbd9ff46f" => :big_sur
+    sha256 "137d71a458497a5b7e5a4a85953c8fc30590a3fa687698a9e019a5eecd77cf04" => :arm64_big_sur
+    sha256 "e4302dedc1720a8374d32d106fab97b4e9daf28ebacc768646b5cb62d05187ec" => :catalina
+    sha256 "893420b8663ccae192b5dbe8dac8221428f17f9c862d1c3ef3e0030bb6d74c3d" => :mojave
   end
 
   uses_from_macos "bison" => :build

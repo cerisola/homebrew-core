@@ -5,6 +5,11 @@ class Opentsdb < Formula
   sha256 "a2d6a34369612b3f91bf81bfab24ec573ab4118127dc1c0f0ed6fc57318d102c"
   license "LGPL-2.1"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "31e57ba38c568eb7a41a6129a55aac5a9b443301578475702cdab5fb891faaa2" => :catalina
@@ -12,10 +17,12 @@ class Opentsdb < Formula
     sha256 "5bcdc828069e124c16e1e6c8b2eb6732d0ef88533c27f60fcbb0bec369aca375" => :high_sierra
   end
 
+  deprecate! date: "2020-11-13", because: :does_not_build
+
   depends_on "gnuplot"
   depends_on "hbase"
-  depends_on java: "1.8"
   depends_on "lzo"
+  depends_on "openjdk@8"
 
   def install
     system "./configure",

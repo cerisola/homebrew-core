@@ -3,20 +3,30 @@ class Fpc < Formula
   homepage "https://www.freepascal.org/"
   url "https://downloads.sourceforge.net/project/freepascal/Source/3.2.0/fpc-3.2.0.source.tar.gz"
   sha256 "d595b72de7ed9e53299694ee15534e5046a62efa57908314efa02d5cc3b1cf75"
+  license "GPL-2.0-or-later"
+
+  # fpc releases involve so many files that the tarball is pushed out of the
+  # RSS feed and we can't rely on the SourceForge strategy.
+  livecheck do
+    url "https://sourceforge.net/projects/freepascal/files/Source/"
+    strategy :page_match
+    regex(%r{href=(?:["']|.*?Source/)?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
 
   bottle do
     cellar :any
-    sha256 "67c263ba003c8b7c5632d2417c9431a8ebb4ff5760f3e495f326f1879d2a7670" => :catalina
-    sha256 "614bb9d30094edd2f7704989c890178c19f8b6aab568b59cbe3711788699ba95" => :mojave
-    sha256 "096629c7be18cd01c278f60c6a1ec0530c52c217637e32a6c7ff38405720336c" => :high_sierra
+    rebuild 1
+    sha256 "f9bdd01fdd59d08c5f4084fde70e4416f13e31625a4134ea7d55828d8bb476b2" => :big_sur
+    sha256 "6f09e7b73774504d5a87681001fcb53632cbc98a143b94fd5cc91e90853a1f3e" => :arm64_big_sur
+    sha256 "2a17877832cf7554835fd5c35d27931c4197604f9ea8161411bfa49746e8ad60" => :catalina
+    sha256 "84a01f7ad8382fab6aa36bad5378009be66d1d0cd8870fe235b2f5d22102c4fd" => :mojave
+    sha256 "96603ce0f998b1eb7c5b0e15b4ad49bbcca2b9943276ddf46d224f844f04582d" => :high_sierra
   end
 
   resource "bootstrap" do
     url "https://downloads.sourceforge.net/project/freepascal/Mac%20OS%20X/3.0.4/fpc-3.0.4a.intel-macosx.dmg"
     sha256 "56b870fbce8dc9b098ecff3c585f366ad3e156ca32a6bf3b20091accfb252616"
   end
-
-  depends_on "subversion" => :build if MacOS.version >= :catalina
 
   # Help fpc find the startup files (crt1.o and friends) with 10.14 SDK
   patch :DATA

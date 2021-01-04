@@ -1,15 +1,20 @@
 class MingwW64 < Formula
   desc "Minimalist GNU for Windows and GCC cross-compilers"
   homepage "https://sourceforge.net/projects/mingw-w64/"
-  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v7.0.0.tar.bz2"
-  sha256 "aa20dfff3596f08a7f427aab74315a6cb80c2b086b4a107ed35af02f9496b628"
+  url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v8.0.0.tar.bz2"
+  sha256 "44c740ea6ab3924bc3aa169bad11ad3c5766c5c8459e3126d44eabb8735a5762"
   license "ZPL-2.1"
-  revision 2
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?release/mingw-w64[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
 
   bottle do
-    sha256 "092d1d30ae9f2de677a35f14ec2907d285b85f9b4ed465a506f72a970deea715" => :catalina
-    sha256 "cdefb18e91d0102ba193caa2c6994d83c30742fa03e03e12b3fc5864ca6b003c" => :mojave
-    sha256 "2658e687bbfee45cfa9d0d74c9c129f9ffc2ac1de017143d25b4017aa899404f" => :high_sierra
+    rebuild 1
+    sha256 "ea2005c1db809cb4798c4fac572df8c98e5eda84da6ab0c234ab94d6e315d33e" => :big_sur
+    sha256 "5a3dd128c46309b477bb9331761479576fb154f23f34f1128eae65b577285b55" => :catalina
+    sha256 "bd21c9f84a48e481d6ab2ef01e933c4a12236f22a39b5f4a622289c7eef7f92c" => :mojave
   end
 
   # Apple's makeinfo is old and has bugs
@@ -21,15 +26,15 @@ class MingwW64 < Formula
   depends_on "mpfr"
 
   resource "binutils" do
-    url "https://ftp.gnu.org/gnu/binutils/binutils-2.34.tar.xz"
-    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.34.tar.xz"
-    sha256 "f00b0e8803dc9bab1e2165bd568528135be734df3fabf8d0161828cd56028952"
+    url "https://ftp.gnu.org/gnu/binutils/binutils-2.35.1.tar.xz"
+    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.35.1.tar.xz"
+    sha256 "3ced91db9bf01182b7e420eab68039f2083aed0a214c0424e257eae3ddee8607"
   end
 
   resource "gcc" do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-9.3.0/gcc-9.3.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-9.3.0/gcc-9.3.0.tar.xz"
-    sha256 "71e197867611f6054aa1119b13a0c0abac12834765fe2d81f35ac57f84f742d1"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz"
+    sha256 "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
   end
 
   def target_archs
@@ -48,6 +53,7 @@ class MingwW64 < Formula
           --prefix=#{arch_dir}
           --enable-targets=#{target}
           --disable-multilib
+          --disable-nls
         ]
         mkdir "build-#{arch}" do
           system "../configure", *args
@@ -74,7 +80,7 @@ class MingwW64 < Formula
         --target=#{target}
         --with-sysroot=#{arch_dir}
         --prefix=#{arch_dir}
-        --with-bugurl=https://github.com/Homebrew/homebrew-core/issues
+        --with-bugurl=#{tap.issues_url}
         --enable-languages=c,c++,fortran
         --with-ld=#{arch_dir}/bin/#{target}-ld
         --with-as=#{arch_dir}/bin/#{target}-as
@@ -83,8 +89,11 @@ class MingwW64 < Formula
         --with-mpc=#{Formula["libmpc"].opt_prefix}
         --with-isl=#{Formula["isl"].opt_prefix}
         --disable-multilib
+        --disable-nls
         --enable-threads=posix
       ]
+      # Avoid reference to sed shim
+      args << "SED=/usr/bin/sed"
 
       mkdir "#{buildpath}/gcc/build-#{arch}" do
         system "../configure", *args

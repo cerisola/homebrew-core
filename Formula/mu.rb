@@ -1,18 +1,27 @@
-# Note that odd release numbers indicate unstable releases.
+# NOTE: Odd release numbers indicate unstable releases.
 # Please only submit PRs for [x.even.x] version numbers:
 # https://github.com/djcb/mu/commit/23f4a64bdcdee3f9956a39b9a5a4fd0c5c2370ba
 class Mu < Formula
   desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "https://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/1.4.12.tar.gz"
-  sha256 "abe891a19bde4b79cc299b9c853fbc7d84875c8852825f8d70e33ecf586df64a"
-  license "GPL-3.0"
+  url "https://github.com/djcb/mu/archive/1.4.14.tar.gz"
+  sha256 "ecde3b1d3d9e69b089a1b5f9a3feadad28063efe43024d7bbde917dfc4055042"
+  license "GPL-3.0-or-later"
+
+  # We restrict matching to versions with an even-numbered minor version number,
+  # as an odd-numbered minor version number indicates a development version:
+  # https://github.com/djcb/mu/commit/23f4a64bdcdee3f9956a39b9a5a4fd0c5c2370ba
+  livecheck do
+    url :head
+    regex(/^v?(\d+\.\d*[02468](?:\.\d+)*)$/i)
+  end
 
   bottle do
     cellar :any
-    sha256 "27769971b2613bc47b54a25fdcdf0244115c92a3747932305f88c9ddb7fcc6d1" => :catalina
-    sha256 "b2963c5da9e5a77deaea3393fbd29e3a268ad91269d617103b30686f9a6d02a8" => :mojave
-    sha256 "f335fca718e3c60ef31d9291758c039e50375b6b3447480f6f5dc3dab8a490c1" => :high_sierra
+    sha256 "969b3056d8a1cded39deaac654b26fe12437ea50c4a501473335fcfb03be1a1b" => :big_sur
+    sha256 "2b0fa10bca63184c3336fea267f5af265898d36be20debc56f3b65b92a6fd1a4" => :arm64_big_sur
+    sha256 "c51dc9590ecf23ca37cc2c656180abfd5bb71f8df62aed5bd60fd1387f050ce7" => :catalina
+    sha256 "a86ee68f010d6df647a8c87194088fcf248d486d1069ac8f27d0f40563f109cc" => :mojave
   end
 
   head do

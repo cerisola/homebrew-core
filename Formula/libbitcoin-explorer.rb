@@ -4,12 +4,12 @@ class LibbitcoinExplorer < Formula
   url "https://github.com/libbitcoin/libbitcoin-explorer/archive/v3.6.0.tar.gz"
   sha256 "e1b3fa2723465f7366a6e8c55e14df53106e90b82cc977db638c78f9bc5c47db"
   license "AGPL-3.0"
-  revision 4
+  revision 6
 
   bottle do
-    sha256 "75d106ae90e93f8b06f1db2e79bed2dac2cf2a8e1f0da5dc45844b7a531424f8" => :catalina
-    sha256 "b0ebcf8e94695fcc4f2acccd527dbdb8479e3d3942588c93f931d84ea93899e8" => :mojave
-    sha256 "76f237988d3dde9024eb66c5e98535017c717e610cbaae3e235b7938e0f29b3d" => :high_sierra
+    sha256 "f2acbb8b1bffc92fc06575aae7937ca0602f23275a02b227500e49f7194e82ad" => :big_sur
+    sha256 "73d1d8e0f063a2fe14d1bfe30d05b983dc1a2a4d273a37b82465338fbe34c304" => :catalina
+    sha256 "ca4ace70e5cbca198539907f9c22df83a964e737df37b55c517a53301aad3bdd" => :mojave
   end
 
   depends_on "autoconf" => :build

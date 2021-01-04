@@ -1,16 +1,18 @@
 class Elvish < Formula
   desc "Friendly and expressive shell"
   homepage "https://github.com/elves/elvish"
-  url "https://github.com/elves/elvish/archive/v0.14.0.tar.gz"
-  sha256 "36ed5e0318d75f7e7d616398e42477cfbd6fd2a1d1f108dee7941621cfb7378a"
+  url "https://github.com/elves/elvish/archive/v0.14.1.tar.gz"
+  sha256 "8a8113c0a1325785b212ed59410869bdea30ca2cb7400f95ebb3fbc8689eb6d8"
   license "BSD-2-Clause"
   head "https://github.com/elves/elvish.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2248775555e32f6c93c30851f8ad6cc268b3c0b8365625b90bcb116cdc7fd251" => :catalina
-    sha256 "d5d4b767f9ed8a5fbf1e27ca857d5afae6bde95b178c00430fdedab7c1cfbe72" => :mojave
-    sha256 "2e341bc1fa4614a3d807771f74d9034aabbe9bc14ba7487697a62ea38d3ddf6e" => :high_sierra
+    sha256 "0ce973f88b08a79b04f23bc36399d124ebc37f7ed15851e39d842e214648132e" => :big_sur
+    sha256 "f683a6e6d7034a4645f73aaa2cca531371a55465cd7999b4bcf9a20db4e126e8" => :arm64_big_sur
+    sha256 "ba7fb1490f6a8bb5136d465a0ab60129f94d00ea996fa246214816e84a7fcf50" => :catalina
+    sha256 "13eefbaac25770a6d26e27bc1e061e6916ec5a258e0bd74c6980cd22b12ff121" => :mojave
+    sha256 "f17ce74f44eb978941acaf715849399ddf3e154e4425ac17b020c6da59e63af6" => :high_sierra
   end
 
   depends_on "go" => :build

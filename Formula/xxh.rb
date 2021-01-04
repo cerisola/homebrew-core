@@ -3,18 +3,25 @@ class Xxh < Formula
 
   desc "Bring your favorite shell wherever you go through the ssh"
   homepage "https://github.com/xxh/xxh"
-  url "https://files.pythonhosted.org/packages/c6/fb/76429ae5970e334996276075338533043bfbef6f96d7e9340ef433662834/xxh-xxh-0.8.3.tar.gz"
-  sha256 "2ba8bbb5d75c77095580b3f2f5570b1700834a42f50e1caaf50a97de925d51bf"
+  url "https://files.pythonhosted.org/packages/d1/8d/04404b4edc1f6dc1fdad61ea5ea84e233d1fc05baf653c3d94ca67d14302/xxh-xxh-0.8.6.tar.gz"
+  sha256 "c35f828c937a34d0ca98797984ac8457a4906ab75dbb38a1ab8843142ff765de"
   license "BSD-2-Clause"
+  revision 1
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "34a321ac28c031fdb427f866d04a3e5d8aa074e2050afb330edc1718147fa3d9" => :catalina
-    sha256 "525eb4703597ec79fcc04f52058b0df50151ce375a72186e8b062fefc955e20f" => :mojave
-    sha256 "029ad00049f267959b390fda46ce1889a0fc7c3d3fdea68844ce477e2cb86e91" => :high_sierra
+    sha256 "4befe7495d9545c742ffa02ec74391ca18ae98ad2e33c325d1d5fa1e78934498" => :big_sur
+    sha256 "0754a6da98349c722996e01826f2a241a2e4f6018d598681cb09e5eb63556616" => :arm64_big_sur
+    sha256 "7fde18469744ddf9ac4d92cbf864dd5aa4019b5e58ed796cb5d23a11c8d6e0b8" => :catalina
+    sha256 "3b122613ebc9631201b902b99b26810c02c2b51084e70242c2fce6b55c7b8fd3" => :mojave
+    sha256 "a01521553c7ee0f9c143e9c58f95233d9b0d497fbc08ccef90c11c0a60412a10" => :high_sierra
   end
 
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "pexpect" do
     url "https://files.pythonhosted.org/packages/e5/9b/ff402e0e930e70467a7178abb7c128709a30dfb22d8777c043e501bc1b10/pexpect-4.8.0.tar.gz"

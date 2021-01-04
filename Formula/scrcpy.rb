@@ -1,15 +1,15 @@
 class Scrcpy < Formula
   desc "Display and control your Android device"
   homepage "https://github.com/Genymobile/scrcpy"
-  url "https://github.com/Genymobile/scrcpy/archive/v1.14.tar.gz"
-  sha256 "45353b6e6cf1efbc8aadf2a51103242460562f6a55c6772037f492716b3fca07"
+  url "https://github.com/Genymobile/scrcpy/archive/v1.17.tar.gz"
+  sha256 "c16f1fe1789290d0c7dd3a2778f33d6dc6347ffe3e78e64127b85eda52420d7f"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    sha256 "cd68e22dbb71217ef2b2cfcb36c1805ee9c5e9502e0b8ec9401d12b620b5237f" => :catalina
-    sha256 "e238570d316bf7b7cd644020320bd0cb548fd312a8a551567009ac870e7c8cb2" => :mojave
-    sha256 "f89663e0942ec853ce720aaa3408a973aa5f14c4e858a869b9395728998bd0b7" => :high_sierra
+    sha256 "35b09818c9bf3d9e11b9894b28dc3333a5395a347932a019c773e21878452bc2" => :big_sur
+    sha256 "cd3bce189328659edc3b9a0fcc11274c12d75ac96696e42cacb042c400fd6448" => :arm64_big_sur
+    sha256 "940fbcda8626585ae3e48e8d5d9edfc4efe85b149eda28a0ea40d99c9caa5379" => :catalina
+    sha256 "ee046917f0fd4ed6f53a162c353ab4d4ab2c27fc10f243d56436a798dafa66ce" => :mojave
   end
 
   depends_on "meson" => :build
@@ -19,8 +19,8 @@ class Scrcpy < Formula
   depends_on "sdl2"
 
   resource "prebuilt-server" do
-    url "https://github.com/Genymobile/scrcpy/releases/download/v1.14/scrcpy-server-v1.14"
-    sha256 "1d1b18a2b80e956771fd63b99b414d2d028713a8f12ddfa5a369709ad4295620"
+    url "https://github.com/Genymobile/scrcpy/releases/download/v1.17/scrcpy-server-v1.17"
+    sha256 "11b5ad2d1bc9b9730fb7254a78efd71a8ff46b1938ff468e47a21b653a1b6725"
   end
 
   def install
@@ -42,7 +42,7 @@ class Scrcpy < Formula
       At runtime, adb must be accessible from your PATH.
 
       You can install adb from Homebrew Cask:
-        brew cask install android-platform-tools
+        brew install --cask android-platform-tools
     EOS
   end
 

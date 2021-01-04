@@ -4,13 +4,15 @@ class Bitcoin < Formula
   url "https://bitcoin.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1.tar.gz"
   sha256 "4bbd62fd6acfa5e9864ebf37a24a04bc2dcfe3e3222f056056288d854c53b978"
   license "MIT"
+  revision 1
   head "https://github.com/bitcoin/bitcoin.git"
 
   bottle do
     cellar :any
-    sha256 "b517d0812bc9f4d72abd98472da90f13a441f44e2d8a8986c4be3a6bec781404" => :catalina
-    sha256 "b9bd9d696d8e87ea84bb58ee4a62956fadbec61c6064f575ae88cbb24594577b" => :mojave
-    sha256 "a251ff5c182db28bbfb489d5f87227e06a38257d4437b5b85f3d63c947f70363" => :high_sierra
+    rebuild 1
+    sha256 "1e2fe63b8580df5b16c631289709906fe29622586fa1902ef3de48fc2303c40e" => :big_sur
+    sha256 "161323955232dfbd43f8a321cf9f486eb1bed5f70a29a6dc75160c23310fbe12" => :catalina
+    sha256 "95bc5ca10981145ccc2de631e6d684aa9ec920a7dfca6204f1dcd63ddbb97f16" => :mojave
   end
 
   depends_on "autoconf" => :build

@@ -1,17 +1,17 @@
 class Monero < Formula
   desc "Official Monero wallet and CPU miner"
-  homepage "https://getmonero.org/"
+  homepage "https://www.getmonero.org/"
   url "https://github.com/monero-project/monero.git",
-      tag:      "v0.16.0.1",
-      revision: "a498a1b4ce432941dee47d74c7e05bf87acd3ad6"
+      tag:      "v0.17.1.8",
+      revision: "36dfd41e01ebc852e094f268433344404c042591"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
     cellar :any
-    sha256 "5bafb43d2a8249a630f82abf163241d296ff651bca57c06e2a2547edf8ad1a0e" => :catalina
-    sha256 "a32d0b627d34ea3eef6ff0e63a23de9afb6d47f7bd3b6698bdec479e07b9ce1b" => :mojave
-    sha256 "c697bc214735aab967bf408ecbf4e059899285e93107b2722dcd4134167eaba8" => :high_sierra
+    sha256 "6c5706ea94e88c49dda866f221800c3da06096c929e5be3011b19ad837ed41ee" => :big_sur
+    sha256 "390d322983dc65f9d536aa4e487d2d72e8263671ce6f3e660b3fb923f65baa4b" => :arm64_big_sur
+    sha256 "2bcff924a39f9659b377b2656aeebc69dacc221860ae70dc3a6b905d5641e8d5" => :catalina
+    sha256 "7a3f17da9689961b37793fc780dae69bc675fd365b275299ba9b24b721b16da8" => :mojave
   end
 
   depends_on "cmake" => :build
@@ -24,6 +24,8 @@ class Monero < Formula
   depends_on "readline"
   depends_on "unbound"
   depends_on "zeromq"
+
+  conflicts_with "wownero", because: "both install a wallet2_api.h header"
 
   def install
     system "cmake", ".", *std_cmake_args

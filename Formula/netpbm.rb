@@ -3,19 +3,26 @@ class Netpbm < Formula
   homepage "https://netpbm.sourceforge.io/"
   # Maintainers: Look at https://sourceforge.net/p/netpbm/code/HEAD/tree/
   # for stable versions and matching revisions.
-  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: 3870
-  version "10.86.15"
+  url "https://svn.code.sf.net/p/netpbm/code/stable", revision: "3997"
+  version "10.86.18"
+  license "GPL-3.0-or-later"
   version_scheme 1
   head "https://svn.code.sf.net/p/netpbm/code/trunk"
 
-  bottle do
-    cellar :any
-    sha256 "37a97b0de551ec64acca8e1c9506e332fa6d89c9e1aabf0a17da0f6eda8209bf" => :catalina
-    sha256 "c41c2506bf6902e2c20ca671b146b7f61b7280f70e592a1c577dc6e6258af8bf" => :mojave
-    sha256 "cd6bde5ae0be1518e7413f5304433635ab6cc30179565b6ed58182081408cf94" => :high_sierra
+  livecheck do
+    url "https://sourceforge.net/p/netpbm/code/HEAD/tree/stable/"
+    strategy :page_match
+    regex(/Release v?(\d+(?:\.\d+)+)/i)
   end
 
-  depends_on "subversion" => :build, :since => :catalina
+  bottle do
+    cellar :any
+    sha256 "f67c2c93ff2c6a3d95640f228f9f7b8b0865a93f4fd4870871016015db79331f" => :big_sur
+    sha256 "0b8a01fca6a878a893dc0d0259e83f1663e0d71ba83fbad26a955812c798e729" => :arm64_big_sur
+    sha256 "9b136982e2785817585826f084a3282cce0b1bd643ddf3af54bf42213fc9eb25" => :catalina
+    sha256 "4b4243c7384518eaee83aeff5e422a467395945300002496fda4d4f4dd8badc9" => :mojave
+  end
+
   depends_on "jasper"
   depends_on "jpeg-turbo"
   depends_on "libpng"

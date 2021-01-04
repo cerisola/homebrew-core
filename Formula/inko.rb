@@ -1,32 +1,32 @@
 class Inko < Formula
-  desc "The Inko programming language"
+  desc "Safe and concurrent object-oriented programming language"
   homepage "https://inko-lang.org/"
-  url "https://gitlab.com/inko-lang/inko/-/archive/v0.7.0/inko-v0.7.0.tar.gz"
-  sha256 "81a613b4d6bee524a8fe8e346466b7f277a42875b357ad61ba0ca3871750c1e3"
+  url "https://releases.inko-lang.org/0.9.0.tar.gz"
+  sha256 "311f6e675e6f7ca488a71022b62edbbc16946f907d7e1695f3f96747ece2051f"
   license "MPL-2.0"
   head "https://gitlab.com/inko-lang/inko.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a31ee4cbff6f48c5384c1966aa6d3821358706ec4716c9ec5a0f3962adc8be60" => :catalina
-    sha256 "bd7f421a086636e9edb9a6946961c717147b174125f45421d6e1db00c09d42dc" => :mojave
-    sha256 "49de93ab54879a2a48bc4e3dce4f2bc52a5912085583de9290895eadae4b119e" => :high_sierra
+    cellar :any
+    rebuild 1
+    sha256 "7af20bfa1f4614c84b01163942ccd0dd2e774838a02fdb4908fb6434e4179bc3" => :big_sur
+    sha256 "173b2e9e8e9f602ebecf42bd4cf2e2f1420c753897d1f956d134bfa048fd3dd8" => :arm64_big_sur
+    sha256 "db8025c76fa5f9fa13d7bc5b9effe7196fa42b998cae164e24855d4c94e799d8" => :catalina
+    sha256 "33b860614ff94ce6c69962ecce17bb14fb107c2164f863d0d4c0340759498de3" => :mojave
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
   depends_on "coreutils" => :build
-  depends_on "libtool" => :build
   depends_on "make" => :build
   depends_on "rust" => :build
+  depends_on "libffi"
 
   uses_from_macos "ruby", since: :sierra
 
   def install
     make = Formula["make"].opt_bin/"gmake"
+    system make, "build", "PREFIX=#{libexec}", "FEATURES=libinko/libffi-system"
     system make, "install", "PREFIX=#{libexec}"
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files libexec/"bin", INKOC_HOME: libexec/"lib/inko"
   end
 
   test do

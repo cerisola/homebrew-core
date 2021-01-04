@@ -1,16 +1,18 @@
 class Mockolo < Formula
   desc "Efficient Mock Generator for Swift"
   homepage "https://github.com/uber/mockolo"
-  url "https://github.com/uber/mockolo/archive/1.2.4.tar.gz"
-  sha256 "c2394a4f5e94cd0a6c8d380085b806e0fa4e52586ea3c888148ad9767ad9ef3b"
+  url "https://github.com/uber/mockolo/archive/1.2.9.tar.gz"
+  sha256 "97054b88ff0609cc4bf1f2bf9bbdb9195a13f8b3abae114b7f757dd2a0731825"
   license "Apache-2.0"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1177ebf6dd5b6507305913a9738c54c842291a2956658fbc73ca682e04a50b21" => :catalina
+    sha256 "fec3a87ea85004d173619ec4ca617fe8c55c887d8b0c2ad7d721af720375dc97" => :big_sur
+    sha256 "e062429fbb5b3dd2c2afcaf3b8b56c9ba25a91d3e6d1e6cd18415bf9c8cac8d9" => :arm64_big_sur
+    sha256 "837170e02d29e1e146242118d2a71f5e3b94c613e5e38e10f347d5ce122c6208" => :catalina
   end
 
-  depends_on xcode: ["11.4", :build]
+  depends_on xcode: ["12.0", :build]
 
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"
@@ -36,10 +38,10 @@ class Mockolo < Formula
           self.num = num
       }
 
-      public var numSetCallCount = 0
+      public private(set) var numSetCallCount = 0
       public var num: Int = 0 { didSet { numSetCallCount += 1 } }
 
-      public var barCallCount = 0
+      public private(set) var barCallCount = 0
       public var barHandler: ((Float) -> (String))?
       public func bar(arg: Float) -> String {
           barCallCount += 1

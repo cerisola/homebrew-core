@@ -2,16 +2,17 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://coreos.com/operators/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      tag:      "v0.19.2",
-      revision: "4282ce9acdef6d7a1e9f90832db4dc5a212ae850"
+      tag:      "v1.3.0",
+      revision: "1abf57985b43bf6a59dcd18147b3c574fa57d3f6"
   license "Apache-2.0"
   head "https://github.com/operator-framework/operator-sdk.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d42df09af8940d0631f4863c3ea98aa0a6a6a1d7b232da6485aaf3db681a69a0" => :catalina
-    sha256 "1ddc6ab31573162d302a51dbc3aefc9ab0525a70ae1d56871fc21b1a26cdc408" => :mojave
-    sha256 "45440738a87ef0ccfc1886cc99c3dbeaa6b72b931144602aa9d1b99065a015e6" => :high_sierra
+    sha256 "085720eb4fb2bfafd0475119ed704cadc62390e63829ea86337b4e5e763999f2" => :big_sur
+    sha256 "1f5b6fc68245da7464e5ba868ec8e907a362def193c0339b2e44388c44fa3dc2" => :arm64_big_sur
+    sha256 "8f65a0a7cb191314734b0eee3188e90d5c9f0f6441c7b103acbca01c51b67402" => :catalina
+    sha256 "ae6df2e3c3f970f3b0ca807c597cb3a9a08fdf8bca1515c723fef6b588686645" => :mojave
   end
 
   depends_on "go"
@@ -30,20 +31,13 @@ class OperatorSdk < Formula
   end
 
   test do
-    # Use the offical golang module cache to prevent network flakes and allow
-    # this test to complete before timing out.
-    ENV["GOPROXY"] = "https://proxy.golang.org"
-
     if build.stable?
       version_output = shell_output("#{bin}/operator-sdk version")
       assert_match "version: \"v#{version}\"", version_output
       assert_match stable.specs[:revision], version_output
     end
 
-    # Create an example AppService operator. This exercises most of the various pieces
-    # of generation logic.
-    args = ["--type=ansible", "--api-version=app.example.com/v1alpha1", "--kind=AppService"]
-    system "#{bin}/operator-sdk", "new", "test", *args
-    assert_predicate testpath/"test/requirements.yml", :exist?
+    output = shell_output("#{bin}/operator-sdk init --domain=example.com --license apache2 --owner BrewTest 2>&1", 1)
+    assert_match "failed to initialize project", output
   end
 end

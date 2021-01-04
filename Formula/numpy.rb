@@ -1,22 +1,35 @@
 class Numpy < Formula
   desc "Package for scientific computing with Python"
   homepage "https://www.numpy.org/"
-  url "https://files.pythonhosted.org/packages/2c/2f/7b4d0b639a42636362827e611cfeba67975ec875ae036dd846d459d52652/numpy-1.19.1.zip"
-  sha256 "b8456987b637232602ceb4d663cb34106f7eb780e247d51a260b84760fd8f491"
+  url "https://files.pythonhosted.org/packages/c5/63/a48648ebc57711348420670bb074998f79828291f68aebfff1642be212ec/numpy-1.19.4.zip"
+  sha256 "141ec3a3300ab89c7f2b0775289954d193cc8edb621ea05f99db9cb181530512"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/numpy/numpy.git"
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "c457ff1ee5e3adf4c11c628aad45276db5bfd9cc18d245f8346ea9ed28d676a7" => :catalina
-    sha256 "d44b16635bfcfebe1f515adf6533123fcf7f5a5f087922b78fad79a154b0a8e8" => :mojave
-    sha256 "1c66b47dbddc55d6d93ef42fe08f0a26b47ab6fe0d3d66024ee88db4634a26ad" => :high_sierra
+    sha256 "fb2e87332b99e24056b915e28a78e17a33c1a13547e2cc144760646421aee01d" => :big_sur
+    sha256 "a32c273bf47a9304a415ea8c58b801e255eb69f3fbc1c3054c03ecdba0e0da13" => :arm64_big_sur
+    sha256 "ed781d5ce1f7c7a8495860b27b577cc83fd4eb056ad2f7f2c630a17141ccd0e8" => :catalina
+    sha256 "3ccaa0bf93bbc235d04af89c2777252e7655f6b4ddcef09b4fb100f28b2a5cc1" => :mojave
   end
 
   depends_on "cython" => :build
   depends_on "gcc" => :build # for gfortran
   depends_on "openblas"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
+
+  # Upstream fix for Apple Silicon, remove in next version
+  # https://github.com/numpy/numpy/pull/17906
+  patch do
+    url "https://github.com/numpy/numpy/commit/1ccb4c6d.patch?full_index=1"
+    sha256 "7777fa6691d4f5a8332538b634d4327313e9cf244bb2bbc25c64acfb64c92602"
+  end
 
   def install
     openblas = Formula["openblas"].opt_prefix
@@ -32,17 +45,17 @@ class Numpy < Formula
 
     Pathname("site.cfg").write config
 
-    version = Language::Python.major_minor_version Formula["python@3.8"].opt_bin/"python3"
+    version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV.prepend_create_path "PYTHONPATH", Formula["cython"].opt_libexec/"lib/python#{version}/site-packages"
 
-    system Formula["python@3.8"].opt_bin/"python3", "setup.py",
+    system Formula["python@3.9"].opt_bin/"python3", "setup.py",
       "build", "--fcompiler=gnu95", "--parallel=#{ENV.make_jobs}",
       "install", "--prefix=#{prefix}",
       "--single-version-externally-managed", "--record=installed.txt"
   end
 
   test do
-    system Formula["python@3.8"].opt_bin/"python3", "-c", <<~EOS
+    system Formula["python@3.9"].opt_bin/"python3", "-c", <<~EOS
       import numpy as np
       t = np.ones((3,3), int)
       assert t.sum() == 9

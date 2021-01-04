@@ -1,16 +1,24 @@
 class Perltidy < Formula
   desc "Indents and reformats Perl scripts to make them easier to read"
   homepage "https://perltidy.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/perltidy/20200619/Perl-Tidy-20200619.tar.gz"
-  sha256 "03b0e1b777c95920053d37942d6398a56b746d7c78090d522371138785c8a09e"
-  license "GPL-2.0"
+  url "https://downloads.sourceforge.net/project/perltidy/20201207/Perl-Tidy-20201207.tar.gz"
+  sha256 "2e4504e493a623674fff9d5e5c0865467f198cf20444d5503dd9ddcd95003d11"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/Perl-Tidy[._-]v?(\d+)\.t}i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e74edc072defecc70cfeac14f6344c0008c8c457f120a377cad20326d7f80e90" => :catalina
-    sha256 "eb9955c2edb97b5a401a62bda71329e6dead46d357b0357a8761a649bd062e01" => :mojave
-    sha256 "e33764a067c1b6b7a2ac4b7f05ca7e4f8aab036f2c80964c9f38c3bb0095e0a4" => :high_sierra
+    sha256 "1199bca3ba6ecf245fcc0642a70fee090f3b12b567d86e2361af7391cae57e00" => :big_sur
+    sha256 "e38bf179878203015b3eb522361df0dfa02897683c2b5aedd7c60fa5d3dc3430" => :arm64_big_sur
+    sha256 "b733a78ef6180b1bc2cc182b1a267e177e931965db5d030c7651b41918b99474" => :catalina
+    sha256 "98b81cb9520970e285d8249fa27d1d3cd1fcaaae8dc453a1b10c6bea1d2ab9ed" => :mojave
   end
+
+  uses_from_macos "perl"
 
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"

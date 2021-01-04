@@ -2,21 +2,23 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.1350.tar.gz"
-  sha256 "beb7257c0c143b5aeacb0a1deede7c8f234a647c0b69b2ad80664d178e9c6352"
+  url "https://github.com/vim/vim/archive/v8.2.2250.tar.gz"
+  sha256 "be1de89b4e41d17a4f27bb70210e9e7d334b80a8f488659617d0742e0cd1bbbd"
   license "Vim"
+  revision 1
   head "https://github.com/vim/vim.git"
 
   bottle do
-    sha256 "c11b2ee2b11413959388ec7880aa42b54ee878be0a3566f6ec58165e73b1092a" => :catalina
-    sha256 "ae3aa4ea3eac4b1620c3ce89f11c752a59970de6c5e49c8030470e8188d2f16a" => :mojave
-    sha256 "dbd0a8368850b210dd17ef8c7cda478ace5046fc9068e3425ba37b31ef5fd8e1" => :high_sierra
+    sha256 "3606b6328f2fa6440c47793e37c8e243833efd836d5a57a0a6788fb703ac2696" => :big_sur
+    sha256 "d95b0d7b51aacbdb476d43919750f7d124e669a616be60b20917e299f90fc042" => :arm64_big_sur
+    sha256 "764e98ea72aea88b0f644ec2432c5ed883286e596cd7e5442c1d31a79a569208" => :catalina
+    sha256 "0cad1117d350e630069c47b00d9f8903a2daf0aaf9560b31b92a8d0db1c6911c" => :mojave
   end
 
   depends_on "gettext"
   depends_on "lua"
   depends_on "perl"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "ruby"
 
   uses_from_macos "ncurses"
@@ -27,8 +29,15 @@ class Vim < Formula
   conflicts_with "macvim",
     because: "vim and macvim both install vi* binaries"
 
+  # Fix vimscript issue that was fixed upstream in 8.2.2251 (just missed our cutoff of every 50 releases)
+  # Remove the next time vim is updated.
+  patch do
+    url "https://github.com/vim/vim/commit/a04d447d3aaddb5b978dd9a0e0186007fde8e09e.patch?full_index=1"
+    sha256 "ddc00f61dc75e3875ea490c56b9cf843f20292844bc34ad434c566ab30e2335a"
+  end
+
   def install
-    ENV.prepend_path "PATH", Formula["python@3.8"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
 
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")
@@ -46,9 +55,9 @@ class Vim < Formula
                           "--mandir=#{man}",
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
+                          "--with-compiledby=Homebrew",
                           "--enable-cscope",
                           "--enable-terminal",
-                          "--with-compiledby=Homebrew",
                           "--enable-perlinterp",
                           "--enable-rubyinterp",
                           "--enable-python3interp",

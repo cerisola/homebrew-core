@@ -3,20 +3,24 @@ class Peru < Formula
 
   desc "Dependency retriever for version control and archives"
   homepage "https://github.com/buildinspace/peru"
-  url "https://files.pythonhosted.org/packages/14/ef/9226d6a47f34afacb241b3d8acf25e5cd958a17f7bdb9f24d3b284aa59e0/peru-1.2.0.tar.gz"
-  sha256 "5bcf70b49fd5a6b089a23d49d93fd6deb05bde560219704de53ae5e48cb49acb"
+  url "https://files.pythonhosted.org/packages/03/28/34c9ddb39e1e50db34b07a73af423978641b84f66ea437f6c40b03e5d5a5/peru-1.2.1.tar.gz"
+  sha256 "4d2f30c71343ae2692f403b465b04a97c110d4126a3fa59cb42b25243cb24064"
   license "MIT"
-  revision 1
+
+  livecheck do
+    url :stable
+  end
 
   bottle do
     cellar :any
-    sha256 "0cdd82ec6457445261cafdf0a64f626f1c5f64a49313bcc6f9b2694e644d4ab3" => :catalina
-    sha256 "9095dd68d7702875b8138efb6b1ba49a84e9c0ba60a7d8be56019acc5422c466" => :mojave
-    sha256 "0e543115564fbebe21054c2b05913efb76b03ecceb41b12d8b2081b575459e39" => :high_sierra
+    sha256 "b8d5f0915d0f6b7a0ce49ffc61a0503b809ac6c074d2057d2f1396ea0788de67" => :big_sur
+    sha256 "171980304c1aa1545f2397ecc9adcedd3f84b533974265d243a88ba2ccd36de0" => :arm64_big_sur
+    sha256 "927f2ddcf69404fde76a587d8797eb6937d206b6f79ee05615bf55788f82dd6c" => :catalina
+    sha256 "8d48227b9184a9f0f623a799a91179e1f24e456507b802c5e620594f7104e940" => :mojave
   end
 
   depends_on "libyaml"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "docopt" do
     url "https://files.pythonhosted.org/packages/a2/55/8f8cab2afd404cf578136ef2cc5dfb50baa1761b68c9da1fb1e4eed343c9/docopt-0.6.2.tar.gz"
@@ -31,7 +35,7 @@ class Peru < Formula
   def install
     # Fix plugins (executed like an executable) looking for Python outside the virtualenv
     Dir["peru/resources/plugins/**/*.py"].each do |f|
-      inreplace f, "#! /usr/bin/env python3", "#!#{libexec}/bin/python3.8"
+      inreplace f, "#! /usr/bin/env python3", "#!#{libexec}/bin/python3.9"
     end
 
     virtualenv_install_with_resources

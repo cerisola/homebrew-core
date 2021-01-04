@@ -1,47 +1,42 @@
 class Immudb < Formula
   desc "Lightweight, high-speed immutable database"
   homepage "https://www.codenotary.io"
-  url "https://github.com/codenotary/immudb/archive/v0.6.1.tar.gz"
-  sha256 "313f09b82f89208705daaf0be16238e1a4f90e590edd038c1719d181ce0ed653"
+  url "https://github.com/codenotary/immudb/archive/v0.8.1.tar.gz"
+  sha256 "a720cdce8888935ed99e2c1aefb1608508b70a374fc62f3434e38392267d65ea"
   license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "769e04db2fd4329c20b6c0a608a3929f774b380071bac36e98a0416457077276" => :catalina
-    sha256 "de2a723ef1e42c3b4757951280bc74d8af0d615221fd9513fd423d48c33c29b0" => :mojave
-    sha256 "0594c1e0fb1a8dafaf8f8b06f768c3626704260d07a328891a72c2db59834887" => :high_sierra
+    rebuild 1
+    sha256 "fd2d3440238a957e684c4799e1024e7f22efa82bb90ac772ae2eb3587bfbbe46" => :big_sur
+    sha256 "e91a080299ec7b6414f3d8f12cffc4349bd5239b0716edf3d21623bfe86a68c1" => :arm64_big_sur
+    sha256 "b033a1e612a61dea608528086e71a43071648be7d58a60d74b64d05f91859cbf" => :catalina
+    sha256 "69f2b95ccaa655900d8af3ea00f2c59a0459dc0d59244d186c2018ea51e08801" => :mojave
   end
 
   depends_on "go" => :build
 
   def install
     system "make", "all"
-    bin.install %w[immudb immuclient immugw immuadmin]
+    bin.install %w[immudb immuclient immuadmin]
   end
 
   test do
     immudb_port = free_port
-    fork do
-      exec bin/"immudb", "-p", immudb_port.to_s
-    end
-    sleep 3
 
-    immugw_port = free_port
     fork do
-      exec bin/"immugw", "-p", immugw_port.to_s, "-j", immudb_port.to_s
+      exec bin/"immudb", "--auth=false", "-p", immudb_port.to_s
     end
     sleep 3
 
     system bin/"immuclient", "safeset", "hello", "world", "-p", immudb_port.to_s
     assert_match "world", shell_output("#{bin}/immuclient safeget hello -p #{immudb_port}")
 
-    command = %W[
-      curl -s -XPOST -d '#{JSON.generate({ "key" => Base64.encode64("hello") })}'
-      http://localhost:#{immugw_port}/v1/immurestproxy/item/safe/get
-    ]
-    response = shell_output(command.join(" "))
-    assert_equal "world", Base64.decode64(JSON.parse(response)["value"])
-
-    assert_match "Uptime", shell_output("#{bin}/immuadmin stats -t -p #{immudb_port}")
+    assert_match "OK", shell_output("#{bin}/immuadmin status -p #{immudb_port}")
   end
 end

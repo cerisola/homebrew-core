@@ -2,22 +2,28 @@ class Devspace < Formula
   desc "CLI helps develop/deploy/debug apps with Docker and k8s"
   homepage "https://devspace.cloud/docs"
   url "https://github.com/devspace-cloud/devspace.git",
-    tag:      "v4.14.0",
-    revision: "c62fc7e1531aadafaecd418cd6f2c260934244e6"
+      tag:      "v5.6.5",
+      revision: "124d53b27632bad85f8c28e8604cbb008c2053cc"
   license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "09545e263d88a5cce5129d58b7cecc2b4f609266bb2f7280c911bb6320304e6e" => :catalina
-    sha256 "85629be8d03222a334b32ddd61dc9b599bd86a8644295faf4ea050020568eeba" => :mojave
-    sha256 "2a8e26bec72882dd303856c7960b664f558967382e82a2285cc871075f9639a3" => :high_sierra
+    sha256 "859e1fcbe615e14e8c1c313ee667fd74be328f68759c9063888b29403274212d" => :big_sur
+    sha256 "fbb4d10d774e4eb523f239fcf037b5a57462a18144e2fddb586878088d114115" => :catalina
+    sha256 "a5fc0a977563409013db5cc7f06d96918b0367503b670405028b117b8c94b29b" => :mojave
   end
 
   depends_on "go" => :build
   depends_on "kubernetes-cli"
 
   def install
-    system "go", "build", *std_go_args
+    system "go", "build", "-ldflags",
+    "-s -w -X main.commitHash=#{stable.specs[:revision]} -X main.version=#{stable.specs[:tag]}", *std_go_args
   end
 
   test do

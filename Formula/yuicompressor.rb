@@ -6,6 +6,11 @@ class Yuicompressor < Formula
   license "BSD-3-Clause"
   revision 1
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle :unneeded
 
   depends_on "openjdk"
