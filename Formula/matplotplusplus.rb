@@ -18,7 +18,7 @@ class Matplotplusplus < Formula
   depends_on "pkg-config" => :build
   depends_on "fftw"
   depends_on "gnuplot"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "openexr"

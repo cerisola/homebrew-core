@@ -12,7 +12,7 @@ class Torchvision < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtorch"
   depends_on "python@3.9"

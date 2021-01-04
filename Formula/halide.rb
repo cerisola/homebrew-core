@@ -21,7 +21,7 @@ class Halide < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libomp"
   depends_on "libpng"
   depends_on "llvm"

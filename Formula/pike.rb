@@ -27,7 +27,7 @@ class Pike < Formula
   depends_on "pcre"
 
   on_linux do
-    depends_on "jpeg"
+    depends_on "jpeg-turbo"
   end
 
   def install
