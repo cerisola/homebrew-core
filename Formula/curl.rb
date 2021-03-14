@@ -1,22 +1,20 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
-  homepage "https://curl.haxx.se/"
-  url "https://curl.haxx.se/download/curl-7.74.0.tar.bz2"
-  sha256 "0f4d63e6681636539dc88fa8e929f934cd3a840c46e0bf28c73be11e521b77a5"
+  homepage "https://curl.se"
+  url "https://curl.se/download/curl-7.75.0.tar.bz2"
+  sha256 "50552d4501c178e4cc68baaecc487f466a3d6d19bbf4e50a01869effb316d026"
   license "curl"
 
   livecheck do
-    url "https://curl.haxx.se/download/"
+    url "https://curl.se/download/"
     regex(/href=.*?curl[._-]v?(.*?)\.t/i)
   end
 
   bottle do
-    cellar :any
-    rebuild 2
-    sha256 "8189929ebd121b28fc04b5c93503cd7af1e3d5755ccfea080d47056e6068f86f" => :big_sur
-    sha256 "0c9ae84590dcd9d4700fc2fe47badb20cdb6c948c1e351a8a588b23b11087556" => :arm64_big_sur
-    sha256 "18e818ff24895ffd9355c34f79dd92aaf220e16d71ffdef6e2a07c0a6ddb4637" => :catalina
-    sha256 "eb84c59697457a6162f7275f0eff0eefc6ec03de13e467e550d35a496ca19425" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "feef288ebc2fb55c4c0803e233c600b5ded8e92863f0ad3a058c9c007933940b"
+    sha256 cellar: :any, big_sur:       "04b809e93240c4b79bad7d224756492a574e6f97e78d2b394cb7418b633d5c7d"
+    sha256 cellar: :any, catalina:      "f06f0f2a005d444c23cdaec96f047a204cb024ee881213682ab3374f1d1f4dbd"
+    sha256 cellar: :any, mojave:        "ebcf2c049613a0655429872b1bd109b1dd00ba1721e6356cf2aec8b95ba37e47"
   end
 
   head do

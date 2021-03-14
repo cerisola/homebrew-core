@@ -1,16 +1,16 @@
 class OpencvAT3 < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/3.4.12.tar.gz"
-  sha256 "c8919dfb5ead6be67534bf794cb0925534311f1cd5c6680f8164ad1813c88d13"
+  url "https://github.com/opencv/opencv/archive/3.4.13.tar.gz"
+  sha256 "70230049194ae03ed8bfaab6cd1388569aa1b5c482d8b50d3af1cd2ae5a0b95d"
   license "BSD-3-Clause"
-  revision 3
+  revision 2
 
   bottle do
-    sha256 "640ea516919445ee6d370678986093de9b7f3b27b756d76a0904687f94cec8c5" => :big_sur
-    sha256 "00b159415bc4ec16ed27f06f88fe5cb1db66f8a870d6564a7782d1ec56a6e672" => :catalina
-    sha256 "ffe594a6c6dfef0cc14dd61b21e3160e230b779abc45007d1e41a0ff4fe33861" => :mojave
-    sha256 "5be7afd889d93bc4c326d39701a8edd864d847a01528d0222868896efd2d1101" => :high_sierra
+    sha256 arm64_big_sur: "7dd060aad31743521ecf989ede57662ea41be3c6b7f6ac0895a5464bc5972615"
+    sha256 big_sur:       "2ea165b4cd7d978e974cbc8fb744244fcbd268ac662a537c59ea73680f0afc54"
+    sha256 catalina:      "0495c3d542d2dceaa17bf4cb0333446e41593b824f12f38fdba1ca2e586e907a"
+    sha256 mojave:        "c254a86ae7e18312c4a036c4ca105c19a2e39ce437303a234fe057d519f22639"
   end
 
   keg_only :versioned_formula
@@ -31,8 +31,8 @@ class OpencvAT3 < Formula
   depends_on "tbb"
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/3.4.12.tar.gz"
-    sha256 "b207024589674dd2efc7c25740ef192ee4f3e0783e773e2d49a198c37e3e7570"
+    url "https://github.com/opencv/opencv_contrib/archive/3.4.13.tar.gz"
+    sha256 "2ba1052eb52e5ad90ed32d2046504345a6bf3ab8ed57d101a492877c3bfae357"
   end
 
   def install
@@ -75,8 +75,10 @@ class OpencvAT3 < Formula
       -DPYTHON3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
     ]
 
-    args << "-DENABLE_AVX=OFF" << "-DENABLE_AVX2=OFF"
-    args << "-DENABLE_SSE41=OFF" << "-DENABLE_SSE42=OFF" unless MacOS.version.requires_sse42?
+    if Hardware::CPU.intel?
+      args << "-DENABLE_AVX=OFF" << "-DENABLE_AVX2=OFF"
+      args << "-DENABLE_SSE41=OFF" << "-DENABLE_SSE42=OFF" unless MacOS.version.requires_sse42?
+    end
 
     mkdir "build" do
       system "cmake", "..", *args

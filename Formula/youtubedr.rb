@@ -1,22 +1,21 @@
 class Youtubedr < Formula
   desc "Download Youtube Video in Golang"
   homepage "https://github.com/kkdai/youtube"
-  url "https://github.com/kkdai/youtube/archive/v2.3.0.tar.gz"
-  sha256 "359c271b641675e20842e5e5146708b477869e55988927dd9610c2a03311f55f"
+  url "https://github.com/kkdai/youtube/archive/v2.5.0.tar.gz"
+  sha256 "7d54bcd7de413b9ba7b0b98a33b05c5fb003a058fd9469c67657f49a3c5e1a63"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "6956fea8197b2302b6b5e31077d3c71a043e1bd1c0aadd5cb13691c1a569d94f" => :big_sur
-    sha256 "873add0ee7b1dcd70242db09789b9c0fbf1b6f9c8d68031f0fb3bebd3360a548" => :arm64_big_sur
-    sha256 "39c6fdca870d0ce13ac4888f8671bbe5cb2e1628da753b38b701e2989e496dde" => :catalina
-    sha256 "e8953674953c78d36207f9584f720f4a511690b1b9862a2ce564cb7c30f79f8b" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "91af75e110175b1cd364bb1472284dac08670daf115175b7b4cfda4440938769"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c11070f97e1d14caabc9bc54cfdc6b64f9fab5be0a8f906c02c6cf1557155014"
+    sha256 cellar: :any_skip_relocation, catalina:      "0050fef719b5136394e6a12d35b3deafac78feb5747a90c914972d6a50ff95c5"
+    sha256 cellar: :any_skip_relocation, mojave:        "511641772c82be12e57a580570c2c42b3f24a6b929863133e637f97ea5109daa"
   end
 
   depends_on "go" => :build
 
   def install
-    build_time = Utils.safe_popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
+    build_time = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     ldflags = %W[
       -s -w

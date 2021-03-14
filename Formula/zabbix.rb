@@ -1,8 +1,8 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
   homepage "https://www.zabbix.com/"
-  url "https://cdn.zabbix.com/zabbix/sources/stable/5.0/zabbix-5.0.7.tar.gz"
-  sha256 "d762f8a9aa9e8717d2e85d2a82d27316ea5c2b214eb00aff41b6e9b06107916a"
+  url "https://cdn.zabbix.com/zabbix/sources/stable/5.0/zabbix-5.0.9.tar.gz"
+  sha256 "2985a710ac8d1273464345b5b3cf6c9eaff1abde019f361e4eb0760a03807c9b"
   license "GPL-2.0-or-later"
 
   # As of writing, the Zabbix SourceForge repository is missing the latest
@@ -16,36 +16,28 @@ class Zabbix < Formula
   end
 
   bottle do
-    sha256 "939012c09a3f42715f144c554861da78f1797d3709834e255106e8e4e7004aa8" => :big_sur
-    sha256 "c5cc517392f6d602ff395d594b5433e6f8ae8f49fdbddb3091b5234846a260bc" => :arm64_big_sur
-    sha256 "e3f61c3f455e4d762854b6d95ad65a0b23c058ea8d547ca3ad44e8479e42e3db" => :catalina
-    sha256 "bd1a49553de2aa8ce79da4841f2d2614142d9ae0c0cb6785c241e4f2a4908fce" => :mojave
+    sha256 arm64_big_sur: "c30636310e36dca63d94e9be9427fe9272db86fb0dae74f74763281a953619e7"
+    sha256 big_sur:       "4cddb5bb01586c3d64fdd54f204890bf4b96aab385ca125b6954aa316e8de02d"
+    sha256 catalina:      "917ad3387981bcc85a891924688bad4f818d8a9967ad0d39590d37da78f65a64"
+    sha256 mojave:        "b9583dfd6e8ea3ee04ff21a9b73ff0b41bbea6eb0edb017dfe280c4c29d535d9"
   end
 
   depends_on "openssl@1.1"
   depends_on "pcre"
 
-  def brewed_or_shipped(db_config)
-    brewed_db_config = "#{HOMEBREW_PREFIX}/bin/#{db_config}"
-    (File.exist?(brewed_db_config) && brewed_db_config) || which(db_config)
-  end
-
   def install
-    sdk = MacOS::CLT.installed? ? "" : MacOS.sdk_path
-
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
       --sysconfdir=#{etc}/zabbix
       --enable-agent
-      --with-iconv=#{sdk}/usr
       --with-libpcre=#{Formula["pcre"].opt_prefix}
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
     ]
 
-    if MacOS.version == :el_capitan && MacOS::Xcode.version >= "8.0"
-      inreplace "configure", "clock_gettime(CLOCK_REALTIME, &tp);",
-                             "undefinedgibberish(CLOCK_REALTIME, &tp);"
+    on_macos do
+      sdk = MacOS::CLT.installed? ? "" : MacOS.sdk_path
+      args << "--with-iconv=#{sdk}/usr"
     end
 
     system "./configure", *args

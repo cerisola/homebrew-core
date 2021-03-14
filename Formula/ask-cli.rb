@@ -3,20 +3,15 @@ require "language/node"
 class AskCli < Formula
   desc "CLI tool for Alexa Skill Kit"
   homepage "https://www.npmjs.com/package/ask-cli"
-  url "https://registry.npmjs.org/ask-cli/-/ask-cli-2.22.0.tgz"
-  sha256 "3bc2bd619ca733dadba371b80d31fc9ae4f65f44e733a3f8a4c241b6804cc42f"
+  url "https://registry.npmjs.org/ask-cli/-/ask-cli-2.22.4.tgz"
+  sha256 "9661eea17000fa5a6d3fd088546175d38ed4da55be7ab723f04e84eb2f7e97ca"
   license "Apache-2.0"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "c003e922402da8dd08a06b7ce46a22526681e7f5288653bab9b10c9d7422575f" => :big_sur
-    sha256 "3f54199342fddc36a818d5036a7b973ca613da2e1371edc4fd83ccec50cfefb1" => :arm64_big_sur
-    sha256 "b3e1f767f77fed1ca76dad1e43f2c2e287082398ea23e53fc16671f8ac10aacf" => :catalina
-    sha256 "3c16fac57b64ceca1b93e02c1c41905dbb7fec48be7afb26f76e7073c1eeb5ac" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "188b7e276246c8084ed5e9c9e35e80aceb05b5c4c6ddfba5b4d3c4681ae0aba3"
+    sha256 cellar: :any_skip_relocation, big_sur:       "d294fde163d254091d70290b044ef203a8845936a368eb049ebd825b5b875fd9"
+    sha256 cellar: :any_skip_relocation, catalina:      "1e9dc2f8c69bb0dfe2bfd78b78f724427d26f0f01e79b7cfe1c3c360e880aa85"
+    sha256 cellar: :any_skip_relocation, mojave:        "30a69e559f02cf7fd6bb4f7190bd71703c18885a826eb9c13f7c71777c124193"
   end
 
   depends_on "node"

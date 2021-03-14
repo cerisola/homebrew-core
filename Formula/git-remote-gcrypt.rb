@@ -1,8 +1,8 @@
 class GitRemoteGcrypt < Formula
   desc "GPG-encrypted git remotes"
   homepage "https://spwhitton.name/tech/code/git-remote-gcrypt/"
-  url "https://github.com/spwhitton/git-remote-gcrypt/archive/1.3.tar.gz"
-  sha256 "e1948dda848db845db404e4337b07206c96cb239b66392fd1c9c246279c2cb25"
+  url "https://github.com/spwhitton/git-remote-gcrypt/archive/1.4.tar.gz"
+  sha256 "12567395bbbec0720d20ec0f89f6f54a7fae4cafedab0fc917164f0deb6b1ef5"
   license "GPL-3.0"
 
   livecheck do
@@ -11,12 +11,10 @@ class GitRemoteGcrypt < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "feb525041cfdf3a36d3d8e7a0c701ec73d1d0bcf90ebb8e900cee2113cd1c8d7" => :big_sur
-    sha256 "6eed2947d709e4f6e233b9d4aad27aa46ebb30c9da03b0021076b98fdbf88115" => :arm64_big_sur
-    sha256 "40fe96f458da47660ec153c19efc0271f9f8bcd987cf328081873adecffd6a88" => :catalina
-    sha256 "c475f8f9a231038a1dcebdf37d14255ed9abb8e242cb0fe5a5216c3727ced1f1" => :mojave
-    sha256 "40fe96f458da47660ec153c19efc0271f9f8bcd987cf328081873adecffd6a88" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2a504a2fd03734bd408fcbf085e2ffb190bdcd7752f130a6f1affd850354a85d"
+    sha256 cellar: :any_skip_relocation, big_sur:       "348795646f446bef6471630348162d3d4ea09e2cee5f71405bdb2da5ab936eac"
+    sha256 cellar: :any_skip_relocation, catalina:      "422197237a410ce36132a62aa25d15419a5a88e60affc63ceb2926f7bddacf03"
+    sha256 cellar: :any_skip_relocation, mojave:        "a8ac84fcad96a05d2846adf010eba868703b7d3732c25c2da8a103e6780624fe"
   end
 
   depends_on "docutils" => :build

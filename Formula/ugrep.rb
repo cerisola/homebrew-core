@@ -1,15 +1,15 @@
 class Ugrep < Formula
   desc "Ultra fast grep with query UI, fuzzy search, archive search, and more"
   homepage "https://github.com/Genivia/ugrep"
-  url "https://github.com/Genivia/ugrep/archive/v3.1.1.tar.gz"
-  sha256 "9afe1b9edc83478404fbcb47b1489c13ceb1101ae372d34b623c3521e5df0a44"
+  url "https://github.com/Genivia/ugrep/archive/v3.1.9.tar.gz"
+  sha256 "c2a94fbacf8cf0f7d35e73fabbe4a6afc20feff8c340c9ced7a22343a8d7a569"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 "334413432ed8d878f7506d6f027aaea776cdcc7d3b2990715369cbad103d78a7" => :big_sur
-    sha256 "f0c095095e0c2b75f9bd655e72cd664990fce4561e0aa877ebddfc0a96bd9c68" => :arm64_big_sur
-    sha256 "3488654793a1cf08cf249ca8d6305535847a58f9115b9b2fab3b35f4291addcb" => :catalina
-    sha256 "b2fe8a609d1dfdbc0c5966f06741866f7e1ce7f419172f2d1655877c47b18b3b" => :mojave
+    sha256 arm64_big_sur: "c34957a11fc70a17ddce7c533db394a11313888c06b7b779324ee09f5cf38b01"
+    sha256 big_sur:       "501a724110b4e1deb8b32db80097644bb9742114f1a45e3fb087290c8491c4e2"
+    sha256 catalina:      "a17da71ffc9f7e139cf72ed5aa6bc309b1303373dae6814693d14ca210aa88f6"
+    sha256 mojave:        "8d93c9c30eea6b835c26ec39798a4a5f95a158a8d02a0dec87ad5e2459766866"
   end
 
   depends_on "pcre2"
@@ -27,7 +27,7 @@ class Ugrep < Formula
 
   test do
     (testpath/"Hello.txt").write("Hello World!")
-    assert_match /Hello World!/, shell_output("#{bin}/ug 'Hello' '#{testpath}'").strip
-    assert_match /Hello World!/, shell_output("#{bin}/ugrep 'World' '#{testpath}'").strip
+    assert_match "Hello World!", shell_output("#{bin}/ug 'Hello' '#{testpath}'").strip
+    assert_match "Hello World!", shell_output("#{bin}/ugrep 'World' '#{testpath}'").strip
   end
 end

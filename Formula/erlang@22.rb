@@ -2,8 +2,8 @@ class ErlangAT22 < Formula
   desc "Programming language for highly scalable real-time systems"
   homepage "https://www.erlang.org/"
   # Download tarball from GitHub; it is served faster than the official tarball.
-  url "https://github.com/erlang/otp/archive/OTP-22.3.4.12.tar.gz"
-  sha256 "5607b27169edb2c02806f21330a3d430c55f21580292743d25b29b678e951aaf"
+  url "https://github.com/erlang/otp/archive/OTP-22.3.4.16.tar.gz"
+  sha256 "92160456fde968208839663d9568a56964c8f0d6220ab57f6bdf078c4c26d854"
   license "Apache-2.0"
 
   livecheck do
@@ -12,10 +12,10 @@ class ErlangAT22 < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "488de36e1f6532a07a505effc1b85ea33ae25d1251be58734b8bf1eb1c7a695c" => :catalina
-    sha256 "980895c1e851c7a7a82be51ca2c1ea24e3b8a9aad63f72e4721d83de3d6121e2" => :mojave
-    sha256 "ba000ca6cd9a086630cc930cd3059238fb54dba5ccb74a4a8dce4e739261db80" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "8b00784f29d470efd3acb80da1a97cc372c62d5f1a5642c2221b5b4925113d63"
+    sha256 cellar: :any, big_sur:       "fec48d1d52c581ba6168ac44063079154425e8b358071bb72d8f84522b950ea2"
+    sha256 cellar: :any, catalina:      "185584eb72b630be7ec1f9b11b463f5953b1196e773b42994d6c968309e8cde8"
+    sha256 cellar: :any, mojave:        "24ed4915aa69901d71dfdf14896a0c2d42b6b26d31b1bbee8aad6a7b2dc2f7fd"
   end
 
   keg_only :versioned_formula
@@ -23,7 +23,6 @@ class ErlangAT22 < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on arch: :x86_64
   depends_on "openssl@1.1"
   depends_on "wxmac" # for GUI apps like observer
 
@@ -39,12 +38,6 @@ class ErlangAT22 < Formula
     url "https://www.erlang.org/download/otp_doc_html_22.3.tar.gz"
     mirror "https://fossies.org/linux/misc/otp_doc_html_22.3.tar.gz"
     sha256 "9b01c61f2898235e7f6643c66215d6419f8706c8fdd7c3e0123e68960a388c34"
-  end
-
-  # Fix build on Xcode 12
-  patch do
-    url "https://github.com/erlang/otp/commit/388622e9b626039c1e403b4952c2c905af364a96.patch?full_index=1"
-    sha256 "85d3611fc071f06d421b9c7fae00b656fde054586bf69551aec38930d4086780"
   end
 
   def install

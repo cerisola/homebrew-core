@@ -7,14 +7,14 @@ class Ffms2 < Formula
   # The FFMS2 source is licensed under the MIT license, but its binaries
   # are licensed under the GPL because GPL components of FFmpeg are used.
   license "GPL-2.0"
+  revision 1
   head "https://github.com/FFMS/ffms2.git"
 
   bottle do
-    cellar :any
-    sha256 "92afbeb075eeca3216cb58eadd0b817bab752bdcddb1fca128c62d3196386168" => :big_sur
-    sha256 "e2bd3ab828aa0d6f410d51480709c85ff2a2a23b931e1752ec485e0c0662e371" => :arm64_big_sur
-    sha256 "696f811f1c101374d98efe609b27bea6a5f51b97a1e0df0c0642b411c33d4023" => :catalina
-    sha256 "e360ea4cd0d1d36526965804e8a324d00961817e41e91b8792d63586c35c0cc7" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "221a3acdb567fd7414a8c8c7a452a878a941962c9c88fb238e6242ae5d7fc1b3"
+    sha256 cellar: :any, big_sur:       "d3933ecde477f9ad7156ab174af028a409cf1a9e9def84f775036704a413101e"
+    sha256 cellar: :any, catalina:      "978c5addaa61cde403d5f5cf51448d6b9512e68c08570385b3ef645e39813d8b"
+    sha256 cellar: :any, mojave:        "4c9b2aa7932969e43df33c69c559df7bbc3212011e94a073cfb3024e334f7fee"
   end
 
   depends_on "autoconf" => :build

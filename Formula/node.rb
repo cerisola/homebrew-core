@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v15.5.0/node-v15.5.0.tar.gz"
-  sha256 "a4f10a2e67dc99ed64c297be988fbe37f8a62f8fb8ff880f121f8be4e30df3d1"
+  url "https://nodejs.org/dist/v15.11.0/node-v15.11.0.tar.xz"
+  sha256 "1a7091a210423970619b4af95dba6f4c6e2b576b9700460e5220afff24a8d2d1"
   license "MIT"
   head "https://github.com/nodejs/node.git"
 
@@ -12,11 +12,10 @@ class Node < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "05a1a6c4ac9994ab88fe176769d9f139cf5dc3a22a6a1f81a33cf805a5dfff52" => :big_sur
-    sha256 "57df79bcb00563ef3e1a5389aef1d0312b3baacb8147fc38560c9fb10c55ac48" => :arm64_big_sur
-    sha256 "b6565277b8d6fb87b15a882cbc613e0ab51bc7c953411c45f0932a86313f2c7e" => :catalina
-    sha256 "6e4a1a3d04248220baae2da648243f434b907f039c588c89598e1c7690cac270" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "0f9370176b23c6a709ead6590fdcacaf1c9ea7ef141aa8e32114b47274e043c5"
+    sha256 cellar: :any, big_sur:       "edb7281061ce503632fcfa44c72efaa0b4f03b2104628b8fc3c28715022a8975"
+    sha256 cellar: :any, catalina:      "1dc4ea77c4196c8376eb6d81401f7bdb357c49ce456780659a2a4e01685cea4e"
+    sha256 cellar: :any, mojave:        "ab1b358c58ed5561d75db0c2dc9661a31fcdd809ce425d293ae869d49f63bfb1"
   end
 
   depends_on "pkg-config" => :build
@@ -26,8 +25,8 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-7.3.0.tgz"
-    sha256 "0b9d1f2d6f3ee315aea08c9e6f6b3273eb61b70a1bee1a930509037425be7912"
+    url "https://registry.npmjs.org/npm/-/npm-7.6.0.tgz"
+    sha256 "6fe261c6af4d4810c0cabf87da402980fe2f610b1a7b58f74449a5d603e011be"
   end
 
   def install
@@ -112,6 +111,6 @@ class Node < Formula
     system "#{HOMEBREW_PREFIX}/bin/npm", *npm_args, "install", "bufferutil" unless head?
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :exist?, "npx must exist"
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :executable?, "npx must be executable"
-    assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx cowsay hello")
+    assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx --yes cowsay hello")
   end
 end

@@ -6,11 +6,10 @@ class Akamai < Formula
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "6a34e6b26f58c2401efee9e063d44db8e753672751c3f7e9a6783e87f1ba8c70" => :big_sur
-    sha256 "a986f3bfc261227cd44447d5ff9cdfb461c50c002118d36caed068f5859432e1" => :catalina
-    sha256 "ce3ea6b8dba89d48bfec3be3bbf5701e7b1dcdde7a2f76a97dd668752b1e95fb" => :mojave
-    sha256 "2b6d07c4926858e1be33bef070a925a6746f396fa27566aaa313d5a2673cb25f" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, big_sur:  "6ce7c1b2b58e3225295f90b5d83f4d3a7df4530b769ea44c716aaeec35b498d2"
+    sha256 cellar: :any_skip_relocation, catalina: "e8c599f32b5f7a489cee4723d378661c8aa12fa7ed3f1bef5e15c27f39a8cf87"
+    sha256 cellar: :any_skip_relocation, mojave:   "1d96850b0c979f5f351877977b7d06e5b26a78701a8993ad6366b229c15cae97"
   end
 
   depends_on "dep" => :build
@@ -18,6 +17,7 @@ class Akamai < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO111MODULE"] = "auto"
     ENV["GLIDE_HOME"] = HOMEBREW_CACHE/"glide_home/#{name}"
 
     srcpath = buildpath/"src/github.com/akamai/cli"

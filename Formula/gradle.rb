@@ -1,8 +1,8 @@
 class Gradle < Formula
   desc "Open-source build automation tool based on the Groovy and Kotlin DSL"
   homepage "https://www.gradle.org/"
-  url "https://services.gradle.org/distributions/gradle-6.7.1-all.zip"
-  sha256 "22449f5231796abd892c98b2a07c9ceebe4688d192cd2d6763f8e3bf8acbedeb"
+  url "https://services.gradle.org/distributions/gradle-6.8.3-all.zip"
+  sha256 "9af5c8e7e2cd1a3b0f694a4ac262b9f38c75262e74a9e8b5101af302a6beadd7"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,22 @@ class Gradle < Formula
 
   bottle :unneeded
 
-  depends_on "openjdk"
+  # gradle currently does not support Java 16
+  if Hardware::CPU.arm?
+    depends_on "openjdk@11"
+  else
+    depends_on "openjdk"
+  end
 
   def install
     rm_f Dir["bin/*.bat"]
     libexec.install %w[bin docs lib src]
-    (bin/"gradle").write_env_script libexec/"bin/gradle", Language::Java.overridable_java_home_env
+    env = if Hardware::CPU.arm?
+      Language::Java.overridable_java_home_env("11")
+    else
+      Language::Java.overridable_java_home_env
+    end
+    (bin/"gradle").write_env_script libexec/"bin/gradle", env
   end
 
   test do

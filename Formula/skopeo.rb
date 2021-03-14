@@ -1,16 +1,15 @@
 class Skopeo < Formula
   desc "Work with remote images registries"
   homepage "https://github.com/containers/skopeo"
-  url "https://github.com/containers/skopeo/archive/v1.2.0.tar.gz"
-  sha256 "113290f6747b7a9946ddf50ad1a7d924d3e507fe923b2e0460df1e6823de0ffb"
+  url "https://github.com/containers/skopeo/archive/v1.2.2.tar.gz"
+  sha256 "b9adf2c209f49f79568cd69ee063bac1d61db20d277c20f189784fe39945a0ad"
   license "Apache-2.0"
 
   bottle do
-    sha256 "99ce8458032e1360d467a2b23a661920457dcfc0abff0c697b5fc9fcee8b3d1e" => :big_sur
-    sha256 "7f3b583733bd0165b84cb7e2eccdae47193c1d1d4f14b19aa8988c48e1824207" => :arm64_big_sur
-    sha256 "f36d5a47905fe5a06efe727ddc44bd948eb4c55f9e18a6bccb7979f229e7e60f" => :catalina
-    sha256 "fb6dbdab20623d34703c7764f469caacf4108b3b88c1ae802f59e4ddde5e88eb" => :mojave
-    sha256 "ae339b7ad02045142355564a4144a12383acb23a32b5092c80a9c6985859b0b5" => :high_sierra
+    sha256 arm64_big_sur: "5f40b68b833bbdffe712545f7c095fcf473be789a13a24cf8f4a5a9df1a591ca"
+    sha256 big_sur:       "e2c2bf736b3507731fabfe214ac1af2a6d332b05903fd5d917c8ffa84619c2a8"
+    sha256 catalina:      "938746cf291931c89ff6e1f122036328430bbfb37509161740381733e6c084dc"
+    sha256 mojave:        "83f4d51a299684dd04c48563794b1eb1aa862497af8dc6b6bbd29ed9a2cd62b8"
   end
 
   depends_on "go" => :build
@@ -57,7 +56,7 @@ class Skopeo < Formula
 
     # https://github.com/Homebrew/homebrew-core/pull/47766
     # https://github.com/Homebrew/homebrew-core/pull/45834
-    assert_match /Invalid destination name test: Invalid image name .+, expected colon-separated transport:reference/,
-                 shell_output("#{bin}/skopeo copy docker://alpine test 2>&1", 1)
+    assert_match(/Invalid destination name test: Invalid image name .+, expected colon-separated transport:reference/,
+                 shell_output("#{bin}/skopeo copy docker://alpine test 2>&1", 1))
   end
 end

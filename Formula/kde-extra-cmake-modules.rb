@@ -1,26 +1,28 @@
 class KdeExtraCmakeModules < Formula
   desc "Extra modules and scripts for CMake"
   homepage "https://api.kde.org/frameworks/extra-cmake-modules/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.77/extra-cmake-modules-5.77.0.tar.xz"
-  sha256 "42f071f628b192122894026de20097cb0b3de411cb41c6935b48eb86ce992a65"
+  url "https://download.kde.org/stable/frameworks/5.79/extra-cmake-modules-5.79.0.tar.xz"
+  sha256 "b29602db99c566d88fa92106abe114bd57b7ffc6ca20773426f896ffde68bed8"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "MIT"]
+  revision 1
   head "https://invent.kde.org/frameworks/extra-cmake-modules.git"
 
+  # We check the tags from the `head` repository because the latest stable
+  # version doesn't seem to be easily available elsewhere.
   livecheck do
     url :head
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ddb3aa8fc133d2cb3bbb59945639205dd13b1b753b3a3cd987ace33e3334e5bd" => :big_sur
-    sha256 "f6d3546b322052f93272ce60d45ea5ed7cd418239223fceb5dfe6d012c021671" => :arm64_big_sur
-    sha256 "bb0655a32826cb4d2d973dacd758130c59ca4a012930630d87605f49be634c6c" => :catalina
-    sha256 "8eaa93ae5208af856982385e97a31b41f206d6e1d74de9b11de9dd8ff874516b" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b037f9a37b5602092d85b8af767ad3f46d970c295aff9bf4b55ca21ecdfd11c0"
+    sha256 cellar: :any_skip_relocation, big_sur:       "fc8d6944b8c8900f3fb464cc8f4589bec834d6b7ab9adbce8b380dcf8d7bc00b"
+    sha256 cellar: :any_skip_relocation, catalina:      "6461611d4f810ef660c4554eadb4f708fe1f952458d2cd374a8200e36895f1cc"
+    sha256 cellar: :any_skip_relocation, mojave:        "daccf07232ea1f687e2f20b0f86823f7ebf421da92f1f4e7608c5197f556ead4"
   end
 
   depends_on "cmake" => [:build, :test]
-  depends_on "qt" => :build
+  depends_on "qt@5" => :build
   depends_on "sphinx-doc" => :build
 
   def install

@@ -1,8 +1,8 @@
 class Phpunit < Formula
   desc "Programmer-oriented testing framework for PHP"
   homepage "https://phpunit.de"
-  url "https://phar.phpunit.de/phpunit-9.5.0.phar"
-  sha256 "aa56801ece16304dbd403fe7f82cd21e91ba01f45be6cdb3f4b3135489dcedfc"
+  url "https://phar.phpunit.de/phpunit-9.5.2.phar"
+  sha256 "bcf913565bc60dfb5356cf67cbbccec1d8888dbd595b0fbb8343a5019342c67c"
   license "BSD-3-Clause"
 
   livecheck do
@@ -111,7 +111,7 @@ class Phpunit < Formula
       }
 
     EOS
-    assert_match /^OK \(3 tests, 3 assertions\)$/,
-      shell_output("#{bin}/phpunit --bootstrap src/autoload.php tests/EmailTest.php")
+    assert_match(/^OK \(3 tests, 3 assertions\)$/,
+      shell_output("#{bin}/phpunit --bootstrap src/autoload.php tests/EmailTest.php"))
   end
 end

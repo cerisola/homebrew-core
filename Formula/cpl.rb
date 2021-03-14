@@ -1,16 +1,20 @@
 class Cpl < Formula
   desc "ISO-C libraries for developing astronomical data-reduction tasks"
-  homepage "https://www.eso.org/sci/software/cpl/index.html"
-  url "ftp://ftp.eso.org/pub/dfs/pipelines/libraries/cpl/cpl-7.1.2.tar.gz"
-  mirror "https://src.fedoraproject.org/repo/pkgs/cpl/cpl-7.1.2.tar.gz/sha512/0835917153fdcf4e7908f9261e143dc54fe7b50dc7903c2041a23a1984554b94a99584def70a792d9fe44a42830bc2baee397635ce922848d514a580be59348a/cpl-7.1.2.tar.gz"
-  sha256 "b6d20752420e2333e86d9a08c24a08057351a9fef97c32f5894e63fbfece463a"
-  revision 6
+  homepage "https://www.eso.org/sci/software/cpl/"
+  url "ftp://ftp.eso.org/pub/dfs/pipelines/libraries/cpl/cpl-7.1.3.tar.gz"
+  sha256 "04109613819b97273045102bd7acf52d13ee7f9217779f17ae2a170c491965c5"
+  license "GPL-2.0-or-later"
+
+  livecheck do
+    url "https://www.eso.org/sci/software/cpl/download.html"
+    regex(/href=.*?cpl[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    cellar :any
-    sha256 "4585413a3561eea4a3443b1214dd1759e82853ca5273929e202a2c38ad526add" => :catalina
-    sha256 "d9410e5fc7b4e1466f88233e8e5e925133257d3f33953a8ce91aee780d53db33" => :mojave
-    sha256 "7a810f03ee554b573832fd30285a2fad70be6b9ad6b0e9936300130396f151cd" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "fcc333aeb18c1c3ae29de030f7eca67b72f5dd688d2fd5d609208722dc669bb7"
+    sha256 cellar: :any, big_sur:       "fdfd479b8c8f52b085f4b04b65dc4c8a2117598180dc6ff4d5b335910d9ac614"
+    sha256 cellar: :any, catalina:      "7fbc74cf613b6247bcbba46ffced1b1436ab7fbee5a53e5c7493eb5b4f9b29cd"
+    sha256 cellar: :any, mojave:        "70f2086f3529c963bbbf9b09069ff29c39d244e49c85decbcea8b6d99642315e"
   end
 
   depends_on "cfitsio"
@@ -26,7 +30,9 @@ class Cpl < Formula
                           "--prefix=#{prefix}",
                           "--with-cfitsio=#{Formula["cfitsio"].prefix}",
                           "--with-fftw=#{Formula["fftw"].prefix}",
-                          "--with-wcslib=#{Formula["wcslib"].prefix}"
+                          "--with-wcslib=#{Formula["wcslib"].prefix}",
+                          # Needed for 7.1.2's ./configure to work under Xcode 12:
+                          "CC=#{ENV.cc} -Wno-implicit-function-declaration"
     system "make", "install"
   end
 

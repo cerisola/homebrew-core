@@ -1,22 +1,20 @@
 class Websocat < Formula
   desc "Command-line client for WebSockets"
   homepage "https://github.com/vi/websocat"
-  url "https://github.com/vi/websocat/archive/v1.6.0.tar.gz"
-  sha256 "3f7e5e99d766b387292af56c8e4b39ce9a7f0da54ff558a6080ddc1024a33896"
+  url "https://github.com/vi/websocat/archive/v1.7.0.tar.gz"
+  sha256 "dabb876e56ac6d3001b0b35aa204525676f2a3ae1f5e782239c9024e9a59ad6d"
   license "MIT"
 
   livecheck do
     url :stable
-    regex(/v([\d.]+$)/i)
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0eb4c8f2100c0d41bd382ff9e4c8bdee1df19e5dbb60053dce90a24339466fec" => :big_sur
-    sha256 "c26d1b774a4bb88e0ecee4cdcf459ec3a22142af55f07fc93fab6bf6e433ff0b" => :arm64_big_sur
-    sha256 "b9ec3480735006f0603df6a0f4ba123f3bf807f8b2c731070975263088b6cc8f" => :catalina
-    sha256 "cfb99f76c48c5ef48ee89118012a75a8b78c1f3602db084407e3fd4e7f0922eb" => :mojave
-    sha256 "c865fed700599d7619e91ecb815b2672b9a1d9da6b4289383cd5455d82d79743" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9ffdb0bd4e66151c2cc813555e7928f08a82e79f399e4d6c039c3da15ae4a4a6"
+    sha256 cellar: :any_skip_relocation, big_sur:       "230d40f194ed076de696840cb2f7d56132da9ade368b89f9bc45048137c7852c"
+    sha256 cellar: :any_skip_relocation, catalina:      "72040f8ecb961dcd3a88d561d63b4ee1a204bdd790bf379674d57ac47db31087"
+    sha256 cellar: :any_skip_relocation, mojave:        "b96be1b018e195db5433a33db0b75ff6b34da210f3ee402f30e929bb0ee84e46"
   end
 
   depends_on "pkg-config" => :build

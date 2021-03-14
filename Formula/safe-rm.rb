@@ -1,21 +1,16 @@
 class SafeRm < Formula
   desc "Wraps rm to prevent dangerous deletion of files"
   homepage "https://launchpad.net/safe-rm"
-  url "https://launchpad.net/safe-rm/trunk/1.0.0/+download/safe-rm-1.0.0.tar.gz"
-  sha256 "7258a1ed4518598cef4d478ed43ff5677023b897a8941585eddbdf63a56718f5"
+  url "https://launchpad.net/safe-rm/trunk/1.1.0/+download/safe-rm-1.1.0.tar.gz"
+  sha256 "a1c916894c5b70e02a6ec6c33abbb2c3b3827464cffd4baffd47ffb69a56a1e0"
   license "GPL-3.0-or-later"
   head "https://git.launchpad.net/safe-rm", using: :git
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "2196591237f36b84a8f715907743e5da00bf8f47f8867734e9a2c048361717cf" => :big_sur
-    sha256 "10d74864cd66894c1458d9b7d0602ef07cd87064c8d3864f71cfe0a1471322dd" => :arm64_big_sur
-    sha256 "deccc20055e675864f7e13194eb720928b94f6e9799f1a83030db87f65dc645e" => :catalina
-    sha256 "0c2d57ca73b19cf2fc2d29b38863ab570ac75db5678842099c032f383fad2be9" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "843d018422bc9b5463f5c28c733ced5cd3a1c6c245de4c92f91da5f3b8bc458b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "702abe3719e6da0cc02c5b43c1a9e3878e8dd2dd30b2e214634545afe380f061"
+    sha256 cellar: :any_skip_relocation, catalina:      "206ed06e860f2474decb800b55326bf0fc0c82cd848b8a414ba7181cb56028d5"
+    sha256 cellar: :any_skip_relocation, mojave:        "fadf91df17e3698589e9c38cb281ce3ee9d7ce34ce53695dcd5400678f408805"
   end
 
   depends_on "rust" => :build

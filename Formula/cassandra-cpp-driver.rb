@@ -1,17 +1,15 @@
 class CassandraCppDriver < Formula
   desc "DataStax C/C++ Driver for Apache Cassandra"
   homepage "https://docs.datastax.com/en/developer/cpp-driver/latest"
-  url "https://github.com/datastax/cpp-driver/archive/2.15.3.tar.gz"
-  sha256 "eccb53c5151621c3b647fc83781a542cfb93e76687b4178ebce418fc4c817293"
+  url "https://github.com/datastax/cpp-driver/archive/2.16.0.tar.gz"
+  sha256 "35b0f4bac3d17fef47e28611dbeb51e07639395e957f23f4a3cc60770db1ab9c"
   license "Apache-2.0"
   head "https://github.com/datastax/cpp-driver.git"
 
   bottle do
-    cellar :any
-    sha256 "b5abf1a67997fd3f02c070416e258916e9caa3106034bd19c65289ac61ea8e7c" => :big_sur
-    sha256 "c0eb554b6a640eed85988e787af1cfc8320b2b4920f2e88921dcf3ae67661ce1" => :catalina
-    sha256 "7600578409910afcb3f14146be2eb7f17cc1eb9c862188b10744dd092f6a80b5" => :mojave
-    sha256 "0eb84266667f4b10184e85e74784c000853b0ed4307008bdc8ee93237518a47e" => :high_sierra
+    sha256 cellar: :any, big_sur:  "e60d94c96a1f877a589541e417b7dfb05ffb25c07360a00b8d04787a55661b26"
+    sha256 cellar: :any, catalina: "aa9d2e9a4e192c1616e83a59b190938806a5b2ad976370ade86e060bb55d834c"
+    sha256 cellar: :any, mojave:   "24526301bf8168625de7688cc8ccad8a420be76b4b9395349f77e39495c72788"
   end
 
   depends_on "cmake" => :build

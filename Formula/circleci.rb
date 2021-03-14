@@ -3,15 +3,15 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      tag:      "v0.1.11540",
-      revision: "55a9ecc97284565cf9ebfd777f7dbe596e2706a2"
+      tag:      "v0.1.15108",
+      revision: "272a716f44303a55b8af6ae99de9d4548f48fa1a"
   license "MIT"
+  head "https://github.com/CircleCI-Public/circleci-cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0ccd53246b6fc1a13b8abf1604d63f4200e289aa469bf4067dcd5ecb377cc694" => :big_sur
-    sha256 "331f83bda10f19b3231ac2cc82353cb60ccd174f0bb0baaeb356b4b6ab5ce64a" => :catalina
-    sha256 "3f34337302ccf1bb48343e17c0eb725c32ede9411150f34f9da746641c0b171c" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "1b7f3d4710db8db512200409be5ef329a04a2debac4b07f03fe8b0fc622effec"
+    sha256 cellar: :any_skip_relocation, catalina: "94e2b6dc7ae87d8c3e8e057997d6695e3c028fa942f0aae9f6d6cde977c729da"
+    sha256 cellar: :any_skip_relocation, mojave:   "ccede1a28d7340e8f65eee3f8ce8f2a0821a94cccbb342543b6588e3ecba2cd7"
   end
 
   depends_on "go" => :build
@@ -23,12 +23,11 @@ class Circleci < Formula
     dir.install buildpath.children
 
     cd dir do
-      commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
       ldflags = %W[
         -s -w
         -X github.com/CircleCI-Public/circleci-cli/version.packageManager=homebrew
         -X github.com/CircleCI-Public/circleci-cli/version.Version=#{version}
-        -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{commit}
+        -X github.com/CircleCI-Public/circleci-cli/version.Commit=#{Utils.git_short_head}
       ]
       system "make", "pack"
       system "go", "build", "-ldflags", ldflags.join(" "),
@@ -39,7 +38,7 @@ class Circleci < Formula
 
   test do
     # assert basic script execution
-    assert_match /#{version}\+.{7}/, shell_output("#{bin}/circleci version").strip
+    assert_match(/#{version}\+.{7}/, shell_output("#{bin}/circleci version").strip)
     (testpath/".circleci.yml").write("{version: 2.1}")
     output = shell_output("#{bin}/circleci config pack #{testpath}/.circleci.yml")
     assert_match "version: 2.1", output

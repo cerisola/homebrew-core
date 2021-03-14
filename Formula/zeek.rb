@@ -2,15 +2,16 @@ class Zeek < Formula
   desc "Network security monitor"
   homepage "https://www.zeek.org"
   url "https://github.com/zeek/zeek.git",
-      tag:      "v3.2.3",
-      revision: "ff8c8f51c28417826ebd2a2fce9681201ff3a766"
+      tag:      "v4.0.0",
+      revision: "7b5263139e9909757c38dfca4c99abebf958df67"
   license "BSD-3-Clause"
   head "https://github.com/zeek/zeek.git"
 
   bottle do
-    sha256 "90bc5edee632cd0d3dc1f8031aaa1d13f30f53394061564c58f2091c4f5dea95" => :big_sur
-    sha256 "7a083eee1d11f79a22dbc0bf1f86b5f05f41f552b12e00a57a5a8afef0906e7a" => :catalina
-    sha256 "9d6d94023910b76331281609329c717d8ed2efe7c5a64744a86684ef302bc76b" => :mojave
+    sha256 arm64_big_sur: "81402ea8773037c8e0a2230240309f12f6ea3814533e87caf15e92c6bb7e4b25"
+    sha256 big_sur:       "dc97e1b05ee465a35da2cfd7fd8c3ff3bd8a229f57934f32e95d053021e73bd1"
+    sha256 catalina:      "1113a1c88e878f05d17050b11e43b5d3db7debb3f2122d260040611fa99b332a"
+    sha256 mojave:        "f6eae52e1144e2245654b36cf4bd668e75a385547c29d7039246fe1f4152bd62"
   end
 
   depends_on "bison" => :build
@@ -20,6 +21,7 @@ class Zeek < Formula
   depends_on "geoip"
   depends_on macos: :mojave
   depends_on "openssl@1.1"
+  depends_on "python@3.9"
 
   uses_from_macos "flex"
   uses_from_macos "libpcap"
@@ -27,12 +29,11 @@ class Zeek < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args,
-                      "-DDISABLE_PYTHON_BINDINGS=on",
                       "-DBROKER_DISABLE_TESTS=on",
                       "-DBUILD_SHARED_LIBS=on",
                       "-DINSTALL_AUX_TOOLS=on",
                       "-DINSTALL_ZEEKCTL=on",
-                      "-DCAF_ROOT_DIR=#{Formula["caf"].opt_prefix}",
+                      "-DCAF_ROOT=#{Formula["caf"].opt_prefix}",
                       "-DOPENSSL_ROOT_DIR=#{Formula["openssl@1.1"].opt_prefix}",
                       "-DZEEK_ETC_INSTALL_DIR=#{etc}",
                       "-DZEEK_LOCAL_STATE_DIR=#{var}"
@@ -42,6 +43,6 @@ class Zeek < Formula
 
   test do
     assert_match "version #{version}", shell_output("#{bin}/zeek --version")
-    assert_match "ARP Parsing", shell_output("#{bin}/zeek --print-plugins")
+    assert_match "ARP packet analyzer", shell_output("#{bin}/zeek --print-plugins")
   end
 end

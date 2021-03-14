@@ -1,19 +1,15 @@
 class Gjs < Formula
   desc "JavaScript Bindings for GNOME"
   homepage "https://gitlab.gnome.org/GNOME/gjs/wikis/Home"
-  url "https://download.gnome.org/sources/gjs/1.66/gjs-1.66.1.tar.xz"
-  sha256 "8d4240455eff642c8bf6d9805077e33e0a60cb2ea13f77a55f7f30c29668344c"
+  url "https://download.gnome.org/sources/gjs/1.66/gjs-1.66.2.tar.xz"
+  sha256 "bd7f5f8b171277cc0bb9ee1754b0240b62f06a76b8b18c968cf471b34ab34e59"
   license all_of: ["LGPL-2.0-or-later", "MIT"]
-
-  livecheck do
-    url :stable
-  end
+  revision 2
 
   bottle do
-    sha256 "1d10fa86fecf3d354dc595db175548427f112943f84a5076222b978c9aff9cf7" => :big_sur
-    sha256 "819aaf721030c22a9f479fca06f52490a2df2b9d2731377d35bf017509723a17" => :catalina
-    sha256 "bc1a84cd054dc1b0918f956b9c88601edf95af714a3a41e08ec3c6c310d4d2c3" => :mojave
-    sha256 "2289aed2c52497f646b73861b4d7f6291a860abf332c5cab65f3581c441b2ad9" => :high_sierra
+    sha256 big_sur:  "a065bebe7a6d0418e0fc35aed79ff6080691305f19bcc78de6bb81405ab73ee3"
+    sha256 catalina: "f630015b9b05f59c731cba6f99bacbd11be5ca6ac865b8a29f496c0fb1d34688"
+    sha256 mojave:   "150190528f20702178f5ad8391ad85b8f576eefa0f40b9bff94191603961dbf0"
   end
 
   depends_on "meson" => :build
@@ -39,8 +35,8 @@ class Gjs < Formula
   end
 
   resource "mozjs78" do
-    url "https://archive.mozilla.org/pub/firefox/releases/78.2.0esr/source/firefox-78.2.0esr.source.tar.xz"
-    sha256 "965ccfcbb8c0aa97639911997c54be0fcf896fd388b03138952089af675ea918"
+    url "https://archive.mozilla.org/pub/firefox/releases/78.8.0esr/source/firefox-78.8.0esr.source.tar.xz"
+    sha256 "1cf2dfdee2e31fd0a5ecced6275a33fa11bee1d2a7c65e23350b26992584a110"
   end
 
   def install
@@ -63,7 +59,7 @@ class Gjs < Formula
     resource("mozjs78").stage do
       inreplace "build/moz.configure/toolchain.configure",
                 "sdk_max_version = Version('10.15.4')",
-                "sdk_max_version = Version('11.0')"
+                "sdk_max_version = Version('11.99')"
       inreplace "config/rules.mk",
                 "-install_name $(_LOADER_PATH)/$(SHARED_LIBRARY) ",
                 "-install_name #{lib}/$(SHARED_LIBRARY) "

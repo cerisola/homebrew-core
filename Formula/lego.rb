@@ -1,27 +1,30 @@
 class Lego < Formula
-  desc "Let's Encrypt client"
+  desc "Let's Encrypt client and ACME library"
   homepage "https://go-acme.github.io/lego/"
-  url "https://github.com/go-acme/lego.git",
-      tag:      "v4.1.3",
-      revision: "086040a8ba1c30336110130df2eafefba1428a6a"
+  url "https://github.com/go-acme/lego/archive/v4.3.1.tar.gz"
+  sha256 "98b5d267a491cacdb901311acf3c360a2f2d03c389a700917c5ca0e43374b508"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b99349308a1af2cc963b3c825cb0fefc37ea21b7ea98497c2e9e49f1c9329bd6" => :big_sur
-    sha256 "f5023447b0ac0ae205c301e961b2199a748fdd5a8b78381822b4b54e3a2925a5" => :arm64_big_sur
-    sha256 "20a37f8e5ccbd6f40908a2d60fd2c4f41aadfd5fc65b861174c181e908c60320" => :catalina
-    sha256 "fc8c01b9e2e5cefcbf9f3f0d002c534d1a7c320b4e7a53849bdcd01fd4f5e4a2" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "98cf7e41c76fcc8f436778c5102d3d813b76fbb38e6d41b890fde18c77a47dd0"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0c5efe9cc6e0888bb78e53e089e7c1ac16f15f71e6894c1cbadab80e12b552db"
+    sha256 cellar: :any_skip_relocation, catalina:      "0304f6caefbffc8376d48aaf77e9de929e9e9036a3f825575660b45cd21db558"
+    sha256 cellar: :any_skip_relocation, mojave:        "84bcdd94d87727e85526053220e2baa01195efc9ef795c9d2ac4e596074dbc18"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", "-trimpath",
-        "-o", bin/"lego", "cmd/lego/main.go"
+    system "go", "build", *std_go_args, "-ldflags", "-s -w -X main.version=#{version}", "./cmd/lego"
   end
 
   test do
+    output = shell_output("lego -a --email test@brew.sh --dns digitalocean -d brew.test run", 1)
+    assert_match "some credentials information are missing: DO_AUTH_TOKEN", output
+
+    output = shell_output("DO_AUTH_TOKEN=xx lego -a --email test@brew.sh --dns digitalocean -d brew.test run 2>&1", 1)
+    assert_match "Could not obtain certificates", output
+
     assert_match version.to_s, shell_output("#{bin}/lego -v")
   end
 end

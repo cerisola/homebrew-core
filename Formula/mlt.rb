@@ -4,12 +4,13 @@ class Mlt < Formula
   url "https://github.com/mltframework/mlt/releases/download/v6.24.0/mlt-6.24.0.tar.gz"
   sha256 "3b977c5632329fca7634d0034162df6d5b79cde3256bac43e7ba8353acced61e"
   license "LGPL-2.1-only"
+  revision 2
   head "https://github.com/mltframework/mlt.git"
 
   bottle do
-    sha256 "50d28e5c661af49faf660bb7fbae1c5e696b20fc91c087bfe8ffb5a4ce29b528" => :big_sur
-    sha256 "5919ce61cb9eab5166aa97695d59c9fad673cf97afad3dcd59f9a0d4ad1ced8c" => :catalina
-    sha256 "f28b8247fc5717bc56d79fc646d05310087b0289c22d096a2474c62334e03885" => :mojave
+    sha256 big_sur:  "768152c19d7f31edf5e3c1ed2a3e8f687d8bf655bb6b9877b0bc3cdf4aadb92d"
+    sha256 catalina: "3dfeb31325eaa6dc6665be06488a4edfa0a89b77b9b4390f3b18ac9842d06250"
+    sha256 mojave:   "a6eec67fd8692b5abef46cea80f2fd8396bae6799bcf63607c3006685e665892"
   end
 
   depends_on "pkg-config" => :build
@@ -21,9 +22,9 @@ class Mlt < Formula
   depends_on "libexif"
   depends_on "libsamplerate"
   depends_on "libvorbis"
-  depends_on "opencv"
+  depends_on "opencv@3"
   depends_on "pango"
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "sdl2"
   depends_on "sox"
 

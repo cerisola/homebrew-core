@@ -1,8 +1,15 @@
 class Byteman < Formula
   desc "Java bytecode manipulation tool for testing, monitoring and tracing"
   homepage "https://byteman.jboss.org/"
-  url "https://downloads.jboss.org/byteman/4.0.12/byteman-download-4.0.12-bin.zip"
-  sha256 "7aebafd6877058a1406e725be4246bcafd8efd78fa583b7192e847cb5d6b27a5"
+  url "https://downloads.jboss.org/byteman/4.0.14/byteman-download-4.0.14-bin.zip"
+  sha256 "e202f6a452ee31538d618d25d353137d5ab9ea6f78a748230c9b8b5d97d4a474"
+  license "LGPL-2.1-or-later"
+  head "https://github.com/bytemanproject/byteman"
+
+  livecheck do
+    url "https://byteman.jboss.org/downloads.html"
+    regex(/href=.*?byteman-download[._-]v?(\d+(?:\.\d+)+)-bin\.zip/i)
+  end
 
   bottle :unneeded
 
@@ -48,15 +55,10 @@ class Byteman < Formula
       DO traceln("Exiting main")
       ENDRULE
     EOS
-    # Compile example
-    system "javac", "src/main/java/BytemanHello.java"
-    # Expected successful output when Byteman runs example
-    expected = <<~EOS
-      Entering main
-      Hello, Brew!
-      Exiting main
-    EOS
+
+    system "#{Formula["openjdk"].bin}/javac", "src/main/java/BytemanHello.java"
+
     actual = shell_output("#{bin}/bmjava -l brew.btm -cp src/main/java BytemanHello")
-    assert_equal(expected, actual)
+    assert_match("Hello, Brew!", actual)
   end
 end

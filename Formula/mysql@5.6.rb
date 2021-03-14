@@ -1,23 +1,19 @@
 class MysqlAT56 < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.50.tar.gz"
-  sha256 "efc48d8160a66b50fc498bb42ea730c3b6f30f036b709a7070d356edd645923e"
+  url "https://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.51.tar.gz"
+  sha256 "262ccaf2930fca1f33787505dd125a7a04844f40d3421289a51974b5935d9abc"
   license "GPL-2.0-only"
 
-  livecheck do
-    url "https://dev.mysql.com/downloads/mysql/5.6.html?tpl=files&os=src&version=5.6"
-    regex(/href=.*?mysql[._-]v?(5\.6(?:\.\d+)*)\.t/i)
-  end
-
   bottle do
-    rebuild 2
-    sha256 "4682d77e9e07fbada76340fe5101163373ecca62619beced780c053516228019" => :big_sur
-    sha256 "3d25ca89293a7e4e4ac702f4494815c343a610fda7c23334ef55ecf98345b05b" => :catalina
-    sha256 "8c2dcd492f329bfe298725920ed9db5c73858b7af6df393bf358ab133a9deac1" => :mojave
+    sha256 big_sur:  "f11cd8885dc59020425bbdad88911471bc24de21810cbfbbcb6d9dd936473a85"
+    sha256 catalina: "bbdc569f29b12fbcf5e877b15598b6adbbfa551df4ffdf8047832335b6dc829f"
+    sha256 mojave:   "d254901fc740ede4295f3ff7323a5d142772caf6144f04480634e5a9bacab7cb"
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2021-02-01", because: :unsupported
 
   depends_on "cmake" => :build
   depends_on "openssl@1.1"
@@ -97,10 +93,12 @@ class MysqlAT56 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
+    # Make sure the var/mysql directory exists
+    (var/"mysql").mkpath
 
-    # Make sure the datadir exists
-    datadir.mkpath
+    # Don't initialize database, it clashes when testing other MySQL-like implementations.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     unless (datadir/"mysql/general_log.CSM").exist?
       ENV["TMPDIR"] = nil
       system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",

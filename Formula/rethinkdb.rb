@@ -7,15 +7,14 @@ class Rethinkdb < Formula
   head "https://github.com/rethinkdb/rethinkdb.git", branch: "next"
 
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://download.rethinkdb.com/service/rest/repository/browse/raw/dist/"
+    regex(/href=.*?rethinkdb[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    cellar :any
-    sha256 "bb4dc60cb80b346f5c095af46c195c6d54cc927531f690889c2d5256f55a63b4" => :big_sur
-    sha256 "31fa08475118f77ecd8785bac8b59c1f5732171a5c0c8ec44087fbbb559cb95b" => :catalina
-    sha256 "3aff9d5aff3f0bc1318f8b53e04d2b688560fcf4911f64d6c963d38f78a88316" => :mojave
+    sha256 cellar: :any, big_sur:  "bb4dc60cb80b346f5c095af46c195c6d54cc927531f690889c2d5256f55a63b4"
+    sha256 cellar: :any, catalina: "31fa08475118f77ecd8785bac8b59c1f5732171a5c0c8ec44087fbbb559cb95b"
+    sha256 cellar: :any, mojave:   "3aff9d5aff3f0bc1318f8b53e04d2b688560fcf4911f64d6c963d38f78a88316"
   end
 
   depends_on "boost" => :build

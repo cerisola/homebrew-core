@@ -3,19 +3,14 @@ require "language/node"
 class Autorest < Formula
   desc "Swagger (OpenAPI) Specification code generator"
   homepage "https://github.com/Azure/autorest"
-  url "https://registry.npmjs.org/autorest/-/autorest-3.0.6322.tgz"
-  sha256 "5ff0066889b5695a7711ca935d5123adbb60cbc861a4b736cb027a16f0bc9b07"
+  url "https://registry.npmjs.org/autorest/-/autorest-3.1.2.tgz"
+  sha256 "35dab2c64d9e5e67a5f0326dd67614503a4bf012356515e7aafda599432cb596"
   license "MIT"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "eff9b827066f26c4e710fa9abe24a480c1cd868c189453d86404dcd73076fb0c" => :big_sur
-    sha256 "6059b02cd613e0fb8e6a822f0a8e4e3f634a594155cb7a088b798197211f5993" => :catalina
-    sha256 "2c7f9212e6af7f2d2323c9cc0dc396ae9cbfa66b00a6b11328ec7d3d5c9fdfec" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "927a6e44937059f91ce985810108a9f95c3594a51b229d4874433134fb96cb15"
+    sha256 cellar: :any_skip_relocation, catalina: "cb0c10fce9f1b39d3ad0e49689c380ff4e9fa097661a28d59f2f23d8e23a2685"
+    sha256 cellar: :any_skip_relocation, mojave:   "a4d6f18868c15478960951af4a3af663ceb0c9c22f011e5b615051e3a815cf58"
   end
 
   depends_on "node"

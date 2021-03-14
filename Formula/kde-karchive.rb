@@ -1,21 +1,22 @@
 class KdeKarchive < Formula
   desc "Reading, creating, and manipulating file archives"
   homepage "https://api.kde.org/frameworks/karchive/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.77/karchive-5.77.0.tar.xz"
-  sha256 "2239af811b9205d9f4486791f4b25ff5ea299b3873021a646e1c8b9d44c2be36"
+  url "https://download.kde.org/stable/frameworks/5.79/karchive-5.79.0.tar.xz"
+  sha256 "0cd2bf46cc476b8b56138b3a892688ab70d0ddaa9739350a7421dc77a6210e07"
   license all_of: [
     "BSD-2-Clause",
     "LGPL-2.0-only",
     "LGPL-2.0-or-later",
     any_of: ["LGPL-2.0-only", "LGPL-3.0-only"],
   ]
+  revision 1
   head "https://invent.kde.org/frameworks/karchive.git"
 
   bottle do
-    sha256 "f5cde4cf769c9ade2f09b8e51eed847ee4af926f898b49cb8c533d4b67de59af" => :big_sur
-    sha256 "f689fed2d889bec07888ed12409ae9b9805a35aedb1407b5246b672ce5344907" => :arm64_big_sur
-    sha256 "e284dad7930966c54df3f93901f55842654ad498a380259b15239fd3e1aa4930" => :catalina
-    sha256 "c8f734a6345b440574e9263d8007b7359987e4236258e4fe0e72aa6ec3f55ae6" => :mojave
+    sha256 arm64_big_sur: "0b3b535f5402de3c1885d2064e1a56ad9724cd3cb9b03b7095bd1ace63f9c877"
+    sha256 big_sur:       "3e1b0e3b53f2879ba8eb38a04ae0b8530c26f6d411c45ff87366e4c55072e671"
+    sha256 catalina:      "1c0dfdc9b341296e4d6f3732207a6fd81497d9573471542ce1d0ea546c0ff435"
+    sha256 mojave:        "e8f81aeae13c7b409fb423074ed50da2a752e0ad7694921665f59e91bc9996d1"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -23,7 +24,7 @@ class KdeKarchive < Formula
   depends_on "graphviz" => :build
   depends_on "kde-extra-cmake-modules" => [:build, :test]
 
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "xz"
 
   uses_from_macos "bzip2"
@@ -43,8 +44,9 @@ class KdeKarchive < Formula
   end
 
   test do
+    ENV.delete "CPATH"
     args = std_cmake_args
-    args << "-DQt5Core_DIR=#{Formula["qt"].opt_prefix/"lib/cmake/Qt5Core"}"
+    args << "-DQt5Core_DIR=#{Formula["qt@5"].opt_prefix/"lib/cmake/Qt5Core"}"
 
     %w[bzip2gzip
        helloworld

@@ -1,9 +1,11 @@
 class Mlton < Formula
   desc "Whole-program, optimizing compiler for Standard ML"
   homepage "http://mlton.org"
-  url "https://downloads.sourceforge.net/project/mlton/mlton/20201002/mlton-20201002.src.tgz"
-  sha256 "ec189157de69e4d1fd6413452b7386c6622696c01200632176a08904f98be9e6"
+  url "https://downloads.sourceforge.net/project/mlton/mlton/20210117/mlton-20210117.src.tgz"
+  version "20210117"
+  sha256 "ec7a5a54deb39c7c0fa746d17767752154e9cb94dbcf3d15b795083b3f0f154b"
   license "HPND"
+  version_scheme 1
   head "https://github.com/MLton/mlton.git"
 
   livecheck do
@@ -12,11 +14,9 @@ class Mlton < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "6532f2264aeade862542d23116a004298b942b5da8e8c58b63d09f8cb370aca7" => :big_sur
-    sha256 "74c855912e47a0ab45209380c066a307e98a801c43ceeb6f724984daeee2235f" => :catalina
-    sha256 "339877740be650978b454a95cc37a4295cd6f2030c19914513463f73b5696986" => :mojave
-    sha256 "c47f72b8ab349204f5b4ad00c5f1d2018a22be49e1eb39da3416648698dcce1b" => :high_sierra
+    sha256 cellar: :any, big_sur:  "be6a6d599390e1182ab91f99c8e4cbeb20ed10cbd472d7a7fda790cbb9e60b88"
+    sha256 cellar: :any, catalina: "9690c5e07e46081d3f771797ea92f8ddef37fb79e3104263794f8c7473170f18"
+    sha256 cellar: :any, mojave:   "e6fdecbf689992c25e1429e2f33d5cd66c5bdee500ec1fe07759ac8d53593fdf"
   end
 
   depends_on "autoconf" => :build
@@ -27,15 +27,15 @@ class Mlton < Formula
   resource "bootstrap" do
     on_macos do
       # https://github.com/Homebrew/homebrew-core/pull/58438#issuecomment-665375929
-      # new `mlton-20201002-1.amd64-darwin-17.7.gmp-static.tgz` artifact
+      # new `mlton-20210117-1.amd64-darwin-17.7.gmp-static.tgz` artifact
       # used here for bootstrapping all homebrew versions
-      url "https://downloads.sourceforge.net/project/mlton/mlton/20201002/mlton-20201002-1.amd64-darwin-17.7.gmp-static.tgz"
-      sha256 "737adc5590b9d010ba3654344103418bf6c70aebc66d98849f7e0f37ef386114"
+      url "https://downloads.sourceforge.net/project/mlton/mlton/20210117/mlton-20210117-1.amd64-darwin-19.6.gmp-static.tgz"
+      sha256 "5bea9f60136ea6847890c5f4e45d7126a32ef14fd46a2303cab875ca95c8cd76"
     end
 
     on_linux do
-      url "https://downloads.sourceforge.net/project/mlton/mlton/20201002/mlton-20201002-1.amd64-linux.tgz"
-      sha256 "8d4bd9358fda1ecb8eeee1414866bf730aa5d7fe5425ef24635c45daf5277a0b"
+      url "https://downloads.sourceforge.net/project/mlton/mlton/20210117/mlton-20210117-1.amd64-linux.tgz"
+      sha256 "25876b075e95b0e70677bd5eeebb791a871629376044f358b908678b8f9b605d"
     end
   end
 

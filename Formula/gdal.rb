@@ -1,10 +1,9 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.2.0/gdal-3.2.0.tar.xz"
-  sha256 "b051f852600ffdf07e337a7f15673da23f9201a9dbb482bd513756a3e5a196a6"
+  url "https://download.osgeo.org/gdal/3.2.2/gdal-3.2.2.tar.xz"
+  sha256 "a7e1e414e5c405af48982bf4724a3da64a05770254f2ce8affb5f58a7604ca57"
   license "MIT"
-  revision 2
 
   livecheck do
     url "https://download.osgeo.org/gdal/CURRENT/"
@@ -12,10 +11,10 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 "d23a5f6f3fd57f6b1ab5ee2933ef995fa2a621880591b638b66c4f425d62176b" => :big_sur
-    sha256 "c7f9e0d97394ced96323a6a01466926683ad8710c6d87ea17e961251e099f464" => :arm64_big_sur
-    sha256 "3358acbacbee3ee6274bd3036f84d61f3bb5a15b73b3bb36300ff294887b2608" => :catalina
-    sha256 "b2e99cebd1ccd3f1016e64650379acd02b8f34dac48d43d74863084ffb3691e9" => :mojave
+    sha256 arm64_big_sur: "f07f82af9cec80db1abf9ad266307dfe7133e5e7e205107f2b3d8668f3c169fb"
+    sha256 big_sur:       "bd3f79d0ca3ca2c35bb086635809ec0c2a5940893b905a8350a644c0fcf16619"
+    sha256 catalina:      "e933d11e8e13b79b7547b2ca21231e4ab116b86193c389e426d1d788e8553514"
+    sha256 mojave:        "f8324215b5735e886a2083fd9ce1df77205a2f9eb79537384be06b995b679e26"
   end
 
   head do
@@ -26,9 +25,6 @@ class Gdal < Formula
   depends_on "pkg-config" => :build
 
   depends_on "cfitsio"
-  # Work around "Symbol not found: _curl_mime_addpart"
-  # due to mismatched SDK version in Mojave.
-  depends_on "curl" if MacOS.version == :mojave
   depends_on "epsilon"
   depends_on "expat"
   depends_on "freexl"
@@ -58,6 +54,8 @@ class Gdal < Formula
   depends_on "xerces-c"
   depends_on "xz" # get liblzma compression algorithm library from XZutils
   depends_on "zstd"
+
+  uses_from_macos "curl"
 
   on_linux do
     depends_on "bash-completion"
@@ -111,6 +109,7 @@ class Gdal < Formula
       # Explicitly disable some features
       "--with-armadillo=no",
       "--with-qhull=no",
+      "--without-exr",
       "--without-grass",
       "--without-jasper",
       "--without-jpeg12",
@@ -142,12 +141,11 @@ class Gdal < Formula
       "--without-sosi",
     ]
 
-    # Work around "Symbol not found: _curl_mime_addpart"
-    # due to mismatched SDK version in Mojave.
-    args << if MacOS.version == :mojave
-      "--with-curl=#{Formula["curl"].opt_prefix}/bin/curl-config"
-    else
-      "--with-curl=/usr/bin/curl-config"
+    on_macos do
+      args << "--with-curl=/usr/bin/curl-config"
+    end
+    on_linux do
+      args << "--with-curl=#{Formula["curl"].opt_bin}/curl-config"
     end
 
     system "./configure", *args

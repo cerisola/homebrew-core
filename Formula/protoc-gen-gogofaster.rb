@@ -1,18 +1,17 @@
 class ProtocGenGogofaster < Formula
   desc "Protocol Buffers for Go with Gadgets"
   homepage "https://github.com/gogo/protobuf"
-  url "https://github.com/gogo/protobuf/archive/v1.3.1.tar.gz"
-  sha256 "5184f06decd681fcc82f6583976111faf87189c0c2f8063b34ac2ea9ed997236"
+  url "https://github.com/gogo/protobuf/archive/v1.3.2.tar.gz"
+  sha256 "2bb4b13d6e56b3911f09b8e9ddd15708477fbff8823c057cc79dd99c9a452b34"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/gogo/protobuf.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "f7d48a601b42a51ce9982cad4772a66a410602a64a15856cc2a704fc9275e647" => :big_sur
-    sha256 "01ca1d04d4ee1a33e038345a6ab7208edafa046485237ff2890bf1f203a68968" => :arm64_big_sur
-    sha256 "454929acb01ffbc0f4f641388d3986a960d03dc92a566b89c42876bf42076fb3" => :catalina
-    sha256 "f57cfc59528edcafc8daebae58f5b82084ca9710429a25926830adc6a5573f57" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "905ceb2f46d868e6def2f0863f182708ae67e9349ec93065bfbb361e7d18b1c0"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b372763eeb9ffa022ff53859db10a5a61a095dd52e9a61e3430edb8d2d3a2a57"
+    sha256 cellar: :any_skip_relocation, catalina:      "04f86e58c4280cc4ef72d28345ba148e79d26196e880afddcaa96771a02fa7d6"
+    sha256 cellar: :any_skip_relocation, mojave:        "5b4acdc4e09b6010ec88f1e28db49c74eeb875f0444824f046ea710a9b1798ab"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class Redis < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "https://redis.io/"
-  url "https://download.redis.io/releases/redis-6.0.9.tar.gz"
-  sha256 "dc2bdcf81c620e9f09cfd12e85d3bc631c897b2db7a55218fd8a65eaa37f86dd"
+  url "https://download.redis.io/releases/redis-6.2.1.tar.gz"
+  sha256 "cd222505012cce20b25682fca931ec93bd21ae92cb4abfe742cf7b76aa907520"
   license "BSD-3-Clause"
   head "https://github.com/redis/redis.git", branch: "unstable"
 
@@ -12,12 +12,10 @@ class Redis < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "cbe0aa73da42e5e64944bb7d13015e3f8639984903b8bba83e1d3b5f2d214b60" => :big_sur
-    sha256 "8403df440507cf8ca79ea0c56f6c6645605d219a08dd0aaeb0101e49a062f8af" => :arm64_big_sur
-    sha256 "673b1485f012e3c9a509c913d175e18451ddab50eca0c140cac84828f6610411" => :catalina
-    sha256 "c1056ac747681a9a5f230810d54e0515d6cfec08d2dc3f6d0d417df3119b96a4" => :mojave
-    sha256 "fa5411300a46f463f98474efdbdbb1d717b3fb7e1c18d452cbf2ee34d973f1b3" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "44b680e722560b6e189c2ea5626d59a013e8935f973c1e78133e11db8128f0f6"
+    sha256 cellar: :any, big_sur:       "5d08e24723ba5e56ad97152024b4a4cdb867d79bf3623dfa46d849ea81ebbc51"
+    sha256 cellar: :any, catalina:      "81c2a841e0b19040e7ea999d57f595863278deb8bb2822596601b16e6e2598bb"
+    sha256 cellar: :any, mojave:        "01351e9736db89c25b5a700fe6e3a12f74e121d96c5d438675c59b436f551559"
   end
 
   depends_on "openssl@1.1"
@@ -31,7 +29,7 @@ class Redis < Formula
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", var/"run/redis.pid"
       s.gsub! "dir ./", "dir #{var}/db/redis/"
-      s.sub!  /^bind .*$/, "bind 127.0.0.1 ::1"
+      s.sub!(/^bind .*$/, "bind 127.0.0.1 ::1")
     end
 
     etc.install "redis.conf"

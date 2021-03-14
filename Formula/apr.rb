@@ -5,19 +5,13 @@ class Apr < Formula
   mirror "https://archive.apache.org/dist/apr/apr-1.7.0.tar.bz2"
   sha256 "e2e148f0b2e99b8e5c6caa09f6d4fb4dd3e83f744aa72a952f94f5a14436f7ea"
   license "Apache-2.0"
-
-  livecheck do
-    url :stable
-  end
+  revision 2
 
   bottle do
-    cellar :any
-    sha256 "405f8351e003635d34d2a460188e564e70524a842378d793e160d971980e9a1c" => :big_sur
-    sha256 "13bfd93603e48f2f0481125c2ff3dce32f37ad4b1b9c7313a05a41e8571265e6" => :arm64_big_sur
-    sha256 "277c42fcf2f5ca298a14279d1325f58da89ee4ec2132b3ccca9bf8dfdc354c48" => :catalina
-    sha256 "3a245185ed7280d1a19e7c639786b4c21dd0088878be8ac87ca58510eb5c9cc1" => :mojave
-    sha256 "4d01f24009ea389e2c8771c5c0bc069ae09c0f5812d7fdb0d0079106c3fc0838" => :high_sierra
-    sha256 "a49a1725c76754297c0f9a268423ee9a1772d23d264360504cc3401a21d2aa7e" => :sierra
+    sha256 cellar: :any, arm64_big_sur: "d8adb33071a6a845ff928b6166377dea6de5b642b412042002386416354932b9"
+    sha256 cellar: :any, big_sur:       "d9a9554a726ec60e124055a55747e6e7f4cff6310955d6340be340ac053ac097"
+    sha256 cellar: :any, catalina:      "3f5c1fa8f17715291ce9f66cf4eb4f518ac1aa856c485f0157036459ad63792c"
+    sha256 cellar: :any, mojave:        "4627416a5d9c651d2d4fbb7faa639d6f7a89c7c0558576eeac1f17a81a17f3bd"
   end
 
   keg_only :provided_by_macos, "Apple's CLT provides apr"
@@ -35,6 +29,13 @@ class Apr < Formula
     sha256 "8754b8089d0eb53a7c4fd435c9a9300560b675a8ff2c32315a5e9303408447fe"
   end
 
+  # Apply r1882980+1882981 to fix implicit exit() declaration
+  # Remove with the next release, along with the autoconf call & dependency.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/fa29e2e398c638ece1a72e7a4764de108bd09617/apr/r1882980%2B1882981-configure.patch"
+    sha256 "24189d95ab1e9523d481694859b277c60ca29bfec1300508011794a78dfed127"
+  end
+
   def install
     ENV["SED"] = "sed" # prevent libtool from hardcoding sed path from superenv
 
@@ -45,18 +46,34 @@ class Apr < Formula
     # Needed to apply the patch.
     system "autoconf"
 
-    # Stick it in libexec otherwise it pollutes lib with a .exp file.
-    system "./configure", "--prefix=#{libexec}"
+    system "./configure", *std_configure_args
     system "make", "install"
-    bin.install_symlink Dir["#{libexec}/bin/*"]
 
-    rm Dir[libexec/"lib/*.la"]
+    # Install symlinks so that linkage doesn't break for reverse dependencies.
+    (libexec/"lib").install_symlink Dir["#{lib}/#{shared_library("*")}"]
+
+    rm Dir["#{lib}/*.{la,exp}"]
 
     # No need for this to point to the versioned path.
-    inreplace libexec/"bin/apr-1-config", libexec, opt_libexec
+    inreplace bin/"apr-#{version.major}-config", prefix, opt_prefix
+
+    on_linux do
+      # Avoid references to the Homebrew shims directory
+      inreplace prefix/"build-#{version.major}/libtool", HOMEBREW_SHIMS_PATH/"linux/super/", "/usr/bin/"
+    end
   end
 
   test do
-    assert_match opt_libexec.to_s, shell_output("#{bin}/apr-1-config --prefix")
+    assert_match opt_prefix.to_s, shell_output("#{bin}/apr-#{version.major}-config --prefix")
+    (testpath/"test.c").write <<~EOS
+      #include <stdio.h>
+      #include <apr-#{version.major}/apr_version.h>
+      int main() {
+        printf("%s", apr_version_string());
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lapr-#{version.major}", "-o", "test"
+    assert_equal version.to_s, shell_output("./test")
   end
 end

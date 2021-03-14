@@ -1,8 +1,8 @@
 class Ompl < Formula
   desc "Open Motion Planning Library consists of many motion planning algorithms"
   homepage "https://ompl.kavrakilab.org/"
-  url "https://github.com/ompl/ompl/archive/1.5.1.tar.gz"
-  sha256 "947598190e4f7d4b64b38370307f941e1716b18aba5e73209427d4a747ac6064"
+  url "https://github.com/ompl/ompl/archive/1.5.2.tar.gz"
+  sha256 "db1665dd2163697437ef155668fdde6101109e064a2d1a04148e45b3747d5f98"
   license "BSD-3-Clause"
   head "https://github.com/ompl/ompl.git"
 
@@ -14,10 +14,10 @@ class Ompl < Formula
   end
 
   bottle do
-    sha256 "add9016ffe798af205fe201607e84dac67a9c8ae01fcaad5efefb1a75344eae7" => :big_sur
-    sha256 "0c0046ebe8850825b29a4932a41bee23be88589998e49362d82597c67adbe338" => :arm64_big_sur
-    sha256 "54e88cc082f922ad904f81021a53c455c9eb389d4ee6e2bfaa9596d09c589f1c" => :catalina
-    sha256 "22bd9dcbe10888f3f599f03fe43092ac8dedbb5ba4c167961ea75aef84383763" => :mojave
+    sha256 arm64_big_sur: "214c8032cd621e44527cacc9af0800312e95922f7d79e58a94c93a09977638de"
+    sha256 big_sur:       "aab42d95974b15167f1a240f853283eed81a928877822a0aa8ee67664f1992e6"
+    sha256 catalina:      "6b0190b615a9929cd74f03e97ff62efdca225ce9c7afc171ed3f5be31f2a8afd"
+    sha256 mojave:        "b7d94176b089fc5959b6accb2da9390f94ab1863902f0f189bd542566815578c"
   end
 
   depends_on "cmake" => :build

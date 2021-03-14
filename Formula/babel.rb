@@ -4,27 +4,22 @@ require "json"
 class Babel < Formula
   desc "Compiler for writing next generation JavaScript"
   homepage "https://babeljs.io/"
-  url "https://registry.npmjs.org/@babel/core/-/core-7.12.10.tgz"
-  sha256 "77478bc9855682349a40ecc3ff4f00329f47989dcca3f6379a7585201fecb6dd"
+  url "https://registry.npmjs.org/@babel/core/-/core-7.13.10.tgz"
+  sha256 "b925118d3026009848e493479f1cfc07f9b32eb7956a3d24d0ea4c27bce5ed9a"
   license "MIT"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b3f552dcd31cd35f83aa44d2b40586608c552ba07e009b96da23a53a75e59bd8" => :big_sur
-    sha256 "15f6a428bb5e6fb70f24fbdc29693451f19f6866f2b6b94cec0dfa5df4542bb0" => :arm64_big_sur
-    sha256 "4f57b7ad8dde162ef1aa46bd14e3f659ab128a19760603193b9386cdfb8784a6" => :catalina
-    sha256 "d84dd1108a58480e65f5e15515c87afbc588d05f959eee51cc20d108dcb4be0b" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b74fbd85045e94602b74ae06e48f3d02191ecdbca04cfac79cd247f09752d76f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "f42771474a813b970a06017ba71f33d032942da6a4e27d7f99e0203c8038b55c"
+    sha256 cellar: :any_skip_relocation, catalina:      "80e6b87b9229170895337c2cee463d515484eacb4c4afec8386e2b1206986a8b"
+    sha256 cellar: :any_skip_relocation, mojave:        "a74c1028d1fff6990cee37df7bd6bdb4e2529a79a1dfdaf9484cb53bd3bb51c6"
   end
 
   depends_on "node"
 
   resource "babel-cli" do
-    url "https://registry.npmjs.org/@babel/cli/-/cli-7.12.10.tgz"
-    sha256 "37dce2d25c075206996913da0dab9970d420bb171f83f495ccbeba2161e88dab"
+    url "https://registry.npmjs.org/@babel/cli/-/cli-7.13.10.tgz"
+    sha256 "b7b54ed45b51aa9cc6c2d98df33b0d17764a506d1dda8e2882726ea0f26ab47a"
   end
 
   def install

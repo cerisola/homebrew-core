@@ -1,16 +1,15 @@
 class Libolm < Formula
   desc "Implementation of the Double Ratchet cryptographic ratchet"
   homepage "https://gitlab.matrix.org/matrix-org/olm"
-  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.2.1/olm-3.2.1.tar.gz"
-  sha256 "d947d9570345e68696668cb855f1a6a7141b7b89cbcc15a08b1fae18535c4c45"
+  url "https://gitlab.matrix.org/matrix-org/olm/-/archive/3.2.2/olm-3.2.2.tar.gz"
+  sha256 "fef6402ebc8a50bb1116eaf2c4de13ae91255d11ff1a7ceeca8a97a407e310f4"
   license "Apache-2.0"
 
   bottle do
-    cellar :any
-    sha256 "0634af436ccc158ea8ba3e15a53df9b3677b88db950691aaf1174189a925c8a5" => :big_sur
-    sha256 "850ca4e75b42221ea5ec4ed0ffb845b9f9d032f711b6ceb600d85813e81d50a3" => :catalina
-    sha256 "09cad39ec7953a8f3d0c9848673490624153107f1fce18db4a489147fa1170bf" => :mojave
-    sha256 "efe5613af63cc93f582b0e6f6dbe81ec9863d49dc347bf354e202ed8c9ed3ed6" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "54b8814692a2dc5a615c9b53f4f2b94b42fcfca3c52caecf98fe690733d997bd"
+    sha256 cellar: :any, big_sur:       "1e247e10fb19a31ae58486726f1560593e16012d0aa57d47af25a46ab6fc3bc2"
+    sha256 cellar: :any, catalina:      "fe465ba38be614bc1198b1344fc1c29e886d41f280be5c81920f1c09fc89428c"
+    sha256 cellar: :any, mojave:        "ed7db7fa826c6ab887082eda37089298f00b183630ea8c0187563bcc56a87206"
   end
 
   depends_on "cmake" => :build
@@ -33,8 +32,9 @@ class Libolm < Formula
         void * utility_buffer = malloc(::olm_utility_size());
         ::OlmUtility * utility = ::olm_utility(utility_buffer);
 
-        uint8_t output[43];
+        uint8_t output[44];
         ::olm_sha256(utility, "Hello, World", 12, output, 43);
+        output[43] = '\0';
         cout << output;
         return 0;
       }

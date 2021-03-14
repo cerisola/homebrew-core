@@ -1,18 +1,16 @@
 class Numcpp < Formula
   desc "C++ implementation of the Python Numpy library"
   homepage "https://dpilger26.github.io/NumCpp"
-  url "https://github.com/dpilger26/NumCpp/archive/Version_2.3.1.tar.gz"
-  sha256 "df18e4762f5a7c42b703a3ac6de545f814bf8b7fe8463646b743c85a144de294"
+  url "https://github.com/dpilger26/NumCpp/archive/Version_2.4.1.tar.gz"
+  sha256 "e497f66bc3e827e34b9f5ba4ee90d1b4340d551f45af499d630cc3dd191c4894"
   license "MIT"
   head "https://github.com/dpilger26/NumCpp.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "cac192f81e747be1de8738a455fe0434aa326730bd898b1ca3d7128506f199c5" => :big_sur
-    sha256 "4cf1e18e75ebfcb953d41eda2e63bd4861ac70a60797cff9873c2bca07a7f527" => :arm64_big_sur
-    sha256 "45d1e6f87c6c253c5cd1a5b75247c2433dcbb4fe4ac5ecb6c2ac1d0d53a9f231" => :catalina
-    sha256 "830cc9312d29337ac066b1861ced8846a54aeddbc7d6401796ee6490fe4881b3" => :mojave
-    sha256 "e68ae1eb4314455e0efa51c8a56a2afbf18f3a8c1987b8b587611fe36966fa65" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fac92d42c82fc628b8441e1ed25fc156e7f96cbc4b438b74ecd396b0a5e2cf06"
+    sha256 cellar: :any_skip_relocation, big_sur:       "07e219c25f8ddd7b80e801b1f37cb1305af54fb907ab3f0c53bf66f4a8610c4c"
+    sha256 cellar: :any_skip_relocation, catalina:      "ccbd4b3aa14f6a509aaf214162c3f1582acf374cafa9e2c8e9c4f1e3f0e11247"
+    sha256 cellar: :any_skip_relocation, mojave:        "26c19afedc51463577541ce31f7641fa545bc73d61c7a563322281b0da7206e9"
   end
 
   depends_on "cmake" => :build

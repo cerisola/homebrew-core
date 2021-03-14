@@ -1,8 +1,8 @@
 class Scc < Formula
   desc "Fast and accurate code counter with complexity and COCOMO estimates"
   homepage "https://github.com/boyter/scc/"
-  url "https://github.com/boyter/scc/archive/v2.13.0.tar.gz"
-  sha256 "11e2e44ef25ef848de1b380c94cb096ed77d3d590466c99c9f1b5c2dc99609c2"
+  url "https://github.com/boyter/scc/archive/v3.0.0.tar.gz"
+  sha256 "01b903e27add5180f5000b649ce6e5088fa2112e080bfca1d61b1832a84a0645"
   license any_of: ["MIT", "Unlicense"]
 
   livecheck do
@@ -11,19 +11,16 @@ class Scc < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "66e94332b83430ce107eb5e529ca1a08b06adfed3ae258b35de391a2194a898d" => :big_sur
-    sha256 "798591b31f8fa70978615076a78cb7adc556d4fb63e6901052728ce47106d4bd" => :catalina
-    sha256 "76530a13d533fd2e54593a119e61f20796f746bfdceaebe01bc64b81e33eb308" => :mojave
-    sha256 "f10f5e6376c18ace0dc1d9fa9c4f6cb8bd21720a4e16378693d6fe36b80195ed" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3c4d0faf74445889e647a4366f428dfada194b66be43bcae45e8493b21d02187"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e55821dfc18b02de3be5dec72881c65085ffa0b5a446179b86a151db5780577c"
+    sha256 cellar: :any_skip_relocation, catalina:      "8f425e7b1f10563d69e459bb5ce07e5cf87512c4eb0923acb2618e0b0f1184f8"
+    sha256 cellar: :any_skip_relocation, mojave:        "81f89e5d3ba8358b052378b2c68bab24ade5d75ec8561b2e2b16b7de065c8d56"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/boyter/scc/").install Dir["*"]
-    system "go", "build", "-o", "#{bin}/scc", "-v", "github.com/boyter/scc/"
+    system "go", "build", *std_go_args
   end
 
   test do
@@ -34,6 +31,11 @@ class Scc < Formula
       }
     EOS
 
-    assert_match "C,test.c,test.c,4,4,0,0,0,50\n", shell_output("#{bin}/scc -fcsv test.c")
+    expected_output = <<~EOS
+      Language,Lines,Code,Comments,Blanks,Complexity,Bytes
+      C,4,4,0,0,0,50
+    EOS
+
+    assert_match expected_output, shell_output("#{bin}/scc -fcsv test.c")
   end
 end

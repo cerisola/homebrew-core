@@ -3,21 +3,16 @@ class AnimeDownloader < Formula
 
   desc "Download your favourite anime"
   homepage "https://github.com/vn-ki/anime-downloader"
-  url "https://files.pythonhosted.org/packages/4f/be/34909ae8d7f322f777475db916b4b5eecec2a20b09a1b07e410f2c6b2c45/anime-downloader-5.0.5.tar.gz"
-  sha256 "2e204fbeb4631e71b94f8c7a952640309f4f154ab41063aeef8754ef339f74bd"
+  url "https://files.pythonhosted.org/packages/06/4f/5290202545ec964b442458410dd9623cde0327ee164036553f976b9ea601/anime-downloader-5.0.7.tar.gz"
+  sha256 "04fe167f679f53545493a23ef36ac572f11dc4348aa274ce2198e6dc1d31ec48"
   license "Unlicense"
   head "https://github.com/vn-ki/anime-downloader.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "37a58c59d9ecf285050795d6581d2dcb0e0861d8b998e34260701a8200a824b7" => :big_sur
-    sha256 "7315ffb54c95ce9010915a5775226b932d6ce8a044551e94d37fd5851249dbbb" => :arm64_big_sur
-    sha256 "57273993dbef082d5898202a4e8cda6ead8dd2666da5105cdf296a784c3623a1" => :catalina
-    sha256 "48b168bbd5eb0fce4a0978eb2b39032b7aa32b7967574c43e82bc3f8e24f6991" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3a202b4257f5b6b0a5eb94ae86cdae3980ac4a2ecd3d806e91c8750ac5ab8c2c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "8000f581b43794240687ae2792a266b1a61929d561e02388c90edccaf0f4b406"
+    sha256 cellar: :any_skip_relocation, catalina:      "e76e47b8fd7b2feb747f78b5e58c33c8a2c52daac637eccfe88cae6fd1fccb2f"
+    sha256 cellar: :any_skip_relocation, mojave:        "4ef176a388883c4fae8202f28023b6548ca6b12dfaf7e8ccf2821198edb8e859"
   end
 
   depends_on "aria2"
@@ -100,8 +95,8 @@ class AnimeDownloader < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz"
-    sha256 "19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"
+    url "https://files.pythonhosted.org/packages/d7/8d/7ee68c6b48e1ec8d41198f694ecdc15f7596356f2ff8e6b1420300cf5db3/urllib3-1.26.3.tar.gz"
+    sha256 "de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"
   end
 
   def install

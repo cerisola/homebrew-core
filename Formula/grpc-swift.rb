@@ -1,27 +1,25 @@
 class GrpcSwift < Formula
   desc "Swift language implementation of gRPC"
   homepage "https://github.com/grpc/grpc-swift"
-  url "https://github.com/grpc/grpc-swift/archive/0.11.0.tar.gz"
-  sha256 "82e0a3d8fe2b9ee813b918e1a674f5a7c6dc024abe08109a347b686db6e57432"
+  url "https://github.com/grpc/grpc-swift/archive/1.0.0.tar.gz"
+  sha256 "5e0258437538bdfa26ca0e023649d97baa138d91881b949b2b344ef84cc2082a"
   license "Apache-2.0"
   revision 1
   head "https://github.com/grpc/grpc-swift.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a0be8359b1b6052cc554f3a9b672162eed4ab6e7e20928c424c0916d110e286f" => :big_sur
-    sha256 "e739583a67354478a9f950375763d41080698e74aeee0d0195773ac7ca383096" => :arm64_big_sur
-    sha256 "5a13e8a2f8e6111ceb163fd1aac8810a278f32317ebffb3563d5860a9a510db2" => :catalina
-    sha256 "0311e7d2eb0f1c5569fd51732dd7e9e917423bcad57e651d4d8a5c468168a55a" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4aec72603988813a29c088629f28cf91d4d9f09431905b59982d07da34a994e4"
+    sha256 cellar: :any_skip_relocation, big_sur:       "fa1bbadcaaf9feafa4277450a3bce9e299ff8c92bb4ef7a94c8d247e6a35da6c"
+    sha256 cellar: :any_skip_relocation, catalina:      "2e5d7811571ca3744cf8caeb836cf37ae1c802d7aff3a96c1126db1513df0c57"
   end
 
-  depends_on xcode: ["10.0", :build]
+  depends_on xcode: ["12.0", :build]
   depends_on "protobuf"
   depends_on "swift-protobuf"
 
   def install
-    system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "protoc-gen-swiftgrpc"
-    bin.install ".build/release/protoc-gen-swiftgrpc"
+    system "swift", "build", "--disable-sandbox", "-c", "release", "--product", "protoc-gen-grpc-swift"
+    bin.install ".build/release/protoc-gen-grpc-swift"
   end
 
   test do
@@ -40,7 +38,7 @@ class GrpcSwift < Formula
         string text = 1;
       }
     EOS
-    system Formula["protobuf"].opt_bin/"protoc", "echo.proto", "--swiftgrpc_out=."
+    system Formula["protobuf"].opt_bin/"protoc", "echo.proto", "--grpc-swift_out=."
     assert_predicate testpath/"echo.grpc.swift", :exist?
   end
 end

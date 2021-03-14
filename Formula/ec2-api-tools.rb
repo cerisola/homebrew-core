@@ -5,11 +5,12 @@ class Ec2ApiTools < Formula
   sha256 "851abe30403ee1c86a3ebdddf5b4bffd7ef4b587110530feadf00954d9ae2f3a"
   revision 1
 
-  livecheck do
-    skip "No longer developed/maintained"
-  end
-
   bottle :unneeded
+
+  # Deprecated upstream somewhere between 2017-12-24 and 2018-09-09 here:
+  # https://docs.aws.amazon.com/AWSEC2/latest/APIReference/Welcome.html
+  # The current version (1.7.5.1) is from 2015-09-08.
+  deprecate! date: "2020-02-03", because: :deprecated_upstream
 
   depends_on "openjdk"
 

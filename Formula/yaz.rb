@@ -4,6 +4,7 @@ class Yaz < Formula
   url "http://ftp.indexdata.dk/pub/yaz/yaz-5.30.3.tar.gz"
   sha256 "f0497fd8420574efab4e5738ea3b70787a6e8042f585156baa30bdc1911ba552"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url "http://ftp.indexdata.dk/pub/yaz/"
@@ -11,12 +12,10 @@ class Yaz < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "bae268483a7bf1bbf81bf4930cb34145b1c5172f1e1737f8b07cf220a3566711" => :big_sur
-    sha256 "410d2e4b4dde8c3392375c3b37aedc1911fbd80c389c68d4eae5619c0593a555" => :arm64_big_sur
-    sha256 "3e99cfd562ae262f299752a7d92dbad3f9b67dd37726e90b1109684f0deac7d1" => :catalina
-    sha256 "0fb86a32e27613df4ef17bc76556364a85d220c9d044f6f2c515ca0bb2e94c6a" => :mojave
-    sha256 "a3dd5357b88bd5780a90dc1fb51c12943d3a8ba6ce69073fb262116c9b050b3e" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "b906d9bcb2853341532644ae7267407cd6ccb90a8c4027ba8d8a7c967c49c221"
+    sha256 cellar: :any, big_sur:       "b76b437a0ebd9ec194f7a21e76ed19e89cb0e3d4c2bfb3ef28f8ebfd97894d2b"
+    sha256 cellar: :any, catalina:      "e8d4407c1ccc973908464faa9c2f3d91f8f7a55cba8d3cadba2875d1bcc977db"
+    sha256 cellar: :any, mojave:        "415ffe9254272f056f57b9860c6785f8d7b2ebaa5ac962c0e9e74ddacb388a33"
   end
 
   head do

@@ -4,19 +4,21 @@ class Libtasn1 < Formula
   url "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.16.0.tar.gz"
   mirror "https://ftpmirror.gnu.org/libtasn1/libtasn1-4.16.0.tar.gz"
   sha256 "0e0fb0903839117cb6e3b56e68222771bebf22ad7fc2295a0ed7d576e8d4329d"
-  license "LGPL-2.1"
-
-  livecheck do
-    url :stable
-  end
+  license "LGPL-2.1-or-later"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "9a69770cae180c61ada4bb4701f5402b35b828d2baa7c5135196cf1df35965cb" => :big_sur
-    sha256 "e5ff2498ab8bcc108dd6797fede68929ae3fd2796c39e349ff3f8e0a87abb7a0" => :arm64_big_sur
-    sha256 "00bd968b6a110c5cb497cf0e3b14800ed5e67a2476d0d544aeb1c0c2c1f3f332" => :catalina
-    sha256 "3c2e9cdfec0ccec899847a3ab69b88967b6cbc0b3e406fa1938a4ca6f277b674" => :mojave
-    sha256 "c3cf713b5bb29fcac1381b7242e557b7920cb327c77170a6dd038a477d6021cd" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "a5a79346194afa5a466d36f07aee16700be211a92e6cbddd522fb252dd6b1b5b"
+    sha256 cellar: :any, big_sur:       "367dc37e3bcb626de815129016cb106aa39ca8c2e8c3c9c5904b8da763b10e9f"
+    sha256 cellar: :any, catalina:      "09f4b0b626425f10665ff506c2dca70101ae9062b284b956197d7e88c91d952c"
+    sha256 cellar: :any, mojave:        "384a48716bc3b0fa7122c2fbd3a1ab4a93087acee7191710fa5bbbfa31e0f24f"
+  end
+
+  # Remove the patch when the issue is resolved:
+  # https://gitlab.com/gnutls/libtasn1/-/issues/30
+  patch do
+    url "https://gitlab.com/gnutls/libtasn1/-/commit/088c9f3e946cb8a15867f6f09f0ef503a7551961.patch"
+    sha256 "0791ee7d9e0f231018956a0a5eac80165ede1ec7732490d7d8bea7dc83022d3a"
   end
 
   def install
@@ -42,6 +44,6 @@ class Libtasn1 < Formula
       s 47
     EOS
     system "#{bin}/asn1Coding", "pkix.asn", "assign.asn1"
-    assert_match /Decoding: SUCCESS/, shell_output("#{bin}/asn1Decoding pkix.asn assign.out PKIX1.Dss-Sig-Value 2>&1")
+    assert_match "Decoding: SUCCESS", shell_output("#{bin}/asn1Decoding pkix.asn assign.out PKIX1.Dss-Sig-Value 2>&1")
   end
 end

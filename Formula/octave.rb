@@ -1,20 +1,17 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
   homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-6.1.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-6.1.0.tar.xz"
-  sha256 "d6cd6b79ef023e300b9287b56aa79333cfb6b651771d43ade7cbde63ca5a6010"
+  url "https://ftp.gnu.org/gnu/octave/octave-6.2.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-6.2.0.tar.xz"
+  sha256 "7b721324cccb3eaeb4efb455508201ac8ccbd200f77106f52342f9ab7f022d1a"
   license "GPL-3.0-or-later"
   revision 1
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    sha256 "be7e3a520db1d6c684120effd115170f49d2cf41c4ee24a9e17af349ef3f9db2" => :big_sur
-    sha256 "7a2372bb936b1b09db7deb5b8f39a777a03f5f8238a4a4be4434f27deb4d1d52" => :catalina
-    sha256 "08d3f28fda600a60b0f0759efaf5b6e2f56124de3d2822758fbf1ba5caaad01f" => :mojave
+    sha256 arm64_big_sur: "afdebc1135673d8c0cf25286153423333c13aa31c89e9b0ceb07a185e4e8e1a3"
+    sha256 big_sur:       "a39e7b2b04823d13e9d71cac7b6379063804bf04cb64ae46ef330eeaa4233f25"
+    sha256 catalina:      "7a5ec4de669a721c99dce0743d6254b57c2b92406978fca7af0e77ba804bc499"
+    sha256 mojave:        "6babda8a8af803dcf3085292374a830123d98a71ded69f568feb3c6271c7356f"
   end
 
   head do
@@ -54,7 +51,7 @@ class Octave < Formula
   depends_on "qhull"
   depends_on "qrupdate"
   depends_on "qscintilla2"
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "readline"
   depends_on "suite-sparse"
   depends_on "sundials"
@@ -78,10 +75,10 @@ class Octave < Formula
     ENV["QCOLLECTIONGENERATOR"] = "qhelpgenerator"
     # These "shouldn't" be necessary, but the build breaks without them.
     # https://savannah.gnu.org/bugs/?55883
-    ENV["QT_CPPFLAGS"]="-I#{Formula["qt"].opt_include}"
-    ENV.append "CPPFLAGS", "-I#{Formula["qt"].opt_include}"
-    ENV["QT_LDFLAGS"]="-F#{Formula["qt"].opt_lib}"
-    ENV.append "LDFLAGS", "-F#{Formula["qt"].opt_lib}"
+    ENV["QT_CPPFLAGS"]="-I#{Formula["qt@5"].opt_include}"
+    ENV.append "CPPFLAGS", "-I#{Formula["qt@5"].opt_include}"
+    ENV["QT_LDFLAGS"]="-F#{Formula["qt@5"].opt_lib}"
+    ENV.append "LDFLAGS", "-F#{Formula["qt@5"].opt_lib}"
 
     system "./bootstrap" if build.head?
     system "./configure", "--prefix=#{prefix}",

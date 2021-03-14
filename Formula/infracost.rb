@@ -1,16 +1,16 @@
 class Infracost < Formula
   desc "Cost estimates for Terraform"
   homepage "https://www.infracost.io/docs/"
-  url "https://github.com/infracost/infracost/archive/v0.7.11.tar.gz"
-  sha256 "dd1f26cb2e8fb8831f3e774211ece251713f0de612952c499a7f90cdcac945c2"
+  url "https://github.com/infracost/infracost/archive/v0.8.1.tar.gz"
+  sha256 "d7b230163e7f2a2340c2c06d40f60ece001a1054e2abdb41067b2d7593c39103"
   license "Apache-2.0"
   head "https://github.com/infracost/infracost.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ff066b253794e6a3142f48618a14369215c89cd8a47b4f66953ff175d916309e" => :big_sur
-    sha256 "b8267ea6000ac543927b55a6ff96293d89152bbd2362eea12172c15b1ffbfc08" => :catalina
-    sha256 "288d04dce5159fef32c396a41158a3793851c8c1c42cd266b70b4faa8a58cac7" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "83a986d6b90858f9cdeea48383876d4630c70119b8eb2ef98275c144c828723d"
+    sha256 cellar: :any_skip_relocation, big_sur:       "d21b235009ea30df0ee51e25a63dd3e4b006b7b91c9f574b2a532a8abc7f24a7"
+    sha256 cellar: :any_skip_relocation, catalina:      "1ea6ccc9b6876616e05cf7ecafc2de911c01fae1bc694b425dfd3f5bb73323b0"
+    sha256 cellar: :any_skip_relocation, mojave:        "3a525b0d493b32e2d8570ae715dc33d96c8f803a8e7b897f14f0865e5e8fa1d0"
   end
 
   depends_on "go" => :build
@@ -23,9 +23,9 @@ class Infracost < Formula
   end
 
   test do
-    assert_match "v#{version}", shell_output("#{bin}/infracost --help 2>&1")
+    assert_match "v#{version}", shell_output("#{bin}/infracost --version 2>&1")
 
-    output = shell_output("#{bin}/infracost --no-color 2>&1", 1)
+    output = shell_output("#{bin}/infracost breakdown --no-color 2>&1", 1)
     assert_match "No INFRACOST_API_KEY environment variable is set.", output
   end
 end

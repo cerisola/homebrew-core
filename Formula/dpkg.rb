@@ -4,11 +4,10 @@ class Dpkg < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # dpkg site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/dpkg-1.20.5.tar.xz"
-  mirror "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.5.tar.xz"
-  sha256 "f2f23f3197957d89e54b87cf8fc42ab00e1b74f3a32090efe9acd08443f3e0dd"
+  url "https://dl.bintray.com/homebrew/mirror/dpkg-1.20.7.1.tar.xz"
+  mirror "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.7.1.tar.xz"
+  sha256 "0aad2de687f797ef8ebdabc7bafd16dc1497f1ce23bd9146f9aa73f396a5636f"
   license "GPL-2.0-only"
-  revision 1
 
   livecheck do
     url "https://deb.debian.org/debian/pool/main/d/dpkg/"
@@ -16,9 +15,10 @@ class Dpkg < Formula
   end
 
   bottle do
-    sha256 "3d26c34cebe35d59aa12bf67d5402a6b1e233951a548e852362c15b943c5968a" => :big_sur
-    sha256 "38c63631f4feda8dd19380fefdfcfb5d3853c42755fff3a1026f81c1e8d37851" => :catalina
-    sha256 "b5208a55481fa889d0fdd14b918b74cea2b6670728b2f613515f2cd0be23ccc6" => :mojave
+    rebuild 1
+    sha256 big_sur:  "d0c2d11dbc25d90112003e893d7ecd64cf32844e909cce3acc06e4ac5fa67142"
+    sha256 catalina: "e17f3fe5bb1e8791707fffbf6e7adf86dd4c0835fb01ae7c127ffc1997288055"
+    sha256 mojave:   "86ea4117acc21ff9e0d64ca131d4e84f9113e385ed12156a81368e48888f6da5"
   end
 
   depends_on "pkg-config" => :build
@@ -37,7 +37,12 @@ class Dpkg < Formula
   def install
     # We need to specify a recent gnutar, otherwise various dpkg C programs will
     # use the system "tar", which will fail because it lacks certain switches.
-    ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
+    on_macos do
+      ENV["TAR"] = Formula["gnu-tar"].opt_bin/"gtar"
+    end
+    on_linux do
+      ENV["TAR"] = Formula["gnu-tar"].opt_bin/"tar"
+    end
 
     # Since 1.18.24 dpkg mandates the use of GNU patch to prevent occurrences
     # of the CVE-2017-8283 vulnerability.

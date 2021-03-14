@@ -1,18 +1,17 @@
 class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
-  # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.2250.tar.gz"
-  sha256 "be1de89b4e41d17a4f27bb70210e9e7d334b80a8f488659617d0742e0cd1bbbd"
+  # vim should only be updated every 25 releases on multiples of 25
+  url "https://github.com/vim/vim/archive/v8.2.2600.tar.gz"
+  sha256 "24a81608c0f9f794959eefebbbd68b3b01ea93800d00bf9d2115e84931ab65e9"
   license "Vim"
-  revision 1
   head "https://github.com/vim/vim.git"
 
   bottle do
-    sha256 "3606b6328f2fa6440c47793e37c8e243833efd836d5a57a0a6788fb703ac2696" => :big_sur
-    sha256 "d95b0d7b51aacbdb476d43919750f7d124e669a616be60b20917e299f90fc042" => :arm64_big_sur
-    sha256 "764e98ea72aea88b0f644ec2432c5ed883286e596cd7e5442c1d31a79a569208" => :catalina
-    sha256 "0cad1117d350e630069c47b00d9f8903a2daf0aaf9560b31b92a8d0db1c6911c" => :mojave
+    sha256 arm64_big_sur: "6683abf3aa854936c74c4adf8974ac55f2c2c58fb4bba41c65c0f50d4c475d0c"
+    sha256 big_sur:       "1eb86d9ef6f874e96c9fa78ac614b2e3df3ab2a26ec19c7327d016f4a7fc85c6"
+    sha256 catalina:      "c1eb54134f95d9dd175f9f98e158ae1c136dd5554b34c32b07ef7d167fa2af76"
+    sha256 mojave:        "a539159b860ae7986f090837ba5cd3482864279e4401355f75a349cc4aafee75"
   end
 
   depends_on "gettext"
@@ -28,13 +27,6 @@ class Vim < Formula
 
   conflicts_with "macvim",
     because: "vim and macvim both install vi* binaries"
-
-  # Fix vimscript issue that was fixed upstream in 8.2.2251 (just missed our cutoff of every 50 releases)
-  # Remove the next time vim is updated.
-  patch do
-    url "https://github.com/vim/vim/commit/a04d447d3aaddb5b978dd9a0e0186007fde8e09e.patch?full_index=1"
-    sha256 "ddc00f61dc75e3875ea490c56b9cf843f20292844bc34ad434c566ab30e2335a"
-  end
 
   def install
     ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"

@@ -1,20 +1,16 @@
 class PostgresqlAT95 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v9.5.24/postgresql-9.5.24.tar.bz2"
-  sha256 "065cfd3db9f5aca84e794e73e71a797c984b2e728e760f4f4226a9162a99c22a"
+  url "https://ftp.postgresql.org/pub/source/v9.5.25/postgresql-9.5.25.tar.bz2"
+  sha256 "7628c55eb23768a2c799c018988d8f2ab48ee3d80f5e11259938f7a935f0d603"
   license "PostgreSQL"
 
-  livecheck do
-    url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(9\.5(?:\.\d+)*)/?["' >]}i)
-  end
-
   bottle do
-    sha256 "b4856b072806f67090e5d09d583bc772398286adbf1de11638022efefb8d2a56" => :big_sur
-    sha256 "cf8bfd8e9ac479bd083d5af375354bc12f2cff7a65f5f0f99f26307aefd67db1" => :arm64_big_sur
-    sha256 "0be4dafb4894658edd6f1df7f3f26e9460d123fc9e34a76b13b4605569aaadee" => :catalina
-    sha256 "8b24d678fb18b585ba9d4034e66edd9d2658f3567762f31a594519dd84f88f7a" => :mojave
+    rebuild 1
+    sha256 arm64_big_sur: "09faf681c2893c716e88000a1e83b1beb497be61fc3b1cc1f5716192cc7ff564"
+    sha256 big_sur:       "072df838f2bffda7ebd83ebef615fd39b2dab0c01724a7750a9286c7fce5c99f"
+    sha256 catalina:      "d02c0da57a7e2ca6419f72d3feee3c80feff11d3a63e58ae96cf37fb73ad4d47"
+    sha256 mojave:        "ffa3da3b26c1591dd5a18d28c0393584513fdeaca3670357b6f0e5225155e512"
   end
 
   keg_only :versioned_formula
@@ -22,7 +18,6 @@ class PostgresqlAT95 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2021-02-11", because: :unsupported
 
-  depends_on arch: :x86_64
   depends_on "openssl@1.1"
   depends_on "readline"
 
@@ -87,10 +82,12 @@ class PostgresqlAT95 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
     postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/initdb", postgresql_datadir unless pg_version_exists?
   end
 
@@ -149,7 +146,7 @@ class PostgresqlAT95 < Formula
   end
 
   test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
+    system "#{bin}/initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal pkgshare.to_s, shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --pkglibdir").chomp

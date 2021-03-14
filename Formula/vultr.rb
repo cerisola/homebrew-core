@@ -1,26 +1,22 @@
 class Vultr < Formula
   desc "Command-line tool for Vultr"
   homepage "https://jamesclonk.github.io/vultr"
-  url "https://github.com/JamesClonk/vultr/archive/v2.0.2.tar.gz"
-  sha256 "bb60e6f82a2900fdcf025362a29efed64806e58a3e2e8251e4e5f5e6f076b763"
+  url "https://github.com/JamesClonk/vultr/archive/v2.0.3.tar.gz"
+  sha256 "6529d521a7fa006808cd07331f31256e91773ec7e1a0c7839cd14884034fb185"
   license "MIT"
   head "https://github.com/JamesClonk/vultr.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "7952cd1e77673a9e64b71ed8081ef47b0a0c7218475c7cf59b76909a108499c4" => :big_sur
-    sha256 "a73bd34611c56aefe57e5491191ae90109f779f49ecacee332c0e55745e84c89" => :catalina
-    sha256 "bce926c779ee605e3f36d9135dfd08bb898f62440cf04e5bcd991afd517931f2" => :mojave
-    sha256 "5f6278c15bd1487cbdee6b871057074b1a548a9dfba7a98b202d3ccbc12966c2" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d0d5bffa07a97813ca4eece9a0e396d8a0c76fdd738d5041ad5d82385cb05dda"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e7a764a5516eaf4923bd134a85f2a6a9c4f2b9537ff7b585e8a32a6581975cab"
+    sha256 cellar: :any_skip_relocation, catalina:      "b3fb6e155013b41bd2b48202e70ef0236be3e24b3f87cf1f1234e7a09e2e7e97"
+    sha256 cellar: :any_skip_relocation, mojave:        "7348b1e615d088dc03781613b17b7187827e9cc98e743fa472c617876f6a543a"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/github.com/JamesClonk").mkpath
-    ln_s buildpath, buildpath/"src/github.com/JamesClonk/vultr"
-    system "go", "build", "-o", bin/"vultr"
+    system "go", "build", *std_go_args, "-ldflags", "-s -w"
   end
 
   test do

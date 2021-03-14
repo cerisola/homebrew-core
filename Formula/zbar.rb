@@ -1,10 +1,9 @@
 class Zbar < Formula
   desc "Suite of barcodes-reading tools"
   homepage "https://github.com/mchehab/zbar"
-  url "https://github.com/mchehab/zbar/archive/0.23.1.tar.gz"
-  sha256 "297439f8859089d2248f55ab95b2a90bba35687975365385c87364c77fdb19f3"
+  url "https://github.com/mchehab/zbar/archive/0.23.90.tar.gz"
+  sha256 "25fdd6726d5c4c6f95c95d37591bfbb2dde63d13d0b10cb1350923ea8b11963b"
   license "LGPL-2.1-only"
-  revision 11
   head "https://github.com/mchehab/zbar.git"
 
   livecheck do
@@ -13,11 +12,10 @@ class Zbar < Formula
   end
 
   bottle do
-    sha256 "0107f9d5bba2e9585acf35c4df3885e3310828c7665526521a9f84fd79ad38a3" => :big_sur
-    sha256 "b533efe9ea7470c01bb2f7dc02b52349df82030748f92cfd96bdd1d422af9c70" => :arm64_big_sur
-    sha256 "24145f43665e55e719161c6cae3fe23be591912bff2343f07f8eec88ee0b9760" => :catalina
-    sha256 "8aa8edbbdd7ba716f74986a67f0b33eb369fe0f06a4ae20aee3b7383498fcd72" => :mojave
-    sha256 "401610f57821c4f6ce548695a4736750cced275cc6fc51978adb89f17903d1fd" => :high_sierra
+    sha256 arm64_big_sur: "da7a7d53d15640ef06f7479abdd322e2a5efeebf3947d8a818fc1184f2367797"
+    sha256 big_sur:       "7d99550adb7819400686e8d43cddc41bcc8b16281571b76028b0621b8458b07f"
+    sha256 catalina:      "edf2bd674be776af3ee0be04f9ad86365413ba57afc513ef51eab4eb88f73743"
+    sha256 mojave:        "8e6433e54110979d17f47332faf44881822e1c31bb1a6cc012c6c10a86e84842"
   end
 
   depends_on "autoconf" => :build
@@ -32,6 +30,10 @@ class Zbar < Formula
   depends_on "libtool"
   depends_on "ufraw"
   depends_on "xz"
+
+  on_linux do
+    depends_on "dbus"
+  end
 
   def install
     system "autoreconf", "-fvi"

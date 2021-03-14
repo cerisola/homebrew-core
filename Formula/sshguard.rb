@@ -5,17 +5,12 @@ class Sshguard < Formula
   sha256 "875d02e6e67dced614790ed5e36aef1160edea940f353a79306cbb1852af3c67"
   version_scheme 1
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9a11ca09ad3478fbd84a62c21e94c4f9997fedd210fd3ac271a8abb9fc006267" => :big_sur
-    sha256 "24aa4cab661aa1ecdf1c2f20e80de6cd7bc90ec928a7d251dbd0d45b0983e0b1" => :arm64_big_sur
-    sha256 "77cd7948bbc56730642e7698416d00b8313cb1273919d762f55d6054c1631e25" => :catalina
-    sha256 "6b817c8751e409999328cdf22aba24701af0ab9c02d1d9c652285dacaa4968bd" => :mojave
-    sha256 "0f006d36404600cb1053df6073142d394cbe166525ab37cb62a4a8c56b7f369f" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "24aa4cab661aa1ecdf1c2f20e80de6cd7bc90ec928a7d251dbd0d45b0983e0b1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9a11ca09ad3478fbd84a62c21e94c4f9997fedd210fd3ac271a8abb9fc006267"
+    sha256 cellar: :any_skip_relocation, catalina:      "77cd7948bbc56730642e7698416d00b8313cb1273919d762f55d6054c1631e25"
+    sha256 cellar: :any_skip_relocation, mojave:        "6b817c8751e409999328cdf22aba24701af0ab9c02d1d9c652285dacaa4968bd"
+    sha256 cellar: :any_skip_relocation, high_sierra:   "0f006d36404600cb1053df6073142d394cbe166525ab37cb62a4a8c56b7f369f"
   end
 
   head do
@@ -36,11 +31,11 @@ class Sshguard < Formula
     inreplace man8/"sshguard.8", "%PREFIX%/etc/", "#{etc}/"
     cp "examples/sshguard.conf.sample", "examples/sshguard.conf"
     inreplace "examples/sshguard.conf" do |s|
-      s.gsub! /^#BACKEND=.*$/, "BACKEND=\"#{opt_libexec}/sshg-fw-pf\""
+      s.gsub!(/^#BACKEND=.*$/, "BACKEND=\"#{opt_libexec}/sshg-fw-pf\"")
       if MacOS.version >= :sierra
         s.gsub! %r{^#LOGREADER="/usr/bin/log}, "LOGREADER=\"/usr/bin/log"
       else
-        s.gsub! /^#FILES.*$/, "FILES=/var/log/system.log"
+        s.gsub!(/^#FILES.*$/, "FILES=/var/log/system.log")
       end
     end
     etc.install "examples/sshguard.conf"

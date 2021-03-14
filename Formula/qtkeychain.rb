@@ -4,17 +4,17 @@ class Qtkeychain < Formula
   url "https://github.com/frankosterfeld/qtkeychain/archive/v0.12.0.tar.gz"
   sha256 "cc547d58c1402f6724d3ff89e4ca83389d9e2bdcfd9ae3d695fcdffa50a625a8"
   license "BSD-2-Clause"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "09f89477a5fa66959801037615fe6c9319a1fff18727d9afac6594e3cc23bde5" => :big_sur
-    sha256 "61f29925d6d5e1bf782025c65973a2ee5f9fcb05d5a9d6dc72c5bb409a335d10" => :arm64_big_sur
-    sha256 "473370be4a7aec5d807ab8f17b75555939b5dc6cf38fb9d2b038349b04ca9c79" => :catalina
-    sha256 "ba63b7080abeab28a37b0e49bf5ded80d67f931020117386285c94dd4090f995" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "58b0ced7662d5f0659ff7d3002d5a8b09d1fb135d1ee51a94bffbdee24d0eb58"
+    sha256 cellar: :any, big_sur:       "f97e360b724536ead639b64f637dc65ed60d90a7c2b3ca775c0af2c0e2c36873"
+    sha256 cellar: :any, catalina:      "94f6a7cef2f131e5193b1eaf7bedb7ab6d89a00de318519624b75a355cd644a4"
+    sha256 cellar: :any, mojave:        "325f6b601b8b004df1203f20d7355fa3f00c82602795ea701055b9eae577b0c5"
   end
 
   depends_on "cmake" => :build
-  depends_on "qt"
+  depends_on "qt@5"
 
   def install
     system "cmake", ".", "-DBUILD_TRANSLATIONS=OFF", *std_cmake_args
@@ -31,8 +31,8 @@ class Qtkeychain < Formula
     EOS
     system ENV.cxx, "test.cpp", "-o", "test", "-std=c++11", "-I#{include}",
                     "-L#{lib}", "-lqt5keychain",
-                    "-I#{Formula["qt"].opt_include}",
-                    "-F#{Formula["qt"].opt_lib}", "-framework", "QtCore"
+                    "-I#{Formula["qt@5"].opt_include}",
+                    "-F#{Formula["qt@5"].opt_lib}", "-framework", "QtCore"
     system "./test"
   end
 end

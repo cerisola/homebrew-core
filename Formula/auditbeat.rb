@@ -2,25 +2,20 @@ class Auditbeat < Formula
   desc "Lightweight Shipper for Audit Data"
   homepage "https://www.elastic.co/products/beats/auditbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.10.1",
-      revision: "1da173a9e716715a7a54bb3ff4db05b5c24fc8ce"
+      tag:      "v7.11.2",
+      revision: "1d9cced55410003f5d0b4594ff5471d15a4e2900"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "63463ad61e9aedbcf5409ff9d4f735f27bd4d5e37c97dc9d87be9e242f9adcd9" => :big_sur
-    sha256 "14f705d02327947fcbb85932d9377a7064ac80a949f31b2b744bef22238335bd" => :catalina
-    sha256 "47953f639b1e9c46649d59840cc8890bbdee878aaced725468fd082921c1ff67" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9870723f061237445a919c8247a0ce0094d7bea88fd51377fc710d7797e98433"
+    sha256 cellar: :any_skip_relocation, big_sur:       "cb67b5d882f1ee837951def344826ddd80876bd48fe7e285bdc5fc4a93485d7f"
+    sha256 cellar: :any_skip_relocation, catalina:      "113d7f2683c6b1562603a0f8573a08ba75f44d2059cc5ac87bcbd55f839d452b"
+    sha256 cellar: :any_skip_relocation, mojave:        "d39b684a038cf540578de2298c599109e838103030488f9411b279bdb448cb78"
   end
 
   depends_on "go" => :build
-  depends_on "python@3.8" => :build
-
-  resource "virtualenv" do
-    url "https://files.pythonhosted.org/packages/d4/0c/9840c08189e030873387a73b90ada981885010dd9aea134d6de30cd24cb8/virtualenv-15.1.0.tar.gz"
-    sha256 "02f8102c2436bb03b3ee6dede1919d1dac8a427541652e5ec95171ec8adbc93a"
-  end
+  depends_on "python@3.9" => :build
 
   def install
     # remove non open source files
@@ -28,15 +23,6 @@ class Auditbeat < Formula
 
     ENV["GOPATH"] = buildpath
     (buildpath/"src/github.com/elastic/beats").install buildpath.children
-
-    xy = Language::Python.major_minor_version "python3"
-    ENV.prepend_create_path "PYTHONPATH", buildpath/"vendor/lib/python#{xy}/site-packages"
-
-    resource("virtualenv").stage do
-      system Formula["python@3.8"].opt_bin/"python3", *Language::Python.setup_install_args(buildpath/"vendor")
-    end
-
-    ENV.prepend_path "PATH", buildpath/"vendor/bin" # for virtualenv
     ENV.prepend_path "PATH", buildpath/"bin" # for mage (build tool)
 
     cd "src/github.com/elastic/beats/auditbeat" do
@@ -112,7 +98,7 @@ class Auditbeat < Formula
     touch testpath/"files/touch"
     sleep 30
     s = IO.readlines(testpath/"auditbeat/auditbeat").last(1)[0]
-    assert_match /"action":\["(initial_scan|created)"\]/, s
+    assert_match(/"action":\["(initial_scan|created)"\]/, s)
     realdirpath = File.realdirpath(testpath)
     assert_match "\"path\":\"#{realdirpath}/files/touch\"", s
   end

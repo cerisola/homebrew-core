@@ -2,8 +2,8 @@ class Ipfs < Formula
   desc "Peer-to-peer hypermedia protocol"
   homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-      tag:      "v0.7.0",
-      revision: "ea77213e31ef2b3cad81d40bf82bb9baef3ea7b6"
+      tag:      "v0.8.0",
+      revision: "ce693d7e81e0206b3afbce30333c21a36a9f094b"
   license all_of: [
     "MIT",
     any_of: ["MIT", "Apache-2.0"],
@@ -11,16 +11,14 @@ class Ipfs < Formula
   head "https://github.com/ipfs/go-ipfs.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b5b83542ce69104ccd4cc5c3b24b04f9901da8ffb0f7f59ab29b1b0cc0b3a2c9" => :big_sur
-    sha256 "efa0829574ec0c1bb8191c3bfa0b5f146ad6a52123e6ac7aa66b318a5b2ef8a0" => :catalina
-    sha256 "155e275561f4602feab774ea6519d61cab1bfb61a8fe33af94c8b8e5e5754d47" => :mojave
-    sha256 "0bb55579cf672cba14ddc8e8bb52c1db3ec691a9bc4d07935cc1f4021e7403b4" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "26b96618554fa924bf04a04b0f3c68714b92b1493f9391c973b7eb7b3409a744"
+    sha256 cellar: :any_skip_relocation, catalina: "f75c5837fecebbeeb36be86091e719d85b0922654d406753bfe3c4f7f4a2e1a9"
+    sha256 cellar: :any_skip_relocation, mojave:   "868371961578f442159865ff5111d778dbc730cda71058f942cbb354e6a46029"
   end
 
   depends_on "go@1.14" => :build

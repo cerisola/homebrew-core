@@ -12,10 +12,11 @@ class Wimlib < Formula
   end
 
   bottle do
-    sha256 "2e20aabc071c0ab510538f393a13d62db0c5206d77c059be32363b67bb4fea69" => :big_sur
-    sha256 "afd742c76098123654e4e7a41b94097c3d58b959ee4205a29eb1c5f4793bee62" => :arm64_big_sur
-    sha256 "4dcc975143838b793a68e5e02ad14d08836c9cf2e89601af962105ed13b82a99" => :catalina
-    sha256 "cf8c8cb2b75f5afdaaf9468967fd04895ef2a0cead7ce14ff403c95f6fd073dd" => :mojave
+    rebuild 1
+    sha256               arm64_big_sur: "a2ff0fc910f2cd3925474e7f7ea700d1f4dd9df724df1c634a47e733752393cf"
+    sha256 cellar: :any, big_sur:       "2e0597a2e987116627df9c6d3a7cb7aed0bd8ed507f5f13b530df685a9e0fe9b"
+    sha256 cellar: :any, catalina:      "51512426e7836eb9a204f036993ef023bf260129fadde73761c1ff487cfa2518"
+    sha256 cellar: :any, mojave:        "479dd4c3bb4eade0c59f92c776aab3bcceba107f6ed7e65ab1ba6006dce1823e"
   end
 
   depends_on "pkg-config" => :build
@@ -41,8 +42,14 @@ class Wimlib < Formula
   test do
     # make a directory containing a dummy 1M file
     mkdir("foo")
-    system "dd", "if=/dev/random", "of=foo/bar", "bs=1m", "count=1"
-
+    size = nil
+    on_macos do
+      size = "1m"
+    end
+    on_linux do
+      size = "1M"
+    end
+    system "dd", "if=/dev/random", "of=foo/bar", "bs=#{size}", "count=1"
     # capture an image
     ENV.append "WIMLIB_IMAGEX_USE_UTF8", "1"
     system "#{bin}/wimcapture", "foo", "bar.wim"

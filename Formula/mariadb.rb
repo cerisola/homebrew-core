@@ -1,8 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://downloads.mariadb.com/MariaDB/mariadb-10.5.8/source/mariadb-10.5.8.tar.gz"
-  sha256 "eb4824f6f2c532cd3fc6a6bce7bf78ea7c6b949f8bdd07656b2c84344e757be8"
+  url "https://downloads.mariadb.com/MariaDB/mariadb-10.5.9/source/mariadb-10.5.9.tar.gz"
+  sha256 "40ab19aeb8de141fdc188cf2251213c9e7351bee4d0cd29db704fae68d1068cf"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,10 +11,10 @@ class Mariadb < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 "8a27f4ff10628a7366f0a63480433fa1138c547fbd49343258abb47cd4908e67" => :big_sur
-    sha256 "4b32c4d13a178a568d7a8668f0d42c40a02d161fac8ea7b10f5c2e468cbca4a6" => :catalina
-    sha256 "c52e7c5c5a92e4e5faf2ab5aa6cb66eeabc943869161bf5c8853b37dbd6a49a3" => :mojave
+    sha256 arm64_big_sur: "f890f360f7d595dd0beaf6495d86248e97e9c450ee09c20ec99f231de97d22c9"
+    sha256 big_sur:       "a976c60a001d2dacd4a9106a667cdcc0292a78da794d39e81cf86944c4f8010b"
+    sha256 catalina:      "990603eb3ef9ed5228c31572c35bd4324e9c1c790286b1b850474b671becc386"
+    sha256 mojave:        "15b7c70995f293db109b71e125b069c5d3b675c08b196c31932574f7ffc42545"
   end
 
   depends_on "cmake" => :build
@@ -65,6 +65,9 @@ class Mariadb < Formula
     # disable TokuDB, which is currently not supported on macOS
     args << "-DPLUGIN_TOKUDB=NO"
 
+    # Disable RocksDB on Apple Silicon (currently not supported)
+    args << "-DPLUGIN_ROCKSDB=NO" if Hardware::CPU.arm?
+
     system "cmake", ".", *std_cmake_args, *args
     system "make"
     system "make", "install"
@@ -114,10 +117,12 @@ class Mariadb < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     # Make sure the var/mysql directory exists
     (var/"mysql").mkpath
+
+    # Don't initialize database, it clashes when testing other MySQL-like implementations.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     unless File.exist? "#{var}/mysql/mysql/user.frm"
       ENV["TMPDIR"] = nil
       system "#{bin}/mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",

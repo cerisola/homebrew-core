@@ -1,20 +1,20 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.4.0.tar.bz2"
-  sha256 "40cb81d9e0d34edcc7c95435a06125bde0bd1a51692e1db52413e31d7ede0b39"
+  url "https://downloads.powerdns.com/releases/pdns-4.4.1.tar.bz2"
+  sha256 "03fa7c181c666a5fc44a49affe7666bd385d46c1fe15088caff175967e85ab6c"
   license "GPL-2.0-or-later"
 
   livecheck do
     url "https://downloads.powerdns.com/releases/"
-    regex(/href=.*?pdns[._-]v?(\d+(?:\.\d+)*)\.t/i)
+    regex(/href=.*?pdns[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 "3bcdd4ecf99f973dfc4f228e429eb0aa61f51b1d237383709d8224528f4c8c6b" => :big_sur
-    sha256 "f3fe8ff82dcfb910ceee21d2a58a93c34c8e8b2b4dcdb626a3c3a126d0fbf33f" => :arm64_big_sur
-    sha256 "7e011f3e8ef5765023f9c9a2f37e623d793879a68289f7efd19f044b9067a9ff" => :catalina
-    sha256 "bc758310a198a7339455d1727270283019189a9c3e08db9d76d00734c8f79bf5" => :mojave
+    sha256 arm64_big_sur: "41d4db1f974f4139abf4e064c33c98e0b31d47fb3be3e062e482f37449a326c4"
+    sha256 big_sur:       "3462eb24c8379733f29bdc2fa6177cdf643aecbfc5fbe58ac3d5f9129a32befe"
+    sha256 catalina:      "b3caacf5599b6a71a88daabb7c7ce5ec606f75ad7378e57a8eb0e19935923c19"
+    sha256 mojave:        "03a2e4848800803555e0e2ea398de47b0172f96a82412b83e0629a62979dd6e7"
   end
 
   head do

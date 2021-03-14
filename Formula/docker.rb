@@ -2,16 +2,16 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/cli.git",
-      tag:      "v20.10.1",
-      revision: "831ebeae967552edf2e19980b628fc7b8e92b59f"
+      tag:      "v20.10.5",
+      revision: "55c4c88966a912ddb365e2d73a4969e700fc458f"
   license "Apache-2.0"
+  head "https://github.com/docker/cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "8be588aa23896f190a6e0b29c059ede59c5583733d86a874f571cd02503e810c" => :big_sur
-    sha256 "dce52f026637389455b177396869b8839df923160faee02f86b109c0ee6a2446" => :arm64_big_sur
-    sha256 "debb0a1b01bca6f0bd13c4737a18d0f7ca58dfedb6e898fc0d3c103598bbc0e6" => :catalina
-    sha256 "c7a5c40881826afedd31a6ee28920af9d08ed41137f0aa585ac5e4206766990e" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "850164428281e1382f71c129b7de8e0295557c8dd085513807602e402a88b347"
+    sha256 cellar: :any_skip_relocation, big_sur:       "6945466371797914754b3f42f597c119703fffa5d1dd0c72ee5c25048f1ac968"
+    sha256 cellar: :any_skip_relocation, catalina:      "aa8c1e0fb619cba19be6a633b0984d559dd4c091f234549df7f3751d53a11355"
+    sha256 cellar: :any_skip_relocation, mojave:        "d209b6efc28e3a496a689f7a9175b766da8cf30af40518a805ea89a19d660330"
   end
 
   depends_on "go" => :build
@@ -23,8 +23,8 @@ class Docker < Formula
     dir = buildpath/"src/github.com/docker/cli"
     dir.install (buildpath/"").children
     cd dir do
-      commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
-      build_time = Utils.safe_popen_read("date -u +'%Y-%m-%dT%H:%M:%SZ' 2> /dev/null").chomp
+      commit = Utils.git_short_head
+      build_time = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
       ldflags = ["-X \"github.com/docker/cli/cli/version.BuildTime=#{build_time}\"",
                  "-X github.com/docker/cli/cli/version.GitCommit=#{commit}",
                  "-X github.com/docker/cli/cli/version.Version=#{version}",

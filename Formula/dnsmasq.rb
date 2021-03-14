@@ -1,9 +1,9 @@
 class Dnsmasq < Formula
   desc "Lightweight DNS forwarder and DHCP server"
-  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
-  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.82.tar.gz"
-  sha256 "62f33bfac1a1b4a5dab8461b4664e414f7d6ced1d2cf141e9cdf9c3c2a424f65"
-  license "GPL-2.0"
+  homepage "https://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "https://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.84.tar.gz"
+  sha256 "4caf385376f34fae5c55244a1f870dcf6f90e037bb7c4487210933dc497f9c36"
+  license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
 
   livecheck do
     url "http://www.thekelleys.org.uk/dnsmasq/"
@@ -11,11 +11,10 @@ class Dnsmasq < Formula
   end
 
   bottle do
-    sha256 "d452e2a6562538d398ffa39c7a1761d222d613b2cbcadf5796a7dc2a25697d55" => :big_sur
-    sha256 "fa45a739d36bf76d47b35d72ab36d8282abab1c7d5c920350f4532fa2fa970a3" => :arm64_big_sur
-    sha256 "0cab9dbb88d09946faed36b09a1f0919141b3e56eea45e5f77969619e00796e0" => :catalina
-    sha256 "c70c3fe42cdabac2497377e6718678eb5c433658ce1ea92e4193d6877d81c628" => :mojave
-    sha256 "77e52871d7bd6af6f4f1e7b1d55bae2fa235c1d6cafc14b290758b741bc19f95" => :high_sierra
+    sha256 arm64_big_sur: "bc3658b1513c04ceb65465f739efab9b4607df16d5019ac4868b58f3faf3b489"
+    sha256 big_sur:       "a4479c0bef111c09b0501624e009cd5b923007c7bd36193da63b22462b0f0bf9"
+    sha256 catalina:      "72c66278024f906a82de40d85a270067303cb3f118fe9bdd62522d819364cfac"
+    sha256 mojave:        "9c0d15c06f40e148e28c5ffd795e69634e897f5569b3a75a112d5209385d1ff5"
   end
 
   depends_on "pkg-config" => :build

@@ -4,29 +4,30 @@ class Qcachegrind < Formula
   url "https://download.kde.org/Attic/applications/19.08.3/src/kcachegrind-19.08.3.tar.xz"
   sha256 "8fc5e0643bb826b07cb5d283b8bd6fd5da4979f6125b43b1db3a9db60b02a36a"
   license "GPL-2.0-or-later"
+  revision 1
 
   # We don't match versions like 19.07.80 or 19.07.90 where the patch number
   # is 80+ (beta) or 90+ (RC), as these aren't stable releases.
   livecheck do
     url "https://download.kde.org/Attic/applications/"
-    regex(%r{href=.*?v?(\d+\.\d+\.(?:(?!8\d|9\d)\d+)(?:\.\d+)*)/?["' >]}i)
+    regex(%r{href=.*?v?(\d+\.\d+\.(?:(?![89]\d)\d+)(?:\.\d+)*)/?["' >]}i)
   end
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "2aeeb8c9bd36dabcf9941ea18b8aa24b1c7549262f3130a572ed01ae96576a78" => :big_sur
-    sha256 "dc39ea438ea591b5aec09e7aa88b82af413100df0b6c689f7930df16953f87e0" => :catalina
-    sha256 "6b27fca8ce13fc1a9cf62bcc85cbcb3f08149dde15f12012aeea6d61ce1bae77" => :mojave
-    sha256 "7635d2f92941c12efce0a89e526198d5b730979511010e7af181f83fe48ff078" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "c7be2d976a82aed944e4b8f44c2b1131b2f302728e48c957a32adffa75ceee5c"
+    sha256 cellar: :any, big_sur:       "72de042902f9d935db011104769efc72e92d3e68aeb0cea9823528faea99eb40"
+    sha256 cellar: :any, catalina:      "fe75b9e67397b67668b0f64bada54519a4fab7cc5f5c9d0cabe8c6af395521ba"
+    sha256 cellar: :any, mojave:        "3164f589fb5bb2a225a5bfbb3543ec9b39a39187482875c0e14c526fc48fc3ec"
   end
 
   depends_on "graphviz"
-  depends_on "qt"
+  depends_on "qt@5"
 
   def install
+    spec = (ENV.compiler == :clang) ? "macx-clang" : "macx-g++"
+    spec << "-arm64" if Hardware::CPU.arm?
     cd "qcachegrind" do
-      system "#{Formula["qt"].opt_bin}/qmake", "-spec", "macx-clang",
+      system "#{Formula["qt@5"].opt_bin}/qmake", "-spec", spec,
                                                "-config", "release"
       system "make"
       prefix.install "qcachegrind.app"

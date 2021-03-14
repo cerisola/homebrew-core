@@ -1,17 +1,16 @@
 class Staticcheck < Formula
   desc "State of the art linter for the Go programming language"
   homepage "https://staticcheck.io/"
-  url "https://github.com/dominikh/go-tools/archive/2020.2.tar.gz"
-  sha256 "4e1658dd8f185f29568cd6bdc8943fe58cb7e6b7d62b4b69ef4bcecbc46d4253"
+  url "https://github.com/dominikh/go-tools/archive/2020.2.3.tar.gz"
+  sha256 "dbd109c8a75ca65dcc077b9799b2e49b1c9607a69f55b063243f2ed9e05cc723"
   license "MIT"
   head "https://github.com/dominikh/go-tools.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "27241d832369d54e2c75db20d984c841b96519e9474dd74f8e2bc4e92d9d0c41" => :big_sur
-    sha256 "ac3fd9cb21581df6bee190217b4e68af401da99c4a201b540af960505dab0a0b" => :arm64_big_sur
-    sha256 "16379ebcb571ff00903bd0894afc34b4eacf4d7076781afb2711816039c7db23" => :catalina
-    sha256 "7e17edd850f6cf0c49a6c5fabfb10ca3e489f1f33a38595d10de621e5fb13175" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "468514b52d658438aabf67c493e3a766d0f4448d86d428a41d71e687ff806402"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0064e0095e3195f6c1d658a2c27ce8204a898ca59cf379f8f2de475e22e554f6"
+    sha256 cellar: :any_skip_relocation, catalina:      "7891492473c216470a127086f681328018b40b31adb427c4b10793cc7235d2b6"
+    sha256 cellar: :any_skip_relocation, mojave:        "19df6ce2ace845788b749adea55e6685211a314ad044e33036c60ed2c438bf31"
   end
 
   depends_on "go"

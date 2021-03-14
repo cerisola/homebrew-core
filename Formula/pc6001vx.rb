@@ -1,23 +1,22 @@
 class Pc6001vx < Formula
   desc "PC-6001 emulator"
   homepage "https://eighttails.seesaa.net/"
-  url "https://eighttails.up.seesaa.net/image/PC6001VX_3.6.0_src.tar.gz"
-  sha256 "5c67c4d392c399e98c65bcd8518b0cf92551813f70357c41403b100981c1d4e8"
+  url "https://eighttails.up.seesaa.net/bin/PC6001VX_3.7.0_src.tar.gz"
+  sha256 "8a735fa6769b1a268fc64c0ed92d7e27c5990b120f53ad50be255024db35b2b8"
   license "LGPL-2.1-or-later"
+  revision 1
   head "https://github.com/eighttails/PC6001VX.git"
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "06bf7debd67d4f1b4165b35b222f48fa19eac46d6b73bcae04af093a61efcab5" => :big_sur
-    sha256 "6fbc717e8c3726eda2135bf5d881dbfd110c26a11b4fc4c09a4063663f437d8b" => :arm64_big_sur
-    sha256 "c53cf5ef699b779e5160200f901eae55ff108ab0ab9cf489a422a3d239ed1710" => :catalina
-    sha256 "d7665cfb82d6a249a3b8dea0cdef20e2f08a7ca0a39fccbc11e1ad3ac2f2e043" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "aee07f4792310c51d12c85a460ec600468169c9b584c47f56b1980ef1ad2ab25"
+    sha256 cellar: :any, big_sur:       "955a851714857a6316552a47e4456f1767c0031da42eb639f3bd256881f19633"
+    sha256 cellar: :any, catalina:      "26437cbcb26ef046a957c42c6a3a2ba1c35ddd35680efb1c9bbeecdf628574ab"
+    sha256 cellar: :any, mojave:        "84e0986b4d0db0802f75ed155e18b2fcf8305707ad031696179a51d28c2ff7b5"
   end
 
   depends_on "pkg-config" => :build
   depends_on "ffmpeg"
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "sdl2"
 
   def install
@@ -29,7 +28,8 @@ class Pc6001vx < Formula
     # Use libc++ explicitly, otherwise build fails
     ENV.append_to_cflags "-stdlib=libc++" if ENV.compiler == :clang
 
-    system "qmake", "PREFIX=#{prefix}", "QMAKE_CXXFLAGS=#{ENV.cxxflags}", "CONFIG+=c++11"
+    qt5 = Formula["qt@5"].opt_prefix
+    system "#{qt5}/bin/qmake", "PREFIX=#{prefix}", "QMAKE_CXXFLAGS=#{ENV.cxxflags}", "CONFIG+=c++11"
     system "make"
     prefix.install "PC6001VX.app"
     bin.write_exec_script "#{prefix}/PC6001VX.app/Contents/MacOS/PC6001VX"

@@ -5,17 +5,13 @@ class Gdb < Formula
   mirror "https://ftpmirror.gnu.org/gdb/gdb-10.1.tar.xz"
   sha256 "f82f1eceeec14a3afa2de8d9b0d3c91d5a3820e23e0a01bbb70ef9f0276b62c0"
   license "GPL-3.0-or-later"
+  revision 1
   head "https://sourceware.org/git/binutils-gdb.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    sha256 "3a9d6b7bfe4530321ab858ca8817431a28010ffbdbe5b0db1d700c81a392c91f" => :big_sur
-    sha256 "fbd7836617ad0bb335ad9175280f14162dfdf0dd2f5e6b634d37b2d93765b51e" => :catalina
-    sha256 "f3656f04b8725825296ce977461af0d0e6133ec9a1f9086ca3b889661f40802e" => :mojave
-    sha256 "a57db00038cdcdc85f80c064332f3b4ef45571a2c0cd0defa55f2e6bde6a751d" => :high_sierra
+    sha256 big_sur:  "e091e16129311d4c9c444e415dc8f8cd58f0ba2f3647952cab242c32c049426e"
+    sha256 catalina: "33e0973094baeb29eeeb29472a8534e11f8c870e94864777ab3d66a1ba68416f"
+    sha256 mojave:   "e9629327e54e84b14ae2c3f54712376428f6c62e070760e6c62b0bdf83f691af"
   end
 
   depends_on "python@3.9"
@@ -56,7 +52,7 @@ class Gdb < Formula
       system "make"
 
       # Don't install bfd or opcodes, as they are provided by binutils
-      system "make", "install-gdb"
+      system "make", "install-gdb", "maybe-install-gdbserver"
     end
   end
 

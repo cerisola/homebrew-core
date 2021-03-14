@@ -1,10 +1,9 @@
 class Libsndfile < Formula
   desc "C library for files containing sampled sound"
   homepage "https://libsndfile.github.io/libsndfile/"
-  url "https://github.com/erikd/libsndfile/releases/download/v1.0.30/libsndfile-1.0.30.tar.bz2"
-  sha256 "9df273302c4fa160567f412e10cc4f76666b66281e7ba48370fb544e87e4611a"
+  url "https://github.com/libsndfile/libsndfile/releases/download/1.0.31/libsndfile-1.0.31.tar.bz2"
+  sha256 "a8cfb1c09ea6e90eff4ca87322d4168cdbe5035cb48717b40bf77e751cc02163"
   license "LGPL-2.1-or-later"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,11 +11,10 @@ class Libsndfile < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "ee9bc99bab89708e8f371173efc13c71c82d63cd46de50c4dd6ca89f4e2bd1f9" => :big_sur
-    sha256 "0c6dd62351317eac23e245450cded41a654084da265d74cc25350b7aa8628d36" => :arm64_big_sur
-    sha256 "8777b541acc126315428bcee3f3453a240157dcdca48d2e51609158ad3539284" => :catalina
-    sha256 "eaa0e886d88536970a5618557f1fb4e7a06d0c1429bf8bcb874cd90e31e05e0a" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "8e2fc3b0df09a21840f8643f644bd3a0bb3c3551d21f600b344f6b316d3ef44d"
+    sha256 cellar: :any, big_sur:       "a4a734e58220fc8615d86e4563e9a874447d568151b366aa94391dfe07c4e0fb"
+    sha256 cellar: :any, catalina:      "671a3cc9c7dafd89cbaffeccf4de826262c144184bf5779320c236e87e7636cc"
+    sha256 cellar: :any, mojave:        "8b2876610f9188e8125f636e85bcbd525343b216c6d0787954e78b88dfe8f101"
   end
 
   depends_on "autoconf" => :build
@@ -27,14 +25,6 @@ class Libsndfile < Formula
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "opus"
-
-  # Upstream commit to fix autotools configure on macOS, fixes
-  # https://github.com/libsndfile/libsndfile/issues/642
-  # Upstream fix is expected in release v1.0.31
-  patch do
-    url "https://github.com/libsndfile/libsndfile/commit/ecd63961.patch?full_index=1"
-    sha256 "419aad070487685157a515adf4c6de25ffbd34adb0ab52b6df0f7c1ed0644893"
-  end
 
   def install
     system "autoreconf", "-fvi"

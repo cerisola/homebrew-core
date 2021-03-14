@@ -1,19 +1,16 @@
 class Smlpkg < Formula
   desc "Package manager for Standard ML libraries and programs"
   homepage "https://github.com/diku-dk/smlpkg"
-  url "https://github.com/diku-dk/smlpkg/archive/v0.1.3.tar.gz"
-  sha256 "cfa7eeff951e04df428694fda38917ee2aaaf0532e2d1dbea7ab4c150f4fe2f0"
+  url "https://github.com/diku-dk/smlpkg/archive/v0.1.5.tar.gz"
+  sha256 "53440d8b0166dd689330fc686738076225ac883a00b283e65394cf9312575c33"
   license "MIT"
   head "https://github.com/diku-dk/smlpkg.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a586b7393075b749b525aee9aedb42b42e8f961997764000b34cb95b1b3da4e9" => :catalina
-    sha256 "e2641ae3cb473051e55ae1163b72018028415195b4971a1254fe7cd1f57efb26" => :mojave
-    sha256 "27f4bec44d28a9903d720632f1a2ac71c0091a564a0e26c0e896fac4f2becf22" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "64911c8474f780f2ca5e40dfa42e0d839b5b406b28f2ba97090d52132d2813de"
+    sha256 cellar: :any_skip_relocation, catalina: "a710728bd5d1972eb545792375f286691fe75f7d470f532c33517ccf5d85858c"
+    sha256 cellar: :any_skip_relocation, mojave:   "6e7e55cdf218da273d5184d411a7a1491b1e52941859bbf08ab610b470b824c4"
   end
-
-  disable! date: "2020-12-08", because: :unmaintained
 
   depends_on "mlkit"
 

@@ -1,20 +1,15 @@
 class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
   homepage "https://sourceforge.net/projects/minidlna/"
-  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.2.1/minidlna-1.2.1.tar.gz"
-  sha256 "67388ba23ab0c7033557a32084804f796aa2a796db7bb2b770fb76ac2a742eec"
+  url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.3.0/minidlna-1.3.0.tar.gz"
+  sha256 "47d9b06b4c48801a4c1112ec23d24782728b5495e95ec2195bbe5c81bc2d3c63"
   license "GPL-2.0-only"
-  revision 5
-
-  livecheck do
-    url :stable
-  end
 
   bottle do
-    cellar :any
-    sha256 "0f008dfaac0220cdd26995d5f5fa00560328a6a30dd6d2ab8b78e23efd559337" => :catalina
-    sha256 "befb568924df8d3b17095d864b84c11733b40e4860a7aecd65f1f4d19f9c343b" => :mojave
-    sha256 "cfaad3159ef845f063cbe32262a59d98d0e0415f15d0ce41321993c2767972cf" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "e8123a9b2f7c100c538774cdb4114c0fdc44ea3a9a3a257e2f28db80a982c8ab"
+    sha256 cellar: :any, big_sur:       "3934b6e9bea9c3f74be9b163909eff0a6f697bdcd36c0fb5b8ac46793b7e362b"
+    sha256 cellar: :any, catalina:      "87538e0663825ec20c3d829db386fffeaf451df2f22f78845d92ff5dcad09a2e"
+    sha256 cellar: :any, mojave:        "f1dd29bb2e954ed3b842ad591f8673419b37c1d151add4dd91c05350cde0e51a"
   end
 
   head do
@@ -98,6 +93,8 @@ class Minidlna < Formula
   end
 
   test do
+    require "expect"
+
     (testpath/".config/minidlna/media").mkpath
     (testpath/".config/minidlna/cache").mkpath
     (testpath/"minidlna.conf").write <<~EOS
@@ -109,11 +106,10 @@ class Minidlna < Formula
 
     port = free_port
 
-    fork do
-      exec "#{sbin}/minidlnad", "-d", "-f", "minidlna.conf", "-p", port.to_s, "-P", testpath/"minidlna.pid"
-    end
-    sleep 2
+    io = IO.popen("#{sbin}/minidlnad -d -f minidlna.conf -p #{port} -P #{testpath}/minidlna.pid", "r")
+    io.expect("debug: Initial file scan completed", 30)
+    assert_predicate testpath/"minidlna.pid", :exist?
 
-    assert_match /MiniDLNA #{version}/, shell_output("curl localhost:#{port}")
+    assert_match "MiniDLNA #{version}", shell_output("curl localhost:#{port}")
   end
 end

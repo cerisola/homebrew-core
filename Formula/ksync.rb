@@ -2,32 +2,37 @@ class Ksync < Formula
   desc "Sync files between your local system and a kubernetes cluster"
   homepage "https://ksync.github.io/ksync/"
   url "https://github.com/ksync/ksync.git",
-      tag:      "0.4.5",
-      revision: "9f40bf134329814a57e1a58d73b84761a2b06c73"
+      tag:      "0.4.6",
+      revision: "bfb445b179a0405ab4a01b999010010406f425b7"
   license "Apache-2.0"
+  head "https://github.com/ksync/ksync.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "01c1dfd22817646205cfc6605ffeeafc04102ed9f472f719cd99aa3ffa0c858c" => :big_sur
-    sha256 "1973e9cc12928e1680bc63c948404a81ae0eb83a083ecfcc593c0f9ba6799f2b" => :catalina
-    sha256 "253963ea2fe87fd45fb16ea131273878368964637140de4b0eeb9b2150e290c7" => :mojave
-    sha256 "b86ba3886a09fa0a5d78d86cf46bdd2dbcf524ef99cd4342e6c176698e0b5d00" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b8fdaafce04e89be790f15be07240b0ce0baabd5550ce6f625b6177d9fafecd1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e68abf337654f51128a835f8d3c124df880a37a26f2773b0aa09fce74c67d63a"
+    sha256 cellar: :any_skip_relocation, catalina:      "68409c1188fc629bb181765961ee9ff645b941400edcea9939d8d7189e7db5dc"
+    sha256 cellar: :any_skip_relocation, mojave:        "a4d52a2a59f8b6308ea858f051e8971145b9964c32564a832408e05f6582c23e"
   end
 
   depends_on "go" => :build
 
   def install
-    time = Utils.safe_popen_read("date", "+%Y%m%dT%H%M%S").chomp
-    goversion = "go#{Formula["go"].version}"
-    commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
-    system "go", "build", "-ldflags",
-              "-w -X github.com/ksync/ksync/pkg/ksync.GitCommit=#{commit} \
-              -X github.com/ksync/ksync/pkg/ksync.GitTag=#{version} \
-              -X github.com/ksync/ksync/pkg/ksync.BuildDate=#{time} \
-              -X github.com/ksync/ksync/pkg/ksync.VersionString=Homebrew \
-              -X github.com/ksync/ksync/pkg/ksync.GoVersion=#{goversion}",
-              *std_go_args,
-              "github.com/ksync/ksync/cmd/ksync"
+    # Remove this when upstream provide working go.sum files
+    # (i.e. it builds without errors)
+    # https://github.com/ksync/ksync/issues/504
+    system "go", "mod", "tidy"
+
+    project = "github.com/ksync/ksync"
+    ldflags = %W[
+      -w
+      -X #{project}/pkg/ksync.GitCommit=#{Utils.git_short_head}
+      -X #{project}/pkg/ksync.GitTag=#{version}
+      -X #{project}/pkg/ksync.BuildDate=#{Time.now.utc.rfc3339(9)}
+      -X #{project}/pkg/ksync.VersionString=Homebrew
+      -X #{project}/pkg/ksync.GoVersion=go#{Formula["go"].version}
+    ]
+    system "go", "build", "-ldflags", ldflags.join(" "), *std_go_args, "#{project}/cmd/ksync"
   end
 
   test do

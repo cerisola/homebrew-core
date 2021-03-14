@@ -3,21 +3,15 @@ require "language/node"
 class Whistle < Formula
   desc "HTTP, HTTP2, HTTPS, Websocket debugging proxy"
   homepage "https://github.com/avwo/whistle"
-  url "https://registry.npmjs.org/whistle/-/whistle-2.6.2.tgz"
-  sha256 "a4d116ac0d9c5f90bfa4257f382a9a8dc097362a40547639ddf0a73730089802"
+  url "https://registry.npmjs.org/whistle/-/whistle-2.6.7.tgz"
+  sha256 "cc93aa4e5ff46c80edf7754878e55494f199481b800d2ba19c0e4996358ef633"
   license "MIT"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "cf2c336fa779a81c2b96cf7b5c4052e60287e74fefe3c99652c275d1542a6b54" => :big_sur
-    sha256 "e3811837472f44bdf219e762aee71555ed0e17181e0d677d3f2cc615fe555540" => :arm64_big_sur
-    sha256 "32fdd97a68642d375403c0a252693dcfc08590290d96eb163b8ad0ccc9f9433c" => :catalina
-    sha256 "856c6989452371a77ac5c2aa9e3bdb7a26c5ace476a3c318b9b4b9f0a0104772" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "89d75d8fd94e6bb272787d1e30da2981dc9820f340dd52d7a40c111a0d5d50dc"
+    sha256 cellar: :any_skip_relocation, big_sur:       "06016938110db64a8645a7729d10a0120aa342e06d2414a9ffca4519c60eb4ef"
+    sha256 cellar: :any_skip_relocation, catalina:      "b0b7eacff7379d821cfcb338c23b4484c0a1d4bc39aa2d862413a6f6d030ac70"
+    sha256 cellar: :any_skip_relocation, mojave:        "7937d9c596a5afb57f45c28b8d0c0d576f9ae1a75a7cd7cb12237919dc793aeb"
   end
 
   depends_on "node"

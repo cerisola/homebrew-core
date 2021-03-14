@@ -1,16 +1,15 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "https://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.141.0.tar.gz"
-  sha256 "b8b58e07fb754560684444f91df2e4a12a90fbb27cb4b0056f904d17b38b6193"
+  url "https://github.com/facebook/flow/archive/v0.146.0.tar.gz"
+  sha256 "7221c17e56511ed7ed3770c04f8aa193d841c19dbba70737b4c89f45d094179d"
   license "MIT"
   head "https://github.com/facebook/flow.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "972d2d72805838e317029ead7d3f91b950a1016bd5d47c9bed93f7302b74a6f8" => :big_sur
-    sha256 "5bc3b2df39c56538bdbdbf8793c6c6d994e0a6d9c9b88a9779f1f875247e89bf" => :catalina
-    sha256 "3ec8c858dcf424ef827f5bc210cda9a0bd9b4a1f374ea36a2eba7f65ddd41213" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "51bfd42347569c751e3d89a32767436c8bc716977d0d3acf53c2062dd9103d46"
+    sha256 cellar: :any_skip_relocation, catalina: "5616d2acec5a9d75b31177454c3c74afa19017530cde7acbce6de9a1c6f0bab0"
+    sha256 cellar: :any_skip_relocation, mojave:   "78a8ac6263b7511a6e11a5bcc88106fff57ae1251ea52ea907e0f5e951c87701"
   end
 
   depends_on "ocaml" => :build
@@ -19,13 +18,6 @@ class Flow < Formula
   uses_from_macos "m4" => :build
   uses_from_macos "rsync" => :build
   uses_from_macos "unzip" => :build
-
-  # Fix "No available version of ocaml-base-compiler satisfies the constraints" error
-  # See https://github.com/facebook/flow/pull/8559
-  patch do
-    url "https://github.com/facebook/flow/commit/073b02dc69f8ddc901775dd13200b46e3e4f8c8d.patch?full_index=1"
-    sha256 "dccac3dfe0d893392517f9f9c85d37c00691e947a0c76c66bee369fe1e317682"
-  end
 
   def install
     system "make", "all-homebrew"

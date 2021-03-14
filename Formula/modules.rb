@@ -1,8 +1,10 @@
 class Modules < Formula
   desc "Dynamic modification of a user's environment via modulefiles"
   homepage "https://modules.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/modules/Modules/modules-4.6.1/modules-4.6.1.tar.bz2"
-  sha256 "9aa8789046cff374857dde62406623bccf14644286ac97765d89806138f73f12"
+  url "https://downloads.sourceforge.net/project/modules/Modules/modules-4.7.0/modules-4.7.0.tar.bz2"
+  sha256 "68099b98f075c669af3a6eb638b75a2feefc8dd7f778bcae3f5504ded9c1b2ca"
+  license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url :stable
@@ -10,16 +12,19 @@ class Modules < Formula
   end
 
   bottle do
-    sha256 "b3327bf218e44bfd3b26c02ffcdd87accc74975e8133bdc8902ce8cb1f24b06b" => :big_sur
-    sha256 "673d73d75d4d693610580f9037ae2522701b5cb418d8a79289988dbaa3229e79" => :catalina
-    sha256 "219a6de0edbd5a629af151f5cb67889088cba2610a0b93c6eab74c3c9e70afa7" => :mojave
+    sha256               arm64_big_sur: "9efa2847cd3b742278569de48251e6e4a3828a4faaee55621c399f8d01efe5ed"
+    sha256               big_sur:       "637ca6ff4592b1c2392a927f289bdb8d867d922f90a9df91aed57c45d6c1d1d4"
+    sha256 cellar: :any, catalina:      "768a0050642449eea6a5d714e39a83f23ca32b2e19a8f3c15e29a75854aebf55"
+    sha256 cellar: :any, mojave:        "9778d58e3a2f1a41236f26c634e75062c1b2c2be2569c65e758c2226a81a0463"
   end
+
+  depends_on "tcl-tk"
 
   def install
     args = %W[
       --prefix=#{prefix}
       --datarootdir=#{share}
-      --with-tcl=#{MacOS.sdk_path}/System/Library/Frameworks/Tcl.framework
+      --with-tcl=#{Formula["tcl-tk"].opt_lib}
       --without-x
     ]
     system "./configure", *args

@@ -4,6 +4,7 @@ class Gpsbabel < Formula
   url "https://github.com/gpsbabel/gpsbabel/archive/gpsbabel_1_7_0.tar.gz"
   sha256 "30b186631fb43db576b8177385ed5c31a5a15c02a6bc07bae1e0d7af9058a797"
   license "GPL-2.0"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,15 +12,14 @@ class Gpsbabel < Formula
   end
 
   bottle do
-    sha256 "1527cf246d7bc4c9ad4ea32f1dae2df36a34c2f10e1a561474a52e40fd455114" => :big_sur
-    sha256 "ef08f246d1d7321d1bb605591194f2d207fc0cd2465755dbbe86afc640cb41db" => :catalina
-    sha256 "7a622c1a689d239e3a98185220428127cffee6f3d060519d509106a8a37fdbc1" => :mojave
-    sha256 "d8a8ecec7300d96476fbba89a2343d87712628cfd2f4325df19aed2dabec4b17" => :high_sierra
+    sha256 big_sur:  "6d5c179704f46781438a06f02a6e83c0d9e5bfa3af0f15b738af0029a4cc56af"
+    sha256 catalina: "c71c3f2662684e9c03cac17d2f211b58ee07b3dc64ce74121922cca41d6b303c"
+    sha256 mojave:   "0a8e9cb2650be7396304d7486975e4ef82dce6e1890f8f54cbbaa0e05ab99991"
   end
 
   depends_on "pkg-config" => :build
   depends_on "libusb"
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "shapelib"
 
   uses_from_macos "zlib"

@@ -4,7 +4,7 @@ class Caffe < Formula
   url "https://github.com/BVLC/caffe/archive/1.0.tar.gz"
   sha256 "71d3c9eb8a183150f965a465824d01fe82826c22505f7aa314f700ace03fa77f"
   license "BSD-2-Clause"
-  revision 29
+  revision 31
 
   livecheck do
     url :stable
@@ -12,9 +12,9 @@ class Caffe < Formula
   end
 
   bottle do
-    sha256 "41b7b3bc80a10b97b86aefda9b48ffba4f8cb2c0465c6cc5aa9ae7bc5ba2b95c" => :big_sur
-    sha256 "16e7ab9979e4ea45b12bbe0f2c252ccc7c2481c0379743d115f2f4bf18017540" => :catalina
-    sha256 "0830824e3a1d7008ab29adc866f6fbeb2b0a5f395c2d66ed5162f764f1075f18" => :mojave
+    sha256 big_sur:  "a34103d1deed73801e19d46c7033332f8f14916dd2adfdf7d054b2782d40cf71"
+    sha256 catalina: "7f236f59400a7ffc13cff85af277e116e31db1c44b6fc094127e0928b5ba9de1"
+    sha256 mojave:   "081fc76b8d6525124bbea609a56b0944ea627ed210aa63cf134e096592fd235b"
   end
 
   depends_on "cmake" => :build

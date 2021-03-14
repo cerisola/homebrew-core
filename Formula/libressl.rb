@@ -2,9 +2,9 @@ class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "https://www.libressl.org/"
   # Please ensure when updating version the release is from stable branch.
-  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.2.3.tar.gz"
-  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.2.3.tar.gz"
-  sha256 "412dc2baa739228c7779e93eb07cd645d5c964d2f2d837a9fd56db7498463d73"
+  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.2.4.tar.gz"
+  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.2.4.tar.gz"
+  sha256 "ac1dbb9e05a64910856599b1ac61118fdec1b3d0c700e42444d81c0d5f507a5a"
   license "OpenSSL"
 
   livecheck do
@@ -13,10 +13,10 @@ class Libressl < Formula
   end
 
   bottle do
-    sha256 "c5060969c420fd7d097a372aeb1c083cb65f26ce4a3a7d760a3e770f56faef0c" => :big_sur
-    sha256 "f4d6d7f7decf667206d58554e63810eec52a20e869d4a74c6c1756ceef77ac8d" => :arm64_big_sur
-    sha256 "4a11c712731e131c223b4b73f25507b1c1c826821257b538b1b5f5f05c0f0736" => :catalina
-    sha256 "a84aa0482ece558c5afe0f2bae8ea6175f61e912778a5e9effa1c959b68a56b6" => :mojave
+    sha256 arm64_big_sur: "e7c3dbbcd08c32b308da932462aecc0b95304c42cf2c6a51d19575511a285608"
+    sha256 big_sur:       "d73d021753a498acafbdbff49a182797487e891628b5106ba6fcf4dcc0148e9f"
+    sha256 catalina:      "3a61191228fa1e5ff6e8dceff5bd29d05cc3ce7a260b4fb37c69fc938db7124f"
+    sha256 mojave:        "7fc2356a16b34b50313b1c0822b33cded2cdffd144b3738c8dd3b6d37318bd5f"
   end
 
   head do
@@ -46,27 +46,29 @@ class Libressl < Formula
   end
 
   def post_install
-    keychains = %w[
-      /System/Library/Keychains/SystemRootCertificates.keychain
-    ]
+    on_macos do
+      keychains = %w[
+        /System/Library/Keychains/SystemRootCertificates.keychain
+      ]
 
-    certs_list = `security find-certificate -a -p #{keychains.join(" ")}`
-    certs = certs_list.scan(
-      /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m,
-    )
+      certs_list = `security find-certificate -a -p #{keychains.join(" ")}`
+      certs = certs_list.scan(
+        /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m,
+      )
 
-    valid_certs = certs.select do |cert|
-      IO.popen("#{bin}/openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
-        openssl_io.write(cert)
-        openssl_io.close_write
+      valid_certs = certs.select do |cert|
+        IO.popen("#{bin}/openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
+          openssl_io.write(cert)
+          openssl_io.close_write
+        end
+
+        $CHILD_STATUS.success?
       end
 
-      $CHILD_STATUS.success?
+      # LibreSSL install a default pem - We prefer to use macOS for consistency.
+      rm_f %W[#{etc}/libressl/cert.pem #{etc}/libressl/cert.pem.default]
+      (etc/"libressl/cert.pem").atomic_write(valid_certs.join("\n"))
     end
-
-    # LibreSSL install a default pem - We prefer to use macOS for consistency.
-    rm_f %W[#{etc}/libressl/cert.pem #{etc}/libressl/cert.pem.default]
-    (etc/"libressl/cert.pem").atomic_write(valid_certs.join("\n"))
   end
 
   def caveats

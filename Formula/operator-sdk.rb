@@ -2,17 +2,16 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://coreos.com/operators/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      tag:      "v1.3.0",
-      revision: "1abf57985b43bf6a59dcd18147b3c574fa57d3f6"
+      tag:      "v1.5.0",
+      revision: "98f30d59ade2d911a7a8c76f0169a7de0dec37a0"
   license "Apache-2.0"
   head "https://github.com/operator-framework/operator-sdk.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "085720eb4fb2bfafd0475119ed704cadc62390e63829ea86337b4e5e763999f2" => :big_sur
-    sha256 "1f5b6fc68245da7464e5ba868ec8e907a362def193c0339b2e44388c44fa3dc2" => :arm64_big_sur
-    sha256 "8f65a0a7cb191314734b0eee3188e90d5c9f0f6441c7b103acbca01c51b67402" => :catalina
-    sha256 "ae6df2e3c3f970f3b0ca807c597cb3a9a08fdf8bca1515c723fef6b588686645" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "dfbb540e7ace32511ffdd4afa27f497c398408c1dc0cadb10e9e954cc5c1a710"
+    sha256 cellar: :any_skip_relocation, big_sur:       "7f65de9e688f5d5f96fb53485e4ba22c0d39ac1e7b20377012b2de3d8c9c1223"
+    sha256 cellar: :any_skip_relocation, catalina:      "0deb5ca0aec5983fd5eb0c846503e436d46fe89b484a80583934d63ad2605ae4"
+    sha256 cellar: :any_skip_relocation, mojave:        "e20a53867394681fff6391dec9b1e59975be9484f60f357fe26a4f89e29126ac"
   end
 
   depends_on "go"
@@ -34,7 +33,8 @@ class OperatorSdk < Formula
     if build.stable?
       version_output = shell_output("#{bin}/operator-sdk version")
       assert_match "version: \"v#{version}\"", version_output
-      assert_match stable.specs[:revision], version_output
+      commit_regex = /[a-f0-9]{40}/
+      assert_match commit_regex, version_output
     end
 
     output = shell_output("#{bin}/operator-sdk init --domain=example.com --license apache2 --owner BrewTest 2>&1", 1)

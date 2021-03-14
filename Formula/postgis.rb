@@ -1,9 +1,10 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "https://postgis.net/"
-  url "https://download.osgeo.org/postgis/source/postgis-3.1.0.tar.gz"
-  sha256 "da06e2456876cd0c6a9bee0636ff700982e900c597d1e4cb80a99a2623400201"
+  url "https://download.osgeo.org/postgis/source/postgis-3.1.1.tar.gz"
+  sha256 "0e96afef586db6939d48fb22fbfbc9d0de5e6bc1722d6d553d63bb41441a2a7d"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://download.osgeo.org/postgis/source/"
@@ -11,10 +12,10 @@ class Postgis < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "9f52ae374944fdd7b69b09aa005181f9ae0e93283c4a231dfe1a33e460aaaf3e" => :big_sur
-    sha256 "7db7c50975f2a5ed18c61cfb3746b92638e0db5da7cd5204ee332c7d88ee893c" => :catalina
-    sha256 "653a92373cdbe27a2c95594d26a0745a81df8814147b8bc55e07b688f85198d8" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "7b2db3f6e3f4582b8d865a9f30d8f865daef0def04d9035c7ff271f36880a49a"
+    sha256 cellar: :any, big_sur:       "1684641950af335917bf683c6d01a3134583fb607dacf659f1d178861443601a"
+    sha256 cellar: :any, catalina:      "5926acfc50c2c61d577df18965c28f9ad87370760f3888c69bbcf8da4d4c8a00"
+    sha256 cellar: :any, mojave:        "5f75dbcb69c3869aec09a51de9eb91ba57aff79e626c27736b494d6f5309f312"
   end
 
   head do

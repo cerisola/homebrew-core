@@ -1,27 +1,23 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-2.0.0/apache-arrow-2.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-2.0.0/apache-arrow-2.0.0.tar.gz"
-  sha256 "be0342cc847bb340d86aeaef43596a0b6c1dbf1ede9c789a503d939e01c71fbe"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
+  sha256 "73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a"
   license "Apache-2.0"
-  revision 1
+  revision 4
   head "https://github.com/apache/arrow.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "c4eacba6faeac0c43dbda3deb7dcc165e8cdecc6050de0286bbf94ebdb60ed71" => :big_sur
-    sha256 "524086a1fafea08afae498b587c52a6171ce5a862d3ced4fa70857e9c2a95693" => :catalina
-    sha256 "cb2fd7de62c49aae81e001955384016b6d5b3e50daee25add17a1575bff04782" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "64f82d9bdc476fe3cc6a201de3983cd3c1177ac6fd038918ea36b1771d297120"
+    sha256 cellar: :any, big_sur:       "8261f65e35b902389be6a40ff3734cbec6afdfa06a5732292f75cc7e0b068f8a"
+    sha256 cellar: :any, catalina:      "ad81da9f96a7a6d5efa5c0eea5403c47eaec53fe54d1cb8e922a3d0ff7ceeb00"
+    sha256 cellar: :any, mojave:        "60c0e8f79baaa38228ba30bfae9ad6b98dc754633a949eda69d5a10fd61245ee"
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
-  depends_on "llvm@9" => :build
+  depends_on "llvm" => :build
   depends_on "brotli"
   depends_on "glog"
   depends_on "grpc"
@@ -36,10 +32,16 @@ class ApacheArrow < Formula
   depends_on "thrift"
   depends_on "zstd"
 
+  # Remove in next version
+  # https://github.com/apache/arrow/pull/9542
+  patch do
+    url "https://github.com/apache/arrow/commit/06c795c948b594c16d3a48289519ce036a285aad.patch?full_index=1"
+    sha256 "732845543b67289d1d462ebf6e87117ac72104047c6747e189a76d09840bc23f"
+  end
+
   def install
-    ENV.cxx11
     # link against system libc++ instead of llvm provided libc++
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm@9"].opt_lib
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
     args = %W[
       -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=TRUE
       -DARROW_FLIGHT=ON

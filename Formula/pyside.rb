@@ -1,64 +1,78 @@
 class Pyside < Formula
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.2-src/pyside-setup-opensource-src-5.15.2.tar.xz"
-  sha256 "b306504b0b8037079a8eab772ee774b9e877a2d84bab2dbefbe4fa6f83941418"
+  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.0.1-src/pyside-setup-opensource-src-6.0.1.tar.xz"
+  sha256 "baac59a71d5d8d28badd4b484b3722500a6616684f932f0652b33a5b5feaf365"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
 
   livecheck do
-    url "https://download.qt.io/official_releases/QtForPython/pyside2/"
-    regex(%r{href=.*?PySide2[._-]v?(\d+(?:\.\d+)+)-src/}i)
+    url "https://download.qt.io/official_releases/QtForPython/pyside6/"
+    regex(%r{href=.*?PySide6[._-]v?(\d+(?:\.\d+)+)-src/}i)
   end
 
   bottle do
-    sha256 "59e5c373a67322e16ede374a28a56a33dc24e4c5915b25a6a144379be3464637" => :big_sur
-    sha256 "2dc161b5c9cd38d7502a4798bcd196ca91d69316be5474619548ec0012850f5b" => :catalina
-    sha256 "7ce52066861e3a94b3dc903e277c2c09824e89f5ce8f37490bb181175215cbc0" => :mojave
+    sha256 arm64_big_sur: "239f99f9eaca9ba85a68a805eb5279738d08bd58d5512ebf8492df84e703ee22"
+    sha256 big_sur:       "f6387aca1629b8cd43a4ddc95d309a94f8b7a6ee9cfd7c0decf11e924b73c427"
+    sha256 catalina:      "4fce7c337eed79efd48ee860b2759fe3b31144dca5824e8c36d783ac4133657e"
+    sha256 mojave:        "48aa2aee0d35ee4218560c63e6f34a9039a0f2a75e8363631be10c6600cfccc0"
   end
 
   depends_on "cmake" => :build
-  depends_on "llvm" => :build
+  depends_on "ninja" => :build
+  depends_on "llvm"
   depends_on "python@3.9"
   depends_on "qt"
 
   def install
-    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
-
-    args = %W[
-      --ignore-git
-      --parallel=#{ENV.make_jobs}
-      --install-scripts #{bin}
-    ]
-
     xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
 
-    system Formula["python@3.9"].opt_bin/"python3",
-           *Language::Python.setup_install_args(prefix),
-           "--install-lib", lib/"python#{xy}/site-packages", *args,
-           "--build-type=shiboken2"
+    args = std_cmake_args + %W[
+      -GNinja
+      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python#{xy}
+      -DCMAKE_INSTALL_RPATH=#{lib}
+    ]
 
-    system Formula["python@3.9"].opt_bin/"python3",
-           *Language::Python.setup_install_args(prefix),
-           "--install-lib", lib/"python#{xy}/site-packages", *args,
-           "--build-type=pyside2"
-
-    lib.install_symlink Dir.glob(lib/"python#{xy}/site-packages/PySide2/*.dylib")
-    lib.install_symlink Dir.glob(lib/"python#{xy}/site-packages/shiboken2/*.dylib")
+    mkdir "build" do
+      system "cmake", *args, ".."
+      system "ninja", "install"
+    end
   end
 
   test do
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import PySide2"
-    %w[
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import PySide6"
+    system Formula["python@3.9"].opt_bin/"python3", "-c", "import shiboken6"
+
+    # TODO: add modules `Position`, `Multimedia`and `WebEngineWidgets` when qt6.2 is released
+    # arm support will finish in qt6.1
+    modules = %w[
       Core
       Gui
-      Location
-      Multimedia
       Network
       Quick
       Svg
-      WebEngineWidgets
       Widgets
       Xml
-    ].each { |mod| system Formula["python@3.9"].opt_bin/"python3", "-c", "import PySide2.Qt#{mod}" }
+    ]
+
+    modules.each { |mod| system Formula["python@3.9"].opt_bin/"python3", "-c", "import PySide6.Qt#{mod}" }
+
+    pyincludes = shell_output("#{Formula["python@3.9"].opt_bin}/python3-config --includes").chomp.split
+    pylib = shell_output("#{Formula["python@3.9"].opt_bin}/python3-config --ldflags --embed").chomp.split
+    pyver = Language::Python.major_minor_version(Formula["python@3.9"].opt_bin/"python3").to_s.delete(".")
+
+    (testpath/"test.cpp").write <<~EOS
+      #include <shiboken.h>
+      int main()
+      {
+        Py_Initialize();
+        Shiboken::AutoDecRef module(Shiboken::Module::import("shiboken6"));
+        assert(!module.isNull());
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "-std=c++11", "test.cpp",
+           "-I#{include}/shiboken6", "-L#{lib}", "-lshiboken6.cpython-#{pyver}-darwin",
+           *pyincludes, *pylib, "-o", "test"
+    system "./test"
   end
 end

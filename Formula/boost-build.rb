@@ -8,19 +8,26 @@ class BoostBuild < Formula
   head "https://github.com/boostorg/build.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^boost[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a8391d8d237ba58ad70c524b21c0d9d3aef5c05b8e9b824e1a326f1d7b4785cd" => :big_sur
-    sha256 "1ff4602f5d80ab3129f451f6316fd9517503f88218eec48eb63cb244581e6ea0" => :arm64_big_sur
-    sha256 "7ed06c86c4b86828bda71d03665c4464dd76603b68a6f8cd0199afed2bf749c1" => :catalina
-    sha256 "23bc63e542ec5835f2450fbb0d472c4b0c2426759cb12ac2f0e7564a706193ca" => :mojave
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "050492679c4ceafce723aca7fa4185e1342e3cd011b1947f33466e639ece226a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3e55b292a1bb2162a3ac207897e0c38031dc65a4bd858c085ffb35dfeae8237e"
+    sha256 cellar: :any_skip_relocation, catalina:      "71b77320b7c991c74dbad21e38e875cb2b150db8fcd56113d3f74ea379343b6f"
+    sha256 cellar: :any_skip_relocation, mojave:        "ef91e139803aba94c3ce22e085d1332b78e1a820fdeb73dace0eebc194aec0a4"
   end
 
   conflicts_with "b2-tools", because: "both install `b2` binaries"
+
+  # Fix build system issues on Apple silicon. This change has aleady
+  # been merged upstream, remove this patch once it lands in a release.
+  patch do
+    url "https://github.com/boostorg/build/commit/456be0b7ecca065fbccf380c2f51e0985e608ba0.patch?full_index=1"
+    sha256 "e7a78145452fc145ea5d6e5f61e72df7dcab3a6eebb2cade6b4cfae815687f3a"
+  end
 
   def install
     system "./bootstrap.sh"
@@ -36,7 +43,15 @@ class BoostBuild < Formula
     (testpath/"Jamroot.jam").write("exe hello : hello.cpp ;")
 
     system bin/"b2", "release"
-    out = Dir["bin/darwin-*/release/hello"]
+    release = nil
+    on_macos do
+      release = "darwin-*"
+    end
+    on_linux do
+      version = IO.popen("gcc -dumpversion").read.chomp
+      release = "gcc-#{version}"
+    end
+    out = Dir["bin/#{release}/release/hello"]
     assert out.length == 1
     assert_predicate testpath/out[0], :exist?
     assert_equal "Hello world", shell_output(out[0])

@@ -7,6 +7,7 @@ class Snapcraft < Formula
       tag:      "4.4.1",
       revision: "24162f9de394d11e9debf166f59fe190c9dcff3a"
   license "GPL-3.0-only"
+  revision 1
 
   livecheck do
     url :stable
@@ -14,10 +15,10 @@ class Snapcraft < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "d591898e5dca16073006237aad418aefae520eeefc36037f37dfc6ff5c73b776" => :big_sur
-    sha256 "2e9edb07d9da2e91de1eb7d7031d6c9e6e9c2014b49ad43ecbd0c772c0c5e450" => :catalina
-    sha256 "941754cf65e07f1e73c7b0ad55638b69c86fb3f013b0c554269bda24b2299ab6" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "41d4fc2c561ca44f95718042d084c2f4aa3cf50e6db6fc8cf781c2b6be58290b"
+    sha256 cellar: :any, big_sur:       "7a237740c0b541c44fbb68558875043823ecd5c2626d0407020cbd519d55d8fe"
+    sha256 cellar: :any, catalina:      "8537fbbd83c21c8769c766f85a9327852242a0302dfbb982670ccaa5c5b664c9"
+    sha256 cellar: :any, mojave:        "3e87c18435182ab3db5b2fa15d3007651f2e39be37211b7a37085f48555b691e"
   end
 
   depends_on "libsodium"
@@ -38,8 +39,8 @@ class Snapcraft < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/05/54/3324b0c46340c31b909fcec598696aaec7ddc8c18a63f2db352562d3354c/cffi-1.14.0.tar.gz"
-    sha256 "2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"
+    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
+    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
   end
 
   resource "chardet" do

@@ -1,17 +1,15 @@
 class Tig < Formula
   desc "Text interface for Git repositories"
   homepage "https://jonas.github.io/tig/"
-  url "https://github.com/jonas/tig/releases/download/tig-2.5.1/tig-2.5.1.tar.gz"
-  sha256 "500d5d34524f6b856edd5cae01f1404d14f3b51a9a53fd7357f4cebb3d4c9e64"
-  license "GPL-2.0"
+  url "https://github.com/jonas/tig/releases/download/tig-2.5.3/tig-2.5.3.tar.gz"
+  sha256 "e528068499d558beb99a0a8bca30f59171e71f046d76ee5d945d35027d3925dc"
+  license "GPL-2.0-or-later"
 
   bottle do
-    cellar :any
-    sha256 "5a7ab3c18f11a0a2e0517648ab884ae245483f095c8397d67550cec98b661d37" => :big_sur
-    sha256 "8981a3341850eec12635de144174fab3198f73b530ed5979413334ddeabf0bf7" => :arm64_big_sur
-    sha256 "e3dd84d1883ca04013d72311c248f623a3e55fa8fa31456f5fe956ae19ccd4de" => :catalina
-    sha256 "0fbc0ae28aed58f73b1e798cbe75c8d131762c91371bd00e5a257c3a6fda7f85" => :mojave
-    sha256 "9f6983f67cbbe6d551c8ab39131ca1e91e9f3e57ffe1f1791e6c182fd017fbf8" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "e8c3f31998bc34f660d1749114aca139284588cde9f3e4c550fbb31125369e3b"
+    sha256 cellar: :any, big_sur:       "f22519146f5e4513fddc73702f00914bd9cae7afcb51004a75f8485ab373423a"
+    sha256 cellar: :any, catalina:      "e5b4e30109382f230b167339c00b7697c51b1a21a85cd070a94d5c3f462844fc"
+    sha256 cellar: :any, mojave:        "d54fd173ad117ad5a6c89df4bc8f388822150818f2e1ec0e406d25e4e67abc19"
   end
 
   head do

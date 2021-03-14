@@ -1,10 +1,15 @@
 class Sbt < Formula
   desc "Build tool for Scala projects"
   homepage "https://www.scala-sbt.org/"
-  url "https://github.com/sbt/sbt/releases/download/v1.4.6/sbt-1.4.6.tgz"
-  mirror "https://sbt-downloads.cdnedge.bluemix.net/releases/v1.4.6/sbt-1.4.6.tgz"
-  sha256 "86a6f28e79966074101066ab1aa19267d0c8d44eae21daa93c9c6056ca6f9da4"
+  url "https://github.com/sbt/sbt/releases/download/v1.4.9/sbt-1.4.9.tgz"
+  mirror "https://sbt-downloads.cdnedge.bluemix.net/releases/v1.4.9/sbt-1.4.9.tgz"
+  sha256 "95468119f7641499367330a60a4b8a6211e6ea7f8bde7d647c67b19dd8fddb6e"
   license "Apache-2.0"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle :unneeded
 

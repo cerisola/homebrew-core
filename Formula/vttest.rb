@@ -1,17 +1,20 @@
 class Vttest < Formula
   desc "Test compatibility of VT100-compatible terminals"
   homepage "https://invisible-island.net/vttest/"
-  url "https://invisible-mirror.net/archives/vttest/vttest-20200920.tgz"
-  sha256 "c9619d6bbe5804181dda18ec2901d51ce5551259565b9ccb13d5ef86b3bfb301"
+  url "https://invisible-mirror.net/archives/vttest/vttest-20210210.tgz"
+  sha256 "0f98a2e305982915f1520984c3e8698e3acd508ee210711528c89f5a7ea7f046"
   license "BSD-3-Clause"
 
+  livecheck do
+    url "https://invisible-mirror.net/archives/vttest/"
+    regex(/href=.*?vttest[._-]v?(\d+(?:[.-]\d+)*)\.t/i)
+  end
+
   bottle do
-    cellar :any_skip_relocation
-    sha256 "16cefda230b7a7bff904595e5a4b528d51c46096994a0d3077d7ae687ecdf0e5" => :big_sur
-    sha256 "0782d07617d76ad09d71834cec53a1a647d4a72cf4b35065b8c4d60220d822f9" => :arm64_big_sur
-    sha256 "18550bfedc0f4b511f56c564509b911b2a62a26b24e6b9d95093e44300be1ece" => :catalina
-    sha256 "e3bda0ee8aa89fe4197dddb7fcddaf510424b929667a029a4c05a67824e0a46b" => :mojave
-    sha256 "80644da812e6ee1c267ef9007ae5d1fb65538e732f18c1dc3851860a4e0495ad" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5bd298d05ad47843648ba8f8b8825614d647b495e4c09c34e00e4947eff9a016"
+    sha256 cellar: :any_skip_relocation, big_sur:       "bcaa7bfde1caffa18b43a357d684b92e6cfc1db34e5f77a47fb4be22f9ed2051"
+    sha256 cellar: :any_skip_relocation, catalina:      "07691c12896f2adfd4cae9ddd7f04b3fcd67ccd6727fe59b7ba79200e7f4961c"
+    sha256 cellar: :any_skip_relocation, mojave:        "a73bba40a8459292c25b2999286c29278c9789cbaed70e5382fb1f2b116a0b21"
   end
 
   def install

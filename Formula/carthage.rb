@@ -2,22 +2,21 @@ class Carthage < Formula
   desc "Decentralized dependency manager for Cocoa"
   homepage "https://github.com/Carthage/Carthage"
   url "https://github.com/Carthage/Carthage.git",
-      tag:      "0.36.0",
-      revision: "499c9cf8dafe5979e761397721f319db8bbe5859",
+      tag:      "0.37.0",
+      revision: "0668de43eb5d323d2e816eaab83677f50a8eeb24",
       shallow:  false
   license "MIT"
   head "https://github.com/Carthage/Carthage.git", shallow: false
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "39fe319f00259c08fcc6d0ca66c0b2240aa9f1b0f2d00f2a6b61d7c7d367b4f8" => :big_sur
-    sha256 "a8dda58b245591307897cc3ce4f421350f319e5c9fd66ebfa8f8d45b0d031581" => :arm64_big_sur
-    sha256 "2ea99e7a332fc6a76a1ca43b087f56534e2c658e7155c0751ffa6407c5e0a528" => :catalina
-    sha256 "334d9982e33f71850b1f467a170ab5c7c050f49a3c9f2429d7db4ac1450d975b" => :mojave
-    sha256 "962d60c36c3bd904cdd7b1ae0c7199b3de617b84ba7cfee7fdc91e46a413ccb9" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "cd0c716682b5b094b82a589fb79def4eb696f70a3fd92423923a5cb86c2c79b3"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0770b4dd885f3018031c2d27fc090a34027d5856a248f33fa2a415d58da74632"
+    sha256 cellar: :any_skip_relocation, catalina:      "8a07c198835cb179d4054313b199ce126e64bb9414eaaa91f55162a4aed63134"
+    sha256 cellar: :any_skip_relocation, mojave:        "7fb777ac169aa4cb05683f0f8bfb5b56dbb0b0e8b673df995ef2fb2bbe0d90d2"
   end
 
   depends_on xcode: ["10.0", :build]
+  depends_on :macos
 
   def install
     system "make", "prefix_install", "PREFIX=#{prefix}"

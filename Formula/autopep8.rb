@@ -3,22 +3,15 @@ class Autopep8 < Formula
 
   desc "Automatically formats Python code to conform to the PEP 8 style guide"
   homepage "https://github.com/hhatto/autopep8"
-  url "https://files.pythonhosted.org/packages/94/37/19bc53fd63fc1caaa15ddb695e32a5d6f6463b3de6b0922ba2a3cbb798c8/autopep8-1.5.4.tar.gz"
-  sha256 "d21d3901cb0da6ebd1e83fc9b0dfbde8b46afc2ede4fe32fbda0c7c6118ca094"
+  url "https://files.pythonhosted.org/packages/32/23/3bc0b99f932155c19e8b6b4f01021b735727ee6b0ccda6b8e5f99bef1b6d/autopep8-1.5.5.tar.gz"
+  sha256 "cae4bc0fb616408191af41d062d7ec7ef8679c7f27b068875ca3a9e2878d5443"
   license "MIT"
-  revision 1
-
-  livecheck do
-    url :stable
-  end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a50d7391893a20c137ba971ef2119ab63f5ceaca21d35fee6e8bda5472a6c6b2" => :big_sur
-    sha256 "ada2ccfd2662a8b51baca7ba6d8b7ac2d56615439d21f79014f2e596bbece49d" => :arm64_big_sur
-    sha256 "8ee96be12db50876b59fd7527e5ac37e78956a1e0a7afee54c37606057b0512b" => :catalina
-    sha256 "f988eb964253d539121936ee925466884bfd57adea919a642d926b5ee5c6188a" => :mojave
-    sha256 "b0105ebba5fe631f32f32a097c15ac904f363746d5945c7d16f994e7dd0cb129" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "abf487f3114b67ebfe0760421a3df96e948fbcb2ec378cd2fcab08e2d73aaf49"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0d9286b07276cd78d5fb31ed9bd126b5675ffb9b8509793f17d49a571e44b49b"
+    sha256 cellar: :any_skip_relocation, catalina:      "7445d78c6c97dad32d841a2afaa2f655d1514b72eca5650460d1d1a8f175e1fe"
+    sha256 cellar: :any_skip_relocation, mojave:        "b3ea685a6f92eb1c2b283a38c54a1155fe06fc3f0f7374c8a99ffcbd483286c8"
   end
 
   depends_on "python@3.9"
@@ -29,8 +22,8 @@ class Autopep8 < Formula
   end
 
   resource "toml" do
-    url "https://files.pythonhosted.org/packages/da/24/84d5c108e818ca294efe7c1ce237b42118643ce58a14d2462b3b2e3800d5/toml-0.10.1.tar.gz"
-    sha256 "926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"
+    url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
+    sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
   end
 
   def install

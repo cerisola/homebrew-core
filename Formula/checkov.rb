@@ -4,33 +4,32 @@ class Checkov < Formula
   desc "Prevent cloud misconfigurations during build-time for IaC tools"
   homepage "https://www.checkov.io/"
   # checkov should only be updated every 15 releases on multiples of 15
-  url "https://files.pythonhosted.org/packages/ec/07/a83bf966d44dcae1c5b96345c6847cc6f01804f8013965a1dedd6980998e/checkov-1.0.675.tar.gz"
-  sha256 "1c9a6cd31ff8668280b2f94a60e5cb15ec5a340f59d7c2e1d8ffc77c9c0ef289"
+  url "https://files.pythonhosted.org/packages/52/00/0abbc400cc72879a931e6afbea91211bf47016da3d81187fee8b06b13ec2/checkov-1.0.825.tar.gz"
+  sha256 "65f8d9f701679737570b5a16f8d171d6e56fe965165322af0d82b118fe706234"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b3a951ed14d34bf40a7a7d5f209736029e7ac4837dc729d74e253800f9d138d7" => :big_sur
-    sha256 "984d930e95385324fbf823000db923287075ea95ef5001db07861d3a441e3a46" => :arm64_big_sur
-    sha256 "86f8dadb5a6351e7bada530da5eda2d4ed8ed2f45c1cb63cf9a8afca088c453b" => :catalina
-    sha256 "ff252f96d4fb15a57a6b32f30683fd4eec5afa446f0f3413b948a347568fb2de" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "708e38c5d4c7e3ca3b930bd5284ad437d07731871ede97d25afdc2085d013370"
+    sha256 cellar: :any_skip_relocation, big_sur:       "625cacdde637cef61c190657e77c3f5921ff9f5d9fccdc14b1f95aabb8239be6"
+    sha256 cellar: :any_skip_relocation, catalina:      "fa5ec7ba3a10f03396acba3ef370d3a3a08ad00eb8b5b210ef81ce33270f8bab"
+    sha256 cellar: :any_skip_relocation, mojave:        "6f18977f74649798f8ea61415599cfa84965e5ddec43cdfa21953c823ea19992"
   end
 
   depends_on "python@3.9"
 
   resource "bc-python-hcl2" do
-    url "https://files.pythonhosted.org/packages/2e/dd/4f826a3aaa2f6b64f055e9294c797f6b1a9b8035ac07b6fd943684c1dd55/bc-python-hcl2-0.3.11.tar.gz"
-    sha256 "559848d68276103646cb3de223afca62f26ae0119a7f347eadc4a01ea9540eb0"
+    url "https://files.pythonhosted.org/packages/88/3b/864cc7c4793ec8874a02f293d40f36371b6dbcff414e108a72c95069fd79/bc-python-hcl2-0.3.18.tar.gz"
+    sha256 "768c1a3c00db3cb9be7bd1e08c20813cf1e86d4a3cc47a76f7f97172d7b7d432"
   end
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/59/01/b16cde7f316d90e67634edfc4d626fbcb188f8824c28b1e03a95b49c5aba/boto3-1.16.41.tar.gz"
-    sha256 "0d84e86ee02e32c86d30e35de9680303a480873dd2e99dcdc83486b92dffb03c"
+    url "https://files.pythonhosted.org/packages/0d/2f/734b2dd3795421b0ee44f1c457681a134b1c2a5b975d9a8033260c76a09a/boto3-1.17.27.tar.gz"
+    sha256 "fa41987f9f71368013767306d9522b627946a01b4843938a26fb19cc8adb06c0"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/f9/eb/635846c4879cfb5afe6a5441a3d8e64acd343f6a3879411b890e91243947/botocore-1.19.41.tar.gz"
-    sha256 "54a8a59497a83ba2d89fb94f86dd07b622d7b5f1d6e9925222ebbc45eb0d63ac"
+    url "https://files.pythonhosted.org/packages/5d/2a/c9d97a542f972b908d9b9e22124fad40aa86855c05fe50992fe3fce9b291/botocore-1.20.27.tar.gz"
+    sha256 "4477803f07649f4d80b17d054820e7a09bb2cb0792d0decc2812108bc3759c4a"
   end
 
   resource "certifi" do
@@ -64,8 +63,8 @@ class Checkov < Formula
   end
 
   resource "GitPython" do
-    url "https://files.pythonhosted.org/packages/85/3d/ee9aa9c77a3c0e9074461d2d8da86c3564ed96abd28fa099dc3e05338a72/GitPython-3.1.11.tar.gz"
-    sha256 "befa4d101f91bad1b632df4308ec64555db684c360bd7d2130b4807d49ce86b8"
+    url "https://files.pythonhosted.org/packages/5f/f2/ea3242d97695451ab1521775a85253e002942d2c8f4519ae1172c0f5f979/GitPython-3.1.14.tar.gz"
+    sha256 "be27633e7509e58391f10207cd32b2a6cf5b908f92d9cd30da2e514e1137af61"
   end
 
   resource "idna" do
@@ -78,19 +77,20 @@ class Checkov < Formula
     sha256 "b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"
   end
 
+  # only doing this because junit-xml source is not available in PyPI for v1.9
   resource "junit-xml" do
-    url "https://files.pythonhosted.org/packages/a6/2a/f8d5aab80bb31fcc789d0f2b34b49f08bd6121cd8798d2e37f416df2b9f8/junit-xml-1.8.tar.gz"
-    sha256 "602f1c480a19d64edb452bf7632f76b5f2cb92c1938c6e071dcda8ff9541dc21"
+    url "https://github.com/kyrus/python-junit-xml.git",
+        revision: "4bd08a272f059998cedf9b7779f944d49eba13a6"
   end
 
   resource "lark-parser" do
-    url "https://files.pythonhosted.org/packages/34/b8/aa7d6cf2d5efdd2fcd85cf39b33584fe12a0f7086ed451176ceb7fb510eb/lark-parser-0.7.8.tar.gz"
-    sha256 "26215ebb157e6fb2ee74319aa4445b9f3b7e456e26be215ce19fdaaa901c20a4"
+    url "https://files.pythonhosted.org/packages/0d/a5/60580c84bbc28f3952aec8f718e7311eb679a825f9c1d424d98a5542d7c0/lark-parser-0.10.1.tar.gz"
+    sha256 "42f367612a1bbc4cf9d8c8eb1b209d8a9b397d55af75620c9e6f53e502235996"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/d7/c5/e81b9fb8033fe78a2355ea7b1774338e1dca2c9cbd2ee140211a9e6291ab/packaging-20.8.tar.gz"
-    sha256 "78598185a7008a470d64526a8059de9aaa449238f280fc9eb6b13ba6c4109093"
+    url "https://files.pythonhosted.org/packages/86/3c/bcd09ec5df7123abcf695009221a52f90438d877a2f1499453c6938f5728/packaging-20.9.tar.gz"
+    sha256 "5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5"
   end
 
   resource "pyparsing" do
@@ -104,8 +104,8 @@ class Checkov < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
-    sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
+    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
+    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
   end
 
   resource "requests" do
@@ -114,8 +114,8 @@ class Checkov < Formula
   end
 
   resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/50/de/2b688c062107942486c81a739383b1432a72717d9a85a6a1a692f003c70c/s3transfer-0.3.3.tar.gz"
-    sha256 "921a37e2aefc64145e7b73d50c71bb4f26f46e4c9f414dc648c6245ff92cf7db"
+    url "https://files.pythonhosted.org/packages/08/e1/3ee2096ebaeeb8c186d20ed16c8faf4a503913e5c9a0e14cd6b8ffc405a3/s3transfer-0.3.4.tar.gz"
+    sha256 "7fdddb4f22275cf1d32129e21f056337fd2a80b6ccef1664528145b72c49e6d2"
   end
 
   resource "semantic-version" do
@@ -129,13 +129,13 @@ class Checkov < Formula
   end
 
   resource "smmap" do
-    url "https://files.pythonhosted.org/packages/75/fb/2f594e5364f9c986b2c89eb662fc6067292cb3df2b88ae31c939b9138bb9/smmap-3.0.4.tar.gz"
-    sha256 "9c98bbd1f9786d22f14b3d4126894d56befb835ec90cef151af566c7e19b5d24"
+    url "https://files.pythonhosted.org/packages/2b/6f/d48bbed5aa971943759f4ede3f12dca40aa7faa44f22bad483de86780508/smmap-3.0.5.tar.gz"
+    sha256 "84c2751ef3072d4f6b2785ec7ee40244c6f45eb934d9e543e2c51f1bd3d54c50"
   end
 
   resource "tabulate" do
-    url "https://files.pythonhosted.org/packages/57/6f/213d075ad03c84991d44e63b6516dd7d185091df5e1d02a660874f8f7e1e/tabulate-0.8.7.tar.gz"
-    sha256 "db2723a20d04bcda8522165c73eea7c300eda74e0ce852d9022e0159d7895007"
+    url "https://files.pythonhosted.org/packages/ae/3d/9d7576d94007eaf3bb685acbaaec66ff4cdeb0b18f1bf1f17edbeebffb0a/tabulate-0.8.9.tar.gz"
+    sha256 "eb1d13f25760052e8931f2ef80aaf6045a6cceb47514db8beab24cded16f13a7"
   end
 
   resource "termcolor" do
@@ -144,8 +144,8 @@ class Checkov < Formula
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/80/e9/a51c724ce67ff24a18861af5b0c6f9468e4b4ecdbd53fd43a9288b856372/tqdm-4.54.1.tar.gz"
-    sha256 "38b658a3e4ecf9b4f6f8ff75ca16221ae3378b2e175d846b6b33ea3a20852cf5"
+    url "https://files.pythonhosted.org/packages/ef/58/60cc1e9af5714d1b86062f6dc00c5dd6973c902da6259f930b9c6e7a3430/tqdm-4.59.0.tar.gz"
+    sha256 "d666ae29164da3e517fcf125e41d4fe96e5bb375cd87ff9763f6b38b5592fe33"
   end
 
   resource "update-checker" do
@@ -154,8 +154,8 @@ class Checkov < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/29/e6/d1a1d78c439cad688757b70f26c50a53332167c364edb0134cadd280e234/urllib3-1.26.2.tar.gz"
-    sha256 "19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08"
+    url "https://files.pythonhosted.org/packages/d7/8d/7ee68c6b48e1ec8d41198f694ecdc15f7596356f2ff8e6b1420300cf5db3/urllib3-1.26.3.tar.gz"
+    sha256 "de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"
   end
 
   def install

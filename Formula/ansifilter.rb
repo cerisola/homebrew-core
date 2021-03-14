@@ -1,8 +1,8 @@
 class Ansifilter < Formula
   desc "Strip or convert ANSI codes into HTML, (La)Tex, RTF, or BBCode"
   homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
-  url "http://www.andre-simon.de/zip/ansifilter-2.17.tar.bz2"
-  sha256 "5985beb39c960a3cb5b0e70d6a121687043dc8458e5783777ff250303cccc42f"
+  url "http://www.andre-simon.de/zip/ansifilter-2.18.tar.bz2"
+  sha256 "66cf017d36a43d5f6ae20609ce3b58647494ee6c0e41fc682c598bffce7d7d39"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,12 +11,10 @@ class Ansifilter < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "4eb6f695e2770188371433e28574888c0e869a94eed6384eb346dea9447ac24d" => :big_sur
-    sha256 "d5b4b56e737b3dd6bea07aeca8cb06cce2bd5b2c92923e4e065f8cc8e85a0cc5" => :arm64_big_sur
-    sha256 "393daa46a9bc661060ca7132feb7d635cc08ad828bd3512e4d27d29a315a26b3" => :catalina
-    sha256 "8a1021a90a26783b1b2127dadac4dcd7d50f0c3e9e8d412a6ee2b0b61160088d" => :mojave
-    sha256 "a6b73540c7ed94ba539e24ade74aaf0281b1895184766085dc0af5b7923a1180" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "604a45cdc202a4cb1ee084a350b8ad989f135e29d1d4153a9c9e20818da8e31e"
+    sha256 cellar: :any_skip_relocation, big_sur:       "bce4e87b0f16217d84a01e664c6e96c530d561da301912bfd9e39ec7ff584a74"
+    sha256 cellar: :any_skip_relocation, catalina:      "95487d963289a6fbc97a933a492a8f82ae88ad7087ca525d710edea34e100f0a"
+    sha256 cellar: :any_skip_relocation, mojave:        "06193d389cb3f1ba85f07fda25e0f17ac732efd289597a6ea2e6ce440123bb5c"
   end
 
   def install

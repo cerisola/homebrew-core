@@ -1,22 +1,16 @@
 class Binutils < Formula
   desc "GNU binary tools for native development"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
-  url "https://ftp.gnu.org/gnu/binutils/binutils-2.35.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.35.1.tar.xz"
-  sha256 "3ced91db9bf01182b7e420eab68039f2083aed0a214c0424e257eae3ddee8607"
+  url "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.xz"
+  mirror "https://ftpmirror.gnu.org/binutils/binutils-2.36.1.tar.xz"
+  sha256 "e81d9edf373f193af428a0f256674aea62a9d74dfe93f65192d4eae030b0f3b0"
   license all_of: ["GPL-2.0-or-later", "GPL-3.0-or-later", "LGPL-2.0-or-later", "LGPL-3.0-only"]
-  revision 1
-
-  livecheck do
-    url :stable
-  end
 
   bottle do
-    sha256 "6ea1be54245d0b0566c10bae2f8b52820fd80d832cd47d7414b82681157c1612" => :big_sur
-    sha256 "911103dd301bcd70ae64882fb6c726b7ef11fb1fec21b99a2471d7071240750d" => :arm64_big_sur
-    sha256 "6f00f0f0fdd76662b39e851d694c7b269bb7a4931154c4b637b744525ba3fffc" => :catalina
-    sha256 "b0a8a94f858655bea9b4af4adc278fb96d3778fe6aadbb48429158a479821c3d" => :mojave
-    sha256 "e5eb466f9073bbcbd906edf23c04ea94942a9faefe8deba595cf95831150dbd8" => :x86_64_linux
+    sha256 arm64_big_sur: "f0c23d8672a107f94bb46eec9cae654b1a9abf663e6d25ec82467f0dfa45dff1"
+    sha256 big_sur:       "993ab1e0149a47224c4e7063be178ff5d551b2ea6d2a79805f03ca40cd5f1279"
+    sha256 catalina:      "d3112607a4820d58df8d1fc0fd3ac998ba9ba8563245e72c9e197c50b333748c"
+    sha256 mojave:        "06de25d200fd389ee4157a278abe261e20c18f8f6ad28d9519a4a4001b5b027e"
   end
 
   keg_only :shadowed_by_macos, "Apple's CLT provides the same tools"
@@ -36,7 +30,9 @@ class Binutils < Formula
                           "--enable-64-bit-bfd",
                           "--enable-gold",
                           "--enable-plugins",
-                          "--enable-targets=all"
+                          "--enable-targets=all",
+                          "--with-system-zlib",
+                          "--disable-nls"
     system "make"
     system "make", "install"
     bin.install_symlink "ld.gold" => "gold"

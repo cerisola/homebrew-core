@@ -1,21 +1,21 @@
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/1.44.1.tar.gz"
-  sha256 "979bbbbd20b90695acb6bb82a94400b2e485c4406a5e0a7be43419bf223dee91"
+  url "https://github.com/bitrise-io/bitrise/archive/1.45.1.tar.gz"
+  sha256 "ce42200fdafe8257b01d08737545e86b3fb64c8462d08bf2a1d6b392b2b432ce"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "fb6c9356eb5e2943c6b69510abf39a6f76a8b0df4a129683913960e1624c5284" => :big_sur
-    sha256 "690a5b3322c47bed6730e1853d19f7a258e73ed8cfa192461be43bc3c5f68489" => :catalina
-    sha256 "ebe928f97d9533607d1a8d70b9dc9e35a0c77af1200962cbafcbfca59e9cfee9" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "a44a0c7700008d453998f3013f725131e8c24ec46f5644b1a215e7c633e10ca8"
+    sha256 cellar: :any_skip_relocation, catalina: "9fbb0ab7bf0dd83e0878fa6cb686cf89629f7b72ca1c3026930df383877846ce"
+    sha256 cellar: :any_skip_relocation, mojave:   "2a2128afb4fe1614cd807d23f12bf775616bc471d412167540b5c1a17bb4c3be"
   end
 
   depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO111MODULE"] = "auto"
 
     # Install bitrise
     bitrise_go_path = buildpath/"src/github.com/bitrise-io/bitrise"

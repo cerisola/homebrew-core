@@ -4,15 +4,14 @@ class Libssh < Formula
   url "https://www.libssh.org/files/0.9/libssh-0.9.5.tar.xz"
   sha256 "acffef2da98e761fc1fd9c4fddde0f3af60ab44c4f5af05cd1b2d60a3fa08718"
   license "LGPL-2.1-or-later"
+  revision 1
   head "https://git.libssh.org/projects/libssh.git"
 
   bottle do
-    cellar :any
-    sha256 "fe61461e16b891d6e8f52ee03492f0f84de879f80d51d36c86dbfac366608495" => :big_sur
-    sha256 "8c2e8ae24564323b6e99068492a7bc029986e9f757e676234a516f373ff1ff19" => :arm64_big_sur
-    sha256 "e990bf70a0eea0f91970ab4e8ffe414cfad55fcba459a7a08d704a3b26200cd3" => :catalina
-    sha256 "9f7af086488d919155cd0c72a66a914b27d278a74d6231d77b07bbafff25ec33" => :mojave
-    sha256 "f6615bdb785f88763212f4b0d393dc302237353abcf299d4d6151531ecbf13f4" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "a51771f2d0aad1f496cece28cd55bf8e9577e68acc57e3c8b2fe2e5c16b82917"
+    sha256 cellar: :any, big_sur:       "ba9752b774a055a0df12b12cb76c8faed66b13de0f8ebbb8d415dae9f21a899d"
+    sha256 cellar: :any, catalina:      "85e25fa108135c48e655b4d26fb716430bea5795e13a7e61011d34c3f75be2dd"
+    sha256 cellar: :any, mojave:        "d5ae563dad7c55f63a2509838a98df08643b13c07e1febd9ddeddf79ecfe043a"
   end
 
   depends_on "cmake" => :build
@@ -22,10 +21,11 @@ class Libssh < Formula
 
   def install
     mkdir "build" do
-      system "cmake", "..", "-DWITH_STATIC_LIB=ON",
+      system "cmake", "..", "-DBUILD_STATIC_LIB=ON",
                             "-DWITH_SYMBOL_VERSIONING=OFF",
                             *std_cmake_args
       system "make", "install"
+      lib.install "src/libssh.a"
     end
   end
 

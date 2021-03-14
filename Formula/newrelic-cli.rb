@@ -1,17 +1,16 @@
 class NewrelicCli < Formula
   desc "Command-line interface for New Relic"
   homepage "https://github.com/newrelic/newrelic-cli"
-  url "https://github.com/newrelic/newrelic-cli/archive/v0.18.9.tar.gz"
-  sha256 "fc55baa87eb93f6121166bb23023ddd98dc89cc3b21ee0e0efe84b5a7f0cb0c9"
+  url "https://github.com/newrelic/newrelic-cli/archive/v0.19.1.tar.gz"
+  sha256 "f7b79b0a2897ce1e4edf31dd60fb8b16e4461fdf81a4bf88de58b217d90a14e7"
   license "Apache-2.0"
   head "https://github.com/newrelic/newrelic-cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "dc541a08eaa2fe9d5ec031fb9bb23b476e360a69a5538cb68ff4da75e60adb0c" => :big_sur
-    sha256 "f1a1320499ffe06872cc6ea8ca090da29920a9a74f5c74b7bc67f8fcfb9c1038" => :arm64_big_sur
-    sha256 "a2774e8e942b15b84833fa85d15c00e3d99ec7d4ea5a512f55fde01854efaf6c" => :catalina
-    sha256 "164f1be779026e6db5a1a47a4abbc71a836d1e521194addf78542f392c19f4d1" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d3a6233dcc3522716bf522a830e9746d85fe06ef40397e03d95651bb0ddd35d7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "7f0dfa0b5906cc88327c8325ed1b3bf55c74cd9c726793382eff06bab85eadd4"
+    sha256 cellar: :any_skip_relocation, catalina:      "3bb778dff511b682a317d40e62e7971b0f6783bb19b69c1ef02fb74d0757c5fd"
+    sha256 cellar: :any_skip_relocation, mojave:        "e911bed59226aec230178db100ab3803035984a9d408983c235d027a0ae4e150"
   end
 
   depends_on "go" => :build
@@ -28,9 +27,9 @@ class NewrelicCli < Formula
   end
 
   test do
-    assert_match /pluginDir/, shell_output("#{bin}/newrelic config list")
-    assert_match /logLevel/, shell_output("#{bin}/newrelic config list")
-    assert_match /sendUsageData/, shell_output("#{bin}/newrelic config list")
+    assert_match "pluginDir", shell_output("#{bin}/newrelic config list")
+    assert_match "logLevel", shell_output("#{bin}/newrelic config list")
+    assert_match "sendUsageData", shell_output("#{bin}/newrelic config list")
     assert_match version.to_s, shell_output("#{bin}/newrelic version 2>&1")
   end
 end

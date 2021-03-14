@@ -1,22 +1,20 @@
 class Libomp < Formula
   desc "LLVM's OpenMP runtime library"
   homepage "https://openmp.llvm.org/"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/openmp-11.0.0.src.tar.xz"
-  sha256 "2d704df8ca67b77d6d94ebf79621b0f773d5648963dd19e0f78efef4404b684c"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/openmp-11.1.0.src.tar.xz"
+  sha256 "d187483b75b39acb3ff8ea1b7d98524d95322e3cb148842957e9b0fbb866052e"
   license "MIT"
 
   livecheck do
     url "https://llvm.org/"
-    regex(/LLVM (\d+.\d+.\d+)/i)
+    regex(/LLVM (\d+\.\d+\.\d+)/i)
   end
 
   bottle do
-    cellar :any
-    sha256 "e33301d4141f0cff471442679b1ec2e858288f9e280b867d02c185f5cc69a12a" => :big_sur
-    sha256 "ecd6b26d43f875348d755e35e48108e85a2a5263e1a2e9d59c71c4a2acc926b5" => :arm64_big_sur
-    sha256 "a882de3c79dd02d1fd9c622fb8e667d97e7aa0319f2600ec5ad06e5e843a66c6" => :catalina
-    sha256 "0716db5d51938b2fae8ab89c71db9a5786849b84c3924e215916f889f7e9e4c1" => :mojave
-    sha256 "421af56c2bd2980ac04213b9e772ec9593e23737c2816cfca829f22db388cb58" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "f87f7841eb8b72650fa771af39642361aec371ea1a1f94f081ecc0e8168a0e75"
+    sha256 cellar: :any, big_sur:       "ec279162f0062c675ea96251801a99c19c3b82f395f1598ae2f31cd4cbd9a963"
+    sha256 cellar: :any, catalina:      "45a5aa653bd45bd5ff5858580b1a4670c4b5a51ea29d68d45a53f72f56010e05"
+    sha256 cellar: :any, mojave:        "aa823f2fef52a032496f4f4c42925ab86244087f81352d04ea8d7b594185fee1"
   end
 
   depends_on "cmake" => :build

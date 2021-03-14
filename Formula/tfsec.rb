@@ -1,8 +1,8 @@
 class Tfsec < Formula
   desc "Static analysis powered security scanner for your terraform code"
   homepage "https://github.com/tfsec/tfsec"
-  url "https://github.com/tfsec/tfsec/archive/v0.36.10.tar.gz"
-  sha256 "9859f4764c2564639f1a11901af8add7d6215d1d3237811a28f85b85c2b6a091"
+  url "https://github.com/tfsec/tfsec/archive/v0.39.6.tar.gz"
+  sha256 "c8e56f367b9978914693db7ca4dec684af2e87660191fde628486322b11b4c3a"
   license "MIT"
 
   livecheck do
@@ -11,19 +11,13 @@ class Tfsec < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "8dc0f3c4bed705438c27a83139ac837410c81300729ed2a6dc10fa0e2583d741" => :big_sur
-    sha256 "448b2db67f018909cec7dbee800c507d5fa5226a4d75bb8ad29c27013ab37d8e" => :arm64_big_sur
-    sha256 "2817724ee161f0dbd90ed8bbb8758d0419425b196b5ec0cd7d90370fea761e42" => :catalina
-    sha256 "1635b24a6daf72e43a28c5efe885d7ea1ebae2ed07ba692cde66e10e1f757d25" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "10ff5a738bc854a2afefdeb237d3454dbcb1926678dfcdc0a20a0bbfffb2258a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "60f7b72fc31c2b3ff284fef3a6780e4a0d230bf259c41402c5385215bf5bd582"
+    sha256 cellar: :any_skip_relocation, catalina:      "1787a26a4a8d632cfa3c5c9b4ebcd7becc3ef629a8feff58169a326f3465f072"
+    sha256 cellar: :any_skip_relocation, mojave:        "f9a23aa6d12487110c4dd7729aacde806656ce10e3a7b9914c5a5c6163cd5500"
   end
 
   depends_on "go" => :build
-
-  resource "testfile" do
-    url "https://raw.githubusercontent.com/tfsec/tfsec/2d9b76a/example/brew-validate.tf"
-    sha256 "3ef5c46e81e9f0b42578fd8ddce959145cd043f87fd621a12140e99681f1128a"
-  end
 
   def install
     system "scripts/install.sh", "v#{version}"
@@ -31,8 +25,20 @@ class Tfsec < Formula
   end
 
   test do
-    resource("testfile").stage do
-      assert_match "No problems detected!", shell_output("#{bin}/tfsec .")
-    end
+    (testpath/"good/brew-validate.tf").write <<~EOS
+      resource "aws_alb_listener" "my-alb-listener" {
+        port     = "443"
+        protocol = "HTTPS"
+      }
+    EOS
+    (testpath/"bad/brew-validate.tf").write <<~EOS
+      }
+    EOS
+
+    good_output = shell_output("#{bin}/tfsec #{testpath}/good")
+    assert_match "No problems detected!", good_output
+    assert_no_match(/WARNING/, good_output)
+    bad_output = shell_output("#{bin}/tfsec #{testpath}/bad 2>&1")
+    assert_match "WARNING", bad_output
   end
 end

@@ -1,22 +1,22 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-20.12.1.tar.xz"
-  sha256 "d0aa2586c0a4296c775f0d2045f28bb95a694113fc995f95350faa12930f7b35"
+  url "https://poppler.freedesktop.org/poppler-21.03.0.tar.xz"
+  sha256 "fd51ead4aac1d2f4684fa6e7b0ec06f0233ed21667e720a4e817e4455dd63d27"
   license "GPL-2.0-only"
+  revision 1
   head "https://gitlab.freedesktop.org/poppler/poppler.git"
 
   livecheck do
     url :homepage
-    regex(/href=.*?poppler[._-]v?(\d+(?:\.\d+)*)\.t/i)
+    regex(/href=.*?poppler[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    rebuild 1
-    sha256 "58ae58c7b1f1e94dd59ebb379fb03a70cc68aa4708ee430141d8c53723b844cc" => :big_sur
-    sha256 "a8c7860a3aa05708e6f07a9774e7188ca9624425fb70c481f644eef8e2087b53" => :arm64_big_sur
-    sha256 "a27a7586dac083c0afb44e4d46f8637f48f0b46dc7307b6e03fa1c09f9887094" => :catalina
-    sha256 "2c522d1c0e284a8c7ee4fe728f012ed6d2bbc7269ffe516a20eaae072a56feb4" => :mojave
+    sha256 arm64_big_sur: "90b6ef0d795977a282db75c4a5caed550d16f88ef41d6e290b3ede2d10e25d0e"
+    sha256 big_sur:       "437360eb64c1bbbe8b403f9a89d8bbbb46daeb5c9e3e94315efbc74605c0eac0"
+    sha256 catalina:      "551f5398999e8de473adaf26e9cba9a07871cfe3f488778cae3cdaffd25ba7db"
+    sha256 mojave:        "d672b3810ad4f8ef2fef83ac3ab9b28e6ea9487090a0f5796579c90aba5ee156"
   end
 
   depends_on "cmake" => :build
@@ -33,13 +33,10 @@ class Poppler < Formula
   depends_on "little-cms2"
   depends_on "nss"
   depends_on "openjpeg"
-  depends_on "qt"
+  depends_on "qt@5"
 
+  uses_from_macos "gperf" => :build
   uses_from_macos "curl"
-
-  on_linux do
-    depends_on "gperf"
-  end
 
   conflicts_with "pdftohtml", "pdf2image", "xpdf",
     because: "poppler, pdftohtml, pdf2image, and xpdf install conflicting executables"
@@ -57,6 +54,7 @@ class Poppler < Formula
       -DENABLE_CMS=lcms2
       -DENABLE_GLIB=ON
       -DENABLE_QT5=ON
+      -DENABLE_QT6=OFF
       -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
       -DWITH_GObjectIntrospection=ON
     ]

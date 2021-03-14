@@ -1,8 +1,8 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/8.0/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.22.tar.gz"
-  sha256 "ba765f74367c638d7cd1c546c05c14382fd997669bcd9680278e907f8d7eb484"
+  url "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-boost-8.0.23.tar.gz"
+  sha256 "1c7a424303c134758e59607a0b3172e43a21a27ff08e8c88c2439ffd4fc724a5"
   license "GPL-2.0-only"
   revision 1
 
@@ -12,16 +12,13 @@ class Mysql < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 "4032192bba2d0aa3433573019c8b4b6566e9c0aa2f69a493e141cc15f53de63b" => :big_sur
-    sha256 "2ec33bf3278faa988e8586c93a27aa87cb58fe7d4ed9a84a2e64d80b55c8d35f" => :arm64_big_sur
-    sha256 "42239a4ab5d73f7ba533cefd0065566e9a68ae8faf977966103b20f80c1fe9d5" => :catalina
-    sha256 "ba3267e7fad1b6e2c991a1dc40d2b4177c554a6ae7734fc7c33c3cc26f4d327e" => :mojave
+    sha256 arm64_big_sur: "813a67f5351719ddd2cd6977e842c1cf35880e9a2bc51095f37cb628d97282eb"
+    sha256 big_sur:       "9e9e4b5bfcad47adfbf7f2af7ebf2c2cc7411d2fb88a4a5155eaa2d919e899a1"
+    sha256 catalina:      "a5533c5f81c6651efee6f47e36bd51ac1e720cc70bd7403c1ac50af4eab33c7f"
+    sha256 mojave:        "23452cab50b70f8a0576001853665bdfff41df3b1c61b28d778dcecc153fb4d1"
   end
 
   depends_on "cmake" => :build
-  # GCC is not supported either, so exclude for El Capitan.
-  depends_on macos: :sierra if DevelopmentTools.clang_build_version == 800
   depends_on "openssl@1.1"
   depends_on "protobuf"
 
@@ -29,13 +26,6 @@ class Mysql < Formula
 
   conflicts_with "mariadb", "percona-server",
     because: "mysql, mariadb, and percona install the same binaries"
-
-  # https://bugs.mysql.com/bug.php?id=86711
-  # https://github.com/Homebrew/homebrew-core/pull/20538
-  fails_with :clang do
-    build 800
-    cause "Wrong inlining with Clang 8.0, see MySQL Bug #86711"
-  end
 
   def datadir
     var/"mysql"
@@ -104,10 +94,12 @@ class Mysql < Formula
   end
 
   def post_install
-    return if ENV["CI"]
+    # Make sure the var/mysql directory exists
+    (var/"mysql").mkpath
 
-    # Make sure the datadir exists
-    datadir.mkpath
+    # Don't initialize database, it clashes when testing other MySQL-like implementations.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     unless (datadir/"mysql/general_log.CSM").exist?
       ENV["TMPDIR"] = nil
       system bin/"mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",

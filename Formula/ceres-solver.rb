@@ -1,35 +1,32 @@
 class CeresSolver < Formula
   desc "C++ library for large-scale optimization"
   homepage "http://ceres-solver.org/"
-  url "http://ceres-solver.org/ceres-solver-1.14.0.tar.gz"
-  sha256 "4744005fc3b902fed886ea418df70690caa8e2ff6b5a90f3dd88a3d291ef8e8e"
-  revision 14
+  url "http://ceres-solver.org/ceres-solver-2.0.0.tar.gz"
+  sha256 "10298a1d75ca884aa0507d1abb0e0f04800a92871cd400d4c361b56a777a7603"
+  license "BSD-3-Clause"
   head "https://ceres-solver.googlesource.com/ceres-solver.git"
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "b361ff56ef92ad9f331eb3555675c41dcda52bb1f00d0918c09a182207689cf4" => :big_sur
-    sha256 "73ed3e90a8e53fc6f26826138849ca6083e08a904e693efecc44963f182a5e0d" => :arm64_big_sur
-    sha256 "e54c5be54b9a2e8d0af4860148d6e7d7c44edca7ce1c397b54a776c1730f03cd" => :catalina
-    sha256 "0a091d6adf630d059340d1c4e69836fc9ecbbac804b23f855095ad9b0473a6b0" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "6a4b388e2ea9cf7b90477cc7ffa4b19214a93e015b10b75a395d961004dd7f67"
+    sha256 cellar: :any, big_sur:       "d07b5cedb61f89df0ea50940be78e5bc7f85148b37621acecb0a92a839abb101"
+    sha256 cellar: :any, catalina:      "899895707bdc81ab3f52e9cf3ac06ac9f39139fcb9d171c09181b13cc8510b83"
+    sha256 cellar: :any, mojave:        "af829a0467fab9ec10f84b5277724dc977b23f57abf4caa5705199629b8bade9"
   end
 
-  depends_on "cmake"
+  depends_on "cmake" => [:build, :test]
   depends_on "eigen"
   depends_on "gflags"
   depends_on "glog"
   depends_on "metis"
+  depends_on "openblas"
   depends_on "suite-sparse"
+  depends_on "tbb"
 
   def install
     system "cmake", ".", *std_cmake_args,
                     "-DBUILD_SHARED_LIBS=ON",
-                    "-DEIGEN_INCLUDE_DIR=#{Formula["eigen"].opt_include}/eigen3",
-                    "-DMETIS_LIBRARY=#{Formula["metis"].opt_lib}/#{shared_library("libmetis")}",
-                    "-DGLOG_INCLUDE_DIR_HINTS=#{Formula["glog"].opt_include}",
-                    "-DGLOG_LIBRARY_DIR_HINTS=#{Formula["glog"].opt_lib}",
-                    "-DTBB=OFF", "-DBUILD_EXAMPLES=OFF", "-DLIB_SUFFIX=''"
+                    "-DBUILD_EXAMPLES=OFF",
+                    "-DLIB_SUFFIX=''"
     system "make"
     system "make", "install"
     pkgshare.install "examples", "data"
@@ -39,12 +36,11 @@ class CeresSolver < Formula
   test do
     cp pkgshare/"examples/helloworld.cc", testpath
     (testpath/"CMakeLists.txt").write <<~EOS
-      cmake_minimum_required(VERSION 2.8)
+      cmake_minimum_required(VERSION 3.5)
       project(helloworld)
       find_package(Ceres REQUIRED)
-      include_directories(${CERES_INCLUDE_DIRS})
       add_executable(helloworld helloworld.cc)
-      target_link_libraries(helloworld ${CERES_LIBRARIES})
+      target_link_libraries(helloworld Ceres::ceres)
     EOS
 
     system "cmake", "-DCeres_DIR=#{share}/Ceres", "."

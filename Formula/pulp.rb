@@ -7,16 +7,12 @@ class Pulp < Formula
   sha256 "695da1581389d060810ed1a5962ab7e53696db8493b224fa7dc2358f255b8b53"
   license "LGPL-3.0"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
     rebuild 1
-    sha256 "b8171d3e267d32cb7c785ee72fb8a1dbe96d7a66a7d5311a23b314a0e742156c" => :catalina
-    sha256 "9ee409ce24c46c02db3dade7b2942d8990708de840e03e0a80d5f2498a9bc46e" => :mojave
-    sha256 "56016abc98b66356ad0d58c0ea951de4da772abca1f12fd2c3635a7700e36c63" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:     "49a599ab8add4444e90892ea7975bafbf1012e23f3d592c8eee3c8476b933c96"
+    sha256 cellar: :any_skip_relocation, catalina:    "b8171d3e267d32cb7c785ee72fb8a1dbe96d7a66a7d5311a23b314a0e742156c"
+    sha256 cellar: :any_skip_relocation, mojave:      "9ee409ce24c46c02db3dade7b2942d8990708de840e03e0a80d5f2498a9bc46e"
+    sha256 cellar: :any_skip_relocation, high_sierra: "56016abc98b66356ad0d58c0ea951de4da772abca1f12fd2c3635a7700e36c63"
   end
 
   depends_on "bower"

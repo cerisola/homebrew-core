@@ -6,20 +6,14 @@ class RobotFramework < Formula
   url "https://files.pythonhosted.org/packages/48/d3/b657f083893dfa1d88d94feb5bfdca66ba6f2861f46e3bd58a0ac1af286a/robotframework-3.2.2.zip"
   sha256 "a0786a916d0572bd9d6afe26e95c6021e3df5dcafa0ece6b302e36366e58c24e"
   license "Apache-2.0"
-  revision 2
+  revision 3
   head "https://github.com/robotframework/robotframework.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    rebuild 2
-    sha256 "a168734871a35e9f15aa4c3c5cfc28ffba1d0ad2ad6b32bc7231945f2a52284a" => :big_sur
-    sha256 "757bfd0aafa1e80a5d33fc3687b5159ef768f033378e15635d1f32dfd44bb2d8" => :arm64_big_sur
-    sha256 "7f58253a529288c61aef44fade8927d6b579528838de302f295c5d22b348ae1c" => :catalina
-    sha256 "56c9affee56f2dfeee1981f32ea19063616cb2e26e211363f6258a0229da9f5d" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "aa67bce52b6c4a04919d3ad4a0e99f8875ca054f9d7cd3c2699dab998205b1ae"
+    sha256 cellar: :any, big_sur:       "de8036161c9ea308ab4022f699dab41ab5e4a3fc0f05816a9a75c9d37ba4bd94"
+    sha256 cellar: :any, catalina:      "5c0e80ea9815eb3703cb31ff6e60cb096efd2d48dc4f0d8e6712b0d03e2946d9"
+    sha256 cellar: :any, mojave:        "8552582ce7a5388ce61502c09561947a6667cadf02ad9cf6390abcb02f54e3a6"
   end
 
   depends_on "openssl@1.1"
@@ -31,8 +25,8 @@ class RobotFramework < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/05/54/3324b0c46340c31b909fcec598696aaec7ddc8c18a63f2db352562d3354c/cffi-1.14.0.tar.gz"
-    sha256 "2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"
+    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
+    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
   end
 
   resource "cryptography" do

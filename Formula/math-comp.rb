@@ -4,14 +4,14 @@ class MathComp < Formula
   url "https://github.com/math-comp/math-comp/archive/mathcomp-1.12.0.tar.gz"
   sha256 "a57b79a280e7e8527bf0d8710c1f65cde00032746b52b87be1ab12e6213c9783"
   license "CECILL-B"
-  revision 1
+  revision 4
   head "https://github.com/math-comp/math-comp.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "cec7286cf56f24ce07de598c0b1f44dfe284f9d9b044ed6eb5983ca2d84ec33c" => :big_sur
-    sha256 "3ab4b9b8672da24dd11ab5188a8fa645275600e4c779848e8ec46e174a8e75e1" => :catalina
-    sha256 "1a3f557494826c53aa759494d60d4c783843a6125edc77c9ea28bc8dd6f7311d" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2fb48ebd8d548d4d1559644a0c725e0bc3702d7ba95997ccef5a8a1ea1175051"
+    sha256 cellar: :any_skip_relocation, big_sur:       "62826f15869cf70f3b135cbbdea8d6857435d975d7db06dbf01230a86388e1b3"
+    sha256 cellar: :any_skip_relocation, catalina:      "0126d4b72e50ccb2a007b21e854118616aff7d533cc17dec31e5dd14a5a58748"
+    sha256 cellar: :any_skip_relocation, mojave:        "8731904c3f814a23b74b9b1dd84f06d227909a1b159448c3937dbaa5a60d3458"
   end
 
   depends_on "ocaml" => :build
@@ -48,6 +48,6 @@ class MathComp < Formula
 
     coqc = Formula["coq"].opt_bin/"coqc"
     cmd = "#{coqc} -R #{lib}/coq/user-contrib/mathcomp mathcomp testing.v"
-    assert_match /\Atest\s+: forall/, shell_output(cmd)
+    assert_match(/\Atest\s+: forall/, shell_output(cmd))
   end
 end

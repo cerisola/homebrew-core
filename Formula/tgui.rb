@@ -1,16 +1,15 @@
 class Tgui < Formula
   desc "GUI library for use with sfml"
   homepage "https://tgui.eu"
-  url "https://github.com/texus/TGUI/archive/v0.8.8.tar.gz"
-  sha256 "a00e34eea7dc584211b2ebbfabc026af7c261d7935c32ca77fd90ed7a6c85230"
+  url "https://github.com/texus/TGUI/archive/v0.9.1.tar.gz"
+  sha256 "6b08f14974be3ef843dacb6200efa39d1735dafac1f502fb604bb1f1de4d312d"
   license "Zlib"
 
   bottle do
-    cellar :any
-    sha256 "444fd41c767dee6a1c372d282aec98f42f5056a0940f33cc57272cb2b9cf9cd9" => :big_sur
-    sha256 "195afefa361330ca0a2ff5c582162bb1c7b4a55e32c3454bbece2d6053e52872" => :catalina
-    sha256 "2ee5a851b200d21f8c70bb82daaef342c9d0d2f8dee94c143855a55f6b6a29a9" => :mojave
-    sha256 "3272f8d3194ed5a1f55503ac524d67dd03cabb80f6ac7aa8aeee43f322a3db08" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "b58a6d6ff3990f2afb85ea39073e00ce31d91c16d7c88c6c6f1c4f22c4f4f674"
+    sha256 cellar: :any, big_sur:       "43215426baf657e7f73aa0751c3c952d35c489025065ed530223353d254c6556"
+    sha256 cellar: :any, catalina:      "7e8a817332ba8a35526ee7dd0a499d4136780f54d905f4abd10fea287a185662"
+    sha256 cellar: :any, mojave:        "4f003c5fc1520d427c657af818d88168cba1eeda04652a8cc016d10ef3214b23"
   end
 
   depends_on "cmake" => :build
@@ -18,7 +17,11 @@ class Tgui < Formula
 
   def install
     system "cmake", ".", *std_cmake_args,
-                    "-DTGUI_MISC_INSTALL_PREFIX=#{pkgshare}"
+                    "-DTGUI_MISC_INSTALL_PREFIX=#{pkgshare}",
+                    "-DTGUI_BUILD_FRAMEWORK=FALSE",
+                    "-DTGUI_BUILD_EXAMPLES=TRUE",
+                    "-DTGUI_BUILD_GUI_BUILDER=TRUE",
+                    "-DTGUI_BUILD_TESTS=FALSE"
     system "make", "install"
   end
 

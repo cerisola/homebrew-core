@@ -4,14 +4,14 @@ class VapoursynthImwri < Formula
   url "https://github.com/vapoursynth/vapoursynth/archive/R52.tar.gz"
   sha256 "4d5dc7950f4357da695d29708bc98013bc3e0bd72fc5d697f8c91ce3c4a4b2ac"
   license "LGPL-2.1-or-later"
+  revision 2
   head "https://github.com/vapoursynth/vapoursynth.git"
 
   bottle do
-    cellar :any
-    sha256 "cfcc6facbd1f40b54d6d0530187233f0db36bb71bda5095d5b49ef17c70ab74b" => :big_sur
-    sha256 "bec45bc1302ecfededdb61c0f8624dcb1f72af4b76ca6d9444e7a41f7c7e92b3" => :arm64_big_sur
-    sha256 "11f86645d5a0eebd7250373a5ac4a04a6df630366afada2fc3f1af8d0ea69793" => :catalina
-    sha256 "07794b0baa5f4a3f544d6bd0a1d990066596c8c99d03f29474a33bca101ec408" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "20b6a0b07a2e4cbb8fe60a87a839f43f466514b2c5dc9198424774edec57f7e0"
+    sha256 cellar: :any, big_sur:       "11991f437ab02ddd68dec46cde3ecc78d79db72773486c4858b72151fc8c2cf3"
+    sha256 cellar: :any, catalina:      "6530be1c73bf93d1ab1d52f338d36fc1a18471a8f9f779cd8b3d74bed667b08b"
+    sha256 cellar: :any, mojave:        "88087c485608b4c72cf17bbc6b6be447be06e895caea683a6e1c49fae7bc61e4"
   end
 
   depends_on "autoconf" => :build

@@ -1,17 +1,16 @@
 class Ccache < Formula
   desc "Object-file caching compiler wrapper"
   homepage "https://ccache.dev/"
-  url "https://github.com/ccache/ccache/releases/download/v4.1/ccache-4.1.tar.xz"
-  sha256 "5fdc804056632d722a1182e15386696f0ea6c59cb4ab4d65a54f0b269ae86f99"
+  url "https://github.com/ccache/ccache/releases/download/v4.2/ccache-4.2.tar.xz"
+  sha256 "2f14b11888c39778c93814fc6843fc25ad60ff6ba4eeee3dff29a1bad67ba94f"
   license "GPL-3.0-or-later"
   head "https://github.com/ccache/ccache.git"
 
   bottle do
-    cellar :any
-    sha256 "ba8c28a2cc2a76753263e785ea4055bb0859cf1b966015755fb025335d7c21fa" => :big_sur
-    sha256 "1fcd4dbb4b915a0938911157556dd8bfa43303987d752236618002ec7d809818" => :arm64_big_sur
-    sha256 "234a4d2ba07206b539a347adff99f283da2bf219775e30da5567140cbd7c4fdf" => :catalina
-    sha256 "bd87ccc67069931f9a4b1833c6ac97f9168425fc4b5680d152f18b64cd87e825" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "582e21a87c6025f4de138f2a5b47a14a0487f2e6deabf4dd54cfb0d34d27190b"
+    sha256 cellar: :any, big_sur:       "4323fd450d0e58cb7c4b76d5254e5a5b44d960d5216073dfeeda41e9baf298f3"
+    sha256 cellar: :any, catalina:      "e84ad1c22e01e75f740c910f562935c2d00058aaf4e8bbd09050dfee18f45324"
+    sha256 cellar: :any, mojave:        "143ee0131253764d489ba4ff6569ec565c50d50662d878065bdf44d290d23c2b"
   end
 
   depends_on "cmake" => :build

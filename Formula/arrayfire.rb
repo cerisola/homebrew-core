@@ -1,15 +1,14 @@
 class Arrayfire < Formula
   desc "General purpose GPU library"
   homepage "https://arrayfire.com"
-  url "https://github.com/arrayfire/arrayfire/releases/download/v3.7.3/arrayfire-full-3.7.3.tar.bz2"
-  sha256 "523194f36ddba346d81c935b5f441f28af97e7454fd4196f3a6dfbf8d170e88b"
+  url "https://github.com/arrayfire/arrayfire/releases/download/v3.8.0/arrayfire-full-3.8.0.tar.bz2"
+  sha256 "dfc1ba61c87258f9ac92a86784b3444445fc4ef6cd51484acc58181c6487ed9e"
   license "BSD-3-Clause"
 
   bottle do
-    cellar :any
-    sha256 "bd0155cbacbdae4aefc106eebcc698c01c1f12e863b2e904b39b74ea8c1e262c" => :big_sur
-    sha256 "ede6ece8582145d943499e3679dfa19858022b1e5662076940249c27ccbe3f49" => :catalina
-    sha256 "710d8a0f9536955e2734c9932317b8b30af90a7741c1fd03b0ec1b65db206167" => :mojave
+    sha256 cellar: :any, big_sur:  "9869e0f31434835932fb93a6036b4d0bea62630b4392f076fafedda977ed5f8a"
+    sha256 cellar: :any, catalina: "509d9c63cc8f3300f4cd026bcc09645474d17d0bfe0bc9d9ca7241996f1a6e6d"
+    sha256 cellar: :any, mojave:   "da0132f5c4acb4d8e4b74a8f442175430ffc080a6a4ad8e0c3612a0bf92d1749"
   end
 
   depends_on "boost" => :build

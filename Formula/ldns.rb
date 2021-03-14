@@ -3,6 +3,7 @@ class Ldns < Formula
   homepage "https://nlnetlabs.nl/projects/ldns/"
   url "https://nlnetlabs.nl/downloads/ldns/ldns-1.7.1.tar.gz"
   sha256 "8ac84c16bdca60e710eea75782356f3ac3b55680d40e1530d7cea474ac208229"
+  license "BSD-3-Clause"
   revision 3
 
   # https://nlnetlabs.nl/downloads/ldns/ since the first-party site has a
@@ -13,12 +14,11 @@ class Ldns < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "998f245038aacbe7e2a953bd4ede86f0175c3c00ea71e3b9a14a134c1d2ca4cd" => :big_sur
-    sha256 "72df9927c731028f56fbbe9962c6effeec5f8581ede570ea22c2d1c702bd7b5a" => :arm64_big_sur
-    sha256 "9143a6b86f643e5d63cf00774619622abaf0f3ee7e7f071f4aab924f15e163ff" => :catalina
-    sha256 "51a0ab78e1788d5a13bc0e14d476a0f9d98b565915b04507df88c8b81c64963d" => :mojave
-    sha256 "86c7687436d1ddb2b41392ee6c5e8f235ffe478d7b7b0d912feaa7a89217e8d5" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "72df9927c731028f56fbbe9962c6effeec5f8581ede570ea22c2d1c702bd7b5a"
+    sha256 cellar: :any, big_sur:       "998f245038aacbe7e2a953bd4ede86f0175c3c00ea71e3b9a14a134c1d2ca4cd"
+    sha256 cellar: :any, catalina:      "9143a6b86f643e5d63cf00774619622abaf0f3ee7e7f071f4aab924f15e163ff"
+    sha256 cellar: :any, mojave:        "51a0ab78e1788d5a13bc0e14d476a0f9d98b565915b04507df88c8b81c64963d"
+    sha256 cellar: :any, high_sierra:   "86c7687436d1ddb2b41392ee6c5e8f235ffe478d7b7b0d912feaa7a89217e8d5"
   end
 
   depends_on "swig" => :build
@@ -44,7 +44,7 @@ class Ldns < Formula
 
     inreplace "Makefile" do |s|
       s.change_make_var! "PYTHON_LDFLAGS", "-undefined dynamic_lookup"
-      s.gsub! /(\$\(PYTHON_LDFLAGS\).*) -no-undefined/, "\\1"
+      s.gsub!(/(\$\(PYTHON_LDFLAGS\).*) -no-undefined/, "\\1")
     end
 
     system "make"

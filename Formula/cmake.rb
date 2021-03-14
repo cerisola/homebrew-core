@@ -1,22 +1,23 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "https://www.cmake.org/"
-  url "https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2.tar.gz"
-  sha256 "e3e0fd3b23b7fb13e1a856581078e0776ffa2df4e9d3164039c36d3315e0c7f0"
+  url "https://github.com/Kitware/CMake/releases/download/v3.19.6/cmake-3.19.6.tar.gz"
+  sha256 "ec87ab67c45f47c4285f204280c5cde48e1c920cfcfed1555b27fb3b1a1d20ba"
   license "BSD-3-Clause"
   head "https://gitlab.kitware.com/cmake/cmake.git"
 
+  # The "latest" release on GitHub has been an unstable version before, so we
+  # check the Git tags instead.
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "474ab1548e4909a2565f44c46f90d03061211f695403419aedc2d7a2b71f1db0" => :big_sur
-    sha256 "ae145ddaf2b17c3a02cf76f06cb217fae88a0a009e409de00fa1b347a00b0c16" => :arm64_big_sur
-    sha256 "4119d81cfa8435976e667af76a8b79a35f34d97aab69b646b2356eb69b8edf78" => :catalina
-    sha256 "2b2cee31bfce62a116567bc295eca855b008630aafee860051aaa599eac7d657" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "dc2b663e16d20465541b78ac5b780114a8f7867d34c0c5712256a18cb32c8b4a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "2b57a88a40946e2340fdec37572b8aad7cea22b4c92459e92359a83fd66d6455"
+    sha256 cellar: :any_skip_relocation, catalina:      "1ae520ac59a80a7f3dda92ea33ec447ae22047b07eb69197d69da0c9f0ae6083"
+    sha256 cellar: :any_skip_relocation, mojave:        "989874119fc4876068106b5dd7948eac4144a11a2ec6712acb8404bcdd2cf3ab"
   end
 
   depends_on "sphinx-doc" => :build

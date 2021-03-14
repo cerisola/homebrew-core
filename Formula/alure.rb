@@ -1,20 +1,21 @@
 class Alure < Formula
   desc "Manage common tasks with OpenAL applications"
-  homepage "https://kcat.strangesoft.net/alure.html"
-  url "https://kcat.strangesoft.net/alure-releases/alure-1.2.tar.bz2"
+  homepage "https://kcat.tomasu.net/alure.html"
+  url "https://kcat.tomasu.net/alure-releases/alure-1.2.tar.bz2"
   sha256 "465e6adae68927be3a023903764662d64404e40c4c152d160e3a8838b1d70f71"
   revision 1
 
-  bottle do
-    cellar :any
-    rebuild 1
-    sha256 "3701d2ac280fd8ef5476343c348fec853397241cb2bdcaeb25e8a53b203d292c" => :catalina
-    sha256 "f2ae4fbf2822241975e66574e41070b298523e6321280bc83aff70d559db149c" => :mojave
-    sha256 "031b2eb61f6206879b76a7276298f1db9875fa996467327b519ccc6d1622a158" => :high_sierra
+  livecheck do
+    url "https://kcat.tomasu.net/alure-releases/"
+    regex(/href=.*?alure[._-]v?(\d+(?:\.\d+)+)(?:[._-]src)?\.t/i)
   end
 
-  # raise issue in here, https://github.com/kcat/alure/issues/47
-  disable! date: "2020-12-24", because: :repo_removed
+  bottle do
+    rebuild 1
+    sha256 cellar: :any, catalina:    "3701d2ac280fd8ef5476343c348fec853397241cb2bdcaeb25e8a53b203d292c"
+    sha256 cellar: :any, mojave:      "f2ae4fbf2822241975e66574e41070b298523e6321280bc83aff70d559db149c"
+    sha256 cellar: :any, high_sierra: "031b2eb61f6206879b76a7276298f1db9875fa996467327b519ccc6d1622a158"
+  end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build

@@ -1,11 +1,11 @@
 class ArxLibertatis < Formula
   desc "Cross-platform, open source port of Arx Fatalis"
   homepage "https://arx-libertatis.org/"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
   revision 2
 
   stable do
-    url "https://arx-libertatis.org/files/arx-libertatis-1.1.2.tar.xz"
+    url "https://arx-libertatis.org/files/arx-libertatis-1.1.2/arx-libertatis-1.1.2.tar.xz"
     sha256 "82adb440a9c86673e74b84abd480cae968e1296d625b6d40c69ca35b35ed4e42"
 
     # Add a missing include to CMakeLists.txt
@@ -16,17 +16,16 @@ class ArxLibertatis < Formula
   end
 
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://arx-libertatis.org/files/"
+    regex(%r{href=["']?arx-libertatis[._-]v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    cellar :any
-    sha256 "2a9e06b2b91e1133389728b2ad0c81f23d95a266a451144fb8639953b5a96cd3" => :big_sur
-    sha256 "204111aff418fd39e00ab1fcb961f2c7d5a7580223ecdbac4011b7c1f3122f03" => :arm64_big_sur
-    sha256 "b93ffc0870dffd0bab99117814e3c094fc019c2315bdd8fc35f687c1009dd661" => :catalina
-    sha256 "39fc49249e5a82bd067c05bcd056b454a90ace91f364b3c33534901827247b2c" => :mojave
-    sha256 "2fe2043845655c6f3e75be1dc7213826fd142f806fd7b59006fdef940584e92a" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "204111aff418fd39e00ab1fcb961f2c7d5a7580223ecdbac4011b7c1f3122f03"
+    sha256 cellar: :any, big_sur:       "2a9e06b2b91e1133389728b2ad0c81f23d95a266a451144fb8639953b5a96cd3"
+    sha256 cellar: :any, catalina:      "b93ffc0870dffd0bab99117814e3c094fc019c2315bdd8fc35f687c1009dd661"
+    sha256 cellar: :any, mojave:        "39fc49249e5a82bd067c05bcd056b454a90ace91f364b3c33534901827247b2c"
+    sha256 cellar: :any, high_sierra:   "2fe2043845655c6f3e75be1dc7213826fd142f806fd7b59006fdef940584e92a"
   end
 
   head do

@@ -1,4 +1,6 @@
 class Unoconv < Formula
+  include Language::Python::Shebang
+
   desc "Convert between any document format supported by OpenOffice"
   homepage "https://github.com/unoconv/unoconv"
   url "https://files.pythonhosted.org/packages/ab/40/b4cab1140087f3f07b2f6d7cb9ca1c14b9bdbb525d2d83a3b29c924fe9ae/unoconv-0.9.0.tar.gz"
@@ -7,22 +9,19 @@ class Unoconv < Formula
   revision 2
   head "https://github.com/unoconv/unoconv.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "7c72ec6ea5faf7c47463f52f37d2c2d72e4aed11cb908edb32dc34e218d13057" => :big_sur
-    sha256 "ffea78962c1983a8b627eeea500738948ff979dc501242b965edd218ccef01fe" => :arm64_big_sur
-    sha256 "f2512d061951b02d953ad4c968d5fc4edf6f1ce0b11fecaf9b806c5655c70f7d" => :catalina
-    sha256 "92911d5bef4561db470583e2a2d42a918ad13c4016f79902448c07f6b8a17a00" => :mojave
-    sha256 "cbfd5a7ba3828eedcbfe26dd7f64ed4c58988f42d7972c2139e4e747010a68e5" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "be1cd33331c14eca168e7667eb571f23ebd5c8023cda1a388405d7f88991e94f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "34695d78b10bb265c9164e262dca4d3321c18bf8f9622c59377f3b8f1e7771d0"
+    sha256 cellar: :any_skip_relocation, catalina:      "21013d55757dbd1d67143f3a3d44dfad73a948a84bcbc323a9be2770d103702b"
+    sha256 cellar: :any_skip_relocation, mojave:        "8f9de5f5019bfae60563a842de0894f8436bc6a988c87ab407eac02eee99188d"
   end
 
   depends_on "python@3.9"
 
   def install
+    rewrite_shebang detected_python_shebang, "unoconv"
+
     system "make", "install", "prefix=#{prefix}"
   end
 
@@ -33,6 +32,6 @@ class Unoconv < Formula
   end
 
   test do
-    assert_match /office installation/, pipe_output("#{bin}/unoconv 2>&1")
+    assert_match "office installation", pipe_output("#{bin}/unoconv 2>&1")
   end
 end

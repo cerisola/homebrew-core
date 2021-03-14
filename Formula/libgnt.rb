@@ -1,8 +1,8 @@
 class Libgnt < Formula
   desc "NCurses toolkit for creating text-mode graphical user interfaces"
   homepage "https://keep.imfreedom.org/libgnt/libgnt"
-  url "https://downloads.sourceforge.net/project/pidgin/libgnt/2.14.0/libgnt-2.14.0.tar.xz"
-  sha256 "6b7ea2030c9755ad9756ab4b1d3396dccaef4a712eccce34d3990042bb4b3abf"
+  url "https://downloads.sourceforge.net/project/pidgin/libgnt/2.14.1/libgnt-2.14.1.tar.xz"
+  sha256 "5ec3e68e18f956e9998d79088b299fa3bca689bcc95c86001bc5da17c1eb4bd8"
   license "GPL-2.0"
 
   livecheck do
@@ -11,12 +11,10 @@ class Libgnt < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "5f793a61de68c97843ff17f339c287d24a32f1562f21d524e181d2b730604b49" => :big_sur
-    sha256 "bddb1f3389bb8c76b175d2fd5df1418d0ae5f91f153034b42a0b3794c2a445ee" => :arm64_big_sur
-    sha256 "0ddf1b6ebd64e3989ee3e2c1482d3f852a3f44f6c196586d1d9c4e839927087a" => :catalina
-    sha256 "3d0291b16678836908fddc885fa613512e6f3ffbb2d11241a5320dfd48086822" => :mojave
-    sha256 "0b710c423d8895b711d3f658fa6abdffe2b351c2256a429f49363eece64b8928" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "fb95e81366fa30eeba4c475a6ceb3a3b10e627f479dd5bc32b1d4ed55785a98a"
+    sha256 cellar: :any, big_sur:       "8af4cf0b8e2727ad0db525084fa644d80df9d1c3fbbada9700a988a5c651dc39"
+    sha256 cellar: :any, catalina:      "69c11afb2957571a907a82545da6ea8bed0f9d35193c9cc15d0e2063f82f976b"
+    sha256 cellar: :any, mojave:        "d805104397225f4c57b8f5c5310f3c77f5eea4f5870332b15c84717c465fb384"
   end
 
   depends_on "gtk-doc" => :build

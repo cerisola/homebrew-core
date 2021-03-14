@@ -1,16 +1,16 @@
 class Traefik < Formula
   desc "Modern reverse proxy"
   homepage "https://traefik.io/"
-  url "https://github.com/traefik/traefik/releases/download/v2.3.6/traefik-v2.3.6.src.tar.gz"
-  sha256 "189861a13f7d61a30f4a9c1c272e1054fd95af44a83586d641623e8caf226069"
+  url "https://github.com/traefik/traefik/releases/download/v2.4.7/traefik-v2.4.7.src.tar.gz"
+  sha256 "995b1e3443e208bf3504728dfd4cd9fbcf1f8d8247849036263a43c4134b40a7"
   license "MIT"
-  head "https://github.com/containous/traefik.git"
+  head "https://github.com/traefik/traefik.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "695f6282ace620d247522e607364a7346bfdf099c4e74ecb697106c7c8454c04" => :big_sur
-    sha256 "62a6bcc01771e7a5206c9843741de042334489f1d39522f01c33ca576607b878" => :catalina
-    sha256 "9338fa20c6a82996368d0d15cee8faf08795bb4954477a4b6dd5d10d90e3842c" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f2453df75149f07c90a6aff7a6e62869e5ab085c6cec5b3e2ed87445af217cf4"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e3640f9c8144306bbd5efc784d2d709fbcbd23c94ae3e6beb19a6d4db0367a47"
+    sha256 cellar: :any_skip_relocation, catalina:      "1b6b426d11b662ce026f97775d504d714325a74aef2261d9f73fd24f37867c5f"
+    sha256 cellar: :any_skip_relocation, mojave:        "c7d79cc0340dc2f01cd8c9549c18caf322f00cffe6167bc3cd2a3c9143870439"
   end
 
   depends_on "go" => :build
@@ -77,10 +77,10 @@ class Traefik < Formula
       end
       sleep 5
       cmd_ui = "curl -sIm3 -XGET http://127.0.0.1:#{http_port}/"
-      assert_match /404 Not Found/m, shell_output(cmd_ui)
+      assert_match "404 Not Found", shell_output(cmd_ui)
       sleep 1
       cmd_ui = "curl -sIm3 -XGET http://127.0.0.1:#{ui_port}/dashboard/"
-      assert_match /200 OK/m, shell_output(cmd_ui)
+      assert_match "200 OK", shell_output(cmd_ui)
     ensure
       Process.kill(9, pid)
       Process.wait(pid)

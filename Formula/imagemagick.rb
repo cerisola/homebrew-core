@@ -1,22 +1,22 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://www.imagemagick.org/"
-  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.10-54.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.10-54.tar.xz"
-  sha256 "bea0eca1c6818e12e7e8f0338e70dce6f1231a7284a79674610f3ffae2b7c799"
+  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-7.0.11-3.tar.xz"
+  mirror "https://www.imagemagick.org/download/releases/ImageMagick-7.0.11-3.tar.xz"
+  sha256 "3a970d1afd5e8fa08754ee8e097af4b7b088e6cd17cf55f1d3a9999d20018bc5"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git"
 
   livecheck do
-    url "https://www.imagemagick.org/download/"
+    url "https://download.imagemagick.org/ImageMagick/download/"
     regex(/href=.*?ImageMagick[._-]v?(\d+(?:\.\d+)+-\d+)\.t/i)
   end
 
   bottle do
-    sha256 "5d6f874e3c67a4e2bfd0975536f01594a17d3dc8a4aa3f8cd345ef773957b770" => :big_sur
-    sha256 "98fcb233bb404f2f2d992e5ee4e39b6d381f9e6afe571d98e9afbd518fd919da" => :arm64_big_sur
-    sha256 "229acba2e32ac93fe9635e6f39f2a12b2decc6b3d7899c1223f64cfacc784eaa" => :catalina
-    sha256 "23b7b3b0226111cd540c2aa8b700bf3979f330260d9d75cc734a3a4548435e23" => :mojave
+    sha256 arm64_big_sur: "420edef75429398019172ddf4ef05c46f9b06225f92af054efe9d195884359a4"
+    sha256 big_sur:       "51de4599cf631810750c36c39cbec1251782096bcb6399a53ab8beda88b65260"
+    sha256 catalina:      "d3cbc778196046e2f833b0746e085aae58d4e99d0b5e466da08c8d4738c3421f"
+    sha256 mojave:        "39707051a2c8f5563f3291833938a7a23766bb96c347d304f1b6dc344a4a5d00"
   end
 
   depends_on "pkg-config" => :build
@@ -58,6 +58,7 @@ class Imagemagick < Formula
       --enable-shared
       --enable-static
       --with-freetype=yes
+      --with-gvc=no
       --with-modules
       --with-openjp2
       --with-openexr
@@ -80,7 +81,7 @@ class Imagemagick < Formula
     end
 
     # versioned stuff in main tree is pointless for us
-    inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"
+    inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_BASE_VERSION}", "${PACKAGE_NAME}"
     system "./configure", *args
     system "make", "install"
   end

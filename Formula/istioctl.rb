@@ -2,16 +2,15 @@ class Istioctl < Formula
   desc "Istio configuration command-line utility"
   homepage "https://istio.io/"
   url "https://github.com/istio/istio.git",
-      tag:      "1.8.1",
-      revision: "806fb24bc121bf93ea06f6a38b7ccb3d78d1f326"
+      tag:      "1.9.1",
+      revision: "2dd7b6207f02cec8b42f4263ac197434f4ec9b4a"
   license "Apache-2.0"
   head "https://github.com/istio/istio.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "4800b4e1f1fb2967dc36aab48dc535e9d7ea9673b94b05a381ac9e522d3a5c86" => :big_sur
-    sha256 "810e84cb98f5e1d75715eb8376b44c64cdaad7be026bf8f2461cba9c814f27cf" => :catalina
-    sha256 "0b5585969427eca2432fa787cb452f6bddca55398d0e17d279ca58fa909f8be7" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "44775765884a6a3513fb9b51fde9e3184af36e06d96f229b64de65a9959ca06b"
+    sha256 cellar: :any_skip_relocation, catalina: "cad34878e6c3a45c2f20d430b4a02f6a3353a28df2ea8774550bacb67564bcb1"
+    sha256 cellar: :any_skip_relocation, mojave:   "a7fc6fd81f16649b4b9e45ad0949b417af53598198270539828cacf176d33552"
   end
 
   depends_on "go" => :build
@@ -25,7 +24,14 @@ class Istioctl < Formula
     ENV["BUILD_WITH_CONTAINER"] = "0"
 
     system "make", "gen-charts", "istioctl", "istioctl.completion"
-    cd "out/darwin_amd64" do
+    dirpath = nil
+    on_macos do
+      dirpath = "darwin_amd64"
+    end
+    on_linux do
+      dirpath = "linux_amd64"
+    end
+    cd "out/#{dirpath}" do
       bin.install "istioctl"
       bash_completion.install "release/istioctl.bash"
       zsh_completion.install "release/_istioctl"

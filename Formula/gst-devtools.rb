@@ -3,16 +3,16 @@ class GstDevtools < Formula
 
   desc "GStreamer development and validation tools"
   homepage "https://gstreamer.freedesktop.org/modules/gstreamer.html"
-  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.18.2.tar.xz"
-  sha256 "6ea73d718bf1f9692218540ff88479c51d67c0b477fa56d6812fc7b739d30a56"
+  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.18.3.tar.xz"
+  sha256 "3025fee3607caf5069154c099533785675916e044ee92c936bbeacdda3750f26"
   license "LGPL-2.1-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-devtools.git"
 
   bottle do
-    sha256 "e156e8077e6ffc8efc6978d498376080d6e16fd39ae967f867c72caca49fc501" => :big_sur
-    sha256 "71454c2d5e7e135612f58bacdcda5028268766be49432f62abeb48b2f1075348" => :arm64_big_sur
-    sha256 "0ad99a02a5f6b69fabaed767a22af18d97a84695362a9db8a2a267d9fd2afd86" => :catalina
-    sha256 "c6d5be2d2ac2b289d55f48b319f2e84b3c79cb96f41571a629a0f28c31f69be1" => :mojave
+    sha256 arm64_big_sur: "a3662cb83ba270a922c7d9c24567583ed71554519f4f9e763c29d2a3ffbbd82a"
+    sha256 big_sur:       "4c90295c25a0601c35262ee438eaaf9693cc0beb879fa8caab7c30be4115064c"
+    sha256 catalina:      "51eca8aaf936f56140cc632f242a3124e49c4a9fcb8b44f5ae5eaf25e7936bfa"
+    sha256 mojave:        "2bc663d80768ec5c2b2ddcbbc689eea373179d2a8388f093dc2b90232fd31653"
   end
 
   depends_on "gobject-introspection" => :build

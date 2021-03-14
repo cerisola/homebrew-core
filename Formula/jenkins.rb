@@ -1,13 +1,13 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins.io/"
-  url "http://mirrors.jenkins.io/war/2.273/jenkins.war"
-  sha256 "371fd289ff154a29d3f0005de3daf70c39a7dec8810746e1674ea7ae8ac63ddc"
+  url "http://mirrors.jenkins.io/war/2.283/jenkins.war"
+  sha256 "bb0c42bbf564eb0bcdd673318c4ca7c24cdf4e7e04c47e7bfb950736a2b4c5a0"
   license "MIT"
 
   livecheck do
-    url :head
-    regex(/^jenkins[._-]v?(\d+(?:\.\d+)+)$/i)
+    url "https://www.jenkins.io/download/"
+    regex(%r{href=.*?/war/v?(\d+(?:\.\d+)+)/jenkins\.war}i)
   end
 
   head do
@@ -73,6 +73,6 @@ class Jenkins < Formula
     sleep 60
 
     output = shell_output("curl localhost:#{port}/")
-    assert_match /Welcome to Jenkins!|Unlock Jenkins|Authentication required/, output
+    assert_match(/Welcome to Jenkins!|Unlock Jenkins|Authentication required/, output)
   end
 end

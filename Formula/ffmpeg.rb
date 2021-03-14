@@ -4,19 +4,11 @@ class Ffmpeg < Formula
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 6
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   stable do
-    url "https://ffmpeg.org/releases/ffmpeg-4.3.1.tar.xz"
-    sha256 "ad009240d46e307b4e03a213a0f49c11b650e445b1f8be0dda2a9212b34d2ffb"
-
-    # https://trac.ffmpeg.org/ticket/8760
-    # Remove in next release
-    patch do
-      url "https://github.com/FFmpeg/FFmpeg/commit/7c59e1b0f285cd7c7b35fcd71f49c5fd52cf9315.patch?full_index=1"
-      sha256 "1cbe1b68d70eadd49080a6e512a35f3e230de26b6e1b1c859d9119906417737f"
-    end
+    url "https://ffmpeg.org/releases/ffmpeg-4.3.2.tar.xz"
+    sha256 "46e4e64f1dd0233cbc0934b9f1c0da676008cad34725113fb7f802cfa84ccddb"
   end
 
   livecheck do
@@ -25,10 +17,10 @@ class Ffmpeg < Formula
   end
 
   bottle do
-    sha256 "c6342f638203e0d6bda7ce92add949a7a2db0a4fb2ac205637d92d713298ecad" => :big_sur
-    sha256 "f3d75997805fa7139d5dde99b1dd58d5877958b2dc76997f9e8ad0d84e8edd89" => :arm64_big_sur
-    sha256 "9af13c4b632cf0f092fe6178e256deb1a702f7465b0211c3c5994ae19467a59c" => :catalina
-    sha256 "3c3765174346a8da8043e376901deb15c22cc2c3ebf3554c87591d4ab6063cd1" => :mojave
+    sha256 arm64_big_sur: "0515c9f60fc6d3975f0ce707414426a62484e6974cd1fd121e5e55457556afc7"
+    sha256 big_sur:       "c749fddc306f2bce4d15ca20cc8e1f7b28082dd381af57486c72a641e71f0ccf"
+    sha256 catalina:      "ed0fc90c66b35c84a904ba01ab3e37c31a0c63a64889b2ab99718288d52404e4"
+    sha256 mojave:        "33cc1c8ede50ab0b7f38a37c1a85c9060165334200f59d735dd8bd8627508f0d"
   end
 
   depends_on "nasm" => :build
@@ -65,10 +57,15 @@ class Ffmpeg < Formula
   depends_on "xvid"
   depends_on "xz"
   depends_on "zeromq"
+  depends_on "zimg"
 
   uses_from_macos "bzip2"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "libxv"
+  end
 
   def install
     args = %W[
@@ -114,12 +111,17 @@ class Ffmpeg < Formula
       --enable-librtmp
       --enable-libspeex
       --enable-libsoxr
-      --enable-videotoolbox
       --enable-libzmq
+      --enable-libzimg
       --disable-libjack
       --disable-indev=jack
       --enable-nonfree
     ]
+
+    on_macos do
+      # Needs corefoundation, coremedia, corevideo
+      args << "--enable-videotoolbox"
+    end
 
     system "./configure", *args
     system "make", "install"

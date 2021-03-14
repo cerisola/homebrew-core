@@ -2,21 +2,16 @@ class Datasette < Formula
   include Language::Python::Virtualenv
   desc "Open source multi-tool for exploring and publishing data"
   homepage "https://docs.datasette.io/en/stable/"
-  url "https://files.pythonhosted.org/packages/0c/f4/436f3ac3027317717e7782d9050584e35954e5f47075a2bae99873b8da6c/datasette-0.53.tar.gz"
-  sha256 "de3aa1c6fd26e9dc4fd84f93f168dad25b8f327021c6db1697047774c096d00b"
+  url "https://files.pythonhosted.org/packages/b6/50/64de62434b2caba0a4599106a32d167d4da1ddcee90f90bbe306274d6245/datasette-0.55.tar.gz"
+  sha256 "524c2efd20d3ed1a033e8b347f7462adbe3e8ebf0c1b1750df61ed27c717a4c4"
   license "Apache-2.0"
   head "https://github.com/simonw/datasette.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "1c44e303e9fe6c674231f514bf1d734c7440223ff53733da79356d248fc02d52" => :big_sur
-    sha256 "1aaee2d60ecbf4c4af5ead3b3984c8b4d0d5ea72edb8cd1d9260702e338d8073" => :arm64_big_sur
-    sha256 "4157a8421eaa87b1a8e7c00f1ee8aa1009f5530e8be4cef414169c079e4a4e1e" => :catalina
-    sha256 "838a487ea29681d6c89ace865e1accdd74b0386f3b55af39d99858d2360fbb36" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5ad3b899e65d24c699db9f56f4c6624da5a304510ff97e909156b3a1ffc38656"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c63f0e7caf21b94beffeda22d57cf0cd7f596f7c391d4528fdfe1f5a0ab61c86"
+    sha256 cellar: :any_skip_relocation, catalina:      "bfbb19b21e5b6aa1464a27da31bfa2be94df7041bd28a55c6eb08a9249dca976"
+    sha256 cellar: :any_skip_relocation, mojave:        "5b777d70305c73d2d6027f044e7fe3057d7a0d827e0243b116b8af91b6a3605d"
   end
 
   depends_on "python@3.9"
@@ -27,8 +22,8 @@ class Datasette < Formula
   end
 
   resource "asgi-csrf" do
-    url "https://files.pythonhosted.org/packages/02/fc/f3670d30faa648bb5e0774f45fdb5173ae06fd6f5ad9795ea4ee1d05928b/asgi-csrf-0.7.1.tar.gz"
-    sha256 "77bfb2a3311643fd2304d0f11f72160559acbbd1a35730a54208135ded3f21a3"
+    url "https://files.pythonhosted.org/packages/84/85/45a529925fd802e0442a43aa3207f0a68dbf75346e5146852b80d04a7e46/asgi-csrf-0.8.tar.gz"
+    sha256 "312a35c73092db96fe2da325458d482954e1e3bceeac398455f0b0f3958d9620"
   end
 
   resource "asgiref" do
@@ -52,13 +47,13 @@ class Datasette < Formula
   end
 
   resource "h11" do
-    url "https://files.pythonhosted.org/packages/22/01/01dc716e71eeead6c6329a19028548ac4a5c2a769a130722548c63479038/h11-0.11.0.tar.gz"
-    sha256 "3c6c61d69c6f13d41f1b80ab0322f1872702a3ba26e12aa864c928f6a43fbaab"
+    url "https://files.pythonhosted.org/packages/bd/e9/72c3dc8f7dd7874812be6a6ec788ba1300bfe31570963a7e788c86280cb9/h11-0.12.0.tar.gz"
+    sha256 "47222cb6067e4a307d535814917cd98fd0a57b6788ce715755fa2b6c28b56042"
   end
 
   resource "httpcore" do
-    url "https://files.pythonhosted.org/packages/9f/32/0001b9ebc116f78df57428cc9971e9dd518baa3b5b754d7685866837051e/httpcore-0.12.2.tar.gz"
-    sha256 "dd1d762d4f7c2702149d06be2597c35fb154c5eff9789a8c5823fbcf4d2978d6"
+    url "https://files.pythonhosted.org/packages/e0/c5/c6aa5cdf93808549d8495569f12757f9800a1c59be4b153b23814712a604/httpcore-0.12.3.tar.gz"
+    sha256 "37ae835fb370049b2030c3290e12ed298bf1473c41bb72ca4aa78681eba9b7c9"
   end
 
   resource "httpx" do
@@ -72,8 +67,8 @@ class Datasette < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/ea/b7/e0e3c1c467636186c39925827be42f16fee389dc404ac29e930e9136be70/idna-2.10.tar.gz"
-    sha256 "b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"
+    url "https://files.pythonhosted.org/packages/9f/24/1444ee2c9aee531783c031072a273182109c6800320868ab87675d147a05/idna-3.1.tar.gz"
+    sha256 "c5b02147e01ea9920e6b0a3f1f7bb833612d507592c837a6c49552768f4054e1"
   end
 
   resource "itsdangerous" do
@@ -87,8 +82,8 @@ class Datasette < Formula
   end
 
   resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/64/a7/45e11eebf2f15bf987c3bc11d37dcc838d9dc81250e67e4c5968f6008b6c/Jinja2-2.11.2.tar.gz"
-    sha256 "89aab215427ef59c34ad58735269eb58b1a5808103067f7bb9d5836c651b3bb0"
+    url "https://files.pythonhosted.org/packages/4f/e7/65300e6b32e69768ded990494809106f87da1d436418d5f1367ed3966fd7/Jinja2-2.11.3.tar.gz"
+    sha256 "a6d58433de0ae800347cab1fa3043cebbabe8baa9d29e668f1c768cb87a333c6"
   end
 
   resource "MarkupSafe" do
@@ -97,13 +92,13 @@ class Datasette < Formula
   end
 
   resource "mergedeep" do
-    url "https://files.pythonhosted.org/packages/50/ff/6c0b3817037c21fc46cb0eabd97152da6bb5bb33b1bfeaba1e7cc865a8d2/mergedeep-1.3.0.tar.gz"
-    sha256 "19a91123e71ae27cb22335f4d03aec040026c89d4ff6df42595f7e7223a83dfb"
+    url "https://files.pythonhosted.org/packages/3a/41/580bb4006e3ed0361b8151a01d324fb03f420815446c7def45d02f74c270/mergedeep-1.3.4.tar.gz"
+    sha256 "0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/16/7c/33ae3aa02eb10ca726b21aa88d338e3f619c674e4fb8544eb352330d880a/packaging-20.7.tar.gz"
-    sha256 "05af3bb85d320377db281cf254ab050e1a7ebcbf5410685a9a407e18a1f81236"
+    url "https://files.pythonhosted.org/packages/86/3c/bcd09ec5df7123abcf695009221a52f90438d877a2f1499453c6938f5728/packaging-20.9.tar.gz"
+    sha256 "5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5"
   end
 
   resource "Pint" do
@@ -132,8 +127,8 @@ class Datasette < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
-    sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
+    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
+    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
   end
 
   resource "rfc3986" do
@@ -152,8 +147,8 @@ class Datasette < Formula
   end
 
   resource "uvicorn" do
-    url "https://files.pythonhosted.org/packages/7d/e0/a5a876987a267b50edd1ec4a922348809b67c21db7a36c90c1094ea1c4b9/uvicorn-0.13.0.tar.gz"
-    sha256 "28420526640d800aabe648038f8e2ea8ba2a8bdc363002eecd5dfc57a0f75ab7"
+    url "https://files.pythonhosted.org/packages/5e/03/dde1ff2144db62bc531606eb1f9c8aa49d71f985f08b31593b460d0ba2e6/uvicorn-0.13.3.tar.gz"
+    sha256 "ef1e0bb5f7941c6fe324e06443ddac0331e1632a776175f87891c7bd02694355"
   end
 
   def install

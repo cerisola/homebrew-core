@@ -11,10 +11,9 @@ class Opentsdb < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "31e57ba38c568eb7a41a6129a55aac5a9b443301578475702cdab5fb891faaa2" => :catalina
-    sha256 "ec077c13211eac9912661ff0e3e1165162f251c3408fdf36b709e0e98af34aa2" => :mojave
-    sha256 "5bcdc828069e124c16e1e6c8b2eb6732d0ef88533c27f60fcbb0bec369aca375" => :high_sierra
+    sha256 cellar: :any_skip_relocation, catalina:    "31e57ba38c568eb7a41a6129a55aac5a9b443301578475702cdab5fb891faaa2"
+    sha256 cellar: :any_skip_relocation, mojave:      "ec077c13211eac9912661ff0e3e1165162f251c3408fdf36b709e0e98af34aa2"
+    sha256 cellar: :any_skip_relocation, high_sierra: "5bcdc828069e124c16e1e6c8b2eb6732d0ef88533c27f60fcbb0bec369aca375"
   end
 
   deprecate! date: "2020-11-13", because: :does_not_build
@@ -114,8 +113,8 @@ class Opentsdb < Formula
   test do
     cp_r (Formula["hbase"].opt_libexec/"conf"), testpath
     inreplace (testpath/"conf/hbase-site.xml") do |s|
-      s.gsub! /(hbase.rootdir.*)\n.*/, "\\1\n<value>file://#{testpath}/hbase</value>"
-      s.gsub! /(hbase.zookeeper.property.dataDir.*)\n.*/, "\\1\n<value>#{testpath}/zookeeper</value>"
+      s.gsub!(/(hbase.rootdir.*)\n.*/, "\\1\n<value>file://#{testpath}/hbase</value>")
+      s.gsub!(/(hbase.zookeeper.property.dataDir.*)\n.*/, "\\1\n<value>#{testpath}/zookeeper</value>")
     end
 
     ENV.prepend "_JAVA_OPTIONS", "-Djava.io.tmpdir=#{testpath}/tmp"

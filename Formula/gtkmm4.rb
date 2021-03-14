@@ -1,8 +1,8 @@
 class Gtkmm4 < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "https://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/gtkmm/4.0/gtkmm-4.0.0.tar.xz"
-  sha256 "3105adb76b738e4af5c0be7b1915f8e39de15474fcfdced9f5a59a2d9b52f83e"
+  url "https://download.gnome.org/sources/gtkmm/4.0/gtkmm-4.0.1.tar.xz"
+  sha256 "8973d9bc7848e02cb2051e05f3ee3a4baffe2feb4af4a5487f0e3132eec03884"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,18 +11,17 @@ class Gtkmm4 < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "ef80d29cee5c8dc89f1c67286578a5ba4184c89f25e812156dc635a9949ba92f" => :big_sur
-    sha256 "a9bd6430e6fd3907379e5d920d133c6cae97e138347b484f287905d00710837c" => :arm64_big_sur
-    sha256 "167c1777a12807a3d6beb77c8eea5a2905402d3eb80f4e1a1799ac2284ac34f3" => :catalina
-    sha256 "9d9efaba8f60440d68c910bb2a4770fa41f7872e1cef3579c3491c2f5194c1fb" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "7e7d3e54eacf6a13fdb2f9d6ee99ec13f9a6bd3d2c76d43743c9d585c557a09b"
+    sha256 cellar: :any, big_sur:       "0e4aa5b50896971c7567c5ef8eb395c06e41c25129bc227cdb845443bdac6d2b"
+    sha256 cellar: :any, catalina:      "89097bb4e438265d5069fc57d3ab212049ace024cd17e7df6c4729261039f79b"
+    sha256 cellar: :any, mojave:        "ea5386ba38bbc0538300b3bafd567580d9d4c17afe83c80ac3a304f0fa1e367b"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "cairomm"
-  depends_on "gtk+4"
+  depends_on "gtk4"
   depends_on "pangomm"
 
   def install

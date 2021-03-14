@@ -2,27 +2,29 @@ class GatewayGo < Formula
   desc "GateWay Client for OpenIoTHub"
   homepage "https://github.com/OpenIoTHub"
   url "https://github.com/OpenIoTHub/gateway-go.git",
-      tag:      "v0.1.92",
-      revision: "8c635b52b883d01563e715b48fed1231227c178d"
+      tag:      "v0.1.97",
+      revision: "45fd6dda8e885293f622c63577bd601f03e4c7c0"
   license "MIT"
+  head "https://github.com/OpenIoTHub/gateway-go.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "930cf80740aef58a36aa4de90931f07195128dbaa90f158b0734e0fa6de14658" => :big_sur
-    sha256 "444eb1ff982c8e9e02f7fedc7c5d237ec0fc65d84bff5ec2bceb7191f5efb9bc" => :arm64_big_sur
-    sha256 "a7f46eb4d8257be3f24c84f971fa6d95582172abda87aeb1e3f6ffb1d85752e6" => :catalina
-    sha256 "083175571da3825c9c159c03a7028b01aa065baca9aeda5f0f6ef9916e2c8f74" => :mojave
-    sha256 "6c6e994988b6f09dc0ff80d51a45b14153834f573746f726c3d00585b1869e8d" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "68a83d86168de5770073aade23a9eca36f7c45af46ebaea6bf467caf08bd6161"
+    sha256 cellar: :any_skip_relocation, big_sur:       "31a5cc63190a8e757c9a7ec84f4ed0b3ba0252d3ee479ee795d3a9fd3c622257"
+    sha256 cellar: :any_skip_relocation, catalina:      "31d0a5a6767e70634c0c2b3d077c0de1533ff4655a1cf14e933cedfdc3e0f993"
+    sha256 cellar: :any_skip_relocation, mojave:        "81a1ec5d087317840427958e1a77ce1a8dfd492864f427a624e4a980d9e2b85d"
   end
 
   depends_on "go" => :build
 
   def install
-    (etc/"gateway-go").mkpath
-    system "go", "build", "-mod=vendor", "-ldflags",
-             "-s -w -X main.version=#{version} -X main.commit=#{stable.specs[:revision]} -X main.builtBy=homebrew",
-             *std_go_args
-    etc.install "gateway-go.yaml" => "gateway-go/gateway-go.yaml"
+    ldflags = %W[
+      -s -w
+      -X main.version=#{version}
+      -X main.commit=#{Utils.git_head}
+      -X main.builtBy=homebrew
+    ]
+    system "go", "build", "-mod=vendor", "-ldflags", ldflags.join(" "), *std_go_args
+    (etc/"gateway-go").install "gateway-go.yaml"
   end
 
   plist_options manual: "gateway-go -c #{HOMEBREW_PREFIX}/etc/gateway-go/gateway-go.yaml"

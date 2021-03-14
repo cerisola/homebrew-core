@@ -6,25 +6,17 @@ class Up < Formula
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9b512ce52999ccd4c5660ec09a277e2f575e1da94a7fa5f1d0a67bff3b67da2f" => :big_sur
-    sha256 "4acef697aef1068c1bc633973dbd15e3b036e8abaf0c3fa6562cfa86f0c90a55" => :arm64_big_sur
-    sha256 "0b7f8e1fdef01b1395acd9331cae1bd15b703d244692ac108e0c9f3d2e75b170" => :catalina
-    sha256 "fbe848c08368b189a0a97372a5b11848d72d2c6759a7c877e1628e9e4439ba30" => :mojave
-    sha256 "5059e775356194442c930aecf199b7a418c3c6ecdd8b82db078c26970a1b3af5" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f3452e5a6d248a93e947fb5500bd7c5aad22fe77ad791b07c9fc7fe645b47170"
+    sha256 cellar: :any_skip_relocation, big_sur:       "48e91e5ef814e94a40749a9765a17eea031cc3e7b20edf4161187d454a1291da"
+    sha256 cellar: :any_skip_relocation, catalina:      "1389b7f7a0c33f8563bacc20c09ba7781440a9fdd0b42a357a944e64dc65e3dc"
+    sha256 cellar: :any_skip_relocation, mojave:        "e9a517e8c51a5da04f070628b327a24344b8a7d093bee13cb1efa8ed6a8a944f"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-    dir = buildpath/"src/github.com/akavel/up"
-    dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", bin/"up", "up.go"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args, "-ldflags", "-s -w", "up.go"
   end
 
   test do

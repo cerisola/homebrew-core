@@ -1,33 +1,30 @@
 class V2ray < Formula
   desc "Platform for building proxies to bypass network restrictions"
   homepage "https://v2fly.org/"
-  url "https://github.com/v2fly/v2ray-core/archive/v4.33.0.tar.gz"
-  sha256 "ce456df0a798e1ed76ec014cb619e89c508bfb812c689260067575ee94e18c76"
+  url "https://github.com/v2fly/v2ray-core/archive/v4.35.1.tar.gz"
+  sha256 "ef469a99c7db8596f8556478b478e2701ce2783af9affb7f3cb28201718e7d35"
   license all_of: ["MIT", "CC-BY-SA-4.0"]
+  revision 1
   head "https://github.com/v2fly/v2ray-core.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    cellar :any_skip_relocation
-    sha256 "124dd5f5dc2499ae80e44fa6763afa47852466de0454838dd71b0a405969e950" => :big_sur
-    sha256 "132fcde2858d46f2ab08234dc99d466cc3cea825cf2ecc3a74020727d6efadca" => :catalina
-    sha256 "2fbeee703cfc396362543b0353dfbff527d88a37a77d3cc5dd7f60afe582db6f" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e38ecc68c454b84781499ded7e886e60954699890e56e1838f497e553c2e1bdf"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a4de3aa1a0758628237f5914d0f9d6b81e8419d7d4676f106c2b19135625ea97"
+    sha256 cellar: :any_skip_relocation, catalina:      "824af3da89c97a39d51c7a00582f2f80d7fa90c97c0c4fbc4f7a61070d98bf74"
+    sha256 cellar: :any_skip_relocation, mojave:        "c92bf45acbe75d0f7a9bdd4fe19bc668a8868388062705e1916632c03a21b174"
   end
 
   depends_on "go" => :build
 
-  resource "geoip" do
-    url "https://github.com/v2fly/geoip/releases/download/202011190012/geoip.dat"
-    sha256 "022e6426f66cd7093fc2454c28537d2345b4fce49dc97b81ddfec07ce54e7081"
-  end
-
-  resource "geosite" do
-    url "https://github.com/v2fly/domain-list-community/releases/download/20201122065644/dlc.dat"
-    sha256 "574af5247bb83db844be03038c8fed1e488bf4bd4ce5de2843847cf40be923c1"
-  end
-
   def install
     ldflags = "-s -w -buildid="
-    system "go", "build", *std_go_args,
+    execpath = libexec/name
+    system "go", "build", *std_go_args, "-o", execpath,
                  "-ldflags", ldflags,
                  "./main"
     system "go", "build", *std_go_args,
@@ -35,16 +32,12 @@ class V2ray < Formula
                  "-tags", "confonly",
                  "-o", bin/"v2ctl",
                  "./infra/control/main"
+    (bin/"v2ray").write_env_script execpath,
+      V2RAY_LOCATION_ASSET: "${V2RAY_LOCATION_ASSET:-#{pkgshare}}"
 
-    pkgetc.install "release/config/config.json" => "config.json"
-
-    resource("geoip").stage do
-      pkgshare.install "geoip.dat"
-    end
-
-    resource("geosite").stage do
-      pkgshare.install "dlc.dat" => "geosite.dat"
-    end
+    pkgetc.install "release/config/config.json"
+    pkgshare.install "release/config/geoip.dat"
+    pkgshare.install "release/config/geosite.dat"
   end
 
   plist_options manual: "v2ray -config=#{HOMEBREW_PREFIX}/etc/v2ray/config.json"
@@ -89,6 +82,13 @@ class V2ray < Formula
             {
               "ip": [
                 "geoip:private"
+              ],
+              "outboundTag": "direct",
+              "type": "field"
+            },
+            {
+              "domains": [
+                "geosite:private"
               ],
               "outboundTag": "direct",
               "type": "field"

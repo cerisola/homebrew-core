@@ -1,10 +1,10 @@
 class Libspatialite < Formula
   desc "Adds spatial SQL capabilities to SQLite"
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
-  url "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-5.0.0.tar.gz"
-  mirror "https://ftp.netbsd.org/pub/pkgsrc/distfiles/libspatialite-5.0.0.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/libspatialite-5.0.0.tar.gz"
-  sha256 "7b7fd70243f5a0b175696d87c46dde0ace030eacc27f39241c24bac5dfac6dac"
+  url "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-5.0.1.tar.gz"
+  mirror "https://ftp.netbsd.org/pub/pkgsrc/distfiles/libspatialite-5.0.1.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/libspatialite-5.0.1.tar.gz"
+  sha256 "eecbc94311c78012d059ebc0fae86ea5ef6eecb13303e6e82b3753c1b3409e98"
   license any_of: ["MPL-1.1", "GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
   livecheck do
@@ -13,11 +13,10 @@ class Libspatialite < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "18444b8c0c78ed66b7dd84e50bbf24b67b0d955c2f1fd8716bbe77b41353a7bf" => :big_sur
-    sha256 "ba20ea1010d62219b45458ad9768f963ff0684497834d00a81a398c3ed6e1dbb" => :arm64_big_sur
-    sha256 "e4a083ce451aa9bad3ca209a042c32f946a9ed3964d498790c6d141ac9d70aab" => :catalina
-    sha256 "3c8bedbf668ba7627e00dfb7dc4b16eab35681fec2d0a06275d40f5091e278a2" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "18ecddab7cd064038e15a9e023fc1cb94dfabcb4ea1dbd527e19754c80829445"
+    sha256 cellar: :any, big_sur:       "eea8b32b264f5183558158fe3d76cfd676bb731620f67fc1da66519f28171b6b"
+    sha256 cellar: :any, catalina:      "054c1286dcdffded43a8cf768eac32c4f20e9870bc0b0e0aa04c40fb31280836"
+    sha256 cellar: :any, mojave:        "c136e8503fda01a139f00fbc6ac5e3b24989961a17485c28e231b355090e98e4"
   end
 
   head do

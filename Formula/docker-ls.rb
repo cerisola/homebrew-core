@@ -2,41 +2,34 @@ class DockerLs < Formula
   desc "Tools for browsing and manipulating docker registries"
   homepage "https://github.com/mayflower/docker-ls"
   url "https://github.com/mayflower/docker-ls.git",
-      tag:      "v0.5.0",
-      revision: "0eb4c9ab7f04f48dadd9e32aecace4a7da2270e5"
+      tag:      "v0.5.1",
+      revision: "ae0856513066feff2ee6269efa5d665145709d2e"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "5ca16daa59b3fcb5cf7196492d8307b1f40fa92932f9573d9568c9acd3806e20" => :big_sur
-    sha256 "510bf640ba6d5be06401f707391e728f9fd1069e8828fdefdcce5ad610ead718" => :arm64_big_sur
-    sha256 "8e08cc258716c42f48d8000423772dfb00903b85b18e3633c53dad99697b4210" => :catalina
-    sha256 "5994442415bfbcc775069311428b7f3b810e5ca09ff7af25f2c3a322d8105786" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "146371ff787d25857ec030cb07025e9e7e062b4fba43eb59136aad8ceca57790"
+    sha256 cellar: :any_skip_relocation, big_sur:       "69d17d15d79bfa1813ad39ae3a0250ddd919a36b4d3923412cfbc17be56316dc"
+    sha256 cellar: :any_skip_relocation, catalina:      "47231e20bcc919d92de35c537c87c54f52bbcdaa85cf2bb9b27bc03a69f25587"
+    sha256 cellar: :any_skip_relocation, mojave:        "38eb334f22797271ae8e121030133f6fc3e33cd178cd938940d4ead6565e0225"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
+    system "go", "generate", "./lib"
 
-    (buildpath/"src/github.com/mayflower/docker-ls").install buildpath.children
-
-    system "go", "generate", "github.com/mayflower/docker-ls/lib"
-
-    cd "src/github.com/mayflower/docker-ls" do
-      system "go", "build", "-o", bin/"docker-ls", "./cli/docker-ls"
-      system "go", "build", "-o", bin/"docker-rm", "./cli/docker-rm"
-      prefix.install_metafiles
+    %w[docker-ls docker-rm].each do |name|
+      system "go", "build", "-trimpath", "-o", bin/name, "-ldflags", "-s -w", "./cli/#{name}"
     end
   end
 
   test do
-    assert_match /\Wlatest\W/m, pipe_output("#{bin}/docker-ls tags \
+    assert_match(/\Wlatest\W/m, pipe_output("#{bin}/docker-ls tags \
       -r https://index.docker.io -u '' -p '' \
       --progress-indicator=false library/busybox \
-    ")
+    "))
 
-    assert_match /401/, pipe_output("#{bin}/docker-rm  \
+    assert_match "401", pipe_output("#{bin}/docker-rm  \
       -r https://index.docker.io -u foo -p bar library/busybox:latest 2<&1 \
     ")
   end

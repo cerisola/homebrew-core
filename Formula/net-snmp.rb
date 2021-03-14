@@ -5,7 +5,6 @@ class NetSnmp < Formula
   sha256 "04303a66f85d6d8b16d3cc53bde50428877c82ab524e17591dfceaeb94df6071"
   license "Net-SNMP"
   head "https://github.com/net-snmp/net-snmp.git"
-  # ...previously used "https://git.code.sf.net/p/net-snmp/code" but github seems more current
 
   livecheck do
     url :stable
@@ -13,10 +12,11 @@ class NetSnmp < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 "4519ee0aa3a4ebdcb4235466861a13b41ff19363a2b83fce26ab507cdc40a015" => :big_sur
-    sha256 "97ca904418f6fc7488478cec55106ce51987eb139fea9f90b38afa4240c4683b" => :catalina
-    sha256 "ffac347f7d928bdc233355f324cff14a0751315661ef480d121362085b56f8d3" => :mojave
+    rebuild 2
+    sha256 arm64_big_sur: "546fe0a8e74e43d8e8ba6d5526a73096aa7e4e92b9f66d910b6146206753e556"
+    sha256 big_sur:       "f76220e8e7bffba146b3886d46d61dca81e947d2d77937e8c756b1f6f242526d"
+    sha256 catalina:      "04210e391fad9e36b9fe9945e4a8b6436263e64aaf24ac0069202c6581c8d624"
+    sha256 mojave:        "1ac45c38fa251f876c70073ef1757c0a3b7659fb8f2ce7f5ec41af2febb1cac9"
   end
 
   keg_only :provided_by_macos
@@ -33,6 +33,15 @@ class NetSnmp < Formula
   patch do
     url "https://github.com/net-snmp/net-snmp/commit/a7c8c26c48c954a19bca5fdc6ba285396610d7aa.patch?full_index=1"
     sha256 "8ccc46a3c15d145e5034c0749f3c0e7bd11eca451809ae7f2312dab459e07cec"
+  end
+
+  # Apple Silicon support
+  # https://github.com/net-snmp/net-snmp/issues/228
+  if Hardware::CPU.arm?
+    patch do
+      url "https://github.com/net-snmp/net-snmp/commit/bcc654e7.patch?full_index=1"
+      sha256 "b5e35ef021e1962bd2fbf675f05eb43cc75bd7d417687d736a4c4b508a9eed47"
+    end
   end
 
   def install

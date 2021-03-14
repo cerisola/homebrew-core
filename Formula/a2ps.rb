@@ -6,16 +6,12 @@ class A2ps < Formula
   sha256 "f3ae8d3d4564a41b6e2a21f237d2f2b104f48108591e8b83497500182a3ab3a4"
   license "GPL-3.0-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
     rebuild 4
-    sha256 "e87da2b47386fc7e3c6f20b3ff90c4bbe37b9e0aaa884440ffa216492dbc150b" => :big_sur
-    sha256 "8ac02041dbec3966b6a695dfc4215b90b9e331ae6eb8c6698cbbfa0175154c9f" => :arm64_big_sur
-    sha256 "82e64b2008971430d160a3f564e32593e98fb55c43d7748c7deb9d6f546e1102" => :catalina
-    sha256 "8ca49b4797277f79e87e48ab4c6794601b64d1dde35b9eac556d4153b8237a51" => :mojave
+    sha256 arm64_big_sur: "8ac02041dbec3966b6a695dfc4215b90b9e331ae6eb8c6698cbbfa0175154c9f"
+    sha256 big_sur:       "e87da2b47386fc7e3c6f20b3ff90c4bbe37b9e0aaa884440ffa216492dbc150b"
+    sha256 catalina:      "82e64b2008971430d160a3f564e32593e98fb55c43d7748c7deb9d6f546e1102"
+    sha256 mojave:        "8ca49b4797277f79e87e48ab4c6794601b64d1dde35b9eac556d4153b8237a51"
   end
 
   pour_bottle? do
@@ -23,6 +19,8 @@ class A2ps < Formula
     # https://github.com/Homebrew/brew/issues/2005
     satisfy { HOMEBREW_PREFIX.to_s == Homebrew::DEFAULT_PREFIX }
   end
+
+  uses_from_macos "gperf"
 
   on_macos do
     # Software was last updated in 2007.
@@ -37,10 +35,6 @@ class A2ps < Formula
       url "https://raw.githubusercontent.com/Homebrew/formula-patches/0ae366e6/a2ps/patch-lib__xstrrpl.c"
       sha256 "89fa3c95c329ec326e2e76493471a7a974c673792725059ef121e6f9efb05bf4"
     end
-  end
-
-  on_linux do
-    depends_on "gperf"
   end
 
   def install

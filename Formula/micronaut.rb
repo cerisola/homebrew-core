@@ -1,8 +1,8 @@
 class Micronaut < Formula
   desc "Modern JVM-based framework for building modular microservices"
   homepage "https://micronaut.io/"
-  url "https://github.com/micronaut-projects/micronaut-starter/archive/v2.2.2.tar.gz"
-  sha256 "b57379acf44a533443bed942e21ae8391ee057e3cfd684b47ba60401b3e53e03"
+  url "https://github.com/micronaut-projects/micronaut-starter/archive/v2.3.4.tar.gz"
+  sha256 "e6c9f0f30735f24c85901a49114e919cc0ed84731ce98c736dad738d7f7c7174"
   license "Apache-2.0"
 
   livecheck do
@@ -11,11 +11,9 @@ class Micronaut < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "ecd7bd9dae7d06113319aab1333c31bd54b225a3d69b9471471d630964ce2f24" => :big_sur
-    sha256 "169cb09948e963a4db2709299f0ec178411242367dff7d213f6f2c882fce10a2" => :catalina
-    sha256 "e4a358995e0cd3020812b7bd37ff2e1e21bc5c0bba66183b436deda20aff418a" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "a40bdc09c47ce1163b7b70e7c21cae8b727af350d1b8ee3f38494e2e250ac0c5"
+    sha256 cellar: :any_skip_relocation, catalina: "c21d8b5b29371ba0865a137a58fbc7f373774ca7937b5303ad44dacac9aa3e28"
+    sha256 cellar: :any_skip_relocation, mojave:   "1560420aa23bba3f74215f9ecf8e8ac055c85045ed3de9d8426f8bf74259e485"
   end
 
   depends_on "gradle" => :build

@@ -2,21 +2,20 @@ class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
   url "https://github.com/hashicorp/consul.git",
-      tag:      "v1.9.1",
-      revision: "ca5c389431a8af9e1c16281042ce7459c7a655d9"
+      tag:      "v1.9.4",
+      revision: "10bb6cb3b035fdee0e039bddef76a38108f0c803"
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul.git", shallow: false
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "e3252a0c80a1fe4e068e046dd9dfb999a676b888b33ea543ed9078bb0220776f" => :big_sur
-    sha256 "797e30eb70688f226343491cf8fb776a751f19e973cea9093984a2a814f54a52" => :catalina
-    sha256 "f18664062a69d912ec82f7541b1d89551fb8aed2d159406c2f30f109f163c61e" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "0c9f867ffcb9eb62d5e5a38a7ac49bb0a04330882aab3f9311c5f4658238a04b"
+    sha256 cellar: :any_skip_relocation, catalina: "b54d7e1bd3497214e2208c5db1484ff8d00742f4f99f96347dd42ea5ac6f3921"
+    sha256 cellar: :any_skip_relocation, mojave:   "4b1d04ef343f4c5ca1bc656888dbd085e72f6cb31115dae5616d65767d460de7"
   end
 
   depends_on "go" => :build
@@ -25,7 +24,13 @@ class Consul < Formula
   uses_from_macos "zip" => :build
 
   def install
-    ENV["XC_OS"] = "darwin"
+    # Specificy the OS, else all platforms will be built
+    on_macos do
+      ENV["XC_OS"] = "darwin"
+    end
+    on_linux do
+      ENV["XC_OS"] = "linux"
+    end
     ENV["XC_ARCH"] = "amd64"
     ENV["GOPATH"] = buildpath
     contents = Dir["{*,.git,.gitignore}"]

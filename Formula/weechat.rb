@@ -1,17 +1,16 @@
 class Weechat < Formula
   desc "Extensible IRC client"
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-3.0.tar.xz"
-  sha256 "6cb7d25a363b66b835f1b9f29f3580d6f09ac7d38505b46a62c178b618d9f1fb"
+  url "https://weechat.org/files/src/weechat-3.1.tar.xz"
+  sha256 "a55a2975aa119f76983412507e3ddb3fe68d0744e08739681ddc17744e77a4f7"
   license "GPL-3.0-or-later"
-  revision 3
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha256 "5a706cd428686054a8e2dbcae39466cb7a9a3d3e8bd8160d24421144d8f8ba3c" => :big_sur
-    sha256 "d6aeb1040ef6a269d5d1c175b3c3be0951b37773372aad82a507a19dfe53a5bc" => :arm64_big_sur
-    sha256 "ae89b52c202b3d9a04f6ed95ea5aa95b065a3e29a999a70abace53a4dc312aa6" => :catalina
-    sha256 "6f20c8a394ad86077666e398d9e9fba4cc25a27a33a2d163a6f1ff8bd770a8a0" => :mojave
+    sha256 arm64_big_sur: "13358880145e64b9abb5aa1b3edd45cbe99fad9513269e71e40015561e274dac"
+    sha256 big_sur:       "2dc092a658d47fa3792106517dbc0c8d067f2a43e47444f9e11a8f6dd4d5841b"
+    sha256 catalina:      "bbe506b6fe5fc7ef054299d35114508e5bef467c9083880a237b76d4d4a078af"
+    sha256 mojave:        "b956b1d6111acfbdeafbeffb42eb715ce39a3fb064238f089f2373d31325c93a"
   end
 
   depends_on "asciidoctor" => :build
@@ -21,7 +20,6 @@ class Weechat < Formula
   depends_on "gettext"
   depends_on "gnutls"
   depends_on "libgcrypt"
-  depends_on "libiconv"
   depends_on "lua"
   depends_on "ncurses"
   depends_on "perl"
@@ -30,6 +28,10 @@ class Weechat < Formula
 
   uses_from_macos "curl"
   uses_from_macos "tcl-tk"
+
+  on_macos do
+    depends_on "libiconv"
+  end
 
   def install
     args = std_cmake_args + %W[
@@ -41,7 +43,8 @@ class Weechat < Formula
     ]
 
     # Fix error: '__declspec' attributes are not enabled
-    args << "-DCMAKE_C_FLAGS=-fdeclspec"
+    # See https://github.com/weechat/weechat/issues/1605
+    args << "-DCMAKE_C_FLAGS=-fdeclspec" if ENV.compiler == :clang
 
     # Fix system gem on Mojave
     ENV["SDKROOT"] = ENV["HOMEBREW_SDKROOT"]

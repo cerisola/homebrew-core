@@ -1,6 +1,6 @@
 class Bind < Formula
   desc "Implementation of the DNS protocols"
-  homepage "https://www.isc.org/downloads/bind/"
+  homepage "https://www.isc.org/bind/"
 
   # BIND releases with even minor version numbers (9.14.x, 9.16.x, etc) are
   # stable. Odd-numbered minor versions are for testing, and can be unstable
@@ -8,8 +8,8 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.16.10/bind-9.16.10.tar.xz"
-  sha256 "bc47fc019c6205e6a6bfb839c544a1472321df0537ba905b846a4cbffe3362b3"
+  url "https://downloads.isc.org/isc/bind9/9.16.12/bind-9.16.12.tar.xz"
+  sha256 "9914af9311fd349cab441097898d94fb28d0bfd9bf6ed04fe1f97f042644da7f"
   license "MPL-2.0"
   version_scheme 1
   head "https://gitlab.isc.org/isc-projects/bind9.git"
@@ -17,15 +17,15 @@ class Bind < Formula
   # BIND indicates stable releases with an even-numbered minor (e.g., x.2.x)
   # and the regex below only matches these versions.
   livecheck do
-    url "https://www.isc.org/downloads/"
+    url "https://www.isc.org/download/"
     regex(/href=.*?bind[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
   end
 
   bottle do
-    sha256 "f8f9b3c9a3df7232b7e81c01356d36df49d0df28c99ec4495988bda7545e9c2f" => :big_sur
-    sha256 "5798f63e2851041b383c72f10f5a3d1a3dbbddbe6edb5a485c635c863d2f6526" => :arm64_big_sur
-    sha256 "025635585415436906b2963721a0dcf12b70fe1fe430bbf87e04510f268dc794" => :catalina
-    sha256 "bf7266f0a662934231bc43a713fdfbbc42888e56569f6d6090e3bd7af36036a3" => :mojave
+    sha256 arm64_big_sur: "defb57d18f896cf7c124808b07126a0db2cf8fbfecf7af1e16ad0930f64ed588"
+    sha256 big_sur:       "f86da30695af86463799dcfa0d6efe12497e5095cdff498057bd0796db5184a3"
+    sha256 catalina:      "a0d971cc2b9469a29287c4871bd9130889ed91d698673e4882264d8b96128078"
+    sha256 mojave:        "19f25056c8e200658e50e5e7b03ed79b533f839984d16565c49ef9ac1a1233a7"
   end
 
   depends_on "pkg-config" => :build
@@ -51,7 +51,7 @@ class Bind < Formula
     end
 
     # Fix "configure: error: xml2-config returns badness"
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra || MacOS.version == :el_capitan
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
 
     args = [
       "--prefix=#{prefix}",

@@ -1,18 +1,19 @@
 class Igraph < Formula
   desc "Network analysis package"
   homepage "https://igraph.org/"
-  url "https://github.com/igraph/igraph/releases/download/0.8.5/igraph-0.8.5.tar.gz"
-  sha256 "2e5da63a2b8e9bb497893a17cf77c691df1739c298664f8adb1310a01218f95b"
+  url "https://github.com/igraph/igraph/releases/download/0.9.0/igraph-0.9.0.tar.gz"
+  sha256 "012e5d5a50420420588c33ec114c6b3000ccde544db3f25c282c1931c462ad7a"
   license "GPL-2.0-or-later"
 
   bottle do
-    cellar :any
-    sha256 "f465b8d9fefa756c504d37e0af723557c276b15d1f7d548ed25d45368dded147" => :big_sur
-    sha256 "c545569d11877ab3692dff937cd885f6ee58ca492af51839e47c2f0cef8a538d" => :arm64_big_sur
-    sha256 "8e9868d06e9ad6a4bc388f7f44ed175fcc54f81c4362eb3de324fadadaf8c3c3" => :catalina
-    sha256 "e14e7cb3c9925863daea2981b4130bcdb969a34c6e73b43dcfc49820c809948d" => :mojave
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6ae842ab97a92237987c202eb561dc309571af3d9452570d8c47edc0f4474b5f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b9d9cbcfc223d72bc33add33264d8bf6f4eb677107f1e72984114f083336fe59"
+    sha256 cellar: :any_skip_relocation, catalina:      "c02bb0b1563dfcc3e5511be93d1d20d0f38a34a588919112299b0be4780dd8f6"
+    sha256 cellar: :any_skip_relocation, mojave:        "990acbc314d5fec00ccc08bf76f3b436ac297abf3c5c303364315f41961d0aba"
   end
 
+  depends_on "cmake" => :build
   depends_on "glpk"
   depends_on "gmp"
 
@@ -21,30 +22,28 @@ class Igraph < Formula
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-external-blas",
-                          "--with-external-lapack",
-                          "--with-external-glpk"
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "-G", "Unix Makefiles", "-DIGRAPH_ENABLE_TLS=ON", "..", *std_cmake_args
+      system "make"
+      system "make", "install"
+    end
   end
 
   test do
     (testpath/"test.c").write <<~EOS
       #include <igraph.h>
       int main(void) {
-        igraph_integer_t diameter;
+        igraph_real_t diameter;
         igraph_t graph;
         igraph_rng_seed(igraph_rng_default(), 42);
         igraph_erdos_renyi_game(&graph, IGRAPH_ERDOS_RENYI_GNP, 1000, 5.0/1000, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
         igraph_diameter(&graph, &diameter, 0, 0, 0, IGRAPH_UNDIRECTED, 1);
-        printf("Diameter = %d\\n", (int) diameter);
+        printf("Diameter = %f\\n", (double) diameter);
         igraph_destroy(&graph);
       }
     EOS
     system ENV.cc, "test.c", "-I#{include}/igraph", "-L#{lib}",
-                   "-ligraph", "-o", "test"
+                   "-ligraph", "-lm", "-o", "test"
     assert_match "Diameter = 9", shell_output("./test")
   end
 end

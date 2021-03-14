@@ -1,9 +1,11 @@
 class Gh < Formula
   desc "GitHub command-line tool"
   homepage "https://github.com/cli/cli"
-  url "https://github.com/cli/cli/archive/v1.4.0.tar.gz"
-  sha256 "9f8851264938e48f5ccabe12e4de404ee0f94c8e33c107b818c4e324dbafa558"
+  url "https://github.com/cli/cli/archive/v1.7.0.tar.gz"
+  sha256 "8d737d4e4a2943ca6e08c030c0992468162de0fc1366862d101b8e1389bdc36a"
   license "MIT"
+
+  head "https://github.com/cli/cli.git", branch: "trunk"
 
   livecheck do
     url :stable
@@ -11,19 +13,21 @@ class Gh < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "daf4c5b566b1a1b9f00ac73aeffcc72792479da9ddebfdb3a91ce5d19fbba309" => :big_sur
-    sha256 "b039ae32ed849b635eb7b3e1c7528d9934537c4dac76f170a2d195eab2148466" => :arm64_big_sur
-    sha256 "70c9d617f18341ab35bebc17b1916ec79cc053dbed5782eb34656babdb6908a8" => :catalina
-    sha256 "930dd87d86bcc1b6ac220cc488766df4fc00472d49221b37f51281970015cabe" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1575fad6e5dda0241957d4668b04802df7d5a963a93d213471f5f89730d1e260"
+    sha256 cellar: :any_skip_relocation, big_sur:       "88ab0ed37b4050437aaaac46fb444a001b86b024afd04f9926c5f479d44d6a7b"
+    sha256 cellar: :any_skip_relocation, catalina:      "9399e8ca6bb5c0621c06d3963e28db01a9de4074f729054315a048272de3555d"
+    sha256 cellar: :any_skip_relocation, mojave:        "c0dc5b0ddd5a30880be8e162bf9c2cc51f7057707204ae2af3b999715d371537"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GH_VERSION"] = version.to_s
-    ENV["GO_LDFLAGS"] = "-s -w"
-    system "make", "bin/gh", "manpages"
+    with_env(
+      "GH_VERSION" => version.to_s,
+      "GO_LDFLAGS" => "-s -w -X main.updaterEnabled=cli/cli",
+    ) do
+      system "make", "bin/gh", "manpages"
+    end
     bin.install "bin/gh"
     man1.install Dir["share/man/man1/gh*.1"]
     (bash_completion/"gh").write `#{bin}/gh completion -s bash`

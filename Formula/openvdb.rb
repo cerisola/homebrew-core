@@ -1,17 +1,16 @@
 class Openvdb < Formula
   desc "Sparse volume processing toolkit"
   homepage "https://www.openvdb.org/"
-  url "https://github.com/AcademySoftwareFoundation/openvdb/archive/v8.0.0.tar.gz"
-  sha256 "04a28dc24a744f8ac8bbc5636a949628edb02b7c84db24ad795429c8c739a9ee"
+  url "https://github.com/AcademySoftwareFoundation/openvdb/archive/v8.0.1.tar.gz"
+  sha256 "a6845da7c604d2c72e4141c898930ac8a2375521e535f696c2cd92bebbe43c4f"
   license "MPL-2.0"
   head "https://github.com/AcademySoftwareFoundation/openvdb.git"
 
   bottle do
-    rebuild 1
-    sha256 "aca9749f30518e713372752d61852505516171b6d3c99aa1b44dcc8ada9574c3" => :big_sur
-    sha256 "97007153e3a295731c12e7c2bae5e60a8c4e98ec76651c5337023d7a524ad288" => :arm64_big_sur
-    sha256 "f84f5645fe791485c6e41a59dfc602dc55fe84d233ac7c458646d41b8652ea52" => :catalina
-    sha256 "fb01a2bbe0e6e2876815a8fdd70aee0b1868983cfeccb5482c291cd76a2596ab" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "9cb0c66ec3ad5baa45c67f8dada344f9ea146f77e077addefbea16706764980a"
+    sha256 cellar: :any, big_sur:       "bd06f00067f72d29c1db2d4dc5b89b4478f03b2706f0643ac2b7d7014339c0c3"
+    sha256 cellar: :any, catalina:      "6a6d9b59e6e0a83d1067183a239fb01cd6fccdc18951e50bca8221a7b14934de"
+    sha256 cellar: :any, mojave:        "942d34f3346db67246bcb9d9ad642c6f328645425fced48f68e885277d3c09be"
   end
 
   depends_on "cmake" => :build

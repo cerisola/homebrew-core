@@ -1,10 +1,9 @@
 class GtkMacIntegration < Formula
   desc "Integrates GTK macOS applications with the Mac desktop"
   homepage "https://wiki.gnome.org/Projects/GTK+/OSX/Integration"
-  url "https://download.gnome.org/sources/gtk-mac-integration/2.1/gtk-mac-integration-2.1.3.tar.xz"
-  sha256 "d5f72302daad1f517932194d72967a32e72ed8177cfa38aaf64f0a80564ce454"
-  license "LGPL-2.1"
-  revision 5
+  url "https://download.gnome.org/sources/gtk-mac-integration/3.0/gtk-mac-integration-3.0.0.tar.xz"
+  sha256 "af88bb3a284e24c550e15290e07e562fcd2a038ebb0fcc863dd069d3738952ae"
+  license "LGPL-2.1-only"
 
   # We use a common regex because gtk-mac-integration doesn't use GNOME's
   # "even-numbered minor is stable" version scheme.
@@ -14,21 +13,21 @@ class GtkMacIntegration < Formula
   end
 
   bottle do
-    sha256 "f0d9bb8b2c933eed402589d7b767fb87fa42382f05790e318c8499f653f9e0e2" => :big_sur
-    sha256 "399875d7fc8d09a9a36fa064b0162b77495340320a402eef3ff820672659fcfa" => :catalina
-    sha256 "b313e1ee47a17b401455b055a4a8b79279a2016f682ee5239a6a915aa11f5884" => :mojave
+    sha256 arm64_big_sur: "133b558e42113237d02387f4951aac3e64e9ed63c44ce17c0b7bfc4f1750ea57"
+    sha256 big_sur:       "4dbaba924b79a4b09e30cd27d1ae62f300d59231e972641efa3d35c863d907f0"
+    sha256 catalina:      "6409347cf27701ae7b9cc4a7eb3620291d1023c4b20cdaed899423fab9cc85e2"
+    sha256 mojave:        "33025ae0eb0f311ed92782f589e9ae36a528bcf2330e3b119d5225ba3f3db1af"
   end
 
   head do
-    url "https://github.com/jralls/gtk-mac-integration.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "gtk-doc" => :build
-    depends_on "libtool" => :build
+    url "https://gitlab.gnome.org/GNOME/gtk-mac-integration.git"
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "gobject-introspection" => :build
+  depends_on "gtk-doc" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gtk+"
@@ -45,11 +44,7 @@ class GtkMacIntegration < Formula
       --enable-python=no
     ]
 
-    if build.head?
-      system "./autogen.sh", *args
-    else
-      system "./configure", *args
-    end
+    system "./autogen.sh", *args
     system "make", "install"
   end
 

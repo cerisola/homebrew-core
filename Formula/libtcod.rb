@@ -1,18 +1,15 @@
 class Libtcod < Formula
   desc "API for roguelike developers"
   homepage "https://github.com/libtcod/libtcod"
-  url "https://github.com/libtcod/libtcod/archive/1.15.1.tar.gz"
-  sha256 "2713d8719be53db7a529cbf53064e5bc9f3adf009db339d3a81b50d471bc306f"
+  url "https://github.com/libtcod/libtcod/archive/1.16.6.tar.gz"
+  sha256 "7f55579f163ad48ce05bc9f7a7597bf2bcf8449f5249b49d45567d7e2940ab29"
   license "BSD-3-Clause"
-  revision 2
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "464855bc6a479110433503a085c22f0bd8c2389875334595f9e525528982c1c3" => :big_sur
-    sha256 "2307306cad3fe74920216768953f8b2ba6721a49d1738870f7b2ccbab8a2691e" => :arm64_big_sur
-    sha256 "0ac1dde6fa975c1504880848ba2ec66dd0d044c5cfeccb92d3afe4f6ebb8231a" => :catalina
-    sha256 "e076b9fe253e60fc065493cab467d30c4db178d9364e410a3c7cf71293df7cf0" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "0770edf9bc3a7596f90d4cc154e164b18a2ba35ffdbdefab82c57d41c9df5bb3"
+    sha256 cellar: :any, big_sur:       "ae925c1b758d1f1b7b7a00709c6bb32107f81af13a6ba947c187737290eebae1"
+    sha256 cellar: :any, catalina:      "b8ba426399d67c23880e2657e2c8ddd69b9e4e48f51ddbf708a3b8b3bc23c997"
+    sha256 cellar: :any, mojave:        "afdc4240c571e2c34e33b59b6506ef0705a7b69b75f5fee899a2e37c247c4cfe"
   end
 
   depends_on "autoconf" => :build
@@ -52,6 +49,7 @@ class Libtcod < Formula
     assert_equal "#{version}\n", `./version-c`
     (testpath/"version-cc.cc").write <<~EOS
       #include <libtcod/libtcod.hpp>
+      #include <iostream>
       int main()
       {
         std::cout << TCOD_STRVERSION << std::endl;

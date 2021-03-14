@@ -3,18 +3,16 @@ class Vulture < Formula
 
   desc "Find dead Python code"
   homepage "https://github.com/jendrikseipp/vulture"
-  url "https://files.pythonhosted.org/packages/44/a5/bfc438b2e5d06440c7340d7eeefe98e3af69b3053698cf30ac662f4ebc96/vulture-2.1.tar.gz"
-  sha256 "933bf7f3848e9e39ecab6a12faa59d5185471c887534abac13baea6fe8138cc2"
+  url "https://files.pythonhosted.org/packages/30/8b/bf4765866521da744ca081f09184657c0dc4fd8ee910a2fd1043d2c7cd6e/vulture-2.3.tar.gz"
+  sha256 "03d5a62bcbe9ceb9a9b0575f42d71a2d414070229f2e6f95fa6e7c71aaaed967"
   license "MIT"
   head "https://github.com/jendrikseipp/vulture.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a3d2a03fa3542b8e7fd9acf7f4f5e4135ad27b5238ffa34505ff59e091a36e88" => :big_sur
-    sha256 "ca85d3256fecad7108d300f4e22e0a2868ae27de1aea09290d686cccfd029c94" => :arm64_big_sur
-    sha256 "cbe063689773ed4f0f631c359603a53f803f312b98944e3718d21b9f7974bda7" => :catalina
-    sha256 "87d1b12cb798f56a56f0c16bcd5af882ecf111a5a181655209da4cc60afd0d81" => :mojave
-    sha256 "305fefa88f47886779dc6c377abba61134c4c045be7400227bc7b0b24d75c337" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5c98aa924262650ff457d153e7b0452a22d8a6b69543bc4712832728837af256"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b4f0c8d4d327b6d8687ef63b370a82332a25cea64be3eea8a55e20508d2072d2"
+    sha256 cellar: :any_skip_relocation, catalina:      "b5e8ebd31bc7aee0bd3c547db9e49d6e91af523213488bdb99ac6435c5404cf9"
+    sha256 cellar: :any_skip_relocation, mojave:        "0c6278066d30cedf4c077cb351c750d295ba566a32107580243820970d3f787b"
   end
 
   depends_on "python@3.9"

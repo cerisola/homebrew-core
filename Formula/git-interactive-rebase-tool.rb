@@ -1,9 +1,9 @@
 class GitInteractiveRebaseTool < Formula
   desc "Native sequence editor for Git interactive rebase"
   homepage "https://gitrebasetool.mitmaro.ca/"
-  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/1.2.1.tar.gz"
-  sha256 "8df32f209d481580c3365a065882e40343ecc42d9e4ed593838092bb6746a197"
-  license "GPL-3.0"
+  url "https://github.com/MitMaro/git-interactive-rebase-tool/archive/2.0.0.tar.gz"
+  sha256 "572815b6bf152cae9414635caf9c8c918a575747c3a8885767380da4aeeeb709"
+  license "GPL-3.0-or-later"
 
   livecheck do
     url :stable
@@ -11,16 +11,14 @@ class GitInteractiveRebaseTool < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a04e9592263251aa339a90a19f2664db2490656c835e766f9f1b09f854c3ea0a" => :big_sur
-    sha256 "ab2feae40a1c22695f88383fc0d25bd1ce90499cf74004719fbaf7540a673f09" => :catalina
-    sha256 "50a7e6d5e3b6e0cdb75f9dd83fde8c9d473a632c8f22f575591fe4b5469a19bf" => :mojave
-    sha256 "530ae677663e9773d05a17878a1e28e91e8751d9b9ac8cffdb0acaad7a7d1e8b" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6180d15058ccd520f47d2098b5cc027582cf8ea7ecb1c4a4d64e345c3e902f67"
+    sha256 cellar: :any_skip_relocation, big_sur:       "372e9db83f4c4e47a7268c380e83346884901e3323cab736ba8e6e2a6fd523be"
+    sha256 cellar: :any_skip_relocation, catalina:      "dbb362bd82f3863f68aaa26591cd0754070f91c6573556e86210b63034fe47b0"
+    sha256 cellar: :any_skip_relocation, mojave:        "06a54c67aa4daa0187733cb43a8ce3fcadd0d9a3aa3f8577dbd77f13e1128da5"
   end
 
   depends_on "rust" => :build
 
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   def install
@@ -28,41 +26,29 @@ class GitInteractiveRebaseTool < Formula
   end
 
   test do
-    require "pty" # required for interactivity
+    require "pty"
+    require "io/console"
+
     mkdir testpath/"repo" do
       system "git", "init"
-      touch "FILE1"
-      system "git", "add", "FILE1"
-      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'",
-                              "--author='Test <test@example.com>'",
-                              "--message='File 1'"
-      touch "FILE2"
-      system "git", "add", "FILE2"
-      system "git", "commit", "--date='2005-04-07T22:13:13-3:30'",
-                              "--author='Test <test@example.com>'",
-                              "--message='File 2'"
     end
 
     (testpath/"repo/.git/rebase-merge/git-rebase-todo").write <<~EOS
-      pick be5eaa0 File 1
-      pick 32bd1bb File 2
+      noop
     EOS
 
     expected_git_rebase_todo = <<~EOS
-      drop be5eaa0 File 1
-      pick 32bd1bb File 2
+      noop
     EOS
 
     env = { "GIT_DIR" => testpath/"repo/.git/" }
     executable = bin/"interactive-rebase-tool"
-    file = testpath/"repo/.git/rebase-merge/git-rebase-todo"
-    PTY.spawn(env, executable, file) do |stdout, stdin, _pid|
-      # simulate user input
-      stdin.putc "d"
-      stdin.putc "W"
-      stdout.read
-    end
+    todo_file = testpath/"repo/.git/rebase-merge/git-rebase-todo"
 
-    assert_equal expected_git_rebase_todo, (testpath/"repo/.git/rebase-merge/git-rebase-todo").read
+    _, _, pid = PTY.spawn(env, executable, todo_file)
+    Process.wait(pid)
+
+    assert_equal 0, $CHILD_STATUS.exitstatus
+    assert_equal expected_git_rebase_todo, todo_file.read
   end
 end

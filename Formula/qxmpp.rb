@@ -4,18 +4,17 @@ class Qxmpp < Formula
   url "https://github.com/qxmpp-project/qxmpp/archive/v1.3.1.tar.gz"
   sha256 "812e718a2dd762ec501a9012a1281b9b6c6d46ec38adbc6eec242309144e1c55"
   license "LGPL-2.1"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "98e9f506c62ab3b25d0de4fff745309eb36f99230910e83f8258a4853b8c99f9" => :big_sur
-    sha256 "ae5ada2da192e552193487318f63c28bc5a1ce71705ac97ff2f2cdaebf1ace20" => :catalina
-    sha256 "ace2c4096387d98f5a27d28d73b0ed2453a61a5a9b4bd7ff1c55b105f0373b38" => :mojave
-    sha256 "a8342df624addc888a2d409e01a087e7974ff78b2091df7f6dc94949bb55abee" => :high_sierra
+    sha256 cellar: :any, big_sur:  "305342475120bce321cb8c08155abea73b9bea24bf13182a2c90f5d15b52f55d"
+    sha256 cellar: :any, catalina: "3afe3b595811cbe3294fde018171c6af388f045ddc2a8c1dddda563d8713e5e0"
+    sha256 cellar: :any, mojave:   "bab8c0aa083c76d3dd59674a1b001efe33624e5a37b03b02effbd098d9c24852"
   end
 
   depends_on "cmake" => :build
   depends_on xcode: :build
-  depends_on "qt"
+  depends_on "qt@5"
 
   def install
     mkdir "build" do
@@ -25,6 +24,7 @@ class Qxmpp < Formula
   end
 
   test do
+    ENV.delete "CPATH"
     (testpath/"test.pro").write <<~EOS
       TEMPLATE     = app
       CONFIG      += console
@@ -45,7 +45,7 @@ class Qxmpp < Formula
       }
     EOS
 
-    system "#{Formula["qt"].bin}/qmake", "test.pro"
+    system "#{Formula["qt@5"].bin}/qmake", "test.pro"
     system "make"
     assert_predicate testpath/"test", :exist?, "test output file does not exist!"
     system "./test"

@@ -2,9 +2,10 @@ class Inlets < Formula
   desc "Expose your local endpoints to the Internet"
   homepage "https://github.com/inlets/inlets"
   url "https://github.com/inlets/inlets.git",
-      tag:      "2.7.10",
-      revision: "9bbbd0ef498474b922830bd2bfaa6a1caf382660"
+      tag:      "3.0.1",
+      revision: "dbccc1ee8edfa0a06e4f7b258bbee4a959bc18af"
   license "MIT"
+  head "https://github.com/inlets/inlets.git"
 
   livecheck do
     url :stable
@@ -12,12 +13,10 @@ class Inlets < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a109f03f644398c4f63a527e14cdfd62fa766566f98503efb79518d06baeaf86" => :big_sur
-    sha256 "b0313990e00dcba9f9cf6781966cf7dd73c4f7f7555b83581b402ac0ab064604" => :arm64_big_sur
-    sha256 "cabff941d6c28e6e5fba7408862c3ad9b9dc8cce3400cfc2c3842ef78f2aa04e" => :catalina
-    sha256 "b4fbf74800a0d0baeac891755ac892817c4ec32e851d27fda613fce56918503c" => :mojave
-    sha256 "76c5394f14c87b319df9a06dd097edfacc0bb040ac7273de8cfa2cfa07408830" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "49385530d15aed2d23ef0aed4f5f6b46cc6e6c49b0936a2b9995d95115cf88b8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "dd817356a0bccef76ee190e3ec5bd1a99965929b0e427697c8df0a4db088ab34"
+    sha256 cellar: :any_skip_relocation, catalina:      "ae0b7a7acdf69fce8d9305cbd125083aff5f98e7ec0d1bdcf96aa26a4319fca1"
+    sha256 cellar: :any_skip_relocation, mojave:        "1922d778ad53108052d204fe06122e7402ee5a28612c2e97f3ff78075b25cbae"
   end
 
   depends_on "go" => :build
@@ -25,10 +24,12 @@ class Inlets < Formula
   uses_from_macos "ruby" => :test
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "HEAD").chomp
-    system "go", "build", *std_go_args,
-            "-ldflags", "-s -w -X main.GitCommit=#{commit} -X main.Version=#{version}",
-            "-a", "-installsuffix", "cgo"
+    ldflags = %W[
+      -s -w
+      -X main.GitCommit=#{Utils.git_head}
+      -X main.Version=#{version}
+    ]
+    system "go", "build", *std_go_args, "-ldflags", ldflags.join(" "), "-a", "-installsuffix", "cgo"
   end
 
   def cleanup(name, pid)
@@ -76,13 +77,11 @@ class Inlets < Formula
     end
 
     begin
-      stable_resource = stable.instance_variable_get(:@resource)
-      commit = stable_resource.instance_variable_get(:@specs)[:revision]
-
       # Basic --version test
+      commit_regex = /[a-f0-9]{40}/
       inlets_version = shell_output("#{bin}/inlets version")
-      assert_match /\s#{commit}$/, inlets_version
-      assert_match /\s#{version}$/, inlets_version
+      assert_match commit_regex, inlets_version
+      assert_match version.to_s, inlets_version
 
       # Client/Server e2e test
       # This test involves establishing a client-server inlets tunnel on the
@@ -95,12 +94,12 @@ class Inlets < Formula
 
       client_pid = fork do
         # Starting inlets client
-        exec "#{bin}/inlets client --remote localhost:#{remote_port} " \
-             "--upstream localhost:#{upstream_port} --token #{secret_token}"
+        exec "#{bin}/inlets client --url ws://localhost:#{remote_port} " \
+             "--upstream localhost:#{upstream_port} --token #{secret_token} --insecure"
       end
 
       sleep 3 # Waiting for inlets websocket tunnel
-      assert_match mock_response, shell_output("curl -s http://localhost:#{remote_port}/inlets-test")
+      assert_match mock_response, shell_output("curl -s localhost:#{remote_port}/inlets-test")
     ensure
       cleanup("Mock Server", mock_upstream_server_pid)
       cleanup("Inlets Server", server_pid)

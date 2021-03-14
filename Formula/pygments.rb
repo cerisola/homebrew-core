@@ -3,21 +3,16 @@ class Pygments < Formula
 
   desc "Generic syntax highlighter"
   homepage "https://pygments.org/"
-  url "https://files.pythonhosted.org/packages/29/60/8ff9dcb5eac7f4da327ba9ecb74e1ad783b2d32423c06ef599e48c79b1e1/Pygments-2.7.3.tar.gz"
-  sha256 "ccf3acacf3782cbed4a989426012f1c535c9a90d3a7fc3f16d231b9372d2b716"
+  url "https://files.pythonhosted.org/packages/15/9d/bc9047ca1eee944cc245f3649feea6eecde3f38011ee9b8a6a64fb7088cd/Pygments-2.8.1.tar.gz"
+  sha256 "2656e1a6edcdabf4275f9a3640db59fd5de107d88e8663c5d4e9a0fa62f77f94"
   license "BSD-2-Clause"
   head "https://github.com/pygments/pygments.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a97e775ec600eac6459e812a5b56d6be6e31942eb700650749becf84f97d7f33" => :big_sur
-    sha256 "076471967168c0e3fcea735c1cfea2c1e1c568acb8851a94afee7bfe47238414" => :arm64_big_sur
-    sha256 "ebf72c4fbc6b7c4992ecb815a9092f52e6a862deeb6ba2e4534aa62701a40e02" => :catalina
-    sha256 "c3fa220fa15087e40f4df61f3c7c249b8bec78177d6609306a92b3c1af92ecb3" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1a3f3b461647e5a27f28be74638a0a14f075ecf6c15c3bf86fb8967a574589f1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "fa0453988908f7898bcb6cba2983f0f741c119466a52ce475d3509c21b273029"
+    sha256 cellar: :any_skip_relocation, catalina:      "bbf8057e41df8d871afc02c4dce7904e1e21da7c67b52c03b4e8a8dc39b0b83e"
+    sha256 cellar: :any_skip_relocation, mojave:        "1328dcbfbdd825c547c6bc4e181587afd6a05a8d5e10c11d2c3169d9d452a29a"
   end
 
   depends_on "python@3.9"

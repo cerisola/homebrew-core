@@ -2,19 +2,17 @@ class Osc < Formula
   include Language::Python::Virtualenv
 
   desc "Command-line interface to work with an Open Build Service"
-  homepage "https://github.com/openSUSE/osc"
-  url "https://github.com/openSUSE/osc/archive/0.171.0.tar.gz"
-  sha256 "e824480c1c5811b05ea18236cd13164a15f7bcf17df929b43ed0617cfcb60f80"
-  license "GPL-2.0"
+  homepage "https://openbuildservice.org"
+  url "https://github.com/openSUSE/osc/archive/0.172.0.tar.gz"
+  sha256 "bd4d8c5e081064524972a3f6844798143cc1a0aa3df41f84ee93ec59444e9d8b"
+  license "GPL-2.0-or-later"
   head "https://github.com/openSUSE/osc.git"
 
   bottle do
-    cellar :any
-    sha256 "ce00021e980c530d2b3fccb16698f2869462bb59fd7b054b92a95024565ec840" => :big_sur
-    sha256 "92515d809578b1cf136cc46dfdbde614179c68fdb58b12b619cbd5a6c3dd956a" => :arm64_big_sur
-    sha256 "bf7953f981826e73bd4be7ef9b1e8d4127afebd95febe9659a1b0f10a389e9a6" => :catalina
-    sha256 "6b55d18a07e128e2811a8c3c8d8bceed67201a4761977903b68780e8fc405225" => :mojave
-    sha256 "b5438d36082a8d13b22de3c7a4f67399ff8899707658e9146af73e8c572bda6c" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "2031fc5819080a21b135068bc14f85cbb9fd6f1974ffedf214480df511e6e4d4"
+    sha256 cellar: :any, big_sur:       "4d481afd08224785009b0679d26ad2970f87bb27bb547fee9bcdd0bcfec6a85d"
+    sha256 cellar: :any, catalina:      "91728d2288f373343410be0d60848aab70baeacb2d18b6c6eb5c93ff8291c8d9"
+    sha256 cellar: :any, mojave:        "0358596adc5d92f5bf0a3f519f5c1dd611110b23f823532e06288ddffa0631cf"
   end
 
   depends_on "swig" => :build

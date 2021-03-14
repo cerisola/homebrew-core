@@ -1,15 +1,15 @@
 class Arangodb < Formula
   desc "Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.7.5.tar.gz"
-  sha256 "104dbc3676dac0684aa11c5c580a0231ce0ed5e53e544fb8f31f2b5a52bb6ddd"
+  url "https://download.arangodb.com/Source/ArangoDB-3.7.9.tar.gz"
+  sha256 "7b4337de998fd915809a12f1b9787e809ab8183e920a5e12d92753b9e8e5ca60"
   license "Apache-2.0"
   head "https://github.com/arangodb/arangodb.git", branch: "devel"
 
   bottle do
-    sha256 "82de995f5190653363448b2af49c2b35bb8720382ca48482738871617a400897" => :big_sur
-    sha256 "00fd570b6bf25f6dd15b0c155c900a4b2cc8cd8b8baebe29f9c1d98c5a7c7885" => :catalina
-    sha256 "4dfbf3933b90efb73d0042e7782468428ffb3cf8e5e911c304b670159581e4f7" => :mojave
+    sha256 big_sur:  "33124b28422186cd518920b2273314818f6b351de10bca36a44a2d071da15fb3"
+    sha256 catalina: "353a248168201db1d2b251bb4041190fd87cafd234a8f20d2e676d2ee9e5b87d"
+    sha256 mojave:   "7378681390cf97ff8a32f24e74c88882e0cb35808ad0f1297dabe70ade999148"
   end
 
   depends_on "ccache" => :build
@@ -36,13 +36,11 @@ class Arangodb < Formula
     resource("starter").stage do
       ENV["GO111MODULE"] = "on"
       ENV["DOCKERCLI"] = ""
-      # use commit-id as projectBuild
-      commit = `git rev-parse HEAD`.chomp
       system "make", "deps"
       ldflags = %W[
         -s -w
         -X main.projectVersion=#{resource("starter").version}
-        -X main.projectBuild=#{commit}
+        -X main.projectBuild=#{Utils.git_head}
       ]
       system "go", "build", *std_go_args, "-ldflags", ldflags.join(" "), "github.com/arangodb-helper/arangodb"
     end

@@ -6,13 +6,13 @@ class LiterateGit < Formula
   url "https://github.com/bennorth/literate-git/archive/v0.3.1.tar.gz"
   sha256 "f1dec77584236a5ab2bcee9169e16b5d976e83cd53d279512136bdc90b04940a"
   license "GPL-3.0-or-later"
-  revision 5
+  revision 6
 
   bottle do
-    cellar :any
-    sha256 "7d0a903d891863d8ce77ac5b9508102273526dea2efc86d57b168d46d05025cd" => :big_sur
-    sha256 "1f672f78ba93ff8ce5185bd9db20b651f45cfceccde64f7c047493bf5b4e929d" => :catalina
-    sha256 "c0abc49f503c8c2ff5d58ec8af19309823b254e451a20f33db6ddaf696c01117" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "331f2b1125935469948fb649b8ac5a8063bcb63e4a7023aa8db3c6ef63a43b31"
+    sha256 cellar: :any, big_sur:       "7cf45d23a0f329ce3a0f4f6dbf714ba2ac6cacdebda0aadecb47cbab3c837296"
+    sha256 cellar: :any, catalina:      "3a9b77d11ab5cf7c11ca7c68e87facd315892aeb3b4f39eb2e620642bd0cbce4"
+    sha256 cellar: :any, mojave:        "ab1381ddd5dca2639be003b01a67d62a4fe76b1fbf3572859d7b5adaa1e44303"
   end
 
   depends_on "libgit2"
@@ -30,8 +30,8 @@ class LiterateGit < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/05/54/3324b0c46340c31b909fcec598696aaec7ddc8c18a63f2db352562d3354c/cffi-1.14.0.tar.gz"
-    sha256 "2d384f4a127a15ba701207f7639d94106693b6cd64173d6c8988e2c25f3ac2b6"
+    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
+    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
   end
 
   resource "docopt" do

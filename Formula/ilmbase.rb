@@ -2,15 +2,15 @@ class Ilmbase < Formula
   desc "OpenEXR ILM Base libraries (high dynamic-range image file format)"
   homepage "https://www.openexr.com/"
   # NOTE: Please keep these values in sync with openexr.rb when updating.
-  url "https://github.com/openexr/openexr/archive/v2.5.4.tar.gz"
-  sha256 "dba19e9c6720c6f64fbc8b9d1867eaa75da6438109b941eefdc75ed141b6576d"
+  url "https://github.com/openexr/openexr/archive/v2.5.5.tar.gz"
+  sha256 "59e98361cb31456a9634378d0f653a2b9554b8900f233450f2396ff495ea76b3"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 "96c25377e22df725dff159ed26a7664448e7ba4a7fd90924532b1ed67c1c76c2" => :big_sur
-    sha256 "e00555535d8beaf7bdc54686c4841072f934460cd2c2326c73a142cd0a642a5e" => :arm64_big_sur
-    sha256 "dc14e8650e42b22189ce338e9c8593dd29a81c68d1a915e104651a97b3f1f7ab" => :catalina
-    sha256 "5f64d530a2162ca1a7b042704f0ba38de1b9efde4742ee76cbde3172af7612ac" => :mojave
+    sha256 arm64_big_sur: "f465c8e3f824777ab727d17e11c018eff8d8afc12ffe0bb014dbce22522e9b7d"
+    sha256 big_sur:       "c29c6544af5a4b57b14984322b16ab1d7e5e6598f6a999bed1cd757b78d8324c"
+    sha256 catalina:      "9f185fa9c393f463d37002736f4ef0dfdbe347a60193d38371d1b1055fc22a0d"
+    sha256 mojave:        "53b8f2f3e3e1ef9b6c22de5993eec29ab6d9cc46109df39a7eb7b49f0b8e02a2"
   end
 
   depends_on "cmake" => :build

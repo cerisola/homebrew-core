@@ -1,8 +1,8 @@
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.18.2.tar.xz"
-  sha256 "dd04fb1f7826e2f6d9b4d66fc22f19cc6a47c301e13041f0ee3d7f65c89b05ac"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.18.3.tar.xz"
+  sha256 "dbfa20283848f0347a223dd8523dfb62e09e5220b21b1d157a8b0c8b67ba9f52"
   license "LGPL-2.0-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-base.git"
 
@@ -12,10 +12,10 @@ class GstPluginsBase < Formula
   end
 
   bottle do
-    sha256 "41df7adc463eddef2e64d52990a076437dc115b5dcf501d0739aa754879f54b3" => :big_sur
-    sha256 "25c8983ac5492195697fdb49424bbbbec6547394e0879b8f59235a20a87db138" => :arm64_big_sur
-    sha256 "515ad20ac0cb9d714aefc57c4dca4a566a3ae652c701251d0ea3dbe78542f65e" => :catalina
-    sha256 "6ca05eda42dc16f6652f9f3135557a794806e2b3ec2dd6ce910adde700c5f5ac" => :mojave
+    sha256 arm64_big_sur: "8dc45556d4090a686375d78f50f3187b88121023f3024ffaa9cc65e1fc8ebb15"
+    sha256 big_sur:       "c386d9f8ee2700a3dc9acd8cc73f4bd5e2ead2baceca3ff17b995f6723da6a24"
+    sha256 catalina:      "564476c1219d2850bf6282700f8641580921d0c9d6fa1e8f18bde4981345dd0f"
+    sha256 mojave:        "ceec6241e4c5f756770f9f780449f5a3eec67ad2782406fdb12b4d5320ea4b5f"
   end
 
   depends_on "gobject-introspection" => :build

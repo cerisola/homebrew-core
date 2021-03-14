@@ -1,21 +1,22 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.1/postgresql-13.1.tar.bz2"
-  sha256 "12345c83b89aa29808568977f5200d6da00f88a035517f925293355432ffe61f"
+  url "https://ftp.postgresql.org/pub/source/v13.2/postgresql-13.2.tar.bz2"
+  sha256 "5fd7fcd08db86f5b2aed28fcfaf9ae0aca8e9428561ac547764c2a2b0f41adfc"
   license "PostgreSQL"
+  revision 1
   head "https://github.com/postgres/postgres.git"
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(\d+(?:\.\d+)*)/?["' >]}i)
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 "e4d523c7171f265b340df22a88ff78e6fba4aed46afcf3f4e5bd4ac4b94e8a16" => :big_sur
-    sha256 "6939bfae5047a585985ef45d71a04b88ef8ccbced5d35a3ccce4a9aa452087aa" => :arm64_big_sur
-    sha256 "13939e578f0a48c78966c2527dc48391b19650b51f7489767b5237e3bab16793" => :catalina
-    sha256 "1826c98f6d117bd040fbb307c1c95dfa2dee6ff8647ec8010e1b79386aa59eb0" => :mojave
+    sha256 arm64_big_sur: "299babccbbf29b9769ab402aca01c4a0c4bc173a19a928e09fe1edabe7461c88"
+    sha256 big_sur:       "67a547842ae49911d301d490e70b5fff1ee27a65cea403abeff3a25d1806e8d6"
+    sha256 catalina:      "02af915cc2b5291c5a15b59a74dff255e918e7a6af34dbef53cf6ad264627628"
+    sha256 mojave:        "37f0b76c0f034d8a6837805eb27da3787c39cf895516a193ad298ea96f68e98a"
   end
 
   depends_on "pkg-config" => :build
@@ -78,10 +79,12 @@ class Postgresql < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
     postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
   end
 
@@ -141,7 +144,7 @@ class Postgresql < Formula
   end
 
   test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
+    system "#{bin}/initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal "#{HOMEBREW_PREFIX}/share/postgresql", shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal "#{HOMEBREW_PREFIX}/lib", shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal "#{HOMEBREW_PREFIX}/lib/postgresql", shell_output("#{bin}/pg_config --pkglibdir").chomp

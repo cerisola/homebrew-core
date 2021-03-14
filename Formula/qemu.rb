@@ -1,20 +1,23 @@
 class Qemu < Formula
   desc "Emulator for x86 and PowerPC"
   homepage "https://www.qemu.org/"
-  url "https://download.qemu.org/qemu-5.1.0.tar.xz"
-  sha256 "c9174eb5933d9eb5e61f541cd6d1184cd3118dfe4c5c4955bc1bdc4d390fa4e5"
+  url "https://download.qemu.org/qemu-5.2.0.tar.xz"
+  sha256 "cb18d889b628fbe637672b0326789d9b0e3b8027e0445b936537c78549df17bc"
   license "GPL-2.0-only"
   head "https://git.qemu.org/git/qemu.git"
 
   bottle do
-    sha256 "6d66e4689bda9dc9c43bd3924e49e4722586bb611073ced182c79c6d7f995cb0" => :big_sur
-    sha256 "9659d7d483d014be6366a0480de364cc983e1f9e24e9c42e09f0fa19e216d5d1" => :catalina
-    sha256 "dc0d52fc6839c7800ec0dc38c78c8ccb862357149141aee669ec29449cb3b810" => :mojave
-    sha256 "9a30c423617ebd3dbfc8e67afada9a17f7534a7bba16b3c13189301f53458f36" => :high_sierra
+    sha256 arm64_big_sur: "87f301721d69b60e9088e4c60da5c905f887cbc504f31185ae663bfa36a11291"
+    sha256 big_sur:       "a9d19e88aaaa1cbca0069e298f09b738b8a0a27157ce893ac322f3d6a24519bc"
+    sha256 catalina:      "2443538eb765864a43207708b0f2eb80a601c4755952c9f3d9c7c85e1b07f2da"
+    sha256 mojave:        "359f0bc3b9f605758f3e34819a69c310f855e8b7ddc5ba45c2f3f4c8cf884f19"
   end
 
   depends_on "libtool" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "gnutls"
   depends_on "jpeg-turbo"
@@ -32,6 +35,18 @@ class Qemu < Formula
   resource "test-image" do
     url "https://dl.bintray.com/homebrew/mirror/FD12FLOPPY.zip"
     sha256 "81237c7b42dc0ffc8b32a2f5734e3480a3f9a470c50c14a9c4576a2561a35807"
+  end
+
+  # remove in next release
+  patch do
+    url "https://git.qemu.org/?p=qemu.git;a=patch;h=0dbce6efb5ff2e7113734d3a0cabbf87fc56feec"
+    sha256 "8ced33c7f829216544b762d8db0f143dbea04fa5a1ce41b491bbd7808f64a944"
+  end
+
+  # remove in next release
+  patch do
+    url "https://git.qemu.org/?p=qemu.git;a=patch;h=cb7abd8319d19000b57ae6c5c474c2635db054c6"
+    sha256 "818ad42f0cb25ab5df37058e27d7f879e4389489f692da4404c1f15dde5b2c4d"
   end
 
   def install
@@ -73,7 +88,6 @@ class Qemu < Formula
     assert_match expected, shell_output("#{bin}/qemu-system-cris --version")
     assert_match expected, shell_output("#{bin}/qemu-system-hppa --version")
     assert_match expected, shell_output("#{bin}/qemu-system-i386 --version")
-    assert_match expected, shell_output("#{bin}/qemu-system-lm32 --version")
     assert_match expected, shell_output("#{bin}/qemu-system-m68k --version")
     assert_match expected, shell_output("#{bin}/qemu-system-microblaze --version")
     assert_match expected, shell_output("#{bin}/qemu-system-microblazeel --version")
@@ -95,7 +109,6 @@ class Qemu < Formula
     assert_match expected, shell_output("#{bin}/qemu-system-sparc --version")
     assert_match expected, shell_output("#{bin}/qemu-system-sparc64 --version")
     assert_match expected, shell_output("#{bin}/qemu-system-tricore --version")
-    assert_match expected, shell_output("#{bin}/qemu-system-unicore32 --version")
     assert_match expected, shell_output("#{bin}/qemu-system-x86_64 --version")
     assert_match expected, shell_output("#{bin}/qemu-system-xtensa --version")
     assert_match expected, shell_output("#{bin}/qemu-system-xtensaeb --version")

@@ -2,8 +2,8 @@ class Onnxruntime < Formula
   desc "Cross-platform, high performance scoring engine for ML models"
   homepage "https://github.com/microsoft/onnxruntime"
   url "https://github.com/microsoft/onnxruntime.git",
-      tag:      "v1.6.0",
-      revision: "718ca7f92085bef4b19b1acc71c1e1f3daccde94"
+      tag:      "v1.7.1",
+      revision: "711a31e2ea7f9d7512d29f26702476102bda4ca4"
   license "MIT"
 
   livecheck do
@@ -12,11 +12,10 @@ class Onnxruntime < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "337d7698df55dc5e51642648c48b197d16b16724a18f8b3f2dd8d945ab3d9570" => :big_sur
-    sha256 "86072fc05e9cf6c79ceace253b63db065b7b0e102f411b86ef6491f5ef02cd8e" => :arm64_big_sur
-    sha256 "abba47ba776200c08639652a71b543152a60cb665cfeba5a6d10802329ac3637" => :catalina
-    sha256 "66ad4dd817c95e4f47e29ee2728d0f0e4e1e5e21b0bcb69cee1153b08fe115c9" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "e2844199bfcfcae12e9d15da1559d87bf0d6945dd302e23e16b646aef451f869"
+    sha256 cellar: :any, big_sur:       "75f2c88ccb0c65bcdf6d5441e53c05d389a266ed3f8894bf2b6f4dcdad3bf8dc"
+    sha256 cellar: :any, catalina:      "2eb0fe993ca4fbf621f51ecdb7e0d502fe369de12a1f9863c3eef3b950c9814d"
+    sha256 cellar: :any, mojave:        "7ef9a5fcf95576b1d62b08ed09ec4d15d567ea3a5799333c36889fcc5e29194a"
   end
 
   depends_on "cmake" => :build
@@ -29,7 +28,6 @@ class Onnxruntime < Formula
       -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
       -Donnxruntime_BUILD_SHARED_LIB=ON
       -Donnxruntime_BUILD_UNIT_TESTS=OFF
-      -DCMAKE_BUILD_TYPE=Release
     ]
 
     mkdir "build" do

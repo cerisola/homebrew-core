@@ -1,9 +1,8 @@
 class Dcmtk < Formula
   desc "OFFIS DICOM toolkit command-line utilities"
   homepage "https://dicom.offis.de/dcmtk.php.en"
-  url "https://dicom.offis.de/download/dcmtk/dcmtk365/dcmtk-3.6.5.tar.gz"
-  sha256 "a05178665f21896dbb0974106dba1ad144975414abd760b4cf8f5cc979f9beb9"
-  revision 1
+  url "https://dicom.offis.de/download/dcmtk/dcmtk366/dcmtk-3.6.6.tar.gz"
+  sha256 "6859c62b290ee55677093cccfd6029c04186d91cf99c7642ae43627387f3458e"
   head "https://git.dcmtk.org/dcmtk.git"
 
   livecheck do
@@ -12,10 +11,9 @@ class Dcmtk < Formula
   end
 
   bottle do
-    sha256 "a52a1b60a406463246b8eb194e25589c88dfa982a936560bf6948be569448833" => :big_sur
-    sha256 "a86027494ff074de767cef1a7bf31639e50f153d4a2ec5297bb9560bb3e48ef6" => :catalina
-    sha256 "2bbb1bf5d51c7e12c2db901a632862b9429ef2b146f973feda5212fb1391ac33" => :mojave
-    sha256 "352137e82f70183e543b6d532dcf67c7fa95ea67b63421ad4fc9c0a0f19ba484" => :high_sierra
+    sha256 big_sur:  "14f0ad1188c09414ce0c38a5b1daad58031c490dedcb0e602d3a9d8946a7513c"
+    sha256 catalina: "b7169841e5ae53c3641392130e2d72190a859eb566e0445d16f58131a0bfe34a"
+    sha256 mojave:   "ba2af245944fd723362c4fd758aaa90a9f3b651e3422ce1326078bcdc4cad093"
   end
 
   depends_on "cmake" => :build
@@ -31,6 +29,16 @@ class Dcmtk < Formula
       system "make", "install"
       system "cmake", "-DBUILD_SHARED_LIBS=ON", *std_cmake_args, ".."
       system "make", "install"
+
+      on_macos do
+        inreplace lib/"cmake/dcmtk/DCMTKConfig.cmake", "#{HOMEBREW_SHIMS_PATH}/mac/super/", ""
+      end
+
+      on_linux do
+        if File.readlines(lib/"cmake/dcmtk/DCMTKConfig.cmake").grep(/#{HOMEBREW_SHIMS_PATH}/o).any?
+          inreplace lib/"cmake/dcmtk/DCMTKConfig.cmake", "#{HOMEBREW_SHIMS_PATH}/linux/super/", ""
+        end
+      end
     end
   end
 

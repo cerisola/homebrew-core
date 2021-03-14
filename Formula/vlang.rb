@@ -2,21 +2,20 @@ class Vlang < Formula
   desc "V programming language"
   homepage "https://vlang.io"
   # NOTE: Keep this in sync with V compiler below when updating
-  url "https://github.com/vlang/v/archive/0.2.1.tar.gz"
-  sha256 "0e7d37e7ef7a5001b86811239770bd3bc13949a6489e0de87b59d9e50ea342c9"
+  url "https://github.com/vlang/v/archive/0.2.2.tar.gz"
+  sha256 "9152eec96d2eeb575782cf138cb837f315e48c173878857441d98ba679e3a9bf"
   license "MIT"
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "5b1c0aff3a00b1ed5280773f58cc7036e7c7815fe240801648991b8e7169d76a" => :big_sur
-    sha256 "bd90ad78b6152fc2a96c75f9fbf3ee33b53286fa25253f370b180f58902d1dc5" => :arm64_big_sur
-    sha256 "c76679206c70528a145c8624511ee53a2ad8aa075f0cc7ddbfec7e0540257bb1" => :catalina
-    sha256 "6df40d00a41a8b6da2588c9dbfd111ed78e5a909f5ab1a1d5043cba8a78f9ed3" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c6d2d50296fdad67fb6ea868b8b530e8979db42575679fc8ffd1a1757f530147"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9be25862e7c69582ef1c8ee312e10e76988e5247439657f704078f56a5f6abc3"
+    sha256 cellar: :any_skip_relocation, catalina:      "d4e2bde9c42995a3c348f1ede4a78fa579a22b601144cc0b8adeb009d310c1b7"
+    sha256 cellar: :any_skip_relocation, mojave:        "0fe9d3b759400cee1a53c10f1a913a541d2f2f151822ff82454e953796c931cf"
   end
 
   resource "vc" do
@@ -24,7 +23,7 @@ class Vlang < Formula
     # "[v:master] {short SHA of the vlang release commit} - {vlang version number}".
     # The sources of this V compiler commit need to be used here
     url "https://github.com/vlang/vc.git",
-        revision: "563c3bd5720e513326fbac728dde29454275de9d"
+        revision: "31dd14b7927f154682437be1f2fbeed36c59ea2b"
   end
 
   def install

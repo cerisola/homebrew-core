@@ -1,15 +1,15 @@
 class E2fsprogs < Formula
   desc "Utilities for the ext2, ext3, and ext4 file systems"
   homepage "https://e2fsprogs.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.45.6/e2fsprogs-1.45.6.tar.gz"
-  sha256 "5f64ac50a2b60b8e67c5b382bb137dec39344017103caffc3a61554424f2d693"
-  # This package, the EXT2 filesystem utilities, are made available under
-  # the GNU Public License version 2, with the exception of the lib/ext2fs
-  # and lib/e2p libraries, which are made available under the GNU Library
-  # General Public License Version 2, the lib/uuid library which is made
-  # available under a BSD-style license and the lib/et and lib/ss
-  # libraries which are made available under an MIT-style license.
-  license "GPL-2.0"
+  url "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.46.2/e2fsprogs-1.46.2.tar.gz"
+  sha256 "f79f26b4f65bdc059fca12e1ec6a3040c3ce1a503fb70eb915bee71903815cd5"
+  license all_of: [
+    "GPL-2.0-or-later",
+    "LGPL-2.0-or-later", # lib/ex2fs
+    "LGPL-2.0-only",     # lib/e2p
+    "BSD-3-Clause",      # lib/uuid
+    "MIT",               # lib/et, lib/ss
+  ]
   head "https://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git"
 
   livecheck do
@@ -18,11 +18,10 @@ class E2fsprogs < Formula
   end
 
   bottle do
-    sha256 "2df2ed4769e646b512faae1bba7f064bd2c181bd08598aa63fdfb69821cbf49a" => :big_sur
-    sha256 "a5f198879bda78305887d100698abc17c3fc551be452e2c2ebb8732da676c4a9" => :arm64_big_sur
-    sha256 "bf44ad4af62150e9f29827532fced8640fdfcd9ef77e890347ce3eda288be30a" => :catalina
-    sha256 "2986dc8e3be65b03e27990226e78ba8bcd2d512381836bb09223f04c94974837" => :mojave
-    sha256 "0cdfcb50d1b1046d90d56ece1c4d1c7e624adf4c8b7f19587285bf77b10b7ec7" => :high_sierra
+    sha256 arm64_big_sur: "1e0cdd0fdb3195c51b5c8945ee6940831c996b7a43bed64ae44793eedec30f5b"
+    sha256 big_sur:       "5867593150f8074619181fb886e614d799be0fa241e579875593e8c4cadcd900"
+    sha256 catalina:      "567cf6795aebc06c1f1d99051800bcd55195061062398bad92049a38bb343890"
+    sha256 mojave:        "fd0cb15c18294ce9072377f0833b73302011efc1087c9fdc4fce3e730839c717"
   end
 
   keg_only "this installs several executables which shadow macOS system commands"

@@ -1,17 +1,15 @@
 class OsmGpsMap < Formula
   desc "GTK+ library to embed OpenStreetMap maps"
   homepage "https://nzjrs.github.com/osm-gps-map/"
-  url "https://github.com/nzjrs/osm-gps-map/releases/download/1.1.0/osm-gps-map-1.1.0.tar.gz"
-  sha256 "8f2ff865ed9ed9786cc5373c37b341b876958416139d0065ebb785cf88d33586"
-  license "GPL-2.0"
-  revision 5
+  url "https://github.com/nzjrs/osm-gps-map/releases/download/1.2.0/osm-gps-map-1.2.0.tar.gz"
+  sha256 "ddec11449f37b5dffb4bca134d024623897c6140af1f9981a8acc512dbf6a7a5"
+  license "GPL-2.0-or-later"
 
   bottle do
-    sha256 "1f7e957d457ba285d3cfe1ed7993455a5283f48941ba3a6de0c1add17a5b61f7" => :big_sur
-    sha256 "26630bf508c2b9bcacde4c4e40d9c3b393103d044dd0d15f34e3a34931e85d40" => :arm64_big_sur
-    sha256 "cbaa9aca7464061d5eb6bb92c24df2a643e065156d67d3615c18c7581e839eda" => :catalina
-    sha256 "da1513dbd5379a9176ab65fcd908892332cbc441757aaa4bdd9c7acd8b35c953" => :mojave
-    sha256 "25403998f03d0079d5bfecd396f58b5f3ba8277b3af6f76e506c33f0f09a4cad" => :high_sierra
+    sha256 arm64_big_sur: "8d4bfe8a748f9c06582dda25792b96b98eab8b21cec98d58b521cb8b8d4c26cf"
+    sha256 big_sur:       "54380e69472c5e9ae483823a3ec04c8b5bde31a1cdbc581dd9e14efeed2f8324"
+    sha256 catalina:      "c02c8a26f0a806b356e84ef628f71243007da8811b887ddcde2627f3ad763d2b"
+    sha256 mojave:        "af136c4438f1b2ff9fd45c1c89a39db9a5703b18d766137abdf2644c8d418ac2"
   end
 
   head do

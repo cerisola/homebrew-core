@@ -7,16 +7,11 @@ class Borgmatic < Formula
   sha256 "5cb6c126f351987f16f529ce8c5ef351b6b3458142316e9210edb028dff65536"
   license "GPL-3.0-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "875035ec5d79c0641ef5a86ad7f41d79b9e965a90a2a9a822881cce3c318b14c" => :big_sur
-    sha256 "a053876cc2c25aeb2923ed88b7c367cf1587287bb4ecab816ac30d0101717c97" => :arm64_big_sur
-    sha256 "23676967eec18bcf94d54357eef710b94274b2b988a576eb933c2823da418bcc" => :catalina
-    sha256 "61eb64ccf14eca1e09de11aa94adfa64190354fb58b1f66eebcca0f71661bedf" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "a053876cc2c25aeb2923ed88b7c367cf1587287bb4ecab816ac30d0101717c97"
+    sha256 cellar: :any, big_sur:       "875035ec5d79c0641ef5a86ad7f41d79b9e965a90a2a9a822881cce3c318b14c"
+    sha256 cellar: :any, catalina:      "23676967eec18bcf94d54357eef710b94274b2b988a576eb933c2823da418bcc"
+    sha256 cellar: :any, mojave:        "61eb64ccf14eca1e09de11aa94adfa64190354fb58b1f66eebcca0f71661bedf"
   end
 
   depends_on "libyaml"

@@ -1,8 +1,8 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.13.0.tar.gz"
-  sha256 "a954043a95b0326ca4037e50dace1f3a207a0a19e9a4a22f4c6718fc623db2a1"
+  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.13.1.tar.gz"
+  sha256 "8504d97b8fc5bd897345c95d116e0ee0ddf8c8ff99590ab2b4bd13278c9f50b8"
   license "BSD-3-Clause"
   head "https://github.com/NLnetLabs/unbound.git"
 
@@ -15,10 +15,10 @@ class Unbound < Formula
   end
 
   bottle do
-    sha256 "cef5d9843ecaabaa0a4cb9b89e04bc3d370ce143e4ff2e0f6711aa6572b1ad3a" => :big_sur
-    sha256 "2db4e311e44be817d3639b59ef14abdf53aa990bff95f2c6f445c47b704370de" => :arm64_big_sur
-    sha256 "132e7387adde0939a0f50d125ef5b6bdfa0186bae6dd9628668e9813813f4a9a" => :catalina
-    sha256 "a1941e3c48de236e9310547620b1fdf71ec5c07ff8cb6dadc9e9433d02dfa1a7" => :mojave
+    sha256 arm64_big_sur: "ca8e29b1898957208edd7a8ea445b0d39c942815a57f428b612ff0ae636bf859"
+    sha256 big_sur:       "c29ad2474ecb496f9e98a7389485cac2c542d8515d5fd2810bed05f206350a21"
+    sha256 catalina:      "0276d7a615cdd250ce1764a708c9e031c9c814f7d2c1a0f7aeb9d08166875af6"
+    sha256 mojave:        "27a471fe986b64f4ccd80280ba5695532ec77198542b30f0bd176cb02f07b0b8"
   end
 
   depends_on "libevent"
@@ -39,7 +39,12 @@ class Unbound < Formula
       --with-ssl=#{Formula["openssl@1.1"].opt_prefix}
     ]
 
-    args << "--with-libexpat=#{MacOS.sdk_path}/usr" if MacOS.sdk_path_if_needed
+    on_macos do
+      args << "--with-libexpat=#{MacOS.sdk_path}/usr" if MacOS.sdk_path_if_needed
+    end
+    on_linux do
+      args << "--with-libexpat=#{Formula["expat"].opt_prefix}"
+    end
     system "./configure", *args
 
     inreplace "doc/example.conf", 'username: "unbound"', 'username: "@@HOMEBREW-UNBOUND-USER@@"'

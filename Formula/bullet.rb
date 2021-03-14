@@ -1,17 +1,16 @@
 class Bullet < Formula
   desc "Physics SDK"
   homepage "https://bulletphysics.org/"
-  url "https://github.com/bulletphysics/bullet3/archive/3.08.tar.gz"
-  sha256 "05826c104b842bcdd1339b86894cb44c84ac2525ac296689d34b38a14bbba0dd"
+  url "https://github.com/bulletphysics/bullet3/archive/3.09.tar.gz"
+  sha256 "f2feef9322329c0571d9066fede2db0ede92b19f7f7fdf54def3b4651f02af03"
   license "Zlib"
-  revision 1
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
-    sha256 "c24a6a53450090dbccc161dd17f2555b8988934771019809c4c5e33aca9864b5" => :big_sur
-    sha256 "565e712684c82a288a59d47bc9bbde23ff076fb6b48f85433b1997516b014b72" => :arm64_big_sur
-    sha256 "c6fdc1cb6d9d45e68ed4c2ed841edacfc0d7d1b44ffc05c77869329260f2c266" => :catalina
-    sha256 "8c66500f251d89ee7ae7e9c282984fe81f43c21dd9566024e47132ec78a1322a" => :mojave
+    sha256 arm64_big_sur: "0865d80fd735e15ea05fc362daac4b4165a0034043d90e5ea0c620ea4b33c990"
+    sha256 big_sur:       "bb66686ae45e1f5dcea79ce2aa025631e001e11edc1f7ea4d1c0ab46a359349e"
+    sha256 catalina:      "79d5312f7ddf2f95a54b492d2ea46f92f0fffe7908807f4b9eb2e7fdb4738317"
+    sha256 mojave:        "f3b6f6ae687d26ce1315936c9f6b1fd82c083538145ff7d2ba6ecd3b9ca37e01"
   end
 
   depends_on "cmake" => :build
@@ -22,7 +21,6 @@ class Bullet < Formula
     args = std_cmake_args + %W[
       -DBUILD_PYBULLET=ON
       -DBUILD_PYBULLET_NUMPY=ON
-      -DUSE_DOUBLE_PRECISION=ON
       -DBT_USE_EGL=ON
       -DBUILD_UNIT_TESTS=OFF
       -DCMAKE_INSTALL_RPATH=#{lib}

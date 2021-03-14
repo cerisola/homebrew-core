@@ -2,17 +2,16 @@ class Tile38 < Formula
   desc "In-memory geolocation data store, spatial index, and realtime geofence"
   homepage "https://tile38.com/"
   url "https://github.com/tidwall/tile38.git",
-      tag:      "1.22.5",
-      revision: "6c653ab268df2ef36618ef7c2060f6744f220632"
+      tag:      "1.22.6",
+      revision: "d211858db62a3e13768879b3954648b2147759fe"
   license "MIT"
+  head "https://github.com/tidwall/tile38.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "2dfd0bfec5e04b0b816643934390f549d011e6f9b6c777b256df1297e17d5c53" => :big_sur
-    sha256 "baefb9c1937a56b9ae34c3995b541bbd62359900ac351fc01577dc2beb29fb13" => :arm64_big_sur
-    sha256 "a5e9bd65b0d1d2ff9fb707788fbbc943d048e33f3e7ae1597189088b5d5c0dc1" => :catalina
-    sha256 "dfbf2bdd63ff31fd7ca1bd8ec4bfbccc6e5e29ceb3e471f05822fcab3ee7ee98" => :mojave
-    sha256 "93f9977d272169bf165033bf0bf55f9151aa3080da95fca1b1373ef5d3d0d117" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1f387e3ffa1428b4b1c2804a7d52a34932062e1b7464587bf2a47ed0c9e52d6a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "675b17af3d429dca6462194f62007c1544c0a4782fd22d54440f11e13f24c825"
+    sha256 cellar: :any_skip_relocation, catalina:      "9972d32b249e738605729640cd449e998a7de599685887d41277b913eaa14d3f"
+    sha256 cellar: :any_skip_relocation, mojave:        "711814efd1b7a8f0ec7673910e6ecb37b6a6f5dadff3e2b88468e0f8def8a7aa"
   end
 
   depends_on "go" => :build
@@ -22,12 +21,10 @@ class Tile38 < Formula
   end
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
-
     ldflags = %W[
       -s -w
       -X github.com/tidwall/tile38/core.Version=#{version}
-      -X github.com/tidwall/tile38/core.GitSHA=#{commit}
+      -X github.com/tidwall/tile38/core.GitSHA=#{Utils.git_short_head}
     ]
 
     system "go", "build", "-o", bin/"tile38-server", "-ldflags", ldflags.join(" "), "./cmd/tile38-server"

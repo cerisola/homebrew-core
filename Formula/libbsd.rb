@@ -1,15 +1,15 @@
 class Libbsd < Formula
   desc "Utility functions from BSD systems"
   homepage "https://libbsd.freedesktop.org/"
-  url "https://libbsd.freedesktop.org/releases/libbsd-0.10.0.tar.xz"
-  sha256 "34b8adc726883d0e85b3118fa13605e179a62b31ba51f676136ecb2d0bc1a887"
+  url "https://libbsd.freedesktop.org/releases/libbsd-0.11.3.tar.xz"
+  sha256 "ff95cf8184151dacae4247832f8d4ea8800fa127dbd15033ecfe839f285b42a1"
   license "BSD-3-Clause"
 
+  depends_on "libmd"
   depends_on :linux
 
   def install
     system "./configure",
-      "--disable-debug",
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}"

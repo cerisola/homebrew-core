@@ -1,16 +1,15 @@
 class Detox < Formula
   desc "Utility to replace problematic characters in filenames"
   homepage "https://detox.sourceforge.io/"
-  url "https://github.com/dharple/detox/archive/v1.3.0.tar.gz"
-  sha256 "00daf6b019b51c7bbc3ac96deeeec18fd886c144eeee97c3372dd297bb134c84"
+  url "https://github.com/dharple/detox/archive/v1.4.2.tar.gz"
+  sha256 "40af25c00a55227cdddaa54d8a1b18fb47112f4fd72efabc325dd8e540b804df"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 "b7e48d1a3aa5f3d49149400be5f228ddf997089cdf85139d1a8691c224f84c34" => :big_sur
-    sha256 "c79ab2ec6be240cc277dea257a526a406b6a41981dbb7e897dae7747df242d6e" => :arm64_big_sur
-    sha256 "34cf8b1f4375e659bb76d81fbe298ae6afed01ecd6cd070755b3eabc409c329a" => :catalina
-    sha256 "d8b6b72801850f3cf9ecc81e5dfbdcbc77de66c4dc65b49efd008dcb8aadc432" => :mojave
-    sha256 "07b8fe6a481bac0864ccc50939980aad50772c4af9c15d57f95d81ad41acda8e" => :high_sierra
+    sha256 arm64_big_sur: "bdc45f67f781b94e1898b7538dfed399e5d47eeeefc33eb84fe1c6cda3a469f9"
+    sha256 big_sur:       "9d468f782f96d667d59892911dc1fa7ef7b40b3f0410d46c3a75147c8a5b886b"
+    sha256 catalina:      "83987429b9b768b6559420dd4656603ab6c963785e87bffd02a61e2be6557393"
+    sha256 mojave:        "a371814287b76ac37a6f24a719da41d5fb7d4215a2be548b075c706b1f670165"
   end
 
   depends_on "autoconf" => :build

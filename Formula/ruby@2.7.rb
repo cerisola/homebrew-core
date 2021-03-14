@@ -11,10 +11,11 @@ class RubyAT27 < Formula
   end
 
   bottle do
-    sha256 "bd5316036e68d01516a5432c8ecf8920a5b4f9ddccdaf26f7d36ae3897cf1a23" => :big_sur
-    sha256 "b97a27586d820e6f6c0eeeab57598a2f1f544707aff830269e52314736744656" => :arm64_big_sur
-    sha256 "034b77a8e5fe20a2cc16d1a31df2a92dccd6a6cb22ad25b45474665587f131fb" => :catalina
-    sha256 "7c81d846365cc64bf6fa5cb674e290912d8eed8b533fa8a90c4967ab31b43f65" => :mojave
+    rebuild 1
+    sha256 arm64_big_sur: "495d438227b12dd726981cbde5f97ad2266169976042c519086336918b118590"
+    sha256 big_sur:       "9d9a96326e21b878179285b9964ac4145f8dc0765cca841a394c2cf791286081"
+    sha256 catalina:      "6126c27ef5998b8ad3fb7112e4331191c9b6d8e45fadf52d9f4f21af823d25aa"
+    sha256 mojave:        "74278fbbb07822bc074b9a75848ce7501b4e9171279e6c02988d51b5a72a056f"
   end
 
   keg_only :versioned_formula
@@ -61,12 +62,7 @@ class RubyAT27 < Formula
     end
 
     # Correct MJIT_CC to not use superenv shim
-    on_macos do
-      args << "MJIT_CC=/usr/bin/clang"
-    end
-    on_linux do
-      args << "MJIT_CC=/usr/bin/gcc"
-    end
+    args << "MJIT_CC=/usr/bin/#{DevelopmentTools.default_compiler}"
 
     system "./configure", *args
 

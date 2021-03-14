@@ -1,17 +1,15 @@
 class Gd < Formula
   desc "Graphics library to dynamically manipulate images"
   homepage "https://libgd.github.io/"
-  url "https://github.com/libgd/libgd/releases/download/gd-2.3.0/libgd-2.3.0.tar.xz"
-  sha256 "ecd9155b9a417fb3f837f29e5966323796de247789163761dd72dbf83bfcac58"
+  url "https://github.com/libgd/libgd/releases/download/gd-2.3.2/libgd-2.3.2.tar.xz"
+  sha256 "478a047084e0d89b83616e4c2cf3c9438175fb0cc55d8c8967f06e0427f7d7fb"
   license :cannot_represent
 
   bottle do
-    cellar :any
-    sha256 "57db02960b120179fcd18257989a043f6d6f82212dde034e6efeffd9ec75434a" => :big_sur
-    sha256 "a8f4861ed56409298cc5f5b4b0f7ebc5abde584f92f64237102503071fc0a5ba" => :arm64_big_sur
-    sha256 "ebc4192da4580942545084cf2f5c36dc4645a5c83244224905e01dee4e50837e" => :catalina
-    sha256 "c014efe5f692b3146a4416c0acdaad3c632064d50aad2c18598cfb32fb31ee69" => :mojave
-    sha256 "0bd97ae0be0bfaa7554d0628a69b5fd8cba27de7ff5bde0533d4a1b6445be614" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "c625bf1de35375334370901cfb5283b169253a2616e2cd7c5299a110fe07672e"
+    sha256 cellar: :any, big_sur:       "2c746f463d1b0ceaa2a9986b9ace87da6ec8b99b1a1362383d2375b067dc7010"
+    sha256 cellar: :any, catalina:      "aa93cd58d9694c86299445e73750e41b5740bc6ea5b247032ed3c71eca5cbce4"
+    sha256 cellar: :any, mojave:        "59e7dada9e961a52a5db6d14ad39985310bd6dfdbf4b9a4a321280d880b110bc"
   end
 
   head do

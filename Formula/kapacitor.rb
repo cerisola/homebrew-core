@@ -2,22 +2,21 @@ class Kapacitor < Formula
   desc "Open source time series data processor"
   homepage "https://github.com/influxdata/kapacitor"
   url "https://github.com/influxdata/kapacitor.git",
-      tag:      "v1.5.7",
-      revision: "0cb75d8c317c529d657f53c41c8870c37ebd0d18"
+      tag:      "v1.5.8",
+      revision: "873d93b7377bf1c7bfbcd508e4ea6a6213997aff"
   license "MIT"
   head "https://github.com/influxdata/kapacitor.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ab34c0300102c0e772e734ee8169effe333c7065f10f2e6b6efc131a6e7bbb31" => :big_sur
-    sha256 "e418264589e6068854fea663315369616977a59568dad1c4b5641cccef1cf38b" => :catalina
-    sha256 "8c78689d4c22160d4acbf4aeb11af9906a20c0d922d95401134ee6786bcfaf63" => :mojave
-    sha256 "d39896edf580fa9692057a2acbd04b204021a3f6ce31d47c3d1471a230a86836" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "53a4ffb90955abd638c370b605249e59cebf063a9bab2a91f8cd78f5ae81542c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a1381a3e165a2aeaac47206ab1de2898de021b1e6508253fdc04d57afe599d6a"
+    sha256 cellar: :any_skip_relocation, catalina:      "6e5902e6a5524d6062185bc20eaedaccf68d48ff9a12e374fce7d7666e0b8ad7"
+    sha256 cellar: :any_skip_relocation, mojave:        "786f624493214d9b7135f4e01753cab017eb5db0f24a0629319f6c85101755f0"
   end
 
   depends_on "go" => :build
@@ -26,12 +25,10 @@ class Kapacitor < Formula
     ENV["GOPATH"] = buildpath
     kapacitor_path = buildpath/"src/github.com/influxdata/kapacitor"
     kapacitor_path.install Dir["*"]
-    revision = Utils.safe_popen_read("git", "rev-parse", "HEAD").strip
-    version = Utils.safe_popen_read("git", "describe", "--tags").strip
 
     cd kapacitor_path do
       system "go", "install",
-             "-ldflags", "-X main.version=#{version} -X main.commit=#{revision}",
+             "-ldflags", "-X main.version=#{version} -X main.commit=#{Utils.git_head}",
              "./cmd/..."
     end
 
@@ -86,7 +83,7 @@ class Kapacitor < Formula
     (testpath/"config.toml").write shell_output("#{bin}/kapacitord config")
 
     inreplace testpath/"config.toml" do |s|
-      s.gsub! /disable-subscriptions = false/, "disable-subscriptions = true"
+      s.gsub! "disable-subscriptions = false", "disable-subscriptions = true"
       s.gsub! %r{data_dir = "/.*/.kapacitor"}, "data_dir = \"#{testpath}/kapacitor\""
       s.gsub! %r{/.*/.kapacitor/replay}, "#{testpath}/kapacitor/replay"
       s.gsub! %r{/.*/.kapacitor/tasks}, "#{testpath}/kapacitor/tasks"

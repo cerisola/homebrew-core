@@ -1,18 +1,16 @@
 class Rclone < Formula
   desc "Rsync for cloud storage"
   homepage "https://rclone.org/"
-  url "https://github.com/rclone/rclone/archive/v1.53.3.tar.gz"
-  sha256 "46fb317057ada21add1fa683a004e1ad5b2a1523c381f59b40ed1b18f2856ad0"
+  url "https://github.com/rclone/rclone/archive/v1.54.1.tar.gz"
+  sha256 "432ac3e9d10c5d36dc17e2111386c71b3bde7ae697604d8e257a135fb45e7bb4"
   license "MIT"
-  revision 1
   head "https://github.com/rclone/rclone.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9893c01fd98887fdb8a3f0172aa9f1c0c45772ef66745a035b2d59ed783a5a48" => :big_sur
-    sha256 "892887ded85fbe69da902eb186bfd29d17d6fd5bd2645dfa9d2d9bee5bcd08f4" => :arm64_big_sur
-    sha256 "7e0ac710208b82b5c40da947adebc35a97159d5ef6dae9bb77d5f9e147888a68" => :catalina
-    sha256 "fb4f008464eeec2bc8351ae821109ab762bf67aa604952e5d362288af67d9b46" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0c622cfada3f58e07f4bd86e011168773ee989db6cacaaeed80f465f3a332fbc"
+    sha256 cellar: :any_skip_relocation, big_sur:       "50481ebe8dca697a93c78e9ddea19ec902ce8d51639a48ff4abc4e7e17cba924"
+    sha256 cellar: :any_skip_relocation, catalina:      "c4baf5197b4d6b375ed1ac6e526f56c1ca1aa69170ac0ceb481254b0f3a5d8c8"
+    sha256 cellar: :any_skip_relocation, mojave:        "faffe9ea3e6c01d237e7014e72cd4dd795ed42408368cdd5b607f3f4f975f06c"
   end
 
   depends_on "go" => :build

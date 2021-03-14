@@ -1,9 +1,9 @@
 class Sqldiff < Formula
   desc "Displays the differences between SQLite databases"
   homepage "https://www.sqlite.org/sqldiff.html"
-  url "https://www.sqlite.org/2020/sqlite-src-3340000.zip"
-  version "3.34.0"
-  sha256 "a5c2000ece56d2de13c474658b9cdba6b7f2608a4d711e245518ea02a2a2333e"
+  url "https://www.sqlite.org/2021/sqlite-src-3340100.zip"
+  version "3.34.1"
+  sha256 "dddd237996b096dee8b37146c7a37a626a80306d6695103d2ec16ee3b852ff49"
   license "blessing"
 
   livecheck do
@@ -12,11 +12,10 @@ class Sqldiff < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "bc9c5f75179eebb911074c3ee03c3b569bcf78fd2b86638426cf80fcc0545ccb" => :big_sur
-    sha256 "9604fef23b34f1867541a51fbfbaa562f0c124933243958524c77412cce309b4" => :arm64_big_sur
-    sha256 "90f82a12f8b463d6ae92da105788e8a855968250f6ae2ea971e3945d3b3a5cc7" => :catalina
-    sha256 "8461ed8c4664c0c026fac15277fa6d2e18586f6be60e0ea71fd6eaaffa27e8d1" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f9c6846623d6f94989c17fd33131393d2bc7a8fb336e5598eb326e94b956b584"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ae802d2735142bad1b231ae31a4bfd5bfe8a78a9ac7bfbe68afdc9f2a08880ed"
+    sha256 cellar: :any_skip_relocation, catalina:      "28f56212edcb23f49f8f1d86b1f1b434f7a5b3b03f9d8eba5ba19085ad67c991"
+    sha256 cellar: :any_skip_relocation, mojave:        "6ddccf007a69ef3b632906e5eaca40686de76e819a816d26b2feca69926627a3"
   end
 
   uses_from_macos "tcl-tk" => :build

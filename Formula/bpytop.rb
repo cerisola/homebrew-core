@@ -3,16 +3,15 @@ class Bpytop < Formula
 
   desc "Linux/OSX/FreeBSD resource monitor"
   homepage "https://github.com/aristocratos/bpytop"
-  url "https://files.pythonhosted.org/packages/24/17/01ec1306d54dc8d2e1aaecc135bde2e587a3ad5c50fe9b8ed982d1a11fad/bpytop-1.0.55.tar.gz"
-  sha256 "8632399d1fad4c7910e238c4c5646f1a186b5d04927fad1d262a5817b3bcf282"
+  url "https://files.pythonhosted.org/packages/a5/4b/6822d87164e2696705e8e3d08b7f9431e9b7d17226954db96e864b8ca534/bpytop-1.0.63.tar.gz"
+  sha256 "21d4c87ceae7c9152e8c8094f50843c6174e47a94649dcbecda63c4190168762"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "4943d1c9e6165fe305b3e47cfb5e19e434f6442a1278961ba4b6942dff90d749" => :big_sur
-    sha256 "7c595aea2eeeb7805a69b03f276a3befeb511ae13091d91b2f6f7533a7e8139b" => :arm64_big_sur
-    sha256 "137a231daf1cf1e49e611f905144473052b36f4d37b7bdfee8a43cd7c62a3fa5" => :catalina
-    sha256 "57fd02b5832781fd11f1d701f5c8fe698a8c7e1ffdc4621bfe0a7136f40439f3" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ea5b97c65402aba37adfd6d227b5a6232249e1897bada76a7d2b63e2665481bf"
+    sha256 cellar: :any_skip_relocation, big_sur:       "332ab74636f4b41b83cf717eaa55a33405ee6de585a38c1e20b4e8e7d60baf6c"
+    sha256 cellar: :any_skip_relocation, catalina:      "ecacc9a44eba5e190d6fcc835c5a2d751e76489472b23d3f4e21d2eea44bdc88"
+    sha256 cellar: :any_skip_relocation, mojave:        "77e1fd7926e3187c90d5456e9f990f1530b17f518272cce1bda972101984a69d"
   end
 
   depends_on "python@3.9"
@@ -49,7 +48,7 @@ class Bpytop < Formula
 
     log = (config/"error.log").read
     assert_match "bpytop version #{version} started with pid #{pid}", log
-    assert_not_match /ERROR:/, log
+    assert_not_match(/ERROR:/, log)
   ensure
     Process.kill("TERM", pid)
   end

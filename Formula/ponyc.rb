@@ -2,15 +2,14 @@ class Ponyc < Formula
   desc "Object-oriented, actor-model, capabilities-secure programming language"
   homepage "https://www.ponylang.org/"
   url "https://github.com/ponylang/ponyc.git",
-      tag:      "0.38.2",
-      revision: "eb556003cea6de4eb064ca696530fc21956051ee"
+      tag:      "0.39.0",
+      revision: "85d897b978c5082a1f3264a3a9ad479446d73984"
   license "BSD-2-Clause"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "e4f37d6a1accc3d01b056a555cc16aa76fbf86b1a2121de313f484955d1eb165" => :big_sur
-    sha256 "5328a2550e89aa15d68a4384327fe4ce3446dcec16b81bba1e0f6316f5b651a7" => :catalina
-    sha256 "f2ba99266833d78cebaabec60a3e05961360f5c66cb966767e5db88cad2c9b35" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "b947aefd9340f18f5a25790bc66525b97d6906cc7a9cf1fbde33bc2cd4392832"
+    sha256 cellar: :any_skip_relocation, catalina: "ac79c2dd8d777089cc460b82f8904b9025e78b2c01e3dec427d4e0455e30e22a"
+    sha256 cellar: :any_skip_relocation, mojave:   "4ff3fbf05cee2dc1ee38bac6044802f1b2aba9e44e0bc0116d2b63e5122e5be1"
   end
 
   depends_on "cmake" => :build

@@ -1,15 +1,14 @@
 class Gitversion < Formula
   desc "Easy semantic versioning for projects using Git"
   homepage "https://gitversion.net"
-  url "https://github.com/GitTools/GitVersion/archive/5.6.1.tar.gz"
-  sha256 "4edcc8a78d4e2997a4a42accd5e8a72616be98d6f81ba302cef50538ded55846"
+  url "https://github.com/GitTools/GitVersion/archive/5.6.6.tar.gz"
+  sha256 "36aa1bc58997a31d5c78ab98faaa8f3b4478a97b0caa3a6afeac6129ad279143"
   license "MIT"
 
   bottle do
-    cellar :any
-    sha256 "386cb168c672cd51658af8a37559e788d8cd86d5529d2fd30fe2b8c19905b78c" => :big_sur
-    sha256 "79ff7c600007f3b1c983f50d6621f890731b5f2179133033a48c28b98d73ea5a" => :catalina
-    sha256 "0aa9e8d668a9cd3d1bd36c6fcd8372e3b2fc02e69e280b8a04dac59dea332cd8" => :mojave
+    sha256 cellar: :any, big_sur:  "75ebeca8702ea549395c24070f1c376cb650663e549389c73c2e804d612b04e4"
+    sha256 cellar: :any, catalina: "06b78e5440747da71e7e9b692cb09ed089c6e857dd9fbe7c510b6cbfd21e5883"
+    sha256 cellar: :any, mojave:   "fb27d74a0ecd26af8792f43bb99ed6756486d61323382aee29f2248a18ef0527"
   end
 
   depends_on "dotnet"
@@ -17,9 +16,9 @@ class Gitversion < Formula
   def install
     system "dotnet", "build",
            "--configuration", "Release",
-           "--framework", "netcoreapp3.1",
+           "--framework", "net#{Formula["dotnet"].version.major_minor}",
            "--output", "out",
-           "src/GitVersionExe/GitVersionExe.csproj"
+           "src/GitVersion.App/GitVersion.App.csproj"
 
     libexec.install Dir["out/*"]
 

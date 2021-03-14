@@ -1,19 +1,21 @@
 class Sile < Formula
   desc "Modern typesetting system inspired by TeX"
   homepage "https://www.sile-typesetter.org"
-  url "https://github.com/sile-typesetter/sile/releases/download/v0.10.13/sile-0.10.13.tar.xz"
-  sha256 "d207d0ee9749a6da16fa2db217f51d3586955387a132c45423b47eedf8c964a6"
+  url "https://github.com/sile-typesetter/sile/releases/download/v0.10.15/sile-0.10.15.tar.xz"
+  sha256 "49b55730effd473c64a8955a903e48f61c51dd7bb862e6d5481193218d1e3c5c"
   license "MIT"
-  revision 2
-  head "https://github.com/sile-typesetter/sile.git", shallow: false
+  revision 1
 
   bottle do
-    sha256 "d791ab6a480aabc66efede6487b6c8199527d0d9874249f510f18bf50fdb8443" => :big_sur
-    sha256 "cb965e298eeb6f23de84f65c97b6537c2ae5ad1fc55224c3355f77eb28113bb7" => :catalina
-    sha256 "f1707b37213ffda7234761238e10a8abb8179c86c3f9b6e02c6d8dd71ffbecc0" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "f768811fa4abe78d42b5ee0649e5cb341c1360d4d846cbf2c86034d58f680da9"
+    sha256 cellar: :any, big_sur:       "13a0eadc5d659744004b803354ac10338afe1042c451072c5edce823dbb2c3a8"
+    sha256               catalina:      "8fb3dfa926b68959d7cdb5ebae7e2552165a199b08667a267067845bc55841b3"
+    sha256               mojave:        "439746d81c4a7395678327038d77f294c6848c31690ee90df592ba93d7a52b62"
   end
 
-  if build.head?
+  head do
+    url "https://github.com/sile-typesetter/sile.git", shallow: false
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -28,7 +30,8 @@ class Sile < Formula
   depends_on "libpng"
   depends_on "lua"
   depends_on "openssl@1.1"
-  depends_on "zlib"
+
+  uses_from_macos "zlib"
 
   resource "bit32" do
     url "https://github.com/keplerproject/lua-compat-5.3/archive/v0.10.tar.gz"
@@ -56,8 +59,8 @@ class Sile < Formula
   end
 
   resource "lua_cliargs" do
-    url "https://github.com/amireh/lua_cliargs/archive/v2.3-3.tar.gz"
-    sha256 "288eea7c12b2e37bb40241c59e592472f835c526cd807ffc3e2fe21def772481"
+    url "https://github.com/amireh/lua_cliargs/archive/v3.0-2.tar.gz"
+    sha256 "971d6f1440a55bdf9db581d4b2bcbf472a301d76f696a0d0ed9423957c7d176e"
   end
 
   resource "lua-zlib" do
@@ -91,13 +94,13 @@ class Sile < Formula
   end
 
   resource "luasec" do
-    url "https://github.com/brunoos/luasec/archive/v0.9.tar.gz"
-    sha256 "6b6b94e8517bf6baf545fad29a2112f9ac7957ad85b4aae8e0727bec77d7a325"
+    url "https://github.com/brunoos/luasec/archive/v1.0.tar.gz"
+    sha256 "912bfd2050338895207cf24bc8dd26fa9ebddc34006cb8c33d488156d41ac932"
   end
 
   resource "penlight" do
-    url "https://github.com/Tieske/Penlight/archive/1.8.0.tar.gz"
-    sha256 "a1a41c5ec82c0459bc0508a0fb1cb56dfaa83a1dd7754d7174b336ad65420d3d"
+    url "https://github.com/Tieske/Penlight/archive/1.9.2.tar.gz"
+    sha256 "1094368bd95f84428ce1ce814028f8a73ee6a952e18dfffc5fa05d9ee1f0e486"
   end
 
   resource "stdlib" do
@@ -105,9 +108,14 @@ class Sile < Formula
     sha256 "42ca25ddcde59f608694a3335d24919a4df4cf6f14ea46c75249561a16c84711"
   end
 
+  resource "luautf8" do
+    url "https://github.com/starwing/luautf8/archive/0.1.3.tar.gz"
+    sha256 "208b3423a03a6c2822a2fa6b7cc8092ed7d3c0d792ec12c7cd28d6afaa442e0b"
+  end
+
   resource "vstruct" do
-    url "https://github.com/ToxicFrog/vstruct/archive/v2.0.1.tar.gz"
-    sha256 "4529ab32691b5f6e3c798ddfac36013d24d7581715dc7a50a77f17bb2d575c13"
+    url "https://github.com/ToxicFrog/vstruct/archive/v2.1.1.tar.gz"
+    sha256 "029ae887fc3c59279f378a499741811976d90f9a806569a42f4de80ad349f333"
   end
 
   def install
@@ -147,9 +155,14 @@ class Sile < Formula
             s.gsub! ", <= 5.3", ""
           end
 
+          zlib_dir = Formula["zlib"].opt_prefix
+          on_macos do
+            zlib_dir = "#{MacOS.sdk_path_if_needed}/usr"
+          end
+
           system "luarocks", "make",
                              "#{r.name}-#{r.version}-1.rockspec",
-                             "ZLIB_DIR=#{Formula["zlib"].opt_prefix}",
+                             "ZLIB_DIR=#{zlib_dir}",
                              "--tree=#{luapath}",
                              "--lua-dir=#{luaprefix}"
         when "luaexpat"
@@ -185,10 +198,10 @@ class Sile < Formula
 
     (libexec/"bin").install bin/"sile"
     (bin/"sile").write <<~EOS
-      #!/bin/bash
+      #!/usr/bin/env sh
       export LUA_PATH="#{ENV["LUA_PATH"]};;"
       export LUA_CPATH="#{ENV["LUA_CPATH"]};;"
-      "#{libexec}/bin/sile" "$@"
+      exec "#{libexec}/bin/sile" "$@"
     EOS
   end
 

@@ -1,8 +1,8 @@
 class Neo4j < Formula
   desc "Robust (fully ACID) transactional property graph database"
   homepage "https://neo4j.com/"
-  url "https://neo4j.com/artifact.php?name=neo4j-community-4.2.1-unix.tar.gz"
-  sha256 "0f074e2d84c265fbb066ad648b52c62c623d1f1b18b9d4d04356d46726853c96"
+  url "https://neo4j.com/artifact.php?name=neo4j-community-4.2.3-unix.tar.gz"
+  sha256 "319edc1d6eed094b0e53b27491df2cbb0cbd10fce546a981e871aa06612765ce"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -80,6 +80,6 @@ class Neo4j < Formula
     ENV["NEO4J_LOG"] = testpath/"libexec/data/log/neo4j.log"
     ENV["NEO4J_PIDFILE"] = testpath/"libexec/data/neo4j-service.pid"
     mkpath testpath/"libexec/data/log"
-    assert_match /Neo4j .*is not running/i, shell_output("#{bin}/neo4j status", 3)
+    assert_match(/Neo4j .*is not running/i, shell_output("#{bin}/neo4j status", 3))
   end
 end

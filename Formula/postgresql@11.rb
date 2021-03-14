@@ -1,20 +1,21 @@
 class PostgresqlAT11 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v11.10/postgresql-11.10.tar.bz2"
-  sha256 "13e6d2f80662fe463bc7718cdf0de6a9ec67fc78afcc7a3ae66b9ea19bb97899"
+  url "https://ftp.postgresql.org/pub/source/v11.11/postgresql-11.11.tar.bz2"
+  sha256 "40607b7fa15b7d63f5075a7277daf7b3412486aa5db3aedffdb7768b9298186c"
   license "PostgreSQL"
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(11(?:\.\d+)*)/?["' >]}i)
+    regex(%r{href=["']?v?(11(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 "1be79dc456c13293c3f01c04e21004bd02c44f79cba83d2bde76195e35e0e02e" => :big_sur
-    sha256 "1cd0993f4b4fb154b3a028b3a795906f7938ad105ebcc8e8e371db408e9f6ea5" => :arm64_big_sur
-    sha256 "d0758c755abfe5516c4f9ea89fd1926733411d0f87a0b91502dbff09c6f78b86" => :catalina
-    sha256 "ea13e9ccace5efd7fdbb60b9af0ee2fa1f1751ff5aea0dbff913c7f62a876d35" => :mojave
+    sha256 arm64_big_sur: "13273b530b4676aff62fe029c75c42e2807a239172ad6b1741e82ba86975c279"
+    sha256 big_sur:       "ea91a1a975c8ddc11fab237adc0e38915eae9789ca6b6158270d20a355403ef3"
+    sha256 catalina:      "3dbecb364cfb97f67a4268bff369fb6d8c5f575821743b9117d912fc7a320c9e"
+    sha256 mojave:        "58721865e436ac9177d52b69e53d3334a19c3a0db387a4205526f828aeda32f6"
   end
 
   keg_only :versioned_formula
@@ -77,10 +78,12 @@ class PostgresqlAT11 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
     postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
   end
 
@@ -137,7 +140,7 @@ class PostgresqlAT11 < Formula
   end
 
   test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
+    system "#{bin}/initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal opt_pkgshare.to_s, shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal opt_lib.to_s, shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal opt_lib.to_s, shell_output("#{bin}/pg_config --pkglibdir").chomp

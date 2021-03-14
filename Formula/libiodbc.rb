@@ -1,18 +1,15 @@
 class Libiodbc < Formula
   desc "Database connectivity layer based on ODBC. (alternative to unixodbc)"
   homepage "http://www.iodbc.org/dataspace/iodbc/wiki/iODBC/"
-  url "https://github.com/openlink/iODBC/archive/v3.52.13.tar.gz"
-  sha256 "4bf67fc6d4d237a4db19b292b5dd255ee09a0b2daa4e4058cf3a918bc5102135"
+  url "https://github.com/openlink/iODBC/archive/v3.52.14.tar.gz"
+  sha256 "896d7e16b283cf9a6f5b5f46e8e9549aef21a11935726b0170987cd4c59d16db"
   license any_of: ["BSD-3-Clause", "LGPL-2.0-only"]
 
   bottle do
-    cellar :any
-    sha256 "5788f536c0ccce81f9205bc8950d9c158299a3f2339f546192fa695313eb88a7" => :big_sur
-    sha256 "35bf9aab3420bf0ba56bfa8802fe1274d397e3a74783f8d1c7c1cb769e3ad83c" => :arm64_big_sur
-    sha256 "b9b78f823c2af7962bfc97cb34fd528c8f6eab85823045168ac8ac84eaac3d12" => :catalina
-    sha256 "1472bb0987705537158b7c3196d27d01ba02d6c0fdcca733f3cf8d53eca29c5d" => :mojave
-    sha256 "77a4fb5fa3036a831e05e2a83585ac2fcdcdf4cf83baa72f28cfb2f8a659ba13" => :high_sierra
-    sha256 "abc07f2fe98ed04c4dc5bd5cada2ea68fb9be56337ed442393609f0a22ec21e8" => :sierra
+    sha256 cellar: :any, arm64_big_sur: "9179490e07b80540b31a531babb6168cbd0ea2e10dc994a38f6e5ff8ad2c9f67"
+    sha256 cellar: :any, big_sur:       "981db56543c7f668350a12248aa9047de688e9223bf502a93762ec0e53867d40"
+    sha256 cellar: :any, catalina:      "288802927c2719db23449d5df0ca88c7b9c267c5755a9fa742f5c031d31db552"
+    sha256 cellar: :any, mojave:        "40f53ec2a76bac0bb87697bd2e9cd06ee68d4e83c0e73cd901e569227d6df486"
   end
 
   depends_on "autoconf" => :build

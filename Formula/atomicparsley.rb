@@ -1,23 +1,30 @@
 class Atomicparsley < Formula
   desc "MPEG-4 command-line tool"
   homepage "https://github.com/wez/atomicparsley"
-  url "https://github.com/wez/atomicparsley/archive/20201231.092811.cbecfb1.tar.gz"
-  version "20201231.092811.cbecfb1"
-  sha256 "b38f3483ed07aa556e3faf070630a73035a69e57a182ed4394b1974da7c59f88"
-  license "GPL-2.0"
+  url "https://github.com/wez/atomicparsley/archive/20210124.204813.840499f.tar.gz"
+  version "20210124.204813.840499f"
+  sha256 "21e6eb6791b63ba1d06c6ffa9cf40ee81cec80da944e8a29c6dbd11d9de50b28"
+  license "GPL-2.0-or-later"
   version_scheme 1
   head "https://github.com/wez/atomicparsley.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "10ed6bfad101b5e57fd8d44e9485033308b56d09b4cc08bcd02d9b0eb45c7595" => :big_sur
-    sha256 "5b27fb350ad43a09587dd8fb606b70b5c839c6b9a4079e054def9ffa58c3f69c" => :arm64_big_sur
-    sha256 "164a92e2a72ac3f1e3a47edaad51114d83582019722d8688299684381299f5eb" => :catalina
-    sha256 "04cdcb145d63be082b604db3b79284987c6fdc042b7b5451fd28b21789c015b4" => :mojave
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b13b47c39fe2d69a9aef32280da1529e5e70c02b35fbb7add9c2d0ad25dc36fb"
+    sha256 cellar: :any_skip_relocation, big_sur:       "7030626fea429aab956442a66f630639ea17c44c05d948ad1c2c91cde5eefb53"
+    sha256 cellar: :any_skip_relocation, catalina:      "9fb54fe0aa1faeef942d48c139bb7e003aaf795c8a47b0d9c6d046bafc3b3fb0"
+    sha256 cellar: :any_skip_relocation, mojave:        "b58fc8376ed3e18b7207ede4825c34256854b3abc390260f5f6759e0eb329013"
   end
 
   depends_on "cmake" => :build
+
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "gcc" => :build
+  end
+
+  fails_with gcc: "5"
 
   def install
     system "cmake", ".", *std_cmake_args

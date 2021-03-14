@@ -1,8 +1,8 @@
 class PostgresqlAT96 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v9.6.20/postgresql-9.6.20.tar.bz2"
-  sha256 "3d08cba409d45ab62d42b24431a0d55e7537bcd1db2d979f5f2eefe34d487bb6"
+  url "https://ftp.postgresql.org/pub/source/v9.6.21/postgresql-9.6.21.tar.bz2"
+  sha256 "930feaef28885c97ec40c26ab6221903751eeb625de92b22602706d7d47d1634"
   license "PostgreSQL"
 
   livecheck do
@@ -11,10 +11,11 @@ class PostgresqlAT96 < Formula
   end
 
   bottle do
-    sha256 "1d2e78a45b69aa887935849a2b2a663825ef1e78e6eb8df2692f1642d51fb073" => :big_sur
-    sha256 "3ffef993065857ae631e04efa4a1e6c2b998940acf11dabd15622924c8be8a8d" => :arm64_big_sur
-    sha256 "1406b0e42667227867dc5cdb4ecf316387b7ade1789837969f8aa2295afe22b4" => :catalina
-    sha256 "e0d93fe31b16a638b34c4e381e4d631f3cba32abbc9728f447e2960a829d235d" => :mojave
+    rebuild 1
+    sha256 arm64_big_sur: "5d6d88348d7ea4ccef8259d6357dc9b72a4ac93514de282a28cf2a8b920b4fc6"
+    sha256 big_sur:       "ab1af8b44d2de91b7f39441d224e0f4cca582be0e7cf37bc845e86ec660b2ece"
+    sha256 catalina:      "17ff71424cfaf686d2a83fb2c36ae509012b773c40f92420a31250214ee5ffe8"
+    sha256 mojave:        "4374f31f6e7ea4d531ece7419cfd857bafca0bddef9336c518800b30d689def7"
   end
 
   keg_only :versioned_formula
@@ -22,7 +23,6 @@ class PostgresqlAT96 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2021-11-11", because: :unsupported
 
-  depends_on arch: :x86_64
   depends_on "openssl@1.1"
   depends_on "readline"
 
@@ -87,9 +87,12 @@ class PostgresqlAT96 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
+    postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     postgresql_datadir.mkpath
     system "#{bin}/initdb", postgresql_datadir unless pg_version_exists?
   end
@@ -149,7 +152,7 @@ class PostgresqlAT96 < Formula
   end
 
   test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
+    system "#{bin}/initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal pkgshare.to_s, shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --pkglibdir").chomp

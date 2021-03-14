@@ -4,24 +4,19 @@ class Agda < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://hackage.haskell.org/package/Agda-2.6.1.2/Agda-2.6.1.2.tar.gz"
-    sha256 "08703073c4a5bce89ea64931ac891245dc42dea44b59bed837614811a213072d"
+    url "https://hackage.haskell.org/package/Agda-2.6.1.3/Agda-2.6.1.3.tar.gz"
+    sha256 "bb1bc840cee95eea291bd220ea043b60153a6f7bd8198bc53be2bf3b83c8a1e7"
 
     resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib/archive/v1.4.tar.gz"
-      sha256 "ccc8666405c0f46aa3fd01565e762774518c8d1717667f728eae0cf3c33f1c63"
+      url "https://github.com/agda/agda-stdlib/archive/v1.5.tar.gz"
+      sha256 "ff486a5540dafb9cb53f989904b21ff70d4c7a226780cf330e08f4d133424c4d"
     end
   end
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    rebuild 1
-    sha256 "23ff8d4cfc8b39f2059a3c92b999a48548d8efb0546494438a337f716017c2f6" => :big_sur
-    sha256 "656972ecb09c1fea73920f0d4c8a3666581d2e347036d0b0df398063062aad20" => :catalina
-    sha256 "1059ee247f77d6175f182e8fe96ee1b8ffa7000efa9385583c9a041516592292" => :mojave
+    sha256 big_sur:  "8a5e4d0c98e1d1a2e4f23788c60679a1a9ccb200876db602e3a26c97de9ba90d"
+    sha256 catalina: "e4033aa9b7b376f0e31fae79a36cdcc1203cc3c5901b9c53e7e4371b86aec1b8"
+    sha256 mojave:   "94cb23fbc0d49c2da13eedbfecd5bbac1826264c5b099f5b24c5a9804d3c52d5"
   end
 
   head do
@@ -51,13 +46,6 @@ class Agda < Formula
   resource "happy" do
     url "https://hackage.haskell.org/package/happy-1.20.0/happy-1.20.0.tar.gz"
     sha256 "3b1d3a8f93a2723b554d9f07b2cd136be1a7b2fcab1855b12b7aab5cbac8868c"
-  end
-
-  # Enable build with ghc 8.10.3. Remove at version bump, but verify that it includes:
-  # https://github.com/agda/agda/commit/76278c23d447b49f59fac581ca4ac605792aabbc
-  patch do
-    url "https://github.com/agda/agda/commit/76278c23d447b49f59fac581ca4ac605792aabbc.patch?full_index=1"
-    sha256 "c045c0426b867db1dedcee9c1b7a8514967226acf33e4be3ceba98d1d876aabb"
   end
 
   def install

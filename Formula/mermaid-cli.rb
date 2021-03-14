@@ -3,15 +3,14 @@ require "language/node"
 class MermaidCli < Formula
   desc "Command-line interface (CLI) for mermaid"
   homepage "https://github.com/mermaid-js/mermaid-cli"
-  url "https://registry.npmjs.org/@mermaid-js/mermaid-cli/-/mermaid-cli-8.8.4-1.tgz"
-  sha256 "d644776eb97539546e5cc5f4d978b8b5c2cf354b4a232422a07fd056a6e416c8"
+  url "https://registry.npmjs.org/@mermaid-js/mermaid-cli/-/mermaid-cli-8.9.1.tgz"
+  sha256 "3e9257bbca0d59ca377362559c9ee565a9e15c7afa5e2ebb9e6a6e4d033318da"
   license "MIT"
 
   bottle do
-    cellar :any
-    sha256 "a1f146280bdf459bd1c62f3032aa284991886e28ad254deee8e94dc23681eeca" => :big_sur
-    sha256 "04a30ab774696f49ea0dcac6a2119078d32b3fc4f4488dadfb413d3a3959fa00" => :catalina
-    sha256 "c85e4cfb11303b1ec32629e3c42cb6ea31e9dbb4582861629d8f6d9679b6ec2c" => :mojave
+    sha256 cellar: :any, big_sur:  "5635192d53af750c9b036b7128a41322b0f698463963023adbf5eab65c2e8afc"
+    sha256 cellar: :any, catalina: "57ed759a7ba88759de07a3b456df58b4918e006fdba235a5e2bb7eb59a8a49ca"
+    sha256 cellar: :any, mojave:   "fdf370a8efd089f84ac72d88ad37ededff2740b6f4702dba566cb045e7becafe"
   end
 
   depends_on "node"

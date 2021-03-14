@@ -7,10 +7,10 @@ class Chezscheme < Formula
   revision 1
 
   bottle do
-    sha256 "8eae7ff25a1c3b5a7d4192048f53f51904b997eda6c4c7a558e19a0cd461babe" => :big_sur
-    sha256 "54d8553a07253c0215f8654f1c54e9ac03734160544ac9823896601e86dd2c81" => :catalina
-    sha256 "a1f551093249b315e309f75e4174995b2d7f475376dc97c78f43e5302ec4b3a6" => :mojave
-    sha256 "cb114681db205f5b31da0c3b7906dba46633275b369f6bc3adef4e0411880982" => :high_sierra
+    sha256 big_sur:     "8eae7ff25a1c3b5a7d4192048f53f51904b997eda6c4c7a558e19a0cd461babe"
+    sha256 catalina:    "54d8553a07253c0215f8654f1c54e9ac03734160544ac9823896601e86dd2c81"
+    sha256 mojave:      "a1f551093249b315e309f75e4174995b2d7f475376dc97c78f43e5302ec4b3a6"
+    sha256 high_sierra: "cb114681db205f5b31da0c3b7906dba46633275b369f6bc3adef4e0411880982"
   end
 
   depends_on "libx11" => :build
@@ -18,17 +18,6 @@ class Chezscheme < Formula
   uses_from_macos "ncurses"
 
   def install
-    # dyld: lazy symbol binding failed: Symbol not found: _clock_gettime
-    # Reported 20 Feb 2017 https://github.com/cisco/ChezScheme/issues/146
-    if MacOS.version == "10.11" && MacOS::Xcode.version >= "8.0"
-      inreplace "c/stats.c" do |s|
-        s.gsub! "CLOCK_MONOTONIC", "UNDEFINED_GIBBERISH"
-        s.gsub! "CLOCK_PROCESS_CPUTIME_ID", "UNDEFINED_GIBBERISH"
-        s.gsub! "CLOCK_REALTIME", "UNDEFINED_GIBBERISH"
-        s.gsub! "CLOCK_THREAD_CPUTIME_ID", "UNDEFINED_GIBBERISH"
-      end
-    end
-
     inreplace "configure", "/opt/X11", Formula["libx11"].opt_prefix
     inreplace Dir["c/Mf-*osx"], "/opt/X11", Formula["libx11"].opt_prefix
     inreplace "c/version.h", "/usr/X11R6", Formula["libx11"].opt_prefix

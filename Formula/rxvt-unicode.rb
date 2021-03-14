@@ -6,12 +6,17 @@ class RxvtUnicode < Formula
   license "GPL-3.0-only"
   revision 4
 
+  livecheck do
+    url "http://dist.schmorp.de/rxvt-unicode/"
+    regex(/href=.*?rxvt-unicode[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 "db278d2c19f2b837f1fa44dfa4a72bac3ed8c8359a13732fb7db854ba1c6b450" => :big_sur
-    sha256 "13dca2d2c2ca7e160e54a6d839b48fb259b4ae719803c0374c186904f3f9ac0e" => :arm64_big_sur
-    sha256 "ed894bfefa87992845b652fc3ccf0104b1b4743e2dbdd1f2b7146c73433c165f" => :catalina
-    sha256 "6c9e5a04bf611a3e4b342f2554a32db25ef105f5795183bf22512922a1e57a59" => :mojave
-    sha256 "e54074cfd9c978a71847abe7af73d5d3c174fc85b4b1a60f254dd831ff5b5714" => :high_sierra
+    rebuild 1
+    sha256 arm64_big_sur: "d63da8a963160651a29a24729ff21a071456096706ad59f721b818c322dc889e"
+    sha256 big_sur:       "deebaec714d6b276ef8e7c0bdb89f1872b8dd0eab82b97139e1000fc55098ed9"
+    sha256 catalina:      "6dbe84073a435ced0c6be3646121374155c2b47df89e76e84d0ebd06ea78a59b"
+    sha256 mojave:        "b606c0cc0daa70dc43fad2997af3d11cae5f07d6b5acdd7de0666ce646361876"
   end
 
   depends_on "pkg-config" => :build
@@ -22,6 +27,8 @@ class RxvtUnicode < Formula
   depends_on "libxmu"
   depends_on "libxrender"
   depends_on "libxt"
+
+  uses_from_macos "perl"
 
   # Patches 1 and 2 remove -arch flags for compiling perl support
   # Patch 3 fixes `make install` target on case-insensitive filesystems

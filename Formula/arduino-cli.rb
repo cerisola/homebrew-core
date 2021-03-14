@@ -2,31 +2,29 @@ class ArduinoCli < Formula
   desc "Arduino command-line interface"
   homepage "https://github.com/arduino/arduino-cli"
   url "https://github.com/arduino/arduino-cli.git",
-     tag:      "0.14.0",
-     revision: "a86b21d99e2af9e0857da0ce4ab80baf1d3afb55"
+     tag:      "0.16.1",
+     revision: "76f55490438e6c19226c9e2d9934f7d088152648"
   license "GPL-3.0-only"
   head "https://github.com/arduino/arduino-cli.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "234182b6dcb88edd148b34a0602c3ee6473fd23d35cd8d3bb3881076739f10d9" => :big_sur
-    sha256 "b3c8840c27606d351488b2df73145e26fac19851caaf58b07e5cea41caefe1b0" => :catalina
-    sha256 "cd4767c40d06c4da8cdee1b91c2fb75af9509ec67e062a11b69af974bf11222d" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "bd5434ba150eb34f4d5d77dfa8430814d33ec9e7ade0c7d3a4ed0b13b56cbbe7"
+    sha256 cellar: :any_skip_relocation, catalina: "dacfe865d4c42047932f5ce48133839cd550b49375f0408e71541ccdbd897dee"
+    sha256 cellar: :any_skip_relocation, mojave:   "2d01dc5a03005628970a21f65d73a325197be6d52392a93717d1e7caeea22790"
   end
 
   depends_on "go" => :build
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "HEAD").chomp
     ldflags = %W[
       -s -w
       -X github.com/arduino/arduino-cli/version.versionString=#{version}
-      -X github.com/arduino/arduino-cli/version.commit=#{commit}
+      -X github.com/arduino/arduino-cli/version.commit=#{Utils.git_head}
     ]
     system "go", "build", *std_go_args, "-ldflags", ldflags.join(" ")
 

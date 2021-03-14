@@ -1,24 +1,21 @@
 class Cli53 < Formula
   desc "Command-line tool for Amazon Route 53"
   homepage "https://github.com/barnybug/cli53"
-  url "https://github.com/barnybug/cli53/archive/0.8.17.tar.gz"
-  sha256 "32b8e6ffe3234f87497328285c377b9280d1b302658e9acb45eb0dedbda0b14d"
+  url "https://github.com/barnybug/cli53/archive/0.8.18.tar.gz"
+  sha256 "aa9ee59a52fc45f426680da48f45a79f2ac8365c15d8d7beed83a8ed71a891e4"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0cb72c1182f1f323ce607fe9e016c3cf9352db57e18384da6b356164aab751cf" => :big_sur
-    sha256 "1d7ce2cfe475ced9a092cf4c8c18d34feab5398249bc8672235c13004dfe9206" => :arm64_big_sur
-    sha256 "65f9f13eb5c2f53afcb697f9699f8dd6b9df5f400908a2d3423879f8ca895942" => :catalina
-    sha256 "73ec9efeaf423dd32530bd4a547b11522b54dd5666942735268bb7690479ff09" => :mojave
-    sha256 "190e2e02b890cf099ca52d1468b224d16c82840a3a534db83a2aed5553b07bfc" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "98cb37be5b6af7dd7cc216a93ad0c5fb000d4bac22762e9731832de6119a9f0c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9f7f7b6f459a9d42e4f58bf32a618046e124e5544af3fece7a76e7e50005dbe4"
+    sha256 cellar: :any_skip_relocation, catalina:      "9bf273343ecbaadbae4b55c1bc48bc529d1e6ecfe651848db995f2cd70966756"
+    sha256 cellar: :any_skip_relocation, mojave:        "6e3fff5c7242c391fa6a43d1a9cb79467b56149102624b60abc8008e46280199"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"cli53", "./cmd/cli53"
-    prefix.install_metafiles
+    system "go", "build", *std_go_args, "-ldflags", "-s -w", "./cmd/cli53"
   end
 
   test do

@@ -8,9 +8,11 @@ class BoostMpi < Formula
   head "https://github.com/boostorg/boost.git"
 
   bottle do
-    sha256 "e26c78b7b79809c2011c4cdfd11affa1c67c7f11ea3bb48a2ed36b23438b3430" => :big_sur
-    sha256 "9e8f6567030032ca400b8c4efa109cbdb43f7e0736638db6255ae8c1c194b505" => :catalina
-    sha256 "18c0d683a25e9ec0e7bf24a5d0a1fa8fae728719fa14d7b236656be1dc56d15c" => :mojave
+    rebuild 1
+    sha256 arm64_big_sur: "1e3acbc5248b962a5d82eb8edb1e3ffef905cc52106a28d46c46f2b68d24e293"
+    sha256 big_sur:       "94e6a5f93cb4c9f225e8efdeee54aec07f8a440d515cb49f4ebbfa836154b09d"
+    sha256 catalina:      "4b9073178ad5d46e4770e58bf12323b725dd3053a1afa1d872202120ce1dcd28"
+    sha256 mojave:        "c44780bc2bc1ee6c58717f2c4c20f01a00c027f6c035ddeb7ac90e5eaf122dc8"
   end
 
   # Test with cmake to avoid issues like:
@@ -18,6 +20,14 @@ class BoostMpi < Formula
   depends_on "cmake" => :test
   depends_on "boost"
   depends_on "open-mpi"
+
+  # Fix build system issues on Apple silicon. This change has aleady
+  # been merged upstream, remove this patch once it lands in a release.
+  patch do
+    url "https://github.com/boostorg/build/commit/456be0b7ecca065fbccf380c2f51e0985e608ba0.patch?full_index=1"
+    sha256 "e7a78145452fc145ea5d6e5f61e72df7dcab3a6eebb2cade6b4cfae815687f3a"
+    directory "tools/build"
+  end
 
   def install
     # "layout" should be synchronized with boost

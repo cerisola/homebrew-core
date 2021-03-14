@@ -1,18 +1,16 @@
 class Jql < Formula
   desc "JSON query language CLI tool"
   homepage "https://github.com/yamafaktory/jql"
-  url "https://github.com/yamafaktory/jql/archive/v2.9.0.tar.gz"
-  sha256 "bd3a78b92042f9104dab9c996eba5a89974bd567fe64da9a16c4739e0bf70e78"
+  url "https://github.com/yamafaktory/jql/archive/v2.9.3.tar.gz"
+  sha256 "7115dcc3bf26458b5f55cd2af4e81bb68a8dda01ef0e3a707013f9fef9887022"
   license "MIT"
   head "https://github.com/yamafaktory/jql.git"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "4626e89a15af443c0c93fe4b3af51c8c82744d32161680c70add383d32a954ce" => :big_sur
-    sha256 "6b3e2d1bd56c9bba7fd196fdfb302268854e1422ebbf38ea883e888d2db7ca56" => :arm64_big_sur
-    sha256 "bdd6c8cb7b67a5f6459960b68ecb28981daad3136fc913dfe4a4ecb9bb434d94" => :catalina
-    sha256 "02f393c6b20beb8e4be1ee2bd45b8ebabbdab7c7de07672eb97b4c3994237a67" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5ac4ee4d58c7c60ca260f9ed69f210f6e73149be8b8b9d571f01986c6fae2d60"
+    sha256 cellar: :any_skip_relocation, big_sur:       "1f5948e6b22235f43c23bfcdeaa8bfcb9ab238b1ce7050f455f6416c4d9b5b67"
+    sha256 cellar: :any_skip_relocation, catalina:      "d95e93bea9dc17026e5033482916686a87e22a80035c387efeb17bcc8af48c2b"
+    sha256 cellar: :any_skip_relocation, mojave:        "b0e27ddd36efe3fa14caac8b3096e3408b4406af2cda72a7b0bb66a1f062d060"
   end
 
   depends_on "rust" => :build

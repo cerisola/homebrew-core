@@ -6,12 +6,14 @@ class Cwlogs < Formula
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
     rebuild 1
-    sha256 "40fdfc79d6533963798aed789fe8026f30d44e87c3e6e9ecd602d531ed1fb7c2" => :big_sur
-    sha256 "975da66abe1ce9ff42eb63453c52acc31aeeffff435a2c0aab9d1bd3008be280" => :catalina
-    sha256 "d0e1bda71db260a905c5f88da3fce0074ab59576ef6c12948eeae2ae5faf6435" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "40fdfc79d6533963798aed789fe8026f30d44e87c3e6e9ecd602d531ed1fb7c2"
+    sha256 cellar: :any_skip_relocation, catalina: "975da66abe1ce9ff42eb63453c52acc31aeeffff435a2c0aab9d1bd3008be280"
+    sha256 cellar: :any_skip_relocation, mojave:   "d0e1bda71db260a905c5f88da3fce0074ab59576ef6c12948eeae2ae5faf6435"
   end
+
+  # https://github.com/segmentio/cwlogs/issues/37
+  deprecate! date: "2021-02-21", because: :unmaintained
 
   depends_on "go" => :build
   depends_on "govendor" => :build
@@ -19,6 +21,7 @@ class Cwlogs < Formula
   def install
     ENV["GOPATH"] = buildpath
     ENV["CGO_ENABLED"] = "0"
+    ENV["GO111MODULE"] = "auto"
 
     path = buildpath/"src/github.com/segmentio/cwlogs"
     path.install Dir["{*,.git}"]

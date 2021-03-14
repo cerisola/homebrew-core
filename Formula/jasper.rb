@@ -1,38 +1,47 @@
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
   homepage "https://www.ece.uvic.ca/~frodo/jasper/"
-  url "https://github.com/mdadams/jasper/archive/version-2.0.23.tar.gz"
-  sha256 "20facc904bd9d38c20e0c090b1be3ae02ae5b2703b803013be2ecad586a18927"
+  url "https://github.com/jasper-software/jasper/archive/version-2.0.26.tar.gz"
+  sha256 "a82a119e85b7d1f448e61309777fa5f79053a9adca4a2b5bfe44be5439fb8fea"
   license "JasPer-2.0"
 
   bottle do
-    sha256 "5bdfa3e3512a37f98fee42ebb1de00d6f1252344a827bc60329c4a1337d1ef0b" => :big_sur
-    sha256 "b65f3d2c159fa0c9be917e074d79d9ffd79bee8e9b320a5e62bca4e425a9009c" => :arm64_big_sur
-    sha256 "0920d1450e3545eb62d7446c8c1d8dcb9bc404e4a846230eb52963a212c43667" => :catalina
-    sha256 "d29a2f3e4b14c7e4756150764d36c2fe7780a62af94a8320feab5f27967cf451" => :mojave
+    sha256 arm64_big_sur: "dedf51908cf539c24cd195e105c7f6d54cbcd0b120015e906f7ab5c6b7c62ffb"
+    sha256 big_sur:       "b4f893059b48d3bcecafbfcc58d867d9770772e398401f84b846fbae21fa1741"
+    sha256 catalina:      "7ff4907367a4d6d0fa8f1370ab2a866688f9aba18670ba9420cdfcecc797a113"
+    sha256 mojave:        "bde3ae3b0d6656c3b57ef597e2e0d826a163549fab594faec5c008725e8959fc"
   end
 
   depends_on "cmake" => :build
   depends_on "jpeg-turbo"
 
+  on_linux do
+    depends_on "freeglut"
+  end
+
   def install
     mkdir "build" do
-      # Make sure macOS's GLUT.framework is used, not XQuartz or freeglut
-      # Reported to CMake upstream 4 Apr 2016 https://gitlab.kitware.com/cmake/cmake/issues/16045
-      glut_lib = "#{MacOS.sdk_path}/System/Library/Frameworks/GLUT.framework"
+      args = std_cmake_args
+      args << "-DJAS_ENABLE_DOC=OFF"
+
+      on_macos do
+        # Make sure macOS's GLUT.framework is used, not XQuartz or freeglut
+        # Reported to CMake upstream 4 Apr 2016 https://gitlab.kitware.com/cmake/cmake/issues/16045
+        glut_lib = "#{MacOS.sdk_path}/System/Library/Frameworks/GLUT.framework"
+        args << "-DGLUT_glut_LIBRARY=#{glut_lib}"
+      end
 
       system "cmake", "..",
-        "-DGLUT_glut_LIBRARY=#{glut_lib}",
         "-DJAS_ENABLE_AUTOMATIC_DEPENDENCIES=false",
-        *std_cmake_args
+        "-DJAS_ENABLE_SHARED=ON",
+        *args
       system "make"
       system "make", "install"
       system "make", "clean"
 
       system "cmake", "..",
-        "-DGLUT_glut_LIBRARY=#{glut_lib}",
         "-DJAS_ENABLE_SHARED=OFF",
-        *std_cmake_args
+        *args
       system "make"
       lib.install "src/libjasper/libjasper.a"
     end

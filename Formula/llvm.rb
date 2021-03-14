@@ -2,12 +2,12 @@ class Llvm < Formula
   desc "Next-gen compiler infrastructure"
   homepage "https://llvm.org/"
   # The LLVM Project is under the Apache License v2.0 with LLVM Exceptions
-  license "Apache-2.0"
-  head "https://github.com/llvm/llvm-project.git"
+  license "Apache-2.0" => { with: "LLVM-exception" }
+  head "https://github.com/llvm/llvm-project.git", branch: "main"
 
   stable do
-    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/llvm-project-11.0.0.tar.xz"
-    sha256 "b7b639fc675fa1c86dd6d0bc32267be9eb34451748d2efd03f674b773000e92b"
+    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/llvm-project-11.1.0.src.tar.xz"
+    sha256 "74d2529159fd118c3eac6f90107b5611bccc6f647fdea104024183e8d5e25831"
 
     patch do
       url "https://github.com/llvm/llvm-project/commit/c86f56e32e724c6018e579bb2bc11e667c96fc96.patch?full_index=1"
@@ -28,20 +28,26 @@ class Llvm < Formula
       url "https://github.com/llvm/llvm-project/commit/c4d7536136b331bada079b2afbb2bd09ad8296bf.patch?full_index=1"
       sha256 "2b894cbaf990510969bf149697882c86a068a1d704e749afa5d7b71b6ee2eb9f"
     end
+
+    # Upstream ARM patch for OpenMP runtime, remove in next version
+    # https://reviews.llvm.org/D91002
+    # https://bugs.llvm.org/show_bug.cgi?id=47609
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/6166a68c/llvm/openmp_arm.patch"
+      sha256 "70fe3836b423e593688cd1cc7a3d76ee6406e64b9909f1a2f780c6f018f89b1e"
+    end
   end
 
   livecheck do
     url :homepage
-    regex(/LLVM (\d+.\d+.\d+)/i)
+    regex(/LLVM (\d+\.\d+\.\d+)/i)
   end
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "cd5f01eea2f16816ff7d8b706dcf3c1e0144f5670d66a8f0aa92151365792086" => :big_sur
-    sha256 "c43f734066dd9bf4093f68e31585abb55fa8a10bfdbf4418717ad3a3af3c70b8" => :arm64_big_sur
-    sha256 "337e5aed0dab5292de87f571b818b1a018d486051ff41e19d6b7431ed9174546" => :catalina
-    sha256 "621cafec72c02a299f64b4b2a55fa764209f208c4cd24772210ada18b32cc696" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "6024181e8252d3300a44d989f0716cec5a6d92b66a439290232c7dbeed3a50dc"
+    sha256 cellar: :any, big_sur:       "0f26bad97402fd22555367e8d6f20511b24912dcc56d202b7960b41a8462d6b2"
+    sha256 cellar: :any, catalina:      "c1260c9b53f3bd098650f0bafea11d284b8c48c812dca34c50828239f559737b"
+    sha256 cellar: :any, mojave:        "2f9f6bb43e7743a71426358d2666647e6ff563c00cc14c1404ea43c3f504041d"
   end
 
   # Clang cannot find system headers if Xcode CLT is not installed
@@ -63,14 +69,6 @@ class Llvm < Formula
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
-
-  # Upstream ARM patch for OpenMP runtime, remove in next version
-  # https://reviews.llvm.org/D91002
-  # https://bugs.llvm.org/show_bug.cgi?id=47609
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/6166a68c/llvm/openmp_arm.patch"
-    sha256 "70fe3836b423e593688cd1cc7a3d76ee6406e64b9909f1a2f780c6f018f89b1e"
-  end
 
   def install
     projects = %w[

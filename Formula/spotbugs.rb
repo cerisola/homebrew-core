@@ -1,8 +1,8 @@
 class Spotbugs < Formula
   desc "Tool for Java static analysis (FindBugs's successor)"
   homepage "https://spotbugs.github.io/"
-  url "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/4.2.0/spotbugs-4.2.0.tgz"
-  sha256 "f5e2ad6e94515923a8b9a6db370d3b34a3aad9eda13315146b9bbd03bcbe7e30"
+  url "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/4.2.2/spotbugs-4.2.2.tgz"
+  sha256 "4967c72396e34b86b9458d0c34c5ed185770a009d357df8e63951ee2844f769f"
   license "LGPL-2.1-or-later"
 
   head do
@@ -43,6 +43,6 @@ class Spotbugs < Formula
     system "#{Formula["openjdk"].bin}/javac", "HelloWorld.java"
     system "#{Formula["openjdk"].bin}/jar", "cvfe", "HelloWorld.jar", "HelloWorld", "HelloWorld.class"
     output = shell_output("#{bin}/spotbugs -textui HelloWorld.jar")
-    assert_match /M V EI.*\nM C UwF.*\n/, output
+    assert_match(/M V EI.*\nM C UwF.*\n/, output)
   end
 end

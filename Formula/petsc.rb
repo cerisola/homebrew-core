@@ -1,21 +1,20 @@
 class Petsc < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (real)"
   homepage "https://www.mcs.anl.gov/petsc/"
-  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.14.2.tar.gz"
-  sha256 "87a04fd05cac20a2ec47094b7d18b96e0651257d8c768ced2ef7db270ecfb9cb"
+  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.14.5.tar.gz"
+  sha256 "8b8ff5c4e10468f696803b354a502d690c7d25c19d694a7e10008a302fdbb048"
   license "BSD-2-Clause"
 
   livecheck do
-    url "https://www.mcs.anl.gov/petsc/download/index.html"
+    url "https://www.mcs.anl.gov/petsc/download/"
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    rebuild 1
-    sha256 "3ef9adf142bd76bc057d3d2424bc05c7123f224753a5cd427c798d592872edd9" => :big_sur
-    sha256 "02eddb0f06078ef7b9b1a2f6c50155674f0db334e33eeb77389561d6669be86c" => :arm64_big_sur
-    sha256 "e970168ddbf670ca704b6c7cade72cbcc06277d8839bfce72079e7a8e1ea4464" => :catalina
-    sha256 "f7a6c876c4cf9ac8cfab0277a60dd2972276b2bcf6bafff71e0f2b99397fd8a0" => :mojave
+    sha256 arm64_big_sur: "e07e8686997f1d27838e8fc9abdb85edb08ec9e2f8f241fdc3202a8a820ada36"
+    sha256 big_sur:       "f297696e560becc66043d2787f5386a6201205e2708e27938c693fc94b428593"
+    sha256 catalina:      "a283d7a72d6273e21fa61de0c03949ca52198ce73854f31f399308dfde4f817f"
+    sha256 mojave:        "d27458d650c0a4ded823ef17386bd98bb482b2c557b63317994bfd68ab89633c"
   end
 
   depends_on "hdf5"
@@ -62,7 +61,7 @@ class Petsc < Formula
     # This PETSc example prints several lines of output. The last line contains
     # an error norm, expected to be small.
     line = output.lines.last
-    assert_match /^Norm of error .+, Iterations/, line, "Unexpected output format"
+    assert_match(/^Norm of error .+, Iterations/, line, "Unexpected output format")
     error = line.split[3].to_f
     assert (error >= 0.0 && error < 1.0e-13), "Error norm too large"
   end

@@ -1,8 +1,8 @@
 class Hledger < Formula
   desc "Easy plain text accounting with command-line, terminal and web UIs"
   homepage "https://hledger.org/"
-  url "https://hackage.haskell.org/package/hledger-1.20.2/hledger-1.20.2.tar.gz"
-  sha256 "7915448f4e8d04ab3c5dc659111f1114316f804cf33f3a114bb1402e956967d6"
+  url "https://hackage.haskell.org/package/hledger-1.21/hledger-1.21.tar.gz"
+  sha256 "5a57b05b3b934c781a6bb443611236e92b0ba03c0c0b67a515c933b2eb74cc1d"
   license "GPL-3.0-or-later"
 
   # A new version is sometimes present on Hackage before it's officially
@@ -14,10 +14,9 @@ class Hledger < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "aa8a1e5557c932a746bcca23b9d9bab16639af4973c8c5a1ea55308facc68f6f" => :big_sur
-    sha256 "8adfbc73fc81e33591bf6683bbebb24264092490058a47682497fd53c2132754" => :catalina
-    sha256 "6d76219c533e3fcfef1ae0123125364299e9bb76d189057fb90914b9f353d4a9" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "83d91bd5847275c6e7089b71332015c71272bc24f562a55b595e8c192bfe7285"
+    sha256 cellar: :any_skip_relocation, catalina: "5f812bbfa7a4409166716730edf3fda92bb6a6dcb99572440d926a56e47554b2"
+    sha256 cellar: :any_skip_relocation, mojave:   "0a379919ad9936b1b93b7af1103fd5c98656c43ed879eea8f2e0dcfdcccb2e0a"
   end
 
   depends_on "ghc" => :build
@@ -27,16 +26,16 @@ class Hledger < Formula
   uses_from_macos "zlib"
 
   resource "hledger-lib" do
-    url "https://hackage.haskell.org/package/hledger-lib-1.20.2/hledger-lib-1.20.2.tar.gz"
-    sha256 "2bbc51be838162be6e85849e9c5a23f7937085901071a801901abe38a5343f82"
+    url "https://hackage.haskell.org/package/hledger-lib-1.21/hledger-lib-1.21.tar.gz"
+    sha256 "be2cd8c4259da63a6cc2c5abf625ebc8ffaab405ec3284c6f7cb6e3431d5f902"
   end
   resource "hledger-ui" do
-    url "https://hackage.haskell.org/package/hledger-ui-1.20.2/hledger-ui-1.20.2.tar.gz"
-    sha256 "fc17b080c3892f5166b5e6278597d1aa3a0fe02990de46cbcbc3f675abfc41db"
+    url "https://hackage.haskell.org/package/hledger-ui-1.21/hledger-ui-1.21.tar.gz"
+    sha256 "14f4f5de87b69b05ca6040cb444cf2e6e8dc1ccae601740cde0c79f00d322dc1"
   end
   resource "hledger-web" do
-    url "https://hackage.haskell.org/package/hledger-web-1.20.2/hledger-web-1.20.2.tar.gz"
-    sha256 "ae07ed6d0adf96157214694c356b3121adbc3d9bbe7312339adf114f9ab62821"
+    url "https://hackage.haskell.org/package/hledger-web-1.21/hledger-web-1.21.tar.gz"
+    sha256 "e2251687ed0c4dff9fea1767e3c30279df50713bdb9d4c2c1712f0eb19fe7a47"
   end
 
   def install
@@ -45,16 +44,8 @@ class Hledger < Formula
     (buildpath/"../hledger-web").install resource("hledger-web")
     cd ".." do
       system "stack", "update"
-      # For the moment we use a custom stack.yaml file to help build
-      # with ghc 8.10.3, which does not yet have a stackage snapshot,
-      # and to declare some needed extra dependencies that are not yet
-      # in stackage. When stackage catches up, we can drop this and go
-      # back to an install command something like:
-      # system "stack", "install", "--local-bin-path=#{bin}",
-      #   "--system-ghc", "--no-install-ghc", "--skip-ghc-check", "--resolver=nightly-2021-01-15",
-      #   "./hledger-#{version}", "./hledger-lib", "./hledger-ui", "./hledger-web"
       (buildpath/"../stack.yaml").write <<~EOS
-        resolver: lts-16.27
+        resolver: lts-17.5
         compiler: ghc-#{Formula["ghc"].version}
         compiler-check: newer-minor
         packages:
@@ -62,27 +53,12 @@ class Hledger < Formula
         - hledger-lib
         - hledger-ui
         - hledger-web
-        extra-deps:
-        - pretty-simple-4.0.0.0
-        - prettyprinter-1.7.0
       EOS
       system "stack", "install", "--system-ghc", "--no-install-ghc", "--skip-ghc-check", "--local-bin-path=#{bin}"
 
-      man1.install "hledger-#{version}/hledger.1"
-      man5.install "hledger-lib/hledger_csv.5"
-      man5.install "hledger-lib/hledger_journal.5"
-      man5.install "hledger-lib/hledger_timeclock.5"
-      man5.install "hledger-lib/hledger_timedot.5"
-      man1.install "hledger-ui/hledger-ui.1"
-      man1.install "hledger-web/hledger-web.1"
-
-      info.install "hledger-#{version}/hledger.info"
-      info.install "hledger-lib/hledger_csv.info"
-      info.install "hledger-lib/hledger_journal.info"
-      info.install "hledger-lib/hledger_timeclock.info"
-      info.install "hledger-lib/hledger_timedot.info"
-      info.install "hledger-ui/hledger-ui.info"
-      info.install "hledger-web/hledger-web.info"
+      man1.install Dir["hledger-*/*.1"]
+      man5.install Dir["hledger-lib/*.5"]
+      info.install Dir["hledger-*/*.info"]
     end
   end
 

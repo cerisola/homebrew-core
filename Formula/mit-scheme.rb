@@ -1,10 +1,10 @@
 class MitScheme < Formula
   desc "MIT/GNU Scheme development tools and runtime library"
   homepage "https://www.gnu.org/software/mit-scheme/"
-  url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/10.1.11/mit-scheme-10.1.11.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gnu/mit-scheme/stable.pkg/10.1.11/mit-scheme-10.1.11.tar.gz"
-  sha256 "03a6df3b9d4c2472b9db7ad92010ea06423d81b018b12d0231d4241b57c80d54"
-  license "GPL-2.0"
+  url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/11.2/mit-scheme-11.2.tar.gz"
+  mirror "https://ftpmirror.gnu.org/gnu/mit-scheme/stable.pkg/11.2/mit-scheme-11.2.tar.gz"
+  sha256 "0859cb03a7c841d2dbc67e374cfee2b3ae1f95f6a1ee846d8f5bad39c7e566a1"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/?C=M&O=D"
@@ -13,10 +13,9 @@ class MitScheme < Formula
   end
 
   bottle do
-    sha256 "ae2167a7a177e9731350e5f7d91679dc29856fd1b504653c5e54c5e3d2266393" => :big_sur
-    sha256 "5ae123ef4a76b34e2b927873991a823b0ab68a5518d1543f1e76bf9d3c36e589" => :catalina
-    sha256 "7f74120df838cc2f4542c73f20b7f3e3473f23a775d249e2b8170e6acfd43ed1" => :mojave
-    sha256 "cf0d2bf18da0dd0454f53f125bcb4d85632619cd8a79f3dd30ddb16a19c0d470" => :high_sierra
+    sha256 big_sur:  "2a010afbf69c03bf7da5e45077bf76a1cce13d96748fa6c4c9d4ff74a87674cc"
+    sha256 catalina: "f1f056a425dddbc394caa899e1eab404163b7404ea07f3673850e5fb2ce78aaa"
+    sha256 mojave:   "f3b91a23b3e924b1cd560b59a87cf64350a232579390adf35661d9d6cec3b4bc"
   end
 
   # Has a hardcoded compile check for /Applications/Xcode.app
@@ -26,8 +25,13 @@ class MitScheme < Formula
   depends_on "openssl@1.1"
 
   resource "bootstrap" do
-    url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/10.1.11/mit-scheme-10.1.11-x86-64.tar.gz"
-    sha256 "32c29fe08588ed325774113bac00dce72c2454955c64ba32fc40f30db011c21c"
+    if Hardware::CPU.intel?
+      url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/11.2/mit-scheme-11.2-x86-64.tar.gz"
+      sha256 "7ca848cccf29f2058ab489b41c5b3a101fb5c73dc129b1e366fb009f3414029d"
+    else
+      url "https://ftp.gnu.org/gnu/mit-scheme/stable.pkg/11.2/mit-scheme-11.2-aarch64le.tar.gz"
+      sha256 "49679bcf76c8b5896fda8998239c4dff0721708de4162dcbc21c88d9688faa86"
+    end
   end
 
   def install
@@ -64,7 +68,7 @@ class MitScheme < Formula
       s.gsub! "/usr/local", prefix
       # Fixes "configure: error: No MacOSX SDK for version: 10.10"
       # Reported 23rd Apr 2016: https://savannah.gnu.org/bugs/index.php?47769
-      s.gsub! /SDK=MacOSX\$\{MACOS\}$/, "SDK=MacOSX#{MacOS.sdk.version}"
+      s.gsub!(/SDK=MacOSX\$\{MACOS\}$/, "SDK=MacOSX#{MacOS.sdk.version}")
     end
 
     inreplace "edwin/compile.sh" do |s|
@@ -76,14 +80,6 @@ class MitScheme < Formula
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--without-x"
     system "make"
     system "make", "install"
-    # Copy over all.com and runtime.com from the original bootstrap
-    # binaries to avoid shims
-    %w[
-      mit-scheme-x86-64/all.com
-      mit-scheme-x86-64/runtime.com
-    ].each do |f|
-      cp buildpath/"staging/lib/#{f}", lib/f
-    end
   end
 
   test do

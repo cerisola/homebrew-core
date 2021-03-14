@@ -1,8 +1,9 @@
 class Antlr4CppRuntime < Formula
   desc "ANother Tool for Language Recognition C++ Runtime Library"
   homepage "https://www.antlr.org/"
-  url "https://www.antlr.org/download/antlr4-cpp-runtime-4.9-source.zip"
-  sha256 "1055533089015f0837535a0126708678eb1212a80c70f42d8c4ce467d351cb7f"
+  url "https://www.antlr.org/download/antlr4-cpp-runtime-4.9.2-source.zip"
+  sha256 "838a2c804573f927c044e5f45a8feb297683a7047ab62dfac8ddc995498db11c"
+  license "BSD-3-Clause"
 
   livecheck do
     url "https://www.antlr.org/download/"
@@ -10,11 +11,10 @@ class Antlr4CppRuntime < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "7eba6396f9ee8296e836118c91754652f02866c01d1413bd3ce9f65f98144164" => :big_sur
-    sha256 "6def4677006825dc6d66c222d0b4ca400b8a8361577e9cb5d1c15e7ff32953bf" => :arm64_big_sur
-    sha256 "d16dbd88b32577a5eedecfd6e9c9e7f704fc344477dfbc997c88549f0d44f43a" => :catalina
-    sha256 "2048b1ea9f2d661f55819e1aa4c9ee7ca8bcccfee7717b5be6bfb9149ac12574" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "2675f194768a527b27fb7423a2cd13d449d7102f87a84648dc3dee4c9a5a2ef1"
+    sha256 cellar: :any, big_sur:       "1a0ecd0f7f72c1ec539b5e827d4249d163a648678fe236697a78a4acb05e3766"
+    sha256 cellar: :any, catalina:      "8d4d96b21b91529016470d651680f6c90f02854e7b0fa1569570c9c830da0c6b"
+    sha256 cellar: :any, mojave:        "e9c6ac2f0d41c5e4c69894e6c4fdfb079693eaa0f297a013a66487339439c164"
   end
 
   depends_on "cmake" => :build

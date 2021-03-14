@@ -1,18 +1,16 @@
 class Pueue < Formula
   desc "Command-line tool for managing long-running shell commands"
   homepage "https://github.com/Nukesor/pueue"
-  url "https://github.com/Nukesor/pueue/archive/v0.10.2.tar.gz"
-  sha256 "dbd333079df9249609f6a01d7c96175ec9d74f9d621688b95ec755134b7fa1f5"
+  url "https://github.com/Nukesor/pueue/archive/v0.12.1.tar.gz"
+  sha256 "a67e6f349696a61e0471fc573aa8791695a7e536ee76df3e1eb12397fa3b3571"
   license "MIT"
   head "https://github.com/Nukesor/pueue.git"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "7198c69473088117d81cbce3a2873852f8fb8b947298b128843116e1347f3dbc" => :big_sur
-    sha256 "ba014e839a9178f7c2b90db5d7e96ae6495ba7127be184a5b09ae6101e457136" => :arm64_big_sur
-    sha256 "1bac5127cd26fe85dfe204c523cf8618672110e35e4c42fc6fd06d7bbc542df3" => :catalina
-    sha256 "52bf8fdd86821ac5864bda91b659980eff21869c70c8c0a6ede080318d70909f" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d41441f0b73efc9cdaff84d1f0c6f846713e44eeee596f8e45f8cb891956e229"
+    sha256 cellar: :any_skip_relocation, big_sur:       "64ef61f0c9ffc71acda4ba872763f8231d6f47945292c32bdb47fac9d0bd822d"
+    sha256 cellar: :any_skip_relocation, catalina:      "e5a867f9a6ef13ffa4fb2c7299f54a1f2a1b9eb4692a9089f718e86c2e070c89"
+    sha256 cellar: :any_skip_relocation, mojave:        "3701700007c0198d27942382917e479de6b0040238fa5663e41f28df2a6fcb15"
   end
 
   depends_on "rust" => :build
@@ -59,15 +57,21 @@ class Pueue < Formula
   end
 
   test do
-    mkdir testpath/"Library/Preferences"
+    pid = fork do
+      exec bin/"pueued"
+    end
+    sleep 2
 
     begin
-      pid = fork do
-        exec bin/"pueued"
-      end
-      sleep 5
-      cmd = "#{bin}/pueue status"
-      assert_match /Task list is empty.*/m, shell_output(cmd)
+      mkdir testpath/"Library/Preferences"
+      output = shell_output("#{bin}/pueue status")
+      assert_match "Task list is empty. Add tasks with `pueue add -- [cmd]`", output
+
+      output = shell_output("#{bin}/pueue add x")
+      assert_match "New task added (id 0).", output
+
+      output = shell_output("#{bin}/pueue status")
+      assert_match "(1 parallel): running", output
     ensure
       Process.kill("TERM", pid)
     end

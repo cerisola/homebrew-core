@@ -1,15 +1,14 @@
 class TerraformAT013 < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.13.5.tar.gz"
-  sha256 "c4bdb9e636550795862f13e0ae667a1d381bf2f6cd30c4dde54411afdd07aeab"
+  url "https://github.com/hashicorp/terraform/archive/v0.13.6.tar.gz"
+  sha256 "a057c041c8b282c02b2cddb2e301c0c5165db37d6305c3fe187e6b357c542d2d"
   license "MPL-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0ec5412c1760c74a03116027f695c59c174a43ca443e1dbbfcfc74d444f0d02d" => :big_sur
-    sha256 "2eb194afe33fccd297800339ddc7ab46c536ad65d15b3149941d12c17e8388c8" => :catalina
-    sha256 "ba1565728f8ad9627b1ec549eb6ef1793699ba6bb5b4e9191467de1b5ab8f82e" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "2be4e09894ddede7b099ffd95450425ee87f34d7430ea294ed21e6777601c9b4"
+    sha256 cellar: :any_skip_relocation, catalina: "687e490a5e0d953b4007ed234a81327878da1b31eb33f9f74f2164b189249c1a"
+    sha256 cellar: :any_skip_relocation, mojave:   "b14780d63a50d9e82ce1401cc487f1385251ebd6467a46525cb122cfd532c531"
   end
 
   keg_only :versioned_formula

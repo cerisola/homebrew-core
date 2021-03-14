@@ -5,17 +5,13 @@ class Httpd < Formula
   mirror "https://archive.apache.org/dist/httpd/httpd-2.4.46.tar.bz2"
   sha256 "740eddf6e1c641992b22359cabc66e6325868c3c5e2e3f98faf349b61ecf41ea"
   license "Apache-2.0"
-
-  livecheck do
-    url :stable
-  end
+  revision 2
 
   bottle do
-    rebuild 1
-    sha256 "52044b82ea97ef07416b50c9a5a4814d01826f216aacaed18b421fe8dcdacf3f" => :big_sur
-    sha256 "6aae607116448980a05419c497ae3fb04aa9822251e8f869835f9e3e85cf6ac5" => :arm64_big_sur
-    sha256 "a927b3b0661465316615333e7ae7836b14188691b36d7ede06fb30ac1fe00aee" => :catalina
-    sha256 "c31ed64fef5c5a063ac3d973533d1e71d01baa4f342e9811191ca65f7ad57a6e" => :mojave
+    sha256 arm64_big_sur: "35357c35f6be07c0f3e60d64c88eae200158dca6e390a341569a9f0296ed33fb"
+    sha256 big_sur:       "5a979ae3affd408b4ab51f917ef34e662a9cb85eb3918e56e05e1bcfac1aedac"
+    sha256 catalina:      "c540cd4ba596ff6f0df9d772c41487c26201f548a3756ee7a02108c70fee147e"
+    sha256 mojave:        "b88153894953fa0c976f0f74bec8abf2646b320424cc92a5cbdebb6a493ab729"
   end
 
   depends_on "apr"

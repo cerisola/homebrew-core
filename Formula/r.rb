@@ -1,10 +1,9 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.0.3.tar.gz"
-  sha256 "09983a8a78d5fb6bc45d27b1c55f9ba5265f78fa54a55c13ae691f87c5bb9e0d"
+  url "https://cran.r-project.org/src/base/R-4/R-4.0.4.tar.gz"
+  sha256 "523f27d69744a08c8f0bd5e1e6c3d89a4db29ed983388ba70963a3cd3a4a802e"
   license "GPL-2.0-or-later"
-  revision 2
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
@@ -12,10 +11,10 @@ class R < Formula
   end
 
   bottle do
-    sha256 "d3859bfc06a1cac65a60a43f105aec2b3c2ebdb465b69eb6988a4686eefd0819" => :big_sur
-    sha256 "67c3d8b4f5adcfe3da2651c5f300b56a2129130db579c65eda952023ef305849" => :arm64_big_sur
-    sha256 "057a9e1fafd85ec2f65ecbfb651f6299cbbaab630158d6cf6d1057b43f7b9f29" => :catalina
-    sha256 "ffffeb9ad7f2892187d26fde97bc8f47ba4b27bf95ea8bcc1ce43a09771f7d51" => :mojave
+    sha256 arm64_big_sur: "850201a102aa7b0ae7865b32ed27b1f252e968d93aa663929abc475394a2d21b"
+    sha256 big_sur:       "1bf6b564592e5908384a43a78b8039a9077d2953cccb8ec7cff3aeb11961596f"
+    sha256 catalina:      "9ac4f83c55c651d5dfb22f1b9bca3f90ac60494b226a55bb74085a454dcd8027"
+    sha256 mojave:        "0a7797f9411a5339be8caf9e7efb0ceb283002916156e1f8a36b4ada02d60d4f"
   end
 
   depends_on "pkg-config" => :build
@@ -33,12 +32,6 @@ class R < Formula
   skip_clean "lib/R/bin", "lib/R/doc"
 
   def install
-    # Fix dyld: lazy symbol binding failed: Symbol not found: _clock_gettime
-    if MacOS.version == "10.11" && MacOS::Xcode.installed? &&
-       MacOS::Xcode.version >= "8.0"
-      ENV["ac_cv_have_decl_clock_gettime"] = "no"
-    end
-
     # BLAS detection fails with Xcode 12 due to missing prototype
     # https://bugs.r-project.org/bugzilla/show_bug.cgi?id=18024
     ENV.append "CFLAGS", "-Wno-implicit-function-declaration"

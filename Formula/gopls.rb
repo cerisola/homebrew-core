@@ -1,8 +1,8 @@
 class Gopls < Formula
   desc "Language server for the Go language"
   homepage "https://github.com/golang/tools/tree/master/gopls"
-  url "https://github.com/golang/tools/archive/gopls/v0.6.1.tar.gz"
-  sha256 "e02bd50379993220cec2c8a3ebda1214d759a547fb96daa41dbdd12d56e61a4f"
+  url "https://github.com/golang/tools/archive/gopls/v0.6.6.tar.gz"
+  sha256 "eb212db3c41fa1b234b239892853329b0abf71e6c683da1d84f6be330127bff6"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,11 +12,10 @@ class Gopls < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a4f60e4c2e8a70aae414995319bb6b4dc5dfe4295a5d105fe0b0fcf84a02f5a9" => :big_sur
-    sha256 "38711952665cce5d9e6bf606c6ad08dba09f7ebef09f84ea6a35fb2a0a248b4c" => :arm64_big_sur
-    sha256 "a4d25c188943c90cd324b052cd43ab4560328051249f4be410dc9c5903e5b8c7" => :catalina
-    sha256 "1d79c7f315bf4e0737036293faf6c70af25d7162c463e0969915bf5c8d08d12c" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "979f6f5b5bbae00ec9bcc5633740049a11377d3dfa330d47dfb2feae95ee71fa"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b1eee49bac5be73717a980c5eaed7012e9725db26e592185997460b89f8a74e2"
+    sha256 cellar: :any_skip_relocation, catalina:      "833745810ea15b2555c5eba60b959fc7d10c6c6a54a3936fbea3387b8a20b39f"
+    sha256 cellar: :any_skip_relocation, mojave:        "2b8cddff3120787cbbd9f500488b62dca762aed096c26861a5749f621b76fc17"
   end
 
   depends_on "go" => :build
@@ -31,7 +30,7 @@ class Gopls < Formula
     output = shell_output("#{bin}/gopls api-json")
     output = JSON.parse(output)
 
-    assert_equal "gopls.generate", output["Commands"][0]["Command"]
-    assert_equal "false", output["Options"]["Debugging"][0]["Default"]
+    assert_equal "gopls.add_dependency", output["Commands"][0]["Command"]
+    assert_equal "buildFlags", output["Options"]["User"][0]["Name"]
   end
 end

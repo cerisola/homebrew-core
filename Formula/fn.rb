@@ -1,16 +1,15 @@
 class Fn < Formula
   desc "Command-line tool for the fn project"
   homepage "https://fnproject.io"
-  url "https://github.com/fnproject/cli/archive/0.6.1.tar.gz"
-  sha256 "31c35c8e73bcd45368c3d390297fb4fc076ccf819711d15a52a6fe21a2dd5f0f"
+  url "https://github.com/fnproject/cli/archive/0.6.3.tar.gz"
+  sha256 "ae1b1d833a83e5666f529e809a4e3ea4f690842f02ab9934dca868d704241072"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "e493bdbe2d7f61000f4d92602789fd47850eb2c5f27be805888202880e81699b" => :big_sur
-    sha256 "8d6ce96f1b90a20005b7676a71e9cca0219b9b10eb0141962b7862a16c90bf33" => :arm64_big_sur
-    sha256 "deca08e83d8ff598ca73c0ef3fcf396f6ad20ec936c10bd0e2032595a0106d55" => :catalina
-    sha256 "0bf5ce388e4c03334fec85b0b9733d9b270d38c8650223b591805c4bb3950b84" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "307acf7937fe51a13e79400b15510877a8004c9a4e5da6734eeddfc126c86901"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4ca32e7eebd502f925986f1e3c8033afd2fb830b40c08b9fa104171a7aeabdef"
+    sha256 cellar: :any_skip_relocation, catalina:      "46525248fd7c40edb3be0a5e6d7994b40fe755e35ac353a3e862cd55deb4c4b9"
+    sha256 cellar: :any_skip_relocation, mojave:        "eab657e996f50030c3dbb1c76b1684dd3ada11bcc96165909daefe8401c32356"
   end
 
   depends_on "go" => :build

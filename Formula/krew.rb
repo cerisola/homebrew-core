@@ -2,23 +2,21 @@ class Krew < Formula
   desc "Package manager for kubectl plugins"
   homepage "https://sigs.k8s.io/krew/"
   url "https://github.com/kubernetes-sigs/krew.git",
-      tag:      "v0.4.0",
-      revision: "8bebb56d7295f361db3780fa18bd9f2f995ed48f"
+      tag:      "v0.4.1",
+      revision: "ffa2933fba45e5577a45a944da1c14a1058d4fcb"
   license "Apache-2.0"
+  head "https://github.com/kubernetes-sigs/krew.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ca2d7f7574bf8ff75dff88a4248db5374c161cfbd9461b0bbb7897381ffe61a7" => :big_sur
-    sha256 "0d9829908a9d668fc86eb86a675201202d42091ab93931b25f6b0f6f097191a1" => :catalina
-    sha256 "c4e11ef97fc169636f581737325617cc64e672c995c916bd6fb6a49d90268ab9" => :mojave
-    sha256 "cd01a286df37159eec08266e02ab5637fcb953418ec5c220c4718f73bac43d5d" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "72ec667db2da34fc298d32f376ae8a8a5769858a418185c5b581bec29458e394"
+    sha256 cellar: :any_skip_relocation, catalina: "59131bf3f0e3264dd96a4f788cbe44bef4d4c21056dc583d912c3788cd429670"
+    sha256 cellar: :any_skip_relocation, mojave:   "677db3b345035e81dbd8ae57ef4c27e3693dcc0fafd279a508f20485a59d005c"
   end
 
   depends_on "go" => :build
   depends_on "kubernetes-cli"
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "--short=8", "HEAD").chomp
     ENV["CGO_ENABLED"] = "0"
     # build in local dir to avoid this error:
     # go build: cannot write multiple packages to non-directory /usr/local/Cellar/krew/0.3.2/bin/krew
@@ -26,8 +24,8 @@ class Krew < Formula
 
     ldflags = %W[
       -w
-      -X sigs.k8s.io/krew/pkg/version.gitCommit=#{commit}
-      -X sigs.k8s.io/krew/pkg/version.gitTag=v#{version}
+      -X sigs.k8s.io/krew/internal/version.gitCommit=#{Utils.git_short_head(length: 8)}
+      -X sigs.k8s.io/krew/internal/version.gitTag=v#{version}
     ]
 
     system "go", "build", "-o", "build", "-tags", "netgo",
@@ -42,6 +40,7 @@ class Krew < Formula
     system "#{bin}/kubectl-krew", "version"
     system "#{bin}/kubectl-krew", "update"
     system "#{bin}/kubectl-krew", "install", "ctx"
+    assert_match "v#{version}", shell_output("#{bin}/kubectl-krew version")
     assert_predicate testpath/"bin/kubectl-ctx", :exist?
   end
 end

@@ -1,15 +1,15 @@
 class Pnetcdf < Formula
   desc "Parallel netCDF library for scientific data using the OpenMPI library"
   homepage "https://parallel-netcdf.github.io/index.html"
-  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.1.tar.gz"
-  sha256 "56f5afaa0ddc256791c405719b6436a83b92dcd5be37fe860dea103aee8250a2"
+  url "https://parallel-netcdf.github.io/Release/pnetcdf-1.12.2.tar.gz"
+  sha256 "3ef1411875b07955f519a5b03278c31e566976357ddfc74c2493a1076e7d7c74"
   license "NetCDF"
-  revision 1
 
   bottle do
-    sha256 "89fe221a5cfb46dac697259ace423488721524a62cf9753e2f2b0824a5092316" => :catalina
-    sha256 "ca2024aecf06507fa3f5018773f59aaa2b6be3291107b73565002f19ed0def02" => :mojave
-    sha256 "218b5b009bb564ed50117a0ad5842ee2d20b4b29cc134587fd5e30a3e703412b" => :high_sierra
+    sha256 arm64_big_sur: "050d7d04413ccbc8b015ff662dabfa5abd051e116270437125987d2378037663"
+    sha256 big_sur:       "85211030d47c598d6ff4de8af6c063194d82cfd030c3799ffe61d0ea775fee91"
+    sha256 catalina:      "850305bbe69b1ada59f7cc8628d12471819e720dbd41f873d269ff12ff7a9f86"
+    sha256 mojave:        "7313cd18dde083b4cb5bee094a43e1138ab70f97f33e762c8d97d64d916143eb"
   end
 
   depends_on "gcc"
@@ -20,11 +20,14 @@ class Pnetcdf < Formula
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--enable-shared",
-                          # Fix for GCC 10, remove in next version
-                          # https://github.com/Parallel-NetCDF/PnetCDF/pull/63
-                          "FFLAGS=-fallow-argument-mismatch",
-                          "FCFLAGS=-fallow-argument-mismatch"
+                          "--enable-shared"
+
+    cd "src/utils" do
+      # Avoid references to Homebrew shims
+      inreplace ["pnetcdf-config", "pnetcdf_version/Makefile"], "#{HOMEBREW_SHIMS_PATH}/mac/super/",
+                                                                "/usr/bin/"
+    end
+
     system "make", "install"
   end
 

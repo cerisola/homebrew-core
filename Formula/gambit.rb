@@ -4,12 +4,13 @@ class Gambit < Formula
   url "https://github.com/gambitproject/gambit/archive/v16.0.1.tar.gz"
   sha256 "56bb86fd17575827919194e275320a5dd498708fd8bb3b20845243d492c10fef"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "c1bf628cb87dbed50a0bd5299b3921545a001999af7a061343caf6aa75784cf5" => :catalina
-    sha256 "849760c07650bf6d240e3d488ed984ef3f1520976cc402ec1afe215ac881aa08" => :mojave
-    sha256 "f5d187618279c18de8e290151ba7683a5b68e4b96203db1a05600eb84002d391" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "45b7d50d9ab796456c5688aabcffa048f39c5d8698e914f2c9d4d308d1f795a9"
+    sha256 cellar: :any, big_sur:       "e5b2c33a83a81fedeaf73e1e62186864a52031c6046fb7a69f2d5a0e44d881f4"
+    sha256 cellar: :any, catalina:      "05ab5f78b317c4128110507c07b8eb94914361624248defae542008d9a9d62d5"
+    sha256 cellar: :any, mojave:        "74b93be01bbbdd562b00977b6d3f442c0edcfde923ab973c1c62b61e9afd33ad"
   end
 
   depends_on "autoconf" => :build
@@ -23,6 +24,8 @@ class Gambit < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+    # Sanitise references to Homebrew shims
+    rm Dir["contrib/**/Makefile*"]
     pkgshare.install "contrib"
   end
 

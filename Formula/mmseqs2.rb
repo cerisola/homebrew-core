@@ -1,22 +1,20 @@
 class Mmseqs2 < Formula
   desc "Software suite for very fast sequence search and clustering"
   homepage "https://mmseqs.com/"
-  url "https://github.com/soedinglab/MMseqs2/archive/12-113e3.tar.gz"
-  version "12-113e3"
-  sha256 "81fa0d77eab9d74b429567da00aa7ec2d46049537ce469595d7356b6d8b5458a"
+  url "https://github.com/soedinglab/MMseqs2/archive/13-45111.tar.gz"
+  version "13-45111"
+  sha256 "6444bb682ebf5ced54b2eda7a301fa3e933c2a28b7661f96ef5bdab1d53695a2"
   license "GPL-3.0-or-later"
   head "https://github.com/soedinglab/MMseqs2.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "791977eec2f261f8b895d84baab2d8bbd4721c487515257ce1e9b929fa2eb52e" => :big_sur
-    sha256 "bd1efb5b4246c6e2ae92f44430885d73feb1e97d8d0fb6971fb3e27fc5868056" => :arm64_big_sur
-    sha256 "19e991c528466e6443a0772d6ea2c373b5323f3b6d919adde3ec2cd6958c6e04" => :catalina
-    sha256 "f31e32a418bb6a407be63e5d60c4bcc10497c3412b07fe270ac523851fbeeea7" => :mojave
-    sha256 "6a92a84f48542cac881e7bf4de5c7946d8038e8da1c799c98fe0992ed3f4d1a0" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "510d513310f2372e90eb1cd63a3e03e8f86e92d286fc9bc28e11c64c6e953ebb"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9c77c3321deb69aa84df7326821c803ecd377dc3f91931c26ca030832c25ee80"
+    sha256 cellar: :any_skip_relocation, catalina:      "f52feb3e6c03379981c6d7af2f2a3d404b0f0eb20ef2de490c1e8d67bd03ef54"
+    sha256 cellar: :any_skip_relocation, mojave:        "72a26a3d303d4150154c8200893ae6f4554b5eb1fe93a24d86c3b88d90aa1a3a"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
   depends_on "libomp"
   depends_on "wget"
 
@@ -25,13 +23,22 @@ class Mmseqs2 < Formula
 
   resource "documentation" do
     url "https://github.com/soedinglab/MMseqs2.wiki.git",
-        revision: "d53d8be3761ee625b0dcddda29b092bbd02244ef"
+        revision: "790eb1b49f460d6054d5b8a6a643b8543f166388"
+  end
+
+  resource "testdata" do
+    url "https://github.com/soedinglab/MMseqs2/releases/download/12-113e3/MMseqs2-Regression-Minimal.zip"
+    sha256 "ab0c2953d1c27736c22a57a1ccbb976c1320435fad82b5c579dbd716b7bae4ce"
   end
 
   def install
     args = *std_cmake_args << "-DHAVE_TESTS=0" << "-DHAVE_MPI=0"
     args << "-DVERSION_OVERRIDE=#{version}"
-    args << "-DHAVE_SSE4_1=1"
+    args << if Hardware::CPU.arm?
+      "-DHAVE_ARM8=1"
+    else
+      "-DHAVE_SSE4_1=1"
+    end
 
     libomp = Formula["libomp"]
     args << "-DOpenMP_C_FLAGS=-Xpreprocessor\ -fopenmp\ -I#{libomp.opt_include}"
@@ -39,9 +46,6 @@ class Mmseqs2 < Formula
     args << "-DOpenMP_CXX_FLAGS=-Xpreprocessor\ -fopenmp\ -I#{libomp.opt_include}"
     args << "-DOpenMP_CXX_LIB_NAMES=omp"
     args << "-DOpenMP_omp_LIBRARY=#{libomp.opt_lib}/libomp.a"
-
-    # Fix SIMDe on AppleClang11, fixed upstream, remove in next release
-    args << "-DCMAKE_CXX_FLAGS=-DSIMDE_NO_CHECK_IMMEDIATE_CONSTANT=1" if DevelopmentTools.clang_build_version == 1100
 
     system "cmake", ".", *args
     system "make", "install"
@@ -52,14 +56,12 @@ class Mmseqs2 < Formula
   end
 
   def caveats
-    "MMseqs2 requires at least SSE4.1 CPU instruction support." unless Hardware::CPU.sse4?
+    "MMseqs2 requires at least SSE4.1 CPU instruction support." if !Hardware::CPU.sse4? && !Hardware::CPU.arm?
   end
 
   test do
-    system "#{bin}/mmseqs", "createdb", "#{pkgshare}/examples/QUERY.fasta", "q"
-    system "#{bin}/mmseqs", "cluster", "q", "res", "tmp", "-s", "1"
-    system "#{bin}/mmseqs", "createtsv", "q", "q", "res", "res.tsv"
-    assert_predicate testpath/"res.tsv", :exist?
-    assert_predicate (testpath/"res.tsv").size, :positive?
+    resource("testdata").stage do
+      system "./run_regression.sh", "#{bin}/mmseqs", "scratch"
+    end
   end
 end

@@ -1,40 +1,35 @@
 class P7zip < Formula
   desc "7-Zip (high compression file archiver) implementation"
-  homepage "https://p7zip.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/p7zip/p7zip/16.02/p7zip_16.02_src_all.tar.bz2"
-  sha256 "5eb20ac0e2944f6cb9c2d51dd6c4518941c185347d4089ea89087ffdd6e2341f"
-  # CPP/7zip/Compress/Rar* files:  GNU LGPL + unRAR restriction
-  license "LGPL-2.1"
-  revision 2
-
-  livecheck do
-    url :stable
-  end
+  homepage "https://github.com/jinfeihan57/p7zip"
+  url "https://github.com/jinfeihan57/p7zip/archive/v17.03.tar.gz"
+  sha256 "bb4b9b21584c0e076e0b4b2705af0dbe7ac19d378aa7f09a79da33a5b3293187"
+  license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ecdc4815bfff50521a58b16dd8e5433734353361a0a25fe2f1a56aa8c102a567" => :big_sur
-    sha256 "bb11f5174c07fbe798fc288a68aa0844b55441189b4b30b15194b1216357db60" => :arm64_big_sur
-    sha256 "b9f5fb1321ce5738d0129b3c48f51fc36a947bd84450f95ce9caa90e767fbd1b" => :catalina
-    sha256 "0de20c4bd05dc5652ca5f188895bf74e52eb701aaed502a0d1271eb58236f898" => :mojave
-    sha256 "5951a42bd864da7dba5ef5781a2efba206daba8b6f75c60c0cfd910dae218482" => :high_sierra
-    sha256 "73fe6276e906f67cd28adc0f5a22c914d57fd3cfdd54134ad64e5330f710235a" => :sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d14cc7a098606e902b3bfcb908d71a658e6b78c64adccdc93ae87a0c9f1bfd87"
+    sha256 cellar: :any_skip_relocation, big_sur:       "696fae5d82319db27d8460c09bfcaa238b2af1f3741575317b4bb010d93cc90d"
+    sha256 cellar: :any_skip_relocation, catalina:      "f6b8e20d8f659449c9ee8b9793c78a6bfbf5e1eb990865721b91fd7a2e7e21cc"
+    sha256 cellar: :any_skip_relocation, mojave:        "b5d486a4b47f49eae90b1255a002219fc5f5e8236202333dc84d99a4529cc104"
   end
 
+  # Remove non-free RAR sources
+  patch :DATA
+
+  # Fix AES security bugs
+  # https://github.com/jinfeihan57/p7zip/pull/117
   patch do
-    url "https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_16.02+dfsg-6.debian.tar.xz"
-    sha256 "fab0be1764efdbde1804072f1daa833de4e11ea65f718ad141a592404162643c"
-    apply "patches/12-CVE-2016-9296.patch",
-          "patches/13-CVE-2017-17969.patch"
-  end
-
-  patch :p4 do
-    url "https://github.com/aonez/Keka/files/2940620/15-Enhanced-encryption-strength.patch.zip"
-    sha256 "838dd2175c3112dc34193e99b8414d1dc1b2b20b861bdde0df2b32dbf59d1ce4"
+    url "https://github.com/jinfeihan57/p7zip/commit/6106df26ff64fa8147bfc9abdc0a14908b5d3871.patch?full_index=1"
+    sha256 "5fcce7293ba017b4aa3ba5afbe6f2a847d60a785ea0966c31ac33da4bdf3ef6e"
   end
 
   def install
-    mv "makefile.macosx_llvm_64bits", "makefile.machine"
+    on_macos do
+      mv "makefile.macosx_llvm_64bits", "makefile.machine"
+    end
+    on_linux do
+      mv "makefile.linux_any_cpu", "makefile.machine"
+    end
     system "make", "all3",
                    "CC=#{ENV.cc} $(ALLFLAGS)",
                    "CXX=#{ENV.cxx} $(ALLFLAGS)"
@@ -50,3 +45,32 @@ class P7zip < Formula
     assert_equal "hello world!\n", File.read(testpath/"out/foo.txt")
   end
 end
+
+__END__
+diff -u -r a/makefile b/makefile
+--- a/makefile	2021-02-21 14:27:14.000000000 +0800
++++ b/makefile	2021-02-21 14:27:31.000000000 +0800
+@@ -31,7 +31,6 @@
+ 	$(MAKE) -C CPP/7zip/UI/Client7z           depend
+ 	$(MAKE) -C CPP/7zip/UI/Console            depend
+ 	$(MAKE) -C CPP/7zip/Bundles/Format7zFree  depend
+-	$(MAKE) -C CPP/7zip/Compress/Rar          depend
+ 	$(MAKE) -C CPP/7zip/UI/GUI                depend
+ 	$(MAKE) -C CPP/7zip/UI/FileManager        depend
+ 
+@@ -42,7 +41,6 @@
+ common7z:common
+ 	$(MKDIR) bin/Codecs
+ 	$(MAKE) -C CPP/7zip/Bundles/Format7zFree all
+-	$(MAKE) -C CPP/7zip/Compress/Rar         all
+ 
+ lzham:common
+ 	$(MKDIR) bin/Codecs
+@@ -67,7 +65,6 @@
+ 	$(MAKE) -C CPP/7zip/UI/FileManager       clean
+ 	$(MAKE) -C CPP/7zip/UI/GUI               clean
+ 	$(MAKE) -C CPP/7zip/Bundles/Format7zFree clean
+-	$(MAKE) -C CPP/7zip/Compress/Rar         clean
+ 	$(MAKE) -C CPP/7zip/Compress/Lzham       clean
+ 	$(MAKE) -C CPP/7zip/Bundles/LzmaCon      clean2
+ 	$(MAKE) -C CPP/7zip/Bundles/AloneGCOV    clean

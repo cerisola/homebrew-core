@@ -2,16 +2,15 @@ class Aom < Formula
   desc "Codec library for encoding and decoding AV1 video streams"
   homepage "https://aomedia.googlesource.com/aom"
   url "https://aomedia.googlesource.com/aom.git",
-      tag:      "v2.0.1",
-      revision: "b52ee6d44adaef8a08f6984390de050d64df9faa"
+      tag:      "v2.0.2",
+      revision: "cb1d48da8da2061e72018761788a18b8fa8013bb"
   license "BSD-2-Clause"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "c03472a3e8dd38972fe30ee245dade96626c7927f511b7c39eb5b1b6f789e34b" => :big_sur
-    sha256 "06d96aee6c62b57139fec871110fb0c53bbe0bea114f50ab4655dda087ae54ba" => :arm64_big_sur
-    sha256 "ebac8d7473e89b82ad00046243ef47207c0823e410c4d3c40483a81324ad2a4c" => :catalina
-    sha256 "99912d7dfc789ce059c33ea739f736930c40ea59ce58a70a6ee2478199b4363b" => :mojave
+    sha256 arm64_big_sur: "f17ad0f61eef16b08826918342e88f7d180009b867467aba7307a6a495b20b59"
+    sha256 big_sur:       "4ac5117ff5065d8ad5e185c98eba0b4909ea2201bd0f8b8844edf2987e85d8a6"
+    sha256 catalina:      "0cad1d09aafe134daa8e24f5e346fd2766171f637b31894be22f9a80dcbbb770"
+    sha256 mojave:        "1856596662ee2ad37056f4db3ac26e049be22801dade3b98f1bc4ef143a23908"
   end
 
   depends_on "cmake" => :build
@@ -24,11 +23,13 @@ class Aom < Formula
 
   def install
     mkdir "macbuild" do
-      args = std_cmake_args.concat(["-DENABLE_DOCS=off",
+      args = std_cmake_args.concat(["-DCMAKE_INSTALL_RPATH=#{lib}",
+                                    "-DENABLE_DOCS=off",
                                     "-DENABLE_EXAMPLES=on",
                                     "-DENABLE_TESTDATA=off",
                                     "-DENABLE_TESTS=off",
-                                    "-DENABLE_TOOLS=off"])
+                                    "-DENABLE_TOOLS=off",
+                                    "-DBUILD_SHARED_LIBS=on"])
       # Runtime CPU detection is not currently enabled for ARM on macOS.
       args << "-DCONFIG_RUNTIME_CPU_DETECT=0" if Hardware::CPU.arm?
       system "cmake", "..", *args

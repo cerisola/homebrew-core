@@ -1,16 +1,15 @@
 class TRec < Formula
   desc "Blazingly fast terminal recorder that generates animated gif images for the web"
   homepage "https://github.com/sassman/t-rec-rs"
-  url "https://github.com/sassman/t-rec-rs/archive/v0.4.1.tar.gz"
-  sha256 "38f0e33fa6e99efe59fda94bf6d7b818102b88f6af3b6236581fb4e60110cfbc"
+  url "https://github.com/sassman/t-rec-rs/archive/v0.5.0.tar.gz"
+  sha256 "89e0a03eeb4893de19dde750f44a227df4b56b5e23f32397769bb7dc9362de7f"
   license "GPL-3.0-only"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a4195888a33197b7d22f50e4fb7bb17ff237c2b30d89390f470bb45c38c6fd53" => :big_sur
-    sha256 "6ede2cb92c9656dda7085b0506de109f43526446eee269b74240f5d109f7b896" => :arm64_big_sur
-    sha256 "77e233b438d7215f4f7792b277881354d614c7916fcde89d81a9ef6c3886d4c8" => :catalina
-    sha256 "948ea605e3655a8002e9223379362bead206b929c29ead731916779ea858209e" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1419e611ff929071f7662ae68b19652655ff34aa2a7649df82145b9c0bbcf7a7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "70730794a535317f4af96876cc61095f3fd92d1306a41c03e6207f645a891609"
+    sha256 cellar: :any_skip_relocation, catalina:      "6d6324c92f0b2a9f1f53924206025a78272b73602cbac9fbc26216780f05475e"
+    sha256 cellar: :any_skip_relocation, mojave:        "9b1a76bac6d4ccbdb33b4d054450a8bb4fe2411eed54f5967d067b95391fa7a0"
   end
 
   depends_on "rust" => :build

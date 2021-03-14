@@ -1,16 +1,15 @@
 class Cocoapods < Formula
   desc "Dependency manager for Cocoa projects"
   homepage "https://cocoapods.org/"
-  url "https://github.com/CocoaPods/CocoaPods/archive/1.10.0.tar.gz"
-  sha256 "d44c70047020ea114ca950df6d4499b1f86e5e7bbd3536a46f6fa3e32f1df21e"
+  url "https://github.com/CocoaPods/CocoaPods/archive/1.10.1.tar.gz"
+  sha256 "7629705179e4bfd894bebe4ed62c28d1cc539103f6d1924f4c8127f46cbd13e1"
   license "MIT"
-  revision 2
 
   bottle do
-    sha256 "a5532d13f702b48348c7d21c6b1a80b56c8e638aa0624e8d56e7497bfc17e657" => :big_sur
-    sha256 "83ab1ef7d462362083fbc9bf079d0fd437b47f5207a226a06833e5d2d72882db" => :arm64_big_sur
-    sha256 "6200a5f99093050fcd136c1886acf33c311e56031b1fded1ee60ec5632a6ef2f" => :catalina
-    sha256 "7b935fe6c4ac9e379fa66bca56eac7914826baad13a5935afdf250cc2bc919a5" => :mojave
+    sha256 arm64_big_sur: "08794cfd260bf206eed3496805816661da367bffdf9af748cd812b1c40a0de75"
+    sha256 big_sur:       "0caa8953926c827f62d53f9767aed0a904604c0425ea0557b24d738240db809a"
+    sha256 catalina:      "3a05cecba1a15c8cad8baa04b4e6be6eef8159c061b37096012de75132e7cd74"
+    sha256 mojave:        "0883b18c75e7cade594eced3d828ccacefafbbb3ead61667bca21e1fbc94970d"
   end
 
   depends_on "pkg-config" => :build

@@ -1,15 +1,17 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.3.tar.xz"
-  sha256 "338012037b5e67730529187c555a54cc567a85b15a7e8ddb3a807b1971566ccf"
+  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.6.tar.xz"
+  sha256 "2be149a4895c3cb613477f8cf1193593e3d8a1d38a75ffa7d32da8c8316a4d5e"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/MusicPlayerDaemon/MPD.git"
 
   bottle do
-    cellar :any
-    sha256 "035629dc87d70607aeba56d678e493d26e5a8f611592aea77077e4bb4fae62c5" => :catalina
-    sha256 "db8b3fe34ec3496c04f7a384005f09f025b45cb40793e5965fbed13288035b72" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "17788f621266bae943e912f8ec02c09e4a82fee90b071868dbf47279012892c5"
+    sha256 cellar: :any, big_sur:       "6ad7522c6793e94000346e9ebfeffb16be3cf5e7b6137d980727bfd0709f7335"
+    sha256 cellar: :any, catalina:      "ec2f59889ddd17efe2b15029ab61878798bd3fcd302229edf029891b08245b75"
+    sha256 cellar: :any, mojave:        "d3aac34e250c84974268cae2fd7aeda94dba391768f5df9a246cc63899a0a002"
   end
 
   depends_on "boost" => :build
@@ -107,6 +109,8 @@ class Mpd < Formula
   end
 
   test do
+    require "expect"
+
     port = free_port
 
     (testpath/"mpd.conf").write <<~EOS
@@ -114,23 +118,16 @@ class Mpd < Formula
       port "#{port}"
     EOS
 
-    pid = fork do
-      exec "#{bin}/mpd --stdout --no-daemon #{testpath}/mpd.conf"
-    end
-    sleep 5
+    io = IO.popen("#{bin}/mpd --stdout --no-daemon #{testpath}/mpd.conf 2>&1", "r")
+    io.expect("output: Successfully detected a osx audio device", 30)
 
-    begin
-      ohai "Connect to MPD command (localhost:#{port})"
-      TCPSocket.open("localhost", port) do |sock|
-        assert_match "OK MPD", sock.gets
-        ohai "Ping server"
-        sock.puts("ping")
-        assert_match "OK", sock.gets
-        sock.close
-      end
-    ensure
-      Process.kill "SIGINT", pid
-      Process.wait pid
+    ohai "Connect to MPD command (localhost:#{port})"
+    TCPSocket.open("localhost", port) do |sock|
+      assert_match "OK MPD", sock.gets
+      ohai "Ping server"
+      sock.puts("ping")
+      assert_match "OK", sock.gets
+      sock.close
     end
   end
 end

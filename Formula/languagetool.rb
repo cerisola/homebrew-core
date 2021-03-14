@@ -2,20 +2,20 @@ class Languagetool < Formula
   desc "Style and grammar checker"
   homepage "https://www.languagetool.org/"
   url "https://github.com/languagetool-org/languagetool.git",
-      tag:      "v5.2",
-      revision: "eb572bf077c1873424ab18b99215f77b5c5d482d"
+      tag:      "v5.2.3",
+      revision: "fb961c9735cb632b82bd47099fc04f42981d56e4"
   license "LGPL-2.1-or-later"
   head "https://github.com/languagetool-org/languagetool.git"
 
   livecheck do
-    url :head
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "6e0b47919b400614b541ced972d8513f81bdacad7bce2077cd3ca8d72c2026c6" => :big_sur
-    sha256 "247283b436a70bb8b5b3ecf43becaa3b986d260ff68d602417ed39e441befe5e" => :catalina
-    sha256 "c25896d28e5b4484317fb881478a67122cb847e53dd3f78b99e66790a5d54790" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "9753ae0ec75627733703df26db05d5e54f7c3faa0b612c191f8de2c116c1a9e0"
+    sha256 cellar: :any_skip_relocation, catalina: "4948aa9547e2562282fa6b0ddc12c27093bb09ff124bd3fe2190301956d3a191"
+    sha256 cellar: :any_skip_relocation, mojave:   "d5dcd3a16324dc4fe9c0684530e687cd792ebecccd755de53b73b056dbdffd72"
   end
 
   depends_on "maven" => :build
@@ -46,6 +46,6 @@ class Languagetool < Formula
     (testpath/"test.txt").write <<~EOS
       Homebrew, the missing package manager for macOS.
     EOS
-    assert_match /Homebrew/, shell_output("#{bin}/languagetool -l en-US test.txt")
+    assert_match "Homebrew", shell_output("#{bin}/languagetool -l en-US test.txt")
   end
 end

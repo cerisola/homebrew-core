@@ -1,18 +1,16 @@
 class Sk < Formula
   desc "Fuzzy Finder in rust!"
   homepage "https://github.com/lotabout/skim"
-  url "https://github.com/lotabout/skim/archive/v0.9.3.tar.gz"
-  sha256 "c4eea49ae3b22896d9d671e4ffa95614e4bed4fa996882b94738490bce863926"
+  url "https://github.com/lotabout/skim/archive/v0.9.4.tar.gz"
+  sha256 "5ec639c34c7657be4f7f990e9ad0d8d0a7a979eba68daa7c100126ce06702a1b"
   license "MIT"
   head "https://github.com/lotabout/skim.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0d760d248a659112d772854614764286b3bf09616f344658481e09d5642246fa" => :big_sur
-    sha256 "8a9e3271b0f8569f4a4e37e3c417b9aec43d37d9a652f5ba41660b6fc0b387a0" => :arm64_big_sur
-    sha256 "07b4b9382fa9a43d57609d18481fd63b0b4561b09d625762e68c0fcfefc0120a" => :catalina
-    sha256 "a299f9fd5ed97d733838ede34a7602ac9682fe3957de49faf660aa2aa086a15a" => :mojave
-    sha256 "d80ddfbbca4c831a61d987edc3554cbb32d6d93ff65054b99cb67eb796854349" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1bd497fc73a90ccca27cc9bff110d394f65148839c25265d017fc384fddd9c55"
+    sha256 cellar: :any_skip_relocation, big_sur:       "61c1157e45e27f80c0aa1807416b82562540d72d6e1132912f59fc9fd0d51c86"
+    sha256 cellar: :any_skip_relocation, catalina:      "e1b6019d494e2750d305e5366b51129720126c51931928681da48ba89293a46b"
+    sha256 cellar: :any_skip_relocation, mojave:        "05483c56866808ff11d9054ccfde8b7c8bfea652d3aff1f353cddca5e4451d4f"
   end
 
   depends_on "rust" => :build
@@ -33,6 +31,6 @@ class Sk < Formula
   end
 
   test do
-    assert_match /.*world/, pipe_output("#{bin}/sk -f wld", "hello\nworld")
+    assert_match(/.*world/, pipe_output("#{bin}/sk -f wld", "hello\nworld"))
   end
 end

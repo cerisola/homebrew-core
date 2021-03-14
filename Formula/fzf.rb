@@ -1,17 +1,16 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.25.0.tar.gz"
-  sha256 "ccbe13733d692dbc4f0e4c0d40c053cba8d22f309955803692569fb129e42eb0"
+  url "https://github.com/junegunn/fzf/archive/0.26.0.tar.gz"
+  sha256 "a8dc01f16b3bf453fdc9e9a2cd0ca39db7a1b44386517bb7859805b053aa7810"
   license "MIT"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "e4cbab67d49b7472302b1809a8b6fb9569f3dfe8c17d92fba796810585ecb501" => :big_sur
-    sha256 "e496f401d222aa84759ceedbb9174eaf0a0f8c9e89b7e04ad2b14cca9f77bfa9" => :arm64_big_sur
-    sha256 "8be78a2d3f66016fd770a52760bfcea039a2fef131027c58df101e229b0a17c1" => :catalina
-    sha256 "97c5f0acb223b9bc355169ca9bb76ee741d1b034c1766acf4b28c2fa2864ff32" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c6301bb126f9d1d0858408ed428a368a95d61b65e310a9083cca3be66ec9aeac"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b711f6a7672111cfe55bdf2ff56182eece3362a34745700bf37082e6fdc43e46"
+    sha256 cellar: :any_skip_relocation, catalina:      "99d6ed82769c08f345b286a676d6354b5a983699773b3c0878726291d093ceb3"
+    sha256 cellar: :any_skip_relocation, mojave:        "ed36a1cfa7de25cbeb08b9fa37c1d6663dfa22218e65843dd1530605ba37d04b"
   end
 
   depends_on "go" => :build
@@ -19,8 +18,7 @@ class Fzf < Formula
   uses_from_macos "ncurses"
 
   def install
-    ENV["GOPATH"] = HOMEBREW_CACHE/"go_cache"
-    system "go", "build", "-o", bin/"fzf", "-ldflags", "-X main.version=#{version} -X main.revision=brew"
+    system "go", "build", *std_go_args, "-ldflags", "-s -w -X main.version=#{version} -X main.revision=brew"
 
     prefix.install "install", "uninstall"
     (prefix/"shell").install %w[bash zsh fish].map { |s| "shell/key-bindings.#{s}" }

@@ -7,9 +7,9 @@ class PostgresqlAT94 < Formula
 
   bottle do
     rebuild 3
-    sha256 "15217a46087cd4bef0227f5ca941ed843a4e024aafa4e7c7a3ebf746ca8a1344" => :catalina
-    sha256 "4d24193f0f0931c246a86407d3d8208a48b514b8969dc4567b7d62de2becc3ec" => :mojave
-    sha256 "2e09355d0bf2f70b5ea9c202f15aadee823902caad5cf35b64c882e4b969e70f" => :high_sierra
+    sha256 catalina:    "15217a46087cd4bef0227f5ca941ed843a4e024aafa4e7c7a3ebf746ca8a1344"
+    sha256 mojave:      "4d24193f0f0931c246a86407d3d8208a48b514b8969dc4567b7d62de2becc3ec"
+    sha256 high_sierra: "2e09355d0bf2f70b5ea9c202f15aadee823902caad5cf35b64c882e4b969e70f"
   end
 
   keg_only :versioned_formula
@@ -30,7 +30,7 @@ class PostgresqlAT94 < Formula
 
   def install
     # Fix "configure: error: readline library not found"
-    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra || MacOS.version == :el_capitan
+    ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version <= :sierra
 
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@1.1"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@1.1"].opt_include} -I#{Formula["readline"].opt_include}"
@@ -65,10 +65,12 @@ class PostgresqlAT94 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
     postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/initdb", postgresql_datadir unless pg_version_exists?
   end
 
@@ -130,9 +132,5 @@ class PostgresqlAT94 < Formula
       </dict>
       </plist>
     EOS
-  end
-
-  test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
   end
 end

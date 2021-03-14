@@ -2,8 +2,8 @@ class CfrDecompiler < Formula
   desc "Yet Another Java Decompiler"
   homepage "https://www.benf.org/other/cfr/"
   url "https://github.com/leibnitz27/cfr.git",
-      tag:      "0.150",
-      revision: "1361cd7fa74f25f30a6bbf72c825d83647d2cdaf"
+      tag:      "0.151",
+      revision: "fecd6421a8b9de98ade2b9f9b89caecf4a8c93d8"
   license "MIT"
   head "https://github.com/leibnitz27/cfr.git"
 
@@ -13,11 +13,10 @@ class CfrDecompiler < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0ab2bafd7228773c3cb8a03ce56cdd3eb04bb4644d2f0cf985417931d92628d8" => :big_sur
-    sha256 "05d1bff6093077a4f9789606c7b8d77d26f66f341aa491a9412da3e85669c932" => :catalina
-    sha256 "0235b4a3204736079b3790db8de5bb02f99162318bff390aea45168f2bd1ea48" => :mojave
-    sha256 "c6866f8e6b6c8e849936d2b5a45c3827dda9acacfe49ca2e831041e633617ac5" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "75a69ae0a8ac09219854b6ed8b0ffff354c06cc01df7e3c343db71eb43489a02"
+    sha256 cellar: :any_skip_relocation, big_sur:       "01b786e75cce66964d72c4da0e6545ed08275d7372e43f6e810c76bd65ee26d4"
+    sha256 cellar: :any_skip_relocation, catalina:      "59ae9cd6d368e85589ffd31f2ae0c223b9635d6cd5787e9a360de5f743f15ba2"
+    sha256 cellar: :any_skip_relocation, mojave:        "bad961cc5db80bdc29b4ac304147dc019b16efc01161a5e5289ad87cf835a5bf"
   end
 
   depends_on "maven" => :build
@@ -37,7 +36,7 @@ class CfrDecompiler < Formula
       if build.head?
         lib_jar = Dir["cfr-*-SNAPSHOT.jar"]
         doc_jar = Dir["cfr-*-SNAPSHOT-javadoc.jar"]
-        odie "Unexpected number of artifacts!" unless (lib_jar.length == 1) && (doc_jar.length == 1)
+        odie "Unexpected number of artifacts!" if (lib_jar.length != 1) || (doc_jar.length != 1)
         lib_jar = lib_jar[0]
         doc_jar = doc_jar[0]
       else
@@ -65,11 +64,14 @@ class CfrDecompiler < Formula
 
   test do
     fixture = <<~EOS
+      /*
+       * Decompiled with CFR #{version}.
+       */
       class T {
           T() {
           }
 
-          public static void main(String[] arrstring) {
+          public static void main(String[] stringArray) {
               System.out.println("Hello brew!");
           }
       }

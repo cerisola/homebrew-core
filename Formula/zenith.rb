@@ -1,18 +1,22 @@
 class Zenith < Formula
   desc "In terminal graphical metrics for your *nix system"
   homepage "https://github.com/bvaisvil/zenith/"
-  url "https://github.com/bvaisvil/zenith/archive/0.11.0.tar.gz"
-  sha256 "be216df5d4e9bc0271971a17e8e090d3abe513f501c69e69174899a30c857254"
+  url "https://github.com/bvaisvil/zenith/archive/0.12.0.tar.gz"
+  sha256 "2b33892be95149550c84179b341e304c4222e3489bc121ea8c8346e075433aa6"
   license "MIT"
+  version_scheme 1
   head "https://github.com/bvaisvil/zenith.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "b6863e0f25d2b1590bba5016f563fa101f8f76f716220d7b2c07c2c2bbc47df2" => :big_sur
-    sha256 "a6c9804ff96250b57852555414d3f37e793c379178ffd9b0b00bb4b79ac37c4a" => :catalina
-    sha256 "33aeda2cfe6a2e2ce8089e5991b0b41feb201ddaaf250e62796a7e3bd85692ac" => :mojave
-    sha256 "34669ca8a79071a5ab3d78ccd80a261984f60711126bd6d35ead14890279fde7" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "7d883fde3bda035e36d3107923e96362cb5e538753ad4366ac8fa04137143cb2"
+    sha256 cellar: :any_skip_relocation, big_sur:       "eeb7ca6be51f678aaad01f4025ad62faf0068f48a6b8ef1eb908cb37676861e8"
+    sha256 cellar: :any_skip_relocation, catalina:      "929ff75d609fec1abe20a6fe0e1833949b0d1157821be5778c91b809a20d3193"
+    sha256 cellar: :any_skip_relocation, mojave:        "8e587b9ae59e970e0b3ee7a7e8f6076cdde1c002e81d61a2e373ca7bd8942443"
   end
 
   depends_on "rust" => :build
@@ -30,7 +34,7 @@ class Zenith < Formula
     r.winsize = [80, 43]
     sleep 1
     w.write "q"
-    assert_match /PID\s+USER\s+P\s+N\s+↓CPU%\s+MEM%/, r.read
+    assert_match(/PID\s+USER\s+P\s+N\s+↓CPU%\s+MEM%/, r.read)
   ensure
     Process.kill("TERM", pid)
   end

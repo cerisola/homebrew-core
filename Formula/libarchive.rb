@@ -12,11 +12,11 @@ class Libarchive < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "1c23bc3fa56221b24bf500672f2f2934cf3d5846d7a3dabda169f424955344a9" => :big_sur
-    sha256 "a7fde93723f788e76cdfaf0efbfdea736d7046306d72c558b2fec1596be7d584" => :arm64_big_sur
-    sha256 "7af1a019eb165fd3ca3ba1e6b09f2d1b44dc99d14a5d5b148462a8cd6b1d73b6" => :catalina
-    sha256 "b0bd53d1118459d5acdc4a22c77ba5d273cb8249b5cdbbaf2800d633debfa415" => :mojave
+    rebuild 1
+    sha256 cellar: :any, arm64_big_sur: "70d00c2b7edaa2e7e84d8831edddfc07490f19016f7899bcde581d5d71040d67"
+    sha256 cellar: :any, big_sur:       "88826e185e60eba60ad004889a76dae4354a15533a5ba8254ecf0323075b34cd"
+    sha256 cellar: :any, catalina:      "616792d4660cc153ce5868fd612980af9b8b9e18d54c4199eb11e08bc9bb45da"
+    sha256 cellar: :any, mojave:        "b231516d40d35180e1f61a50175324e4ce28f71aec27769ecc4661dbe6e883d0"
   end
 
   keg_only :provided_by_macos
@@ -29,6 +29,11 @@ class Libarchive < Formula
   uses_from_macos "bzip2"
   uses_from_macos "expat"
   uses_from_macos "zlib"
+
+  on_linux do
+    conflicts_with "cpio", because: "both install `cpio` binaries"
+    conflicts_with "gnu-tar", because: "both install `tar` binaries"
+  end
 
   def install
     system "./configure",
@@ -51,6 +56,6 @@ class Libarchive < Formula
   test do
     (testpath/"test").write("test")
     system bin/"bsdtar", "-czvf", "test.tar.gz", "test"
-    assert_match /test/, shell_output("#{bin}/bsdtar -xOzf test.tar.gz")
+    assert_match "test", shell_output("#{bin}/bsdtar -xOzf test.tar.gz")
   end
 end

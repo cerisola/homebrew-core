@@ -1,17 +1,15 @@
 class PinboardNotesBackup < Formula
   desc "Efficiently back up the notes you've saved to Pinboard"
   homepage "https://github.com/bdesham/pinboard-notes-backup"
-  url "https://github.com/bdesham/pinboard-notes-backup/archive/v1.0.5.tar.gz"
-  sha256 "eb4409edd52745cac16a68faf51f6a86178db1432b3b848e6fb195fd7528e7da"
-  license "GPL-3.0"
+  url "https://github.com/bdesham/pinboard-notes-backup/archive/v1.0.5.2.tar.gz"
+  sha256 "e326fb407b1127ce3bed80930477cbeef4aac05ba3c44ddac117aef9016f5d7f"
+  license "GPL-3.0-or-later"
   head "https://github.com/bdesham/pinboard-notes-backup.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "f5de063fa7d3ef372f34c0707fe22c4d1a9bef77142b221030ff75503d7a1194" => :big_sur
-    sha256 "1735309c67f5ff12f212c8f780fe0cfb3d0409c53ce9376ee265597ceb517693" => :catalina
-    sha256 "244865afa3cd3d89f059dd4e6a162de07ce8d404c9ea2c05dc92ef17869c75e8" => :mojave
-    sha256 "cddc7122a3aa1aec17c18d2e50f471a154db42006684b7ba8d5fb4b2cfd5842f" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "b14513ed43c8bf9176111e913154b6c9351da0fd40b0d2b6889237f2cb2e7f1e"
+    sha256 cellar: :any_skip_relocation, catalina: "91b6d42a2b460055184537d40b745babcfd6b9eac2f9bbe4c0a02b2efb6d3a17"
+    sha256 cellar: :any_skip_relocation, mojave:   "55ec30fc54c829a928f7b5878c5288bc4a800a41e42d5ef3676a3c44c6ef343e"
   end
 
   depends_on "cabal-install" => :build

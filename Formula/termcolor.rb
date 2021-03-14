@@ -1,17 +1,15 @@
 class Termcolor < Formula
   desc "Header-only C++ library for printing colored messages"
   homepage "https://termcolor.readthedocs.io/"
-  url "https://github.com/ikalnytskyi/termcolor/archive/v1.0.1.tar.gz"
-  sha256 "612f9ff785c74dcbe081bb82e8c915858572cf97dcf396ea7bd6a7d21cf6026a"
+  url "https://github.com/ikalnytskyi/termcolor/archive/v2.0.0.tar.gz"
+  sha256 "4a73a77053822ca1ed6d4a2af416d31028ec992fb0ffa794af95bd6216bb6a20"
   license "BSD-3-Clause"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "def1f0c727fa7494adaaae105c6567ff1a01cf86a06713ba38272a2c99a2542c" => :big_sur
-    sha256 "5db4ac397b8826be095a0fcd81d01460ddbb1340fb401f1958df5deaa46c4779" => :arm64_big_sur
-    sha256 "bf8dbd74a3f8661b2dcc5968698dc6d0797d32ad4022744fca1c3c2ac1e7b863" => :catalina
-    sha256 "bf8dbd74a3f8661b2dcc5968698dc6d0797d32ad4022744fca1c3c2ac1e7b863" => :mojave
-    sha256 "bf8dbd74a3f8661b2dcc5968698dc6d0797d32ad4022744fca1c3c2ac1e7b863" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6600a6345ddca25f57a8ac394b62edac659399eb1c7eab287c201108ac390461"
+    sha256 cellar: :any_skip_relocation, big_sur:       "86b0707099a56545dc78d87c81407b998c900c22d14b23d53ffa35eafa2e01f2"
+    sha256 cellar: :any_skip_relocation, catalina:      "41012d8fe7ea77d22b30dc9baeac6aa0472b66c4f40e490b214ae34d20076cb1"
+    sha256 cellar: :any_skip_relocation, mojave:        "49ed93a14e7bd15d692c8222d161dc732b3836b829f1dbc4b2e7326d66620674"
   end
 
   depends_on "cmake" => :build
@@ -33,6 +31,6 @@ class Termcolor < Formula
       }
     EOS
     system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", "-I#{include}"
-    assert_match /Hello Colorful World/, shell_output("./test")
+    assert_match "Hello Colorful World", shell_output("./test")
   end
 end

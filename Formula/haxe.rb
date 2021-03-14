@@ -2,8 +2,8 @@ class Haxe < Formula
   desc "Multi-platform programming language"
   homepage "https://haxe.org/"
   url "https://github.com/HaxeFoundation/haxe.git",
-      tag:      "4.1.5",
-      revision: "5e33a78aad9a6733f4aa3a4b99f7c14555523a36"
+      tag:      "4.2.1",
+      revision: "bf9ff69c0801082174f0b2b0a66faeb5356de580"
   license all_of: ["GPL-2.0-or-later", "MIT"]
   head "https://github.com/HaxeFoundation/haxe.git", branch: "development"
 
@@ -13,10 +13,9 @@ class Haxe < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "e7699cc68fbab0efc9562cf045c36a2acebbeb63e5b109bec7723f98448ea2ff" => :big_sur
-    sha256 "4e8990bb2d2f2556272d8cbc2ee6966a6f6c4308fe47e5d89aeca3d32d46f24c" => :catalina
-    sha256 "203944b02f84bc182342c6831ec81ba27a0c71c8fba56849a2c2adc6a1ad8f4c" => :mojave
+    sha256 cellar: :any, big_sur:  "3dc0587c5d6c49899f0b2208a97671c80eff869c68da21873d345d95a7ad7a8b"
+    sha256 cellar: :any, catalina: "aa33bde76f485b4f587aaeccbfee29cdbb1838cf77bfdb8ada917b11aa4a617c"
+    sha256 cellar: :any, mojave:   "56c43935a93389029569492772bd0dfedfc46de51be542fbe5c3ea908f2f7dde"
   end
 
   depends_on "cmake" => :build
@@ -100,6 +99,6 @@ class Haxe < Formula
     EOS
     system "#{bin}/haxe", "-js", "out.js", "-main", "HelloWorld"
     _, stderr, = Open3.capture3("osascript -so -lJavaScript out.js")
-    assert_match /^Hello world!$/, stderr
+    assert_match "Hello world!", stderr.strip
   end
 end

@@ -1,10 +1,9 @@
 class Oil < Formula
   desc "Bash-compatible Unix shell with more consistent syntax and semantics"
   homepage "https://www.oilshell.org/"
-  url "https://www.oilshell.org/download/oil-0.8.5.tar.gz"
-  sha256 "4286eebb190f020e5c2472a48b0aa16a5abecfbf60068d1d9ad57d694e3ffc0a"
+  url "https://www.oilshell.org/download/oil-0.8.7.tar.gz"
+  sha256 "599a93985dd70adaf8773f021742ddced82deeb5a9414405de10f2298100ad7b"
   license "Apache-2.0"
-  revision 1
 
   livecheck do
     url "https://www.oilshell.org/releases.html"
@@ -12,10 +11,10 @@ class Oil < Formula
   end
 
   bottle do
-    sha256 "3df7db073f8172ed6215f23141c894da5038cb01ab21e9fa3963fdf85977ac28" => :big_sur
-    sha256 "09995b74c7f608022a3b4255c615995bc23ad2da3ca334e9c19cefee5b69fb3d" => :arm64_big_sur
-    sha256 "f768ace710ef8c63d699cb81765ab8aed700de33ce0451d92d03adaf28b270b1" => :catalina
-    sha256 "e31eb9050a371c77ada60cbd6bc02a37b76aae54f9e65b2320d9ec4bda902554" => :mojave
+    sha256 arm64_big_sur: "efa230c838f08708379180132ebc6a4ef7ceb3f621b7976ec983826df621eea8"
+    sha256 big_sur:       "3c5a97efe79952d35796bd6bbe42da9c409a96cd30f0778c4b740775db3a59c1"
+    sha256 catalina:      "50a478f15af8bd3d5e04aa3ad7e76089f03b80cc2ad2d45f7dbe78797112df6c"
+    sha256 mojave:        "265b248b82d7a7c410ee0545c3fa210362f7616b97e5623975fe269c03ef3985"
   end
 
   depends_on "readline"

@@ -9,15 +9,15 @@ class Netcdf < Formula
   head "https://github.com/Unidata/netcdf-c.git"
 
   livecheck do
-    url :head
-    regex(/^(?:netcdf-|v)?(\d+(?:\.\d+)+)$/i)
+    url "https://www.unidata.ucar.edu/downloads/netcdf/"
+    regex(/href=.*?netcdf-c[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 "55caff29df9b25ee906d2dcce6c78e02b6e9ac163b42e06f53c45aa0f6ade645" => :big_sur
-    sha256 "26eaaca9d9cf3bddea87d982c76c31df6df91b198d04ac62f0084141109457dd" => :arm64_big_sur
-    sha256 "b3aeca909a91b47e8e0d3fdc9d209dd13ecfb2b1879bab5ea49d3dcfd6404ddd" => :catalina
-    sha256 "9504a25d84dd6afb80553576474420cc074c64821aa346a58271dad26982b187" => :mojave
+    sha256 arm64_big_sur: "26eaaca9d9cf3bddea87d982c76c31df6df91b198d04ac62f0084141109457dd"
+    sha256 big_sur:       "55caff29df9b25ee906d2dcce6c78e02b6e9ac163b42e06f53c45aa0f6ade645"
+    sha256 catalina:      "b3aeca909a91b47e8e0d3fdc9d209dd13ecfb2b1879bab5ea49d3dcfd6404ddd"
+    sha256 mojave:        "9504a25d84dd6afb80553576474420cc074c64821aa346a58271dad26982b187"
   end
 
   depends_on "cmake" => :build
@@ -138,7 +138,7 @@ class Netcdf < Formula
     system ENV.cc, "test.c", "-L#{lib}", "-I#{include}", "-lnetcdf",
                    "-o", "test"
     if head?
-      assert_match /^\d+(?:\.\d+)+/, `./test`
+      assert_match(/^\d+(?:\.\d+)+/, `./test`)
     else
       assert_equal version.to_s, `./test`
     end

@@ -1,18 +1,19 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/8.10.3/ghc-8.10.3-src.tar.xz"
-  sha256 "ccdc8319549028a708d7163e2967382677b1a5a379ff94d948195b5cf46eb931"
+  url "https://downloads.haskell.org/~ghc/8.10.4/ghc-8.10.4-src.tar.xz"
+  sha256 "52af871b4e08550257d720c2944ac85727d0b948407cef1bebfe7508c224910e"
   license "BSD-3-Clause"
 
   livecheck do
-    url :stable
+    url "https://www.haskell.org/ghc/download.html"
+    regex(/href=.*?download[._-]ghc[._-][^"' >]+?\.html[^>]*?>\s*?v?(8(?:\.\d+)+)\s*?</i)
   end
 
   bottle do
-    sha256 "5ed34f95506b09b1b722fbcbb2ab050854d1ade4dcc6c6b5a3220fd9f78a76f6" => :big_sur
-    sha256 "1259e7d41e9ba1c89f648e412d12c70f4472f96ba969741c116c157239699d9d" => :catalina
-    sha256 "eb32eeadb989c83317d8509764f8c3584df9c7f5c168d930e074f24630c94969" => :mojave
+    sha256 big_sur:  "965f94c14b56e3db7b239860e0a1d577be0b27caf8adb6212710a7430ce723d3"
+    sha256 catalina: "9a4f6c3edf83d5e2020bee5c3dd419bb6c3ebb5988306be9ffeca6bb7810d1f8"
+    sha256 mojave:   "5230b93b929e970b68aa6778ebd717c32ca08448c3428f97650e4f707c022ed5"
   end
 
   depends_on "python@3.9" => :build
@@ -25,18 +26,18 @@ class Ghc < Formula
     sha256 "fd4829912cddd12f84181c3451cc752be224643e87fac497b69edddadc49b4f2"
   end
 
-  # https://www.haskell.org/ghc/download_ghc_8_10_1.html#macosx_x86_64
+  # https://www.haskell.org/ghc/download_ghc_8_10_4.html#macosx_x86_64
   # "This is a distribution for Mac OS X, 10.7 or later."
   # A binary of ghc is needed to bootstrap ghc
   resource "binary" do
     on_macos do
-      url "https://downloads.haskell.org/~ghc/8.10.3/ghc-8.10.3-x86_64-apple-darwin.tar.xz"
-      sha256 "2635f35d76e44e69afdfd37cae89d211975cc20f71f784363b72003e59f22015"
+      url "https://downloads.haskell.org/~ghc/8.10.4/ghc-8.10.4-x86_64-apple-darwin.tar.xz"
+      sha256 "725ecf6543e63b81a3581fb8c97afd21a08ae11bc0fa4f8ee25d45f0362ef6d5"
     end
 
     on_linux do
-      url "https://downloads.haskell.org/~ghc/8.10.3/ghc-8.10.3-x86_64-deb9-linux.tar.xz"
-      sha256 "95e4aadea30701fe5ab84d15f757926d843ded7115e11c4cd827809ca830718d"
+      url "https://downloads.haskell.org/~ghc/8.10.4/ghc-8.10.4-x86_64-deb9-linux.tar.xz"
+      sha256 "5694200a5c38f22c142baf850b1d2f3784211d2ec9302e11693259a1ae8e38b7"
     end
   end
 

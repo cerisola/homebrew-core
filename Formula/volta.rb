@@ -2,8 +2,8 @@ class Volta < Formula
   desc "JavaScript toolchain manager for reproducible environments"
   homepage "https://volta.sh"
   url "https://github.com/volta-cli/volta.git",
-      tag:      "v1.0.0",
-      revision: "d523e32f03f8c4a653ded9a73fb4cc8a8b49ea22"
+      tag:      "v1.0.2",
+      revision: "9606139be374266859264c7931e990ad97ae8419"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,13 +12,18 @@ class Volta < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b8bffc3f480bd53dfd54be6e5d80ff40eb88ae2d02fe67a1b9604e7c3d1a59f9" => :big_sur
-    sha256 "bfc3ab319797126e880603726b81fd2655d6dbc739a1a3f3b99e886a1347ae4b" => :catalina
-    sha256 "84fb97810a95d64a61bec2a49da0e2c8fddd9332978e1ccecd4b338d63044dd8" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "efd062a807d2528c9e900958f0fd34f356972965e9dcd59e2d2438e2d4f0f0f8"
+    sha256 cellar: :any_skip_relocation, catalina: "721096bc2ddd9c82f900bdcee57fcdb0cf09e7d8b209ada6889ff478791d553c"
+    sha256 cellar: :any_skip_relocation, mojave:   "3f54cb49589eb0bfde6c32a3619c72e141ba842aaceae8bea902d8ab901302cf"
   end
 
   depends_on "rust" => :build
+
+  uses_from_macos "openssl@1.1"
+
+  on_linux do
+    depends_on "pkg-config" => :build
+  end
 
   def install
     system "cargo", "install", *std_cargo_args

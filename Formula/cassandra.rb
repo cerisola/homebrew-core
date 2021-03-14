@@ -1,21 +1,15 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=cassandra/3.11.9/apache-cassandra-3.11.9-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/3.11.9/apache-cassandra-3.11.9-bin.tar.gz"
-  sha256 "0c90cf369e86cef10c53be2d0196ba4019150f2a84653a291547821f18536ab2"
+  url "https://www.apache.org/dyn/closer.lua?path=cassandra/3.11.10/apache-cassandra-3.11.10-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/3.11.10/apache-cassandra-3.11.10-bin.tar.gz"
+  sha256 "bbe772956c841158e3228c3b6c8fc38cece6bceeface695473c59c0573039bf1"
   license "Apache-2.0"
-  revision 1
-
-  livecheck do
-    url :stable
-  end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "5a9c16a717b01e4de7ca72bf51f6e77cd67ac5367ce48c599a3aad0ff165ea97" => :big_sur
-    sha256 "9f9e9d7068ab6cb2c47e905fb74eca85f2e22bd400ceaef2ef316ae59e5ef7f8" => :catalina
-    sha256 "34e8f5d301f6d6cf3e3a16e1fc1702e2dd1440487929ca392c4fffd9bb4c3f91" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "4babefaee69d52f82b75f93fd15a037b3dc9c37e2f922392ff288547967eb094"
+    sha256 cellar: :any_skip_relocation, catalina: "46bbd9bd4fe297537192cdaa12507943910f05479585286b9feb213a31740efb"
+    sha256 cellar: :any_skip_relocation, mojave:   "8b19e737d3c564ee943d1ae27dc300f9ffe4d8f8f6c46f8958fd9fadc8ce16c4"
   end
 
   depends_on "cython" => :build
@@ -97,7 +91,7 @@ class Cassandra < Formula
 
     # This breaks on `brew uninstall cassandra && brew install cassandra`
     # https://github.com/Homebrew/homebrew/pull/38309
-    (etc/"cassandra").install Dir["conf/*"]
+    pkgetc.install Dir["conf/*"]
 
     libexec.install Dir["*.txt", "{bin,interface,javadoc,pylib,lib/licenses}"]
     libexec.install Dir["lib/*.jar"]

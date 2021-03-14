@@ -1,8 +1,8 @@
 class Asuka < Formula
   desc "Gemini Project client written in Rust with NCurses"
-  homepage "https://git.sr.ht/~julienxx/asuka"
+  homepage "https://sr.ht/~julienxx/Asuka/"
   url "https://git.sr.ht/~julienxx/asuka/archive/0.8.1.tar.gz"
-  sha256 "06b03e9595b5b84e46e860ea2cf1103b244b3908fabf30337fcdf1db2a06281e"
+  sha256 "8b51eecd885be5b32e970d6cc1f4d56515960a08ed860769368859be8bdc083e"
   license "MIT"
 
   livecheck do
@@ -11,10 +11,9 @@ class Asuka < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "6c71e20910385795758563119bf66206b6507fc83a6ed70f39872e45acc47415" => :catalina
-    sha256 "8143fc7187b559648f9c7e1f8c53a6f6c9dcee316ba623480abbe1fa6ccef90d" => :mojave
-    sha256 "1b483ae24e861978bcc9487794ffb27a79edbbcb0a1821b24b9e62b5ee3c9c0e" => :high_sierra
+    sha256 cellar: :any_skip_relocation, catalina:    "6c71e20910385795758563119bf66206b6507fc83a6ed70f39872e45acc47415"
+    sha256 cellar: :any_skip_relocation, mojave:      "8143fc7187b559648f9c7e1f8c53a6f6c9dcee316ba623480abbe1fa6ccef90d"
+    sha256 cellar: :any_skip_relocation, high_sierra: "1b483ae24e861978bcc9487794ffb27a79edbbcb0a1821b24b9e62b5ee3c9c0e"
   end
 
   depends_on "rust" => :build
@@ -43,8 +42,8 @@ class Asuka < Formula
     input.puts "exit"
 
     screenlog = (testpath/"screenlog.txt").read
-    assert_match /# Project Gemini/, screenlog
-    assert_match /Gemini is a new internet protocol/, screenlog
+    assert_match "# Project Gemini", screenlog
+    assert_match "Gemini is a new internet protocol", screenlog
   ensure
     Process.kill("TERM", wait_thr.pid)
   end

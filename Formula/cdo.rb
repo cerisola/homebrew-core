@@ -1,8 +1,8 @@
 class Cdo < Formula
   desc "Climate Data Operators"
   homepage "https://code.mpimet.mpg.de/projects/cdo"
-  url "https://code.mpimet.mpg.de/attachments/download/23323/cdo-1.9.9.tar.gz"
-  sha256 "959b5b58f495d521a7fd1daa84644888ec87d6a0df43f22ad950d17aee5ba98d"
+  url "https://code.mpimet.mpg.de/attachments/download/24638/cdo-1.9.10.tar.gz"
+  sha256 "cc39c89bbb481d7b3945a06c56a8492047235f46ac363c4f0d980fccdde6677e"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,12 +11,10 @@ class Cdo < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "a9b7acb1b9e16a835b5c7430f0283d3eb1d58261e2c0a2187646276e90867021" => :big_sur
-    sha256 "9b68acc35afb3ba4b4ec3afff659522c6e7fb2d9727c9352e9c629f756a616a8" => :arm64_big_sur
-    sha256 "52253227a742132e1ed2fadcc549025539d246abf899e13ef9572f0ae8e49c15" => :catalina
-    sha256 "07ee76a81ad678ed9608ad8460cae87fcc20398401dec3607558057e46abe39e" => :mojave
-    sha256 "a17b8f98e2470e75e8c0cffc4e838ab45188218a021683d866578063ad2aaecc" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "3d7b530430215b221d425f561c801d46cdd53a55d2386a816d1101cb9d1aa62a"
+    sha256 cellar: :any, big_sur:       "bfc4a37a38a61186ca6e8426899136d65bb7d66ab9987c16e5d422e6a955874d"
+    sha256 cellar: :any, catalina:      "955ae6b0e69ba8c32530c732011da18da59088f9758b84e8733ca3be9d973212"
+    sha256 cellar: :any, mojave:        "93c32ad2e784fec206d157300a97bab63cf934ad6da881f2f880fe97133493e4"
   end
 
   depends_on "eccodes"

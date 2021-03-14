@@ -1,23 +1,21 @@
 class Entr < Formula
   desc "Run arbitrary commands when files change"
-  homepage "http://entrproject.org/"
-  url "http://entrproject.org/code/entr-4.6.tar.gz"
-  sha256 "16de20820df4a38162354754487b1248c8711822c7342d2f6d4f28fbd4a38e6d"
+  homepage "https://eradman.com/entrproject/"
+  url "https://eradman.com/entrproject/code/entr-4.8.tar.gz"
+  sha256 "f05555cd745b7dc67b61a98cf79971125b7e43931a5772d5bce2d891327425ae"
   license "ISC"
   head "https://github.com/eradman/entr.git"
 
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://eradman.com/entrproject/code/"
+    regex(/href=.*?entr[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "014e80aa42f3793499133711e30b9d4b626789482f558aad60d2e864d2c5bbd0" => :big_sur
-    sha256 "f1b1b9b34ced4b9ac9b365e16673ca1030040dda599524316d0f9952cbfe07d9" => :arm64_big_sur
-    sha256 "21b69b1e641551d2022f5b261fd03d43e16e54d7eb09528890d122968de12460" => :catalina
-    sha256 "26cae580f66328a940c9f13add3c4cf91fae6b01247144a302757aac11e53427" => :mojave
-    sha256 "f37ebf2d5da20610536902c4010e4cd93136bc6282f2f3c7a119e3876c79d447" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c565a40ecea43d1a11359c89faae83ddf72f8333e2502c9484c889ef581b6246"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4c766358f913ef78bb956e50aef6e5b7d742b53fdf764a57feaaa9c35c0a6fa4"
+    sha256 cellar: :any_skip_relocation, catalina:      "8325c4a45a914f504b4097cb02d4575dcd62a73b44b79592f679b2abcd83b4a8"
+    sha256 cellar: :any_skip_relocation, mojave:        "133c9d70c130b848c948829b1e43d4325de4f7da32c3134987ff616242118c60"
   end
 
   def install

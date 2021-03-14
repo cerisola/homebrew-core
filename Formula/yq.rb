@@ -1,16 +1,15 @@
 class Yq < Formula
   desc "Process YAML documents from the CLI"
   homepage "https://github.com/mikefarah/yq"
-  url "https://github.com/mikefarah/yq/archive/v4.2.1.tar.gz"
-  sha256 "83d0bc17078552084eeeebd7c505add331baa89ffde2253119340d22f3b80685"
+  url "https://github.com/mikefarah/yq/archive/v4.6.1.tar.gz"
+  sha256 "a843b90e4e86efa310284823ab6f1249e4ae3c6aa5df4d61c10b0fdc543b267d"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "11eea0fba7fedb6d81d225fb565592b07f6d685ec7c79709c3a55fef944bbaa1" => :big_sur
-    sha256 "e22c1197e212d9dbb856dc0c33486f38d049b727b919ba8124a912247f9c2dbd" => :arm64_big_sur
-    sha256 "907a87912a3dc1adf03ee49ed9c9f55e389589a8d23e609f2484164e51fcd5e5" => :catalina
-    sha256 "56287df264fa91497d210ad145e57726e75cb1452e8e02ce64b12cf7bce63032" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c762efa35553565f258fafe92c104168139d8e027c7730c5a1260df26ae98c9f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e48faa2a839dd51abf563f268f8ca9d7ed8ee88d570312de1d25b2a229e39ca5"
+    sha256 cellar: :any_skip_relocation, catalina:      "e5d4585a172a1c6d5e40e3b828eac7cabb8d99107cc4cc382d8a3f177d3ff7c6"
+    sha256 cellar: :any_skip_relocation, mojave:        "d4a2f9a41c12e53c076080d36f35db2250baf179cadd2c602a98efc90610de46"
   end
 
   depends_on "go" => :build
@@ -27,6 +26,6 @@ class Yq < Formula
 
   test do
     assert_equal "key: cat", shell_output("#{bin}/yq eval --null-input --no-colors '.key = \"cat\"'").chomp
-    assert_equal "cat", pipe_output("#{bin}/yq eval --null-input \".key\" -", "key: cat", 0).chomp
+    assert_equal "cat", pipe_output("#{bin}/yq eval \".key\" -", "key: cat", 0).chomp
   end
 end

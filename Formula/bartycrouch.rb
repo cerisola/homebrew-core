@@ -2,17 +2,15 @@ class Bartycrouch < Formula
   desc "Incrementally update/translate your Strings files"
   homepage "https://github.com/Flinesoft/BartyCrouch"
   url "https://github.com/Flinesoft/BartyCrouch.git",
-      tag:      "4.3.2",
-      revision: "35b819cb7575583c74a4d13ca4a91d829d1b8a7c"
+      tag:      "4.5.0",
+      revision: "34ca469548e5ed8c39ddc394683b5cfcd510d866"
   license "MIT"
   head "https://github.com/Flinesoft/BartyCrouch.git"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "bb05255e27f2f4f8248374e390aac3c0f721b328ca8afd137f9f0aac17fd7e30" => :big_sur
-    sha256 "c4425d05d4901ffab03c87991cf6af51efe85f7382c22eb1517b22f2f466ae0e" => :arm64_big_sur
-    sha256 "71c4a6bf3106632f4cc5191a473d4dad66f2b86090fe52548a29b4775517b67e" => :catalina
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "32a73b5f6efe8401e1aade10a2ac16b0d1116ab9b3c7e2fcc4cadb9dee26cc64"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5b64f40f1dc594b244c0a68eec60332f0bb10b59218a7086832cf8264f958f8c"
+    sha256 cellar: :any_skip_relocation, catalina:      "68b7b0654ff7e0d4d46713d245e180dd547559b8e6065ad0ce2bd0687d8fe4ee"
   end
 
   depends_on xcode: ["12.0", :build]
@@ -38,7 +36,7 @@ class Bartycrouch < Formula
     EOS
 
     system bin/"bartycrouch", "update"
-    assert_match /"oldKey" = "/, File.read("en.lproj/Localizable.strings")
-    assert_match /"test" = "/, File.read("en.lproj/Localizable.strings")
+    assert_match '"oldKey" = "', File.read("en.lproj/Localizable.strings")
+    assert_match '"test" = "', File.read("en.lproj/Localizable.strings")
   end
 end

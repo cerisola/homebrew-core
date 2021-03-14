@@ -12,16 +12,21 @@ class Babeld < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "37e82024df11755d6cd35632c10f2e44ea3185e9ef1eb3ba667adeac19ab8b82" => :big_sur
-    sha256 "4f8a2d17314ebbd685c9cf68b74621942902a75817ece179c2c4a36f95018ab1" => :arm64_big_sur
-    sha256 "d65c7dd41ac16cb2f791a80f3cbebdb6616321e106874504644b0ab5cd37da24" => :catalina
-    sha256 "14f512383b868d8c9752414328fd4681de70d6aa37992cdcb55be61406bcb08a" => :mojave
-    sha256 "6b920612afb160b31950f28dad5b38880689cb3f52a23be723e8dd680370fca8" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6a56133eedc55610cbd65c8862584e2a109702e6f6c3619c58bcc99a41c99da1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a7bb20a1f278ab2acc151622894d0e96ee81e9a9a0e53c1ecc9565f5906ed172"
+    sha256 cellar: :any_skip_relocation, catalina:      "1e311a15868154bf204fe2d9d19ed1db24c830fcf9cfaa32cf1255d7ed35b108"
+    sha256 cellar: :any_skip_relocation, mojave:        "1ddbacdd3433b008c2ad86e582ab2376cf0bab93b7939bb9f47d6e1e1fd06ad3"
   end
 
   def install
-    system "make", "LDLIBS=''"
+    on_macos do
+      # LDLIBS='' fixes: ld: library not found for -lrt
+      system "make", "LDLIBS=''"
+    end
+    on_linux do
+      system "make"
+    end
     system "make", "install", "PREFIX=#{prefix}"
   end
 

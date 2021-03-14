@@ -1,19 +1,15 @@
 class Wget < Formula
   desc "Internet file retriever"
   homepage "https://www.gnu.org/software/wget/"
-  url "https://ftp.gnu.org/gnu/wget/wget-1.21.tar.gz"
-  sha256 "b3bc1a9bd0c19836c9709c318d41c19c11215a07514f49f89b40b9d50ab49325"
+  url "https://ftp.gnu.org/gnu/wget/wget-1.21.1.tar.gz"
+  sha256 "59ba0bdade9ad135eda581ae4e59a7a9f25e3a4bde6a5419632b31906120e26e"
   license "GPL-3.0-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    sha256 "eb830909eed1e6d861968f324fd0701883df44f9d6e191c4e5ebbe2635cc70e7" => :big_sur
-    sha256 "2824baa832bb6abe003371d42bab24df5afab5e4076922b2300a90a98526990b" => :arm64_big_sur
-    sha256 "d163d32bba98f0a535d179c5d8efd076d12f41bd9232f5c0a41523a4eeaeb500" => :catalina
-    sha256 "6343b9c76468bf9ba05e587403b378b1bb93e5108c6505abef4eaaee92257e22" => :mojave
+    sha256 arm64_big_sur: "e9034fc9062d5d28972135be031876672aff18fa945ce37e9c2ee1e2c4287f3a"
+    sha256 big_sur:       "e6ea2a50b8196206f7072360e713535bb16fb786c8b5fe23cab05757e0f67b13"
+    sha256 catalina:      "88116cb28d6b85e441d1bb9df0a1454b84f8b9d0e8817a5bee0f228acc59e75a"
+    sha256 mojave:        "ae4e6f1dc4ecaf2bbed7700e8d64cdc671bf9d6c085ba335f119861fd15956fe"
   end
 
   head do
@@ -33,10 +29,6 @@ class Wget < Formula
     depends_on "util-linux"
   end
 
-  # commit ref, https://git.savannah.gnu.org/cgit/gnulib.git/patch/?id=6a76832db224ac5671599ce332717f985a2addc7
-  # remove in next release
-  patch :DATA
-
   def install
     system "./bootstrap", "--skip-po" if build.head?
     system "./configure", "--prefix=#{prefix}",
@@ -46,7 +38,8 @@ class Wget < Formula
                           "--disable-debug",
                           "--disable-pcre",
                           "--disable-pcre2",
-                          "--without-libpsl"
+                          "--without-libpsl",
+                          "--without-included-regex"
     system "make", "install"
   end
 
@@ -54,16 +47,3 @@ class Wget < Formula
     system bin/"wget", "-O", "/dev/null", "https://google.com"
   end
 end
-
-__END__
-diff --git a/lib/utime.c b/lib/utime.c
-index bf7d7c5..3372179 100644
---- a/lib/utime.c
-+++ b/lib/utime.c
-@@ -261,6 +261,7 @@ utime (const char *name, const struct utimbuf *ts)
-
- #else
-
-+# include <errno.h>
- # include <sys/stat.h>
- # include "filename.h"

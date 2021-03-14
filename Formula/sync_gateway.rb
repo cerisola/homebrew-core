@@ -2,8 +2,8 @@ class SyncGateway < Formula
   desc "Make Couchbase Server a replication endpoint for Couchbase Lite"
   homepage "https://docs.couchbase.com/sync-gateway/current/index.html"
   url "https://github.com/couchbase/sync_gateway.git",
-      tag:      "2.8.0",
-      revision: "61ca30a14f10edf40a26f7b2189c962c16a04b8a"
+      tag:      "2.8.2",
+      revision: "4df7a2da36c88a72131b23eb044b7d0b69b456bd"
   license "Apache-2.0"
   head "https://github.com/couchbase/sync_gateway.git"
 
@@ -13,11 +13,10 @@ class SyncGateway < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0ef1cc1e395235f91e764036711e8ae2027c3f30fde86f1396b885d81f377866" => :big_sur
-    sha256 "3e4caa9429a0d2274e8c2ffeec79081a043a6c5c0ebba19c5f8c0fa338cfe9f3" => :catalina
-    sha256 "47a1cf6e49bd6d477d9c41a5296a8362f5a576ce868ead4239adbf5297d7cdc4" => :mojave
-    sha256 "03325c7a870a032d3ec25877aab7da989bf6212cb5329e61625d8624d9b1f672" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e445a768ff0ec3e3e33d7a0ccd14c7a66cfb8401cfa385e68ee62ce8cef4668a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b718f1e3d7fee3d47e9091606afd43891f6323558c8d3a4c30c88eff563147e3"
+    sha256 cellar: :any_skip_relocation, catalina:      "6abd3e4f3d682d3e1bc6e7ffcee385c95b33664af989f22d1c86f96c3e4b7474"
+    sha256 cellar: :any_skip_relocation, mojave:        "e43aa516b0457ef79f599773ccfe110c34ddbc492b552fd63bc5e97fda432c06"
   end
 
   depends_on "gnupg" => :build
@@ -33,14 +32,14 @@ class SyncGateway < Formula
     (buildpath/"build").install_symlink repo_cache
     cp Dir["*.sh"], "build"
 
-    git_commit = `git rev-parse HEAD`.chomp
     manifest = buildpath/"new-manifest.xml"
     manifest.write Utils.safe_popen_read "python", "rewrite-manifest.sh",
                                          "--manifest-url",
                                          "file://#{buildpath}/manifest/default.xml",
                                          "--project-name", "sync_gateway",
-                                         "--set-revision", git_commit
+                                         "--set-revision", Utils.git_head
     cd "build" do
+      ENV["GO111MODULE"] = "auto"
       mkdir "godeps"
       system "repo", "init", "-u", stable.url, "-m", "manifest/default.xml"
       cp manifest, ".repo/manifest.xml"

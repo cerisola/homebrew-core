@@ -3,17 +3,14 @@ class LibtensorflowAT1 < Formula
 
   desc "C interface for Google's OS library for Machine Intelligence"
   homepage "https://www.tensorflow.org/"
-  url "https://github.com/tensorflow/tensorflow/archive/v1.15.4.tar.gz"
-  sha256 "e18c55e771ad136f9bf3a70ea8f0e2d36662b2ba7c890f9eaf7950554557c7fa"
+  url "https://github.com/tensorflow/tensorflow/archive/v1.15.5.tar.gz"
+  sha256 "4c4d23e311093ded2d2e287b18d7c45b07b5984ab88a1d2f91f8f13c886123db"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    cellar :any
-    sha256 "30aa7f3e8e2a98bbc16bfcf75595fa9cf11cead941c2cf81dd630a913100710b" => :big_sur
-    sha256 "9763732a2181ccbd646821c7bdf4e59dbefa67e9d70616b11492d3860d59710d" => :catalina
-    sha256 "0d60e4fdc3565e394a87824af4ad5612d059a38c9a48babfe3dee85d372d3cc6" => :mojave
-    sha256 "958c949341285f4cb069a1a8ff3477dae75aea70f5d6f86cf4c9af42c29ee2ab" => :high_sierra
+    sha256 cellar: :any, big_sur:  "8f1c80ebe024b29fb7d6695fa41de75e84d21948535a6459f3dd11b8e5a2165f"
+    sha256 cellar: :any, catalina: "28bac51bae550468948151ffa7fa62d38cce9eee19522f045b1f40b4885f9625"
+    sha256 cellar: :any, mojave:   "aefd6a0dbaae05e710a8372fa6ca3e6d731b9ee455ca99f898141d7f627303eb"
   end
 
   keg_only :versioned_formula
@@ -22,10 +19,7 @@ class LibtensorflowAT1 < Formula
   depends_on "python@3.9" => :build
 
   def install
-    venv_root = "#{buildpath}/venv"
-    virtualenv_create(venv_root, "python3")
-
-    ENV["PYTHON_BIN_PATH"] = "#{venv_root}/bin/python"
+    ENV["PYTHON_BIN_PATH"] = Formula["python@3.9"].opt_bin/"python3"
     ENV["CC_OPT_FLAGS"] = "-march=native"
     ENV["TF_IGNORE_MAX_BAZEL_VERSION"] = "1"
     ENV["TF_NEED_JEMALLOC"] = "1"

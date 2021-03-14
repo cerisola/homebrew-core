@@ -1,16 +1,15 @@
 class Libpqxx < Formula
   desc "C++ connector for PostgreSQL"
   homepage "http://pqxx.org/development/libpqxx/"
-  url "https://github.com/jtv/libpqxx/archive/7.3.0.tar.gz"
-  sha256 "55563821727310828cd79737732ca7e14a49dbbaa86bdce7c5829d440dafde59"
+  url "https://github.com/jtv/libpqxx/archive/7.4.1.tar.gz"
+  sha256 "73b2f0a0af786d6039291b60250bee577bc7ea7c10b7550ec37da448940848b7"
   license "BSD-3-Clause"
 
   bottle do
-    cellar :any
-    sha256 "d1677be98c31ac3533053137ca68a9a99be1221e797305a26617cc9d797e5b9d" => :big_sur
-    sha256 "56f976bd0211daafbb869d2f53aa368999812dec72eecfee43178cd71c95c295" => :arm64_big_sur
-    sha256 "53ed6045a272a0369d445a23508cbda5f01ef4018ef72d63740e5b0d05885bcb" => :catalina
-    sha256 "c9a15d608af5d566d0a790d9460f12b9a0589b193302f99a29e568aaca7a007e" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "5d7d1131c04dc41a6277ab06f953e180fef6979be60d854e4fa02df7111e59f8"
+    sha256 cellar: :any, big_sur:       "941aa261f18765bfed6888c94baaf7a0ad495ef8272229537a881e1ac8be5504"
+    sha256 cellar: :any, catalina:      "f0304c955169cdec57747a49acb59556001944ddd83d6d53601aaa9806f25d4f"
+    sha256 cellar: :any, mojave:        "e0fa3edf4874999fbf4062c9083c74d1517e974f1bb882b7f842a0d731cd5870"
   end
 
   depends_on "pkg-config" => :build

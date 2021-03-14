@@ -1,15 +1,15 @@
 class Fq < Formula
   desc "Brokered message queue optimized for performance"
   homepage "https://github.com/circonus-labs/fq"
-  url "https://github.com/circonus-labs/fq/archive/v0.13.4.tar.gz"
-  sha256 "1ec2e6293d092c0a2b560a5bd325488d1ae11f7c571494192792abf300549420"
+  url "https://github.com/circonus-labs/fq/archive/v0.13.8.tar.gz"
+  sha256 "efd6b7007e317ff562bf0c7abf1817db48153d9b8a1495fa4f025dec8c4c7de7"
   license "MIT"
   head "https://github.com/circonus-labs/fq.git"
 
   bottle do
-    sha256 "526f8bd3827c657b68e255548af318404f488dbb52e270b68aa4035579094edc" => :big_sur
-    sha256 "2bfae7445286bb2cac9ccde216c00d4bab996da613621b4a6332a0c39463d900" => :catalina
-    sha256 "a2f5a81b57c0c701a95fde6a328d4ade2111d79a1d674b9afb4bf02acf6a9c25" => :mojave
+    sha256 big_sur:  "7ebbd20f8d7fde7ae781e2ab430d3721d62e4536db6155b50dfb2467e849be66"
+    sha256 catalina: "de8abe5779afcea66bb6365ee1f7a0a00dcec6ffcbfe12ab639442ca1421f875"
+    sha256 mojave:   "5b5f533adb69d9750ba18722054685d01bcbd1e1860c9f3bb5daddad550384b8"
   end
 
   depends_on "concurrencykit"
@@ -29,7 +29,7 @@ class Fq < Formula
     pid = fork { exec sbin/"fqd", "-D", "-c", testpath/"test.sqlite" }
     sleep 10
     begin
-      assert_match /Circonus Fq Operational Dashboard/, shell_output("curl 127.0.0.1:8765")
+      assert_match "Circonus Fq Operational Dashboard", shell_output("curl 127.0.0.1:8765")
     ensure
       Process.kill 9, pid
       Process.wait pid

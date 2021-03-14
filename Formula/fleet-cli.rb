@@ -2,9 +2,10 @@ class FleetCli < Formula
   desc "Manage large fleets of Kubernetes clusters"
   homepage "https://github.com/rancher/fleet"
   url "https://github.com/rancher/fleet.git",
-      tag:      "v0.3.1",
-      revision: "e5ff6fdd2d8e08ccfe11b1efc6438d3cbc467152"
+      tag:      "v0.3.4",
+      revision: "adbf94f1af99d3ee43e3b847f316f00c18c39a13"
   license "Apache-2.0"
+  head "https://github.com/rancher/fleet.git"
 
   livecheck do
     url :stable
@@ -12,21 +13,20 @@ class FleetCli < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "695b73ebc4a6f540b58351a3bf9478031db796ba3ccafa1c0b54231f79d8e5c1" => :big_sur
-    sha256 "18e64d168412856226909f57ea88d844399b79ee16a912b56b624260579c2c21" => :arm64_big_sur
-    sha256 "3b67e8efdd84a72182347386c79b28bb792355919ee4e46ad9643f25d37e0b7f" => :catalina
-    sha256 "473658446ff24a8873aee2de76d805c1285c7ba62eebd7374c6d339c8f028e02" => :mojave
-    sha256 "f43939a331854c0e19236f2b441bb6f68987d0552f57747893e36811e2e9529a" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5fcee1d2ca3150e65cbd7a6237e9c38e4385fc73bd5ff39b7226f5fdc62bce51"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0ca409fed1d4771ff13aca203aefcb3e309ab7ab96483d78ead004d238f7a308"
+    sha256 cellar: :any_skip_relocation, catalina:      "ee38189b4740f9ac1f0f2c0112b9287806d23818615bd6ab72da83d60670c51c"
+    sha256 cellar: :any_skip_relocation, mojave:        "1d2022964b99813e6b3778de6ffa98ac95435c1da3c63e90eeb2ec94a851bab6"
   end
 
   depends_on "go" => :build
 
   def install
-    commit = Utils.safe_popen_read("git", "rev-parse", "--short", "HEAD").chomp
-    system "go", "build", *std_go_args, "-ldflags",
-           "-X github.com/rancher/fleet/pkg/version.Version=#{version} -X github.com/rancher/fleet/pkg/version.GitCommit=#{commit}",
-           "-o", bin/"fleet"
+    ldflags = %W[
+      -X github.com/rancher/fleet/pkg/version.Version=#{version}
+      -X github.com/rancher/fleet/pkg/version.GitCommit=#{Utils.git_short_head}
+    ]
+    system "go", "build", *std_go_args, "-ldflags", ldflags.join(" "), "-o", bin/"fleet"
   end
 
   test do

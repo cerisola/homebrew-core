@@ -7,16 +7,15 @@ class Vapoursynth < Formula
   head "https://github.com/vapoursynth/vapoursynth.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^R(\d+(?:\.\d+)*?)$/i)
   end
 
   bottle do
-    cellar :any
-    sha256 "3c71ee0d92d3187ddab6500dac2a36597268efa50cee90c854ffb69d75d5e6e7" => :big_sur
-    sha256 "b3c19ccf1ca5ced181f926a8bf4216161e1768d32206a1a37d9622429d58c1a1" => :arm64_big_sur
-    sha256 "4e4668fb68c7df01857472c070dfcf562fd392c48200204f637856a1368181b8" => :catalina
-    sha256 "3d1e521272e5b5cff323d6678ff56f959945b9756f938c5ad46a797a345959c1" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "b3c19ccf1ca5ced181f926a8bf4216161e1768d32206a1a37d9622429d58c1a1"
+    sha256 cellar: :any, big_sur:       "3c71ee0d92d3187ddab6500dac2a36597268efa50cee90c854ffb69d75d5e6e7"
+    sha256 cellar: :any, catalina:      "4e4668fb68c7df01857472c070dfcf562fd392c48200204f637856a1368181b8"
+    sha256 cellar: :any, mojave:        "3d1e521272e5b5cff323d6678ff56f959945b9756f938c5ad46a797a345959c1"
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +24,6 @@ class Vapoursynth < Formula
   depends_on "libtool" => :build
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
-  depends_on macos: :el_capitan # due to zimg dependency
   depends_on "python@3.9"
   depends_on "zimg"
 

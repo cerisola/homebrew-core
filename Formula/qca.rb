@@ -1,33 +1,22 @@
 class Qca < Formula
   desc "Qt Cryptographic Architecture (QCA)"
   homepage "https://userbase.kde.org/QCA"
-  license "LGPL-2.1"
-  revision 3
+  url "https://download.kde.org/stable/qca/2.3.2/qca-2.3.2.tar.xz"
+  sha256 "4697600237c4bc3a979e87d2cc80624f27b06280e635f5d90ec7dd4d2a9f606d"
+  license "LGPL-2.1-or-later"
+  revision 1
   head "https://invent.kde.org/libraries/qca.git"
 
-  stable do
-    url "https://download.kde.org/stable/qca/2.3.1/qca-2.3.1.tar.xz"
-    sha256 "c13851109abefc4623370989fae3a745bf6b1acb3c2a13a8958539823e974e4b"
-
-    # use major version for framework, instead of full version
-    # see: https://invent.kde.org/libraries/qca/-/merge_requests/34
-    patch do
-      url "https://invent.kde.org/libraries/qca/-/commit/f899a6aaad6747c703a9ee438a4a75bd7f6052f4.diff"
-      sha256 "1ae6e279d3e1e4dbe10ff80908517dab29e2b538f7c79384901d28bed69cbc9e"
-    end
-  end
-
   livecheck do
-    url :head
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url "https://download.kde.org/stable/qca/"
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    cellar :any
-    sha256 "0ce2bbd226e16d2e037c61f404123be202e6b3be814f3eab5be83f95f6803978" => :big_sur
-    sha256 "4d4c37739a1afeeb5623bdbc7800b82652a93e02770cdc06b63379ae35746223" => :arm64_big_sur
-    sha256 "55a109c49bc235dd6423f5924b3879c3c9677670bc45650306aa5f14cf9877aa" => :catalina
-    sha256 "41ba9d1f97eab606b1cf30566fa3b8f4a3c1bdf06b32c74deab067896fa6db7a" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "27409ec10e90ea2f1c6ab4c0cf343ad578ffe2d24f4ef4c8effb1ee9486c9367"
+    sha256 cellar: :any, big_sur:       "13f763f5765519e0ae2abdbd29157c913b2921a574858aae30adbcdaf2c26673"
+    sha256 cellar: :any, catalina:      "50c9fc8e51d570d965a70a978877e4b8aa632d61e6a8c836697ee7e046e1bffb"
+    sha256 cellar: :any, mojave:        "f9c79cd7db5b5c539ca73afd55b1acde851f8ca5180607265a83f72d7a29cde1"
   end
 
   depends_on "cmake" => :build
@@ -38,7 +27,7 @@ class Qca < Formula
   depends_on "nss"
   depends_on "openssl@1.1"
   depends_on "pkcs11-helper"
-  depends_on "qt"
+  depends_on "qt@5"
 
   def install
     args = std_cmake_args

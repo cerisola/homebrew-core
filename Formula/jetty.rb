@@ -1,9 +1,9 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.35.v20201120/jetty-distribution-9.4.35.v20201120.tar.gz"
-  version "9.4.35.v20201120"
-  sha256 "5b2d099a167e70628873db54af4ac6a16029909691408a8468ee446e3eceedb2"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.38.v20210224/jetty-distribution-9.4.38.v20210224.tar.gz"
+  version "9.4.38.v20210224"
+  sha256 "579f6496ecf1d2a77cac8a12a0606b37e5098eca95f0c4de74235ddb898eff09"
   license any_of: ["Apache-2.0", "EPL-1.0"]
 
   livecheck do
@@ -33,12 +33,13 @@ class Jetty < Formula
   end
 
   test do
+    ENV["JETTY_ARGS"] = "jetty.http.port=#{free_port} jetty.ssl.port=#{free_port}"
     ENV["JETTY_BASE"] = testpath
     cp_r Dir[libexec/"*"], testpath
     pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin
-      assert_match /Jetty running pid=\d+/, shell_output("#{bin}/jetty check")
+      assert_match(/Jetty running pid=\d+/, shell_output("#{bin}/jetty check"))
       assert_equal "Stopping Jetty: OK\n", shell_output("#{bin}/jetty stop")
     ensure
       Process.kill 9, pid

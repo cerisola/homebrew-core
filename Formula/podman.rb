@@ -1,16 +1,15 @@
 class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
-  url "https://github.com/containers/podman/archive/v2.2.1.tar.gz"
-  sha256 "bd86b181251e2308cb52f18410fb52d89df7f130cecf0298bbf9a848fe7daf60"
+  url "https://github.com/containers/podman/archive/v3.0.1.tar.gz"
+  sha256 "259e682d6e90595573fe8880e0252cc8b08c813e19408b911c43383a6edd6852"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "9f1b52e8e1fbb23a43ed7e961cb5e119d38aaa6abec767d1c795ffcbb5a08d8f" => :big_sur
-    sha256 "2d4557414e96180dd119382303f932a685cfd9f810cb39c89e646f366d6e933c" => :arm64_big_sur
-    sha256 "c495895437ba8d9fbc999a74d3d8e465f7980fc78b846b383c396e96a220e5d7" => :catalina
-    sha256 "a608e53d52bfa2448c1ca8a48aa2702107d60bcd9bc351f4387c9c3922f3ca3f" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "52eca484cd692aa7f967e718190a52ebbf9e9e6a5bfb9e7e26555dcd8de2f5aa"
+    sha256 cellar: :any_skip_relocation, big_sur:       "8b4b6a03c9d98359fec6f66f7a28d7621a63550567e80b517d0ab41808568577"
+    sha256 cellar: :any_skip_relocation, catalina:      "28cc004f8bfcb8bc100cf3a4974d58c18fab019fa6a4665aab4338d914700ecb"
+    sha256 cellar: :any_skip_relocation, mojave:        "e651eaa0c5791d732d81880034fbf117fb585334c3a6371625bbdcc89d274c24"
   end
 
   depends_on "go" => :build
@@ -29,6 +28,6 @@ class Podman < Formula
 
   test do
     assert_match "podman version #{version}", shell_output("#{bin}/podman -v")
-    assert_match "Error: Get", shell_output("#{bin}/podman info 2>&1", 125)
+    assert_match(/Error: Cannot connect to the Podman socket/i, shell_output("#{bin}/podman info 2>&1", 125))
   end
 end

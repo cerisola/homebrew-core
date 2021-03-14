@@ -1,17 +1,15 @@
 class Miniserve < Formula
   desc "High performance static file server"
   homepage "https://github.com/svenstaro/miniserve"
-  url "https://github.com/svenstaro/miniserve/archive/v0.10.3.tar.gz"
-  sha256 "315f8a96253f831100b13584d6d89207d9fd2a7b53823cea5a1a4e3e84d39593"
+  url "https://github.com/svenstaro/miniserve/archive/v0.11.0.tar.gz"
+  sha256 "f81bd7ceb269c9358bdb09e11a731781d1a84d17c9f01e80b1bdbaf3ef1c90f8"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "360d6a2c155008807a600f6918d102c18e4189fd22e1b3e951df61b1a26af785" => :big_sur
-    sha256 "15f3fd501ad3a1224029634aa130abb09d1ef15349d7974363d30fe3dda96e6c" => :arm64_big_sur
-    sha256 "5aecd4dd080d29cbdc19c9364d0f258dab2c0b949d91f7e1476c04815b1efe04" => :catalina
-    sha256 "a1ad84a40334855440f7a05815a6824c6ee300fadaa6324be156057b2ee04d60" => :mojave
-    sha256 "3c004b4741d5b70faa4d77dc560b7416027a5dc5af4fcca54baaa559946571a5" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "916cb032415cf9a92f99714535774592c1adb2e6b01aea36c28d60d3e910b909"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4195e1a7576a43bc2bf6accc959a81e1349cd8b4c6e28c3344616ea9ade1f1a8"
+    sha256 cellar: :any_skip_relocation, catalina:      "3e67b2ffa1b6ffda5adc32278fb7c9109202c49e2c9bf4537fe6bdb7237d1dfe"
+    sha256 cellar: :any_skip_relocation, mojave:        "26a6f26ac6dbdf86e9e5950accf6393c1a65c5baf310c387cee96e10389f627d"
   end
 
   depends_on "rust" => :build

@@ -1,20 +1,21 @@
 class PostgresqlAT10 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v10.15/postgresql-10.15.tar.bz2"
-  sha256 "5956bce0becffa77883c41594c95a23110b94f10cd66a1157e373c3575921f7e"
+  url "https://ftp.postgresql.org/pub/source/v10.16/postgresql-10.16.tar.bz2"
+  sha256 "a35c718b1b6690e01c69626d467edb933784f8d1d6741e21fe6cce0738467bb3"
   license "PostgreSQL"
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(10(?:\.\d+)*)/?["' >]}i)
+    regex(%r{href=["']?v?(10(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 "0f46b9ebfcb7549d7c1b01eed0aee17a0e2d0e48ecad0a532bddc6da10b7a46a" => :big_sur
-    sha256 "cf0a50442e13e4e6bb3dba192bfa8248d542d0090cfd841d86cd11fe7c94f629" => :arm64_big_sur
-    sha256 "081de285d1e263b609e62cb1f92b2d3d2885af81d844f62ae4ad5313198c761d" => :catalina
-    sha256 "ba91fc4dfb53e16d8dcde2c7c06fda44e1b7c88e3202f29da2376e592a277468" => :mojave
+    sha256 arm64_big_sur: "2394c47aefba56aa92284f393dde0f15d1b7ff526dd3e95a6b66d02d1b7fd0a3"
+    sha256 big_sur:       "569467a10dc757df4379d04c9cd04faa7c8e410a8b8235a2fc4e35e5dfe5df36"
+    sha256 catalina:      "4514036606239ca6ee8f80f732883507450b0b39412c3d4c0fc0f00826650263"
+    sha256 mojave:        "79b03ea9605950cbc9fd2495669d4745557f532dd3f98b8f3956f2b8786d1a15"
   end
 
   keg_only :versioned_formula
@@ -32,6 +33,14 @@ class PostgresqlAT10 < Formula
 
   on_linux do
     depends_on "util-linux"
+  end
+
+  # Patch for `error: conflicting types for 'DefineCollation'`
+  # when built against icu4c 68.2. Adapted from
+  # https://svnweb.freebsd.org/ports/head/databases/postgresql10-server/files/patch-icu68?revision=553940&view=co
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/a28787a7f9b4a33cf5036379236e5a57a36282bc/postgresql%4010/icu4c68-2.patch"
+    sha256 "8d625f31f176c256a9b8b5763e751091472d9f8a57e12bb7324c990777cf674c"
   end
 
   def install
@@ -87,10 +96,12 @@ class PostgresqlAT10 < Formula
   end
 
   def post_install
-    return if ENV["CI"]
-
     (var/"log").mkpath
     postgresql_datadir.mkpath
+
+    # Don't initialize database, it clashes when testing other PostgreSQL versions.
+    return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
   end
 
@@ -147,7 +158,7 @@ class PostgresqlAT10 < Formula
   end
 
   test do
-    system "#{bin}/initdb", testpath/"test" unless ENV["CI"]
+    system "#{bin}/initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal pkgshare.to_s, shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal lib.to_s, shell_output("#{bin}/pg_config --pkglibdir").chomp

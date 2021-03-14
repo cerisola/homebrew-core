@@ -1,16 +1,14 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "https://rocksdb.org/"
-  url "https://github.com/facebook/rocksdb/archive/v6.14.6.tar.gz"
-  sha256 "fa61c55735a4911f36001a98aa2f5df1ffe4b019c492133d0019f912191209ce"
+  url "https://github.com/facebook/rocksdb/archive/v6.15.5.tar.gz"
+  sha256 "d7b994e1eb4dff9dfefcd51a63f86630282e1927fc42a300b93c573c853aa5d0"
   license any_of: ["GPL-2.0-only", "Apache-2.0"]
-  revision 1
 
   bottle do
-    cellar :any
-    sha256 "f8065a2594655a33d36335f516b0448f2195ba5b4088aa36186b56bf3c1fb989" => :big_sur
-    sha256 "a9e2c1d9c7f27200b8ff1483233fdf671665f8bbc5671eeb27875ae20d212e07" => :catalina
-    sha256 "629da5a15d3e75afc921716e2c13b5f580444d6c9bf380e3ccb92e215c9978a0" => :mojave
+    sha256 cellar: :any, big_sur:  "aad14af99b39d155869bbb1f389b6da072890a531cd1e268aeb24ef911415a90"
+    sha256 cellar: :any, catalina: "e40e671dd9b9fe4ac37af9cb5845c085445ddc46dccadb523fa16fbbc9d8a539"
+    sha256 cellar: :any, mojave:   "189185a4b829e09cfb51fd9739f20b908bcc72b0a22327bc132c40a3b76fecbb"
   end
 
   depends_on "cmake" => :build
@@ -31,39 +29,45 @@ class Rocksdb < Formula
 
   def install
     ENV.cxx11
-    args = std_cmake_args
-    args << "-DPORTABLE=ON"
-    args << "-DUSE_RTTI=ON"
-    args << "-DWITH_BENCHMARK_TOOLS=OFF"
-    args << "-DWITH_BZ2=ON"
-    args << "-DWITH_LZ4=ON"
-    args << "-DWITH_SNAPPY=ON"
-    args << "-DWITH_ZLIB=ON"
-    args << "-DWITH_ZSTD=ON"
+    args = std_cmake_args + %w[
+      -DPORTABLE=ON
+      -DUSE_RTTI=ON
+      -DWITH_BENCHMARK_TOOLS=OFF
+      -DWITH_BZ2=ON
+      -DWITH_LZ4=ON
+      -DWITH_SNAPPY=ON
+      -DWITH_ZLIB=ON
+      -DWITH_ZSTD=ON
+    ]
 
     # build regular rocksdb
-    system "cmake", ".", *args
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make", "install"
 
-    cd "tools" do
-      bin.install "sst_dump" => "rocksdb_sst_dump"
-      bin.install "db_sanity_test" => "rocksdb_sanity_test"
-      bin.install "write_stress" => "rocksdb_write_stress"
-      bin.install "ldb" => "rocksdb_ldb"
-      bin.install "db_repl_stress" => "rocksdb_repl_stress"
-      bin.install "rocksdb_dump"
-      bin.install "rocksdb_undump"
+      cd "tools" do
+        bin.install "sst_dump" => "rocksdb_sst_dump"
+        bin.install "db_sanity_test" => "rocksdb_sanity_test"
+        bin.install "write_stress" => "rocksdb_write_stress"
+        bin.install "ldb" => "rocksdb_ldb"
+        bin.install "db_repl_stress" => "rocksdb_repl_stress"
+        bin.install "rocksdb_dump"
+        bin.install "rocksdb_undump"
+      end
+      bin.install "db_stress_tool/db_stress" => "rocksdb_stress"
     end
-    bin.install "db_stress_tool/db_stress" => "rocksdb_stress"
 
     # build rocksdb_lite
-    args << "-DROCKSDB_LITE=ON"
-    args << "-DARTIFACT_SUFFIX=_lite"
-    args << "-DWITH_CORE_TOOLS=OFF"
-    args << "-DWITH_TOOLS=OFF"
-    system "make", "clean"
-    system "cmake", ".", *args
-    system "make", "install"
+    args += %w[
+      -DROCKSDB_LITE=ON
+      -DARTIFACT_SUFFIX=_lite
+      -DWITH_CORE_TOOLS=OFF
+      -DWITH_TOOLS=OFF
+    ]
+    mkdir "build_lite" do
+      system "cmake", "..", *args
+      system "make", "install"
+    end
   end
 
   test do

@@ -15,16 +15,14 @@ class Luajit < Formula
 
   livecheck do
     url "https://luajit.org/download.html"
-    regex(/class="downname">LuaJIT[._-]v?([\d.]+)</i)
+    regex(/href=.*?LuaJIT[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    cellar :any
-    rebuild 3
-    sha256 "527ed375a89f8f017af2e557da99046bc98047433ea367953e3a731ca3119ec0" => :big_sur
-    sha256 "907d7fbbd3be370fac28341bf902a551c1d07dd929b9379bb19e30ccaf0bdef6" => :catalina
-    sha256 "a127723ca4997acaa45e3b548eeb43f06ada464f2f59d518c4d68a89d9cfe6cf" => :mojave
-    sha256 "afd383c796b7d3d7826a6a72acea41ecf57cf183ae84d590a777fb6a71166e80" => :high_sierra
+    rebuild 4
+    sha256 cellar: :any, big_sur:  "b3d7fd95cf9b72f89bc95cbc86e19786e9353b353c409e19b721d9ac98c9216b"
+    sha256 cellar: :any, catalina: "0a37eaa5b05ab2e30fcdbfb0355265404b7030655344d79394f9b957df4f317d"
+    sha256 cellar: :any, mojave:   "0b6cad395e49805dfa9b3dc70fd775c416d997ea4774ee8453e87deeaf5fdffa"
   end
 
   def install
@@ -39,8 +37,6 @@ class Luajit < Formula
     # Per https://luajit.org/install.html: If MACOSX_DEPLOYMENT_TARGET
     # is not set then it's forced to 10.4, which breaks compile on Mojave.
     ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
-
-    ENV.O2 # Respect the developer's choice.
 
     args = %W[PREFIX=#{prefix}]
 

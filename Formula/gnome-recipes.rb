@@ -3,17 +3,13 @@ class GnomeRecipes < Formula
   homepage "https://wiki.gnome.org/Apps/Recipes"
   url "https://download.gnome.org/sources/gnome-recipes/2.0/gnome-recipes-2.0.2.tar.xz"
   sha256 "1be9d2fcb7404a97aa029d2409880643f15071c37039247a6a4320e7478cd5fb"
-  revision 14
-
-  livecheck do
-    url :stable
-  end
+  revision 15
 
   bottle do
-    sha256 "555f367e08429f2d3f3b7c328ae1ee3f98e6d814cbf74dff07082868e924e4ba" => :big_sur
-    sha256 "8525bf318111d8b1e5b8e1df89675c0994717820d6bf1da78f245ae80d571668" => :catalina
-    sha256 "1dbaaf7bf99ef4f2e6f1a7ebbd092385661b0f8edbc174574d58024dd93fd2db" => :mojave
-    sha256 "09462612f5370fae0aad9c0af904328c7fa37092ea81e8eda62e3f614bcdc479" => :high_sierra
+    sha256 arm64_big_sur: "a383ac85885a09d8c959af00fda8ab9fd6599b4347ce26929b6ed67bf9735e05"
+    sha256 big_sur:       "c0ad5482453faf871b12613b8d6a6e9c2ae5762ed14513ff96e941645822feb6"
+    sha256 catalina:      "57c8af5693a567947ea106732c61bcb30e867118dddc79c17856a0b226ee93da"
+    sha256 mojave:        "4c3c1df208cdb1114858b1760fa0db2f606c9c5d999d2cfee9a483a519681cde"
   end
 
   depends_on "itstool" => :build
@@ -22,10 +18,10 @@ class GnomeRecipes < Formula
   depends_on "pkg-config" => :build
   depends_on "adwaita-icon-theme"
   depends_on "gnome-autoar"
-  depends_on "gnu-tar"
   depends_on "gspell"
   depends_on "gtk+3"
   depends_on "json-glib" # for goa
+  depends_on "libarchive"
   depends_on "libcanberra"
   depends_on "librest" # for goa
   depends_on "libsoup"

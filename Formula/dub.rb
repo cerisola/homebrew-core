@@ -1,22 +1,21 @@
 class Dub < Formula
   desc "Build tool for D projects"
   homepage "https://code.dlang.org/getting_started"
-  url "https://github.com/dlang/dub/archive/v1.24.0.tar.gz"
-  sha256 "4d14ba97748d89a2af9a3d62c1721c2f92bd393b010a9a4a39037449941e1312"
+  url "https://github.com/dlang/dub/archive/v1.24.1.tar.gz"
+  sha256 "1e601b8dbde9ea041715a2be7ac243f573912fe38ce636fa1cacf09605a1cf95"
   license "MIT"
   version_scheme 1
   head "https://github.com/dlang/dub.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "3b754d2403322152227cc45a1525321f64c940143bde42220595dcee4d32361f" => :big_sur
-    sha256 "b71a9aa0abd4e9f25391ab6e25be4357c5a70801c4c2e86332bfc909c5253568" => :catalina
-    sha256 "acdd545896e27976e2178ea9bf12dba7d39e2118ba04dc762a444f639b51ce81" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "d79d4b4e6b2ed53f6908798ca24c178fe6f8eeaa67fc4f0d1fb5a3433051abce"
+    sha256 cellar: :any_skip_relocation, catalina: "5a6fa5e698960fcdb23b66cd43f105bae80e1cb7488e3a496836dbd0987fd7dd"
+    sha256 cellar: :any_skip_relocation, mojave:   "55fd6eeaff82c03155343f219d1afdc9ac5c1f0e49f0d1a94fa563576a6f4906"
   end
 
   depends_on "dmd" => :build

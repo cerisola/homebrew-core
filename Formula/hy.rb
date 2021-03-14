@@ -3,22 +3,15 @@ class Hy < Formula
 
   desc "Dialect of Lisp that's embedded in Python"
   homepage "https://github.com/hylang/hy"
-  url "https://files.pythonhosted.org/packages/e2/a8/d2118cf14aab7652d54283e6a9a199177f528610348e3712509a8596c0d0/hy-0.19.0.tar.gz"
-  sha256 "3a5a1d76ddeb2f1d5de71ad1b1167799850db955b5eb0258e351fb182b2e6016"
+  url "https://files.pythonhosted.org/packages/2d/80/c9de6ace090a06f42ef68e746f1430d0074a33d21e46839813c764934d64/hy-0.20.0.tar.gz"
+  sha256 "1b72863754fb57e2dd275a9775bf621cb50a565e76733a2e74e9954e7fbb060e"
   license "MIT"
-  revision 1
-
-  livecheck do
-    url :stable
-  end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "15bce8a17bdf2b9331df03dee4bf33cc9f397bb76438e79f39bb543a580a6128" => :big_sur
-    sha256 "12e1268704a5e05621258cdd082cf1a8d2118bd55a7f0edd7ed629df4b32a931" => :arm64_big_sur
-    sha256 "8d26542c3b7206359d5a67555e30ea778d96be433a2bfc3539b4b593f50cb2d4" => :catalina
-    sha256 "1a466ad15fbd8e08b20da924b51464674842074a1ff50722df4150675c122789" => :mojave
-    sha256 "3517d09c61dac52cabd9dadead19f34280c5560e491fb2dfe46f47a55927d556" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "98b24099b57bdb1322de0e0a20885853a3cc6ddeeb21b833293c3372a600f005"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b3a8611e5647203bc52944ae8c3a7fb1c105e1dda9d65a6641fef45edfc1f48c"
+    sha256 cellar: :any_skip_relocation, catalina:      "b8f9062329e87549cc63f63712e0a5790d9722905fd15765d82f997296f49c58"
+    sha256 cellar: :any_skip_relocation, mojave:        "30734f23d8c216671a4eb3b8595288354e8f00f31da0da76f9022595c3daf496"
   end
 
   depends_on "python@3.9"
@@ -34,8 +27,8 @@ class Hy < Formula
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/82/75/f2a4c0c94c85e2693c229142eb448840fba0f9230111faa889d1f541d12d/colorama-0.4.3.tar.gz"
-    sha256 "e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
+    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
+    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
   end
 
   resource "funcparserlib" do

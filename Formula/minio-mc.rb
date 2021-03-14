@@ -2,23 +2,25 @@ class MinioMc < Formula
   desc "Replacement for ls, cp and other commands for object storage"
   homepage "https://github.com/minio/mc"
   url "https://github.com/minio/mc.git",
-      tag:      "RELEASE.2020-12-18T10-53-53Z",
-      revision: "d0e1456be34f39548148af45c2e64a61b3448a59"
-  version "20201218105353"
+      tag:      "RELEASE.2021-02-19T05-34-40Z",
+      revision: "b3c692d6eb496ee5719f279b96883aabd91e9213"
+  version "20210219053440"
   license "Apache-2.0"
+  head "https://github.com/minio/mc.git"
 
   livecheck do
     url :stable
-    strategy :github_latest
-    regex(%r{href=.*?/tag/(?:RELEASE[._-]?)?([^"' >]+)["' >]}i)
+    regex(%r{href=.*?/tag/(?:RELEASE[._-]?)?([\d\-TZ]+)["' >]}i)
+    strategy :github_latest do |page, regex|
+      page.scan(regex).map { |match| match&.first&.gsub(/\D/, "") }
+    end
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "218b71bea4be4c2253b65c3d703771d6ed83170457101b597a623f8c3457c148" => :big_sur
-    sha256 "0964617177ed76e4bb3bc0e2470ff5aa704669fb4b57f76d8bfd82d34b2fdeb7" => :arm64_big_sur
-    sha256 "a845d3658f70670bea009bd80da55cb2d7329f504f4d8e6390daeaad79b9c24f" => :catalina
-    sha256 "5ac98c7afd304272465c645ace6a1796765b0c45990c7fc451b0cb77c744b728" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4cafcc6a8dcfba05ebcb572ffebaddc477cb075db1259fedac5f2c03303fd7b6"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b3b9bf30be936a05ea50fa04d06861cfc04bba6c3f6cfbb943958d9a1439aeae"
+    sha256 cellar: :any_skip_relocation, catalina:      "ec9831679aaf37e35a8429d692d7c16a82f94530ead2566615c0a8213bd3576d"
+    sha256 cellar: :any_skip_relocation, mojave:        "dfdc73bd87522f919bcd45b1dcda2b91541cda7ff5cb529c0e6643f98bb3ec89"
   end
 
   depends_on "go" => :build
@@ -31,13 +33,12 @@ class MinioMc < Formula
     else
       minio_release = `git tag --points-at HEAD`.chomp
       minio_version = minio_release.gsub(/RELEASE\./, "").chomp.gsub(/T(\d+)-(\d+)-(\d+)Z/, 'T\1:\2:\3Z')
-      minio_commit = `git rev-parse HEAD`.chomp
       proj = "github.com/minio/mc"
 
       system "go", "build", "-trimpath", "-o", bin/"mc", "-ldflags", <<~EOS
         -X #{proj}/cmd.Version=#{minio_version}
         -X #{proj}/cmd.ReleaseTag=#{minio_release}
-        -X #{proj}/cmd.CommitID=#{minio_commit}
+        -X #{proj}/cmd.CommitID=#{Utils.git_head}
       EOS
     end
   end

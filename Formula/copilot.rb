@@ -4,17 +4,16 @@ class Copilot < Formula
   desc "CLI tool for Amazon ECS and AWS Fargate"
   homepage "https://github.com/aws/copilot-cli/wiki"
   url "https://github.com/aws/copilot-cli.git",
-      tag:      "v1.0.0",
-      revision: "238fd708679d4534b2f4c58cc3b7a85e6e1a768d"
+      tag:      "v1.3.0",
+      revision: "cc48fae82b2d83cf041ef08eca3879e173b979f4"
   license "Apache-2.0"
   head "https://github.com/aws/copilot-cli.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "00d35d5ada87fda4b7c2cdef4da58e9a026e1a3e942dc30b575cbd8d3a8260e6" => :big_sur
-    sha256 "482aa57df717ff9fbbbdea49c8ddb507f7d507121a0cdfa3a7a97d6c63957ee7" => :arm64_big_sur
-    sha256 "fc8ad0a5cbb32d5c68fa2e2e20e0fd57aa7d93b0a866329e36b7887947d845aa" => :catalina
-    sha256 "c90fa63256de5549f88b3f0fe88b3c3def47866bf5999a71b0fc5e9f7eeee690" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "35bf8affb16f06e8435a2a1b273627b240c89044186833e16ef3495f983d215e"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ca81917801301987b7688fb7a9e8b4fec893ee210c4a7465debd2d2bfdd09ea5"
+    sha256 cellar: :any_skip_relocation, catalina:      "d525998e5f9af989be701c5b24760c559340d1dd603c3273766c0d31f4080c8f"
+    sha256 cellar: :any_skip_relocation, mojave:        "520499adac5166ebd3407372bc0c7221f1303c94518b3d4ce5aa934d80862613"
   end
 
   depends_on "go" => :build
@@ -40,7 +39,7 @@ class Copilot < Formula
     assert_match "Welcome to the Copilot CLI! We're going to walk you through some questions",
       shell_output("#{bin}/copilot init 2>&1", 1)
 
-    assert_match "list environments for application : MissingRegion: could not find region",
+    assert_match "could not find an application attached to this workspace, please run `app init` first",
       shell_output("#{bin}/copilot pipeline init 2>&1", 1)
   end
 end

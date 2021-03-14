@@ -1,16 +1,15 @@
 class Libimagequant < Formula
   desc "Palette quantization library extracted from pnquant2"
   homepage "https://pngquant.org/lib/"
-  url "https://github.com/ImageOptim/libimagequant/archive/2.13.1.tar.gz"
-  sha256 "1f46deec3fa280335cf7f0be3ede6006bb420ba8159a03d1f6938e8d283d03ae"
+  url "https://github.com/ImageOptim/libimagequant/archive/2.14.1.tar.gz"
+  sha256 "b5fa27da1f3cf3e8255dd02778bb6a51dc71ce9f99a4fc930ea69b83200a7c74"
   license :cannot_represent
 
   bottle do
-    cellar :any
-    sha256 "4eec259853e8c650282ab0f9fe2fe382cfb0c63adf50eefb0e53038e9579b117" => :big_sur
-    sha256 "3f24de6501d3c1ceea4d4c79d2895332fec3796d09cda4ff5abc456479ca1504" => :arm64_big_sur
-    sha256 "ddaab4f5d02ee638676c716701a3e4364c76a3e6184787b2b5bc078b95497fb2" => :catalina
-    sha256 "f7902838c7698902828571a5bbb170a1855ee66d96070e7b577b9a332370989b" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "b1b6b13823a3a8590dc94296c891c447a1aec3f17f2d0847b33c9bb3cb25ccf3"
+    sha256 cellar: :any, big_sur:       "e0cc2ed03f455bed35c3cf56c897c3430efa22d6b0646e083b41ec253248fdf8"
+    sha256 cellar: :any, catalina:      "eed2b90a2cbeb0394177056b5f6d1b4776b0051439526c4e826e8e5cc6ceebaa"
+    sha256 cellar: :any, mojave:        "7d3930509859c89f13b0c9adf1c50615241b839a96be746bbce9bd6e3e35f236"
   end
 
   def install

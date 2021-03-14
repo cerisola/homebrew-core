@@ -1,20 +1,20 @@
 class Gcc < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
-  if Hardware::CPU.arch == :arm64
+  if Hardware::CPU.arm?
     # Branch from the Darwin maintainer of GCC with Apple Silicon support,
     # located at https://github.com/iains/gcc-darwin-arm64 and
     # backported with his help to gcc-10 branch. Too big for a patch.
-    url "https://github.com/fxcoudert/gcc/archive/gcc-10-arm-20201228.tar.gz"
-    sha256 "dd5377a13f0ee4645bce1c18ed7327ea4ad5f8bd5c6a2a24eb299c647d3d43f4"
+    url "https://github.com/fxcoudert/gcc/archive/gcc-10-arm-20210220.tar.gz"
+    sha256 "53beed690e4e0355d972ad58917a11e01af1cfe67b2e7602ca1ef89c98417a67"
     version "10.2.0"
   else
     url "https://ftp.gnu.org/gnu/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz"
     mirror "https://ftpmirror.gnu.org/gcc/gcc-10.2.0/gcc-10.2.0.tar.xz"
     sha256 "b8dd4368bb9c7f0b98188317ee0254dd8cc99d1e3a18d0ff146c855fe16c1d8c"
   end
-  license "GPL-3.0"
-  revision 1
+  license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
+  revision 4
   head "https://gcc.gnu.org/git/gcc.git"
 
   livecheck do
@@ -26,10 +26,11 @@ class Gcc < Formula
   end
 
   bottle do
-    sha256 "60424299458ac0e658f3ac4515916b3efb930b3717084601fc957c8962680740" => :big_sur
-    sha256 "a5ebb1c2db1dbf7bec08c0e67844c1b521f959c103b5e33091f4a7e5bf319e44" => :arm64_big_sur
-    sha256 "93f7199203fa36df4e197687a1eb9a582e06aae793e16e258d75abfc5ba6d528" => :catalina
-    sha256 "257f9d4fd82675c99e97bcf6063ce17874bda6110f4fcdd2481faddc7fb82b6a" => :mojave
+    rebuild 1
+    sha256 arm64_big_sur: "26e823464b7a0c4b854d95ec1bbed3caa4875ab552ce76792f0a9084ee085d96"
+    sha256 big_sur:       "9c412d919eb6808625ac69fe8ff882e06a82700c28c7e650defe5748930be87e"
+    sha256 catalina:      "9e8ebd91740ea2113601ee4ba2adec48ecd580c1fbe66998e93cdc44fc92ebff"
+    sha256 mojave:        "930750d0fd5abd916a7fd4346d5a01affb38929eec02824351cd599ecba6a943"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -49,12 +50,12 @@ class Gcc < Formula
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
   cxxstdlib_check :skip
 
-  if Hardware::CPU.arch != :arm64
-    # Patch for Big Sur version numbering, remove with GCC 11
-    # https://github.com/iains/gcc-darwin-arm64/commit/556ab512
+  if Hardware::CPU.intel?
+    # Patch for Big Sur, remove with GCC 10.3
+    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98805
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/7baf6e2f/gcc/bigsur.diff"
-      sha256 "42de3bc4889b303258a4075f88ad8624ea19384cab57a98a5270638654b83f41"
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/6a83f36d/gcc/bigsur_2.patch"
+      sha256 "347a358b60518e1e0fe3c8e712f52bdac1241e44e6c7738549d969c24095f65b"
     end
   end
 
@@ -93,7 +94,7 @@ class Gcc < Formula
       --with-isl=#{Formula["isl"].opt_prefix}
       --with-system-zlib
       --with-pkgversion=#{pkgversion}
-      --with-bugurl=https://github.com/Homebrew/homebrew-core/issues
+      --with-bugurl=#{tap.issues_url}
     ]
 
     # Xcode 10 dropped 32-bit support
@@ -105,10 +106,6 @@ class Gcc < Formula
       args << "--with-native-system-header-dir=/usr/include"
       args << "--with-sysroot=#{sdk}"
     end
-
-    # Mojave uses the Catalina SDK which causes issues like
-    # https://github.com/Homebrew/homebrew-core/issues/46393
-    ENV["ac_cv_func_aligned_alloc"] = "no" if MacOS.version == :mojave
 
     # Avoid reference to sed shim
     args << "SED=/usr/bin/sed"
@@ -158,9 +155,13 @@ class Gcc < Formula
 
     (testpath/"hello-cc.cc").write <<~EOS
       #include <iostream>
+      struct exception { };
       int main()
       {
         std::cout << "Hello, world!" << std::endl;
+        try { throw exception{}; }
+          catch (exception) { }
+          catch (...) { }
         return 0;
       }
     EOS

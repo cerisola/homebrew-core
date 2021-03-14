@@ -1,16 +1,15 @@
 class SpirvTools < Formula
   desc "API and commands for processing SPIR-V modules"
   homepage "https://github.com/KhronosGroup/SPIRV-Tools"
-  url "https://github.com/KhronosGroup/SPIRV-Tools/archive/v2020.6.tar.gz"
-  sha256 "de2392682df8def7ac666a2a320cd475751badf4790b01c7391b7644ecb550a3"
+  url "https://github.com/KhronosGroup/SPIRV-Tools/archive/v2020.7.tar.gz"
+  sha256 "c06eed1c7a1018b232768481184b5ae4d91d614d7bd7358dc2fe306bd0a39c6e"
   license "Apache-2.0"
 
   bottle do
-    cellar :any
-    sha256 "3e11043908ed15d64d1ae3f8f7938d107e861d6fab9334d8a1738a8faeb99c97" => :big_sur
-    sha256 "de0e45feb7b2342392980d3d9ee58098615296a0c3f7ff7f02b785fb75fd83ba" => :arm64_big_sur
-    sha256 "e51201b6a2af7e6a557c044325b62e2388a08e44a5e4f3e57db544d000860c6d" => :catalina
-    sha256 "c98af1a7354aecc6ff40d15025a83c60ab00e55e73252f9b292cf5c2dad2a420" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "298a193c4afa67d0205bcda76cc8ec2cdbc4c501b426da048ddedd39293db17a"
+    sha256 cellar: :any, big_sur:       "f0d685a0636f3fdc829b3bfd050b9307eaec55d3c14cc268597a5b6337878b00"
+    sha256 cellar: :any, catalina:      "862c589b37c0e016504a21f15db961537fda9233d646181154addd96495da1b5"
+    sha256 cellar: :any, mojave:        "8ba12af92ba9c44685ee2bed8f10ffa2890b0a991d7298659b1188351fc53521"
   end
 
   depends_on "cmake" => :build
@@ -31,7 +30,7 @@ class SpirvTools < Formula
   resource "spirv-headers" do
     # revision number could be found in ./DEPS
     url "https://github.com/KhronosGroup/SPIRV-Headers.git",
-        revision: "f027d53ded7e230e008d37c8b47ede7cd308e19d"
+        revision: "faa570afbc91ac73d594d787486bcf8f2df1ace0"
   end
 
   def install

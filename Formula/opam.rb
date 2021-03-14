@@ -1,18 +1,16 @@
 class Opam < Formula
   desc "OCaml package manager"
   homepage "https://opam.ocaml.org"
-  url "https://github.com/ocaml/opam/releases/download/2.0.7/opam-full-2.0.7.tar.gz"
-  sha256 "9c0dac1094ed624158fff13000cdfa8edbc96798d32b9fab40b0b5330f9490a2"
+  url "https://github.com/ocaml/opam/releases/download/2.0.8/opam-full-2.0.8.tar.gz"
+  sha256 "7b9d29233d9633ef50ba766df2e39112b15cd05c1c6fedf80bcb548debcdd9bd"
   license "LGPL-2.1"
   head "https://github.com/ocaml/opam.git"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "34baee7b82515f19b8b5163bb8dd410128519e67635c079e392fc35b4625deb9" => :big_sur
-    sha256 "2b1115dfcdfe71a806d07da60597a76f0e531c828e33e2c2c9901b0ef343c285" => :catalina
-    sha256 "39900786c86d1534586d261ced1876e9d0a90d119d41b37ba7eb2fbed948c033" => :mojave
-    sha256 "2d363ac12943a0505c55b9fe3249a5f12b37d666d6b811e374908ae2cbd22626" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "83fedf7b107a1cc3ea02a3782e3d830feeec7b8482a8e015707af65c0bb94ac9"
+    sha256 cellar: :any_skip_relocation, big_sur:       "d34e0dcbfa4302960a8f813d4e06c113e24beff31d2fbf8e55e470c5b51ecc0b"
+    sha256 cellar: :any_skip_relocation, catalina:      "882bf7f9d3f94fbbc2d5f08019456f533e0a71fd58c0a02650aa5781faefca9a"
+    sha256 cellar: :any_skip_relocation, mojave:        "e091ed13ebfa241890e0489cdc2645d66c9c189f618466cf8f7576751b381726"
   end
 
   depends_on "ocaml" => [:build, :test]

@@ -1,8 +1,8 @@
 class Fcct < Formula
   desc "Fedora CoreOS Config Transpiler"
   homepage "https://github.com/coreos/fcct"
-  url "https://github.com/coreos/fcct/archive/v0.8.0.tar.gz"
-  sha256 "9938c84bcb39ab78e21f3632773f0840b4d6139ee10fcb567fb12a25447710e7"
+  url "https://github.com/coreos/fcct/archive/v0.10.0.tar.gz"
+  sha256 "4dc13da0a0473390e208ee303757dbc8c1cbeb1a9330199de86fa8f16afb24b4"
   license "Apache-2.0"
   head "https://github.com/coreos/fcct.git"
 
@@ -12,11 +12,10 @@ class Fcct < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "365386878665e279e3649861a1e7955dd28898ed3eec6b1c3b144339fbb397bf" => :big_sur
-    sha256 "423e25428e2aa6c037c573c5a9d158f93d4423306cf5396fcdd0e3d0298e0526" => :arm64_big_sur
-    sha256 "6db04a1c576680f2b5a1789b0f9df88f2215bc668e9e20fd19410183b340e734" => :catalina
-    sha256 "513e72c532404b4458605cd6d37922d427b68eaebdc50f85ccfafedc65cd480c" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "168e14f5c7e7843342a66bd5073e198ee1f63c614b84803f9c9a83d6932b33c2"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ad3be57c5b5be44baebf9b65b58707dc6ae42d8ec88694ecf212ef48b1ec6f71"
+    sha256 cellar: :any_skip_relocation, catalina:      "bfa9271ef810cdaa856fe7f77a1bedebda49156a62ffedbadac2a7b3dff762ee"
+    sha256 cellar: :any_skip_relocation, mojave:        "01a0424af0d9e118de1f247fee0c9b0cde198364860c818b55259e9c8884ae5b"
   end
 
   depends_on "go" => :build
@@ -52,10 +51,10 @@ class Fcct < Formula
 
     system "#{bin}/fcct", "--strict", "--output=#{testpath}/example.ign", "#{testpath}/example.fcc"
     assert_predicate testpath/"example.ign", :exist?
-    assert_match /.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, File.read(testpath/"example.ign").strip
+    assert_match(/.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, File.read(testpath/"example.ign").strip)
 
     output = shell_output("#{bin}/fcct --strict #{testpath}/example.fcc")
-    assert_match /.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, output.strip
+    assert_match(/.*"sshAuthorizedKeys":\["ssh-rsa mykey"\].*/m, output.strip)
 
     shell_output("#{bin}/fcct --strict --output=#{testpath}/broken.ign #{testpath}/broken.fcc", 1)
     refute_predicate testpath/"broken.ign", :exist?

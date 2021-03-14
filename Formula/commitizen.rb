@@ -3,21 +3,16 @@ class Commitizen < Formula
 
   desc "Defines a standard way of committing rules and communicating it"
   homepage "https://commitizen-tools.github.io/commitizen/"
-  url "https://files.pythonhosted.org/packages/6b/d1/9252cecb125c716f37dbbe67b7b8ded25ef9f13883554d56632c6bf85c69/commitizen-2.13.0.tar.gz"
-  sha256 "bef4c1dcb63eb8fc5cb6ca4bfa547c227caab8f69732c0fd72cb9f41a8de2e35"
+  url "https://files.pythonhosted.org/packages/d6/bd/58553e152b7033973622221c7c319f83ee1919b88355860a6f441f5b435b/commitizen-2.16.0.tar.gz"
+  sha256 "cd6e90843d26898e8682bc6f4628a9777b5eaac6925a8030007f18a0270fcf4c"
   license "MIT"
   head "https://github.com/commitizen-tools/commitizen.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a4de1478d503451335874f65d602fa36eb890a3c30267f02da17403fdc24a60a" => :big_sur
-    sha256 "847761e5112300c3fb1ae6f09ffe75522e0697dd42bc7e21a71da13af71a959a" => :arm64_big_sur
-    sha256 "4490305e830f2e4f21bbfc1eb34b77d70f174cac20d053a00bd19ae29a7a18e2" => :catalina
-    sha256 "e4f7de5a05b18e245f92cab6ecf0ca7abd1d0b62ae58f19b0e18b1e41e04b672" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fd969a705873077a3fa899f3f28aa01ab446156fcb948b82585effcd52ace4f7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9c5b2df8331b5d0de6ff0ffbe39af11768f271545ebc4979f8630a808b290af5"
+    sha256 cellar: :any_skip_relocation, catalina:      "47818d3be3d62d0ee473204a6ba70441e241127916f09f304d47b1c99dfe8fd2"
+    sha256 cellar: :any_skip_relocation, mojave:        "55da341a0942bfefaae7db9949879fa5d175e74f4090307ffe7ea8c65dce3cae"
   end
 
   depends_on "python@3.9"
@@ -38,8 +33,8 @@ class Commitizen < Formula
   end
 
   resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/64/a7/45e11eebf2f15bf987c3bc11d37dcc838d9dc81250e67e4c5968f6008b6c/Jinja2-2.11.2.tar.gz"
-    sha256 "89aab215427ef59c34ad58735269eb58b1a5808103067f7bb9d5836c651b3bb0"
+    url "https://files.pythonhosted.org/packages/4f/e7/65300e6b32e69768ded990494809106f87da1d436418d5f1367ed3966fd7/Jinja2-2.11.3.tar.gz"
+    sha256 "a6d58433de0ae800347cab1fa3043cebbabe8baa9d29e668f1c768cb87a333c6"
   end
 
   resource "MarkupSafe" do
@@ -48,13 +43,13 @@ class Commitizen < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/d7/c5/e81b9fb8033fe78a2355ea7b1774338e1dca2c9cbd2ee140211a9e6291ab/packaging-20.8.tar.gz"
-    sha256 "78598185a7008a470d64526a8059de9aaa449238f280fc9eb6b13ba6c4109093"
+    url "https://files.pythonhosted.org/packages/86/3c/bcd09ec5df7123abcf695009221a52f90438d877a2f1499453c6938f5728/packaging-20.9.tar.gz"
+    sha256 "5b327ac1320dc863dca72f4514ecc086f31186744b84a230374cc1fd776feae5"
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/d4/12/7fe77b49d67845a378cfadb484b64218ed09d0e8bf420c663b4fe28f0631/prompt_toolkit-3.0.8.tar.gz"
-    sha256 "25c95d2ac813909f813c93fde734b6e44406d1477a9faef7c915ff37d39c0a8c"
+    url "https://files.pythonhosted.org/packages/b1/32/2a6b734dc25b249467bfc1d844b077a252ea393d1b90733f4e899aa56506/prompt_toolkit-3.0.16.tar.gz"
+    sha256 "0fa02fa80363844a4ab4b8d6891f62dd0645ba672723130423ca4037b80c1974"
   end
 
   resource "pyparsing" do
@@ -63,8 +58,8 @@ class Commitizen < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
-    sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
+    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
+    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
   end
 
   resource "questionary" do

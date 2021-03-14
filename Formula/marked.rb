@@ -3,20 +3,15 @@ require "language/node"
 class Marked < Formula
   desc "Markdown parser and compiler built for speed"
   homepage "https://marked.js.org/"
-  url "https://registry.npmjs.org/marked/-/marked-1.2.7.tgz"
-  sha256 "590679c0053b5fff1cf714b47abbf6fb712e916ee6a3a0c1210840551716ac18"
+  url "https://registry.npmjs.org/marked/-/marked-2.0.1.tgz"
+  sha256 "a7c2d3b13267ba811ff157441cfe1b7fcf5ebf268c2862ead4985eb697209804"
   license "MIT"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "beb4dd0e093ad7753855705c734dae9ba522d9e7414b38ac240352d6aab3bbac" => :big_sur
-    sha256 "5050e98f7a5a9715a491030f6a552beb6a90a222a1fee74d330177039f85ac90" => :arm64_big_sur
-    sha256 "62b9478edcbf45327e3d4bca454c4c34a505aa9f23a450bacead225c9a227b79" => :catalina
-    sha256 "4ba7f9cf413ab50cde3050f96262ec740b186c684e7d5a8f434adecfa8cda8f8" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "722f50a4da81765a90ffb0ffa92bff6ca94ba570480d7a9f45f498a18e013ab5"
+    sha256 cellar: :any_skip_relocation, big_sur:       "39f9f1f360a49f502d39196627cb76b570981645cacc3858a4edb5387146f23b"
+    sha256 cellar: :any_skip_relocation, catalina:      "364cbf030af81bace489c131dedfca66edd7a530f531b19ed847826d2610c461"
+    sha256 cellar: :any_skip_relocation, mojave:        "2fb7473810118285da26992ce1de87e4c9d7897e8fa77089201b90a3e1d70c0d"
   end
 
   depends_on "node"

@@ -1,21 +1,20 @@
 class Ngt < Formula
   desc "Neighborhood graph and tree for indexing high-dimensional data"
   homepage "https://github.com/yahoojapan/NGT"
-  url "https://github.com/yahoojapan/NGT/archive/v1.12.1.tar.gz"
-  sha256 "eafc2d11618211017fd51e22bc972dff46cb9ebc4272c80de43ce85111113fd8"
+  url "https://github.com/yahoojapan/NGT/archive/v1.13.3.tar.gz"
+  sha256 "4d1705e03d784b089af35a923cb486ba8a56781d69e93234f86e4acb3a8aac4f"
   license "Apache-2.0"
 
   livecheck do
     url :stable
-    strategy :github_latest
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any
-    sha256 "0c0390236b196ef49cd82ab692a1689281db1d06b0632878e534e02126544798" => :big_sur
-    sha256 "630a651c1764f527a39d9b43ffe4d6ade5b0004596aad4038d55612f10a21c24" => :catalina
-    sha256 "ce88dcbfc71c78b2e3155868a6df503e71771ae488547be9113213f09a35c049" => :mojave
-    sha256 "daff8e6efb83eee79a205962f1e2346de46e53f63df7ee4183cfe9dd31f19130" => :high_sierra
+    sha256 arm64_big_sur: "2904b34765e80cab35c4ba6eced566acebd6ccc785dc0b02cda507d1fce44256"
+    sha256 big_sur:       "abb91b335f7adc31fe0406e29f5dee6c485c966fed3f24abaadf2f0f110d6fbe"
+    sha256 catalina:      "5bb09741c501f1dfec11e46652022c929de3d79d7a268fa52f90e3d2dbde41a4"
+    sha256 mojave:        "b00f6760adccd430822d17e27b8fd3202ff332a5a8bb93734e5e0b8ebcc01958"
   end
 
   depends_on "cmake" => :build
@@ -23,7 +22,7 @@ class Ngt < Formula
 
   def install
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{lib}"
       system "make"
       system "make", "install"
     end

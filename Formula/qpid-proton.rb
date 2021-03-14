@@ -7,15 +7,12 @@ class QpidProton < Formula
   license "Apache-2.0"
   head "https://gitbox.apache.org/repos/asf/qpid-proton.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "8fbc4f2dd6d3da1b582d4ac681efbe6642556f5ac32f15ee9fc1519ffd2d00bd" => :big_sur
-    sha256 "95e0eee7ab97b025c67e28d3463eb903216820361a39e247683814a75c4f6ba7" => :catalina
-    sha256 "2322808f69519175c64b268a7ea75dceab4c3a8d3d898d4637a3dff066d2f69b" => :mojave
+    rebuild 1
+    sha256 cellar: :any, arm64_big_sur: "a24a18a5d17a1f4d221676d8fa7e7bfff6fdc598708d4b07010ffa2ecefdf5b0"
+    sha256 cellar: :any, big_sur:       "37ac24b89b4a23abff75e11dda46d71403e39abc148906a2f77a65cf61f63804"
+    sha256 cellar: :any, catalina:      "5bb29532d0ac3ea61cc1c58b2bf3975f76d9cb7ff8e53b7a692558279a7ddcaf"
+    sha256 cellar: :any, mojave:        "9718338d5d938b7264df5a0312ff36a9060c5bd41c8b7bd439e6821238f10010"
   end
 
   depends_on "cmake" => :build
@@ -26,6 +23,7 @@ class QpidProton < Formula
     mkdir "build" do
       system "cmake", "..", "-DBUILD_BINDINGS=",
                          "-DLIB_INSTALL_DIR=#{lib}",
+                         "-DBUILD_TESTING=OFF",
                          "-Dproactor=libuv",
                          *std_cmake_args
       system "make", "install"

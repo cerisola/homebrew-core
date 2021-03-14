@@ -1,8 +1,8 @@
 class Tokei < Formula
   desc "Program that allows you to count code, quickly"
   homepage "https://github.com/XAMPPRocky/tokei"
-  url "https://github.com/XAMPPRocky/tokei/archive/v12.1.1.tar.gz"
-  sha256 "c8b94ddd3ffe3d712d8a63c9e90cf32bb4506c3ecc51c357cf399417bc7afcc8"
+  url "https://github.com/XAMPPRocky/tokei/archive/v12.1.2.tar.gz"
+  sha256 "81ef14ab8eaa70a68249a299f26f26eba22f342fb8e22fca463b08080f436e50"
   license "Apache-2.0"
 
   livecheck do
@@ -11,11 +11,10 @@ class Tokei < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "abf9d085c9b7f570febd69a431fcfa25b6bd2f3e6f70ee8a86ae34b5fbd2a114" => :big_sur
-    sha256 "c9f0f41321eb5504b6a5867178a7686dda6f37eb47a040d828ce81096b2c515d" => :arm64_big_sur
-    sha256 "89299611a6f336c378fe2be3eb67ff51fe0882eb18a066d6beda0b373e7f8a2a" => :catalina
-    sha256 "f27651fba0d57a1c2977862114f5779bcf7c9a0d4199c4b742f8732145ebaff7" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e8ebff0ff4e422447970fce9d87917e61f01651d030124201d73853f7288f3e8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "70ec65406393fe4af7eb7aeb6ac261cfe7319b66b5559b1d65c56fcfdc77ee08"
+    sha256 cellar: :any_skip_relocation, catalina:      "f65dfddfe85d0ca4a06707a65fac5746eb6a756d76021b5ec806ee4f1d0a3639"
+    sha256 cellar: :any_skip_relocation, mojave:        "ea27c2cf381e93e5423d8e5ab3b19283fe99310fdc85323309b263747cc10b2d"
   end
 
   depends_on "rust" => :build

@@ -1,21 +1,16 @@
 class Libsigsegv < Formula
   desc "Library for handling page faults in user mode"
   homepage "https://www.gnu.org/software/libsigsegv/"
-  url "https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-2.12.tar.gz"
-  mirror "https://ftpmirror.gnu.org/libsigsegv/libsigsegv-2.12.tar.gz"
-  sha256 "3ae1af359eebaa4ffc5896a1aee3568c052c99879316a1ab57f8fe1789c390b6"
+  url "https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-2.13.tar.gz"
+  mirror "https://ftpmirror.gnu.org/libsigsegv/libsigsegv-2.13.tar.gz"
+  sha256 "be78ee4176b05f7c75ff03298d84874db90f4b6c9d5503f0da1226b3a3c48119"
   license "GPL-2.0-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "8f4dde47fdc37a7d8bfe2e5fb5a6935df61933ac0c261c7e84a779ea9d1571f9" => :big_sur
-    sha256 "3f08091c87658aaf556a9309ce98146faee3d9be07e72380fdab78449111195c" => :catalina
-    sha256 "f883382e7eb115a7ea8f660487b40f186d2d422f16d0bceaa58ceca19f7279f9" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "709a1a801698a0e0862be0f71d9b15ed8af9b6777956ae2caf0795d418956ce4"
+    sha256 cellar: :any, big_sur:       "9bd929ab1b6a2c35bdde0306a2a4c30498a47659ae0877bc89a7b74f67d93425"
+    sha256 cellar: :any, catalina:      "0d7f731afff70661df049267de9fe2c34b74d3918a7a7695fbfd1deef664aa68"
+    sha256 cellar: :any, mojave:        "95525c7e620743555e44175496c21c57a8cc39b8ca2670bf0fd690cc42a2977c"
   end
 
   head do
@@ -78,6 +73,6 @@ class Libsigsegv < Formula
     EOS
 
     system ENV.cc, "test.c", "-L#{lib}", "-lsigsegv", "-o", "test"
-    assert_match /Test passed/, shell_output("./test")
+    assert_match "Test passed", shell_output("./test")
   end
 end

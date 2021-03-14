@@ -7,17 +7,18 @@ class Confd < Formula
   head "https://github.com/kelseyhightower/confd.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "8c337c7afdcf9d7bf7662f94d24fa326990e69344f6c23700ba2a5c0c540592e" => :big_sur
-    sha256 "34d59b3c47493cd00685c62997ac0385f52f90a5d99adb9ed5c98576c6c02452" => :catalina
-    sha256 "6c83fe2e7e744917d241e8fd51d76b83838ac08dcab31c2663c7b2c7703140cc" => :mojave
-    sha256 "8605d52c611da0530d31178fbb9805592113d70b3d496d21a34696ff499aac70" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f2eb5cdb05b9f92b2472331857765f5b4922183d4cde23e61c44d7bb3d080dfe"
+    sha256 cellar: :any_skip_relocation, big_sur:       "8c337c7afdcf9d7bf7662f94d24fa326990e69344f6c23700ba2a5c0c540592e"
+    sha256 cellar: :any_skip_relocation, catalina:      "34d59b3c47493cd00685c62997ac0385f52f90a5d99adb9ed5c98576c6c02452"
+    sha256 cellar: :any_skip_relocation, mojave:        "6c83fe2e7e744917d241e8fd51d76b83838ac08dcab31c2663c7b2c7703140cc"
+    sha256 cellar: :any_skip_relocation, high_sierra:   "8605d52c611da0530d31178fbb9805592113d70b3d496d21a34696ff499aac70"
   end
 
   depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO111MODULE"] = "auto"
     (buildpath/"src/github.com/kelseyhightower/confd").install buildpath.children
     cd "src/github.com/kelseyhightower/confd" do
       system "go", "install", "github.com/kelseyhightower/confd"

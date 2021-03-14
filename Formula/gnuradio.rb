@@ -3,43 +3,44 @@ class Gnuradio < Formula
 
   desc "SDK for signal processing blocks to implement software radios"
   homepage "https://gnuradio.org/"
-  url "https://github.com/gnuradio/gnuradio/releases/download/v3.8.2.0/gnuradio-3.8.2.0.tar.gz"
-  sha256 "3e293541a9ac8d78660762bae8b80c0f6195b3494e1c50c01a9fd79cc60bb624"
+  url "https://github.com/gnuradio/gnuradio/releases/download/v3.9.0.0/gnuradio-3.9.0.0.tar.xz"
+  sha256 "0a2622933c96a4b22405c7656b8af0db32762834317ec2b90bff0a0a5a4f75cb"
   license "GPL-3.0-or-later"
-  revision 6
+  revision 3
   head "https://github.com/gnuradio/gnuradio.git"
 
   bottle do
-    sha256 "836caaec970bbbcfcba33209fa8a9414e210fdf977b2ef838567ff6ac373309b" => :big_sur
-    sha256 "52a8e132fcc8cc862069051af8e0827875bccfe513c11c10ee07b6fd725509e5" => :catalina
-    sha256 "391db623588498ab3adab1e195b2f2cbb45bcd25973fe036935e679f714d61be" => :mojave
+    sha256 big_sur:  "704874cf05f78628123ff2200d33dfe4f1478062bdb3e478c4fe27dd85d7a093"
+    sha256 catalina: "5ccb4f1a85fdb7710152deec42165858b3b70c16f00dfa2a42a0534021771049"
+    sha256 mojave:   "4854e1b3c6b2398305e5f731187f0c0d38c1b8844549aa7f3d8f672633d24a97"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
-  depends_on "swig" => :build
+  depends_on "pybind11" => :build
   depends_on "adwaita-icon-theme"
   depends_on "boost"
   depends_on "fftw"
   depends_on "gmp"
   depends_on "gsl"
   depends_on "gtk+3"
+  depends_on "jack"
   depends_on "log4cpp"
   depends_on "numpy"
   depends_on "portaudio"
   depends_on "pygobject3"
-  depends_on "pyqt"
+  depends_on "pyqt@5"
   depends_on "python@3.9"
-  depends_on "qt"
+  depends_on "qt@5"
   depends_on "qwt"
   depends_on "uhd"
   depends_on "volk"
   depends_on "zeromq"
 
   resource "Cheetah" do
-    url "https://files.pythonhosted.org/packages/50/d5/34b30f650e889d0d48e6ea9337f7dcd6045c828b9abaac71da26b6bdc543/Cheetah3-3.2.5.tar.gz"
-    sha256 "ececc9ca7c58b9a86ce71eb95594c4619949e2a058d2a1af74c7ae8222515eb1"
+    url "https://files.pythonhosted.org/packages/ee/6f/29c6d74d8536dede06815eeaebfad53699e3f3df0fb22b7a9801a893b426/Cheetah3-3.2.6.tar.gz"
+    sha256 "f1c2b693cdcac2ded2823d363f8459ae785261e61c128d68464c8781dba0466b"
   end
 
   resource "click" do
@@ -53,8 +54,8 @@ class Gnuradio < Formula
   end
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/72/89/402d2b4589e120ca76a6aed8fee906a0f5ae204b50e455edd36eda6e778d/Mako-1.1.3.tar.gz"
-    sha256 "8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27"
+    url "https://files.pythonhosted.org/packages/5c/db/2d2d88b924aa4674a080aae83b59ea19d593250bfe5ed789947c21736785/Mako-1.1.4.tar.gz"
+    sha256 "17831f0b7087c313c0ffae2bcbbd3c1d5ba9eeac9c38f2eb7b50e8c99fe9d5ab"
   end
 
   resource "six" do
@@ -72,23 +73,15 @@ class Gnuradio < Formula
     sha256 "964031c0944f913933f55ad1610938105a6657a69d1ac5a6dd50e16a679104d5"
   end
 
-  # patch for boost 1.73.0, remove after next release
-  # https://github.com/gnuradio/gnuradio/pull/3566
+  # patch to fix drag-and-drop in gnuradio-companion, remove after next release
+  # https://github.com/gnuradio/gnuradio/issues/2727
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/0d2af1812716a874d1e49268e999ea1a8ca9fc3c/gnuradio/boost-1.73.0.patch"
-    sha256 "7e4abd08210d242d65807b7e2419f163a58b4630027a3beaff0e325d044266d7"
-  end
-
-  # Add -undefined dynamic_lookup linker flag back for macOS
-  # https://github.com/gnuradio/gnuradio/pull/3674
-  patch do
-    url "https://github.com/gnuradio/gnuradio/commit/80ba62cb11cf604495e87a5e302e68eaf441eea9.patch?full_index=1"
-    sha256 "d12640f62b266b244950d84f2deb1544f41574229106a525e693159fb3fc80eb"
+    url "https://github.com/gnuradio/gnuradio/commit/518dc7eda3a2575292dc67374cad62c887f83d12.patch?full_index=1"
+    sha256 "88f28e204615c1893568cf72c3841cf372f7626e4e5aadd6a099fe4a3caa08a9"
   end
 
   def install
     ENV.cxx11
-    ENV.prepend_path "PATH", Formula["qt"].opt_bin.to_s
 
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
@@ -117,8 +110,8 @@ class Gnuradio < Formula
       -DPYTHON_VERSION_MAJOR=3
       -DQWT_LIBRARIES=#{Formula["qwt"].lib}/qwt.framework/qwt
       -DQWT_INCLUDE_DIRS=#{Formula["qwt"].lib}/qwt.framework/Headers
-      -DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_lib}
-      -DQT_BINARY_DIR=#{Formula["qt"].opt_bin}
+      -DCMAKE_PREFIX_PATH=#{Formula["qt@5"].opt_lib}
+      -DQT_BINARY_DIR=#{Formula["qt@5"].opt_bin}
       -DENABLE_TESTING=OFF
       -DENABLE_INTERNAL_VOLK=OFF
     ]

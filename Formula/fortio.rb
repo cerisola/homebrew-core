@@ -2,15 +2,20 @@ class Fortio < Formula
   desc "HTTP and gRPC load testing and visualization tool and server"
   homepage "https://fortio.org/"
   url "https://github.com/fortio/fortio.git",
-      tag:      "v1.11.4",
-      revision: "6dd1b178adba1a28da7e20e8a0be4dc32ea7a048"
+      tag:      "v1.14.2",
+      revision: "ee098c572115f4149a67d2a812cb3d1ca79e30e1"
   license "Apache-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 "dc3dcac1c7007b2b21dd9105c55505cb1b6f86149be1242ac413baa0a361feb4" => :big_sur
-    sha256 "8df5eecd8bff63c24abc875c6977cf5a1e548f8a52f12e9ffc64f8650fdeaaae" => :arm64_big_sur
-    sha256 "41a9b9b4ddb5729ee114dfb42e305f558260c055d786bd1b17cc837344bff1d0" => :catalina
-    sha256 "eb37c04b1d2bcdf1237fdf75fcbf0c83a274f4027b532b2eb6a9e62fe63f39d7" => :mojave
+    sha256 arm64_big_sur: "3610f39eb343fb5b7a73d8ce5f6893c3739871d4c53c15b148da277204e61946"
+    sha256 big_sur:       "d4b6e17fbec3492790aee0560f4a77f85f5464c11b0b40ec933d617e74461c7b"
+    sha256 catalina:      "3d42972667821ee5d0b149ec7bd990d75908ce54458c9a3dcf8d3c8a915326ad"
+    sha256 mojave:        "0abdf2c221e547a3528b6343a8eaa8502fd1127ba73a3d15b59cc0007432a7a2"
   end
 
   depends_on "go" => :build
@@ -30,7 +35,7 @@ class Fortio < Formula
       end
       sleep 2
       output = shell_output("#{bin}/fortio load http://localhost:#{port}/ 2>&1")
-      assert_match /^All\sdone/, output.lines.last
+      assert_match(/^All\sdone/, output.lines.last)
     ensure
       Process.kill("SIGTERM", pid)
     end

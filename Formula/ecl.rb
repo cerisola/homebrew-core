@@ -1,15 +1,16 @@
 class Ecl < Formula
   desc "Embeddable Common Lisp"
   homepage "https://common-lisp.net/project/ecl/"
-  url "https://common-lisp.net/project/ecl/static/files/release/ecl-20.4.24.tgz"
-  sha256 "670838edf258a936b522fdb620da336de7e575aa0d27e34841727252726d0f07"
+  url "https://common-lisp.net/project/ecl/static/files/release/ecl-21.2.1.tgz"
+  sha256 "b15a75dcf84b8f62e68720ccab1393f9611c078fcd3afdd639a1086cad010900"
+  license "LGPL-2.1-or-later"
   head "https://gitlab.com/embeddable-common-lisp/ecl.git", branch: "develop"
 
   bottle do
-    rebuild 1
-    sha256 "23de8394468aa1682fdfaa00544b0316798eaf726b674f5003c6451dbecbb6f8" => :big_sur
-    sha256 "612d10e1c4c34d9fcb5ec731e683210634f12111c30862ae890d225a604343ce" => :catalina
-    sha256 "a29d90c9343ff63a28c6442caccf1161724804b0632624a531546db9ea63ce45" => :mojave
+    sha256 arm64_big_sur: "847322265172ae8fe032c0a0ce7aa49a97fc5d7b65b67747b75e328567938d08"
+    sha256 big_sur:       "5df2258cb07a0f70a7e5d664f691d843fd5cae916009dbbc1ee0f6867c3dff48"
+    sha256 catalina:      "5286a86476c459ce1694d50363a885be2869df62bf632c532755eb51fe9fdbc5"
+    sha256 mojave:        "db02128ab8feb220552e2dad2f565283c44b64b688e2e467ecfbe68e4dce6bef"
   end
 
   depends_on "texinfo" => :build # Apple's is too old
@@ -19,15 +20,14 @@ class Ecl < Formula
 
   def install
     ENV.deparallelize
-    # Work around configure issues with Xcode 12
-    # https://gitlab.com/embeddable-common-lisp/ecl/-/merge_requests/231
-    # Remove once the commit is released
-    ENV.append "CFLAGS", "-Wno-implicit-function-declaration"
 
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads=yes",
                           "--enable-boehm=system",
-                          "--enable-gmp=system"
+                          "--enable-gmp=system",
+                          "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
+                          "--with-libffi-prefix=#{Formula["libffi"].opt_prefix}",
+                          "--with-libgc-prefix=#{Formula["bdw-gc"].opt_prefix}"
     system "make"
     system "make", "install"
   end

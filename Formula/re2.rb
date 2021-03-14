@@ -1,19 +1,28 @@
 class Re2 < Formula
   desc "Alternative to backtracking PCRE-style regular expression engines"
   homepage "https://github.com/google/re2"
-  url "https://github.com/google/re2/archive/2020-11-01.tar.gz"
-  version "20201101"
-  sha256 "8903cc66c9d34c72e2bc91722288ebc7e3ec37787ecfef44d204b2d6281954d7"
+  url "https://github.com/google/re2/archive/2021-02-02.tar.gz"
+  version "20210202"
+  sha256 "1396ab50c06c1a8885fb68bf49a5ecfd989163015fd96699a180d6414937f33f"
   license "BSD-3-Clause"
   head "https://github.com/google/re2.git"
 
+  # The `strategy` block below is used to massage upstream tags into the
+  # YYYYMMDD format used in the `version`. This is necessary for livecheck
+  # to be able to do proper `Version` comparison.
+  livecheck do
+    url :stable
+    regex(/^(\d{2,4}-\d{2}-\d{2})$/i)
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.gsub(/\D/, "") }.compact
+    end
+  end
+
   bottle do
-    cellar :any
-    sha256 "02fed353151f3d3d936af926e1fcd18cd68ca0e51694eb48acccbc5280316ce2" => :big_sur
-    sha256 "0a41585c7bd946cd0b427533c79c272cb5ba7b031054d3892ca0bd9763cc6749" => :arm64_big_sur
-    sha256 "3775e06cd4478f7ef90cfe76bbd01d051c8ba2b646fd84601e307a8c0e2ec7de" => :catalina
-    sha256 "621f2bcea8c2f42d3ddb2de7f3df669259b5818763290d7b957c6bd406102a45" => :mojave
-    sha256 "6be4625dab709d29564e85823b24c668c1b7fe061365d443ac4956f4ad3135fc" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "d5d10c0775f70740b3c6500824d18e01f5b29c5ed98291ee52b53107db6f6a8d"
+    sha256 cellar: :any, big_sur:       "65a30882f68414d1a9d5b08f6f452a0091460bcc062962789e9585652de04164"
+    sha256 cellar: :any, catalina:      "de7bad8a1ea4cf5b8ab0b32463160321aed137e4864d0c81e7b298cf4f8a8164"
+    sha256 cellar: :any, mojave:        "7d98093a112270677f4f5a76cedfd2432af1464f3c69c4cf5f8d554997f49513"
   end
 
   depends_on "cmake" => :build

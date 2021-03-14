@@ -7,11 +7,11 @@ class Onednn < Formula
   head "https://github.com/oneapi-src/onednn.git"
 
   bottle do
-    cellar :any
-    sha256 "d17e096d72bd885c7cac190adfc750e482a7e65d44886f73481755792198d5ea" => :big_sur
-    sha256 "51e627c893ce04790d65e625dc2acd3014cd69020bfdb89f3401848283988a49" => :arm64_big_sur
-    sha256 "b4fa356473727ddf9506f7705739237c397b7c967df761a5b80cebfed256d648" => :catalina
-    sha256 "defca13c472154c8faa951b61476964965824c07baa3ab26419e4d5822a060b0" => :mojave
+    rebuild 1
+    sha256 cellar: :any, arm64_big_sur: "045f62a40883229b10146c715306d1412f6f0bc4828d45942dbba29f03bb3c12"
+    sha256 cellar: :any, big_sur:       "8acd092ad84f8677785da0c5bb92e117b17f903a2702b66ee4572c93d5bb80a1"
+    sha256 cellar: :any, catalina:      "669ffb542483c34cf208829b6fe5d8debc60d0e9def35394834676d4db42c4cd"
+    sha256 cellar: :any, mojave:        "aa2922eb9ba741cde52d2b74f8787fdcec61e478b0d949cd6c8795fa3a2560e4"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +33,7 @@ class Onednn < Formula
         return !(status == mkldnn_success);
       }
     EOS
-    system ENV.cc, "-L#{lib}", "-lmkldnn", "test.c", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-lmkldnn", "-o", "test"
     system "./test"
   end
 end

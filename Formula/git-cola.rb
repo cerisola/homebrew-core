@@ -1,23 +1,21 @@
 class GitCola < Formula
   desc "Highly caffeinated git GUI"
   homepage "https://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v3.8.tar.gz"
-  sha256 "ea482ca32fe142ddba500d2edf3a05f11e31cf193e5d7a944f3fe28c9ab123d4"
+  url "https://github.com/git-cola/git-cola/archive/v3.9.tar.gz"
+  sha256 "66b62f479ad141322351d62aff76e4882719d08f8f29b35f97d30f355391a54e"
   license "GPL-2.0-or-later"
   revision 1
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "d5e72dde0b6ea555a8daae7c873d58a5c97ddbf6ac499b41239f10dc3aff94a9" => :big_sur
-    sha256 "20b6f47d793bb85dff6f5b1a8b6df25c9184043657d1d18552a4d582e1f903a9" => :arm64_big_sur
-    sha256 "ef1c8b2bcaf9de6249a46bfc97ab24f048f5b9051c2d8290614fce3d5c8edfef" => :catalina
-    sha256 "18ff1bd2601835ab966f635680470031912913593d8a28cdeba9e92effcb7418" => :mojave
-    sha256 "64f4ec4531a6f96370748a586dfe81fe134ae24c0292f7429043e8eeb7ac64f3" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b9a2de2f11aa72f0c4010a89c0118974cca4aed743bd8809cac81d6839a35bb2"
+    sha256 cellar: :any_skip_relocation, big_sur:       "54c0806c423ffadb4bf4e017d8e7b657f0636fd16055e174bdf98881ccbb0ed0"
+    sha256 cellar: :any_skip_relocation, catalina:      "8ba8892158a9e2ceef9f278b4c7a789a2ee26bfffce97c56863d287a5b56d071"
+    sha256 cellar: :any_skip_relocation, mojave:        "ad020b9751ad02ff662b94c1df5bb18a496ec77c46957d6ec200633b45bf2959"
   end
 
   depends_on "sphinx-doc" => :build
-  depends_on "pyqt"
+  depends_on "pyqt@5"
   depends_on "python@3.9"
 
   uses_from_macos "rsync"

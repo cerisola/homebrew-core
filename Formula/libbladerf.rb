@@ -2,17 +2,21 @@ class Libbladerf < Formula
   desc "USB 3.0 Superspeed Software Defined Radio Source"
   homepage "https://nuand.com/"
   url "https://github.com/Nuand/bladeRF.git",
-      tag:      "2019.07",
-      revision: "991bba2f9c4d000f000077cc465878d303417e26"
+      tag:      "2021.02",
+      revision: "3b4f42dee4300669d58718df4b85616a85b64904"
   license "GPL-2.0"
   head "https://github.com/Nuand/bladeRF.git"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 "53852b1fb3d6fcebfacc6778666f5da33e016324a81b413854ff07717ff99174" => :big_sur
-    sha256 "69f5a01be75ac5237cf278c76449f3a09ba60a1d284412a82040b4687b4b3244" => :arm64_big_sur
-    sha256 "a60bfb3c0e350ec8fc1774b902bb8e151581f11a6669d067cb94da417e266bc3" => :catalina
-    sha256 "47cc541e8c1e2061cb842595f08cd9adc65194378bf1303d876e79e6c5a93b85" => :mojave
-    sha256 "f276e5ce4058bd486edaff6b97f61bddea9f44b5f88f35997a90c100da8f70d1" => :high_sierra
+    sha256 arm64_big_sur: "8aad9ec5a110be875915aefb2eb22a0027939aa41c9f19beacf369990012c96b"
+    sha256 big_sur:       "7f31ea534f7b3e45b6aa757e437a81e463b88adead45f70583de6528c8d07c1c"
+    sha256 catalina:      "6f663f523dfb1cada7a8637c2a8715f7da520fd7c53872a97212f776ca7639d9"
+    sha256 mojave:        "6cf6caa846b8cab56722c692912e37485598d7bc415ffbe722e961bb1f219cff"
   end
 
   depends_on "cmake" => :build

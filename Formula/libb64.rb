@@ -4,16 +4,12 @@ class Libb64 < Formula
   url "https://downloads.sourceforge.net/project/libb64/libb64/libb64/libb64-1.2.1.zip"
   sha256 "20106f0ba95cfd9c35a13c71206643e3fb3e46512df3e2efb2fdbf87116314b2"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any_skip_relocation
-    sha256 "56790860cf8aba45beb19d6b50dab0e3905d98308dea3716e913863f61047754" => :big_sur
-    sha256 "ee788cea9a073c456398f86661ea27e092c3d327ea8b0792643ed7d38bd402d0" => :catalina
-    sha256 "7a53661bc0fe2bea875f0a14cc66b6352694f1e797e4506ad2c8ef35dfcc2169" => :mojave
-    sha256 "3b5266e99b78c81ae7ec00c19aa7e9d3fad7f47611fc1332710bd8e03f48da55" => :high_sierra
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "56d58f54a9441400aa4558ea15ced076cc3d712fbdc2801b786b923b7db2220a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "155001ff9b7e697215db86e40e861308d601c7077c6ec10ef99acf007558415c"
+    sha256 cellar: :any_skip_relocation, catalina:      "f2bdf6ee59f94515b24aaf0a2feb4fdce2b93910b9a802973434d2c7e769bc42"
+    sha256 cellar: :any_skip_relocation, mojave:        "6b4f2d282b1ed8e03c4f86a937bcdbf3c8f79679a88568462133440f06d349e7"
   end
 
   def install
@@ -37,7 +33,7 @@ class Libb64 < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-L/usr/local/lib", "-lb64", "-o", "test"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lb64", "-o", "test"
     system "./test"
   end
 end

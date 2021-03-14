@@ -1,18 +1,15 @@
 class Shtools < Formula
   desc "Spherical Harmonic Tools"
   homepage "https://shtools.github.io/SHTOOLS/"
-  url "https://github.com/SHTOOLS/SHTOOLS/archive/v4.7.1.tar.gz"
-  sha256 "6ed2130eed7b741df3b19052b29b3324601403581c7b9afb015e0370e299a2bd"
+  url "https://github.com/SHTOOLS/SHTOOLS/releases/download/v4.8/SHTOOLS-4.8.tar.gz"
+  sha256 "c36fc86810017e544abbfb12f8ddf6f101a1ac8b89856a76d7d9801ffc8dac44"
   license "BSD-3-Clause"
-  revision 1
-  head "https://github.com/SHTOOLS/homebrew-shtools.git"
+  head "https://github.com/SHTOOLS/SHTOOLS.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "5c5163cc734b57d538fc8507a974fbafa7fd52769ff3d51f18f69bef8a399b18" => :big_sur
-    sha256 "02042f2cf73c441cc6f0a98654ededcaccefe1851d7817bdb7dde72d6f7a8af4" => :catalina
-    sha256 "b8f08723ebb0811022c50a8e86cab9a9844427859ddc708660c7d5375825983b" => :mojave
-    sha256 "e96a79e0e15a37acd2758c10c2b3d3bb7a98d5372f8fb856205a1a8b10a4891f" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "1a9fd37585d31ef6f1c61b431bfab4fde9755db5ee081d8eba1c9a358278481f"
+    sha256 cellar: :any_skip_relocation, catalina: "99aea0397bae82f956eab6868704b493b99f9160e4c5f8f558937db3e349b96b"
+    sha256 cellar: :any_skip_relocation, mojave:   "00f6302f52c6df51ee3477d0c05d66c1a1feec59a4b8883b2af53faa6a631e30"
   end
 
   depends_on "fftw"
@@ -26,7 +23,11 @@ class Shtools < Formula
     pkgshare.install "examples/fortran/", "examples/ExampleDataFiles/"
 
     lib.install "lib/libSHTOOLS.a", "lib/libSHTOOLS-mp.a"
-    include.install "include/fftw3.mod", "include/planetsconstants.mod", "include/shtools.mod", "include/ftypes.mod"
+    include.install "include/fftw3.mod",
+                    "include/planetsconstants.mod",
+                    "include/shtools.mod",
+                    "include/ftypes.mod",
+                    "include/shtools.h"
     share.install "man"
   end
 

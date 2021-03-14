@@ -1,21 +1,16 @@
 class GitAnnex < Formula
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-8.20201129/git-annex-8.20201129.tar.gz"
-  sha256 "8324b71bafc5c30e630699534f410a9cfcfdfeed078dc62bc410f41244a1dd81"
+  url "https://hackage.haskell.org/package/git-annex-8.20210310/git-annex-8.20210310.tar.gz"
+  sha256 "dd0ae1cac40c97490e0699c68a341b5bff6fcb38e733df83b67c442a7eca97a8"
   license all_of: ["AGPL-3.0-or-later", "BSD-2-Clause", "BSD-3-Clause",
                    "GPL-2.0-only", "GPL-3.0-or-later", "MIT"]
   head "git://git-annex.branchable.com/"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "0bbb56b04054ca98667fb71c8731b4d3894b436b9c04c3c030da01a6b939a7b5" => :big_sur
-    sha256 "ac8d58a49a0ea3d82e1796c33ee2e9032213db7c734dc0d12cf1bcd58e1cec13" => :catalina
-    sha256 "0235b53d49d4ba220139024aa924da0f14a12560a6beed7f1e8efa06cf5961a8" => :mojave
+    sha256 cellar: :any, big_sur:  "dfab392cf4d1007e60b65a9efeb836289a296186a142d7cc388f8e320ea53ca8"
+    sha256 cellar: :any, catalina: "9b3cd55de3855d984992fba412b091521fb1f1c612fb3e5a466f738bddba8c92"
+    sha256 cellar: :any, mojave:   "2365ae1349e7d9ab3196ec2cf92a8ac1cc28a66217f51ee9e66d6ce9998cd45e"
   end
 
   depends_on "cabal-install" => :build
@@ -67,7 +62,7 @@ class GitAnnex < Formula
     system "git", "annex", "init"
     (testpath/"Hello.txt").write "Hello!"
     assert !File.symlink?("Hello.txt")
-    assert_match /^add Hello.txt.*ok.*\(recording state in git\.\.\.\)/m, shell_output("git annex add .")
+    assert_match(/^add Hello.txt.*ok.*\(recording state in git\.\.\.\)/m, shell_output("git annex add ."))
     system "git", "commit", "-a", "-m", "Initial Commit"
     assert File.symlink?("Hello.txt")
 

@@ -2,16 +2,15 @@ class SqliteUtils < Formula
   include Language::Python::Virtualenv
   desc "CLI utility for manipulating SQLite databases"
   homepage "https://sqlite-utils.datasette.io/"
-  url "https://files.pythonhosted.org/packages/49/24/3554aae898744ae33f49d1ab2e4ebf088e0b64515c8d03e7e549d503e585/sqlite-utils-3.2.tar.gz"
-  sha256 "83d60e0f0de5e4a367e2ad414dc008c0602e2af35325b09e41c7b2c69808dcc1"
+  url "https://files.pythonhosted.org/packages/0d/7e/111bde53d3f4c4f03152963086a28aa11ea5536c6980f64b48eff43d7c7d/sqlite-utils-3.6.tar.gz"
+  sha256 "582a9bcf4b6cb32ee2efa4a0d8f79ec630e8965ca93c69ceaaa7d424e1c01560"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "f4169414eadec9610552963886d3759b9807b7743603b50c4dfceb669ee7d7f4" => :big_sur
-    sha256 "9b031f5ba70bd57f651e097c40d65795a9d72319a30789e14b8df770bc11d322" => :arm64_big_sur
-    sha256 "c8e9ccbfbb25af1daa8b93b7d49b698294c0ec8c7af2dfb34522c11799b1d8b8" => :catalina
-    sha256 "ef7e0bdcc695dc08cf505d6982f7420102af1da85f40fa2833a0602dec6338d0" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9e37e4cee6496ffc04f0baa54e9cd053be627329cbae5a1c3e9cfb31bd8a2b25"
+    sha256 cellar: :any_skip_relocation, big_sur:       "f44bcf9d53ce1f616563ecebaa46a56fd5c5b67496980c20bdc957b11b10f01e"
+    sha256 cellar: :any_skip_relocation, catalina:      "19086ce7bce1db596f95a2c9c56b256a4a4a455daaf40a2050803cafba883fc2"
+    sha256 cellar: :any_skip_relocation, mojave:        "e2ab94b6a41c963426c3bd51107625871ce931d788674d1c32791ff20a9ce0db"
   end
 
   depends_on "python@3.9"
@@ -32,8 +31,8 @@ class SqliteUtils < Formula
   end
 
   resource "tabulate" do
-    url "https://files.pythonhosted.org/packages/57/6f/213d075ad03c84991d44e63b6516dd7d185091df5e1d02a660874f8f7e1e/tabulate-0.8.7.tar.gz"
-    sha256 "db2723a20d04bcda8522165c73eea7c300eda74e0ce852d9022e0159d7895007"
+    url "https://files.pythonhosted.org/packages/69/44/6c7326b95268c16cf8dc1376ed1a4f404fa9fd04c1371c0917d3f2806832/tabulate-0.8.8.tar.gz"
+    sha256 "26f2589d80d332fefd2371d396863dedeb806f51b54bdb4b264579270b621e92"
   end
 
   def install

@@ -2,14 +2,15 @@ class Minetest < Formula
   desc "Free, open source voxel game engine and game"
   homepage "https://www.minetest.net/"
   license "LGPL-2.1"
+  revision 1
 
   stable do
-    url "https://github.com/minetest/minetest/archive/5.3.0.tar.gz"
-    sha256 "65dc2049f24c93fa544500f310a61e289c1b8fa47bf60877b746a2c27a7238d6"
+    url "https://github.com/minetest/minetest/archive/5.4.0.tar.gz"
+    sha256 "6e9b299e156651be9bcf973a9232cff32215de31dfae5ea770a71d1757cab014"
 
     resource "minetest_game" do
-      url "https://github.com/minetest/minetest_game/archive/5.3.0.tar.gz"
-      sha256 "06c6c1d4b97af211dd0fa518a3e68a205f594e9816a4b2477e48d4d21d278e2d"
+      url "https://github.com/minetest/minetest_game/archive/5.4.0.tar.gz"
+      sha256 "520d2056085ec11e8806cf5a8f928537797d27a86704770bf408c113ea9881cb"
     end
   end
 
@@ -19,10 +20,9 @@ class Minetest < Formula
   end
 
   bottle do
-    sha256 "c362ca09023fd58d8a0cd171b1712ccc8555edcef6993a8847039786c1c0ae2c" => :big_sur
-    sha256 "4442b3b3093e256ba969209a654394ca82de909b1f2b182ff690b543741277c6" => :catalina
-    sha256 "e00fbd45f80e2527940738850f7841c0627704f05bfb15ca8cc02e1fa16d3b34" => :mojave
-    sha256 "f75c155307545d8627d676182c4b175dfeaeeeda87d50e893f50b58feedbdfeb" => :high_sierra
+    sha256 cellar: :any, big_sur:  "fa39d78bcd7d5df96fabfba84e16564d0ae2950810cc30c3bf657ec7fc27ad37"
+    sha256               catalina: "f5c72cf858dfb63f981676ca03eab7c5b875107226adb179612d59b0e177992c"
+    sha256               mojave:   "5fc0d12bfbb4b9c6e9986a5ca403b0d3f0913ba0d17fb45c1ef1138c44247c42"
   end
 
   head do
@@ -45,8 +45,8 @@ class Minetest < Formula
   def install
     (buildpath/"games/minetest_game").install resource("minetest_game")
 
-    args = std_cmake_args - %w[-DCMAKE_BUILD_TYPE=None]
-    args << "-DCMAKE_BUILD_TYPE=Release" << "-DBUILD_CLIENT=1" << "-DBUILD_SERVER=0"
+    args = std_cmake_args
+    args << "-DBUILD_CLIENT=1" << "-DBUILD_SERVER=0"
     args << "-DENABLE_FREETYPE=1" << "-DCMAKE_EXE_LINKER_FLAGS='-L#{Formula["freetype"].opt_lib}'"
     args << "-DENABLE_GETTEXT=1" << "-DCUSTOM_GETTEXT_PATH=#{Formula["gettext"].opt_prefix}"
 

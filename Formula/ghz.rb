@@ -1,16 +1,15 @@
 class Ghz < Formula
   desc "Simple gRPC benchmarking and load testing tool"
   homepage "https://ghz.sh"
-  url "https://github.com/bojand/ghz/archive/v0.80.0.tar.gz"
-  sha256 "ac0e071608a93c283405290d33939865bb71082a4c2dcb2780c860683542cda4"
+  url "https://github.com/bojand/ghz/archive/v0.94.0.tar.gz"
+  sha256 "4b79e88a73d006ba22fe8f3284f89db172c7f12a6f046dd82058e051f1a27b9f"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "34091316bd785f93a86e91e728e54cfe734377a5a481fab8c124a34c78382751" => :big_sur
-    sha256 "ef3d0edc9966ad84bc0ef49089171f9c713396859dab877e1e8d47e44d668f2b" => :arm64_big_sur
-    sha256 "b76d0fa5163d437413fec89811e2318038f45b86996fc9c5c611bb3558abf6ef" => :catalina
-    sha256 "bf024a6bc4e36008ce418df7cb8a2b451893ffb3c73826922a7205c4e0a9a7d2" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c51a6aef4e0cad28ee84b2cd16ba4eeb1ea989c9bf633fee824b4b6c105154ba"
+    sha256 cellar: :any_skip_relocation, big_sur:       "460fa7896c5696917b52b0646dbb93211b71d892a0ff7c376e3bad522073f34d"
+    sha256 cellar: :any_skip_relocation, catalina:      "71dab1c46819603fc8deb6af47cd7a852eef75338550305131a537500e9eeedb"
+    sha256 cellar: :any_skip_relocation, mojave:        "5e007c7ddfc4caa53fe7e0d471f48039c60ed67dc9e6a0779de94fcf63ac331b"
   end
 
   depends_on "go" => :build

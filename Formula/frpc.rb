@@ -2,16 +2,15 @@ class Frpc < Formula
   desc "Client app of fast reverse proxy to expose a local server to the internet"
   homepage "https://github.com/fatedier/frp"
   url "https://github.com/fatedier/frp.git",
-      tag:      "v0.34.3",
-      revision: "aa0a41ee4e3fd332978d509dcdbb09a7f457c880"
+      tag:      "v0.35.1",
+      revision: "3bf1eb85659ee49aff28dfb70e537b1f54b84365"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "16c2574a266ba143cfb8a21c1a861c7cdf72fee01bba872e8ad791bdb79c26d9" => :big_sur
-    sha256 "50cab3b1f46d6e7b4224d6f9e4bd0b7d18e3445fc260d40729e08ccfa282ff81" => :arm64_big_sur
-    sha256 "cbb573268565ade29a95e20f458678ffe2182367603e4640ed8cec12ff3b9285" => :catalina
-    sha256 "8781e241ebe52fad10c329292cdd4cb12438ac74f45348c7e3d398e3ad573578" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "63864b7dce1fb494a1e09fa7ebecbfbab6e8d26ccf38052e57a93a5743597db3"
+    sha256 cellar: :any_skip_relocation, big_sur:       "80f4f2ecea61dd91c6936cc2537fce7df074d87382e6d735fd511fe20c1f26f0"
+    sha256 cellar: :any_skip_relocation, catalina:      "eb16b50c914d06353e99149f6e3f24d9d3c8f09d4414c58cb0afbd1acdfbada1"
+    sha256 cellar: :any_skip_relocation, mojave:        "c731e374a0155c2957430260073594e6cab05685d782fcf827ec3daa161ca8ad"
   end
 
   depends_on "go" => :build

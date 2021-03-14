@@ -2,17 +2,15 @@ class Kubevela < Formula
   desc "Application Platform based on Kubernetes and Open Application Model"
   homepage "https://kubevela.io"
   url "https://github.com/oam-dev/kubevela.git",
-      tag:      "v0.2.2",
-      revision: "2943bc7ce19c0d6c1f46eecea665760ce3db52e6"
+      tag:      "v0.3.5",
+      revision: "3bc014bc8c8ff915018441e7aa2b6c4ce44c3fb9"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "fe892630f78f4007270864612b48bea7443453b7544c6125d601c96f32963265" => :big_sur
-    sha256 "2194e8592b6a2e8bfffe4ba8277e3f905d3c99453c39ef5a5fb9cbcb493b4c6e" => :arm64_big_sur
-    sha256 "a4355a354323936ff5b71f3363ef39bdd35198c9177857918fe3b4d98a5d3ee0" => :catalina
-    sha256 "27f3f0fd5ae62a7016af0a82e26b950eba4c94d58d24e2f368dbfbcdc71123aa" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d677af5b105432ef6a071692c605318e6e06e5f8b91dc8fcc968817b52781ea6"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3b033c0b1fd0f94d78bc886037c551bc16a447408428033767605a7eddea78da"
+    sha256 cellar: :any_skip_relocation, catalina:      "5cca706366b66834dadfc3feaf1ad3353b594bfc74410cc540bb79fec7ddc30c"
+    sha256 cellar: :any_skip_relocation, mojave:        "e338ccdfca542819cddf3fd56668cc34108ce6d87d09fd9c21d6ebaed1332b24"
   end
 
   depends_on "go" => :build

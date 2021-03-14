@@ -5,16 +5,11 @@ class Glibmm < Formula
   sha256 "c1f38573191dceed85a05600888cf4cf4695941f339715bd67d51c2416f4f375"
   license "LGPL-2.1-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "59b86d3d2fe4f28e8a19ba0f5faf0174f7829bb46ae3b04f06bdcf5f3c24935b" => :big_sur
-    sha256 "ad82e21e43601e8804150bea12157afa6c38201a441d97a91521ecea93bbfc13" => :arm64_big_sur
-    sha256 "f4d4326c91b4c573e07a832a0b204bd5a8bc75da331e87f18c044e1397951bc2" => :catalina
-    sha256 "ff82b1c3e7e8467ac8cd91f01cd97ca2bb4329861b2dd99bda0be89954f730b6" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "ad82e21e43601e8804150bea12157afa6c38201a441d97a91521ecea93bbfc13"
+    sha256 cellar: :any, big_sur:       "59b86d3d2fe4f28e8a19ba0f5faf0174f7829bb46ae3b04f06bdcf5f3c24935b"
+    sha256 cellar: :any, catalina:      "f4d4326c91b4c573e07a832a0b204bd5a8bc75da331e87f18c044e1397951bc2"
+    sha256 cellar: :any, mojave:        "ff82b1c3e7e8467ac8cd91f01cd97ca2bb4329861b2dd99bda0be89954f730b6"
   end
 
   depends_on "meson" => :build
@@ -22,6 +17,12 @@ class Glibmm < Formula
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libsigc++"
+
+  on_linux do
+    depends_on "gcc" => :build
+  end
+
+  fails_with gcc: "5"
 
   def install
     ENV.cxx11

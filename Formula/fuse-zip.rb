@@ -9,18 +9,23 @@ class FuseZip < Formula
   head "https://bitbucket.org/agalanin/fuse-zip", using: :hg
 
   bottle do
-    cellar :any
     rebuild 1
-    sha256 "70905b7f3ba6baa6683d7ad1cc0ae51ae9ad37a2c4c037de96abfec298fbd7d0" => :catalina
-    sha256 "f99be52df0a2ff2842c615bb4fa255c4400b382d2bb98d14e023223956edb245" => :mojave
-    sha256 "e72d442a43e1396c8a744e73bc9d197cbef7bb996bba97bff4b377c253c12ed8" => :high_sierra
+    sha256 cellar: :any, catalina:    "70905b7f3ba6baa6683d7ad1cc0ae51ae9ad37a2c4c037de96abfec298fbd7d0"
+    sha256 cellar: :any, mojave:      "f99be52df0a2ff2842c615bb4fa255c4400b382d2bb98d14e023223956edb245"
+    sha256 cellar: :any, high_sierra: "e72d442a43e1396c8a744e73bc9d197cbef7bb996bba97bff4b377c253c12ed8"
   end
-
-  deprecate! date: "2020-11-10", because: "requires FUSE"
 
   depends_on "pkg-config" => :build
   depends_on "libzip"
-  depends_on :osxfuse
+
+  on_macos do
+    deprecate! date: "2020-11-10", because: "requires FUSE"
+    depends_on :osxfuse
+  end
+
+  on_linux do
+    depends_on "libfuse"
+  end
 
   def install
     system "make", "prefix=#{prefix}", "install"

@@ -1,18 +1,16 @@
 class Gopass < Formula
   desc "Slightly more awesome Standard Unix Password Manager for Teams"
   homepage "https://github.com/gopasspw/gopass"
-  url "https://github.com/gopasspw/gopass/releases/download/v1.10.1/gopass-1.10.1.tar.gz"
-  sha256 "23e7cf39938fcc34856ec4e6abce740a9be9fe8fa68cf8a6f61ca497fe6f9283"
+  url "https://github.com/gopasspw/gopass/releases/download/v1.12.2/gopass-1.12.2.tar.gz"
+  sha256 "b4254ecbc14b62a68e1e98c99d08d53c50a5b5b15b8b5b592266a6d581c93f13"
   license "MIT"
   head "https://github.com/gopasspw/gopass.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "eaeba339220efef431cb87934369a1b06790a1105fb8ba8d15b958ddaee68791" => :big_sur
-    sha256 "b944c345d9eaa25df8d8119b6dfdd80f124318c4462029d0dab0130af7c88c41" => :arm64_big_sur
-    sha256 "a9cb1f08e282ab8a9abe4c96553b336141b9c6abeaca11949134de35e45046fd" => :catalina
-    sha256 "8cb98e59bf7622afb658d5115ff18ac21bd7c2d52fab74dffdb8db344c1c11b2" => :mojave
-    sha256 "7eb6e87bccacafcd03a69aacfff0d4081fa413dc9d0d4aa55bfbdca6ea25dc26" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "687c1702f659299c6207330938716ac7a742f6f2c9f3fd806c7cf87836d47970"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c54d0015557a42bb8ff45f6b5727ba09a6bb926f19fe57c51c7803ade0f2d01a"
+    sha256 cellar: :any_skip_relocation, catalina:      "85b54fce51edccec19b757f8bb9965e0e260d750832ec953643ce0fce7f42582"
+    sha256 cellar: :any_skip_relocation, mojave:        "b236144cf649f9ebd86002bcb121558f1579abaffd1daf798f7d5ff59d604609"
   end
 
   depends_on "go" => :build

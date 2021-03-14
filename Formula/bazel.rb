@@ -1,21 +1,29 @@
 class Bazel < Formula
   desc "Google's own build tool"
   homepage "https://bazel.build/"
-  url "https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-dist.zip"
-  sha256 "de255bb42163a915312df9f4b86e5b874b46d9e8d4b72604b5123c3a845ed9b1"
+  url "https://github.com/bazelbuild/bazel/releases/download/4.0.0/bazel-4.0.0-dist.zip"
+  sha256 "d350f80e70654932db252db380d2ec0144a00e86f8d9f2b4c799ffdb48e9cdd1"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "7ab24050548f7539419bbd310c00c718854e95b2e7d15a74b2c8246588d95480" => :big_sur
-    sha256 "d12919775ba3cde5a7f42582fd9cf10513145485ac4a60170e44a1dac70e04fe" => :catalina
-    sha256 "974514ef8eef4ca3d7d548a28c89335129781db6e65f5ab8795ba5096c4cfae6" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "03d9bae72a88eb463ca7fc05edd799d2b33193982a31368e5ea347bbdbfe4468"
+    sha256 cellar: :any_skip_relocation, big_sur:       "f8d9221e1fac2cc9b732ecaeffe8e5d83e2cd7bb4083006697d1828891e5777c"
+    sha256 cellar: :any_skip_relocation, catalina:      "5f98dfeab044d1178e7466334c3d5a90338bd1d2907a9f9797f0fc6ba6ed4490"
+    sha256 cellar: :any_skip_relocation, mojave:        "6d62c70b69b6275216a182a5dc5fa10c8c73e5876367557e8a9f01465b48f649"
   end
 
   depends_on "python@3.9" => :build
   depends_on "openjdk@11"
 
   uses_from_macos "zip"
+
+  # Fix compilation on macOS 10.14 Mojave
+  # Remove in the next release
+  # See https://github.com/bazelbuild/bazel/pull/12882
+  patch do
+    url "https://github.com/bazelbuild/bazel/commit/092b4c10fa2a2552dc3a98544d637c02ea2865c7.patch?full_index=1"
+    sha256 "273cf54bf4c0fe42fe8da959dc76fc1a3e768f3f3d4108bfd280728db022a308"
+  end
 
   def install
     ENV["EMBED_LABEL"] = "#{version}-homebrew"

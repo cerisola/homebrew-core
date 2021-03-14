@@ -1,17 +1,15 @@
 class OpenjdkAT8 < Formula
   desc "Development kit for the Java programming language"
   homepage "https://openjdk.java.net/"
-  url "https://openjdk-sources.osci.io/openjdk8/openjdk8u275-ga.tar.xz"
-  version "1.8.0+275"
-  sha256 "6a83e8bd8caebf5dc8989a22925ac5598c9edb2ba8dcfad7472a5ff99a14c0e7"
+  url "https://openjdk-sources.osci.io/openjdk8/openjdk8u282-ga.tar.xz"
+  version "1.8.0+282"
+  sha256 "e5c0000d54fea680375ab06e6d477713fb5c294d84baf0ed6224498bde811b7c"
   license "GPL-2.0-only"
 
   bottle do
-    cellar :any
-    sha256 "b37ae302878e8bdbfaaa9eb085c7315bef27c09fee834c1e43a7540b2b986d5a" => :big_sur
-    sha256 "85e18d44283b8c93a7065d2dd40540278607ff6d6fdf3e460cdbf5886c051c4b" => :catalina
-    sha256 "b8893a1e645893395f767b21c947ab5669093f3b60c47a3c423a358aeeb024f8" => :mojave
-    sha256 "384c545a8e63a4535ed6999d046f02d25206a72d2925489cba818c63df3e2e37" => :high_sierra
+    sha256 cellar: :any, big_sur:  "b56ff29a7f7f285efc4b704a40cfd7a11f0dfcd39c398ce1de27adf27ea25513"
+    sha256 cellar: :any, catalina: "43314334444466e9540b4193f8313c080af49e6fb6c7ea1b6b2e7c3fde45335c"
+    sha256 cellar: :any, mojave:   "f515bc94c06607642574b44814ca4993c103dc4582fa1ac62d8a6ea96ee8b8b9"
   end
 
   keg_only :versioned_formula

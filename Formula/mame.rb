@@ -1,9 +1,10 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/mame0226.tar.gz"
-  version "0.226"
-  sha256 "7c4c9ec232ba988e65fd29665c9b8e40b5ac3aa9f561eeb107cebbf08ba94baf"
+  # NOTE: Please keep these values in sync with rom-tools.rb when updating.
+  url "https://github.com/mamedev/mame/archive/mame0229.tar.gz"
+  version "0.229"
+  sha256 "414921771ada0804a8c7f3540e33338e8495e16a3bca78a5a2b355abafa51e6a"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git"
 
@@ -18,16 +19,14 @@ class Mame < Formula
   end
 
   bottle do
-    cellar :any
-    rebuild 1
-    sha256 "df514e97b41c36a65fb3d0729f8e927887cd9d1f7b3f23a189e4430a1e48bb76" => :big_sur
-    sha256 "9bc14fa247f653226bcdc771ad60ba70d2dc5e19b3386b547cf9b02c6f760615" => :catalina
-    sha256 "ca698bbefa83ddc6be99d0a471fe7f6303b35a6c757bb5b6b73a70acf8281c3f" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "5d9c92530c40172e07638877b9c96447cb91bfdbf33045a72d2dbd4fa4f71e6d"
+    sha256 cellar: :any, big_sur:       "1e8892e6ffbe413fa809a266f490ed675fb0d5998368b725be1f08b7df6d09ef"
+    sha256 cellar: :any, catalina:      "be17029d7e336580480abfd196d80ea6f99600d9097a6c14472d92c137923379"
+    sha256 cellar: :any, mojave:        "217f52078eb0005e27d65fd4f2aed651c7252884349679751602feaa53a241da"
   end
 
   depends_on "glm" => :build
   depends_on "pkg-config" => :build
-  depends_on "pugixml" => :build
   depends_on "python@3.9" => :build
   depends_on "rapidjson" => :build
   depends_on "sphinx-doc" => :build
@@ -37,18 +36,13 @@ class Mame < Formula
   depends_on macos: :high_sierra
   depends_on "portaudio"
   depends_on "portmidi"
+  depends_on "pugixml"
   depends_on "sdl2"
   depends_on "sqlite"
   depends_on "utf8proc"
 
   uses_from_macos "expat"
   uses_from_macos "zlib"
-
-  # Disable BGFX threading. Remove in next version.
-  patch do
-    url "https://github.com/mamedev/mame/commit/48d1f0de37fc6c429051dd1bcd1a49dbef581b1a.patch?full_index=1"
-    sha256 "9f9aba588ab1e82d927d1c101780415672c54cb463e80d435be3cb1d0ec34217"
-  end
 
   def install
     # Cut sdl2-config's invalid option.
@@ -72,7 +66,7 @@ class Mame < Formula
                    "USE_SYSTEM_LIB_RAPIDJSON=1",
                    "USE_SYSTEM_LIB_SQLITE3=1",
                    "USE_SYSTEM_LIB_UTF8PROC=1"
-    bin.install "mame64" => "mame"
+    bin.install "mame"
     cd "docs" do
       # We don't convert SVG files into PDF files, don't load the related extensions.
       inreplace "source/conf.py", "'sphinxcontrib.rsvgconverter',", ""

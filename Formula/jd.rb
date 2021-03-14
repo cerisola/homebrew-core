@@ -1,29 +1,21 @@
 class Jd < Formula
   desc "JSON diff and patch"
   homepage "https://github.com/josephburnett/jd"
-  url "https://github.com/josephburnett/jd/archive/v1.2.0.tar.gz"
-  sha256 "044a1c459b5255cce83bbfc0e8bc73ea227cf9c1c904fc3dada46f640136cbc5"
+  url "https://github.com/josephburnett/jd/archive/v1.3.0.tar.gz"
+  sha256 "cbd5f2ff3c56a57126acd246cbd7820dbc4a9296756c5af9ce4ca705bcefc0d9"
   license "MIT"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "881c3988d2ff749b6b98008f025f69d377b6750b48c8fe7746830ebab26cb979" => :big_sur
-    sha256 "e2803ce038346619f7007e08c9ac922b79bb2aaba4a47a65eb164264bfd39e4a" => :arm64_big_sur
-    sha256 "cb706ba25f462bd0f8c32b3373022d1fe2bb9416b709c9f2b5d3d2b5c8c8bd64" => :catalina
-    sha256 "a3c5ff305e4e52d31cd410dc6b88efaea8a758637cf96e997b95be2d8a049abd" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5b45be90cd17c04df3705c2ee08cdef96e46e74367d8203b0e5d78b03ac925e7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "25a7769810ab7ae690b0eb36ca77ebabb2c1d7bccf69fc5d84997019c1ecce42"
+    sha256 cellar: :any_skip_relocation, catalina:      "b2598d40731b157f9bad27e48397db6dd44f8df036f66657ea9961e6a04573a2"
+    sha256 cellar: :any_skip_relocation, mojave:        "82b255b04f78303e4df2fb1d68c8d2d0ff852372516efe6a9d1b476db96d9166"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
-    dir = buildpath/"src/github.com/josephburnett/jd"
-    dir.install buildpath.children
-
-    cd dir do
-      system "go", "build", "-o", bin/"jd"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args, "-ldflags", "-s -w"
   end
 
   test do

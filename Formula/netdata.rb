@@ -1,8 +1,8 @@
 class Netdata < Formula
   desc "Diagnose infrastructure problems with metrics, visualizations & alarms"
   homepage "https://netdata.cloud/"
-  url "https://github.com/netdata/netdata/releases/download/v1.28.0/netdata-v1.28.0.tar.gz"
-  sha256 "44801e240b1883a98d203156397cc8d9232492f3136891e61074e2e7facbf1a8"
+  url "https://github.com/netdata/netdata/releases/download/v1.29.3/netdata-v1.29.3.tar.gz"
+  sha256 "eeba8b18519a9123a3cc8b450dcd042e23a3b145a78a7017a14c47ed36d923df"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,10 +11,10 @@ class Netdata < Formula
   end
 
   bottle do
-    sha256 "b82d22e73700e96436551a9119415dbd74ef096b1be7a3e98dbbeb00b04a19a6" => :big_sur
-    sha256 "2ee333bffcc8ee2bd1e3cfd4eab8ebb9791588a195991448a5a3d7eb7da8e0ed" => :arm64_big_sur
-    sha256 "a0a0e076fbf393299fd7c5f4775bdbf449d5e8d393f4b456c8d617219cc83aef" => :catalina
-    sha256 "944a5e4a9de241e57f91d8cf3007752e4cc27df9a364e1b38d42fe24eed306d9" => :mojave
+    sha256 arm64_big_sur: "0568a4cafa481062063768c710c3ea924e92c95d5723720b9858dd5edc4c9cf0"
+    sha256 big_sur:       "39521fa2e058702dd343672302389b4507088352eb07e5ec41ba6ed54747f821"
+    sha256 catalina:      "f8faef68bd371013bb2b38d834982b0adb868efdd096eccc964ab9f562c2f3ce"
+    sha256 mojave:        "d906de464e725959fc7006160569712bebaba1ceb09b9d96da50bb21e987df76"
   end
 
   depends_on "autoconf" => :build
@@ -24,6 +24,12 @@ class Netdata < Formula
   depends_on "libuv"
   depends_on "lz4"
   depends_on "openssl@1.1"
+
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "util-linux"
+  end
 
   resource "judy" do
     url "https://downloads.sourceforge.net/project/judy/judy/Judy-1.0.5/Judy-1.0.5.tar.gz"
@@ -50,18 +56,27 @@ class Netdata < Formula
     ENV.append "LDFLAGS", "-L#{judyprefix}/lib"
 
     system "autoreconf", "-ivf"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}",
-                          "--libexecdir=#{libexec}",
-                          "--with-math",
-                          "--with-zlib",
-                          "--enable-dbengine",
-                          "--with-user=netdata",
-                          "UUID_CFLAGS=-I/usr/include",
-                          "UUID_LIBS=-lc"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --sysconfdir=#{etc}
+      --localstatedir=#{var}
+      --libexecdir=#{libexec}
+      --with-math
+      --with-zlib
+      --enable-dbengine
+      --with-user=netdata
+    ]
+    on_macos do
+      args << "UUID_LIBS=-lc"
+      args << "UUID_CFLAGS=-I/usr/include"
+    end
+    on_linux do
+      args << "UUID_LIBS=-luuid"
+      args << "UUID_CFLAGS=-I#{Formula["util-linux"].opt_include}"
+    end
+    system "./configure", *args
     system "make", "clean"
     system "make", "install"
 

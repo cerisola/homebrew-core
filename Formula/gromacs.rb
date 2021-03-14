@@ -1,8 +1,9 @@
 class Gromacs < Formula
   desc "Versatile package for molecular dynamics calculations"
-  homepage "http://www.gromacs.org/"
-  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2020.4.tar.gz"
-  sha256 "5519690321b5500c7951aaf53ff624042c3edd1a5f5d6dd1f2d802a3ecdbf4e6"
+  homepage "https://www.gromacs.org/"
+  url "https://ftp.gromacs.org/pub/gromacs/gromacs-2021.1.tar.gz"
+  sha256 "bc1d0a75c134e1fb003202262fe10d3d32c59bbb40d714bc3e5015c71effe1e5"
+  license "LGPL-2.1-or-later"
 
   livecheck do
     url "https://ftp.gromacs.org/pub/gromacs/"
@@ -10,17 +11,19 @@ class Gromacs < Formula
   end
 
   bottle do
-    sha256 "1bcecb34934eadf23261f044280b1794a4a99cdd6b65f85e741a16b86b3b5d34" => :big_sur
-    sha256 "e2228179c68b5e529ed52b1c254d1c7413a3a024008a269ab011e39df564e146" => :arm64_big_sur
-    sha256 "a47955588b6626afba661dd5a72b7b2e4669f28e59060ebfd9e033f2739ba56e" => :catalina
-    sha256 "3741e067b76102f12bd52d2a9f5cfb5ff2a437f60c09788f8a4cd2b066966cf9" => :mojave
-    sha256 "931193676d571f0418f11bf67885b2a0d0f5c94ce0e6f2bcd7f6f5910ec5ebd1" => :high_sierra
+    sha256 arm64_big_sur: "d6544181b87b3fc112bac1062701baef98494401db96b9bb66ecdf74592626e5"
+    sha256 big_sur:       "ebea4352a0e8e468b72b403fb02c0293ffa86a5b0904b336d9a194a55f908c3a"
+    sha256 catalina:      "342033a6ab15cb11014ca9289ea51ecbe8ac6c0d1e1cb6f1fb80bf20d3be8071"
+    sha256 mojave:        "5fa4f3d48ec60a17153b6f767869970fd9cf7d92b4348b4fce2d203587b4a5b5"
   end
 
   depends_on "cmake" => :build
   depends_on "fftw"
   depends_on "gcc" # for OpenMP
   depends_on "openblas"
+
+  fails_with gcc: "5"
+  fails_with gcc: "6"
 
   def install
     # Non-executable GMXRC files should be installed in DATADIR

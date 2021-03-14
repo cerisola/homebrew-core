@@ -4,15 +4,14 @@ class Pdal < Formula
   url "https://github.com/PDAL/PDAL/releases/download/2.2.0/PDAL-2.2.0-src.tar.gz"
   sha256 "421e94beafbfda6db642e61199bc4605eade5cab5d2e54585e08f4b27438e568"
   license "BSD-3-Clause"
-  revision 1
+  revision 3
   head "https://github.com/PDAL/PDAL.git"
 
   bottle do
-    sha256 "891506bdb2c472daa21ba458d6d52d71f1aa70b1f7dbae2c70f3b21977b016e9" => :big_sur
-    sha256 "704621f65b657ada078747030eb336ddcd92f67b3382f6662f4f5ee66079348f" => :arm64_big_sur
-    sha256 "ff1bcf0dc89090c9a0f542403b383356af63fe83872a072ed9538ed61797353d" => :catalina
-    sha256 "68f240bac142ac17134d7fe0cfd5522dc0d73391fe5236987d1f9ae0b7a5f4b0" => :mojave
-    sha256 "fcfaaa69177ce2f263013dec667a309c78140104f9d4520f212bcfd0986ddeea" => :high_sierra
+    sha256 arm64_big_sur: "f43d527f411e9f7f5f05d8d222a9905d8884c8c4c755f5c97dde94c25e3dba35"
+    sha256 big_sur:       "38ea562310b33f0c87e067cbf807548711bb583ea7afff19139fc94a346cea09"
+    sha256 catalina:      "5dfb4410adec9ec76695ab3a6c31928f3f49534905f3aea271a998a9172a9d26"
+    sha256 mojave:        "1fd56f223fc51da343f069420643062cc89774f19adcb55ab81bf57da45918f4"
   end
 
   depends_on "cmake" => :build

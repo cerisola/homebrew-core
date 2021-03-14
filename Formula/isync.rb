@@ -1,22 +1,16 @@
 class Isync < Formula
   desc "Synchronize a maildir with an IMAP server"
   homepage "https://isync.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/isync/isync/1.3.3/isync-1.3.3.tar.gz"
-  sha256 "f2213bf7f90266e1295deafe39b02d1ba0b4c7f3b897c09cd17c60f0d4f4c882"
+  url "https://downloads.sourceforge.net/project/isync/isync/1.4.1/isync-1.4.1.tar.gz"
+  sha256 "0d36dbb57bb06c8bbe10bb66f40ae543095b143443209b7037167be600420150"
   license "GPL-2.0"
   head "https://git.code.sf.net/p/isync/isync.git"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "278f8ee2e2d3cd15cff66ab586f458b2103896573e2772522d97629c46768e37" => :big_sur
-    sha256 "9d2c437a42156cc9d7589b27fb1f84db292d76482bf103b725c89898c9405a2c" => :arm64_big_sur
-    sha256 "e246ae47ad32253be95b4344e3a8c7ef2b586364944080d98beb7d9543ba7c9e" => :catalina
-    sha256 "af52bcdb59df55a0aa754d5fd3b77ef14107365d9d1ef39cf20115e0d49d6221" => :mojave
-    sha256 "aaea9bd9e79853387aef7c312616d9c1446af6661b889539500e5640070679f4" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "47e57e76845e8f327c3125d97a80695e1f55b2f92837a9f6d9d3e496cbb84345"
+    sha256 cellar: :any, big_sur:       "5d051373932508e94d32d663a4f5352213997b107b690b702383a51810dad7a0"
+    sha256 cellar: :any, catalina:      "25182d348d0169c13d02405319edb4c764e421af445ca9cd903ea1a6964fcf4d"
+    sha256 cellar: :any, mojave:        "2d7e9567b746d9aaed7ec0e704800180b448df8ae762636182800eba491dad31"
   end
 
   depends_on "autoconf" => :build

@@ -4,22 +4,22 @@ class ImagemagickAT6 < Formula
   # Please always keep the Homebrew mirror as the primary URL as the
   # ImageMagick site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://dl.bintray.com/homebrew/mirror/imagemagick%406-6.9.11-54.tar.xz"
-  mirror "https://www.imagemagick.org/download/releases/ImageMagick-6.9.11-54.tar.xz"
-  sha256 "d48d0d6710c02b821aa89338bcbcb5e83a4883ac4aafbc98b357bb9228d2e820"
+  url "https://dl.bintray.com/homebrew/mirror/ImageMagick-6.9.12-3.tar.xz"
+  mirror "https://www.imagemagick.org/download/releases/ImageMagick-6.9.12-3.tar.xz"
+  sha256 "b9bf05a49f878713d96bc9c88d21414adaf2a542125530e2dee8a07128ef8ed1"
   license "ImageMagick"
   head "https://github.com/imagemagick/imagemagick6.git"
 
   livecheck do
-    url "https://www.imagemagick.org/download/"
+    url "https://download.imagemagick.org/ImageMagick/download/"
     regex(/href=.*?ImageMagick[._-]v?(6(?:\.\d+)+(?:-\d+)?)\.t/i)
   end
 
   bottle do
-    sha256 "b0a72d572fbfba8492b8a98609b1d5dc886a143e9de2d22f6d0b701c59b080a2" => :big_sur
-    sha256 "1422843654f1cde9f15a419a77ae334ccb84fe70a5f3c1585a384c616e4963c2" => :arm64_big_sur
-    sha256 "e264f830468e3e791d6822df06c5813c6b1f27556c598acac2554080cd5aa5a5" => :catalina
-    sha256 "3406b0a04bc95946d293f816e55e2c7168d3a6d7582fc268a6475ac283440f13" => :mojave
+    sha256 arm64_big_sur: "c086c50654f423114fab9143bd0796a0f8e9bdddfeb76388f8f3235c3d7103f3"
+    sha256 big_sur:       "6f78526fcb973435691e4cb448bda102351e96ab86e8abc0e623d59d032d2894"
+    sha256 catalina:      "65e46157781b3d4117c213040ae4c690f43096f092ac3bf445f7ae617d5cc764"
+    sha256 mojave:        "dae91937b1bfea921fdffd570d6d0deacc3bb295ee579537cd6890e1869452db"
   end
 
   keg_only :versioned_formula
@@ -65,7 +65,7 @@ class ImagemagickAT6 < Formula
     ]
 
     # versioned stuff in main tree is pointless for us
-    inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_VERSION}", "${PACKAGE_NAME}"
+    inreplace "configure", "${PACKAGE_NAME}-${PACKAGE_BASE_VERSION}", "${PACKAGE_NAME}"
     system "./configure", *args
     system "make", "install"
   end

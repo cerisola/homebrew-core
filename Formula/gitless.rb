@@ -6,14 +6,13 @@ class Gitless < Formula
   url "https://files.pythonhosted.org/packages/9c/2e/457ae38c636c5947d603c84fea1cf51b7fcd0c8a5e4a9f2899b5b71534a0/gitless-0.8.8.tar.gz"
   sha256 "590d9636d2ca743fdd972d9bf1f55027c1d7bc2ab1d5e877868807c3359b78ef"
   license "MIT"
-  revision 6
+  revision 7
 
   bottle do
-    cellar :any
-    rebuild 2
-    sha256 "b51c28ae1384c64c79bbfcd0c00a4cc95a04b887e68c1be1943410117317535b" => :big_sur
-    sha256 "2334609a1f389d1c5ec347ab7739003663829451cc0d1413ef83b09eaabc4b63" => :catalina
-    sha256 "bf11491ea7de12ae3cad01dbc68fca2af347b71f3efe2d187c5dadea5bdfd246" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "8fe3da387f2212fe2618a07b2e1682e3bae08be20f105734e21079f0f3df7d79"
+    sha256 cellar: :any, big_sur:       "4c845e5cc5e9fafccda5ab5b2dfeb1e9cbbbe8f67ab9c2f72060c09a8d7743e4"
+    sha256 cellar: :any, catalina:      "1f52f84f5a9f9c9633e7fc9ef7ef8227431abd37ca6629f33986766b61470cc0"
+    sha256 cellar: :any, mojave:        "50884b829598dab4558bc9f338b96b6ac18302c426ad6cfd440d2d721b1cb30a"
   end
 
   depends_on "libgit2"
@@ -36,8 +35,8 @@ class Gitless < Formula
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/93/1a/ab8c62b5838722f29f3daffcc8d4bd61844aa9b5f437341cc890ceee483b/cffi-1.12.3.tar.gz"
-    sha256 "041c81822e9f84b1d9c401182e174996f0bae9991f33725d059b771744290774"
+    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
+    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
   end
 
   resource "clint" do

@@ -2,16 +2,16 @@ class Wownero < Formula
   desc "Official wallet and node software for the Wownero cryptocurrency"
   homepage "https://wownero.org"
   url "https://git.wownero.com/wownero/wownero.git",
-      tag:      "v0.9.2.0",
-      revision: "4b1d0f2340c4d21f0a7b3d520bd0acfd6eeb8192"
+      tag:      "v0.9.2.2",
+      revision: "0e65b21328f88044009838ed963652effe13b5c4"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "46c35cb57aa75b3938782c992a20e21b2439c862e28940ebc6b08bf447bbe229" => :big_sur
-    sha256 "f2a79ca860b6c7f49ee7fdcc7bf83e37c1537884bfd2497f068f2666f43f383f" => :arm64_big_sur
-    sha256 "ff9c445d15fc95660c62a24b6eebf380cc165bc5ba8e28077cc1bebcd1a18736" => :catalina
-    sha256 "ca7c85dd4135286d897194108d268622910bc8a415226d1695ada95295515bcb" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "d80890e7ee1eb581b34b03499d02b2448dcedd1f8a1f995328a2c0900d43de9a"
+    sha256 cellar: :any, big_sur:       "9c6e61cdf77def4a409b44b0ca5f7a18f05d761f900dd3ceb3b99b4499d6d245"
+    sha256 cellar: :any, catalina:      "20768518c25c2477ee4719547d763e50286c7bace569e39ad9fb4f2d1d3df971"
+    sha256 cellar: :any, mojave:        "0d5accab8bb0c88ce97f9b215b16c91305474b5d4e6f9fdb73bdf2993a33693e"
   end
 
   depends_on "cmake" => :build

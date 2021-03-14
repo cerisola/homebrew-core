@@ -1,28 +1,29 @@
 class Spotifyd < Formula
   desc "Spotify daemon"
   homepage "https://github.com/Spotifyd/spotifyd"
-  url "https://github.com/Spotifyd/spotifyd/archive/v0.2.24.tar.gz"
-  sha256 "d3763f4647217a8f98ee938b50e141d67a5f3d33e9378894fde2a92c9845ef80"
+  url "https://github.com/Spotifyd/spotifyd/archive/v0.3.2.tar.gz"
+  sha256 "d1d5442e6639cde7fbd390a65335489611eec62a1cfcba99a4aba8e8977a9d9c"
   license "GPL-3.0-only"
   head "https://github.com/Spotifyd/spotifyd.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "5b5f8cae3d600eb6aee6ac3ac9ccdd036d37308820e2ac11b9b49bcd2ae41983" => :big_sur
-    sha256 "e86e0a3ece83eccdfecfd584b4a6dea2682c857b766945821dfbf792370540de" => :catalina
-    sha256 "d7e0da5e772657ce9cbdb3a6f48aa47cc55a87b563913f957cf35ba678814991" => :mojave
-    sha256 "d745753724407c3b7e1d88743c4abfac7c1c945a9f03608dc7be4d90f1878bd0" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "c8f63e37af5e61c265e6843f91244dee84cddd37b4c311145f7b8d1c14e429fe"
+    sha256 cellar: :any_skip_relocation, catalina: "777337567077e1ca16cffc7784fed7bfea77ea4f58fc42852584ed181ade6ea5"
+    sha256 cellar: :any_skip_relocation, mojave:   "eeb3feaaebc725fc35f27d71c9070089a9dc9d042a845d5d4e6ca4c86aeb58ff"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
   depends_on "dbus"
+
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
   def install
     ENV["COREAUDIO_SDK_PATH"] = MacOS.sdk_path_if_needed
@@ -64,6 +65,6 @@ class Spotifyd < Formula
 
   test do
     cmd = "#{bin}/spotifyd --username homebrew_fake_user_for_testing --password homebrew --no-daemon --backend rodio"
-    assert_match /Authentication failed/, shell_output(cmd, 101)
+    assert_match "Authentication failed", shell_output(cmd, 101)
   end
 end

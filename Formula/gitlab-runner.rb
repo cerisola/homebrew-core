@@ -2,22 +2,21 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v13.7.0",
-      revision: "943fc2521df7d18aacd73ab211c35546ace47c27"
+      tag:      "v13.9.0",
+      revision: "2ebc4dc45bd6065afa304a5bfdb846334981529e"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "fa7fb8c6e9aa870c6f99ea9b7c900f8e26c0959ca2dd4db272b82eb80564be9b" => :big_sur
-    sha256 "66e7158a51e584ad2cc7f587b2146b5841ce1e1e30e5dc3353f6f00818ba86ac" => :arm64_big_sur
-    sha256 "1b22b36fa6d32ce822eef5164e510a1580d242eb830f9e90111ecb5ad16a17b5" => :catalina
-    sha256 "163e0e10323ec2e18e62b58773a5b45179db0d0f737aae7b636f2814738c4854" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f33d6880cae9fbed3b58162ccf1016ac1a5759412fd108fc5c4f544a45dfca66"
+    sha256 cellar: :any_skip_relocation, big_sur:       "572eb3014382b91d4475fc8ef88aa359d8f24d66c290b2a74e084be4ae8826d2"
+    sha256 cellar: :any_skip_relocation, catalina:      "539d16ba765ed9a15cbd9575cfc00e59fa63394514b9d7d12458c6363cff5478"
+    sha256 cellar: :any_skip_relocation, mojave:        "b584ec47826383ebf7d7743409fe222c990d5613a6dbd0bb600047d5886ca335"
   end
 
   depends_on "go" => :build
@@ -28,15 +27,12 @@ class GitlabRunner < Formula
 
     cd dir do
       proj = "gitlab.com/gitlab-org/gitlab-runner"
-      commit = Utils.safe_popen_read("git", "rev-parse", "--short=8", "HEAD").chomp
-      branch = "#{version.major}-#{version.minor}-stable"
-      built = Time.new.strftime("%Y-%m-%dT%H:%M:%S%:z")
       system "go", "build", "-ldflags", <<~EOS
         -X #{proj}/common.NAME=gitlab-runner
         -X #{proj}/common.VERSION=#{version}
-        -X #{proj}/common.REVISION=#{commit}
-        -X #{proj}/common.BRANCH=#{branch}
-        -X #{proj}/common.BUILT=#{built}
+        -X #{proj}/common.REVISION=#{Utils.git_short_head(length: 8)}
+        -X #{proj}/common.BRANCH=#{version.major}-#{version.minor}-stable
+        -X #{proj}/common.BUILT=#{Time.new.strftime("%Y-%m-%dT%H:%M:%S%:z")}
       EOS
 
       bin.install "gitlab-runner"

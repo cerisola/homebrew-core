@@ -1,25 +1,26 @@
 class Coq < Formula
   desc "Proof assistant for higher-order logic"
   homepage "https://coq.inria.fr/"
-  url "https://github.com/coq/coq/archive/V8.12.2.tar.gz"
-  sha256 "2c57416e3ec737b212610512eae7e40259fb17a4e487b49981556f28838e8b17"
+  url "https://github.com/coq/coq/archive/V8.13.1.tar.gz"
+  sha256 "95e71b16e6f3592e53d8bb679f051b062afbd12069a4105ffc9ee50e421d4685"
   license "LGPL-2.1-only"
   head "https://github.com/coq/coq.git"
 
   livecheck do
-    url :head
+    url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 "e3150876a74c04551f2ed714012df538fd8750d7146c6882f40a6edf6ac09f42" => :big_sur
-    sha256 "82149c53991b3d45cd0748c44df03ee9fc18123473551361099afbe3e00e17de" => :catalina
-    sha256 "f8a13a046decf1f4ad51ce54f86ac69aef3cd970cb03f2a937599b55d7bc7767" => :mojave
+    sha256 arm64_big_sur: "0447644917356bc431d9e97b408a84f0cef0f8bf96ea9b849198f244459e3a2e"
+    sha256 big_sur:       "6f09e0f0691cc213976a437a39c9898671884b333f2999a694bfe2c480edd7b6"
+    sha256 catalina:      "99d041e5c719e86a2a2d99a415e7689e870c08b17d540e2a3d710f6e1761506d"
+    sha256 mojave:        "ce88a3dcd0df33a03a99cc2da7517739c4eedceff7e267f5c3485c4108a741b7"
   end
 
   depends_on "ocaml-findlib" => :build
   depends_on "ocaml"
-  depends_on "ocaml-num"
+  depends_on "ocaml-zarith"
 
   uses_from_macos "m4" => :build
   uses_from_macos "unzip" => :build
@@ -36,7 +37,7 @@ class Coq < Formula
 
   test do
     (testpath/"testing.v").write <<~EOS
-      Require Coq.omega.Omega.
+      Require Coq.micromega.Lia.
       Require Coq.ZArith.ZArith.
 
       Inductive nat : Set :=
@@ -52,12 +53,12 @@ class Coq < Formula
       intros n; induction n; simpl; auto; rewrite IHn; auto.
       Qed.
 
-      Import Coq.omega.Omega.
+      Import Coq.micromega.Lia.
       Import Coq.ZArith.ZArith.
       Open Scope Z.
       Lemma add_O_r_Z : forall (n: Z), n + 0 = n.
       Proof.
-      intros; omega.
+      intros; lia.
       Qed.
     EOS
     system("#{bin}/coqc", "#{testpath}/testing.v")

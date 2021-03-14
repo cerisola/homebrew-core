@@ -2,8 +2,8 @@ class Dotnet < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   url "https://github.com/dotnet/source-build.git",
-      tag:      "v3.1.110-SDK",
-      revision: "2b1abb23997ef7cd23182455e0c6566e205e43d0"
+      tag:      "v5.0.103-SDK",
+      revision: "ccff33e9e87656ab8349dba6779363b15d53d56a"
   license "MIT"
 
   livecheck do
@@ -12,10 +12,9 @@ class Dotnet < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "90d24b7d83bd2d5da82148beca9c4ae758402226b848f2caf98093c7c4d073f8" => :catalina
-    sha256 "952fab6c217409f77da328251a234e3486feba52427459da06ea7f1f8a7bb91f" => :mojave
-    sha256 "41fd78bd40cff8931aa9d059bed8bc9575270a1ef32ef854e1911b069d6c8a6c" => :high_sierra
+    sha256 cellar: :any, big_sur:  "5c84f114b503fb06056fbb92ff9ef62a577200e24b9db5d38805527010d301e3"
+    sha256 cellar: :any, catalina: "dccd1ebb58287b14a845f9c6cde98f449bfd3bbc94ea532f03917e486efb1e3f"
+    sha256 cellar: :any, mojave:   "f9bd9adff1ec683b00f63d6349bd50a22a8cf51fed9c7dd0c5a55b9aa6ddfe62"
   end
 
   depends_on "cmake" => :build
@@ -39,8 +38,15 @@ class Dotnet < Formula
     (bin/"dotnet").write_env_script libexec/"dotnet", DOTNET_ROOT: libexec
   end
 
+  def caveats
+    <<~EOS
+      For other software to find dotnet you may need to set:
+        export DOTNET_ROOT="#{opt_libexec}"
+    EOS
+  end
+
   test do
-    target_framework = "netcoreapp3.1"
+    target_framework = "net#{version.major_minor}"
     (testpath/"test.cs").write <<~EOS
       using System;
 

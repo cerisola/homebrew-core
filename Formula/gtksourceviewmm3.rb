@@ -4,7 +4,7 @@ class Gtksourceviewmm3 < Formula
   url "https://download.gnome.org/sources/gtksourceviewmm/3.18/gtksourceviewmm-3.18.0.tar.xz"
   sha256 "51081ae3d37975dae33d3f6a40621d85cb68f4b36ae3835eec1513482aacfb39"
   license "LGPL-2.1-or-later"
-  revision 9
+  revision 10
 
   livecheck do
     url :stable
@@ -12,11 +12,10 @@ class Gtksourceviewmm3 < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "8c4f4dccd8d2863584a97ade21f7548043396608735140da1e1486f856a8a32d" => :big_sur
-    sha256 "73a527b55ab4b0474b2ff5aa5dd416be5b59e181ad995348b4896c6b9b60dcb9" => :arm64_big_sur
-    sha256 "0b7aaa428f4ac5c494ac82dc385d6fe170d33e6f09f88f90bb76d85181449a8f" => :catalina
-    sha256 "7e6ea75a77e09751dba728dec6b7d87f74a99400fa2c29ea1246f39f57f907fc" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "787713d0f6802ea858aa728be88507a6d1b3adc6e3e648c34af059651393e83a"
+    sha256 cellar: :any, big_sur:       "e1cc731cb3f1d99a040da7719e8d91f325d7c00a46e19a10ffca8d1ec87991e8"
+    sha256 cellar: :any, catalina:      "2909f29ff9dce4266ba101d992bb8831487cd2084f467faad39198ce6923b729"
+    sha256 cellar: :any, mojave:        "548c9dfe0eb1fbbe8bf9234a3d631bc232514855457372633f37bf240e427a5d"
   end
 
   depends_on "pkg-config" => [:build, :test]

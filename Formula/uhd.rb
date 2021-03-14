@@ -4,6 +4,7 @@ class Uhd < Formula
   url "https://github.com/EttusResearch/uhd/archive/v4.0.0.0.tar.gz"
   sha256 "4f3513c43edf0178391ed5755266864532716b8b503bcfb9a983ae6256c51b14"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
+  revision 1
   head "https://github.com/EttusResearch/uhd.git"
 
   livecheck do
@@ -12,10 +13,10 @@ class Uhd < Formula
   end
 
   bottle do
-    sha256 "6cc2856cd61dbc5757d003a75efc9f0a6a5bed1c559a9c21f5ac87a65b496126" => :big_sur
-    sha256 "b63f3421f2bc1892731eaea65ae9ceb54f4f4d0cf4fea767939f4a1ff401265c" => :arm64_big_sur
-    sha256 "000b6f7fd9126542c480b004ad6c0b7e85279d00ab5c3ff96bb45ba98acdf489" => :catalina
-    sha256 "90f5734f4608e8a2c198bee12f4de067d7e5297d531c625bcfc4dbfcfd0fe7fe" => :mojave
+    sha256 arm64_big_sur: "098213c91123486b73640dea181811f24089b910dc4b06dc416f6893890a545a"
+    sha256 big_sur:       "082d0aa874d4fe5c14f5fb095c387b73a03d7b178f28223735cd0b65720686fe"
+    sha256 catalina:      "ce3eb00e862e1d0799b0f6c36b890aa7ce8e224e4a1c37e90b0ad22edc5d3a8e"
+    sha256 mojave:        "52ba3ba2fa2b05eef1811a34285bcb54ae49cdb81e6a9441114cd0f5106830aa"
   end
 
   depends_on "cmake" => :build
@@ -25,8 +26,8 @@ class Uhd < Formula
   depends_on "python@3.9"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/72/89/402d2b4589e120ca76a6aed8fee906a0f5ae204b50e455edd36eda6e778d/Mako-1.1.3.tar.gz"
-    sha256 "8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27"
+    url "https://files.pythonhosted.org/packages/5c/db/2d2d88b924aa4674a080aae83b59ea19d593250bfe5ed789947c21736785/Mako-1.1.4.tar.gz"
+    sha256 "17831f0b7087c313c0ffae2bcbbd3c1d5ba9eeac9c38f2eb7b50e8c99fe9d5ab"
   end
 
   def install

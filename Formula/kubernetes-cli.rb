@@ -2,21 +2,20 @@ class KubernetesCli < Formula
   desc "Kubernetes command-line interface"
   homepage "https://kubernetes.io/"
   url "https://github.com/kubernetes/kubernetes.git",
-      tag:      "v1.20.1",
-      revision: "c4d752765b3bbac2237bf87cf0b1c2e307844666"
+      tag:      "v1.20.4",
+      revision: "e87da0bd6e03ec3fea7933c4b5263d151aafd07c"
   license "Apache-2.0"
   head "https://github.com/kubernetes/kubernetes.git"
 
   livecheck do
-    url :head
-    regex(/^v([\d.]+)$/i)
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0b4f08bd1d47cb913d7cd4571e3394c6747dfbad7ff114c5589c8396c1085ecf" => :big_sur
-    sha256 "f49639875a924ccbb15b5f36aa2ef48a2ed94ee67f72e7bd6fed22ae1186f977" => :catalina
-    sha256 "4a3eaef3932d86024175fd6c53d3664e6674c3c93b1d4ceedd734366cce8e503" => :mojave
+    sha256 cellar: :any_skip_relocation, big_sur:  "afb2863bbea76a02a679f613a8dff63014c7abee3ca10db76911a40d5512e2c4"
+    sha256 cellar: :any_skip_relocation, catalina: "26cd1aaba450b81ae1f0536433f06ecd001be015b1d4cd2ee84ac0745176a505"
+    sha256 cellar: :any_skip_relocation, mojave:   "20e9bc152b7e468fb2cc298934eac84fa606cf222d629deed4b6ad105eea3e90"
   end
 
   depends_on "go" => :build

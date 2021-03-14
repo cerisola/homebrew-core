@@ -1,8 +1,8 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.31.3.tar.xz"
-  sha256 "484041aed08f88f3a528a5b82489b6cda4090764228813bca73678da3a753aca"
+  url "https://notmuchmail.org/releases/notmuch-0.31.4.tar.xz"
+  sha256 "8661b66567660fd630af10c4647c30327fdd1b34a988cab80d614328a5b74f55"
   license "GPL-3.0-or-later"
   revision 1
   head "https://git.notmuchmail.org/git/notmuch", using: :git
@@ -13,11 +13,10 @@ class Notmuch < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "50463927fdfdbd0c2ce451b058d62411c1103224b782594a7c0e31e5cfb6b62d" => :big_sur
-    sha256 "adf2064697804a4c19a1840b14e2ad346062ad27511eccee87cf12d9d772f83d" => :arm64_big_sur
-    sha256 "ce1daba205ab1785008998e93dcb203c06afba8967dece326fec8a868b08de97" => :catalina
-    sha256 "b3dff4eefeaa3438b0b3c87c36b6fb2b3c41da2cdc59e1870a9f8eb1348d4392" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "c042906e75dcade6c9e501bf603bf60847a90bd3535497c3b3259d03932ddf9b"
+    sha256 cellar: :any, big_sur:       "5d5781026437ce04c590ae46dab93e1adecff5fcd6a40f821fe7119de69f14d0"
+    sha256 cellar: :any, catalina:      "223395abe26a26918e7f8b1893fa666e417b20d30ba3c8e4035755d0ce870754"
+    sha256 cellar: :any, mojave:        "be5af71fc297f08ada237d27f4bbb60c5ace573e6656a1f64c603839301caf72"
   end
 
   depends_on "doxygen" => :build
@@ -29,7 +28,8 @@ class Notmuch < Formula
   depends_on "python@3.9"
   depends_on "talloc"
   depends_on "xapian"
-  depends_on "zlib"
+
+  uses_from_macos "zlib", since: :sierra
 
   def install
     args = %W[

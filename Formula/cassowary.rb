@@ -1,19 +1,16 @@
 class Cassowary < Formula
   desc "Modern cross-platform HTTP load-testing tool written in Go"
   homepage "https://github.com/rogerwelin/cassowary"
-  url "https://github.com/rogerwelin/cassowary/archive/v0.11.0.tar.gz"
-  sha256 "60d1bc68b75a59bc5511fd33eb77b14acd735887c74af1bbc4ea68badd271606"
+  url "https://github.com/rogerwelin/cassowary/archive/v0.14.0.tar.gz"
+  sha256 "385232478b8552d56429fbe2584950bfbe42e3b611919a31075366a143aae9a9"
   license "MIT"
   head "https://github.com/rogerwelin/cassowary.git"
 
   bottle do
-    cellar :any_skip_relocation
-    rebuild 1
-    sha256 "f5149dc4bda54c8b21c522f0b46ca7196885d3ec54ce9c34e8117bf50a954734" => :big_sur
-    sha256 "8fa66113ec359799c1ccf3ffc93709aa7beec48f7fa6251cb09cf3d23aadc020" => :arm64_big_sur
-    sha256 "3a6e5b9679a3c5da70142d98eddb6825cb51ba69581e21a485a16c09f56de5f4" => :catalina
-    sha256 "e8ee2d0e616f89a395ed1e6b881a4c7f29529ebccd1524af9bb3ba2a23364106" => :mojave
-    sha256 "2b723e48851feba06f504d2c5ddd51314c619509df0a380cdd286e439ff35c07" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "648d2b294a0a5523a9941c54d4399ba7af9574d00535c27560642e4df77cd883"
+    sha256 cellar: :any_skip_relocation, big_sur:       "cf5c5498ca3f7eead7d7cd3526d968d20e546dc6c8b58d40f3a18cf8e5175406"
+    sha256 cellar: :any_skip_relocation, catalina:      "fee06e4f638390a52a6a0b3ce3f2fb833620ba383871fb03b90fe8b90366787e"
+    sha256 cellar: :any_skip_relocation, mojave:        "f83cb625a473f40918a7eff32b1f2615862faf40868cd7aec8283d6ae7abb9a9"
   end
 
   depends_on "go" => :build

@@ -1,17 +1,15 @@
 class OryHydra < Formula
   desc "OpenID Certified OAuth 2.0 Server and OpenID Connect Provider"
   homepage "https://www.ory.sh/hydra/"
-  url "https://github.com/ory/hydra/archive/v1.8.5.tar.gz"
-  sha256 "5cf0dbb44d837d32868edbf036e67b5fdfbb36b20b75eb2b022d3e42f87ead81"
+  url "https://github.com/ory/hydra/archive/v1.9.2.tar.gz"
+  sha256 "717d27efdb302cae2a57b0664b8cf3cb493d10ac7750a25162778cc256b1c006"
   license "Apache-2.0"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "b1a3d1e6b43ee288835bf0b5c2a07147ccf8a8e77363f9e882045ec25f90165c" => :big_sur
-    sha256 "58cbe92240a5e6d17a5bbf3f546945878ec7efae886fe600890615ca01b64baf" => :arm64_big_sur
-    sha256 "a1028b444425cf5a5c4251b7d8c44ce467ef912414e79c5947f7f1aea863db6f" => :catalina
-    sha256 "32f30a7613dbf5db6cd9ee6315c45079798e10e144a7487bcb8bef7c50f00799" => :mojave
-    sha256 "77047fb7d35683c1409749a7c105a37cc0bfa2c80640ee03c7bec1cacfb6758b" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4992f21e72a0ee88749ad9d0c72064406b12ebffc020db178fda8617e199187e"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3f43c551ba78d8ed1b2c631c56953d160dafafd77c186cfff39471f8da7b156d"
+    sha256 cellar: :any_skip_relocation, catalina:      "af687d0144096dd9baa3031dfc2e69fd5aa8fe95133e4eb8f4344738aaf374db"
+    sha256 cellar: :any_skip_relocation, mojave:        "41a058f5adaf40bd23f206e9a2cb617df92dd30f4fbb841b099afead92e3987a"
   end
 
   depends_on "go" => :build

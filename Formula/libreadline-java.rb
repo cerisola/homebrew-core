@@ -5,16 +5,11 @@ class LibreadlineJava < Formula
   sha256 "cdcfd9910bfe2dca4cd08b2462ec05efee7395e9b9c3efcb51e85fa70548c890"
   revision 3
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "73b6dbaa9a738c05b8195665829637d9c4e5c1be74f7059ee17e97e2ab879e01" => :big_sur
-    sha256 "cc49470dde32faf6c0621944621af9684366e6897a4994b5b021e63a8422f78e" => :catalina
-    sha256 "65444e90dded6862954e3105db11a2918554c866a1a3a344e0414d0db810f55d" => :mojave
-    sha256 "3dc9c829727655f811d50c6ae215b2ae3130e8c4f13c0be8e48fd5b2d62349f3" => :high_sierra
+    sha256 cellar: :any, big_sur:     "73b6dbaa9a738c05b8195665829637d9c4e5c1be74f7059ee17e97e2ab879e01"
+    sha256 cellar: :any, catalina:    "cc49470dde32faf6c0621944621af9684366e6897a4994b5b021e63a8422f78e"
+    sha256 cellar: :any, mojave:      "65444e90dded6862954e3105db11a2918554c866a1a3a344e0414d0db810f55d"
+    sha256 cellar: :any, high_sierra: "3dc9c829727655f811d50c6ae215b2ae3130e8c4f13c0be8e48fd5b2d62349f3"
   end
 
   depends_on "openjdk@8"
@@ -89,10 +84,10 @@ class LibreadlineJava < Formula
 
   # Testing libreadline-java (can we execute and exit libreadline without exceptions?)
   test do
-    assert /Exception/ !~ pipe_output(
+    assert(/Exception/ !~ pipe_output(
       "java -Djava.library.path=#{lib} -cp #{pkgshare}/libreadline-java.jar test.ReadlineTest",
       "exit",
-    )
+    ))
   end
 end
 

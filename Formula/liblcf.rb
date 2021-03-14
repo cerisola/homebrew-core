@@ -4,16 +4,14 @@ class Liblcf < Formula
   url "https://easyrpg.org/downloads/player/0.6.2/liblcf-0.6.2.tar.xz"
   sha256 "c48b4f29ee0c115339a6886fc435b54f17799c97ae134432201e994b1d3e0d34"
   license "MIT"
-  revision 1
+  revision 2
   head "https://github.com/EasyRPG/liblcf.git"
 
   bottle do
-    cellar :any
-    sha256 "c9188f359be4dda83cd9fd6759cfbc2398a48e1c50a6b46e1678cba4056d6011" => :big_sur
-    sha256 "d1154e1054f90550f15a79b47db13a8d72d3482212ae4c71cce89d0a37c692a0" => :arm64_big_sur
-    sha256 "1765ea5fd438e35c255104fcf3670f4fb20b44b0d88dfc5579deeb95fd0567a1" => :catalina
-    sha256 "626aeacfaba89b8d5bb57945c4f82c33758e7a78de2b2d87261e6e83e874a7bc" => :mojave
-    sha256 "b508d5fd894f0962328296f0d292eb3cd88e48d42d20e75934b7b9abad62c53a" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "9677e5b38485773f11aedbc5ead4361fcb8e4e7afb6c2f4f06ea420511f4fcb9"
+    sha256 cellar: :any, big_sur:       "1c195cf45d0bbcbff8684a4d237708098c953d999a7cb0abedb26e059e9917a6"
+    sha256 cellar: :any, catalina:      "a0381102d780bc23458421331a1fe578a471616b1d2c30f8170423f0f9b30cbe"
+    sha256 cellar: :any, mojave:        "afb3d7350397947acbdd9b154303162ce0230f42c0a46f9d438c75966b0d40bc"
   end
 
   depends_on "pkg-config" => :build

@@ -4,17 +4,13 @@ class Libgnomecanvasmm < Formula
   url "https://download.gnome.org/sources/libgnomecanvasmm/2.26/libgnomecanvasmm-2.26.0.tar.bz2"
   sha256 "996577f97f459a574919e15ba7fee6af8cda38a87a98289e9a4f54752d83e918"
   license "LGPL-2.1-or-later"
-  revision 11
-
-  livecheck do
-    url :stable
-  end
+  revision 12
 
   bottle do
-    cellar :any
-    sha256 "109859d2925c79b17566e0aaef6ba7142b611a4b89c79d8568fe9de0cea113ba" => :big_sur
-    sha256 "11e5ae5c4a485d806232311f719cd7553cf88329c55efa0c4c01f60c4d77d9a3" => :catalina
-    sha256 "92941b52627b1511007fc56a0f49ec3f19c13fd6c2e816e3649e50b5eb8b704e" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "fdb748c4593e0ed588493f471ce80d9ebea3d7026020ecfab5d98d8288fd32a4"
+    sha256 cellar: :any, big_sur:       "fbc2efc9e87a6f201ac94b37358d0464fbf2b2a277d1bfdbe2a626236cf41771"
+    sha256 cellar: :any, catalina:      "e92ef2275ecd56b74a7a7f5a6e795c4f1d6a0deecd8f91647bdb62610397b058"
+    sha256 cellar: :any, mojave:        "a0d170f35e076cde6587dc614dbb705d0ecf673a5426ee47a13fdf1ba8f6eae0"
   end
 
   depends_on "pkg-config" => [:build, :test]

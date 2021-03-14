@@ -1,16 +1,15 @@
 class Mongoose < Formula
   desc "Web server build on top of Libmongoose embedded library"
   homepage "https://github.com/cesanta/mongoose"
-  url "https://github.com/cesanta/mongoose/archive/7.0.tar.gz"
-  sha256 "28206185873b5c448765f56e54d86a7af5a856b0b5f241aa44ac94bf34af7eee"
+  url "https://github.com/cesanta/mongoose/archive/7.1.tar.gz"
+  sha256 "f099bf7223c527e1a0b7fc8888136a3992e8b5c7123839639213b9483bb4f95b"
   license "GPL-2.0-only"
 
   bottle do
-    cellar :any
-    sha256 "b1f736d5106f68eed115ae3f50d667ec44c8ff8a1d02ebf6efac3ba152e2dfca" => :big_sur
-    sha256 "079086ee717a75294dfe3b496a3df9bce9c8bd9746f83e21365bea779cc5616a" => :arm64_big_sur
-    sha256 "25df4f89726dc160cedb32c52637bec57a3fa7d5d42d8547c0c645a198463590" => :catalina
-    sha256 "72d7bc75f0155330f362d15ef9604a9d2cadd39f63891b29e22f3f16becc0c7b" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "87374bf95a515e72a2dee8aeb0a9b4d60c42397e7bcd1bb12ed527165f992cfc"
+    sha256 cellar: :any, big_sur:       "8a91713981f4927eb9723d2b5a6b4262185c8e4cf4fe9c02bf7c6f49d7fcab80"
+    sha256 cellar: :any, catalina:      "4f7959dac7c0258f3de40d371b166dca99b077e2856a16bbd4baab7b34527990"
+    sha256 cellar: :any, mojave:        "b6613ccdbe10010e0ddc4bc9a2b0edc169ac7a6f7e9bda4b5f471ccc4efa8fe2"
   end
 
   depends_on "openssl@1.1"
@@ -20,8 +19,8 @@ class Mongoose < Formula
   def install
     # No Makefile but is an expectation upstream of binary creation
     # https://github.com/cesanta/mongoose/issues/326
-    cd "examples/desktop-server" do
-      system "make", "mongoose_mac"
+    cd "examples/http-server" do
+      system "make", "mongoose_mac", "PROG=mongoose_mac"
       bin.install "mongoose_mac" => "mongoose"
     end
 

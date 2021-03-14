@@ -1,8 +1,8 @@
 class GstPython < Formula
   desc "Python overrides for gobject-introspection-based pygst bindings"
   homepage "https://gstreamer.freedesktop.org/modules/gst-python.html"
-  url "https://gstreamer.freedesktop.org/src/gst-python/gst-python-1.18.2.tar.xz"
-  sha256 "e19d0f760b353e88161b3712193cffbd79bf1314418da792b5fec4d8ecef389c"
+  url "https://gstreamer.freedesktop.org/src/gst-python/gst-python-1.18.3.tar.xz"
+  sha256 "4e630735276e08ff4d70337aa5d91fd008e5f1ed3dc0993674cd5820e264259a"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,9 +11,9 @@ class GstPython < Formula
   end
 
   bottle do
-    sha256 "97e1c9d588233b02f41175367c20eec15d64c67e4fccea5c8c9d3b1e75a98bfa" => :big_sur
-    sha256 "380bd027fe162086a91c2942a80d3f2fd31f170095006457065f10b154b49e54" => :catalina
-    sha256 "322c98c44abead553a40e483ac60c3ece595b5e92894cc60e47885c24d93bfbd" => :mojave
+    sha256 big_sur:  "0323f7f77b31d549d64768a94bae8d8b5b1bb32cb30363e027e77ff40a3691c1"
+    sha256 catalina: "744cd20c663082002163044a3dc968b6a9230eadabb5b8c531cb06071c3efbc8"
+    sha256 mojave:   "0d9a4ce411145a61dbc9ae7d72664ffc437a4281916a1c6f957ea6fdb15bd38a"
   end
 
   depends_on "meson" => :build

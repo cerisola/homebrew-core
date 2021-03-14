@@ -1,8 +1,8 @@
 class Sonarqube < Formula
   desc "Manage code quality"
   homepage "https://www.sonarqube.org/"
-  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.6.0.39681.zip"
-  sha256 "5ea2a811eededa521eaa2d0afec33722186e601e9dda0edd3709408d9b6a1795"
+  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.7.0.41497.zip"
+  sha256 "69d7036a881d7af5b5cac61db7b2b60af1f27d4694fcffbd9899f091c7ba4261"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -12,7 +12,7 @@ class Sonarqube < Formula
 
   bottle :unneeded
 
-  depends_on "openjdk"
+  depends_on "openjdk@11"
 
   conflicts_with "sonarqube-lts", because: "both install the same binaries"
 
@@ -23,7 +23,7 @@ class Sonarqube < Formula
     libexec.install Dir["*"]
 
     (bin/"sonar").write_env_script libexec/"bin/macosx-universal-64/sonar.sh",
-      JAVA_HOME: Formula["openjdk"].opt_prefix
+      Language::Java.overridable_java_home_env("11")
   end
 
   plist_options manual: "sonar console"

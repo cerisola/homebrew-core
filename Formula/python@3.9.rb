@@ -1,10 +1,10 @@
 class PythonAT39 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.1/Python-3.9.1.tar.xz"
-  sha256 "991c3f8ac97992f3d308fefeb03a64db462574eadbff34ce8bc5bb583d9903ff"
+  url "https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tar.xz"
+  sha256 "3c2034c54f811448f516668dce09d24008a0716c3a794dd8639b5388cbde247d"
   license "Python-2.0"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://www.python.org/ftp/python/"
@@ -12,10 +12,10 @@ class PythonAT39 < Formula
   end
 
   bottle do
-    sha256 "46933d4a92652c8980f001b1d75a65f564c1341f9ee146ef98445341f517f4af" => :big_sur
-    sha256 "797ac506168db6515a1264fa45d567b99c437a4326b706a15c599c55252c28ae" => :arm64_big_sur
-    sha256 "e545eab0c09efe7653095fb7cfa47d186c331369110c263abafa3a4d7d798796" => :catalina
-    sha256 "47f0bf8b750a0e22b3b7697106776eec0f35c2acab285d4d3839d1a58784b44b" => :mojave
+    sha256 arm64_big_sur: "28ea335cc0bac8d2f25a483d9f3022dc223b1b8b8b7ca256a2a9b565dabe4c5d"
+    sha256 big_sur:       "5aaf6c9ba2ddcdf9e240ad6843abbf2a7fc8df3cf58e4a08680ddc88176fd00d"
+    sha256 catalina:      "65c25cb1486cbda7ce41ce05b3e22a68095b41d50956bda1c9c6eec2dc566916"
+    sha256 mojave:        "162eb3c703f64fcc7b56df755ddf9d70aafe85f4e8f8af2e273de0b7c8a31065"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -33,9 +33,11 @@ class PythonAT39 < Formula
 
   depends_on "pkg-config" => :build
   depends_on "gdbm"
+  depends_on "mpdecimal"
   depends_on "openssl@1.1"
   depends_on "readline"
   depends_on "sqlite"
+  depends_on "tcl-tk"
   depends_on "xz"
 
   uses_from_macos "bzip2"
@@ -64,18 +66,24 @@ class PythonAT39 < Formula
   link_overwrite "Frameworks/Python.framework/Versions/Current"
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/12/e1/b9a2926a3c5a3fb055b8f85052f5baa890106a0e21b64a977c10affea751/setuptools-51.0.0.zip"
-    sha256 "029c49fd713e9230f6a41c0298e6e1f5839f2cde7104c0ad5e053a37777e7688"
+    url "https://files.pythonhosted.org/packages/12/68/95515eaff788370246dac534830ea9ccb0758e921ac9e9041996026ecaf2/setuptools-53.0.0.tar.gz"
+    sha256 "1b18ef17d74ba97ac9c0e4b4265f123f07a8ae85d9cd093949fa056d3eeeead5"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/cb/5f/ae1eb8bda1cde4952bd12e468ab8a254c345a0189402bf1421457577f4f3/pip-20.3.1.tar.gz"
-    sha256 "43f7d3811f05db95809d39515a5111dd05994965d870178a4fe10d5482f9d2e2"
+    url "https://files.pythonhosted.org/packages/b7/2d/ad02de84a4c9fd3b1958dc9fb72764de1aa2605a9d7e943837be6ad82337/pip-21.0.1.tar.gz"
+    sha256 "99bbde183ec5ec037318e774b0d8ae0a64352fe53b2c7fd630be1d07e94f41e5"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/d4/cf/732e05dce1e37b63d54d1836160b6e24fb36eeff2313e93315ad047c7d90/wheel-0.36.1.tar.gz"
-    sha256 "aaef9b8c36db72f8bf7f1e54f85f875c4d466819940863ca0b3f3f77f0a1646f"
+    url "https://files.pythonhosted.org/packages/ed/46/e298a50dde405e1c202e316fa6a3015ff9288423661d7ea5e8f22f589071/wheel-0.36.2.tar.gz"
+    sha256 "e11eefd162658ea59a60a0f6c7d493a7190ea4b9a85e335b33489d9f17e0245e"
+  end
+
+  # Link against libmpdec.so.3, update for mpdecimal.h symbol cleanup.
+  patch do
+    url "https://www.bytereef.org/contrib/decimal.diff"
+    sha256 "b0716ba88a4061dcc8c9bdd1acc57f62884000d1f959075090bf2c05ffa28bf3"
   end
 
   def lib_cellar
@@ -102,6 +110,16 @@ class PythonAT39 < Formula
     ENV["PYTHONHOME"] = nil
     ENV["PYTHONPATH"] = nil
 
+    # Override the auto-detection in setup.py, which assumes a universal build.
+    on_macos do
+      ENV["PYTHON_DECIMAL_WITH_MACHINE"] = Hardware::CPU.arm? ? "uint128" : "x64"
+    end
+
+    # The --enable-optimization and --with-lto flags diverge from what upstream
+    # python does for their macOS binary releases. They have chosen not to apply
+    # these flags because they want one build that will work across many macOS
+    # releases. Homebrew is not so constrained because the bottling
+    # infrastructure specializes for each macOS major release.
     args = %W[
       --prefix=#{prefix}
       --enable-ipv6
@@ -109,11 +127,19 @@ class PythonAT39 < Formula
       --datadir=#{share}
       --enable-loadable-sqlite-extensions
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+      --with-dbmliborder=gdbm:ndbm
+      --enable-optimizations
+      --with-lto
+      --with-system-libmpdec
     ]
 
     on_macos do
       args << "--enable-framework=#{frameworks}"
       args << "--with-dtrace"
+
+      # Override LLVM_AR to be plain old system ar.
+      # https://bugs.python.org/issue43109
+      args << "LLVM_AR=/usr/bin/ar"
     end
     on_linux do
       args << "--enable-shared"
@@ -122,22 +148,28 @@ class PythonAT39 < Formula
       args << "--with-system-ffi"
     end
 
-    cflags   = ["-I#{HOMEBREW_PREFIX}/include"]
-    ldflags  = ["-L#{HOMEBREW_PREFIX}/lib"]
-    cppflags = ["-I#{HOMEBREW_PREFIX}/include"]
+    # Python re-uses flags when building native modules.
+    # Since we don't want native modules prioritizing the brew
+    # include path, we move them to [C|LD]FLAGS_NODIST.
+    # Note: Changing CPPFLAGS causes issues with dbm, so we
+    # leave it as-is.
+    cflags         = []
+    cflags_nodist  = ["-I#{HOMEBREW_PREFIX}/include"]
+    ldflags        = []
+    ldflags_nodist = ["-L#{HOMEBREW_PREFIX}/lib"]
+    cppflags       = ["-I#{HOMEBREW_PREFIX}/include"]
 
     if MacOS.sdk_path_if_needed
       # Help Python's build system (setuptools/pip) to build things on SDK-based systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags  << "-isysroot #{MacOS.sdk_path}" << "-I#{MacOS.sdk_path}/usr/include"
+      cflags  << "-isysroot #{MacOS.sdk_path}"
       ldflags << "-isysroot #{MacOS.sdk_path}"
-      # For the Xlib.h, Python needs this header dir with the system Tk
-      # Yep, this needs the absolute path where zlib needed a path relative
-      # to the SDK.
-      cflags << "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
     end
     # Avoid linking to libgcc https://mail.python.org/pipermail/python-dev/2012-February/116205.html
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
+
+    args << "--with-tcltk-includes=-I#{Formula["tcl-tk"].opt_include}"
+    args << "--with-tcltk-libs=-L#{Formula["tcl-tk"].opt_lib} -ltcl8.6 -ltk8.6"
 
     # We want our readline! This is just to outsmart the detection code,
     # superenv makes cc always find includes/libs!
@@ -161,7 +193,9 @@ class PythonAT39 < Formula
     end
 
     args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "CFLAGS_NODIST=#{cflags_nodist.join(" ")}" unless cflags_nodist.empty?
     args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "LDFLAGS_NODIST=#{ldflags_nodist.join(" ")}" unless ldflags_nodist.empty?
     args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
@@ -194,6 +228,19 @@ class PythonAT39 < Formula
       inreplace Dir[lib_cellar/"**/_sysconfigdata__darwin_darwin.py"],
                 %r{('LINKFORSHARED': .*?)'(Python.framework/Versions/3.\d+/Python)'}m,
                 "\\1'#{opt_prefix}/Frameworks/\\2'"
+    end
+
+    on_linux do
+      # Prevent third-party packages from building against fragile Cellar paths
+      inreplace Dir[lib_cellar/"**/_sysconfigdata_*linux_x86_64-*.py",
+                    lib_cellar/"config*/Makefile",
+                    bin/"python#{version.major_minor}-config",
+                    lib/"pkgconfig/python-3.?.pc"],
+                prefix, opt_prefix
+
+      inreplace bin/"python#{version.major_minor}-config",
+                'prefix_real=$(installed_prefix "$0")',
+                "prefix_real=#{opt_prefix}"
     end
 
     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
@@ -243,10 +290,10 @@ class PythonAT39 < Formula
     # listed in the easy_install.pth. This can break setuptools build with
     # zipimport.ZipImportError: bad local file header
     # setuptools-0.9.8-py3.3.egg
-    rm_rf Dir["#{site_packages}/setuptools*"]
-    rm_rf Dir["#{site_packages}/distribute*"]
+    rm_rf Dir["#{site_packages}/setuptools[-_.][0-9]*", "#{site_packages}/setuptools"]
+    rm_rf Dir["#{site_packages}/distribute[-_.][0-9]*", "#{site_packages}/distribute"]
     rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
-    rm_rf Dir["#{site_packages}/wheel*"]
+    rm_rf Dir["#{site_packages}/wheel[-_.][0-9]*", "#{site_packages}/wheel"]
 
     system bin/"python3", "-m", "ensurepip"
 
@@ -308,11 +355,29 @@ class PythonAT39 < Formula
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
+    # Replace bundled setuptools/pip with our own
+    rm Dir["#{lib_cellar}/ensurepip/_bundled/{setuptools,pip}-*.whl"]
+    system bin/"pip3", "wheel", "--wheel-dir=#{lib_cellar}/ensurepip/_bundled",
+           libexec/"setuptools", libexec/"pip"
+
+    # Patch ensurepip to bootstrap our updated versions of setuptools/pip
+    setuptools_whl = Dir["#{lib_cellar}/ensurepip/_bundled/setuptools-*.whl"][0]
+    setuptools_version = Pathname(setuptools_whl).basename.to_s.split("-")[1]
+
+    pip_whl = Dir["#{lib_cellar}/ensurepip/_bundled/pip-*.whl"][0]
+    pip_version = Pathname(pip_whl).basename.to_s.split("-")[1]
+
+    inreplace lib_cellar/"ensurepip/__init__.py" do |s|
+      s.gsub!(/_SETUPTOOLS_VERSION = .*/, "_SETUPTOOLS_VERSION = \"#{setuptools_version}\"")
+      s.gsub!(/_PIP_VERSION = .*/, "_PIP_VERSION = \"#{pip_version}\"")
+      s.gsub! "    (\"pip\", _PIP_VERSION, \"py2.py3\"),", "    (\"pip\", _PIP_VERSION, \"py3\")," # pip21 is py3 only
+    end
+
     # Help distutils find brewed stuff when building extensions
     include_dirs = [HOMEBREW_PREFIX/"include", Formula["openssl@1.1"].opt_include,
-                    Formula["sqlite"].opt_include]
+                    Formula["sqlite"].opt_include, Formula["tcl-tk"].opt_include]
     library_dirs = [HOMEBREW_PREFIX/"lib", Formula["openssl@1.1"].opt_lib,
-                    Formula["sqlite"].opt_lib]
+                    Formula["sqlite"].opt_lib, Formula["tcl-tk"].opt_lib]
 
     cfg = lib_cellar/"distutils/distutils.cfg"
 
@@ -384,14 +449,29 @@ class PythonAT39 < Formula
     # and it can occur that building sqlite silently fails if OSX's sqlite is used.
     system "#{bin}/python#{version.major_minor}", "-c", "import sqlite3"
 
+    # check to see if we can create a venv
+    system "#{bin}/python#{version.major_minor}", "-m", "venv", testpath/"myvenv"
+
     # Check if some other modules import. Then the linked libs are working.
     system "#{bin}/python#{version.major_minor}", "-c", "import _gdbm"
+    system "#{bin}/python#{version.major_minor}", "-c", "import _decimal"
     system "#{bin}/python#{version.major_minor}", "-c", "import zlib"
     on_macos do
-      # Temporary failure on macOS 11.1 due to https://bugs.python.org/issue42480
-      # Reenable unconditionnaly once Apple fixes the Tcl/Tk issue
-      system "#{bin}/python#{version.major_minor}", "-c", "import tkinter; root = tkinter.Tk()" if MacOS.full_version < "11.1"
+      system "#{bin}/python#{version.major_minor}", "-c", "import tkinter; root = tkinter.Tk()"
     end
+
+    # Verify that the selected DBM interface works
+    (testpath/"dbm_test.py").write <<~EOS
+      import dbm
+
+      with dbm.ndbm.open("test", "c") as db:
+          db[b"foo \\xbd"] = b"bar \\xbd"
+      with dbm.ndbm.open("test", "r") as db:
+          assert list(db.keys()) == [b"foo \\xbd"]
+          assert b"foo \\xbd" in db
+          assert db[b"foo \\xbd"] == b"bar \\xbd"
+    EOS
+    system "#{bin}/python#{version.major_minor}", "dbm_test.py"
 
     system bin/"pip3", "list", "--format=columns"
   end

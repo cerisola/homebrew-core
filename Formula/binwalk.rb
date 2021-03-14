@@ -6,15 +6,13 @@ class Binwalk < Formula
   url "https://github.com/ReFirmLabs/binwalk/archive/v2.2.0.tar.gz"
   sha256 "f5495f0e4c5575023d593f7c087c367675df6aeb7f4d9a2966e49763924daa27"
   license "MIT"
-  revision 2
+  revision 3
   head "https://github.com/ReFirmLabs/binwalk.git"
 
   bottle do
-    cellar :any
-    sha256 "3d895e33479e4fc9ad2351a623fe249dc88a843c8a0b568d24ddcee690395d6a" => :big_sur
-    sha256 "d412322a98c5207c19bdf2d0b7d6abcb6133f875fc48d6227c4c69213e761852" => :catalina
-    sha256 "0edd480cef965ccd9d112aa0f2699e53420aab5a9c9d7397856d6dc0c476cae8" => :mojave
-    sha256 "8ce1ff5841406677da86e5b0976dd7230ae814616a3b368eb8020c467b2e4235" => :high_sierra
+    sha256 cellar: :any, big_sur:  "b1e5dd1e7292c12e45849813f43a4b57e2f853096ea411f3b9f3668d210d7b18"
+    sha256 cellar: :any, catalina: "35b8be77b69cf292e94d6acc1a84f4ff91bcee2cf5cfb98dacd3b15dea1b7a33"
+    sha256 cellar: :any, mojave:   "f1e6fbd62185d6d102752c0d4eb3f430851c1fe820cae4877c7b45b7869a4e6e"
   end
 
   depends_on "pkg-config" => :build
@@ -22,7 +20,7 @@ class Binwalk < Formula
   depends_on "freetype"
   depends_on "libpng"
   depends_on "p7zip"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
   depends_on "ssdeep"
   depends_on "xz"
 
@@ -34,6 +32,11 @@ class Binwalk < Formula
   resource "Cycler" do
     url "https://files.pythonhosted.org/packages/c2/4b/137dea450d6e1e3d474e1d873cd1d4f7d3beed7e0dc973b06e8e10d32488/cycler-0.10.0.tar.gz"
     sha256 "cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8"
+  end
+
+  resource "wheel" do
+    url "https://files.pythonhosted.org/packages/ed/46/e298a50dde405e1c202e316fa6a3015ff9288423661d7ea5e8f22f589071/wheel-0.36.2.tar.gz"
+    sha256 "e11eefd162658ea59a60a0f6c7d493a7190ea4b9a85e335b33489d9f17e0245e"
   end
 
   resource "kiwisolver" do

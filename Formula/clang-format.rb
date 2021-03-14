@@ -7,22 +7,12 @@ class ClangFormat < Formula
   head "https://github.com/llvm/llvm-project.git"
 
   stable do
-    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/llvm-11.0.0.src.tar.xz"
-    sha256 "913f68c898dfb4a03b397c5e11c6a2f39d0f22ed7665c9cefa87a34423a72469"
+    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/llvm-11.1.0.src.tar.xz"
+    sha256 "ce8508e318a01a63d4e8b3090ab2ded3c598a50258cc49e2625b9120d4c03ea5"
 
     resource "clang" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/clang-11.0.0.src.tar.xz"
-      sha256 "0f96acace1e8326b39f220ba19e055ba99b0ab21c2475042dbc6a482649c5209"
-    end
-
-    resource "libcxx" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/libcxx-11.0.0.src.tar.xz"
-      sha256 "6c1ee6690122f2711a77bc19241834a9219dda5036e1597bfa397f341a9b8b7a"
-    end
-
-    resource "libcxxabi" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/libcxxabi-11.0.0.src.tar.xz"
-      sha256 "58697d4427b7a854ec7529337477eb4fba16407222390ad81a40d125673e4c15"
+      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-11.1.0/clang-11.1.0.src.tar.xz"
+      sha256 "0a8288f065d1f57cb6d96da4d2965cbea32edc572aa972e466e954d17148558b"
     end
   end
 
@@ -33,12 +23,10 @@ class ClangFormat < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "078658e8e606dc1ce2dd6d1c2912a081203f92cebef2c6e5f82947aa2e48dad6" => :big_sur
-    sha256 "704a3ccda09c7e31a039b9eaa1389a59b2e88559fe29701ab954337eb61039b7" => :arm64_big_sur
-    sha256 "4ea52df9cb0e800e8fe2f7a62b4c8b7424ae2d9eba162db16567c9488d6f0f38" => :catalina
-    sha256 "4ede17c7d92cf28437513c553283a8916e50c4da976f7fef4e1036b3609917d4" => :mojave
-    sha256 "59ebd49389d11862f756f02f7d4bc3aa8de109563a40eb9a8c469eb2ada625fb" => :high_sierra
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "75d8d02db3431c770474fb5249e4ab051f0127084192a73e130d57a12b71c71b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9a8d102c310fa5f6eb4be1680ba85a69c0ebd9c14790df346ba9ed2656d63a2f"
+    sha256 cellar: :any_skip_relocation, catalina:      "3b0bf3e57d6347cc38913ab55be827c54d236cce927af06ef2cf55811a9926db"
+    sha256 cellar: :any_skip_relocation, mojave:        "c5a0b53844fd9dd4b29e2de30e41c6d92bc39638003ca565af1d057253a6d634"
   end
 
   depends_on "cmake" => :build
@@ -50,12 +38,8 @@ class ClangFormat < Formula
 
   def install
     if build.head?
-      ln_s buildpath/"libcxx", buildpath/"llvm/projects/libcxx"
-      ln_s buildpath/"libcxxabi", buildpath/"llvm/tools/libcxxabi"
       ln_s buildpath/"clang", buildpath/"llvm/tools/clang"
     else
-      (buildpath/"projects/libcxx").install resource("libcxx")
-      (buildpath/"projects/libcxxabi").install resource("libcxxabi")
       (buildpath/"tools/clang").install resource("clang")
     end
 
@@ -63,10 +47,7 @@ class ClangFormat < Formula
 
     mkdir llvmpath/"build" do
       args = std_cmake_args
-      args << "-DLLVM_ENABLE_LIBCXX=ON"
-      args << "-DLLVM_EXTERNAL_PROJECTS=\"clang;libcxx;libcxxabi\""
-      args << "-DLLVM_EXTERNAL_LIBCXX_SOURCE_DIR=\"#{buildpath/"projects/libcxx"}\""
-      args << "-DCMAKE_BUILD_TYPE=Release"
+      args << "-DLLVM_EXTERNAL_PROJECTS=\"clang\""
       args << ".."
       system "cmake", "-G", "Ninja", *args
       system "ninja", "clang-format"

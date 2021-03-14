@@ -3,8 +3,8 @@ class LittleCms2 < Formula
   homepage "https://www.littlecms.com/"
   # Ensure release is announced at https://www.littlecms.com/categories/releases/
   # (or https://www.littlecms.com/blog/)
-  url "https://downloads.sourceforge.net/project/lcms/lcms/2.11/lcms2-2.11.tar.gz"
-  sha256 "dc49b9c8e4d7cdff376040571a722902b682a795bf92985a85b48854c270772e"
+  url "https://downloads.sourceforge.net/project/lcms/lcms/2.12/lcms2-2.12.tar.gz"
+  sha256 "18663985e864100455ac3e507625c438c3710354d85e5cbb7cd4043e11fe10f5"
   license "MIT"
   version_scheme 1
 
@@ -18,12 +18,10 @@ class LittleCms2 < Formula
   end
 
   bottle do
-    cellar :any
-    sha256 "e6f70f21087ef1f0e1379446b5b5f460915d3a132763919feb245534ed9bc4af" => :big_sur
-    sha256 "249a7b998b64074fa0978aa52cdbb9d11414734b2b5c2061ebc61159a9f98771" => :arm64_big_sur
-    sha256 "b0fe7486871b0fb0e34012f48bce09e96229e5e2985d64e7a0164c2847e41975" => :catalina
-    sha256 "e05f0a487d2243411eeb9fd9909f875517d7b27feb3cb914117acd9c60b76fcc" => :mojave
-    sha256 "928d1b8b8292a2d7950d0ef1381c70996bcde325f0124d7dcb68059090544dac" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "83c79aaa225d6363154151a6b1099bb23ee0c7c1ffed35cb4682b993e047f4a0"
+    sha256 cellar: :any, big_sur:       "70eaa9b280425731f7dcf104e75d4ae1e6a90421e1a741e0fe82859361c8ae84"
+    sha256 cellar: :any, catalina:      "0f782fa69d2e12e9c1765df4ae1b7bd87143402aa1840d483092f3b74f89ae19"
+    sha256 cellar: :any, mojave:        "69af639323557bdd2c09fdaf354d9830441014f98609609146a8c836c752ac10"
   end
 
   depends_on "jpeg-turbo"

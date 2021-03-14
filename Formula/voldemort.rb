@@ -4,7 +4,7 @@ class Voldemort < Formula
   url "https://github.com/voldemort/voldemort/archive/release-1.10.26-cutoff.tar.gz"
   sha256 "8bd41b53c3b903615d281e7277d5a9225075c3d00ea56c6e44d73f6327c73d55"
   license "Apache-2.0"
-  revision 1
+  revision 2
 
   livecheck do
     url :stable
@@ -12,10 +12,9 @@ class Voldemort < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "0470f59cbc9dadeff4f18bafddc19f09a81f536bbdcf494982f119451d927bc6" => :catalina
-    sha256 "1c6b5439d0223165729b7f036fe7c11892347e600e8f7e1f28e2595121c26c2f" => :mojave
-    sha256 "301c2913a8e95fd9e1971cf56867b30ddeded2be1c43664011fa909b772e58bd" => :high_sierra
+    sha256 cellar: :any_skip_relocation, big_sur:  "dfd48d6516ae04989d577dc18fe490a678c2fccc562d62f9832e2dcc0449a191"
+    sha256 cellar: :any_skip_relocation, catalina: "f0b69b617d5a983452c62ad06b316a3faf7ae088528afc492a660d370c120e2f"
+    sha256 cellar: :any_skip_relocation, mojave:   "c9b88175b71d839d1afe3d4a3407f982f14f31194065f87bbaff8dbc33198e0b"
   end
 
   depends_on "gradle" => :build
@@ -28,10 +27,10 @@ class Voldemort < Formula
     libexec.install "bin"
     pkgshare.install "config" => "config-examples"
     (etc/"voldemort").mkpath
-    env = {
-      VOLDEMORT_HOME:       libexec,
-      VOLDEMORT_CONFIG_DIR: etc/"voldemort",
-    }
+
+    env = Language::Java.overridable_java_home_env("1.8")
+    env["VOLDEMORT_HOME"] = libexec
+    env["VOLDEMORT_CONFIG_DIR"] = etc/"voldemort"
     bin.env_script_all_files(libexec/"bin", env)
   end
 

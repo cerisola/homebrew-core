@@ -1,20 +1,22 @@
 class KdeKdoctools < Formula
   desc "Create documentation from DocBook"
   homepage "https://api.kde.org/frameworks/kdoctools/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.77/kdoctools-5.77.0.tar.xz"
-  sha256 "a78c44534f85824ed8168670d2880d3735083129635109dfe54fc21f16fb6d44"
+  url "https://download.kde.org/stable/frameworks/5.79/kdoctools-5.79.0.tar.xz"
+  sha256 "ebc37ba10261fc05808ae332260eabfc86705b1d0cf906b529ca7099df907b0d"
   license all_of: [
     "BSD-3-Clause",
     "GPL-2.0-or-later",
     "LGPL-2.1-or-later",
     any_of: ["LGPL-2.1-only", "LGPL-3.0-only"],
   ]
+  revision 1
   head "https://invent.kde.org/frameworks/kdoctools.git"
 
   bottle do
-    sha256 "849bd4de46ae95948247f4e82e730a09448cca530147503ac5def24bf796cfac" => :big_sur
-    sha256 "24c4d7f65b3bd4fc5204b2655123037d68c10090b4e5c824e9e47ddfcd8669f0" => :catalina
-    sha256 "2f63ee320a650c7d0eb56472bf3f69ab929ef7e4630c28ec0cd9e864c73e8a52" => :mojave
+    sha256 arm64_big_sur: "a0dda5a815bee9fb1dda9d0ff3e7403bd98f3829b4d212d8530da3759ae3c324"
+    sha256 big_sur:       "1a0d37dccc89e6cb718310025b98dffb8f17f968eb3990d068dd84732516a86a"
+    sha256 catalina:      "8392330a5b273dece3886f0bb7e2b4fe1c2a02ca61d00822127335c51d8072b0"
+    sha256 mojave:        "7e07c4f0dcae593a2a8aec84484360c581d8a244aea39660075f4c30a3362175"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -94,7 +96,7 @@ class KdeKdoctools < Formula
     cp_r (pkgshare/"tests"), testpath
 
     args = std_cmake_args
-    args << "-DQt5_DIR=#{Formula["qt"].opt_prefix/"lib/cmake/Qt5"}"
+    args << "-DQt5_DIR=#{Formula["qt@5"].opt_prefix/"lib/cmake/Qt5"}"
 
     system "cmake", testpath.to_s, *args
     system "make"

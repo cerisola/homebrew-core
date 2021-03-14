@@ -6,21 +6,19 @@ class Sslyze < Formula
   license "AGPL-3.0-only"
 
   stable do
-    url "https://files.pythonhosted.org/packages/44/07/c4e389c55664524869b06043112ab5bbca6ea7fd39d7c03947cb475df85e/sslyze-3.1.0.tar.gz"
-    sha256 "8b562bd4a50d816ec59c3b3440c6b6b2909c9470111ff29215a22447c93ee5b8"
+    url "https://files.pythonhosted.org/packages/90/b4/f24057503cf7aa318f5e2a778002773612ca0196be1a80f679f06625e71f/sslyze-4.0.4.tar.gz"
+    sha256 "1bac42d2d4248169aa042dd608887b9e3e3aba42f7fb2d807251fb04a9d6acf1"
 
     resource "nassl" do
-      url "https://github.com/nabla-c0d3/nassl/archive/3.1.0.tar.gz"
-      sha256 "a94b7e8ac29fbdf8112efb8aa65e49d5d74ce2aeebbf3f00364a10016427ef63"
+      url "https://github.com/nabla-c0d3/nassl/archive/4.0.0.tar.gz"
+      sha256 "b8a00062bf4cc7cf4fd09600d0a6845840833a8d3c593c0e615d36abac74f36e"
     end
   end
 
   bottle do
-    cellar :any
-    sha256 "2dc261a64f7ffad3ee8de2f649a3570c1da0fddb5addeae636abcb9219a33847" => :big_sur
-    sha256 "65a3500ec8f4939da7af32c9e44ece53524c5e17577872b30464110266cb9974" => :catalina
-    sha256 "bf6cd4aefb0030cdf3be9c6ccfd209949fa9447b62d10825d3fe1abb14fbdc04" => :mojave
-    sha256 "5252621ac2049df5284318ef94252da0601707ecf831726c1df69536c8bc8706" => :high_sierra
+    sha256 cellar: :any, big_sur:  "d4679e0817acb24e97f59577ab84abd33a8a11300ba835d89aaba2e32f33000f"
+    sha256 cellar: :any, catalina: "5acc1a5dc3494fd651cb987e4893af3aa0413f180ca62cc806c96f538f756cde"
+    sha256 cellar: :any, mojave:   "bc861e6c31c30eb914321b65ff758c630357b10031e9f481585a7609df2f9e1c"
   end
 
   head do
@@ -37,13 +35,13 @@ class Sslyze < Formula
   depends_on "python@3.9"
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/cb/ae/380e33d621ae301770358eb11a896a34c34f30db188847a561e8e39ee866/cffi-1.14.3.tar.gz"
-    sha256 "f92f789e4f9241cd262ad7a555ca2c648a98178a953af117ef7fad46aa1d5591"
+    url "https://files.pythonhosted.org/packages/a8/20/025f59f929bbcaa579704f443a438135918484fffaacfaddba776b374563/cffi-1.14.5.tar.gz"
+    sha256 "fd78e5fee591709f32ef6edb9a015b4aa1a5022598e36227500c8f4e02328d9c"
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/94/5c/42de91c7fbdb817b2d9a4e64b067946eb38a4eb36c1a09c96c87a0f86a82/cryptography-3.2.1.tar.gz"
-    sha256 "d3d5e10be0cf2a12214ddee45c6bd203dab435e3d83b4560c03066eda600bfe3"
+    url "https://files.pythonhosted.org/packages/d4/85/38715448253404186029c575d559879912eb8a1c5d16ad9f25d35f7c4f4c/cryptography-3.3.2.tar.gz"
+    sha256 "5a60d3780149e13b7a6ff7ad6526b38846354d11a15e21068e57073e29e19bed"
   end
 
   resource "pycparser" do
@@ -84,6 +82,6 @@ class Sslyze < Formula
 
   test do
     assert_match "SCAN COMPLETED", shell_output("#{bin}/sslyze --regular google.com")
-    assert_no_match /exception/, shell_output("#{bin}/sslyze --certinfo letsencrypt.org")
+    assert_no_match(/exception/, shell_output("#{bin}/sslyze --certinfo letsencrypt.org"))
   end
 end

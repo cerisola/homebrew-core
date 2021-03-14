@@ -3,8 +3,8 @@ class Linkerd < Formula
   homepage "https://linkerd.io"
 
   url "https://github.com/linkerd/linkerd2.git",
-      tag:      "stable-2.9.1",
-      revision: "c3cb84a6382c781f9650d90875a1e89d95346d0c"
+      tag:      "stable-2.10.0",
+      revision: "b10356a827cbe2776f5e960ed5dad8a9103f6443"
   license "Apache-2.0"
 
   livecheck do
@@ -13,11 +13,10 @@ class Linkerd < Formula
   end
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "5e1d514e823f835f30c245dbc2e2d115f287ccb60f25d33335e7aaa71adf4ba4" => :big_sur
-    sha256 "0ba475ac36c57ec4d82b799e1b087f338b1c2672c7447cc5a4bc253761b9325b" => :arm64_big_sur
-    sha256 "42d10f369486219dfe203c4a219310be08d2a62250e31ddfb31668921204fef2" => :catalina
-    sha256 "972c9162520a936baf72bbf3771a52f5698f15903cd7418724cfcab008669b9a" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5a251773327e8fea32c8759264998b16b099e149b1440b912cb1d87f584f3c7a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "431eb96b983d4b0ed7fb5813c27f595a15614ff61e09d10844ee1ba9b9d91ab8"
+    sha256 cellar: :any_skip_relocation, catalina:      "f27800f6c5104460fc2173ab542c89594287513bb61e14f003dbdb2c21d8fd2d"
+    sha256 cellar: :any_skip_relocation, mojave:        "9e0ba5dc3da938a5b9158eb74585e7ecf1da0439bf51d9e05903683f7679937c"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Linkerd < Formula
     ENV["CI_FORCE_CLEAN"] = "1"
 
     system "bin/build-cli-bin"
-    bin.install "target/cli/darwin/linkerd"
+    bin.install Dir["target/cli/*/linkerd"]
 
     # Install bash completion
     output = Utils.safe_popen_read("#{bin}/linkerd", "completion", "bash")

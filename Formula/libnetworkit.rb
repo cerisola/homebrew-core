@@ -1,17 +1,15 @@
 class Libnetworkit < Formula
   desc "NetworKit is an OS-toolkit for large-scale network analysis"
   homepage "https://networkit.github.io"
-  url "https://github.com/networkit/networkit/archive/7.1.tar.gz"
-  sha256 "60026c3be581ae9d5c919c861605082fcb9c8205758b3ddfcde2408153ae166e"
+  url "https://github.com/networkit/networkit/archive/8.1.tar.gz"
+  sha256 "0a22eb839606b9fabfa68c7add12c4de5eee735c6f8bb34420e5916ce5d7f829"
   license "MIT"
 
   bottle do
-    cellar :any
-    sha256 "2e0c3e5599416ae8007b4baf2b55fd6f6a63354727bafd978d4f654586c5ae77" => :big_sur
-    sha256 "456bcb891377b0666eaa4f068c5e0664b038474b10cb03475068109cc5c06b40" => :arm64_big_sur
-    sha256 "ce41e3c47bba5ffc61f1b5ea65b908b64032b1af605e19c8a40f40f26bb946fa" => :catalina
-    sha256 "f2dab092758749672edc5058fc89e53da086e1acec7756900be0e0d7d839bf16" => :mojave
-    sha256 "94522c74e5a3867137849646c49d0e664fd298db24436bf2bfba2e7d725d9caa" => :high_sierra
+    sha256 cellar: :any, arm64_big_sur: "727074b6cac4f69e9c08ce93977f8532b6a1d23d6202b1d90170afdfbd33ac21"
+    sha256 cellar: :any, big_sur:       "7d64ac4870fb93c344fd0b736780fcd24dd4f97edd78ba9230695182509df683"
+    sha256 cellar: :any, catalina:      "06734dd0d47c1c6a97d97f9e4fc0a0ec8a15048d30a615b0b098980e1412d74f"
+    sha256 cellar: :any, mojave:        "fcad0e262612348b5f66af67d15ca7548797ed8c29a673d7a34c0ff28e7e52ad"
   end
 
   depends_on "cmake" => :build

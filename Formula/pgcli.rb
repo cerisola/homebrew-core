@@ -7,16 +7,11 @@ class Pgcli < Formula
   sha256 "d5b2d803f7e4e7fe679306a000bde5d14d15ec590ddd108f3dc4c0ecad169d2b"
   license "BSD-3-Clause"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "3ccba71049db5eb854be6050ee53578f58a49322777615d61d7470ff6ae09713" => :big_sur
-    sha256 "ae1b15213fdd1bd6e82bca428f40488b001c1c88fa640062f5597c8dd2ce0288" => :arm64_big_sur
-    sha256 "4345a13484191db2d804c1f3c7d3cb80a1c8c6aa1734171325f6e9ce088f1984" => :catalina
-    sha256 "31ca1bb800f517ffac95520caee3455746ff1b6ee16bc3960dde21721161db4e" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "ae1b15213fdd1bd6e82bca428f40488b001c1c88fa640062f5597c8dd2ce0288"
+    sha256 cellar: :any, big_sur:       "3ccba71049db5eb854be6050ee53578f58a49322777615d61d7470ff6ae09713"
+    sha256 cellar: :any, catalina:      "4345a13484191db2d804c1f3c7d3cb80a1c8c6aa1734171325f6e9ce088f1984"
+    sha256 cellar: :any, mojave:        "31ca1bb800f517ffac95520caee3455746ff1b6ee16bc3960dde21721161db4e"
   end
 
   depends_on "libpq"

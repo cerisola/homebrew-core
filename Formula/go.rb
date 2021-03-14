@@ -1,25 +1,11 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
   homepage "https://golang.org"
+  url "https://golang.org/dl/go1.16.2.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.16.2.src.tar.gz"
+  sha256 "37ca14287a23cb8ba2ac3f5c3dd8adbc1f7a54b9701a57824bf19a0b271f83ea"
   license "BSD-3-Clause"
-
-  stable do
-    if Hardware::CPU.arm?
-      url "https://golang.org/dl/go1.16beta1.src.tar.gz"
-      sha256 "48e032c8cf71af4dc8119a29ee829c4fbd5265e32fd012564d4a70bb207695c1"
-      version "1.15.6"
-    else
-      url "https://golang.org/dl/go1.15.6.src.tar.gz"
-      mirror "https://fossies.org/linux/misc/go1.15.6.src.tar.gz"
-      sha256 "890bba73c5e2b19ffb1180e385ea225059eb008eb91b694875dd86ea48675817"
-    end
-
-    go_version = version.major_minor
-    resource "gotools" do
-      url "https://go.googlesource.com/tools.git",
-          branch: "release-branch.go#{go_version}"
-    end
-  end
+  head "https://go.googlesource.com/go.git"
 
   livecheck do
     url "https://golang.org/dl/"
@@ -27,35 +13,30 @@ class Go < Formula
   end
 
   bottle do
-    sha256 "2107796e255869aae4a2b1bd5766182f38c87544f968750d78b7ba520d907b1a" => :big_sur
-    sha256 "c2bd24b5a24c19bfdf97a8904aaa76c4db2a8f59096aade83310fee7af4b186c" => :arm64_big_sur
-    sha256 "9dac57ef268c5fee434ac7896fc77f16f16f34462822e216c9973ade6a768e0b" => :catalina
-    sha256 "af0b8702944cde293206a5847bea8fb5aed66babed82fb202aff696ac5211691" => :mojave
-  end
-
-  head do
-    url "https://go.googlesource.com/go.git"
-
-    resource "gotools" do
-      url "https://go.googlesource.com/tools.git"
-    end
+    sha256 arm64_big_sur: "b5e7afc5fe32df4a9f66f7467be5ec25266c649a942dba2fadf59ec0b31c6f33"
+    sha256 big_sur:       "b4b8fd4d0e53711f7ad6333146708a1ea61a7063abcfa086f57b1cf3c820e070"
+    sha256 catalina:      "ad0e76d44fb2f21cd125dc7fb97d2625688ed0cd33c02f9df77efa0a7315f82f"
+    sha256 mojave:        "17f5ec09c5cdd9251800b402b277df9443d4718c291ff3de4c1a58066c47f991"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.
   resource "gobootstrap" do
     on_macos do
       if Hardware::CPU.arm?
-        url "https://storage.googleapis.com/golang/go1.16beta1.darwin-arm64.tar.gz"
-        sha256 "fd57f47987bb330fd9b438e7b4c8941b63c3807366602d99c1d99e0122ec62f1"
+        url "https://storage.googleapis.com/golang/go1.16.darwin-arm64.tar.gz"
+        version "1.16"
+        sha256 "4dac57c00168d30bbd02d95131d5de9ca88e04f2c5a29a404576f30ae9b54810"
       else
-        url "https://storage.googleapis.com/golang/go1.7.darwin-amd64.tar.gz"
-        sha256 "51d905e0b43b3d0ed41aaf23e19001ab4bc3f96c3ca134b48f7892485fc52961"
+        url "https://storage.googleapis.com/golang/go1.16.darwin-amd64.tar.gz"
+        version "1.16"
+        sha256 "6000a9522975d116bf76044967d7e69e04e982e9625330d9a539a8b45395f9a8"
       end
     end
 
     on_linux do
-      url "https://storage.googleapis.com/golang/go1.7.linux-amd64.tar.gz"
-      sha256 "702ad90f705365227e902b42d91dd1a40e48ca7f67a2f4b2fd052aaa4295cd95"
+      url "https://storage.googleapis.com/golang/go1.16.linux-amd64.tar.gz"
+      version "1.16"
+      sha256 "013a489ebb3e24ef3d915abe5b94c3286c070dfe0818d5bca8108f1d6e8440d2"
     end
   end
 
@@ -75,28 +56,9 @@ class Go < Formula
 
     system bin/"go", "install", "-race", "std"
 
-    # Build and install godoc
-    ENV.prepend_path "PATH", bin
-    ENV["GOPATH"] = buildpath
-    (buildpath/"src/golang.org/x/tools").install resource("gotools")
-    cd "src/golang.org/x/tools/cmd/godoc/" do
-      system "go", "build"
-      (libexec/"bin").install "godoc"
-    end
-    bin.install_symlink libexec/"bin/godoc"
-  end
-
-  def caveats
-    s = ""
-
-    if Hardware::CPU.arm?
-      s += <<~EOS
-        This is a beta version of the Go compiler for Apple Silicon
-        (Go 1.16beta1).
-      EOS
-    end
-
-    s
+    # Remove useless files.
+    # Breaks patchelf because folder contains weird debug/test files
+    rm_rf Dir[libexec/"src/debug/elf/testdata"]
   end
 
   test do
@@ -113,10 +75,6 @@ class Go < Formula
     # This is a a bare minimum of go working as it uses fmt, build, and run.
     system bin/"go", "fmt", "hello.go"
     assert_equal "Hello World\n", shell_output("#{bin}/go run hello.go")
-
-    # godoc was installed
-    assert_predicate libexec/"bin/godoc", :exist?
-    assert_predicate libexec/"bin/godoc", :executable?
 
     ENV["GOOS"] = "freebsd"
     ENV["GOARCH"] = "amd64"

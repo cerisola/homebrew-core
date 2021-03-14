@@ -3,22 +3,18 @@ class Jrnl < Formula
 
   desc "Command-line note taker"
   homepage "https://jrnl.sh/"
-  url "https://files.pythonhosted.org/packages/5f/d6/73a8656987ea072e579ff71810eb4b8c386baf26de214cf02995f2a9c05a/jrnl-2.6.tar.gz"
-  sha256 "ea2c35737bdda0ab5f8887d81733e1ad7d1f6e61fa13745102651386b530c15d"
+  url "https://files.pythonhosted.org/packages/38/37/05cefb62bfdb8c02429a565393dc1847740364af4d11f89efb3a06ff3d52/jrnl-2.7.1.tar.gz"
+  sha256 "53fa205afc3853c5e93ecf2bdcef2208331cc8ce235bfe864edfe936780888ca"
   license "GPL-3.0-only"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "f9ca8bca15329ef3d89d3a2b8a5532ae7cceac1886d602042925f85880d63041" => :big_sur
-    sha256 "d8b8f4d8b72fa13db0c6c233819684144f0f4a509354a9e7a3444dbd55bcea4a" => :arm64_big_sur
-    sha256 "0b6415a27a1ae8295c766fe06a9eb0de676382ae46b27374e153e7d24d2528bf" => :catalina
-    sha256 "7ddcbda75725c2e3e6de6442c96cb45d0f4db767232c70eb22c7d7430f592058" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "5e7f32f806e443d3f55d478049b02238983804751fc0c14b252fa742fc3ac415"
+    sha256 cellar: :any, big_sur:       "6a04f3c850ce99ad46329f20adceb5bf66d603fa2bca6f0acce166f7018d964e"
+    sha256 cellar: :any, catalina:      "b2c250572ec81331c3ffa66b8a3c2fb20d9e47ad37a450969c75af8697303d1b"
+    sha256 cellar: :any, mojave:        "ec97793883d503e7547bc740fa081e5b6aa66ebb87d91d7000480f60ab3d911a"
   end
 
+  depends_on "rust" => :build
   depends_on "python@3.9"
 
   uses_from_macos "expect" => :test
@@ -33,13 +29,13 @@ class Jrnl < Formula
   end
 
   resource "asteval" do
-    url "https://files.pythonhosted.org/packages/4f/d5/ce490afa6f6ab1bb97ffd66a80bfb032d22407fc215d60b21ca174e25c51/asteval-0.9.21.tar.gz"
-    sha256 "ee14ba2211cda1c76114e3e7b552cdd57e940309203d5f4106e6d6f2c2346a2e"
+    url "https://files.pythonhosted.org/packages/32/06/efc5ea08dc44836abbabbd949d944d6fde08312ce756557e16ab1ca477a4/asteval-0.9.23.tar.gz"
+    sha256 "f5096a924b1d2f147e70327245d95fc8f534dbe94277b6828ce2a8c049d3a438"
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/66/6a/98e023b3d11537a5521902ac6b50db470c826c682be6a8c661549cb7717a/cffi-1.14.4.tar.gz"
-    sha256 "1a465cbe98a7fd391d47dce4b8f7e5b921e6cd805ef421d04f5f66ba8f06086c"
+    url "https://files.pythonhosted.org/packages/a8/20/025f59f929bbcaa579704f443a438135918484fffaacfaddba776b374563/cffi-1.14.5.tar.gz"
+    sha256 "fd78e5fee591709f32ef6edb9a015b4aa1a5022598e36227500c8f4e02328d9c"
   end
 
   resource "colorama" do
@@ -48,13 +44,13 @@ class Jrnl < Formula
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/b7/82/f7a4ddc1af185936c1e4fa000942ffa8fb2d98cff26b75afa7b3c63391c4/cryptography-3.3.1.tar.gz"
-    sha256 "7e177e4bea2de937a584b13645cab32f25e3d96fc0bc4a4cf99c27dc77682be6"
+    url "https://files.pythonhosted.org/packages/fa/2d/2154d8cb773064570f48ec0b60258a4522490fcb115a6c7c9423482ca993/cryptography-3.4.6.tar.gz"
+    sha256 "2d32223e5b0ee02943f32b19245b61a62db83a882f0e76cc564e1cec60d48f87"
   end
 
   resource "keyring" do
-    url "https://files.pythonhosted.org/packages/c9/5a/c7aefc112d75872ea2099c494b84ba6e108b20584264929e614c60939368/keyring-21.5.0.tar.gz"
-    sha256 "207bd66f2a9881c835dad653da04e196c678bf104f8252141d2d3c4f31051579"
+    url "https://files.pythonhosted.org/packages/bd/4f/76c58e52c08ac53ffed2f3d463cd72799adca2aba3e357c7b727baeb8ff6/keyring-22.3.0.tar.gz"
+    sha256 "16927a444b2c73f983520a48dec79ddab49fe76429ea05b8d528d778c8339522"
   end
 
   resource "parsedatetime" do
@@ -73,8 +69,8 @@ class Jrnl < Formula
   end
 
   resource "pytz" do
-    url "https://files.pythonhosted.org/packages/09/07/448a8887c7195450604dfc0305d80d74324c36ee18ed997664051d4bffe3/pytz-2020.4.tar.gz"
-    sha256 "3e6b7dd2d1e0a59084bcee14a17af60c5c562cdc16d828e8eba2e683d3a7e268"
+    url "https://files.pythonhosted.org/packages/b0/61/eddc6eb2c682ea6fd97a7e1018a6294be80dba08fa28e7a3570148b4612d/pytz-2021.1.tar.gz"
+    sha256 "83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da"
   end
 
   resource "pyxdg" do
@@ -83,8 +79,8 @@ class Jrnl < Formula
   end
 
   resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/64/c2/b80047c7ac2478f9501676c988a5411ed5572f35d1beff9cae07d321512c/PyYAML-5.3.1.tar.gz"
-    sha256 "b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d"
+    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
+    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
   end
 
   resource "six" do

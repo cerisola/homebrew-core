@@ -1,20 +1,21 @@
 class Hdf5AT18 < Formula
   desc "File format designed to store large amounts of data"
   homepage "https://www.hdfgroup.org/HDF5"
-  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.21/src/hdf5-1.8.21.tar.bz2"
-  sha256 "e5b1b1dee44a64b795a91c3321ab7196d9e0871fe50d42969761794e3899f40d"
-  revision 2
+  # NOTE: 1.8.23 is expected to be the last release for HDF5-1.8
+  # (see: https://portal.hdfgroup.org/display/support/HDF5%201.8.22#HDF51.8.22-futureFutureofHDF5-1.8).
+  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.22/src/hdf5-1.8.22.tar.bz2"
+  sha256 "689b88c6a5577b05d603541ce900545779c96d62b6f83d3f23f46559b48893a4"
+  revision 1
 
   livecheck do
-    url "https://support.hdfgroup.org/ftp/HDF5/current18/src/"
-    regex(/href=.*?hdf5[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/"
+    regex(%r{href=["']?hdf5[._-]v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    cellar :any
-    sha256 "cf26b031bb492997d0f6731eb563637d8c37c434ea82bced9e324a1bf40d9031" => :catalina
-    sha256 "869247e293d26ce1988ae02cab81e71d92cb8c845ce5587def24a3c473c2201a" => :mojave
-    sha256 "cc7478ecc9b526b32bb9919a05094d5feff0833d1f5f27b6f7fef60545e6c998" => :high_sierra
+    sha256 cellar: :any, big_sur:  "3c096b8675616ada699dbed4166448607ee962d9be0d204b4bfee7bed9a79dcc"
+    sha256 cellar: :any, catalina: "9e89965d4c4a107868f480a8ec339cd8e73e49bd919eb07e377f375a40558bef"
+    sha256 cellar: :any, mojave:   "5510c91c49d43e1b3f1b60a7792449f5133816ea9384c652c2120e489a975c65"
   end
 
   keg_only :versioned_formula
@@ -26,12 +27,17 @@ class Hdf5AT18 < Formula
   depends_on "szip"
 
   def install
-    inreplace %w[c++/src/h5c++.in fortran/src/h5fc.in tools/misc/h5cc.in],
-      "${libdir}/libhdf5.settings", "#{pkgshare}/libhdf5.settings"
+    inreplace %w[c++/src/h5c++.in fortran/src/h5fc.in bin/h5cc.in],
+      "${libdir}/libhdf5.settings",
+      "#{pkgshare}/libhdf5.settings"
 
     inreplace "src/Makefile.am", "settingsdir=$(libdir)", "settingsdir=#{pkgshare}"
 
     system "autoreconf", "-fiv"
+
+    # necessary to avoid compiler paths that include shims directory being used
+    ENV["CC"] = "/usr/bin/cc"
+    ENV["CXX"] = "/usr/bin/c++"
 
     args = %W[
       --disable-dependency-tracking

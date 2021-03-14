@@ -6,16 +6,11 @@ class Glpk < Formula
   sha256 "4a1013eebb50f728fc601bdd833b0b2870333c3b3e5a816eeba921d95bec6f15"
   license "GPL-3.0-or-later"
 
-  livecheck do
-    url :stable
-  end
-
   bottle do
-    cellar :any
-    sha256 "3f577566f72aa88262e78c5df12974f25f76ebca6632f8e9ccecf7b5ff222d2b" => :big_sur
-    sha256 "e05ebe154868c3ae41e25c6d2bff72596275dc93c74a4f6f1a88c15a553a9bf2" => :arm64_big_sur
-    sha256 "dd6461053c93e0fc37577251f83a17de325efe8382805f5bc883c8a3a018e74b" => :catalina
-    sha256 "2fbd223a7089b352aa9a6e424660aec34edbcaa8fbac7665fe7a9cab2b3f7aac" => :mojave
+    sha256 cellar: :any, arm64_big_sur: "e05ebe154868c3ae41e25c6d2bff72596275dc93c74a4f6f1a88c15a553a9bf2"
+    sha256 cellar: :any, big_sur:       "3f577566f72aa88262e78c5df12974f25f76ebca6632f8e9ccecf7b5ff222d2b"
+    sha256 cellar: :any, catalina:      "dd6461053c93e0fc37577251f83a17de325efe8382805f5bc883c8a3a018e74b"
+    sha256 cellar: :any, mojave:        "2fbd223a7089b352aa9a6e424660aec34edbcaa8fbac7665fe7a9cab2b3f7aac"
   end
 
   depends_on "gmp"
@@ -51,6 +46,6 @@ class Glpk < Formula
     system ENV.cc, pkgshare/"examples/sample.c",
                    "-L#{lib}", "-I#{include}",
                    "-lglpk", "-o", "test"
-    assert_match /OPTIMAL LP SOLUTION FOUND/, shell_output("./test")
+    assert_match "OPTIMAL LP SOLUTION FOUND", shell_output("./test")
   end
 end

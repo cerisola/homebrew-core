@@ -1,17 +1,16 @@
 class Sccache < Formula
   desc "Used as a compiler wrapper and avoids compilation when possible"
   homepage "https://github.com/mozilla/sccache"
-  url "https://github.com/mozilla/sccache/archive/0.2.14.tar.gz"
-  sha256 "664f1557430056960261cac6f939c6d7bbd746b1e4bc88f79edcac40417bb654"
+  url "https://github.com/mozilla/sccache/archive/v0.2.15.tar.gz"
+  sha256 "7dbe71012f9b0b57d8475de6b36a9a3b4802e44a135e886f32c5ad1b0eb506e0"
   license "Apache-2.0"
   head "https://github.com/mozilla/sccache.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "02f4a0a5af2c1c5cf446fa67ad86a535565e1d7cc84f18a596216cad4492eb68" => :big_sur
-    sha256 "ae7f1b07fbd74584704a0b9acde2899bf1baf5e4eff460e3b27441cb4289840b" => :arm64_big_sur
-    sha256 "900c42698ed29c08b034fdeaa990fde48baf9fc608399673d99fb15ade0ba3f7" => :catalina
-    sha256 "afc4e8ae1f1febbea962db840e49a89079b67af20e6058da8b302bc634c9d60b" => :mojave
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e7674f3df1e319c5829551d64b4f2e25486ce7c68e2af84be9d13c496c296fbe"
+    sha256 cellar: :any_skip_relocation, big_sur:       "76080d09cb0b9bf50e7ef37609dc3e797b97b3c0f9deb4d71213b91524d67ab9"
+    sha256 cellar: :any_skip_relocation, catalina:      "d79d0f596f68b457b821a2d16444a53a93faa198049e4810b1a9016ef39fc7fe"
+    sha256 cellar: :any_skip_relocation, mojave:        "76a1c87457acd3fbdd5f6352726911d2d0a524afce4639617f7559e80b6ae849"
   end
 
   depends_on "rust" => :build

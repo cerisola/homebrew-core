@@ -1,16 +1,16 @@
 class Flint < Formula
   desc "C library for number theory"
   homepage "https://flintlib.org"
-  url "https://flintlib.org/flint-2.7.0.tar.gz"
-  sha256 "919a722e33b83bb8dad2231fee97caaa40d028ff9c88ee2be645667f3c472f3a"
+  url "https://flintlib.org/flint-2.7.1.tar.gz"
+  sha256 "186e2fd9ab67df8a05b122fb018269b382e4babcdb17353c4be1fe364dca481e"
   license "LGPL-2.1-or-later"
   head "https://github.com/wbhart/flint2.git", branch: "trunk"
 
   bottle do
-    sha256 "ca09f0a008ddfcd88f6220957ad869b62a2d2ba46a30fe11b8b36104b22c036e" => :big_sur
-    sha256 "aa3a08170c309ce96febaead6c255262ec8797bb28ac89c861c9414f37ec7153" => :arm64_big_sur
-    sha256 "03ecd7eb691ad509717a567daa72972d54d0cbf2928ac037e6138c0f0dd0a3a4" => :catalina
-    sha256 "5cfdb4de40331e3730b625386ff609b495bb5b708dd2fed57fefc6a90a718127" => :mojave
+    sha256 arm64_big_sur: "68bd7a3053ac5e8363ca0128fea147a9866ae9d6af31a0b2876cb29f9f5b96a3"
+    sha256 big_sur:       "c49c7f2e195411a78c7e6d0b29dc2b532be8f501158d53b0c5f32bf270e20794"
+    sha256 catalina:      "09ed48e46ae65d153f1c0014dac7b83436280a7a236bd305b8e82c86762d7777"
+    sha256 mojave:        "f41f76595678bd2f16dc46ceeb1524c089b931f9f65fe6c826272ce703d36283"
   end
 
   depends_on "gmp"

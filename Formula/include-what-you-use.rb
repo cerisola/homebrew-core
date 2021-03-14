@@ -4,6 +4,7 @@ class IncludeWhatYouUse < Formula
   url "https://include-what-you-use.org/downloads/include-what-you-use-0.15.src.tar.gz"
   sha256 "2bd6f2ae0d76e4a9412f468a5fa1af93d5f20bb66b9e7bf73479c31d789ac2e2"
   license "NCSA"
+  revision 2
 
   # This omits the 3.3, 3.4, and 3.5 versions, which come from the older
   # version scheme like `Clang+LLVM 3.5` (25 November 2014). The current
@@ -15,10 +16,10 @@ class IncludeWhatYouUse < Formula
   end
 
   bottle do
-    sha256 "0bbf806279315bb9e367def80c0c537cd2a80ee3983ae87a9103cc3ae3640067" => :big_sur
-    sha256 "564fe6fef3d7aff9903bb03c67e1124209533fba97463f7b4ed86f180ec46169" => :arm64_big_sur
-    sha256 "63958bac561cef7a7370893c6716ca123ff585971bd3dd129158467a30fc2066" => :catalina
-    sha256 "0794bc316e86146e2afecd05c22e18492cf703cf772f60ecdffee80991fa773f" => :mojave
+    sha256 arm64_big_sur: "fc7068fdbc7a9e0bbf2100e5e1dc94ed3bb64a24b4d81386d04ee26639d2a5a0"
+    sha256 big_sur:       "e6df8a20b09f7477fb736af76854189bd98ac7191847d133b1bf63d227897337"
+    sha256 catalina:      "7d8ba990e1bc2ddc345b603bcc7000c5267896bfd16266d1f84633b5bd3a77bf"
+    sha256 mojave:        "8b36ee59b687530695baf9c766010b1356b3f09b6caba4a6750cf8ecd328b36e"
   end
 
   depends_on "cmake" => :build
@@ -35,13 +36,7 @@ class IncludeWhatYouUse < Formula
     args = std_cmake_args + %W[
       -DCMAKE_INSTALL_PREFIX=#{libexec}
       -DCMAKE_PREFIX_PATH=#{Formula["llvm"].opt_lib}
-    ]
-
-    # IWYU does not build with Apple Clang. Upstream issue:
-    # https://github.com/include-what-you-use/include-what-you-use/issues/867
-    args += %W[
-      -DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang
-      -DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++
+      -DCMAKE_CXX_FLAGS=-std=gnu++14
     ]
 
     mkdir "build" do
