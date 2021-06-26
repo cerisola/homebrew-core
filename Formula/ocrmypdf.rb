@@ -3,16 +3,15 @@ class Ocrmypdf < Formula
 
   desc "Adds an OCR text layer to scanned PDF files"
   homepage "https://github.com/jbarlow83/OCRmyPDF"
-  url "https://files.pythonhosted.org/packages/09/8c/6ff143d243a8e7456c7d8e03812c8f8ae91141f0e337f50a0e8c4914c890/ocrmypdf-11.7.1.tar.gz"
-  sha256 "a403699d54d63ff32ebc117ce5dde4d3c870ab69d5ef3e63c24ef12bc7b9b7e9"
+  url "https://files.pythonhosted.org/packages/41/ec/e4159c465406e723eb7f66108344cd49429515469a4c339f143c4d34613f/ocrmypdf-12.2.0.tar.gz"
+  sha256 "00e5e39d18553c76a26767f02ed228c0f2476836bb81b2fdea71cb0fbfcdc57d"
   license "MPL-2.0"
-  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "00bce2b3b0d2305f27da13eca4107a696b848554fc1d3fac22d23fc77fb89eac"
-    sha256 cellar: :any, big_sur:       "d0ce9f51be2d39ee22aa500000a9e4e26cfd4b09de18c0cba78c174cfed403bf"
-    sha256 cellar: :any, catalina:      "905c37b626ad139a0fe13380df46dfead0b862e64480b116c07805590b7ac805"
-    sha256 cellar: :any, mojave:        "66c8b4a39b56dc7f2e832482500091bca9f99667e57f0c42cd3354f46dfaa7e2"
+    sha256 cellar: :any, arm64_big_sur: "310585ce97a515f7ee36d32d28e1c48c252d5fb360d004a208ec020a02de2d02"
+    sha256 cellar: :any, big_sur:       "b5c054682392409c6c5bb2277db237c1e4f30f25c0a537c6399b3b6f8a152401"
+    sha256 cellar: :any, catalina:      "0365ceaca192b31aaac8f7a41feb007c8abc512ee646c76549097fd3b07a2cff"
+    sha256 cellar: :any, mojave:        "0b3586bd18b9b2df18d46be4d6c1ca6bed3999708fa1d72fa0e0047a8a500839"
   end
 
   depends_on "pkg-config" => :build
@@ -36,6 +35,12 @@ class Ocrmypdf < Formula
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   resource "cffi" do
     url "https://files.pythonhosted.org/packages/a8/20/025f59f929bbcaa579704f443a438135918484fffaacfaddba776b374563/cffi-1.14.5.tar.gz"
     sha256 "fd78e5fee591709f32ef6edb9a015b4aa1a5022598e36227500c8f4e02328d9c"
@@ -47,28 +52,28 @@ class Ocrmypdf < Formula
   end
 
   resource "coloredlogs" do
-    url "https://files.pythonhosted.org/packages/ce/ef/bfca8e38c1802896f67045a0c9ea0e44fc308b182dbec214b9c2dd54429a/coloredlogs-15.0.tar.gz"
-    sha256 "5e78691e2673a8e294499e1832bb13efcfb44a86b92e18109fa18951093218ab"
+    url "https://files.pythonhosted.org/packages/cc/c7/eed8f27100517e8c0e6b923d5f0845d0cb99763da6fdee00478f91db7325/coloredlogs-15.0.1.tar.gz"
+    sha256 "7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/fa/2d/2154d8cb773064570f48ec0b60258a4522490fcb115a6c7c9423482ca993/cryptography-3.4.6.tar.gz"
-    sha256 "2d32223e5b0ee02943f32b19245b61a62db83a882f0e76cc564e1cec60d48f87"
+    url "https://files.pythonhosted.org/packages/9b/77/461087a514d2e8ece1c975d8216bc03f7048e6090c5166bc34115afdaa53/cryptography-3.4.7.tar.gz"
+    sha256 "3d10de8116d25649631977cb37da6cbdd2d6fa0e0281d014a5b7d337255ca713"
   end
 
   resource "humanfriendly" do
-    url "https://files.pythonhosted.org/packages/31/0e/a2e882aaaa0a378aa6643f4bbb571399aede7dbb5402d3a1ee27a201f5f3/humanfriendly-9.1.tar.gz"
-    sha256 "066562956639ab21ff2676d1fda0b5987e985c534fc76700a19bd54bcb81121d"
+    url "https://files.pythonhosted.org/packages/24/ca/f3a75b50d978872f6551d72c9c76890d68c84f3ba210cdba5f409587a2fc/humanfriendly-9.2.tar.gz"
+    sha256 "f7dba53ac7935fd0b4a2fc9a29e316ddd9ea135fb3052d3d0279d10c18ff9c48"
   end
 
   resource "img2pdf" do
-    url "https://files.pythonhosted.org/packages/80/ed/5167992abaf268f5a5867e974d9d36a8fa4802800898ec711f4e1942b4f5/img2pdf-0.4.0.tar.gz"
-    sha256 "eaee690ab8403dd1a9cb4db10afee41dd3e6c7ed63bdace02a0121f9feadb0c9"
+    url "https://files.pythonhosted.org/packages/a9/b4/b484d19a7c3565bbe47eb2118d323cb1e03456f70eb1c94e994ee5ece046/img2pdf-0.4.1.tar.gz"
+    sha256 "38a1229ca84b211d7782d1d65ad7251a9781bf24f6f6497c738c755fcfed5552"
   end
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/db/f7/43fecb94d66959c1e23aa53d6161231dca0e93ec500224cf31b3c4073e37/lxml-4.6.2.tar.gz"
-    sha256 "cd11c7e8d21af997ee8079037fff88f16fda188a9776eb4b81c7e4c9c0a7d7fc"
+    url "https://files.pythonhosted.org/packages/e5/21/a2e4517e3d216f0051687eea3d3317557bde68736f038a3b105ac3809247/lxml-4.6.3.tar.gz"
+    sha256 "39b78571b3b30645ac77b95f7c69d1bffc4cf8c3b157c435a34da72e78c82468"
   end
 
   resource "pdfminer.six" do
@@ -77,13 +82,13 @@ class Ocrmypdf < Formula
   end
 
   resource "pikepdf" do
-    url "https://files.pythonhosted.org/packages/d2/44/b3b5d49a41a0793d3621c0614e07028b9640c49e744f80b46a4fe17bb946/pikepdf-2.8.0.post1.tar.gz"
-    sha256 "f742acfd2c41ceff0ade2dec8ddc4875ce0a75f51f5e943b56f4d741ab54b122"
+    url "https://files.pythonhosted.org/packages/b7/df/627c118e0bb5e6da05c308a50ed73b1db9a36cdd69b7e8337b6a18a59499/pikepdf-2.12.2.tar.gz"
+    sha256 "5ff35499b1ae7b181277f78ce5b1bcc8d3009182bb389917791c5dc811fcc8e4"
   end
 
   resource "Pillow" do
-    url "https://files.pythonhosted.org/packages/60/f0/dd2eb7911f948bf529f58f0c7931f6f6466f711bd6f1d81a69dc4edd4e2a/Pillow-8.1.2.tar.gz"
-    sha256 "b07c660e014852d98a00a91adfbe25033898a9d90a8f39beb2437d22a203fc44"
+    url "https://files.pythonhosted.org/packages/21/23/af6bac2a601be6670064a817273d4190b79df6f74d8012926a39bc7aa77f/Pillow-8.2.0.tar.gz"
+    sha256 "a787ab10d7bb5494e5f76536ac460741788f1fbce851068d73a87ca7c35fc3e1"
   end
 
   resource "pluggy" do
@@ -97,18 +102,18 @@ class Ocrmypdf < Formula
   end
 
   resource "reportlab" do
-    url "https://files.pythonhosted.org/packages/6f/72/f5b6bd34e3caf60406adf1c99c91045b8b148ce377d9ecec5e682659b192/reportlab-3.5.63.tar.gz"
-    sha256 "6abe1f858a1df75e66023205f5f70c80db57dafbff5085f9374ea81a28594830"
+    url "https://files.pythonhosted.org/packages/2a/02/078c875d81f231fc11ecda3158a2e2cfccc390a534c316e2524db007e245/reportlab-3.5.67.tar.gz"
+    sha256 "0cf2206c73fbca752c8bd39e12bb9ad7f2d01e6fcb2b25b9eaf94ea042fe86c9"
   end
 
   resource "sortedcontainers" do
-    url "https://files.pythonhosted.org/packages/14/10/6a9481890bae97da9edd6e737c9c3dec6aea3fc2fa53b0934037b35c89ea/sortedcontainers-2.3.0.tar.gz"
-    sha256 "59cc937650cf60d677c16775597c89a960658a09cf7c1a668f86e1e4464b10a1"
+    url "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz"
+    sha256 "25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"
   end
 
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/ef/58/60cc1e9af5714d1b86062f6dc00c5dd6973c902da6259f930b9c6e7a3430/tqdm-4.59.0.tar.gz"
-    sha256 "d666ae29164da3e517fcf125e41d4fe96e5bb375cd87ff9763f6b38b5592fe33"
+    url "https://files.pythonhosted.org/packages/f2/9c/99aae7670351c694c60c72e3cc834b7eab396f738b391bd0bdfc5101a663/tqdm-4.61.1.tar.gz"
+    sha256 "24be966933e942be5f074c29755a95b315c69a91f839a29139bf26ffffe2d3fd"
   end
 
   def install
@@ -116,11 +121,19 @@ class Ocrmypdf < Formula
 
     resource("Pillow").stage do
       inreplace "setup.py" do |s|
-        sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
-        s.gsub! "openjpeg.h", "probably_not_a_header_called_this_eh.h"
-        s.gsub! "xcb.h", "probably_not_a_header_called_this_eh.h"
-        s.gsub! "ZLIB_ROOT = None",
-                "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
+        on_macos do
+          sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
+          s.gsub! "openjpeg.h", "probably_not_a_header_called_this_eh.h"
+          s.gsub! "xcb.h", "probably_not_a_header_called_this_eh.h"
+          s.gsub! "ZLIB_ROOT = None",
+                  "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
+        end
+
+        on_linux do
+          s.gsub! "ZLIB_ROOT = None",
+                  "ZLIB_ROOT = ('#{Formula["zlib"].opt_prefix}/lib', '#{Formula["zlib"].opt_prefix}/include')"
+        end
+
         s.gsub! "JPEG_ROOT = None",
                 "JPEG_ROOT = ('#{Formula["jpeg-turbo"].opt_prefix}/lib', '#{Formula["jpeg-turbo"].opt_prefix}/include')"
         s.gsub! "FREETYPE_ROOT = None",

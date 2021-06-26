@@ -1,20 +1,25 @@
 class RubyAT26 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.6.tar.xz"
-  sha256 "5db187882b7ac34016cd48d7032e197f07e4968f406b0690e20193b9b424841f"
+  url "https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.7.tar.xz"
+  sha256 "f43ead5626202d5432d2050eeab606e547f0554299cc1e5cf573d45670e59611"
   license "Ruby"
-  revision 1
+
+  livecheck do
+    url "https://www.ruby-lang.org/en/downloads/"
+    regex(/href=.*?ruby[._-]v?(2\.6(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    rebuild 1
-    sha256 arm64_big_sur: "a96708875a8876b485f3363013325280b7bc430b2476f1a96eec868a576c3767"
-    sha256 big_sur:       "90a02e7c3985c005348fb1b750c22dce1ebbbd1a8854f3250da9956308c0c65f"
-    sha256 catalina:      "9a4c70bb351c889e3b529be56eeb5699331f6de5bd0564e1baf14c94af37f523"
-    sha256 mojave:        "30328442ad700d940208b1423bab0a0cdc84aaa02501de820ca6d7903fee09a3"
+    sha256 arm64_big_sur: "f0042ce8ff23f1a095d2dd6184ac5aac2658adea9ef1ea965d88388dc9a4bcca"
+    sha256 big_sur:       "b98af7d62a3d5fa120b5debbea3ab72674c018d773cc528fe43ad1b26fc048fb"
+    sha256 catalina:      "bdc61eea5c344317276a83af8222f2c92f1211d121c8c3da4f46f14708b142c4"
+    sha256 mojave:        "2b49b14124648de3af015ea598a1e73e1b3eaca73bbf318428ca605df018cb55"
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2022-04-05", because: :unsupported
 
   depends_on "pkg-config" => :build
   depends_on "libyaml"

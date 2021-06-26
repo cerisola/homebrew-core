@@ -1,15 +1,16 @@
 class Futhark < Formula
   desc "Data-parallel functional programming language"
   homepage "https://futhark-lang.org/"
-  url "https://github.com/diku-dk/futhark/archive/v0.19.2.tar.gz"
-  sha256 "4e5af59056a82770a7defb1f975a47e85d3ac11b85e855413109649d34cb56dc"
+  url "https://github.com/diku-dk/futhark/archive/v0.19.6.tar.gz"
+  sha256 "54f2f80a6f776c0b644a7599d1238b0b2212e387ca5bd67371d154713a203ef9"
   license "ISC"
   head "https://github.com/diku-dk/futhark.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "45ad54cf277690e96eea9515b489b16aea5be2c381a99d0972b01a1d24ae5324"
-    sha256 cellar: :any_skip_relocation, catalina: "dd1328e591e512df8686d5a91ab95e20e6f12218a3167f10937a369a328cf6a5"
-    sha256 cellar: :any_skip_relocation, mojave:   "c0a4fd62db0fa66329996b3aa46a76a38a22db3294ea476aa50b078ccee85eac"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1a5711a14dba56fded942bb08a4a8212445722e065dc849058474b9209fbbb87"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b07cce8318db4102eac3a4f59cb3beb34724c31079798f46cc92f2c59f46c7a9"
+    sha256 cellar: :any_skip_relocation, catalina:      "fce4f4bc59c4228914bb8d9e7e400e5515aa4c19df1231b3f21fdb326094736e"
+    sha256 cellar: :any_skip_relocation, mojave:        "17d63014d7da322f475ea1fa5644813b7c07af99674459296446c4f01df9bba9"
   end
 
   depends_on "cabal-install" => :build
@@ -21,9 +22,7 @@ class Futhark < Formula
 
   def install
     system "cabal", "v2-update"
-    # Remove the `--constraint` flag at version bump
-    # see https://github.com/ddssff/listlike/issues/8#issuecomment-748985462 for detail
-    system "cabal", "v2-install", *std_cabal_v2_args, "--constraint=bytestring==0.10.10.1"
+    system "cabal", "v2-install", *std_cabal_v2_args
 
     system "make", "-C", "docs", "man"
     man1.install Dir["docs/_build/man/*.1"]

@@ -1,8 +1,8 @@
 class Nspr < Formula
   desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://archive.mozilla.org/pub/nspr/releases/v4.29/src/nspr-4.29.tar.gz"
-  sha256 "22286bdb8059d74632cc7c2865c139e63953ecfb33bf4362ab58827e86e92582"
+  url "https://archive.mozilla.org/pub/nspr/releases/v4.31/src/nspr-4.31.tar.gz"
+  sha256 "5729da87d5fbf1584b72840751e0c6f329b5d541850cacd1b61652c95015abc8"
   license "MPL-2.0"
 
   livecheck do
@@ -11,11 +11,10 @@ class Nspr < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "c02e2a44ebd1f681e356062d94af3a7682c212156ec99b7d193f5ff0cd77735b"
-    sha256 cellar: :any, big_sur:       "853f1762fc3372f776f66ead09a8f45b7d03de583b5d70a2c11140eafb899897"
-    sha256 cellar: :any, catalina:      "c47dc31bf73d954e1d4629a92cff5f2e5801573fa9cc1caab7c9ea3b0fb68566"
-    sha256 cellar: :any, mojave:        "5b87579476cdbb34be47c9579125183f9ff29373e9b25e94d419b02995e6ae29"
-    sha256 cellar: :any, high_sierra:   "1b3e41e52e1dc0131ca2ae486d099fb91e7e983355d8dd4ae18ff47a8547fe1e"
+    sha256 cellar: :any, arm64_big_sur: "cc68066c04e374c88ae7d20ebf7093d5a58b1203481272de39554d5b0c46fbfe"
+    sha256 cellar: :any, big_sur:       "097bb45f7541b47ecb45f3476da7aa0249f66681255c10a4f6081452083716e1"
+    sha256 cellar: :any, catalina:      "683ef5685207c5c368c0ac2f0db3235f5b0f5d30d3fa53fcff1b805f815ab4de"
+    sha256 cellar: :any, mojave:        "76cf099f7d02535352ac4bfd5b1c76bde37d891e40923cf0a32e1b8513e011e8"
   end
 
   def install
@@ -31,8 +30,11 @@ class Nspr < Formula
         --enable-64bit
       ]
       system "./configure", *args
-      # Remove the broken (for anyone but Firefox) install_name
-      inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", "-install_name #{lib}/$@ "
+
+      on_macos do
+        # Remove the broken (for anyone but Firefox) install_name
+        inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", "-install_name #{lib}/$@ "
+      end
 
       system "make"
       system "make", "install"

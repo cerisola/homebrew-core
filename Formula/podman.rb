@@ -1,15 +1,15 @@
 class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
-  url "https://github.com/containers/podman/archive/v3.0.1.tar.gz"
-  sha256 "259e682d6e90595573fe8880e0252cc8b08c813e19408b911c43383a6edd6852"
+  url "https://github.com/containers/podman/archive/v3.2.2.tar.gz"
+  sha256 "70f70327be96d873c83c741c004806c0014ea41039e716545c789b4393184e79"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "52eca484cd692aa7f967e718190a52ebbf9e9e6a5bfb9e7e26555dcd8de2f5aa"
-    sha256 cellar: :any_skip_relocation, big_sur:       "8b4b6a03c9d98359fec6f66f7a28d7621a63550567e80b517d0ab41808568577"
-    sha256 cellar: :any_skip_relocation, catalina:      "28cc004f8bfcb8bc100cf3a4974d58c18fab019fa6a4665aab4338d914700ecb"
-    sha256 cellar: :any_skip_relocation, mojave:        "e651eaa0c5791d732d81880034fbf117fb585334c3a6371625bbdcc89d274c24"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "008a58362b3a64fe9a69e2ea314889121d9a19374506ce20bcfabe558a9e6026"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a6905ded224f524651c3e57f1b1ef830a40309b25a511de43b4d0122d94bb2d0"
+    sha256 cellar: :any_skip_relocation, catalina:      "bbf866a98e35c63ad0f572061850cc326e2d5ea1194b478d00a25fcab7f20698"
+    sha256 cellar: :any_skip_relocation, mojave:        "7609e7f56571792255f1e2db2dfd55e72e16f4d9fdb9dbd15f664338a762533c"
   end
 
   depends_on "go" => :build
@@ -17,13 +17,14 @@ class Podman < Formula
 
   def install
     system "make", "podman-remote-darwin"
-    bin.install "bin/podman-remote-darwin" => "podman"
+    bin.install "bin/darwin/podman"
 
     system "make", "install-podman-remote-darwin-docs"
     man1.install Dir["docs/build/remote/darwin/*.1"]
 
     bash_completion.install "completions/bash/podman"
     zsh_completion.install "completions/zsh/_podman"
+    fish_completion.install "completions/fish/podman.fish"
   end
 
   test do

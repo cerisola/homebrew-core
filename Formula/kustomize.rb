@@ -2,8 +2,8 @@ class Kustomize < Formula
   desc "Template-free customization of Kubernetes YAML manifests"
   homepage "https://github.com/kubernetes-sigs/kustomize"
   url "https://github.com/kubernetes-sigs/kustomize.git",
-      tag:      "kustomize/v4.0.5",
-      revision: "9e8e7a7fe99ec9fbf801463e8607928322fc5245"
+      tag:      "kustomize/v4.1.3",
+      revision: "0f614e92f72f1b938a9171b964d90b197ca8fb68"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/kustomize.git"
 
@@ -13,22 +13,21 @@ class Kustomize < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "350e7316e722e71ec14164e37518836d8894dc145300ab1f7a16c7e6be11ff26"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0f9593449e5ad9416c98048c19ae23cfa0e47c31a4a6a894ac08934c8c72adaf"
-    sha256 cellar: :any_skip_relocation, catalina:      "721180bb3af5da9429e586e775deb2bc9880e6482db64782185e25d683206f71"
-    sha256 cellar: :any_skip_relocation, mojave:        "7082426de27c2f8a4e740c31ee312255cdb318a1932168ce77e186594e6f1e92"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c2bc5bcc4b395ba3b3e512a2a9815ae81a5411416380c0520d726db2b8668407"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a5876e31685b13273f268264860af816b4348e8a178d99aea8cf3de01a8d5558"
+    sha256 cellar: :any_skip_relocation, catalina:      "529377a3a884549413e67ff95c159e71d7f62b516009e5c0e8320b3d8a3723ad"
+    sha256 cellar: :any_skip_relocation, mojave:        "1ff7509083a9fefb1d931592318ca1649eb8ed17b28eeec5287a259302a024ec"
   end
 
   depends_on "go" => :build
 
   def install
     commit = Utils.git_head
-    tag = Utils.safe_popen_read("git", "tag", "--contains", "HEAD").strip
 
     cd "kustomize" do
       ldflags = %W[
         -s
-        -X sigs.k8s.io/kustomize/api/provenance.version=#{tag}
+        -X sigs.k8s.io/kustomize/api/provenance.version=#{name}/v#{version}
         -X sigs.k8s.io/kustomize/api/provenance.gitCommit=#{commit}
         -X sigs.k8s.io/kustomize/api/provenance.buildDate=#{Time.now.iso8601}
       ]

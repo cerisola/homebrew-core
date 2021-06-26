@@ -1,18 +1,18 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-3.0.0/apache-arrow-3.0.0.tar.gz"
-  sha256 "73c2cc3be537aa1f3fd9490cfec185714168c9bfd599d23e287ab0cc0558e27a"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-4.0.1/apache-arrow-4.0.1.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-4.0.1/apache-arrow-4.0.1.tar.gz"
+  sha256 "75ccbfa276b925c6b1c978a920ff2f30c4b0d3fdf8b51777915b6f69a211896e"
   license "Apache-2.0"
-  revision 4
+  revision 1
   head "https://github.com/apache/arrow.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "64f82d9bdc476fe3cc6a201de3983cd3c1177ac6fd038918ea36b1771d297120"
-    sha256 cellar: :any, big_sur:       "8261f65e35b902389be6a40ff3734cbec6afdfa06a5732292f75cc7e0b068f8a"
-    sha256 cellar: :any, catalina:      "ad81da9f96a7a6d5efa5c0eea5403c47eaec53fe54d1cb8e922a3d0ff7ceeb00"
-    sha256 cellar: :any, mojave:        "60c0e8f79baaa38228ba30bfae9ad6b98dc754633a949eda69d5a10fd61245ee"
+    sha256 cellar: :any, arm64_big_sur: "ddfffb9d30ceab7155cf5ddd109e9da83d804378c2a530052a005eea47a7aab1"
+    sha256 cellar: :any, big_sur:       "826864401dd8d62cf2c8f52b5af003cc02f86d291b0f8cb3fa88ee3c892c4628"
+    sha256 cellar: :any, catalina:      "00c4a6086316efa3ebea3735840665fed6561655ff17a2d1b81aff40d9419c52"
+    sha256 cellar: :any, mojave:        "943bfdcbd66d337cccf5a9cdecb340e18c1068c172dc28b9dae9b68bf2b8736e"
   end
 
   depends_on "boost" => :build
@@ -31,13 +31,6 @@ class ApacheArrow < Formula
   depends_on "snappy"
   depends_on "thrift"
   depends_on "zstd"
-
-  # Remove in next version
-  # https://github.com/apache/arrow/pull/9542
-  patch do
-    url "https://github.com/apache/arrow/commit/06c795c948b594c16d3a48289519ce036a285aad.patch?full_index=1"
-    sha256 "732845543b67289d1d462ebf6e87117ac72104047c6747e189a76d09840bc23f"
-  end
 
   def install
     # link against system libc++ instead of llvm provided libc++
@@ -61,6 +54,8 @@ class ApacheArrow < Formula
       -DARROW_INSTALL_NAME_RPATH=OFF
       -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].bin/"python3"}
     ]
+
+    args << "-DARROW_MIMALLOC=ON" unless Hardware::CPU.arm?
 
     mkdir "build" do
       system "cmake", "../cpp", *std_cmake_args, *args

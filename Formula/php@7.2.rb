@@ -6,24 +6,24 @@ class PhpAT72 < Formula
   mirror "https://fossies.org/linux/www/php-7.2.34.tar.xz"
   sha256 "409e11bc6a2c18707dfc44bc61c820ddfd81e17481470f3405ee7822d8379903"
   license "PHP-3.01"
-  revision 2
+  revision 4
 
   bottle do
-    sha256 big_sur:  "ddc97a43c92647e196e878e299a4815f3a9b6c39e0f3d8cced98b789ec1727aa"
-    sha256 catalina: "1d565dbd54f4a42d633bd0079d20f48fa6c37600d6b265fedfaba3a9942b95c6"
-    sha256 mojave:   "f5048312f1a67b88e9bbc0553ab5c6e9f679df0ee30c04f9101e89541543a486"
+    sha256 arm64_big_sur: "4605661dda926d33602ddf36f4f5d8a39af412fc8a0481c53e45ede051c96c8d"
+    sha256 big_sur:       "8209d8b2ac1ba6483aaf25137d94a8b04534a2919fb18ce086323d20e00dddb8"
+    sha256 catalina:      "ad509ce758f3d534ffeed10bfc7a8b24805520ede8b82e3620f55e1011461a0e"
+    sha256 mojave:        "bd35a0c61fad2eda69fd0350f3e09f28530d21233704ceb85cb8aaaeca3c0d91"
   end
 
   keg_only :versioned_formula
 
-  disable! date: "2021-11-30", because: :deprecated_upstream
+  deprecate! date: "2021-11-30", because: :deprecated_upstream
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
   depends_on "xz" => :build
   depends_on "apr"
   depends_on "apr-util"
-  depends_on arch: :x86_64
   depends_on "argon2"
   depends_on "aspell"
   depends_on "autoconf"
@@ -342,7 +342,7 @@ class PhpAT72 < Formula
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"
     # Prevent SNMP extension to be added
-    assert_no_match(/^snmp$/, shell_output("#{bin}/php -m"),
+    refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
     begin
       port = free_port

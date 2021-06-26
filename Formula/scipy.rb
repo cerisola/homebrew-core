@@ -1,16 +1,17 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "https://www.scipy.org"
-  url "https://files.pythonhosted.org/packages/26/68/84dbe18583e79e56e4cee8d00232a8dd7d4ae33bc3acf3be1c347991848f/scipy-1.6.1.tar.gz"
-  sha256 "c4fceb864890b6168e79b0e714c585dbe2fd4222768ee90bc1aa0f8218691b11"
+  url "https://files.pythonhosted.org/packages/fe/fd/8704c7b7b34cdac850485e638346025ca57c5a859934b9aa1be5399b33b7/scipy-1.6.3.tar.gz"
+  sha256 "a75b014d3294fce26852a9d04ea27b5671d86736beb34acdfc05859246260707"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/scipy/scipy.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "77db460fd4323ed36fe928a1bdec4dee2e03aff74190f7d4771fd423d100e6e2"
-    sha256 cellar: :any, big_sur:       "b7fa6bd0b970993177b67d5801b7d1a6a0b21ac26a9fa106da136b930a8a9834"
-    sha256 cellar: :any, catalina:      "3312dead60fc9c8be4356c669be35fc6df547f79e5ad7d2205d51c07183c865e"
-    sha256 cellar: :any, mojave:        "869a09d250583791715494cf5b15ab1d00060f8e9213eec08321826259fba796"
+    sha256               arm64_big_sur: "dca16789fc4b99cb12658372f146ef839ab64ba3c838a0aad047af8f72cf52fe"
+    sha256 cellar: :any, big_sur:       "23f22153d382559a089df4cbae73ff5c4b1329add5230d135b71e8447285b952"
+    sha256 cellar: :any, catalina:      "0882b3e88eb307215e7c7867716e987ddd829bbec6709b295955679a19962e82"
+    sha256 cellar: :any, mojave:        "7ce61d050e7d244c9c3405dfa25c31efe50e0d7a5448003bff395aff5bd4e262"
   end
 
   depends_on "swig" => :build
@@ -21,6 +22,8 @@ class Scipy < Formula
   depends_on "python@3.9"
 
   cxxstdlib_check :skip
+
+  fails_with gcc: "5"
 
   def install
     # Fix for current GCC on Big Sur, which does not like 11 as version value
@@ -46,7 +49,8 @@ class Scipy < Formula
     version = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     ENV["PYTHONPATH"] = Formula["numpy"].opt_lib/"python#{version}/site-packages"
     ENV.prepend_create_path "PYTHONPATH", lib/"python#{version}/site-packages"
-    system Formula["python@3.9"].opt_bin/"python3", "setup.py", "build", "--fcompiler=gnu95"
+    system Formula["python@3.9"].opt_bin/"python3", "setup.py", "build",
+      "--fcompiler=gfortran", "--parallel=#{ENV.make_jobs}"
     system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
   end
 

@@ -2,33 +2,35 @@ class Carrot2 < Formula
   desc "Search results clustering engine"
   homepage "https://project.carrot2.org"
   url "https://github.com/carrot2/carrot2.git",
-      tag:      "release/4.1.0",
-      revision: "84fab40554501d653194c8f233ec4b137cd881ae"
+      tag:      "release/4.2.1",
+      revision: "936bcf7fa48e03fafffdf4e6f15b36074d161e6e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "e3c921aca1359a03cf59c4c86398bb60d40bfda7016d724a3bdaf142f217ce1c"
-    sha256 cellar: :any_skip_relocation, catalina: "2bc7f90be9567d859e9536d567bd3337a8c7947cd064f4bf8a7e675f3e0e672a"
-    sha256 cellar: :any_skip_relocation, mojave:   "575a9813da9b3211549e0a9a9b77d080a979c7dc4387809ba9b7184aeb22eb47"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, big_sur:  "378bc81bc95cdfc71b6b9e08058516e40f8bd8446d25fc65cc6e7d7a3840801e"
+    sha256 cellar: :any_skip_relocation, catalina: "7ade89023e00a6fc71b7aa5f3fd8d5c9e4a806248e5aec30cf47d0252d48c523"
+    sha256 cellar: :any_skip_relocation, mojave:   "cc31066d605e9319d118fa02ccabe747772151824e80c53d9940ed21a7853e42"
   end
 
-  depends_on "gradle" => :build
+  # Switch to `gradle` when carrot2 supports Gradle 7+
+  depends_on "gradle@6" => :build
   depends_on "openjdk"
 
   def install
     # Make possible to build the formula with the latest available in Homebrew gradle
     inreplace "gradle/validation/check-environment.gradle",
       /expectedGradleVersion = '[^']+'/,
-      "expectedGradleVersion = '#{Formula["gradle"].version}'"
+      "expectedGradleVersion = '#{Formula["gradle@6"].version}'"
 
-    system "gradle", "assemble"
+    system "gradle", "assemble", "--no-daemon"
 
     cd "distribution/build/dist" do
       inreplace "dcs/conf/logging/appender-file.xml", "${dcs:home}/logs", var/"log/carrot2"
       libexec.install Dir["*"]
     end
 
-    (bin/"carrot2").write_env_script "#{libexec}/dcs/dcs.sh",
+    (bin/"carrot2").write_env_script "#{libexec}/dcs/dcs",
       JAVA_CMD:    "exec '#{Formula["openjdk"].opt_bin}/java'",
       SCRIPT_HOME: libexec/"dcs"
   end

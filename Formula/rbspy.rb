@@ -1,14 +1,15 @@
 class Rbspy < Formula
   desc "Sampling profiler for Ruby"
   homepage "https://rbspy.github.io/"
-  url "https://github.com/rbspy/rbspy/archive/v0.3.14.tar.gz"
-  sha256 "0df6ff6f5bbd47727d9925092ff151d5bcfa33b1989cb4e7178c4d7a436b971f"
+  url "https://github.com/rbspy/rbspy/archive/v0.7.0.tar.gz"
+  sha256 "542f1f872a4434a68f1b3dcb019af1e15aa6e16efe6966a788351240661f50a8"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "215df3cc59e386f95ba3b44cf713bbbbd3d6e2684df9832f391aad32ef5e375d"
-    sha256 cellar: :any_skip_relocation, catalina: "651ac4f3e6e2d595cf1d1543b7bec4050b573008dd511de12206013122934aaf"
-    sha256 cellar: :any_skip_relocation, mojave:   "9844ce8b23eb75f3ae6076fe7d207feb0fa59dbbab9e9f1b8b378e2e1dc36096"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3f17e713f64d3aeb6000e6e1ed32510802f72f7b34fd1f6894c5935b338ae158"
+    sha256 cellar: :any_skip_relocation, big_sur:       "77d8dc599309ef48e956a4ca4d94170eb29589265a1ee23bbc82e7120565c740"
+    sha256 cellar: :any_skip_relocation, catalina:      "0ff9f05b00e53cd8b6c43b961fb6de6c82b6f8438d7386bd9c2265e0072ae427"
+    sha256 cellar: :any_skip_relocation, mojave:        "892c3411831ea4db2d9ff1bfa6e9af44fdca29c9596569c0641f7a1043659a96"
   end
 
   depends_on "rust" => :build
@@ -19,17 +20,26 @@ class Rbspy < Formula
 
   test do
     recording = <<~EOS
-      H4sICCOlhlsAA2JyZXdfdGVzdF9yZXN1bHQAvdHBCsIwDAbgu08hOQ/nHKgM8S08iYy0Vlds0
-      5J2Dhl7d3eZTNxN8Rb4yf9BwiL4xzKbtRAZpYLi2AKh7QfYyfmlJhm1oz0kwMpg1HdVeoxVH9
-      d0I9dQn6AIztRxSKg2JgGjSZGDYtklr0ZEnCgKleNYenZXRrtg8dkI6SEoDmnlrEoFqyYNaL1
-      R70uDuBqJQogpcWL7K3I9IqWU/yCz8WF3FvXkk37P5t0pAa/PUOTbfLvpZk/I+tcWQgIAAA==
+      H4sICDJNbmAAA3JlcG9ydAC9ks1OwzAQhO88RbUnkKzGqfPTRIi34FRV1to11MKxLdtphaq8O
+      w5QVEEPnHrd2ZlPu5ogon+nq7sTRBy8UTxgUtCXlBIIs8YPKkTtLPRAl9WSAYGYMCSe9JAXs0
+      /JyKO2UnHlndxnc1O2bcfWrCJg0bpfct2UrOsopdOUsSmgzDmbU16dAyEapfxiIxcvo5Upk7c
+      ZGZTBpA+Ke0w5Au5H+2bd0T5kDUV0ZkxnzY7GEDDaKuugpxP5SUbEK1Hfd/vgXgMOyyD+RkLx
+      HPMXChHUsfj8SnHNdWayC6YQ4ibM9oIppbwJsywvoI8Davt0Gy6btgS83uWzq1XTEkj7oHDH5
+      0lVreuqrlmTC/yPitZXK1rSlrbNV0U/ACePNHUiAwAA
     EOS
 
     (testpath/"recording.gz").write Base64.decode64(recording.delete("\n"))
-    system "#{bin}/rbspy", "report", "-f", "summary", "-i", "recording.gz",
-                           "-o", "result"
+    system bin/"rbspy", "report", "-f", "summary", "-i", "recording.gz",
+                        "-o", "result"
 
-    expected_result = "100.00   100.00  aaa - short_program.rb"
-    assert_includes File.read("result"), expected_result
+    expected_result = <<~EOS
+      % self  % total  name
+      100.00   100.00  sleep [c function] - (unknown)
+        0.00   100.00  ccc - sample_program.rb
+        0.00   100.00  bbb - sample_program.rb
+        0.00   100.00  aaa - sample_program.rb
+        0.00   100.00  <main> - sample_program.rb
+    EOS
+    assert_equal File.read("result"), expected_result
   end
 end

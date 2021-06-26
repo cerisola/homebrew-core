@@ -1,16 +1,16 @@
 class Grafana < Formula
   desc "Gorgeous metric visualizations and dashboards for timeseries databases"
   homepage "https://grafana.com"
-  url "https://github.com/grafana/grafana/archive/v7.4.3.tar.gz"
-  sha256 "8600e391dc9d059f27a34b00131549e1478d7496669481c6ddceabc7278e2cc2"
-  license "Apache-2.0"
+  url "https://github.com/grafana/grafana/archive/v8.0.3.tar.gz"
+  sha256 "6758ac2dda7ff62996c23d697c8c421ccf4d51bade9d2c4738af622cbe266d23"
+  license "AGPL-3.0-only"
   head "https://github.com/grafana/grafana.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "aaa481e274ea710bc24128f2371bea09b9e6601a8314145d8302ed213aaff1dc"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1e891cfd020d49e44715584f62ecea92c27d77011286c81ab345426134f46c82"
-    sha256 cellar: :any_skip_relocation, catalina:      "db5642446b8e30079cef0374968c0191ecee3cc67769ba989f0d319a0ce45109"
-    sha256 cellar: :any_skip_relocation, mojave:        "4e4721fa1eefcdb4f38d7dd7f2e2aa3a9c877bdc0950c7a48493b4ca6dd5f231"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "feb8ca6c54a08d3aec98c8e528659fd2972c115ae4f7a7a06c994c272d86d548"
+    sha256 cellar: :any_skip_relocation, big_sur:       "eb4a1e345784b4d8cef6783f54a97b31931a2db0bdaa11e0d680adb0cc502abd"
+    sha256 cellar: :any_skip_relocation, catalina:      "1a9a19c6867393e2b69baf63242ed02a973bab9e5300d330ef159308c75b51d0"
+    sha256 cellar: :any_skip_relocation, mojave:        "43c8c61cf9ff5ee5a7ca6f558bb6770629fe2015a202bd89e6cb5cf4bf13c67f"
   end
 
   depends_on "go" => :build
@@ -27,7 +27,7 @@ class Grafana < Formula
   def install
     system "go", "run", "build.go", "build"
 
-    system "yarn", "install", "--ignore-engines"
+    system "yarn", "install", "--ignore-engines", "--network-concurrency", "1"
 
     system "node_modules/webpack/bin/webpack.js", "--config", "scripts/webpack/webpack.prod.js"
 

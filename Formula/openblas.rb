@@ -1,29 +1,38 @@
 class Openblas < Formula
   desc "Optimized BLAS library"
   homepage "https://www.openblas.net/"
-  url "https://github.com/xianyi/OpenBLAS/archive/v0.3.13.tar.gz"
-  sha256 "79197543b17cc314b7e43f7a33148c308b0807cd6381ee77f77e15acf3e6459e"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/xianyi/OpenBLAS.git", branch: "develop"
 
+  stable do
+    url "https://github.com/xianyi/OpenBLAS/archive/v0.3.15.tar.gz"
+    sha256 "30a99dec977594b387a17f49904523e6bc8dd88bd247266e83485803759e4bbe"
+
+    # Fix compile on ARM
+    # https://github.com/xianyi/OpenBLAS/issues/3222
+    patch do
+      url "https://github.com/xianyi/OpenBLAS/commit/c90c23e78f24f37c6be877e37075463a4ba8f201.patch?full_index=1"
+      sha256 "eb89ce6160fc896eb6668658c2e6fdc34942b5e39ed45d28af4673435a500cf5"
+    end
+  end
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "9ac956e8d8704e272b0cf2ddc83c8fd6a78e04fd46b10b5be778d83a6ef24c06"
-    sha256 cellar: :any, big_sur:       "daa8f1e3c94b3dff6a696886e92dd4edcdef12c2d4c68a689c16697ac4590692"
-    sha256 cellar: :any, catalina:      "71191dd65059b73a8dffea7f55c06a3bcaefa27cf0946116f63efd6f976ee9fd"
-    sha256 cellar: :any, mojave:        "10012e1adcafdf18ac06f457c6069805266301879a42453ec0587ffe9647c751"
+    sha256               arm64_big_sur: "d6a3a72eab5bdf20737b24e4ca142ce9f1de7facf296692a1cb427f6991738a3"
+    sha256 cellar: :any, big_sur:       "fa68f6847227743daa07f70be8e0436e43575bea3c3fb2a2672521afa9c4766f"
+    sha256 cellar: :any, catalina:      "053e13fbeb193ed30add73eb3afdec1f8f97314a00dfd328f2c18b66624e6161"
+    sha256 cellar: :any, mojave:        "891c7cc3bc0d6f99829558bc7ee557d3a3511398ab9cccab4783c9c6843d498b"
   end
 
   keg_only :shadowed_by_macos, "macOS provides BLAS in Accelerate.framework"
 
   depends_on "gcc" # for gfortran
   fails_with :clang
-
-  # Build script fix. Remove at version bump.
-  # https://github.com/xianyi/OpenBLAS/pull/3038
-  patch do
-    url "https://github.com/xianyi/OpenBLAS/commit/00ce35336ee1eb1089f30d1e117a8a6a933f9654.patch?full_index=1"
-    sha256 "555e3a8ab042bef2320549db2bad57249d9cf351a6f28e82d6ba53f008920465"
-  end
 
   def install
     ENV["DYNAMIC_ARCH"] = "1"

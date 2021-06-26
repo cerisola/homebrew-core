@@ -1,34 +1,23 @@
 class Ccache < Formula
   desc "Object-file caching compiler wrapper"
   homepage "https://ccache.dev/"
-  url "https://github.com/ccache/ccache/releases/download/v4.2/ccache-4.2.tar.xz"
-  sha256 "2f14b11888c39778c93814fc6843fc25ad60ff6ba4eeee3dff29a1bad67ba94f"
+  url "https://github.com/ccache/ccache/releases/download/v4.3/ccache-4.3.tar.xz"
+  sha256 "504a0f2184465c306826f035b4bc00bae7500308d6af4abbfb50e33a694989b4"
   license "GPL-3.0-or-later"
   head "https://github.com/ccache/ccache.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "582e21a87c6025f4de138f2a5b47a14a0487f2e6deabf4dd54cfb0d34d27190b"
-    sha256 cellar: :any, big_sur:       "4323fd450d0e58cb7c4b76d5254e5a5b44d960d5216073dfeeda41e9baf298f3"
-    sha256 cellar: :any, catalina:      "e84ad1c22e01e75f740c910f562935c2d00058aaf4e8bbd09050dfee18f45324"
-    sha256 cellar: :any, mojave:        "143ee0131253764d489ba4ff6569ec565c50d50662d878065bdf44d290d23c2b"
+    sha256 cellar: :any, arm64_big_sur: "77ef6571b788e52f9f90d95911955ce9cfedf8a971c7634a3d5ae9014ae7777c"
+    sha256 cellar: :any, big_sur:       "017d4408111c3f5146c95a18aaa11d9dc623af7d257386f28b80076a98798bcd"
+    sha256 cellar: :any, catalina:      "4e905bb6bba1479b2cdf3c93c10f21684f50ac7dbdbada7d292aaaa58e87f7a2"
+    sha256 cellar: :any, mojave:        "8001d6a3ff290c51eccc358c465d652758243540a9647606b608d6b6312b34e3"
   end
 
   depends_on "cmake" => :build
   depends_on "zstd"
 
   def install
-    # ccache SIMD checks are broken in 4.1, disable manually for now:
-    # https://github.com/ccache/ccache/pull/735
-    extra_args = []
-    if Hardware::CPU.arm?
-      extra_args << "-DHAVE_C_SSE2=0"
-      extra_args << "-DHAVE_C_SSE41=0"
-      extra_args << "-DHAVE_AVX2=0"
-      extra_args << "-DHAVE_C_AVX2=0"
-      extra_args << "-DHAVE_C_AVX512=0"
-    end
-
-    system "cmake", ".", *extra_args, *std_cmake_args
+    system "cmake", ".", *std_cmake_args
     system "make", "install"
 
     libexec.mkpath

@@ -1,11 +1,20 @@
 class Haxe < Formula
   desc "Multi-platform programming language"
   homepage "https://haxe.org/"
-  url "https://github.com/HaxeFoundation/haxe.git",
-      tag:      "4.2.1",
-      revision: "bf9ff69c0801082174f0b2b0a66faeb5356de580"
   license all_of: ["GPL-2.0-or-later", "MIT"]
   head "https://github.com/HaxeFoundation/haxe.git", branch: "development"
+
+  stable do
+    url "https://github.com/HaxeFoundation/haxe.git",
+        tag:      "4.2.2",
+        revision: "a2f4ba95400edf10195ce2a1c87c56dc0d67111b"
+
+    # Remove when campl5 dependency is bumped to 8.00 in a release
+    patch do
+      url "https://github.com/HaxeFoundation/haxe/commit/db72b31390c51c1627cf5658ca256aace41a81b0.patch?full_index=1"
+      sha256 "95a22f2cc227c4e6d066e60eb88b2a71ad6c278d6f38656fbd87ee905411918a"
+    end
+  end
 
   livecheck do
     url :stable
@@ -13,9 +22,10 @@ class Haxe < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "3dc0587c5d6c49899f0b2208a97671c80eff869c68da21873d345d95a7ad7a8b"
-    sha256 cellar: :any, catalina: "aa33bde76f485b4f587aaeccbfee29cdbb1838cf77bfdb8ada917b11aa4a617c"
-    sha256 cellar: :any, mojave:   "56c43935a93389029569492772bd0dfedfc46de51be542fbe5c3ea908f2f7dde"
+    sha256 cellar: :any, arm64_big_sur: "74bc5a229f86d345f643054840ca1cbf395c9f5c937acf66f67d445ace61b715"
+    sha256 cellar: :any, big_sur:       "c7ddddb58e535f31e496ffdc78142aa55f1ae30982bbfbdd626914b91fe1bbe0"
+    sha256 cellar: :any, catalina:      "06f2c63317134f8554cf2a7b1c45f774ac341b1a8155fe4fc05b2fc444d4c398"
+    sha256 cellar: :any, mojave:        "a8eca0f220ec10a993c4208508993567c6e9e509611418d5dbd70e00570bc38d"
   end
 
   depends_on "cmake" => :build
@@ -60,7 +70,7 @@ class Haxe < Formula
       system "opam", "config", "exec", "--",
              "opam", "pin", "add", "haxe", buildpath, "--no-action"
       system "opam", "config", "exec", "--",
-             "opam", "install", "haxe", "--deps-only"
+             "opam", "install", "haxe", "--deps-only", "--working-dir"
       system "opam", "config", "exec", "--",
              "make"
     end

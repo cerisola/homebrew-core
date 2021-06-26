@@ -2,16 +2,16 @@ class Tile38 < Formula
   desc "In-memory geolocation data store, spatial index, and realtime geofence"
   homepage "https://tile38.com/"
   url "https://github.com/tidwall/tile38.git",
-      tag:      "1.22.6",
-      revision: "d211858db62a3e13768879b3954648b2147759fe"
+      tag:      "1.24.3",
+      revision: "4490eba0fcd1858e7fbf93ff2fad1bd5988a0f18"
   license "MIT"
   head "https://github.com/tidwall/tile38.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1f387e3ffa1428b4b1c2804a7d52a34932062e1b7464587bf2a47ed0c9e52d6a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "675b17af3d429dca6462194f62007c1544c0a4782fd22d54440f11e13f24c825"
-    sha256 cellar: :any_skip_relocation, catalina:      "9972d32b249e738605729640cd449e998a7de599685887d41277b913eaa14d3f"
-    sha256 cellar: :any_skip_relocation, mojave:        "711814efd1b7a8f0ec7673910e6ecb37b6a6f5dadff3e2b88468e0f8def8a7aa"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2e8dd01bd6f5e8149f63b0d8e76af361c26cd83838a931ceed483ec5945f6a8a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4e5a93d399ff8d37fc22650d923fcc065fd891bea5a84786e072a1f4deb7e948"
+    sha256 cellar: :any_skip_relocation, catalina:      "c453c24ed26a4d36d862d5d716517d85109896657748c8f4a7f9fc9b4fcf0410"
+    sha256 cellar: :any_skip_relocation, mojave:        "baff80de4e46465fcd3cbe861539e4d3e29844a57519f3959cdbb644b2692732"
   end
 
   depends_on "go" => :build
@@ -77,14 +77,17 @@ class Tile38 < Formula
   end
 
   test do
+    port = free_port
     pid = fork do
-      exec "#{bin}/tile38-server", "-q"
+      exec "#{bin}/tile38-server", "-q", "-p", port.to_s
     end
     sleep 2
     # remove `$408` in the first line output
-    json_output = shell_output("#{bin}/tile38-cli server").lines[1]
+    json_output = shell_output("#{bin}/tile38-cli -p #{port} server")
     tile38_server = JSON.parse(json_output)
+
     assert_equal tile38_server["ok"], true
+    assert_predicate testpath/"data", :exist?
   ensure
     Process.kill("HUP", pid)
   end

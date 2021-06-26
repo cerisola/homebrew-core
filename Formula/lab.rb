@@ -1,16 +1,16 @@
 class Lab < Formula
   desc "Git wrapper for GitLab"
   homepage "https://zaquestion.github.io/lab"
-  url "https://github.com/zaquestion/lab/archive/v0.20.0.tar.gz"
-  sha256 "95a96985f48bd79f6150146ef13eb8e6de975c3f137875749734c6fc6a53e392"
+  url "https://github.com/zaquestion/lab/archive/v0.22.0.tar.gz"
+  sha256 "ff5b184db71818d0c342788fd5b38ab7c7af8d8561c683b5d08ffd4075116a0d"
   license "CC0-1.0"
   head "https://github.com/zaquestion/lab.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1a8867fb1391fa15d5916cd4f3b17c3048fec255ced1429535820e82ff752079"
-    sha256 cellar: :any_skip_relocation, big_sur:       "4261646689c01de6607d19be1f71454f5b0b61bbbbd2e8cef9de538099d2533e"
-    sha256 cellar: :any_skip_relocation, catalina:      "cddc52e879ecff34a7eb06c911dcca9a72e222607cd0547564899eedcc8e5e19"
-    sha256 cellar: :any_skip_relocation, mojave:        "a9767e6fd2659396cf211d3d971e4c84f4fa9bc355503bba412c9c9cc797a72d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3a47b94f2c4ffcae4f22d9a9c6c88b7ea47d46d6485e9ebf76cafa486b1e0248"
+    sha256 cellar: :any_skip_relocation, big_sur:       "89edf68fded2470d74bc924ee7e48da8500db6eebeef55593620908d223c33c2"
+    sha256 cellar: :any_skip_relocation, catalina:      "bf63f2cd4b9cf9bb5a930922e3cff4f5c75980372a4481034a83161612fcde2e"
+    sha256 cellar: :any_skip_relocation, mojave:        "def57cae9479805aca1ee18761db6df535ce30e85944eb309fb2d37c27f90f7b"
   end
 
   depends_on "go" => :build

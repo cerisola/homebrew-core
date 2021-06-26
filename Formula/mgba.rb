@@ -1,10 +1,9 @@
 class Mgba < Formula
   desc "Game Boy Advance emulator"
   homepage "https://mgba.io/"
-  url "https://github.com/mgba-emu/mgba/archive/0.8.4.tar.gz"
-  sha256 "6b94873dac9040fd6fd9f13f76dc48f342e954f3b4cf82717b59601c3a32b72c"
+  url "https://github.com/mgba-emu/mgba/archive/0.9.1.tar.gz"
+  sha256 "c1e5f6c7635dfb015f8c9466638dd55ee7747cdfb0ca69017baf15ec19d727f9"
   license "MPL-2.0"
-  revision 3
   head "https://github.com/mgba-emu/mgba.git"
 
   livecheck do
@@ -13,10 +12,10 @@ class Mgba < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "2e960f93ae91956ddbbf80541ca176d92585cadc4f3d0537bfc7a166ea9e6e59"
-    sha256 big_sur:       "b6534f335f4c25154cf5e38913a3b5166bf7e96c884409b54219032c34346459"
-    sha256 catalina:      "ae0565f81f06458602216f061e52872d2e5a20ba1399577d1819e507c66e08fe"
-    sha256 mojave:        "b98b2cc7c4d6a8cc6af107196c290538d8555656a27c46844e1c169ceb4e8181"
+    sha256 arm64_big_sur: "04f8c9405cc59416a2231b8c1427cf37919010e6cba9140aa9f03ba4a3354787"
+    sha256 big_sur:       "8c1d76139c08fe3cb85c4910e9c0b84382438d79d5c069e55359ae65474ddd70"
+    sha256 catalina:      "428282cae9f161de3d30115961dfb362c90fcf22aa7f72803071d692fc1f96d1"
+    sha256 mojave:        "8b3b2fad5712a28d4827eaf01ee68ddd7fe5ed7fa186f338243b2f3e87c7c446"
   end
 
   depends_on "cmake" => :build

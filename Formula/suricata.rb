@@ -1,12 +1,12 @@
 class Suricata < Formula
   desc "Network IDS, IPS, and security monitoring engine"
-  homepage "https://suricata-ids.org/"
+  homepage "https://suricata.io"
   url "https://www.openinfosecfoundation.org/download/suricata-6.0.2.tar.gz"
   sha256 "5e4647a07cb31b5d6d0049972a45375c137de908a964a44e2d6d231fa3ad4b52"
   license "GPL-2.0-only"
 
   livecheck do
-    url "https://suricata-ids.org/download/"
+    url "https://suricata.io/download/"
     regex(/href=.*?suricata[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
@@ -28,6 +28,8 @@ class Suricata < Formula
   depends_on "nss"
   depends_on "pcre"
   depends_on "python@3.9"
+
+  uses_from_macos "libpcap"
 
   resource "argparse" do
     url "https://files.pythonhosted.org/packages/18/dd/e617cfc3f6210ae183374cd9f6a26b20514bbb5a792af97949c5aacddf0f/argparse-1.4.0.tar.gz"
@@ -70,8 +72,16 @@ class Suricata < Formula
       --with-libmagic-libraries=#{libmagic.opt_lib}
       --with-libnet-includes=#{libnet.opt_include}
       --with-libnet-libraries=#{libnet.opt_lib}
-      --enable-ipfw
     ]
+
+    on_macos do
+      args << "--enable-ipfw"
+    end
+
+    on_linux do
+      args << "--with-libpcap-includes=#{Formula["libpcap"].opt_include}"
+      args << "--with-libpcap-libraries=#{Formula["libpcap"].opt_lib}"
+    end
 
     system "./configure", *args
     system "make", "install-full"

@@ -3,21 +3,21 @@ class Nginx < Formula
   homepage "https://nginx.org/"
   # Use "mainline" releases only (odd minor version number), not "stable"
   # See https://www.nginx.com/blog/nginx-1-12-1-13-released/ for why
-  url "https://nginx.org/download/nginx-1.19.8.tar.gz"
-  sha256 "308919b1a1359315a8066578472f998f14cb32af8de605a3743acca834348b05"
+  url "https://nginx.org/download/nginx-1.21.0.tar.gz"
+  sha256 "fe192a4bac2bd3a769e8695cb9fe14a00e57eaceb919095347a83b5b2afc0771"
   license "BSD-2-Clause"
   head "https://hg.nginx.org/nginx/", using: :hg
 
   livecheck do
     url :homepage
-    regex(%r{nginx[._-]v?(\d+(?:\.\d+)+)</a>\nmainline version has been released}i)
+    regex(%r{nginx[._-]v?(\d+(?:\.\d+)+)</a>\nmainline version}i)
   end
 
   bottle do
-    sha256 arm64_big_sur: "376f9315513a007f0fc5c67e38e2d68856679fc8f63e96a784b149d78e6fbcbb"
-    sha256 big_sur:       "3cd6595498e228fff4f9b99c629ef759906f1d3b90d5aac0eddbc21631948a56"
-    sha256 catalina:      "e48a1502243ee41d09a1fc7cd92d92023b20628fc7c680e0a73a2f50d22a43c9"
-    sha256 mojave:        "2d9a59694bc55a566f72953662e4487be710ded88c656ca31757d00dd0f6262c"
+    sha256 arm64_big_sur: "9d536ee9f8beb5cd1a5b7d72130bf9b17e69ad34e16477f0f55852e3eb4b7fe2"
+    sha256 big_sur:       "d4d16dc1e0c696d0e30a3a636c39528276c5a967a09a0e4be29a813cc01aa3f5"
+    sha256 catalina:      "03f0a7380a44620e47b410dce2da774d5730a8b12cff3b92e1cd064fc3c623bf"
+    sha256 mojave:        "07b8bf7d7e12b3eb92412755690c3c7b58e27f76af1538d13d78b7747a87b584"
   end
 
   depends_on "openssl@1.1"
@@ -26,7 +26,7 @@ class Nginx < Formula
   def install
     # keep clean copy of source for compiling dynamic modules e.g. passenger
     (pkgshare/"src").mkpath
-    system "tar", "-cJf", (pkgshare/"src/src.tar.xz"), "--options", "compression-level=9", "."
+    system "tar", "-cJf", (pkgshare/"src/src.tar.xz"), "."
 
     # Changes default port to 8080
     inreplace "conf/nginx.conf" do |s|

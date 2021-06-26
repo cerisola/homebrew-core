@@ -1,16 +1,16 @@
 class GitDelta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  url "https://github.com/dandavison/delta/archive/0.6.0.tar.gz"
-  sha256 "27259c3d305edee5f49a3a992e7d739cab400f478a675b7388fef85a2724217c"
+  url "https://github.com/dandavison/delta/archive/0.8.1.tar.gz"
+  sha256 "e478acf90c1125af0cfcb055c1e2b358080d192fbf83cf5ddfa40241830ab826"
   license "MIT"
   head "https://github.com/dandavison/delta.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4fd61af38041ab4aa62806f93da19660a1679439b5516ec8a9a8bc527c45878b"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e76bbea0a4ce5dbbb90106d9fb5f6aaf67ccac5d7f58e2d1b92390e018525fc4"
-    sha256 cellar: :any_skip_relocation, catalina:      "aee11642c678a7d1c0865862b4e8c1834e52818a0cb57f2fec8cb9882f6e0c22"
-    sha256 cellar: :any_skip_relocation, mojave:        "13b9a57ef2a7185dec1ca611f02ab94d8d200c0d8a553be82a3f536375e9e76d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d561484b9cf9d315d3cd2770f340a53341175f785cd5a2d561c0549b3334ab88"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ce955a6b9dc0fd8b00aece1189d1c5682de2f790a9f2d59573765e7c910940fa"
+    sha256 cellar: :any_skip_relocation, catalina:      "7d9a33295175b4093b3448a087850737a40e292bc958cb38d5af8ea406c8d737"
+    sha256 cellar: :any_skip_relocation, mojave:        "88c0109e70a500fa49f4ddaa8a3eb28110e3d4efb8da62f1dbaea7ae948a6d7a"
   end
 
   depends_on "rust" => :build
@@ -20,6 +20,8 @@ class GitDelta < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
+    bash_completion.install "etc/completion/completion.bash" => "delta"
+    zsh_completion.install "etc/completion/completion.zsh" => "_delta"
   end
 
   test do

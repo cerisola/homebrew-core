@@ -1,17 +1,16 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.6.tar.xz"
-  sha256 "2be149a4895c3cb613477f8cf1193593e3d8a1d38a75ffa7d32da8c8316a4d5e"
+  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.9.tar.xz"
+  sha256 "f937403297c2240bd4a569f4b937ee7ab17398a5284ba9df4d6d4c3a0512bc64"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/MusicPlayerDaemon/MPD.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "17788f621266bae943e912f8ec02c09e4a82fee90b071868dbf47279012892c5"
-    sha256 cellar: :any, big_sur:       "6ad7522c6793e94000346e9ebfeffb16be3cf5e7b6137d980727bfd0709f7335"
-    sha256 cellar: :any, catalina:      "ec2f59889ddd17efe2b15029ab61878798bd3fcd302229edf029891b08245b75"
-    sha256 cellar: :any, mojave:        "d3aac34e250c84974268cae2fd7aeda94dba391768f5df9a246cc63899a0a002"
+    sha256 cellar: :any, arm64_big_sur: "289ca04c3caee3ac8bfbbe69c8fe55cae264f07d61986c737523e2766f538438"
+    sha256 cellar: :any, big_sur:       "20fc058208f1afbb9c82d091c4631200dc831fef03b883d6890cd980873824c3"
+    sha256 cellar: :any, catalina:      "1a8e909305eb50fe397c702d95d2226ca936132759f0fe7408e9e60cb79d08bd"
+    sha256 cellar: :any, mojave:        "28875232919ed08ec59ad07391ba3d317e4f71311964ed4446511eb52e327a96"
   end
 
   depends_on "boost" => :build
@@ -38,6 +37,14 @@ class Mpd < Formula
   depends_on macos: :mojave # requires C++17 features unavailable in High Sierra
   depends_on "opus"
   depends_on "sqlite"
+
+  uses_from_macos "curl"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -109,6 +116,12 @@ class Mpd < Formula
   end
 
   test do
+    on_linux do
+      # oss_output: Error opening OSS device "/dev/dsp": No such file or directory
+      # oss_output: Error opening OSS device "/dev/sound/dsp": No such file or directory
+      return if ENV["HOMEBREW_GITHUB_ACTIONS"]
+    end
+
     require "expect"
 
     port = free_port

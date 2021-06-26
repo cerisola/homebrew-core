@@ -2,8 +2,8 @@ class Octant < Formula
   desc "Kubernetes introspection tool for developers"
   homepage "https://octant.dev"
   url "https://github.com/vmware-tanzu/octant.git",
-      tag:      "v0.17.0",
-      revision: "7fded9570239df80f75fa6cf9f4a6ec17945a7e3"
+      tag:      "v0.21.0",
+      revision: "3c7e6079df558774f573beba39d31527685b6001"
   license "Apache-2.0"
   head "https://github.com/vmware-tanzu/octant.git"
 
@@ -13,10 +13,10 @@ class Octant < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "23b00a85b2e55227064438513170540974ad15e41ec61381eec81b34347c6fbe"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7aaa68d4f40aa80157ebd742f8c2daa7e6669302adf2caed6574d28ef4e09ddf"
-    sha256 cellar: :any_skip_relocation, catalina:      "553b8b8dccc524c09141fea90a62c4c11a8dc26a5c7c9996e4adfe8be2041e85"
-    sha256 cellar: :any_skip_relocation, mojave:        "674f1f38df2d07bbd9f0aace72b5258b5f08ef604dd57c4a6ac2533298357a32"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1949aa2595c3ff1c8efe4ccef8eb84ccf28305c08e0b80f765e1b21c3994126a"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ef9b2457589f04448bf7969f40a8e5824834dc3857ea08b8ab5bfc970c3c60fa"
+    sha256 cellar: :any_skip_relocation, catalina:      "e2b974107b34a4e8ba570476c9c7accf5dd590d9d616c6344d77b49367ac0751"
+    sha256 cellar: :any_skip_relocation, mojave:        "5588293186d9bb1332ceb06b5c095e983c6d630fa2918d2d3cf7c3f89fec6cc8"
   end
 
   depends_on "go" => :build
@@ -35,7 +35,6 @@ class Octant < Formula
       system "go", "run", "build.go", "go-install"
       ENV.prepend_path "PATH", buildpath/"bin"
 
-      system "go", "generate", "./pkg/plugin/plugin.go"
       system "go", "run", "build.go", "web-build"
 
       build_time = Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -43,7 +42,7 @@ class Octant < Formula
                  "-X \"main.gitCommit=#{Utils.git_head}\"",
                  "-X \"main.buildTime=#{build_time}\""]
 
-      system "go", "build", "-o", bin/"octant", "-ldflags", ldflags.join(" "),
+      system "go", "build", "-tags", "embedded", "-o", bin/"octant", "-ldflags", ldflags.join(" "),
               "-v", "./cmd/octant"
     end
   end

@@ -1,14 +1,19 @@
 class Easyengine < Formula
   desc "Command-line control panel to manage WordPress sites"
   homepage "https://easyengine.io/"
-  url "https://github.com/EasyEngine/easyengine/releases/download/v4.1.5/easyengine.phar"
-  sha256 "d9abef0aef4f87a54a9c48abcc999c2565a8ba43d109b11d695fb4abd32261a3"
+  url "https://github.com/EasyEngine/easyengine/releases/download/v4.2.0/easyengine.phar"
+  sha256 "a091c0ae193cc0861628c18be0da4ab8a32b6e4287d5f07f50e6fa44b72ac503"
   license "MIT"
 
-  bottle :unneeded
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b3d796a515401acd769c914812c7d0be6fb4b1f535de6e705580414a5cf87cc4"
+    sha256 cellar: :any_skip_relocation, big_sur:       "718e08b3f0a87e69b321c97844c8840a4017b484df1686bf2dc4a99c1a230e66"
+    sha256 cellar: :any_skip_relocation, catalina:      "718e08b3f0a87e69b321c97844c8840a4017b484df1686bf2dc4a99c1a230e66"
+    sha256 cellar: :any_skip_relocation, mojave:        "718e08b3f0a87e69b321c97844c8840a4017b484df1686bf2dc4a99c1a230e66"
+  end
 
   depends_on "dnsmasq"
-  depends_on "php"
+  depends_on "php@7.4"
 
   def install
     bin.install "easyengine.phar" => "ee"

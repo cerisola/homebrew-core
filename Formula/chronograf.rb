@@ -9,15 +9,17 @@ class Chronograf < Formula
   head "https://github.com/influxdata/chronograf.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "50bed55c43911fa4da41bd6b9af3f8c7c82e2142455b8cd6f16ed62f8ade441e"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d4662670cbc74890be952519b97bfe50cd5dd156a009ea263825e4e249e12df1"
-    sha256 cellar: :any_skip_relocation, catalina:      "c2d81125105ec5ede8254d34ecb0a3736c7ce939c94c4b54d33bb422f6730feb"
-    sha256 cellar: :any_skip_relocation, mojave:        "12fc9bc5f8ace1f9d2c3d64befab4d09cd31dec1f3e01308c16051da7815e640"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "67ba86d066284a143eb5e0b725c6205d1c35c685dd8218bd143c8ec10963de4e"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4ec58f7ea07930eb1f2b9d4ae90f08c0c0539f2ef1d5391ce3d31006ee319c4d"
+    sha256 cellar: :any_skip_relocation, catalina:      "d8bafeef82c5e75363d5a6b8e08bf4cffdd1e45f15cdbc6ad3aee84576e361d1"
+    sha256 cellar: :any_skip_relocation, mojave:        "f996a2303272bc562164186e126d244a519285428b445cb3b25430ea2e9fbc30"
   end
 
   depends_on "go" => :build
   depends_on "go-bindata" => :build
-  depends_on "node" => :build
+  # Switch to `node` when chronograf updates dependency node-sass>=6.0.0
+  depends_on "node@14" => :build
   depends_on "yarn" => :build
   depends_on "influxdb"
   depends_on "kapacitor"
@@ -25,9 +27,6 @@ class Chronograf < Formula
   def install
     Language::Node.setup_npm_environment
 
-    cd "ui" do # fix compatibility with the latest node
-      system "yarn", "upgrade", "parcel@1.11.0"
-    end
     system "make", "dep"
     system "make", ".jssrc"
     system "make", "chronograf"

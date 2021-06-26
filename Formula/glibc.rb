@@ -62,18 +62,14 @@ class LinuxKernelRequirement < Requirement
 
   MINIMUM_LINUX_KERNEL_VERSION = "2.6.32".freeze
 
-  def linux_kernel_version
-    @linux_kernel_version ||= Version.new Utils.safe_popen_read("uname -r")
-  end
-
   satisfy(build_env: false) do
-    linux_kernel_version >= MINIMUM_LINUX_KERNEL_VERSION
+    OS.kernel_version >= MINIMUM_LINUX_KERNEL_VERSION
   end
 
   def message
     <<~EOS
       Linux kernel version #{MINIMUM_LINUX_KERNEL_VERSION} or later is required by glibc.
-      Your system has Linux kernel version #{linux_kernel_version}.
+      Your system has Linux kernel version #{OS.kernel_version}.
     EOS
   end
 
@@ -88,6 +84,10 @@ class Glibc < Formula
   url "https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz"
   sha256 "2bd08abb24811cda62e17e61e9972f091f02a697df550e2e44ddcfb2255269d2"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
+
+  livecheck do
+    skip "glibc is pinned to the version present in Homebrew CI"
+  end
 
   depends_on "binutils" => :build
   depends_on GawkRequirement => :build
@@ -132,12 +132,12 @@ class Glibc < Formula
       system "make", "install"
       prefix.install_symlink "lib" => "lib64"
     end
-
-    # Install ld.so symlink.
-    ln_sf lib/"ld-linux-x86-64.so.2", HOMEBREW_PREFIX/"lib/ld.so"
   end
 
   def post_install
+    # Install ld.so symlink.
+    ln_sf lib/"ld-linux-x86-64.so.2", HOMEBREW_PREFIX/"lib/ld.so"
+
     # Compile locale definition files
     mkdir_p lib/"locale"
 

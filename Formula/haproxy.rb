@@ -1,8 +1,8 @@
 class Haproxy < Formula
   desc "Reliable, high performance TCP/HTTP load balancer"
   homepage "https://www.haproxy.org/"
-  url "https://www.haproxy.org/download/2.3/src/haproxy-2.3.6.tar.gz"
-  sha256 "6d4620e5da1d93ed75f229011216db81d5097b68bf175e309f2fab2890bba036"
+  url "https://www.haproxy.org/download/2.4/src/haproxy-2.4.1.tar.gz"
+  sha256 "1b2458b05e923d70cdc00a2c8e5579c2fcde9df16bbed8955f3f3030df14e62e"
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -11,10 +11,10 @@ class Haproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "f3bbf68e687adab98d27ecd56e298572a9021d668345bdbf2b18b3638d9e4b13"
-    sha256 cellar: :any, big_sur:       "e89b2c929d0b77f246918755f03a0cee50c82909656ba35bcfaa1cd01cef64ef"
-    sha256 cellar: :any, catalina:      "8eb8dc549439bdad51fea54e9c4610a0904f0674a0561c3c7f51302aebc0a638"
-    sha256 cellar: :any, mojave:        "9228c83e3799d8b683728e8a7e10b4048af1be1febbbb4c1e3431c2c08338f8f"
+    sha256 cellar: :any, arm64_big_sur: "57ebcece910b552a942096bd38c7030c113518995328750defcf5b17089c9a0f"
+    sha256 cellar: :any, big_sur:       "8d69924b9bf52d2f5a336576730c0156eacab2199ece608c2b57a8bdd456366d"
+    sha256 cellar: :any, catalina:      "5cd0e0293559bc6d380d4c7247bbedc7a81a13382410a93bd9c058fcd1aed9bd"
+    sha256 cellar: :any, mojave:        "7196ac5e06d00ebb40e3a7ec3de8464f11ab784f42bbd17596cdd2a3a264a5db"
   end
 
   depends_on "openssl@1.1"
@@ -22,8 +22,6 @@ class Haproxy < Formula
 
   def install
     args = %w[
-      TARGET=generic
-      USE_KQUEUE=1
       USE_POLL=1
       USE_PCRE=1
       USE_OPENSSL=1
@@ -31,6 +29,14 @@ class Haproxy < Formula
       USE_ZLIB=1
       ADDLIB=-lcrypto
     ]
+    on_macos do
+      args << "TARGET=generic"
+      # BSD only:
+      args << "USE_KQUEUE=1"
+    end
+    on_linux do
+      args << "TARGET=linux-glibc"
+    end
 
     # We build generic since the Makefile.osx doesn't appear to work
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", *args

@@ -6,11 +6,6 @@ class Libu2fHost < Formula
   license "GPL-3.0"
   revision 1
 
-  livecheck do
-    url "https://developers.yubico.com/libu2f-host/Releases/"
-    regex(/href=.*?libu2f-host[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     sha256 cellar: :any, arm64_big_sur: "052b140ee60b38b731fe05d9d4bd0ba81765e9bac7ccc25125ba93596534fe14"
     sha256 cellar: :any, big_sur:       "4c6f6729349bce13f6710e5edf040411b78c36e6815258f54a4c8c52f907109b"
@@ -18,6 +13,9 @@ class Libu2fHost < Formula
     sha256 cellar: :any, mojave:        "deed9f64b0e078130c5618ce98580b9b1b284c531cfb04e6296a8d5b259b6a81"
     sha256 cellar: :any, high_sierra:   "376aa8fc3a98d4aab29ba7d284a58bf07308fda51aa30da72e068f8a6206505e"
   end
+
+  # See: https://github.com/Yubico/libu2f-host
+  deprecate! date: "2021-05-25", because: :repo_archived
 
   depends_on "pkg-config" => :build
   depends_on "hidapi"

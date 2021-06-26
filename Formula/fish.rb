@@ -1,9 +1,10 @@
 class Fish < Formula
   desc "User-friendly command-line shell for UNIX-like operating systems"
   homepage "https://fishshell.com"
-  url "https://github.com/fish-shell/fish-shell/releases/download/3.2.0/fish-3.2.0.tar.xz"
-  sha256 "4f0293ed9f6a6b77e47d41efabe62f3319e86efc8bf83cc58733044fbc6f9211"
+  url "https://github.com/fish-shell/fish-shell/releases/download/3.2.2/fish-3.2.2.tar.xz"
+  sha256 "5944da1a8893d11b0828a4fd9136ee174549daffb3d0adfdd8917856fe6b4009"
   license "GPL-2.0-only"
+  revision 1
 
   livecheck do
     url :stable
@@ -11,36 +12,33 @@ class Fish < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "7071739f327b442f6d1bec65332c33d29cb0833fd601a215d4d3492dbf188614"
-    sha256 cellar: :any, big_sur:       "9891254ae3507ac79a050fc5ef5a837820ab78f06ad7ab5495a61a3e83bfb970"
-    sha256 cellar: :any, catalina:      "dffc718a031961c893db21b189b2ae81a4ed65b7f1d1ae77ac7a83fd6a62038a"
-    sha256 cellar: :any, mojave:        "274a7590ffb5f2252ed2fc1ca97164c8ec77808312e48a2a0d794987e692767b"
+    sha256 cellar: :any, arm64_big_sur: "f43a181738a3c32a204606ca1795a80e5c1cf60c0944a2fc7ac7cfda5fd1696e"
+    sha256 cellar: :any, big_sur:       "81df0f00e919fbdd42ab36fbb13bc7c5eca27b6c3c085a525db6e3f18d03775d"
+    sha256 cellar: :any, catalina:      "2d6e8210d1ebfc5e06c0e73294df22adc6607bd5980d26e59ddeba9d3fca8d6b"
+    sha256 cellar: :any, mojave:        "862fac70a5d143b7ac017f9d6b13f899bd6944f41fde25e8e31de4c70393b387"
   end
 
   head do
-    url "https://github.com/fish-shell/fish-shell.git", shallow: false
+    url "https://github.com/fish-shell/fish-shell.git"
 
     depends_on "sphinx-doc" => :build
   end
 
   depends_on "cmake" => :build
+  # Apple ncurses (5.4) is 15+ years old and
+  # has poor support for modern terminals
+  depends_on "ncurses"
   depends_on "pcre2"
 
-  uses_from_macos "ncurses"
-
   def install
-    # In Homebrew's 'superenv' sed's path will be incompatible, so
-    # the correct path is passed into configure here.
     args = %W[
       -Dextra_functionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_functions.d
       -Dextra_completionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
       -Dextra_confdir=#{HOMEBREW_PREFIX}/share/fish/vendor_conf.d
     ]
-    on_macos do
-      args << "-DSED=/usr/bin/sed"
-    end
-    system "cmake", ".", *std_cmake_args, *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def post_install

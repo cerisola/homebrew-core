@@ -3,16 +3,16 @@ class YouGet < Formula
 
   desc "Dumb downloader that scrapes the web"
   homepage "https://you-get.org/"
-  url "https://files.pythonhosted.org/packages/b3/eb/e24fa3352fa27e1be3b7f8b3d158a3b12f6ee294c09614eb61b5d85fa054/you-get-0.4.1500.tar.gz"
-  sha256 "5a6cc0d661fe0cd4210bf467d6c89afd8611609e402690254722c1415736da92"
+  url "https://files.pythonhosted.org/packages/7b/7d/fe93719aadff3814695dc30541324aba9da422a3800a1942c5e5d2457ab0/you-get-0.4.1527.tar.gz"
+  sha256 "470b2f76ccad5dbe37bc4a8779056cf6da67f4322fe723e2b9227e825da595c9"
   license "MIT"
   head "https://github.com/soimort/you-get.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2238c1f593a3d1e05642f550d5fd8b95bc871efc8fbbf8ca84c62b7838c8fb9f"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6264f3509de8eed9b86952c9e29ad83c701f829af203e6cf15ce7fe5a783309c"
-    sha256 cellar: :any_skip_relocation, catalina:      "0ac325b9b2db370b23fd3c402cae58ae94c4df8ab590612af316c35c2ffb9f2c"
-    sha256 cellar: :any_skip_relocation, mojave:        "42900e74c53614573349195e1761f60e7e9fa696de56ee79acc17d148c4de93f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "880ca7781c0024c3ab49c5d4124dedbf5c5e8f3f225b9db8308f65f5c73e7c71"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9c8a5b19914e33be141651d2919abcd9e172d7aa49048050a943e0e3a7fc3119"
+    sha256 cellar: :any_skip_relocation, catalina:      "9c8a5b19914e33be141651d2919abcd9e172d7aa49048050a943e0e3a7fc3119"
+    sha256 cellar: :any_skip_relocation, mojave:        "9c8a5b19914e33be141651d2919abcd9e172d7aa49048050a943e0e3a7fc3119"
   end
 
   depends_on "python@3.9"

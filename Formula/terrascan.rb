@@ -1,16 +1,16 @@
 class Terrascan < Formula
   desc "Detect compliance and security violations across Infrastructure as Code"
-  homepage "https://www.accurics.com/products/terrascan/"
-  url "https://github.com/accurics/terrascan/archive/v1.4.0.tar.gz"
-  sha256 "6bb231500f7b08c5f36fe1193cd9ba17a036e0a81a7ccf752edf2d958784035f"
+  homepage "https://github.com/accurics/terrascan"
+  url "https://github.com/accurics/terrascan/archive/v1.7.0.tar.gz"
+  sha256 "6ee3f5d915ab20c70a479aa5d598d71e9da54bacaf5239e2f6514605a81da3de"
   license "Apache-2.0"
   head "https://github.com/accurics/terrascan.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d134c7faf143bcee70a7efd729a68aa9d72c4fc6941672b3a98952fc26b84b3d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "660a6ec36404c9e45899249c9f1ac250ac6cdf30a5514dfe52877cbe6954a1e5"
-    sha256 cellar: :any_skip_relocation, catalina:      "f5a93d7392ad8c451a2a6a1379c1d3c9a889583215bfed8b66ca74267b321a5a"
-    sha256 cellar: :any_skip_relocation, mojave:        "be0816e6a545a340880459362b55310674443f2f97f2a7dba7c704a890c4a6d3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4aa9e5ffc6ad9929fd47cd13ce2e3a48336993603877750191ad380a30c1dea1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3bb36a6b1112df06e24e08054b76dc100e2b87fd96ea6df0aae0a90d9eca3ef4"
+    sha256 cellar: :any_skip_relocation, catalina:      "d4ddea335cefe9360673414dcada6144f315761aa28f02a3ae355262becc0abf"
+    sha256 cellar: :any_skip_relocation, mojave:        "e262178b11a8a43d7d4922fd83520536eab0c5fa18902d2a45d9a49424740d00"
   end
 
   depends_on "go" => :build
@@ -35,15 +35,14 @@ class Terrascan < Formula
     EOS
 
     expected = <<~EOS
-      \tPolicies Validated  :	159
-      \tViolated Policies   :	0
-      \tLow                 :	0
-      \tMedium              :	0
-      \tHigh                :	0
+      \tViolated Policies   :\t0
+      \tLow                 :\t0
+      \tMedium              :\t0
+      \tHigh                :\t0
     EOS
 
-    assert_match expected, shell_output("#{bin}/terrascan scan -f #{testpath}/ami.tf -t aws")
-
-    assert_match "version: v#{version}", shell_output("#{bin}/terrascan version")
+    output = shell_output("#{bin}/terrascan scan -f #{testpath}/ami.tf -t aws")
+    assert_match expected, output
+    assert_match(/Policies Validated\s+:\s+\d+/, output)
   end
 end

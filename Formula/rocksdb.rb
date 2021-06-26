@@ -1,14 +1,16 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "https://rocksdb.org/"
-  url "https://github.com/facebook/rocksdb/archive/v6.15.5.tar.gz"
-  sha256 "d7b994e1eb4dff9dfefcd51a63f86630282e1927fc42a300b93c573c853aa5d0"
+  url "https://github.com/facebook/rocksdb/archive/v6.20.3.tar.gz"
+  sha256 "c6502c7aae641b7e20fafa6c2b92273d935d2b7b2707135ebd9a67b092169dca"
   license any_of: ["GPL-2.0-only", "Apache-2.0"]
+  head "https://github.com/facebook/rocksdb.git"
 
   bottle do
-    sha256 cellar: :any, big_sur:  "aad14af99b39d155869bbb1f389b6da072890a531cd1e268aeb24ef911415a90"
-    sha256 cellar: :any, catalina: "e40e671dd9b9fe4ac37af9cb5845c085445ddc46dccadb523fa16fbbc9d8a539"
-    sha256 cellar: :any, mojave:   "189185a4b829e09cfb51fd9739f20b908bcc72b0a22327bc132c40a3b76fecbb"
+    sha256 cellar: :any, arm64_big_sur: "a2587fded0119b3b8cf88ae900c204b4172b6fb24c8908ded8e2a2c961297f08"
+    sha256 cellar: :any, big_sur:       "a8ad63c138140f1917b7959158f1a7a5ff0514431180e1c2c4c36251b5db8b46"
+    sha256 cellar: :any, catalina:      "d317701d793cd9cc5177f4393a8c8066339451d8bb8564b2dc2af20d8c545912"
+    sha256 cellar: :any, mojave:        "278b0478a10c1a4b266af0122422beeae46c9beeaad8c2dab7d862e2e58bc49f"
   end
 
   depends_on "cmake" => :build
@@ -20,16 +22,9 @@ class Rocksdb < Formula
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
-  # Add artifact suffix to shared library
-  # https://github.com/facebook/rocksdb/pull/7755
-  patch do
-    url "https://github.com/facebook/rocksdb/commit/98f3f3143007bcb5455105a05da7eeecc9cf53a0.patch?full_index=1"
-    sha256 "6fb59cd640ed8c39692855115b72e8aa8db50a7aa3842d53237e096e19f88fc1"
-  end
-
   def install
     ENV.cxx11
-    args = std_cmake_args + %w[
+    args = std_cmake_args + %W[
       -DPORTABLE=ON
       -DUSE_RTTI=ON
       -DWITH_BENCHMARK_TOOLS=OFF
@@ -38,6 +33,7 @@ class Rocksdb < Formula
       -DWITH_SNAPPY=ON
       -DWITH_ZLIB=ON
       -DWITH_ZSTD=ON
+      -DCMAKE_EXE_LINKER_FLAGS=-Wl,-rpath,#{rpath}
     ]
 
     # build regular rocksdb

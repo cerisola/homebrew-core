@@ -4,6 +4,11 @@ class Cdparanoia < Formula
   url "https://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz"
   sha256 "005db45ef4ee017f5c32ec124f913a0546e77014266c6a1c50df902a55fe64df"
 
+  livecheck do
+    url "https://www.xiph.org/paranoia/down.html"
+    regex(/href=.*?cdparanoia-III[._-]v?(\d+(?:\.\d+)+)\.src\.t/i)
+  end
+
   bottle do
     sha256 cellar: :any, arm64_big_sur: "79d03f652937117697ae235b7bbb8558be9cb86edc42c330316204a288d5cb59"
     sha256 cellar: :any, big_sur:       "2b7649f89581be2a35b246e4aab15e936573d3920f794ae5187e23b796874dbf"
@@ -13,7 +18,6 @@ class Cdparanoia < Formula
     sha256 cellar: :any, sierra:        "709190d769f7b8c61d19867ae2faf902a2f84dec6f0d5506bd71c56a99e4a67a"
     sha256 cellar: :any, el_capitan:    "135250473fe692dc976ecbf7324676fa8cef3cdb48a091287bb183c31548fed9"
     sha256 cellar: :any, yosemite:      "3cd7bbd1a4a0a7992287b255cf0d6409bdb5f4a3fed245b0fd2296e535e9f2de"
-    sha256 cellar: :any, mavericks:     "14ec797a041edffe73fef897853a833e5588278c03511f27499e55efb68c848d"
   end
 
   depends_on "autoconf" => :build

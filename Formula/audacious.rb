@@ -2,23 +2,22 @@ class Audacious < Formula
   desc "Free and advanced audio player based on GTK+"
   homepage "https://audacious-media-player.org/"
   license "BSD-2-Clause"
-  revision 1
 
   stable do
-    url "https://distfiles.audacious-media-player.org/audacious-4.0.5.tar.bz2"
-    sha256 "51aea9e6a3b17f5209d49283a2dee8b9a7cd7ea96028316909da9f0bfe931f09"
+    url "https://distfiles.audacious-media-player.org/audacious-4.1.tar.bz2"
+    sha256 "1f58858f9789e867c513b5272987f13bdfb09332b03c2814ad4c6e29f525e35c"
 
     resource "plugins" do
-      url "https://distfiles.audacious-media-player.org/audacious-plugins-4.0.5.tar.bz2"
-      sha256 "9f0251922886934f2aa32739b5a30eadfefa7c70dd7b3e78f94aa6fc54e0c55b"
+      url "https://distfiles.audacious-media-player.org/audacious-plugins-4.1.tar.bz2"
+      sha256 "dad6fc625055349d589e36e8e5c8ae7dfafcddfe96894806509696d82bb61d4c"
     end
   end
 
   bottle do
-    sha256 arm64_big_sur: "262e96f1222fb5ceba5b195ab5742913cdf75ac6fd8e5923e563f37301e137c5"
-    sha256 big_sur:       "d5b25fb05e6fe57692a0b6669f84723ca6867c8c9bd2fdcbcbfd816a5d2b907f"
-    sha256 catalina:      "39222ff0b21fb409570d2dbaea7e53a99b87d8a54a9e7e59b28b15b26a35f790"
-    sha256 mojave:        "31c07493cfb5225d8f09ba6728de4a0516abf2b9d8b357cbabb2c09c4d1b902c"
+    sha256 arm64_big_sur: "6b34c0f40150465828af36152ce2bced63ee27c4fe488f64f63f699648cc1f43"
+    sha256 big_sur:       "1343e3cb7f51a3885cef9fde5c81aca7833f2c94d8a2c933bafb23046861ac51"
+    sha256 catalina:      "e213d649e83a181aa0996996bd7455435c00bcc3bb87850c5571d27bc6a9333e"
+    sha256 mojave:        "c1c64e34044dff95f4db265a541aa7f979b36580de6a63ce86bf3b13434f7058"
   end
 
   head do
@@ -27,13 +26,11 @@ class Audacious < Formula
     resource "plugins" do
       url "https://github.com/audacious-media-player/audacious-plugins.git"
     end
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
   depends_on "gettext" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "faad2"
   depends_on "ffmpeg"
@@ -49,7 +46,6 @@ class Audacious < Formula
   depends_on "libsamplerate"
   depends_on "libsoxr"
   depends_on "libvorbis"
-  depends_on :macos # Due to Python 2
   depends_on "mpg123"
   depends_on "neon"
   depends_on "qt@5"
@@ -57,33 +53,31 @@ class Audacious < Formula
   depends_on "wavpack"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-dbus
-      --disable-gtk
-      --enable-qt
+    args = std_meson_args + %w[
+      -Ddbus=false
+      -Dgtk=false
+      -Dqt=true
     ]
 
-    system "./autogen.sh" if build.head?
-    system "./configure", *args
-    system "make"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
 
     resource("plugins").stage do
       args += %w[
-        --disable-coreaudio
-        --disable-mpris2
-        --enable-mac-media-keys
+        -Dcoreaudio=false
+        -Dmpris2=false
+        -Dmac-media-keys=true
       ]
-      inreplace "src/glspectrum/gl-spectrum.cc", "#include <GL/", "#include <"
-      inreplace "src/qtglspectrum/gl-spectrum.cc", "#include <GL/", "#include <"
-      ENV.prepend_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
-      system "./autogen.sh" if build.head?
-
-      system "./configure", *args
-      system "make"
-      system "make", "install"
+      ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
+      mkdir "build" do
+        system "meson", *args, ".."
+        system "ninja", "-v"
+        system "ninja", "install", "-v"
+      end
     end
   end
 

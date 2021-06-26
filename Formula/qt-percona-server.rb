@@ -1,18 +1,19 @@
 class QtPerconaServer < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/submodules/qtbase-everywhere-src-6.0.2.tar.xz"
-  sha256 "991a0e4e123104e76563067fcfa58602050c03aba8c8bb0c6198347c707817f1"
+  url "https://download.qt.io/official_releases/qt/6.1/6.1.1/submodules/qtbase-everywhere-src-6.1.1.tar.xz"
+  sha256 "21a8aa9f07170e047270c668c8b037536f40226db7adbc529a0b41c3a3cb3ff2"
   license all_of: ["LGPL-2.1-only", "LGPL-3.0-only"]
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "e8cac96be21c551591beaf0f0b3db9d236c4d92620ca90566583c415224624e0"
-    sha256 cellar: :any, big_sur:       "7d2301593bfe0133b93feadb819afef0befc687976c15f663b02742f60b7cfa4"
-    sha256 cellar: :any, catalina:      "b31d93758c4e70cb3ddb523b17fce5845cd95f74f516fd29aff083c7e1dcca2d"
-    sha256 cellar: :any, mojave:        "5fd16d09479331b60eaf9de75e34639b00dc2fc3b03d4ae08ce68d1e6ef25ceb"
+    sha256 cellar: :any, arm64_big_sur: "bab264fa46cd22c8fa8e986c22a3938ac4f4e869a6eb0f8e4f24a922cc189d11"
+    sha256 cellar: :any, big_sur:       "39e69f2363b3362c817a315286af998edb0ccb35a96943bb1c78aabcbaaec79c"
+    sha256 cellar: :any, catalina:      "86ab05667e7b9cb607da32d27dc3c81d8bb0925e7be487c66297dd72358094a8"
+    sha256 cellar: :any, mojave:        "47332a6123971a680c19ba07e13af8571cf7f14d513730e74fa328ef4bcac768"
   end
 
   depends_on "cmake" => [:build, :test]
+  depends_on "pkg-config" => :build
 
   depends_on "percona-server"
   depends_on "qt"
@@ -21,13 +22,23 @@ class QtPerconaServer < Formula
     because: "qt-mysql, qt-mariadb, and qt-percona-server install the same binaries"
 
   def install
+    args = std_cmake_args + %W[
+      -DCMAKE_STAGING_PREFIX=#{prefix}
+
+      -DFEATURE_sql_ibase=OFF
+      -DFEATURE_sql_mysql=ON
+      -DFEATURE_sql_oci=OFF
+      -DFEATURE_sql_odbc=OFF
+      -DFEATURE_sql_psql=OFF
+      -DFEATURE_sql_sqlite=OFF
+
+      -DMySQL_LIBRARY=#{Formula["percona-server"].opt_lib}/#{shared_library("libperconaserverclient")}
+    ]
+
     cd "src/plugins/sqldrivers" do
-      system "qmake"
-      system "make", "sub-mysql"
-      (share/"qt").install "plugins/"
-    end
-    Pathname.glob(share/"qt/plugins/sqldrivers/#{shared_library("*")}") do |plugin|
-      system "strip", "-S", "-x", plugin
+      system "cmake", "-S", ".", "-B", "build", *args
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
     end
   end
 

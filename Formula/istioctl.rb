@@ -2,15 +2,16 @@ class Istioctl < Formula
   desc "Istio configuration command-line utility"
   homepage "https://istio.io/"
   url "https://github.com/istio/istio.git",
-      tag:      "1.9.1",
-      revision: "2dd7b6207f02cec8b42f4263ac197434f4ec9b4a"
+      tag:      "1.10.2",
+      revision: "25c4362d87b9946d6b59d39bf21c6c8a192d060f"
   license "Apache-2.0"
   head "https://github.com/istio/istio.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "44775765884a6a3513fb9b51fde9e3184af36e06d96f229b64de65a9959ca06b"
-    sha256 cellar: :any_skip_relocation, catalina: "cad34878e6c3a45c2f20d430b4a02f6a3353a28df2ea8774550bacb67564bcb1"
-    sha256 cellar: :any_skip_relocation, mojave:   "a7fc6fd81f16649b4b9e45ad0949b417af53598198270539828cacf176d33552"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e5c49a8720d5bf52196694892b1d31388201653bf29b57045ad8f9d298235c0d"
+    sha256 cellar: :any_skip_relocation, big_sur:       "25ab8b1a917fdf167d0e1779e6bbba2131e837facdadc8d0bee3a12456e143be"
+    sha256 cellar: :any_skip_relocation, catalina:      "25ab8b1a917fdf167d0e1779e6bbba2131e837facdadc8d0bee3a12456e143be"
+    sha256 cellar: :any_skip_relocation, mojave:        "25ab8b1a917fdf167d0e1779e6bbba2131e837facdadc8d0bee3a12456e143be"
   end
 
   depends_on "go" => :build
@@ -23,14 +24,23 @@ class Istioctl < Formula
     ENV["HUB"] = "docker.io/istio"
     ENV["BUILD_WITH_CONTAINER"] = "0"
 
-    system "make", "gen-charts", "istioctl", "istioctl.completion"
     dirpath = nil
     on_macos do
-      dirpath = "darwin_amd64"
+      if Hardware::CPU.arm?
+        # Fix missing "amd64" for macOS ARM in istio/common/scripts/setup_env.sh
+        # Can remove when upstream adds logic to detect `$(uname -m) == "arm64"`
+        ENV["TARGET_ARCH"] = "arm64"
+
+        dirpath = "darwin_arm64"
+      else
+        dirpath = "darwin_amd64"
+      end
     end
     on_linux do
       dirpath = "linux_amd64"
     end
+
+    system "make", "istioctl", "istioctl.completion"
     cd "out/#{dirpath}" do
       bin.install "istioctl"
       bash_completion.install "release/istioctl.bash"

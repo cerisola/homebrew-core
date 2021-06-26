@@ -1,24 +1,38 @@
 class Driftctl < Formula
   desc "Detect, track and alert on infrastructure drift"
   homepage "https://driftctl.com"
-  url "https://github.com/cloudskiff/driftctl/archive/v0.6.0.tar.gz"
-  sha256 "33a28ce9630ba4fc80021c077086a91867f5af3578f70018b28621d4c7a67b11"
+  url "https://github.com/cloudskiff/driftctl/archive/v0.11.0.tar.gz"
+  sha256 "18454237b33fa8c23f3e93e2c3c088983ac40a269b572a089e858435640dac40"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c3d0b4e12bb73c2ed504d81cfebd6cd32374388d5847a59a59367b1cd9701df5"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7b2e9c5e7cf215752910878ab3aad22aa596dcbd2bd47c8b521395abae5814b9"
-    sha256 cellar: :any_skip_relocation, catalina:      "1ac34b52b8fff225f804473e5ddf57d7ef5177e72a942a8a0264984e3ea1f16c"
-    sha256 cellar: :any_skip_relocation, mojave:        "2479a4f61803209f070f6c5abd55ac5781aeb7e10d2e589aa5c4524cd1bd6bd2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3eb7ed07e3a731c381a92fa631ddd9d94b19fb8f02a418f3ab263fadf2dc14dc"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b66c7db2425bca566662a64b0beffa95d01df7c47dbef9f6d1a45a7a1efb3735"
+    sha256 cellar: :any_skip_relocation, catalina:      "b66c7db2425bca566662a64b0beffa95d01df7c47dbef9f6d1a45a7a1efb3735"
+    sha256 cellar: :any_skip_relocation, mojave:        "b66c7db2425bca566662a64b0beffa95d01df7c47dbef9f6d1a45a7a1efb3735"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags",
-             "-s -w -X github.com/cloudskiff/driftctl/build.env=release
-             -X github.com/cloudskiff/driftctl/pkg/version.version=v#{version}",
-             *std_go_args
+    ENV["CGO_ENABLED"] = "0"
+
+    ldflags = %W[
+      -s -w
+      -X github.com/cloudskiff/driftctl/build.env=release
+      -X github.com/cloudskiff/driftctl/pkg/version.version=v#{version}
+    ].join(" ")
+
+    system "go", "build", *std_go_args(ldflags: ldflags)
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "bash")
+    (bash_completion/"driftctl").write output
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "zsh")
+    (zsh_completion/"_driftctl").write output
+
+    output = Utils.safe_popen_read("#{bin}/driftctl", "completion", "fish")
+    (fish_completion/"driftctl.fish").write output
   end
 
   test do

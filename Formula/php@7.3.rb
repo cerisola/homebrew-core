@@ -2,16 +2,16 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.27.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.27.tar.xz"
-  sha256 "65f616e2d5b6faacedf62830fa047951b0136d5da34ae59e6744cbaf5dca148d"
+  url "https://www.php.net/distributions/php-7.3.28.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.28.tar.xz"
+  sha256 "a2a84dbec8c1eee3f46c5f249eaaa2ecb3f9e7a6f5d0604d2df44ff8d4904dbe"
   license "PHP-3.01"
   revision 1
 
   bottle do
-    sha256 big_sur:  "c8e738ccfa2335cdf50e29d87edb2741e48919c2b501201d87e3452b4e14592c"
-    sha256 catalina: "2b5bd52eaeb65bfddfba55af52fbe549f2b22413092d62718afc8d256bca3e82"
-    sha256 mojave:   "b8d5befa3abc05ae167870f7343d9e89ee31b7230393a2c64de1fe47ae92c997"
+    sha256 big_sur:  "d74c1f1882ac00fbb8209ac0f554fccb84fcb185a7124a7eea4b453da9c72848"
+    sha256 catalina: "54f3ccc8c57bc6e6094eeb51aa15ffaf310f8d5d25654058c15e1b7582a1bfc9"
+    sha256 mojave:   "6bea5fced17992acd7fff5f13322aea118153bbe711f7068722406e5ddafbde4"
   end
 
   keg_only :versioned_formula
@@ -362,7 +362,7 @@ class PhpAT73 < Formula
     system "#{bin}/phpdbg", "-V"
     system "#{bin}/php-cgi", "-m"
     # Prevent SNMP extension to be added
-    assert_no_match(/^snmp$/, shell_output("#{bin}/php -m"),
+    refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
     begin
       port = free_port

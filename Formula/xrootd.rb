@@ -1,8 +1,8 @@
 class Xrootd < Formula
   desc "High performance, scalable, fault-tolerant access to data"
   homepage "https://xrootd.slac.stanford.edu/"
-  url "https://xrootd.slac.stanford.edu/download/v5.1.1/xrootd-5.1.1.tar.gz"
-  sha256 "b5fcaa21dad617bacf46deb56f1961d439505f13e41bf11f2d9a64fe3fb31800"
+  url "https://xrootd.slac.stanford.edu/download/v5.2.0/xrootd-5.2.0.tar.gz"
+  sha256 "e4a90116bd4868c7738024a9091d5b393f649d891da97d7436d520b4a8f87859"
   license "LGPL-3.0-or-later"
   head "https://github.com/xrootd/xrootd.git"
 
@@ -12,10 +12,11 @@ class Xrootd < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "805f3c09b8a549c90bf143ab879a00a45566c199c9c9d90faff51b9ade6db21d"
-    sha256 big_sur:       "47e2ef9a7acfa8bafe7818a55c762d2bc3ca07303e61a2ac8924efcccdaa8ef6"
-    sha256 catalina:      "c8b0263052a469dac59ac2d35dc94c5ecb92daae1695af20aab120a79ce74c84"
-    sha256 mojave:        "4ca621cc2d357d7a31f03883687aa1b8a56f7b7111a616a5bb9747342982b0c5"
+    rebuild 1
+    sha256 cellar: :any, arm64_big_sur: "ec10800dc260fe5f5d3d2c8eaf59bcc4dd66b26e5ef6711d5d69cbdfa127890b"
+    sha256 cellar: :any, big_sur:       "175899de5aa39c513c96846122deb2d39ce36a337a3bac290a8aab6b5e12df77"
+    sha256 cellar: :any, catalina:      "6d8692b31b1075069e7e91f3544761fca89cc61bebcf196990b80cfc858be647"
+    sha256 cellar: :any, mojave:        "e4b86a28028400f6e4f152af77b0784adaf7f0b65c4b2bdf6dece891cf45268a"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +34,7 @@ class Xrootd < Formula
     mkdir "build" do
       system "cmake", "..", *std_cmake_args,
                             "-DENABLE_PYTHON=OFF",
-                            "-DCMAKE_INSTALL_RPATH=#{opt_lib}"
+                            "-DCMAKE_INSTALL_RPATH=#{rpath}"
       system "make", "install"
     end
   end

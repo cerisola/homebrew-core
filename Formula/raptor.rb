@@ -1,8 +1,13 @@
 class Raptor < Formula
   desc "RDF parser toolkit"
-  homepage "http://librdf.org/raptor/"
-  url "http://download.librdf.org/source/raptor2-2.0.15.tar.gz"
+  homepage "https://librdf.org/raptor/"
+  url "https://download.librdf.org/source/raptor2-2.0.15.tar.gz"
   sha256 "ada7f0ba54787b33485d090d3d2680533520cd4426d2f7fb4782dd4a6a1480ed"
+
+  livecheck do
+    url :homepage
+    regex(/href=.*?raptor2[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     sha256 cellar: :any, arm64_big_sur: "2970bdade24bb5ec9afe4b79e89234016147cb506f6b450bcfd66c50fce1cede"
@@ -13,7 +18,6 @@ class Raptor < Formula
     sha256 cellar: :any, sierra:        "dba42ee8efa54c0b5722f0e12a7a585c2a9fe07a22aea6aec9124aaf09860f1d"
     sha256 cellar: :any, el_capitan:    "cc2feb9cd1d6f9eb0f511853f19c43bc96d143de6a73edfd3cdb854647d1d14a"
     sha256 cellar: :any, yosemite:      "c23392012fb5edffbe800771eaee6ae81d288e62c477c27332474f2ed342d1b3"
-    sha256 cellar: :any, mavericks:     "5e640e01d5cdd6899ca00704ba581358d254f7cfb9b81d62c901c825bb347681"
   end
 
   uses_from_macos "libxml2"

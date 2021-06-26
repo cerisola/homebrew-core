@@ -1,15 +1,18 @@
 class Global < Formula
+  include Language::Python::Shebang
+
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "https://ftp.gnu.org/gnu/global/global-6.6.4.tar.gz"
-  mirror "https://ftpmirror.gnu.org/global/global-6.6.4.tar.gz"
-  sha256 "987e8cb956c53f8ebe4453b778a8fde2037b982613aba7f3e8e74bcd05312594"
-  revision 1
+  url "https://ftp.gnu.org/gnu/global/global-6.6.6.tar.gz"
+  mirror "https://ftpmirror.gnu.org/global/global-6.6.6.tar.gz"
+  sha256 "758078afff98d4c051c58785c7ada3ed1977fabb77f8897ff657b71cc62d4d5d"
+  license "GPL-3.0-or-later"
 
   bottle do
-    sha256 catalina:    "748524c4b316196e41e0f54df683117c61f7dfdbab1c3e641c36ae4eed7f1013"
-    sha256 mojave:      "848b4e78c1f507bc4356b285164368641125194e730accf46c540af5806a600f"
-    sha256 high_sierra: "ba9cdd8c988ca4aff95538b8d30cb9f97c99dd6f5e91e296db121c8b53459cf0"
+    sha256 arm64_big_sur: "f96368bfa6146b1e1ab6df7fa7a830edac7a733e5e5b166da466279cd95f7f24"
+    sha256 big_sur:       "b46b54119d50cad76ba3d214e3bfa746f3734fd36da87b59c8ad94368dd635c3"
+    sha256 catalina:      "60e5977d1120c5e9f5044a424e74626e9ac713f9b5df994e6f3dc65ce9bc121e"
+    sha256 mojave:        "2090e947b5325e6c6927d1c7ada590cedfbe765722eb2376b6690ebacf7bfdbf"
   end
 
   head do
@@ -24,7 +27,7 @@ class Global < Formula
   end
 
   depends_on "ctags"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   uses_from_macos "ncurses"
 
@@ -35,17 +38,18 @@ class Global < Formula
   skip_clean "lib/gtags"
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/cb/9f/27d4844ac5bf158a33900dbad7985951e2910397998e85712da03ce125f0/Pygments-2.5.2.tar.gz"
-    sha256 "98c8aa5a9f778fcd1026a17361ddaf7330d1b7c62ae97c3bb0ae73e0b9b6b0fe"
+    url "https://files.pythonhosted.org/packages/ba/6e/7a7c13c21d8a4a7f82ccbfe257a045890d4dbf18c023f985f565f97393e3/Pygments-2.9.0.tar.gz"
+    sha256 "a18f47b506a429f6f4b9df81bb02beab9ca21d0a5fee38ed15aef65f0545519f"
   end
 
   def install
     system "sh", "reconf.sh" if build.head?
 
-    xy = Language::Python.major_minor_version "python3"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
-    pygments_args = %W[build install --prefix=#{libexec}]
-    resource("Pygments").stage { system "python3", "setup.py", *pygments_args }
+    ENV.prepend_create_path "PYTHONPATH", libexec/Language::Python.site_packages("python3")
+
+    resource("Pygments").stage do
+      system "python3", *Language::Python.setup_install_args(libexec)
+    end
 
     args = %W[
       --disable-dependency-tracking
@@ -56,6 +60,8 @@ class Global < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    rewrite_shebang detected_python_shebang, share/"gtags/script/pygments_parser.py"
 
     bin.env_script_all_files(libexec/"bin", PYTHONPATH: ENV["PYTHONPATH"])
 
@@ -95,10 +101,10 @@ class Global < Formula
     assert_match "test.c", shell_output("#{bin}/global -d c2func  # passes")
     assert_match "test.py", shell_output("#{bin}/global -d pyfunc  # passes")
     assert_match "test.py", shell_output("#{bin}/global -d py2func # passes")
-    assert_no_match(/test\.c/, shell_output("#{bin}/global -r c2func  # correctly fails"))
-    assert_no_match(/test\.c/, shell_output("#{bin}/global -s cvar    # correctly fails"))
-    assert_no_match(/test\.py/, shell_output("#{bin}/global -r py2func # correctly fails"))
-    assert_no_match(/test\.py/, shell_output("#{bin}/global -s pyvar   # correctly fails"))
+    refute_match "test.c", shell_output("#{bin}/global -r c2func  # correctly fails")
+    refute_match "test.c", shell_output("#{bin}/global -s cvar    # correctly fails")
+    refute_match "test.py", shell_output("#{bin}/global -r py2func # correctly fails")
+    refute_match "test.py", shell_output("#{bin}/global -s pyvar   # correctly fails")
 
     # Test the default parser
     assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=default .")

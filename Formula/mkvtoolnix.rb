@@ -1,8 +1,8 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://mkvtoolnix.download/"
-  url "https://mkvtoolnix.download/sources/mkvtoolnix-53.0.0.tar.xz"
-  sha256 "8dfd66278c81e6f1df0fd84aad30ce2b4cf7a2ad4336924f01f1879f9d1e4cd6"
+  url "https://mkvtoolnix.download/sources/mkvtoolnix-58.0.0.tar.xz"
+  sha256 "1af727fa203e2bd8c54a005f28b635c96a4b80aa4ee8d23b4def0b6800ca6e38"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,10 +11,9 @@ class Mkvtoolnix < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "3a9e5699a395a9e2a5823885fa3337c74dccb13b545195a1010075a7587e5a03"
-    sha256 cellar: :any, big_sur:       "712880637df3730d2c49390de8fc3be9053b2e093a06e8d5dcd43ba7c1d79547"
-    sha256 cellar: :any, catalina:      "8139fcc6b846f6f4b317bd4ac393a3ef15e72446a0f6a0f12b65daddff04cd76"
-    sha256 cellar: :any, mojave:        "a633f4d8d7438fdc876fc2dfba0ef20037d43391e63e509df833d34ef169d812"
+    sha256 cellar: :any, arm64_big_sur: "bb017dde154996cbb8ad6cc177dc789cb04d002497364f83bd693f0ba0103737"
+    sha256 cellar: :any, big_sur:       "0d894d3ef94d55f8345eb27896d15d5a1cf228b2a70f43b2ef00d9e9cfd0cb05"
+    sha256 cellar: :any, catalina:      "f1807c38089b67bd26aafc3964dfebcc7c4aa3c9186bde1ed1c42831b40308b6"
   end
 
   head do
@@ -35,12 +34,21 @@ class Mkvtoolnix < Formula
   depends_on "libmatroska"
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on macos: :mojave # C++17
+  # https://mkvtoolnix.download/downloads.html#macosx
+  depends_on macos: :catalina # C++17
+  depends_on "nlohmann-json"
   depends_on "pcre2"
   depends_on "pugixml"
+  depends_on "utf8cpp"
 
   uses_from_macos "libxslt" => :build
   uses_from_macos "ruby" => :build
+
+  on_linux do
+    depends_on "gcc" => :build
+  end
+
+  fails_with gcc: "5"
 
   def install
     ENV.cxx11
@@ -52,6 +60,7 @@ class Mkvtoolnix < Formula
       extra_includes << "#{Formula[feature].opt_include};"
       extra_libs << "#{Formula[feature].opt_lib};"
     end
+    extra_includes << "#{Formula["utf8cpp"].opt_include}/utf8cpp;"
     extra_includes.chop!
     extra_libs.chop!
 

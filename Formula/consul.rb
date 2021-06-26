@@ -1,11 +1,10 @@
 class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
-  url "https://github.com/hashicorp/consul.git",
-      tag:      "v1.9.4",
-      revision: "10bb6cb3b035fdee0e039bddef76a38108f0c803"
+  url "https://github.com/hashicorp/consul/archive/refs/tags/v1.10.0.tar.gz"
+  sha256 "971acdd8b180b95d9ace9a29bd6f954d14719b56c7c5a47eeef66aa278b1c1e3"
   license "MPL-2.0"
-  head "https://github.com/hashicorp/consul.git", shallow: false
+  head "https://github.com/hashicorp/consul.git"
 
   livecheck do
     url :stable
@@ -13,36 +12,16 @@ class Consul < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "0c9f867ffcb9eb62d5e5a38a7ac49bb0a04330882aab3f9311c5f4658238a04b"
-    sha256 cellar: :any_skip_relocation, catalina: "b54d7e1bd3497214e2208c5db1484ff8d00742f4f99f96347dd42ea5ac6f3921"
-    sha256 cellar: :any_skip_relocation, mojave:   "4b1d04ef343f4c5ca1bc656888dbd085e72f6cb31115dae5616d65767d460de7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "7a3369f9f96d35fbfa18d04c3e9e38c82cbb79e6bd0d58dd14bf65e282f510af"
+    sha256 cellar: :any_skip_relocation, big_sur:       "428501ad054c955587c9630f611ad317c45c07c20981e70bc746a4dab427c554"
+    sha256 cellar: :any_skip_relocation, catalina:      "63138480100a43016bbdd31daf45aa179bff8a80b2175bd606934b640dede838"
+    sha256 cellar: :any_skip_relocation, mojave:        "bdab7d79a9f4198e2ae4328687ee10815100ed47346bed66738316745fd8b8a2"
   end
 
   depends_on "go" => :build
-  depends_on "gox" => :build
-
-  uses_from_macos "zip" => :build
 
   def install
-    # Specificy the OS, else all platforms will be built
-    on_macos do
-      ENV["XC_OS"] = "darwin"
-    end
-    on_linux do
-      ENV["XC_OS"] = "linux"
-    end
-    ENV["XC_ARCH"] = "amd64"
-    ENV["GOPATH"] = buildpath
-    contents = Dir["{*,.git,.gitignore}"]
-    (buildpath/"src/github.com/hashicorp/consul").install contents
-
-    (buildpath/"bin").mkpath
-
-    cd "src/github.com/hashicorp/consul" do
-      system "make"
-      bin.install "bin/consul"
-      prefix.install_metafiles
-    end
+    system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   plist_options manual: "consul agent -dev -bind 127.0.0.1"

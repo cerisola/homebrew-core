@@ -1,19 +1,25 @@
 class Latexindent < Formula
   desc "Add indentation to LaTeX files"
   homepage "https://ctan.org/pkg/latexindent"
-  url "https://github.com/cmhughes/latexindent.pl/archive/V3.8.3.tar.gz"
-  sha256 "34ad26e69257f5a9dd475e16417a8c16b590ccf17e98a4b05f6316f65df621cd"
+  url "https://github.com/cmhughes/latexindent.pl/archive/V3.10.tar.gz"
+  sha256 "2b19cbf45eb93fc707ab7ae5f239d3cdab8580fa73f22cec5b09af5ede4c7288"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "990afa8cf06b7d7d6e4564af13d4f8054873e03ca320c9da7b75efef7769aa86"
-    sha256 cellar: :any_skip_relocation, big_sur:       "78f0e4bc0d5963fa6dcad8ac5486ab9a34c2da4bfd9cffabd16337385ce1824f"
-    sha256 cellar: :any_skip_relocation, catalina:      "80bc255ec4660c8cec1f8af2ec9f30d6b810af189a168dab4c61128430cf25e0"
-    sha256 cellar: :any_skip_relocation, mojave:        "13bb96a8f2256a72a53c0f6338300dace9853b0cb0b97c2892b9e3a81b8cc5ee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f398b0e856b73a0b1f266b7682b6eeb7446d60be96debc95598fdb90dbe118d7"
+    sha256 cellar: :any_skip_relocation, big_sur:       "4fcc64f5d5ece8a2323c017f846ae3fe5e22523949e1f37decddce5525bd5959"
+    sha256 cellar: :any_skip_relocation, catalina:      "5d4d8b44a5df93d70c317e8d1065693b12a9e1793859a0cfa949b0caff23455d"
+    sha256 cellar: :any_skip_relocation, mojave:        "0dbee2129f88c6bc369d1f0c5afe645ce27a6f7f4bf1146a8bcfd5cf787add64"
   end
 
   depends_on "perl"
+
+  on_macos do
+    resource "Mac::SystemDirectory" do
+      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Mac-SystemDirectory-0.13.tar.gz"
+      sha256 "8730740e4ff3ea4812139b0787dbd1b544e093a08218d908071629b70fde3684"
+    end
+  end
 
   resource "B::Hooks::EndOfScope" do
     url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.24.tar.gz"
@@ -78,11 +84,6 @@ class Latexindent < Formula
   resource "MRO::Compat" do
     url "https://cpan.metacpan.org/authors/id/H/HA/HAARG/MRO-Compat-0.13.tar.gz"
     sha256 "8a2c3b6ccc19328d5579d02a7d91285e2afd85d801f49d423a8eb16f323da4f8"
-  end
-
-  resource "Mac::SystemDirectory" do
-    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Mac-SystemDirectory-0.13.tar.gz"
-    sha256 "8730740e4ff3ea4812139b0787dbd1b544e093a08218d908071629b70fde3684"
   end
 
   resource "Module::Build" do

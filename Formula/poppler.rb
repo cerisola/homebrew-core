@@ -1,10 +1,9 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-21.03.0.tar.xz"
-  sha256 "fd51ead4aac1d2f4684fa6e7b0ec06f0233ed21667e720a4e817e4455dd63d27"
+  url "https://poppler.freedesktop.org/poppler-21.06.1.tar.xz"
+  sha256 "86b09e5a02de40081a3916ef8711c5128eaf4b1fc59d5f87d0ec66f04f595db4"
   license "GPL-2.0-only"
-  revision 1
   head "https://gitlab.freedesktop.org/poppler/poppler.git"
 
   livecheck do
@@ -13,10 +12,10 @@ class Poppler < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "90b6ef0d795977a282db75c4a5caed550d16f88ef41d6e290b3ede2d10e25d0e"
-    sha256 big_sur:       "437360eb64c1bbbe8b403f9a89d8bbbb46daeb5c9e3e94315efbc74605c0eac0"
-    sha256 catalina:      "551f5398999e8de473adaf26e9cba9a07871cfe3f488778cae3cdaffd25ba7db"
-    sha256 mojave:        "d672b3810ad4f8ef2fef83ac3ab9b28e6ea9487090a0f5796579c90aba5ee156"
+    sha256 arm64_big_sur: "aaff85fe2abc31c6a6607acd0c1a4b06942f0d5e6be11f18c98c457ca75e9d62"
+    sha256 big_sur:       "c7ce27dd122ef1757adfa047648bb359c7da830c7c55ce3008638605157bfdae"
+    sha256 catalina:      "34c5d4fbb39da3ebf8a5fdc557812150a5e94d5fa25ff44898df3238f5d5686f"
+    sha256 mojave:        "34a03d61112039f6fc2d89bcf003badf902795f26c2535bf96dd3b8dc9a9a12b"
   end
 
   depends_on "cmake" => :build
@@ -51,6 +50,7 @@ class Poppler < Formula
 
     args = std_cmake_args + %w[
       -DBUILD_GTK_TESTS=OFF
+      -DENABLE_BOOST=OFF
       -DENABLE_CMS=lcms2
       -DENABLE_GLIB=ON
       -DENABLE_QT5=ON
@@ -71,16 +71,18 @@ class Poppler < Formula
       system "make", "install", "prefix=#{prefix}"
     end
 
-    libpoppler = (lib/"libpoppler.dylib").readlink
-    [
-      "#{lib}/libpoppler-cpp.dylib",
-      "#{lib}/libpoppler-glib.dylib",
-      "#{lib}/libpoppler-qt5.dylib",
-      *Dir["#{bin}/*"],
-    ].each do |f|
-      macho = MachO.open(f)
-      macho.change_dylib("@rpath/#{libpoppler}", "#{opt_lib}/#{libpoppler}")
-      macho.write!
+    on_macos do
+      libpoppler = (lib/"libpoppler.dylib").readlink
+      [
+        "#{lib}/libpoppler-cpp.dylib",
+        "#{lib}/libpoppler-glib.dylib",
+        "#{lib}/libpoppler-qt5.dylib",
+        *Dir["#{bin}/*"],
+      ].each do |f|
+        macho = MachO.open(f)
+        macho.change_dylib("@rpath/#{libpoppler}", "#{opt_lib}/#{libpoppler}")
+        macho.write!
+      end
     end
   end
 

@@ -3,7 +3,7 @@ class Handbrake < Formula
   homepage "https://handbrake.fr/"
   url "https://github.com/HandBrake/HandBrake/releases/download/1.3.3/HandBrake-1.3.3-source.tar.bz2"
   sha256 "218a37d95f48b5e7cf285363d3ab16c314d97627a7a710cab3758902ae877f85"
-  license "GPL-2.0"
+  license "GPL-2.0-only"
   revision 1
   head "https://github.com/HandBrake/HandBrake.git"
 
@@ -25,8 +25,22 @@ class Handbrake < Formula
   depends_on xcode: ["10.3", :build]
   depends_on "yasm" => :build
 
+  uses_from_macos "m4" => :build
+  uses_from_macos "libxml2"
+
+  on_linux do
+    depends_on "jansson"
+    depends_on "numactl"
+    depends_on "opus"
+  end
+
   def install
     inreplace "contrib/ffmpeg/module.defs", "$(FFMPEG.GCC.gcc)", "cc"
+
+    on_linux do
+      ENV.append "CFLAGS", "-I#{Formula["libxml2"].opt_include}/libxml2"
+    end
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-xcode",
                           "--disable-gtk"

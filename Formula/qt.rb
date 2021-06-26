@@ -1,10 +1,10 @@
 class Qt < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/single/qt-everywhere-src-6.0.2.tar.xz"
-  sha256 "67a076640647783b95a907d2231e4f34cec69be5ed338c1c1b33124cadf10bdf"
+  url "https://download.qt.io/official_releases/qt/6.1/6.1.1/single/qt-everywhere-src-6.1.1.tar.xz"
+  sha256 "6ac937aae4c7b5a3eac90ea4d13f31ded9f78ebc93007bb919fae65c58c808c3"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
-  head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
+  head "https://code.qt.io/qt/qt5.git", branch: "dev"
 
   # The first-party website doesn't make version information readily available,
   # so we check the `head` repository tags instead.
@@ -14,18 +14,19 @@ class Qt < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "fb36682730c3261967347efd1e1219970ddcf9e39998183b2aeaa76acad98cce"
-    sha256 cellar: :any, big_sur:       "99950b7eb8c3fd4a91f5622f1199b77d99d9d2aa9deeb2e2f11a1ed568f1194b"
-    sha256 cellar: :any, catalina:      "30f9131632cfa2088eb24315a5f34090e004413261e11b7290e37d78d7f9e42e"
-    sha256 cellar: :any, mojave:        "9498b72fda65897df32aa8ecd754b45d0f02551280170beb6b76e7001d4fff01"
+    sha256 cellar: :any, arm64_big_sur: "49063d24b2e11d21ed2062f7722299d3db01ed755fbe68467769403a393f91bd"
+    sha256 cellar: :any, big_sur:       "e662f1d81ddf33b58ea69ac67aa64ece963e19867ed3f96b494210c736b2d06c"
+    sha256 cellar: :any, catalina:      "7f9f46123093efd89eaec0879994993e5e5c156dd0cb0d2717b972eec49b31d3"
+    sha256 cellar: :any, mojave:        "d52b2b2dc6971206ef3b37194325fc7935abf577b6cc5479e2da3177da768fcb"
   end
 
-  depends_on "cmake" => [:build, :test]
-  depends_on "ninja" => :build
+  depends_on "cmake"      => [:build, :test]
+  depends_on "ninja"      => :build
   depends_on "pkg-config" => :build
-  depends_on xcode: :build
+  depends_on xcode: [:build, :test] if MacOS.version <= :mojave
 
   depends_on "assimp"
+  depends_on "brotli"
   depends_on "dbus"
   depends_on "double-conversion"
   depends_on "freetype"
@@ -39,60 +40,51 @@ class Qt < Formula
   depends_on "libtiff"
   depends_on "pcre2"
   depends_on "python@3.9"
+  depends_on "sqlite"
   depends_on "webp"
   depends_on "zstd"
 
   uses_from_macos "cups"
   uses_from_macos "krb5"
   uses_from_macos "perl"
-  uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
-  resource "qtimageformats" do
-    url "https://download.qt.io/official_releases/additional_libraries/6.0/6.0.2/qtimageformats-everywhere-src-6.0.2.tar.xz"
-    sha256 "b0379ba6bbefbc48ed3ef8a1d8812531bd671362f74e0cffa6adf67bb1139206"
-  end
-
-  resource "qt3d" do
-    url "https://download.qt.io/official_releases/additional_libraries/6.0/6.0.2/qt3d-everywhere-src-6.0.2.tar.xz"
-    sha256 "ff6434da878062aea612a9d7323bd615c2f232c4462c26323f1a5511aac6db89"
-  end
-
-  resource "qtnetworkauth" do
-    url "https://download.qt.io/official_releases/additional_libraries/6.0/6.0.2/qtnetworkauth-everywhere-src-6.0.2.tar.xz"
-    sha256 "05b66ef42f3e6bf4cf5f36744db8483f9a57dbc7bd9ecc9ba81e7ca99b0a37e6"
-  end
-
   def install
-    resources.each { |addition| addition.stage buildpath/addition.name }
+    # FIXME: See https://bugreports.qt.io/browse/QTBUG-89559
+    # and https://codereview.qt-project.org/c/qt/qtbase/+/327393
+    # It is not friendly to Homebrew or macOS
+    # because on macOS `/tmp` -> `/private/tmp`
+    inreplace "qtbase/CMakeLists.txt", "FATAL_ERROR", ""
 
     config_args = %W[
       -release
 
       -prefix #{HOMEBREW_PREFIX}
       -extprefix #{prefix}
+      -sysroot #{MacOS.sdk_path}
 
-      -libexecdir share/qt/libexec
-      -plugindir share/qt/plugins
-      -qmldir share/qt/qml
-      -docdir share/doc/qt
-      -translationdir share/qt/translations
+      -archdatadir share/qt
+      -datadir share/qt
       -examplesdir share/qt/examples
       -testsdir share/qt/tests
 
       -libproxy
       -no-feature-relocatable
       -system-sqlite
+
+      -no-sql-mysql
+      -no-sql-odbc
+      -no-sql-psql
     ]
 
+    # TODO: remove `-DFEATURE_qt3d_system_assimp=ON`
+    # and `-DTEST_assimp=ON` when Qt 6.2 is released.
+    # See https://bugreports.qt.io/browse/QTBUG-91537
     cmake_args = std_cmake_args.reject { |s| s["CMAKE_INSTALL_PREFIX"]||s["CMAKE_FIND_FRAMEWORK"] } + %W[
-      -DICU_ROOT=#{Formula["icu4c"].opt_prefix}
-
       -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
       -DCMAKE_FIND_FRAMEWORK=FIRST
 
       -DINSTALL_MKSPECSDIR=share/qt/mkspecs
-      -DINSTALL_DESCRIPTIONSDIR=share/qt/modules
 
       -DFEATURE_pkg_config=ON
       -DFEATURE_qt3d_system_assimp=ON
@@ -100,15 +92,15 @@ class Qt < Formula
     ]
 
     system "./configure", *config_args, "--", *cmake_args
-    system "ninja"
-    system "ninja", "install"
+    system "cmake", "--build", "."
+    system "cmake", "--install", "."
 
     rm bin/"qt-cmake-private-install.cmake"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
 
-    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", /.*set.__qt_initial_.*/, ""
+    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", HOMEBREW_SHIMS_PATH/"mac/super", "/usr/bin"
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
@@ -126,7 +118,7 @@ class Qt < Formula
 
   test do
     (testpath/"CMakeLists.txt").write <<~EOS
-      cmake_minimum_required(VERSION 3.19.0)
+      cmake_minimum_required(VERSION #{Formula["cmake"].version})
 
       project(test VERSION 1.0.0 LANGUAGES CXX)
 
@@ -196,8 +188,7 @@ class Qt < Formula
     system "make"
     system "./test"
 
-    # Work around "error: no member named 'signbit' in the global namespace"
-    ENV.delete "CPATH"
+    ENV.delete "CPATH" unless MacOS.version <= :mojave
     system bin/"qmake", testpath/"test.pro"
     system "make"
     system "./test"

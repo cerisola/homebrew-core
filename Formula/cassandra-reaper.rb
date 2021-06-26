@@ -1,16 +1,15 @@
 class CassandraReaper < Formula
   desc "Management interface for Cassandra"
   homepage "https://cassandra-reaper.io/"
-  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/2.2.1/cassandra-reaper-2.2.1-release.tar.gz"
-  sha256 "7c15268a33f6401969e24f714b50d65917273d08648d7b1b20e04ccbb820ce93"
+  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/2.2.5/cassandra-reaper-2.2.5-release.tar.gz"
+  sha256 "5622555209e1d347f7c2173097a865a540d9ccd3a66222aa563e773d645cedbe"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "01694dadff9e5346eb17afdfc1ce9f1a1592ff745836d5e27f2483834c1e7dd8"
-    sha256 cellar: :any_skip_relocation, catalina: "a251f0ec5834b55f1248be09da973ef1ca6b3fd4a07d5bf3eaf521b45077a2ea"
-    sha256 cellar: :any_skip_relocation, mojave:   "2ca0101a100e34384dac99a674e65474018682eb0613deb823071dcd43e6e9a2"
+    sha256 cellar: :any_skip_relocation, all: "37f39d8bd30b6aa47004edcffbadb32dec037271f96cfd4b4fe6f2a63f902497"
   end
 
+  depends_on arch: :x86_64 # openjdk@8 does not support ARM
   depends_on "openjdk@8"
 
   def install
@@ -63,7 +62,7 @@ class CassandraReaper < Formula
     fork do
       exec "#{bin}/cassandra-reaper", "#{testpath}/cassandra-reaper.yaml"
     end
-    sleep 10
+    sleep 30
     assert_match "200 OK", shell_output("curl -Im3 -o- http://localhost:#{port}/webui/login.html")
   end
 end

@@ -1,15 +1,16 @@
 class Hlint < Formula
   desc "Haskell source code suggestions"
   homepage "https://github.com/ndmitchell/hlint"
-  url "https://hackage.haskell.org/package/hlint-3.2.7/hlint-3.2.7.tar.gz"
-  sha256 "6f9c3d9603a072e1b76d3ee125dfaa54ce356fc0ced836affa741d989bedcf7c"
+  url "https://hackage.haskell.org/package/hlint-3.3.1/hlint-3.3.1.tar.gz"
+  sha256 "0c3e09b42eeb8e42fedb310107919f5171cab4195d01b884653cc0b76eb9828a"
   license "BSD-3-Clause"
   head "https://github.com/ndmitchell/hlint.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "537e2d46565c5b6799d5b538927741020c3422cb48eb81ce453180791fba03aa"
-    sha256 cellar: :any_skip_relocation, catalina: "75d3c4a1ce18ec83dd7e02033b44d2c7d9086b70719fed008e02c6d552e6d03c"
-    sha256 cellar: :any_skip_relocation, mojave:   "16397d3ee6601a82fb75ae4c58d57dc65d827a86052bd85d9a07f22edfc5a465"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c16d82b9b80acb360fc4af05e196607afc9234246098002e0d2f1b009aa9416b"
+    sha256 cellar: :any_skip_relocation, big_sur:       "b20afaeeda64896bd2c2fcd1e4922f92b1f9cc42d0500060e2cbebd528aed6f0"
+    sha256 cellar: :any_skip_relocation, catalina:      "28267b085f5c47b6972b99024b0c59578653f31c47e8c5ece308c2308359337b"
+    sha256 cellar: :any_skip_relocation, mojave:        "120e86ad71c28a88889173a5a8139f523c8aaa1c349a56053ef3a6687733e198"
   end
 
   depends_on "cabal-install" => :build

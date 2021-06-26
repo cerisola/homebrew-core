@@ -1,8 +1,8 @@
 class Openimageio < Formula
   desc "Library for reading, processing and writing images"
   homepage "https://openimageio.org/"
-  url "https://github.com/OpenImageIO/oiio/archive/Release-2.2.12.0.tar.gz"
-  sha256 "6010b0642b5bf9c045c397a0f0a7efec232fdaffb49984d449073d006e9004a6"
+  url "https://github.com/OpenImageIO/oiio/archive/Release-2.2.15.1.tar.gz"
+  sha256 "f222c6b51a40aabbc80ddf4055535be9af1ffa907452fa6d1ffa7674854aab17"
   license "BSD-3-Clause"
   head "https://github.com/OpenImageIO/oiio.git"
 
@@ -13,9 +13,10 @@ class Openimageio < Formula
   end
 
   bottle do
-    sha256 big_sur:  "3df83ab1ae7839a94676222239912f28cc4192ba977fe44acebd07c20b678f76"
-    sha256 catalina: "8c040bf300de4c716578d20cd0cab302ede08588761fa1f56e45ca98d245cbab"
-    sha256 mojave:   "940b43b047c56509bb52fe39912ac9cf3cfec63525e706a9f1ff0df79c15c48f"
+    sha256 cellar: :any, arm64_big_sur: "234df6f7b3eda72c108f81838a5541e7e3a69f04328e502c62a64ac2a93f621d"
+    sha256 cellar: :any, big_sur:       "a0807afc887f880005465c91d0ed6c37801ff316dda04c81a1c1432243b75588"
+    sha256 cellar: :any, catalina:      "62b267f53517973e8c018057eba39c751553fa1839362c8b95aede135b669bd2"
+    sha256 cellar: :any, mojave:        "cdd0daa342392f8de170d30443731a31d40c9c338a8758d80130e3c9c951eb11"
   end
 
   depends_on "cmake" => :build
@@ -25,7 +26,7 @@ class Openimageio < Formula
   depends_on "ffmpeg"
   depends_on "freetype"
   depends_on "giflib"
-  depends_on "ilmbase"
+  depends_on "imath"
   depends_on "jpeg-turbo"
   depends_on "libheif"
   depends_on "libpng"
@@ -54,6 +55,9 @@ class Openimageio < Formula
     # CMake picks up the system's python dylib, even if we have a brewed one.
     py3ver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
     py3prefix = Formula["python@3.9"].opt_frameworks/"Python.framework/Versions/#{py3ver}"
+    on_linux do
+      py3prefix = Formula["python@3.9"].opt_prefix
+    end
 
     ENV["PYTHONPATH"] = lib/"python#{py3ver}/site-packages"
 

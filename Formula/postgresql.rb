@@ -1,10 +1,9 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.2/postgresql-13.2.tar.bz2"
-  sha256 "5fd7fcd08db86f5b2aed28fcfaf9ae0aca8e9428561ac547764c2a2b0f41adfc"
+  url "https://ftp.postgresql.org/pub/source/v13.3/postgresql-13.3.tar.bz2"
+  sha256 "3cd9454fa8c7a6255b6743b767700925ead1b9ab0d7a0f9dcb1151010f8eb4a1"
   license "PostgreSQL"
-  revision 1
   head "https://github.com/postgres/postgres.git"
 
   livecheck do
@@ -13,10 +12,10 @@ class Postgresql < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "299babccbbf29b9769ab402aca01c4a0c4bc173a19a928e09fe1edabe7461c88"
-    sha256 big_sur:       "67a547842ae49911d301d490e70b5fff1ee27a65cea403abeff3a25d1806e8d6"
-    sha256 catalina:      "02af915cc2b5291c5a15b59a74dff255e918e7a6af34dbef53cf6ad264627628"
-    sha256 mojave:        "37f0b76c0f034d8a6837805eb27da3787c39cf895516a193ad298ea96f68e98a"
+    sha256 arm64_big_sur: "7c0e1b76d60b428facd521c729323221712d7f6d9954e21da389aeeb2c62348e"
+    sha256 big_sur:       "eaf28965ead970ecfb327b121ec6a07f0a4e39865797a1a0383605a17e5911e3"
+    sha256 catalina:      "74e946503c73cd0efc55ad4b373efbd8f4fb8a9e26a670b878c6db25794aea4a"
+    sha256 mojave:        "36c7bde4788571e5b66ffe05b6174b62c69781d61c53c3ebcd9d278e8f148197"
   end
 
   depends_on "pkg-config" => :build
@@ -31,9 +30,11 @@ class Postgresql < Formula
 
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
+  uses_from_macos "openldap"
   uses_from_macos "perl"
 
   on_linux do
+    depends_on "linux-pam"
     depends_on "util-linux"
   end
 
@@ -50,7 +51,6 @@ class Postgresql < Formula
       --sysconfdir=#{etc}
       --docdir=#{doc}
       --enable-thread-safety
-      --with-bonjour
       --with-gssapi
       --with-icu
       --with-ldap
@@ -59,9 +59,14 @@ class Postgresql < Formula
       --with-openssl
       --with-pam
       --with-perl
-      --with-tcl
       --with-uuid=e2fs
     ]
+    on_macos do
+      args += %w[
+        --with-bonjour
+        --with-tcl
+      ]
+    end
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
@@ -76,6 +81,12 @@ class Postgresql < Formula
                                     "pkgincludedir=#{include}/postgresql",
                                     "includedir_server=#{include}/postgresql/server",
                                     "includedir_internal=#{include}/postgresql/internal"
+
+    on_linux do
+      inreplace lib/"postgresql/pgxs/src/Makefile.global",
+                "LD = #{HOMEBREW_PREFIX}/Homebrew/Library/Homebrew/shims/linux/super/ld",
+                "LD = #{HOMEBREW_PREFIX}/bin/ld"
+    end
   end
 
   def post_install

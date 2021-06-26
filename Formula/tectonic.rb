@@ -1,10 +1,9 @@
 class Tectonic < Formula
   desc "Modernized, complete, self-contained TeX/LaTeX engine"
   homepage "https://tectonic-typesetting.github.io/"
-  url "https://github.com/tectonic-typesetting/tectonic/archive/tectonic@0.4.1.tar.gz"
-  sha256 "5a2c910f822d59ddaf9d32a0e5f7f34ce30f44e4129513b3a0c50425cf48ac8f"
+  url "https://github.com/tectonic-typesetting/tectonic/archive/tectonic@0.7.0.tar.gz"
+  sha256 "d4e674d7532d2d69601f1e9dd00766bc46ccffac89728e9f3e3032511dbdd201"
   license "MIT"
-  revision 1
 
   # As of writing, only the tags starting with `tectonic@` are release versions.
   # NOTE: The `GithubLatest` strategy cannot be used here because the "latest"
@@ -15,10 +14,10 @@ class Tectonic < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "ca6e5d2c0f438d8ab645cb3a910a69b353d2ec1db75166109d8ea8dc0e68a47e"
-    sha256 cellar: :any, big_sur:       "fc5ee56b319d0fface7d033aa0cdaf9e17f8a738e031dae4268d8b3a13b04493"
-    sha256 cellar: :any, catalina:      "061da8046e4dad195200c34cf24916ec1171dd283be4df0fd6a74d56384ad00e"
-    sha256 cellar: :any, mojave:        "44cf87fc25c63521b4338916d4caccf4edf7204b050d7a096c7a05c1aa7206f3"
+    sha256 cellar: :any, arm64_big_sur: "789552406930565512fc6ccda46fbde8d7ded52e1b8f94e2705af8704966d9bf"
+    sha256 cellar: :any, big_sur:       "b9909b29dc6ec0be2248b9f5d7a4fc2baf94606178b8316bf59079accc05d083"
+    sha256 cellar: :any, catalina:      "a2c33046b00d3c232545c4dbb6583625be421d83989da9ecd0d012eb856e4cb4"
+    sha256 cellar: :any, mojave:        "5ed2962c062416fb3a7daf60f06eeabeb283e5b9f7d6d1cc9eeb9639f9ffce27"
   end
 
   depends_on "pkg-config" => :build
@@ -39,7 +38,7 @@ class Tectonic < Formula
     # https://crates.io/crates/openssl#manual-configuration
     ENV["OPENSSL_DIR"] = Formula["openssl@1.1"].opt_prefix
 
-    system "cargo", "install", *std_cargo_args
+    system "cargo", "install", "--features", "external-harfbuzz", *std_cargo_args
   end
 
   test do

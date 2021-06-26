@@ -28,6 +28,10 @@ class Coreutils < Formula
 
   uses_from_macos "gperf" => :build
 
+  on_linux do
+    depends_on "attr"
+  end
+
   conflicts_with "aardvark_shell_utils", because: "both install `realpath` binaries"
   conflicts_with "b2sum", because: "both install `b2sum` binaries"
   conflicts_with "ganglia", because: "both install `gstat` binaries"
@@ -45,6 +49,7 @@ class Coreutils < Formula
       --prefix=#{prefix}
       --program-prefix=g
       --without-gmp
+      --without-selinux
     ]
 
     system "./configure", *args
@@ -65,6 +70,9 @@ class Coreutils < Formula
       b2sum base32 chcon hostid md5sum nproc numfmt pinky ptx realpath runcon
       sha1sum sha224sum sha256sum sha384sum sha512sum shred shuf stdbuf tac timeout truncate
     ]
+    on_linux do
+      no_conflict += ["dir", "dircolors", "vdir"]
+    end
     no_conflict.each do |cmd|
       bin.install_symlink "g#{cmd}" => cmd
       man1.install_symlink "g#{cmd}.1" => "#{cmd}.1"
@@ -72,8 +80,12 @@ class Coreutils < Formula
   end
 
   def caveats
+    msg = "Commands also provided by macOS"
+    on_linux do
+      msg = "All commands"
+    end
     <<~EOS
-      Commands also provided by macOS have been installed with the prefix "g".
+      #{msg} have been installed with the prefix "g".
       If you need to use these commands with their normal names, you
       can add a "gnubin" directory to your PATH from your bashrc like:
         PATH="#{opt_libexec}/gnubin:$PATH"

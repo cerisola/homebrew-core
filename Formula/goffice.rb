@@ -1,16 +1,15 @@
 class Goffice < Formula
   desc "Gnumeric spreadsheet program"
   homepage "https://developer.gnome.org/goffice/"
-  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.48.tar.xz"
-  sha256 "a439162fa26a0e58117e07b82b37000a7f421088ad379eb1f6a1cdee101ecefc"
+  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.50.tar.xz"
+  sha256 "2c5c3ddc7b08b3452408c81b121c5f012a734981d75e444debccb1c58e5cbfdc"
   license any_of: ["GPL-3.0-only", "GPL-2.0-only"]
 
   bottle do
-    sha256 arm64_big_sur: "b29f128d789d1399cb06fc284981d690a039ddeaa709bb15ac5f93483e3609f4"
-    sha256 big_sur:       "314d34ff359e1d6eb5d5935ac6e2778b47e360e6e13a6c3b98f99b7071e4c961"
-    sha256 catalina:      "3e05167a37c42bfa01acf4be7055a52e3c2a03c990536ae5562b2c0aa4812e42"
-    sha256 mojave:        "9edf36fd2ffb0a116e4e5f69cd00a04dd29eda04c1a3069b0e4da8950573c0a4"
-    sha256 high_sierra:   "7043808e39862444e7aaae796137b30fadefb142dea291f9d8ce23228d635264"
+    sha256 arm64_big_sur: "e571776d6027505872945c458da49905765f260bc76c197f83565ff1f9c06a6b"
+    sha256 big_sur:       "4cbc19a7ea37b8d511e2c908ab810c5655d76af9f13cffbaafdc39bac01ad009"
+    sha256 catalina:      "b21162268cc6c6dc2bdb7c63f6ea7b95eb3db9228f75536b98bf7fabff4ea9e8"
+    sha256 mojave:        "e7e8f0d817617e0b4450bc77905d988cd06918e45992881eeaba24c61b2e4030"
   end
 
   head do
@@ -36,6 +35,12 @@ class Goffice < Formula
   uses_from_macos "libxslt"
 
   def install
+    on_linux do
+      # Needed to find intltool (xml::parser)
+      ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5"
+      ENV["INTLTOOL_PERL"] = Formula["perl"].bin/"perl"
+    end
+
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     if build.head?
       system "./autogen.sh", *args
@@ -57,12 +62,16 @@ class Goffice < Formula
           return 0;
       }
     EOS
+    libxml2 = MacOS.sdk_path/"usr/include/libxml2"
+    on_linux do
+      libxml2 = Formula["libxml2"].opt_include/"libxml2"
+    end
     system ENV.cc, "-I#{include}/libgoffice-0.10",
            "-I#{Formula["glib"].opt_include}/glib-2.0",
            "-I#{Formula["glib"].opt_lib}/glib-2.0/include",
            "-I#{Formula["harfbuzz"].opt_include}/harfbuzz",
            "-I#{Formula["libgsf"].opt_include}/libgsf-1",
-           "-I#{MacOS.sdk_path}/usr/include/libxml2",
+           "-I#{libxml2}",
            "-I#{Formula["gtk+3"].opt_include}/gtk-3.0",
            "-I#{Formula["pango"].opt_include}/pango-1.0",
            "-I#{Formula["cairo"].opt_include}/cairo",

@@ -1,18 +1,18 @@
 class KymaCli < Formula
   desc "Kyma command-line interface"
   homepage "https://kyma-project.io"
-  url "https://github.com/kyma-project/cli/archive/1.19.0.tar.gz"
-  sha256 "5b010913a60e70fd04a1e63219e6446060e857f387cc74ca66cf846f3569271c"
+  url "https://github.com/kyma-project/cli/archive/1.23.0.tar.gz"
+  sha256 "f2dace87dd3d8e812e08db25620a7787d31911de4630134d944813bafb2775da"
   license "Apache-2.0"
   head "https://github.com/kyma-project/cli.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "f916d2e34ce347f5e9fd201a348b787477f154d553dd54a2f9108dd2bdfad816"
-    sha256 cellar: :any_skip_relocation, catalina: "7cddd24bd0f447a412fcbdf262881b2b23d94065abad9557c73185655fa64191"
-    sha256 cellar: :any_skip_relocation, mojave:   "404fdac1b20854feeb541ced5f29b751d82863d75761dc3d6d1eb4197664be3d"
+    sha256 cellar: :any_skip_relocation, big_sur:  "0e601fd0da73a60a64edae7b8ac333be829712ab0da2a997e3e531d6b2e4816b"
+    sha256 cellar: :any_skip_relocation, catalina: "7e457764826ffdacf963a96a9ff5e69c66cc27430e4088888504ac68de08915c"
   end
 
-  depends_on "go@1.14" => :build
+  depends_on "go" => :build
+  depends_on macos: :catalina
 
   def install
     ldflags = %W[

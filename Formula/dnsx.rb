@@ -1,16 +1,16 @@
 class Dnsx < Formula
   desc "DNS query and resolution tool"
   homepage "https://github.com/projectdiscovery/dnsx"
-  url "https://github.com/projectdiscovery/dnsx/archive/v1.0.1.tar.gz"
-  sha256 "cd8111d27333d8f71904befdea7c362babca6698531327b55d8c5c79203c9d75"
+  url "https://github.com/projectdiscovery/dnsx/archive/v1.0.4.tar.gz"
+  sha256 "9b98fd691670b922c036bac5fcfc1a89afe244eab7d6d1f5689d3a96749876a2"
   license "MIT"
   head "https://github.com/projectdiscovery/dnsx.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "363d5e89426b1506989364815d019e6d933d0cc64e43ddc978c221af898f98ef"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b3b673351d2c889399ac1bcecf1787d5e249cb3a54dc7dafb7835607b9546948"
-    sha256 cellar: :any_skip_relocation, catalina:      "f4a4b868cdca5f03c22233f7f9eeb197103311a87372bd10207fd4ae6de1ab09"
-    sha256 cellar: :any_skip_relocation, mojave:        "98c11892bb76063840bc27ce8b99c2924e2ed1ed0d20bd155bb6508f97d292a0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "02d16f2d08342459b63ce8ba7eee9bcde85a85950bec244c9d5827e07f375cf0"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c9c74cf305fa4939b7b528a43656c84a6b35d9fd249a29b07a023786eaa20081"
+    sha256 cellar: :any_skip_relocation, catalina:      "9e5eccd53d43bb234df114e268b19ef7e12fe31d15dafb11429cdf2305706c84"
+    sha256 cellar: :any_skip_relocation, mojave:        "f40c3479f34895f14a902799b4a22d8a246b3d492e58d93e8b4eb268afb158da"
   end
 
   depends_on "go" => :build

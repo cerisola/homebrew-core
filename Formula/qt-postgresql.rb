@@ -1,15 +1,15 @@
 class QtPostgresql < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/submodules/qtbase-everywhere-src-6.0.2.tar.xz"
-  sha256 "991a0e4e123104e76563067fcfa58602050c03aba8c8bb0c6198347c707817f1"
+  url "https://download.qt.io/official_releases/qt/6.1/6.1.1/submodules/qtbase-everywhere-src-6.1.1.tar.xz"
+  sha256 "21a8aa9f07170e047270c668c8b037536f40226db7adbc529a0b41c3a3cb3ff2"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "cdb24bf5fe174d484438d265095fd6c38614e55f11dd0be543dead6b1abbbe20"
-    sha256 cellar: :any, big_sur:       "d497f050cb6530bf28f409a84093bb875f8d60e8842b30ba1e465527cb5e0fb4"
-    sha256 cellar: :any, catalina:      "778231dc3ffc60418545ca8530550908723090b3b2ea4e6bbfeaeceae2f16e21"
-    sha256 cellar: :any, mojave:        "ae857493cde2aa599959fb887b76c502ef925b2a11fbe713b5f43393b25687d8"
+    sha256 cellar: :any, arm64_big_sur: "792d15d1c9ae9f07719fdb46f2b52e5a22867a4a0bc3f3a04202bb384cd81754"
+    sha256 cellar: :any, big_sur:       "83d2458de45ad9a57e94f61c50a7e326abae16878b8ee0464caf26fc3a939af3"
+    sha256 cellar: :any, catalina:      "8119a6c729db9bcd3f621708379dfc6f08411aebd9f4d5d8a7e5570fd041ca4f"
+    sha256 cellar: :any, mojave:        "d1d5041bff3e3a39419ca559057773ece7332c07ea2f14c9fc4ab27073179f9f"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -18,19 +18,27 @@ class QtPostgresql < Formula
   depends_on "qt"
 
   def install
+    args = std_cmake_args + %W[
+      -DCMAKE_STAGING_PREFIX=#{prefix}
+
+      -DFEATURE_sql_ibase=OFF
+      -DFEATURE_sql_mysql=OFF
+      -DFEATURE_sql_oci=OFF
+      -DFEATURE_sql_odbc=OFF
+      -DFEATURE_sql_psql=ON
+      -DFEATURE_sql_sqlite=OFF
+    ]
+
     cd "src/plugins/sqldrivers" do
-      system "qmake"
-      system "make", "sub-psql"
-      (share/"qt").install "plugins/"
-    end
-    Pathname.glob(share/"qt/plugins/sqldrivers/#{shared_library("*")}") do |plugin|
-      system "strip", "-S", "-x", plugin
+      system "cmake", ".", *args
+      system "cmake", "--build", "."
+      system "cmake", "--install", "."
     end
   end
 
   test do
     (testpath/"CMakeLists.txt").write <<~EOS
-      cmake_minimum_required(VERSION 3.19.0)
+      cmake_minimum_required(VERSION #{Formula["cmake"].version})
       project(test VERSION 1.0.0 LANGUAGES CXX)
       set(CMAKE_CXX_STANDARD 17)
       set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -67,9 +75,9 @@ class QtPostgresql < Formula
       }
     EOS
 
-    system "cmake", "-DCMAKE_BUILD_TYPE=Debug", testpath
-    system "make"
-    system "./test"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"
+    system "cmake", "--build", "build"
+    system "./build/test"
 
     ENV.delete "CPATH"
     system "qmake"

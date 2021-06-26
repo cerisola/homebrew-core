@@ -1,8 +1,8 @@
 class NodeAT12 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v12.21.0/node-v12.21.0.tar.gz"
-  sha256 "36e862555bebc04b13f7afebf4472c4dd7ebf4c891f9d6746ec545a4f099d05e"
+  url "https://nodejs.org/dist/v12.22.1/node-v12.22.1.tar.gz"
+  sha256 "6023f1f8f03f9780c75e6eca9d372b8411a83757c0389c51baee1c7242afd702"
   license "MIT"
   revision 1
 
@@ -12,10 +12,10 @@ class NodeAT12 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "a1e70d57bbafc4578ff8d956043f4bc38afe94f7b9a0b7fdabdb240ceec4f2f4"
-    sha256 cellar: :any, big_sur:       "1489d77d80acb5a36de769c235043f225c1f295826ad4cf799f0473ce31b8c5a"
-    sha256 cellar: :any, catalina:      "1f3f872487188abe46a9f3666f5c5dfbc22b663a1f08183ee47606131a9afb4a"
-    sha256 cellar: :any, mojave:        "e7b1fe6404255a92f9cffef1016478e6c98066a805f9ac7518be7b41b5bd3e10"
+    sha256 cellar: :any, arm64_big_sur: "07e3b8bcfb13fdeaffb78005217547d8e306e2b8eb2b7df1dca6ac426945d190"
+    sha256 cellar: :any, big_sur:       "c45a5cf6332bf0d95801aa7d934ddc658eaaa4a904490183d5637ed03d440891"
+    sha256 cellar: :any, catalina:      "b7abc525b8c061e6543e8631907f89ee56f62a517a8a08c3a33aa2aec1e2f0ce"
+    sha256 cellar: :any, mojave:        "46331633475eda013a40673692e9a45e307eed0e6fbe0605dbdeb9843e680756"
   end
 
   keg_only :versioned_formula
@@ -23,6 +23,13 @@ class NodeAT12 < Formula
   depends_on "pkg-config" => :build
   depends_on "python@3.9" => :build
   depends_on "icu4c"
+
+  # Patch for compatibility with ICU 69. Backported from
+  # https://github.com/v8/v8/commit/035c305ce7761f51328b45f1bd83e26aef267c9d
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/9eb96c36ff61c76c809c975f3b4463e826eae73c/node%4012/node%4012-icu69.patch"
+    sha256 "c23163cc26c784479471f904fb47f1c16ec4177c687fd9c3988a8208a3faa583"
+  end
 
   def install
     # make sure subprocesses spawned by make are using our Python 3

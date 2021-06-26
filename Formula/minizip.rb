@@ -3,6 +3,7 @@ class Minizip < Formula
   homepage "https://www.winimage.com/zLibDll/minizip.html"
   url "https://zlib.net/zlib-1.2.11.tar.gz"
   sha256 "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1"
+  license "Zlib"
 
   livecheck do
     url "https://zlib.net/"
@@ -25,7 +26,7 @@ class Minizip < Formula
 
   uses_from_macos "zlib"
 
-  conflicts_with "minizip2",
+  conflicts_with "minizip-ng",
     because: "both install a `libminizip.a` library"
 
   def install
@@ -33,11 +34,13 @@ class Minizip < Formula
     system "make"
 
     cd "contrib/minizip" do
-      # edits to statically link to libz.a
-      inreplace "Makefile.am" do |s|
-        s.sub! "-L$(zlib_top_builddir)", "$(zlib_top_builddir)/libz.a"
-        s.sub! "-version-info 1:0:0 -lz", "-version-info 1:0:0"
-        s.sub! "libminizip.la -lz", "libminizip.la"
+      on_macos do
+        # edits to statically link to libz.a
+        inreplace "Makefile.am" do |s|
+          s.sub! "-L$(zlib_top_builddir)", "$(zlib_top_builddir)/libz.a"
+          s.sub! "-version-info 1:0:0 -lz", "-version-info 1:0:0"
+          s.sub! "libminizip.la -lz", "libminizip.la"
+        end
       end
       system "autoreconf", "-fi"
       system "./configure", "--prefix=#{prefix}"

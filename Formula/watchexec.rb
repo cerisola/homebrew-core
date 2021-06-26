@@ -1,31 +1,32 @@
 class Watchexec < Formula
   desc "Execute commands when watched files change"
   homepage "https://github.com/watchexec/watchexec"
-  url "https://github.com/watchexec/watchexec/archive/1.14.1.tar.gz"
-  sha256 "23ca90f1f070b0d30e821667c8b9deaf174d020373ea032e9e22f1a78adcfa1c"
+  url "https://github.com/watchexec/watchexec/archive/cli-v1.16.1.tar.gz"
+  sha256 "d8e8e5ef6c11f4a7512f4841eff8960558edb39f54a563e5dda8e1058ff057b5"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "6d4e987c12e2ccdd9ed5ec73c7c987259faf2687195c5d3be4e8896b67c372f9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d53e7eccb32fcefde96e0237d8a900a64fcda304d94b9a675528c75dd0cc419a"
-    sha256 cellar: :any_skip_relocation, catalina:      "bd5816dbe23399183808f0a407a4d605d7113644c0e8fcf815439fefaf734dfb"
-    sha256 cellar: :any_skip_relocation, mojave:        "c8ba045ce6c7d45bbd5b3c12dc4a17038b1ca1d1ffbd2a1742d13c8a971e15bd"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "2add0c1e367f4626d16ded8470adbc3e1780811259d0b2faf52e8d0aaf50f91e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3d595eb504c88c0105e641f6a3a984d4b3244da2f48f724cedf127ada1b7c109"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c66bdf49260814408a74fd51f658f28eb5398d61bb9f2fb422e269acc08a2c93"
+    sha256 cellar: :any_skip_relocation, catalina:      "b97efcba269149c456ab5b3913adc8d1e8458b1f3b1b880c6fc6789acd0cbd2f"
+    sha256 cellar: :any_skip_relocation, mojave:        "cb04ec9019c20c619cb8cbc2f056e17ad20fc13cf66e7db7440f7684127d4f69"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", *std_cargo_args
+    cd "cli" do
+      system "cargo", "install", *std_cargo_args
+    end
     man1.install "doc/watchexec.1"
   end
 
   test do
     o = IO.popen("#{bin}/watchexec -1 --postpone -- echo 'saw file change'")
-    sleep 1
+    sleep 15
     touch "test"
-    sleep 1
-    Process.kill("INT", o.pid)
+    sleep 15
+    Process.kill("TERM", o.pid)
     assert_match "saw file change", o.read
   end
 end

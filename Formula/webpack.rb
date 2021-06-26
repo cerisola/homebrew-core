@@ -4,23 +4,23 @@ require "json"
 class Webpack < Formula
   desc "Bundler for JavaScript and friends"
   homepage "https://webpack.js.org/"
-  url "https://registry.npmjs.org/webpack/-/webpack-5.24.2.tgz"
-  sha256 "51ac2b12d562ee424a556d15b95a64277ec4368bdb1450a0bbbdea214fcd3fd9"
+  url "https://registry.npmjs.org/webpack/-/webpack-5.40.0.tgz"
+  sha256 "3e8829f35bebdc78cbb1b307de499f4ccb290efa95e8aee1de3b4cb1e7b6ad8d"
   license "MIT"
   head "https://github.com/webpack/webpack.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "78a39124fce64417398dc5d486ae00175a099727d56b6b14ed9e4aa0188166ba"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a6f7721ad08279bcf761e115b6ef9a114e21423b51454cff3868854542eda596"
-    sha256 cellar: :any_skip_relocation, catalina:      "2535dd0c6b8ecdaa8c47eccd52bf3a501830c7f1d72a5e62bdf1e1d541f2679c"
-    sha256 cellar: :any_skip_relocation, mojave:        "184300224eec81565511dc705d2c458c641afa5b96c683b366baf2384250d9ef"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8a9bf8b9c75dfb92def09694f412038cfaa1ddc7511299f6d0ddb7482743f6ab"
+    sha256 cellar: :any_skip_relocation, big_sur:       "74459253fc64c9125850f05c4f89349b7354b919c412ebafbc81cd2263f7e9b5"
+    sha256 cellar: :any_skip_relocation, catalina:      "74459253fc64c9125850f05c4f89349b7354b919c412ebafbc81cd2263f7e9b5"
+    sha256 cellar: :any_skip_relocation, mojave:        "74459253fc64c9125850f05c4f89349b7354b919c412ebafbc81cd2263f7e9b5"
   end
 
   depends_on "node"
 
   resource "webpack-cli" do
-    url "https://registry.npmjs.org/webpack-cli/-/webpack-cli-4.5.0.tgz"
-    sha256 "6db23ada5a0ef82f6fd8f7c4b247589af6b6eaec36ef5e54f39660923a001679"
+    url "https://registry.npmjs.org/webpack-cli/-/webpack-cli-4.7.2.tgz"
+    sha256 "dce6cce3002e13873a36fb2c31034d9df20f4c68e3edecb93b9e4b71d2e32b77"
   end
 
   def install
@@ -28,7 +28,7 @@ class Webpack < Formula
     buildpath.install resource("webpack-cli")
 
     cd buildpath/"node_modules/webpack" do
-      system "npm", "install", *Language::Node.local_npm_install_args, "--production", "--legacy-peer-deps"
+      system "npm", "install", *Language::Node.local_npm_install_args, "--legacy-peer-deps"
     end
 
     # declare webpack as a bundledDependency of webpack-cli

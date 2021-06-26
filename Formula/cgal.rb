@@ -1,16 +1,15 @@
 class Cgal < Formula
   desc "Computational Geometry Algorithms Library"
   homepage "https://www.cgal.org/"
-  url "https://github.com/CGAL/cgal/releases/download/v5.2/CGAL-5.2.tar.xz"
-  sha256 "744c86edb6e020ab0238f95ffeb9cf8363d98cde17ebb897d3ea93dac4145923"
+  url "https://github.com/CGAL/cgal/releases/download/v5.2.2/CGAL-5.2.2.tar.xz"
+  sha256 "80b05049d20dc0e346f33037b6f87f69eb0b4407a3e27ffc10f7c71d45c05f7a"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f147afbea70885e0b536b942a8d2df08e80e95aaeca3a614b7cdde6c7aea5d00"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6b2bc9f1ff6c12c35578717211ed65c727d87362a1b5fdd94324bba7c52b7a78"
-    sha256 cellar: :any_skip_relocation, catalina:      "7c0402790a66c241c80cbc2288a4860afbdb9c3b33c1e800c3563565ba0f337f"
-    sha256 cellar: :any_skip_relocation, mojave:        "1794cb845b902e25ea590b1334fe1384c28985d21a5e181141c786c94361e153"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "39d8e1234f08860e0fd53131654a3986e093e21a2ce0a268241acdf119d82e12"
+    sha256 cellar: :any_skip_relocation, big_sur:       "25fdaa548ad0599f97ead357fa87b98e7074c90a4643e7e36f8cd84e15c0d5ed"
+    sha256 cellar: :any_skip_relocation, catalina:      "25fdaa548ad0599f97ead357fa87b98e7074c90a4643e7e36f8cd84e15c0d5ed"
+    sha256 cellar: :any_skip_relocation, mojave:        "25fdaa548ad0599f97ead357fa87b98e7074c90a4643e7e36f8cd84e15c0d5ed"
   end
 
   depends_on "cmake" => [:build, :test]

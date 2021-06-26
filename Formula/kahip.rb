@@ -1,16 +1,16 @@
 class Kahip < Formula
   desc "Karlsruhe High Quality Partitioning"
   homepage "https://algo2.iti.kit.edu/documents/kahip/index.html"
-  url "https://algo2.iti.kit.edu/schulz/software_releases/KaHIP_2.12.tar.gz"
-  sha256 "b91abdbf9420e2691ed73cea999630e38dfaf0e03157c7a690a998564c652aac"
-  revision 1
+  url "https://github.com/KaHIP/KaHIP/archive/v3.10.tar.gz"
+  sha256 "d58dc08f0205373d1a811b888c6db5192deeb3271f056daf2fc9ba89654832c5"
+  license "MIT"
+  head "https://github.com/KaHIP/KaHIP.git"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_big_sur: "251a9daa84641cace789ee3a35512f139de3ff076690aba9a4b1f1518ec46307"
-    sha256 cellar: :any, big_sur:       "2b70b966c1677ebd261ee0de5a25a1db63ebc2d565fc8cda7935ba5f09dc2dcf"
-    sha256 cellar: :any, catalina:      "17060cfbab50579d52bfc82e71543ffc3832c1ffca61d03fe12e72ea238fcc3b"
-    sha256 cellar: :any, mojave:        "43c9497861fdd75caf95132fbcb8af3e58aff877ac6e9cbd5ca2f307e96396ae"
+    sha256 cellar: :any, arm64_big_sur: "7838960157c7a4dcf2752d9c9ec052bd4ab9e720b9614166496836e27abef22d"
+    sha256 cellar: :any, big_sur:       "3d4062b822961bca86be0cbb658896a73af607f6fa040084041143d283b0a271"
+    sha256 cellar: :any, catalina:      "e4067631417a7a8a09aeb7599be89d6a1bf218bbfcbdebb8a4ed95f2f6f30eef"
+    sha256 cellar: :any, mojave:        "3be779a531ce19ebb82b8adfcbb6a305eeb1f730df44d80cff59fc95f583ab93"
   end
 
   depends_on "cmake" => :build

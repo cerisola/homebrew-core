@@ -1,8 +1,8 @@
 class Elektra < Formula
   desc "Framework to access config settings in a global key database"
   homepage "https://libelektra.org/"
-  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.4.tar.gz"
-  sha256 "e1f11f063ab262ce056238ca17aa60442a450a0bb6c5f57a9959df0365576bc6"
+  url "https://www.libelektra.org/ftp/elektra/releases/elektra-0.9.6.tar.gz"
+  sha256 "c8e75f4d21bf3bd6b1028e776af9ff644a17a7dfbb1f2052f50392767deea197"
   license "BSD-3-Clause"
   head "https://github.com/ElektraInitiative/libelektra.git"
 
@@ -12,9 +12,10 @@ class Elektra < Formula
   end
 
   bottle do
-    sha256 big_sur:  "1008c3fe882d99290df6946ec1d74e76068df35e64ed316a2ec761f35900815f"
-    sha256 catalina: "e96e11f3508ac5ba9cc3bb4f4f5b251d9792f071fec62afb97d6d73f391a73f4"
-    sha256 mojave:   "19336159915f7a97c7028c867f2515acd6e6e0e10061362089b22cded8f53f2a"
+    sha256 arm64_big_sur: "b246eb7351b10188c76762094e9e6bd08a8a6119cb8589fd244b304c54355608"
+    sha256 big_sur:       "4bcef10484817f1cad4335703c2714f6e5dac109766bb7f403fc3ed16103b5f9"
+    sha256 catalina:      "be7504905eaae104e3f59fc90adad96c2ea845d8f4f95ca0fbb261760afe45f1"
+    sha256 mojave:        "18dc59bc3c7dbbea60eae22d88f89157413c35fe285ea46fe0cbd884e5d3535d"
   end
 
   depends_on "cmake" => :build
@@ -26,10 +27,6 @@ class Elektra < Formula
                             "-DPLUGINS=NODEP", *std_cmake_args
       system "make", "install"
     end
-
-    # Avoid references to the Homebrew shims directory
-    inreplace Dir[prefix/"share/elektra/test_data/gen/gen/highlevel/*.check.sh"],
-              HOMEBREW_SHIMS_PATH/"mac/super/", ""
 
     bash_completion.install "scripts/completion/kdb-bash-completion" => "kdb"
     fish_completion.install "scripts/completion/kdb.fish"

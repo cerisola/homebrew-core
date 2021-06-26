@@ -2,15 +2,15 @@ class Crystal < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "https://crystal-lang.org/"
   license "Apache-2.0"
-  revision 3
+  revision 2
 
   stable do
-    url "https://github.com/crystal-lang/crystal/archive/0.36.1.tar.gz"
-    sha256 "e6806aa04f60dfe0aaf3cfef103e252f6ac3d8400ea3305b0d1b8463b052ec88"
+    url "https://github.com/crystal-lang/crystal/archive/1.0.0.tar.gz"
+    sha256 "6b85c9139a891732c1f10638030635ff9dbe4e6818cad81a5dbd72db40913019"
 
     resource "shards" do
-      url "https://github.com/crystal-lang/shards/archive/v0.13.0.tar.gz"
-      sha256 "82a496aa450624afceab79bd9f7e6e1a43de41f61095512d08c3a3063c4da723"
+      url "https://github.com/crystal-lang/shards/archive/v0.14.1.tar.gz"
+      sha256 "040b080acb4d4d44bfe07897219fdcb7525f783e253d8878d8381bf78f13f328"
     end
   end
 
@@ -20,9 +20,9 @@ class Crystal < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "be5cb87069b5e6301a083e2fc48917512044f712652cad8b4ffc3c3930da9f1f"
-    sha256 cellar: :any, catalina: "4d1e9c3f64c471e1e5edd16d80c08a14ada621ace96cb886e45878acb595633b"
-    sha256 cellar: :any, mojave:   "0cff71c7ccd5e060f10b0c5552106dfe8eecdbc3e4d7e44822edd647adae0f4e"
+    sha256 big_sur:  "2b3ed35fef1b42c1d2acc740edbdc72eb6849ec658f8680fef3f2c1c2a7d5378"
+    sha256 catalina: "2f270445145ad381faf1e5a2d35d5400c084a38099c4ffb4b6a861dd712ee6ff"
+    sha256 mojave:   "00a853fa0bae01d2acf4013f4e5acc75db736145bf0e9b07719909e31b1401b0"
   end
 
   head do
@@ -37,21 +37,21 @@ class Crystal < Formula
   depends_on "gmp" # std uses it but it's not linked
   depends_on "libevent"
   depends_on "libyaml"
-  depends_on "llvm"
+  depends_on "llvm@11"
   depends_on "openssl@1.1" # std uses it but it's not linked
   depends_on "pcre"
   depends_on "pkg-config" # @[Link] will use pkg-config if available
 
   resource "boot" do
     on_macos do
-      url "https://github.com/crystal-lang/crystal/releases/download/0.35.1/crystal-0.35.1-1-darwin-x86_64.tar.gz"
-      version "0.35.1-1"
-      sha256 "7d75f70650900fa9f1ef932779bc23f79a199427c4219204fa9e221c330a1ab6"
+      url "https://github.com/crystal-lang/crystal/releases/download/0.36.1/crystal-0.36.1-1-darwin-x86_64.tar.gz"
+      version "0.36.1-1"
+      sha256 "3b381d4ac1241514d63b1f243ed183a1b10945b0e77c5dd625067e91a657ef75"
     end
     on_linux do
-      url "https://github.com/crystal-lang/crystal/releases/download/0.35.1/crystal-0.35.1-1-linux-x86_64.tar.gz"
-      version "0.35.1-1"
-      sha256 "6c3fd36073b32907301b0a9aeafd7c8d3e9b9ba6e424ae91ba0c5106dc23f7f9"
+      url "https://github.com/crystal-lang/crystal/releases/download/0.36.1/crystal-0.36.1-1-linux-x86_64.tar.gz"
+      version "0.36.1-1"
+      sha256 "38cc7514f8d9e463665ebaf7232d3a6c46a7397fc9ff5c05fd0f9e4706febb18"
     end
   end
 
@@ -60,7 +60,7 @@ class Crystal < Formula
     ENV.append_path "PATH", "boot/bin"
     ENV.append_path "CRYSTAL_LIBRARY_PATH", Formula["bdw-gc"].opt_lib
     ENV.append_path "CRYSTAL_LIBRARY_PATH", ENV["HOMEBREW_LIBRARY_PATHS"]
-    ENV.append_path "LLVM_CONFIG", Formula["llvm"].opt_bin/"llvm-config"
+    ENV.append_path "LLVM_CONFIG", Formula["llvm@11"].opt_bin/"llvm-config"
 
     # Build crystal
     crystal_build_opts = []

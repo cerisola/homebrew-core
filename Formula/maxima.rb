@@ -1,10 +1,9 @@
 class Maxima < Formula
   desc "Computer algebra system"
   homepage "https://maxima.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/maxima/Maxima-source/5.44.0-source/maxima-5.44.0.tar.gz"
-  sha256 "d93f5e48c4daf8f085d609cb3c7b0bdf342c667fd04cf750c846426874c9d2ec"
-  license "GPL-2.0"
-  revision 3
+  url "https://downloads.sourceforge.net/project/maxima/Maxima-source/5.45.1-source/maxima-5.45.1.tar.gz"
+  sha256 "fe9016276970bef214a1a244348558644514d7fdfaa4fc8b9d0e87afcbb4e7dc"
+  license "GPL-2.0-only"
 
   livecheck do
     url :stable
@@ -12,10 +11,10 @@ class Maxima < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1b3cd50dfe24a1cb2767a6c95515d615b8efce9b8cf6de8c4fe96f44ccbc73b6"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b0002ba34b984e449257a23e83f8ea495664a589cf5e9eabf8f5ea2b90269344"
-    sha256 cellar: :any_skip_relocation, catalina:      "0a1bea5dfe4ceeab29522bb9ef23c22e48627a50effbea345e4f8a2fbcf4423a"
-    sha256 cellar: :any_skip_relocation, mojave:        "6f2a11fbcf5fa8822e846964ac67bdb2584c26c940434ab44615a04f9e4dde11"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "00cf3fb4eaf3e194c6bb0175614c16a4ba465fc33299dbd6eaf54632769aead8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "2443561d225319adccf304ff87c4066239eff87244e3c292bed3c3fe7fe2f30e"
+    sha256 cellar: :any_skip_relocation, catalina:      "28fee58de710306017aa69b449d3929c7a73feb4dbb4b381760ce2a5e1fcc91d"
+    sha256 cellar: :any_skip_relocation, mojave:        "de037bb4344f9d6b82b62700f022d990fd567f397c8e300ccd08a5c3abef087e"
   end
 
   depends_on "gawk" => :build

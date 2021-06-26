@@ -1,15 +1,15 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.8.1/deno_src.tar.gz"
-  sha256 "65d700b90c85b105b50df390a6ca84b8df8635b701e3b7afdf115175501fcd9d"
+  url "https://github.com/denoland/deno/releases/download/v1.11.2/deno_src.tar.gz"
+  sha256 "502553bf7664bd9e1c9d70fc564aed4cdf9fad6aa05f185d7c1bd38ddfc03854"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "42c6541cf729c37b1246e4105f74571f5b4ad2eb932974f66013953f8d4dd6fa"
-    sha256 cellar: :any_skip_relocation, big_sur:       "dbf1b4d8a897c2160ced21441a2749d32fe0508d5af3d96ccb2d626e168f8fcd"
-    sha256 cellar: :any_skip_relocation, catalina:      "de7c50d8d4683160acf211cfdbaab2cbaea1a9f53dba01b41672d46c786cb3cf"
-    sha256 cellar: :any_skip_relocation, mojave:        "b95650cb6794cf1b97c2775045320d52c828dcf5188016e1413bb9ac5c73161c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d9972538f70e435813988e46a36f31fa5387bab694501b888ec15cfe37da23ef"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0fe8edb0495bcba3ed797666ee4e65bbd3370b02211e9f0dc021051320b5c0cc"
+    sha256 cellar: :any_skip_relocation, catalina:      "83ee94681e652ad1600629e5bce18386e264f0d3c58617e146a1611c4782d545"
+    sha256 cellar: :any_skip_relocation, mojave:        "342b74a48d85a723ba2f58f1a0069fd1b659b7b68c6f2a246d4fffba21d23017"
   end
 
   depends_on "llvm" => :build
@@ -54,11 +54,11 @@ class Deno < Formula
       system "cargo", "install", "-vv", "-j1", *std_cargo_args
     end
 
-    bash_output = Utils.safe_popen_read("#{bin}/deno", "completions", "bash")
+    bash_output = Utils.safe_popen_read(bin/"deno", "completions", "bash")
     (bash_completion/"deno").write bash_output
-    zsh_output = Utils.safe_popen_read("#{bin}/deno", "completions", "zsh")
+    zsh_output = Utils.safe_popen_read(bin/"deno", "completions", "zsh")
     (zsh_completion/"_deno").write zsh_output
-    fish_output = Utils.safe_popen_read("#{bin}/deno", "completions", "fish")
+    fish_output = Utils.safe_popen_read(bin/"deno", "completions", "fish")
     (fish_completion/"deno.fish").write fish_output
   end
 

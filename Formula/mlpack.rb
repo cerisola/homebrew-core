@@ -4,6 +4,7 @@ class Mlpack < Formula
   url "https://mlpack.org/files/mlpack-3.4.2.tar.gz"
   sha256 "9e5c4af5c276c86a0dcc553289f6fe7b1b340d61c1e59844b53da0debedbb171"
   license all_of: ["BSD-3-Clause", "MPL-2.0", "BSL-1.0", "MIT"]
+  revision 2
 
   livecheck do
     url "https://mlpack.org/files/"
@@ -11,9 +12,11 @@ class Mlpack < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "55819c54944eabc313874577f91e448decc0e28edb029f66417a900b7f9aba78"
-    sha256 cellar: :any, catalina: "baa0ddc38114b9c207c3c6839d683fa4580b8227bad3c4b6cae06c0110b7fe68"
-    sha256 cellar: :any, mojave:   "b00745a4f66ea745c28ad1c64829a278c4def5fc8458f277ca90f04e306838d4"
+    rebuild 1
+    sha256 cellar: :any, arm64_big_sur: "7d72d55cb3e88ee5ea2c2fb459c9677f9666d38c59cb9dbe9df40f9a12cc92d2"
+    sha256 cellar: :any, big_sur:       "17810ae8730f736691263d205df67d013c812f00edf0ec5ecce7a18611b59716"
+    sha256 cellar: :any, catalina:      "5980cb24352e2b3c2a42c21d0d58370efa5185e44571f01953dd986df3a9bdf1"
+    sha256 cellar: :any, mojave:        "6de39cd1a291271dd254eeaa6056c64d315d2207e494605065b54a462b81e7c1"
   end
 
   depends_on "cmake" => :build
@@ -25,13 +28,15 @@ class Mlpack < Formula
   depends_on "graphviz"
 
   resource "stb_image" do
-    url "https://mlpack.org/files/stb-2.22/stb_image.h"
-    sha256 "0e28238d865510073b5740ae8eba8cd8032cc5b25f94e0f7505fac8036864909"
+    url "https://raw.githubusercontent.com/nothings/stb/e140649c/stb_image.h"
+    sha256 "8e5b0d717dfc8a834c97ef202d20e78d083d009586e1731c985817d0155d568c"
+    version "2.26"
   end
 
   resource "stb_image_write" do
-    url "https://mlpack.org/files/stb-1.13/stb_image_write.h"
-    sha256 "0e8b3d80bc6eb8fdb64abc4db9fec608b489bc73418eaf14beda102a0699a4c9"
+    url "https://raw.githubusercontent.com/nothings/stb/314d0a6f/stb_image_write.h"
+    sha256 "51998500e9519a85be1aa3291c6ad57deb454da98a1693ab5230f91784577479"
+    version "1.15"
   end
 
   def install
@@ -48,8 +53,9 @@ class Mlpack < Formula
       -DUSE_OPENMP=OFF
       -DARMADILLO_INCLUDE_DIR=#{Formula["armadillo"].opt_include}
       -DENSMALLEN_INCLUDE_DIR=#{Formula["ensmallen"].opt_include}
-      -DARMADILLO_LIBRARY=#{Formula["armadillo"].opt_lib}/libarmadillo.dylib
+      -DARMADILLO_LIBRARY=#{Formula["armadillo"].opt_lib}/#{shared_library("libarmadillo")}
       -DSTB_IMAGE_INCLUDE_DIR=#{include/"stb"}
+      -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
     mkdir "build" do
       system "cmake", "..", *cmake_args
@@ -77,8 +83,8 @@ class Mlpack < Formula
         Log::Warn << "A false alarm!" << std::endl;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-I#{Formula["armadillo"].opt_lib}/libarmadillo",
-                    "-L#{lib}", "-lmlpack", "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
+                    "-larmadillo", "-L#{lib}", "-lmlpack", "-o", "test"
     system "./test", "--verbose"
   end
 end

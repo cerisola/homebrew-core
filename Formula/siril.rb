@@ -1,15 +1,16 @@
 class Siril < Formula
   desc "Astronomical image processing tool"
   homepage "https://www.siril.org"
-  url "https://free-astro.org/download/siril-0.99.8.1.tar.bz2"
-  sha256 "45b73ee8d1e1bd7ff184478f90da59c729ca1bd5285fb2f7ac0237c6b5cdbdb2"
+  url "https://free-astro.org/download/siril-0.99.10.1.tar.bz2"
+  sha256 "a0b3debc1efb313a84958fb1819b3a5d0a1395b096db54cce7e3e34a463a5c79"
   license "GPL-3.0-or-later"
   head "https://gitlab.com/free-astro/siril.git"
 
   bottle do
-    sha256 big_sur:  "5e27c3ab3740980331edca631549372c91388342d9e94ee40dbfd6ec25ede24c"
-    sha256 catalina: "fe4bb5bff2cf48f9bdd62abe930cf2fde12073bb23cd996f773c02d105cf8376"
-    sha256 mojave:   "44132a8e1947801f0a6f1cf7d1ed6ea1e149cf657a49bb931ab66bcc29d9f14b"
+    sha256 arm64_big_sur: "8917ab63cdff809d77899b5c4ee9db471826f2b9569800d2e4f30695ae7dca2b"
+    sha256 big_sur:       "3731dcf2047e89cf8e0ef788ef0356a6039a386fceb3248e32dbca060e88f615"
+    sha256 catalina:      "a51082e5d3bbcae83fb3f7d2a7fd175cf030655ce4e5e9c6ec03e0929287e99c"
+    sha256 mojave:        "fcb5c6b1232af882056b4cc908f291e94e3f16987cdf8870bca93d74e13cc8b0"
   end
 
   depends_on "autoconf" => :build
@@ -32,7 +33,6 @@ class Siril < Formula
   depends_on "libomp"
   depends_on "libraw"
   depends_on "librsvg"
-  depends_on "libsvg"
   depends_on "netpbm"
   depends_on "opencv"
   depends_on "openjpeg"

@@ -1,10 +1,9 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "https://postgis.net/"
-  url "https://download.osgeo.org/postgis/source/postgis-3.1.1.tar.gz"
-  sha256 "0e96afef586db6939d48fb22fbfbc9d0de5e6bc1722d6d553d63bb41441a2a7d"
+  url "https://download.osgeo.org/postgis/source/postgis-3.1.2.tar.gz"
+  sha256 "2cdd3760176926704b4eb25ff3357543c9637dee74425a49082906857c7e0732"
   license "GPL-2.0-or-later"
-  revision 1
 
   livecheck do
     url "https://download.osgeo.org/postgis/source/"
@@ -12,10 +11,10 @@ class Postgis < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "7b2db3f6e3f4582b8d865a9f30d8f865daef0def04d9035c7ff271f36880a49a"
-    sha256 cellar: :any, big_sur:       "1684641950af335917bf683c6d01a3134583fb607dacf659f1d178861443601a"
-    sha256 cellar: :any, catalina:      "5926acfc50c2c61d577df18965c28f9ad87370760f3888c69bbcf8da4d4c8a00"
-    sha256 cellar: :any, mojave:        "5f75dbcb69c3869aec09a51de9eb91ba57aff79e626c27736b494d6f5309f312"
+    sha256 cellar: :any, arm64_big_sur: "d024f9c9da0d07b0dfab7f90f888798bb692cd3ba8a4aad18073f36472561d69"
+    sha256 cellar: :any, big_sur:       "a70b062b0c3d6da8b86af146d292d063ff0d042b63f84c54df2a76a3e8072c00"
+    sha256 cellar: :any, catalina:      "39124e1f7788988510215185cc04354a1b490f3fc0f24bd1e411d4fd01f23a2f"
+    sha256 cellar: :any, mojave:        "9f3543c449d002372c6c52c3b82a832b37b3157ff1691d34e929b67fd952fe37"
   end
 
   head do
@@ -33,7 +32,7 @@ class Postgis < Formula
   depends_on "json-c" # for GeoJSON and raster handling
   depends_on "pcre"
   depends_on "postgresql"
-  depends_on "proj"
+  depends_on "proj@7"
   depends_on "protobuf-c" # for MVT (map vector tiles) support
   depends_on "sfcgal" # for advanced 2D/3D functions
 
@@ -41,7 +40,7 @@ class Postgis < Formula
     ENV.deparallelize
 
     args = [
-      "--with-projdir=#{Formula["proj"].opt_prefix}",
+      "--with-projdir=#{Formula["proj@7"].opt_prefix}",
       "--with-jsondir=#{Formula["json-c"].opt_prefix}",
       "--with-pgconfig=#{Formula["postgresql"].opt_bin}/pg_config",
       "--with-protobufdir=#{Formula["protobuf-c"].opt_bin}",
