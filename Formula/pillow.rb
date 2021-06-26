@@ -17,7 +17,7 @@ class Pillow < Formula
   depends_on "python@3.7" => [:build, :test] unless Hardware::CPU.arm?
   depends_on "python@3.8" => [:build, :test]
   depends_on "python@3.9" => [:build, :test]
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libimagequant"
   depends_on "libraqm"
   depends_on "libtiff"

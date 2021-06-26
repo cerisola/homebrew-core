@@ -19,7 +19,7 @@ class JpegXl < Formula
   depends_on "brotli"
   depends_on "giflib"
   depends_on "ilmbase"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "openexr@2"
   depends_on "webp"

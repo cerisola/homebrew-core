@@ -35,7 +35,7 @@ class Openj9 < Formula
   depends_on "fontconfig"
   depends_on "giflib"
   depends_on "harfbuzz"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "little-cms2"
 

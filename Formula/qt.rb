@@ -33,7 +33,7 @@ class Qt < Formula
   depends_on "glib"
   depends_on "icu4c"
   depends_on "jasper"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libb2"
   depends_on "libpng"
   depends_on "libproxy"

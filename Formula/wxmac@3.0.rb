@@ -17,7 +17,7 @@ class WxmacAT30 < Formula
     sha256 cellar: :any, mojave:        "319f6ca3509265ace16fae3aaab777ae932130b741ba51d99702c0391da7833f"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
 

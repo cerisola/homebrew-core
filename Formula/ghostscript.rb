@@ -32,7 +32,7 @@ class Ghostscript < Formula
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jbig2dec"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libidn"
   depends_on "libpng"
   depends_on "libtiff"
