@@ -160,7 +160,7 @@ class Volatility < Formula
         sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
         s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
 
-        jpeg_opt_prefix = Formula["jpeg"].opt_prefix
+        jpeg_opt_prefix = Formula["jpeg-turbo"].opt_prefix
         s.gsub! "JPEG_ROOT = None",
                 "JPEG_ROOT = ('#{Formula["jpeg-turbo"].opt_prefix}/lib', " \
                              "'#{Formula["jpeg-turbo"].opt_prefix}/include')"
