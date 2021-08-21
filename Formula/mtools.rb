@@ -1,16 +1,17 @@
 class Mtools < Formula
   desc "Tools for manipulating MSDOS files"
   homepage "https://www.gnu.org/software/mtools/"
-  url "https://ftp.gnu.org/gnu/mtools/mtools-4.0.29.tar.gz"
-  mirror "https://ftpmirror.gnu.org/mtools/mtools-4.0.29.tar.gz"
-  sha256 "641676fc2f25f660ae32da7d04714ae4b5ec22833a6670ad2e75c7f6b5f86c70"
+  url "https://ftp.gnu.org/gnu/mtools/mtools-4.0.35.tar.gz"
+  mirror "https://ftpmirror.gnu.org/mtools/mtools-4.0.35.tar.gz"
+  sha256 "27af3ebb1b5c6c74ca0b8276bf21b70c3fb497dd8eb1b605d74df7a761aedef5"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4729d29ebbee602d9d2e08d3f3c2a3c8f5d6046d9f5022aea6e6dc31ae5ebdac"
-    sha256 cellar: :any_skip_relocation, big_sur:       "f800c846a3d0c54bf973d5ea9705923b112e0cafbea95b8702b6191a735ad91e"
-    sha256 cellar: :any_skip_relocation, catalina:      "c81917c79a0551c2edebea61112fbb0a1161066392366e16e9881c28873f86c3"
-    sha256 cellar: :any_skip_relocation, mojave:        "b0c2c049dedeac135038a45304497086356eb109347018e5a0a0d0bc932fd81d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "18cddaa9135b9523b2bf852c66cebf108a52c665faabb4eceb1dc8038f7b3265"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5b327d09dd012e22085b77055ca713db9e2b0b054b58d2da0f446d977d4a7d17"
+    sha256 cellar: :any_skip_relocation, catalina:      "82f3ac919cf59793834c72e525d8b76f0249401a78c6bdc16eb70ea394f1b798"
+    sha256 cellar: :any_skip_relocation, mojave:        "eff0b4cc2fa5e3090634b2f25865593c240a654edeb0a0b21c628179ac8899d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "56ebb016b728650f785c08f42c9ae191bcd163c34b5aaed9dae3352a394e5d97"
   end
 
   conflicts_with "multimarkdown", because: "both install `mmd` binaries"
@@ -20,12 +21,14 @@ class Mtools < Formula
 
   def install
     args = %W[
-      LIBS=-liconv
       --disable-debug
       --prefix=#{prefix}
       --sysconfdir=#{etc}
       --without-x
     ]
+    on_macos do
+      args << "LIBS=-liconv"
+    end
 
     # The mtools configure script incorrectly detects stat64. This forces it off
     # to fix build errors on Apple Silicon. See stat(6) and pv.rb.

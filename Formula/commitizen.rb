@@ -3,16 +3,16 @@ class Commitizen < Formula
 
   desc "Defines a standard way of committing rules and communicating it"
   homepage "https://commitizen-tools.github.io/commitizen/"
-  url "https://files.pythonhosted.org/packages/74/1f/929bd6acc4c79663e5c5fa3b56120bab2412e3a7035cf63e146082824bb8/commitizen-2.17.11.tar.gz"
-  sha256 "30cbfe6ee17f598f02ae4f820d64cdf499d7b93e24a3f69f9e728103dd1c81c2"
+  url "https://files.pythonhosted.org/packages/66/1f/2a25267d9b3c5052b3c52f256a40a318bf33069677e2268e364b8639560b/commitizen-2.18.0.tar.gz"
+  sha256 "f24a22eb6734e1791046e817dff72505b515e9a1f282577a82423cf7563201d7"
   license "MIT"
-  head "https://github.com/commitizen-tools/commitizen.git"
+  head "https://github.com/commitizen-tools/commitizen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f4e94117f15222d2de2fd04b20b931a83bdd83f5485f3e52569163222f39c242"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b1be49aba2d294c117f623a7bbdb1e99c9355ba1e640cff1f14ba4ee2167e2d1"
-    sha256 cellar: :any_skip_relocation, catalina:      "5828383b37d9f03680c382b5e2c1fb3aa414d206b8b118e6a99d153f19d1eabb"
-    sha256 cellar: :any_skip_relocation, mojave:        "af5900ae160a3780e300080f74395ab60e996daccddbe44ff433e870c0e90788"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "391c069b524a408ae1815f4f7b9dfc16e24e29d9854bdf8432364bc7ffdfaf98"
+    sha256 cellar: :any_skip_relocation, big_sur:       "e8f44064f987cde9667c349230fe43452dd2891937d33403a76b276a49e04f88"
+    sha256 cellar: :any_skip_relocation, catalina:      "090a4c91479683903b46ecdef4e9f28a8c9283c8d24939ff9e3d4e5ed2d55bcb"
+    sha256 cellar: :any_skip_relocation, mojave:        "f8ee4f06b2873ffa9b477e9a5c7d82e6bfeb326c2849538329366c0c1bfaff75"
   end
 
   depends_on "python@3.9"
@@ -63,8 +63,8 @@ class Commitizen < Formula
   end
 
   resource "questionary" do
-    url "https://files.pythonhosted.org/packages/b5/a5/20e0d643ce997cd5d87b3100373e24eb2c6aa874f713b08552a01639145e/questionary-1.9.0.tar.gz"
-    sha256 "a050fdbb81406cddca679a6f492c6272da90cb09988963817828f697cf091c55"
+    url "https://files.pythonhosted.org/packages/04/c6/a8dbf1edcbc236d93348f6e7c437cf09c7356dd27119fcc3be9d70c93bb1/questionary-1.10.0.tar.gz"
+    sha256 "600d3aefecce26d48d97eee936fdb66e4bc27f934c3ab6dd1e292c4f43946d90"
   end
 
   resource "termcolor" do

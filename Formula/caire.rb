@@ -4,13 +4,14 @@ class Caire < Formula
   url "https://github.com/esimov/caire/archive/v1.3.2.tar.gz"
   sha256 "fe759bbbf4ddb2a89d43ac99812f8a3027e2f84fc8f9771db88ac043cc41cbf7"
   license "MIT"
-  head "https://github.com/esimov/caire.git"
+  head "https://github.com/esimov/caire.git", branch: "master"
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_big_sur: "99e369779abadd222e6d46031536c33f0097054633eae3e077f61eb5951a85cc"
     sha256 cellar: :any_skip_relocation, big_sur:       "fc1c2ff0a4e00e2fc4005515bd2720ecdd2abba2c0e36a0f2396d52a0ff127aa"
     sha256 cellar: :any_skip_relocation, catalina:      "869c6ff4fc5cabbc85b87f37afef6df1ea7fab98aaf98d779daf5e5c506b803f"
     sha256 cellar: :any_skip_relocation, mojave:        "22072fce690001b8cb981244ce84ce0f1c0aba0323e372cb992a8bc0b067aafa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a43af22ecd706f96c3566792561e1a267cbf983bb8dc54f28a70788ec9d8ff0d"
   end
 
   depends_on "go" => :build

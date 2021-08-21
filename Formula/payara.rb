@@ -1,13 +1,23 @@
 class Payara < Formula
   desc "Java EE application server forked from GlassFish"
   homepage "https://www.payara.fish"
-  url "https://search.maven.org/remotecontent?filepath=fish/payara/distributions/payara/5.192/payara-5.192.zip"
-  sha256 "272352a4d8a6fd19a0e3e02bde946fb9a860c1206fc6e39a41279a73f43b2995"
-  revision 1
+  url "https://search.maven.org/remotecontent?filepath=fish/payara/distributions/payara/5.2021.5/payara-5.2021.5.zip"
+  sha256 "52fbc7272823739030475d8df97d05a526677ed7bbe73e2933264a93ee7c7806"
+  license any_of: [
+    "CDDL-1.1",
+    { "GPL-2.0-only" => { with: "Classpath-exception-2.0" } },
+  ]
 
-  bottle :unneeded
+  livecheck do
+    url "https://search.maven.org/remotecontent?filepath=fish/payara/distributions/payara/"
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
 
-  depends_on "openjdk@8"
+  bottle do
+    sha256 cellar: :any_skip_relocation, all: "04446f556082c49a4d434354416e9337b89888c2bf0aa23c5cbb455153f9fa5b"
+  end
+
+  depends_on "openjdk@11"
 
   conflicts_with "glassfish", because: "both install the same scripts"
 
@@ -20,7 +30,7 @@ class Payara < Formula
 
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
-    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("11"))
   end
 
   def caveats
@@ -31,47 +41,17 @@ class Payara < Formula
     EOS
   end
 
-  plist_options manual: "asadmin start-domain --verbose domain1"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>KeepAlive</key>
-        <dict>
-          <key>Crashed</key>
-          <true/>
-          <key>SuccessfulExit</key>
-          <false/>
-        </dict>
-        <key>WorkingDirectory</key>
-        <string>#{opt_libexec}/glassfish</string>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>GLASSFISH_HOME</key>
-          <string>#{opt_libexec}/glassfish</string>
-        </dict>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_libexec}/glassfish/bin/asadmin</string>
-          <string>start-domain</string>
-          <string>--verbose</string>
-          <string>domain1</string>
-        </array>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_libexec/"glassfish/bin/asadmin", "start-domain", "--verbose", "domain1"]
+    keep_alive true
+    working_dir opt_libexec/"glassfish"
+    environment_variables GLASSFISH_HOME: opt_libexec/"glassfish"
   end
 
   test do
     ENV["GLASSFISH_HOME"] = opt_libexec/"glassfish"
     output = shell_output("#{bin}/asadmin list-domains")
-    assert_equal "domain1 not running", output
-    assert_equal "production not running", output
-    assert_equal "Command list-domains executed successfully.", output
+    assert_match "domain1 not running", output
+    assert_match "Command list-domains executed successfully.", output
   end
 end

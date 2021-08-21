@@ -1,8 +1,8 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-3.0.7.tar.xz"
-  sha256 "2bad8be0be95c8f54a26d1e16299e65f31ae1b34bd6ad3819aa50e7b40521484"
+  url "https://secure.nic.cz/files/knot-dns/knot-3.1.1.tar.xz"
+  sha256 "75bfb1acaca774ed3dd781dc74780298dc0fd51b54e4b61015e7487d6cd2067c"
   license all_of: ["GPL-3.0-or-later", "0BSD", "BSD-3-Clause", "LGPL-2.0-or-later", "MIT"]
 
   livecheck do
@@ -11,10 +11,11 @@ class Knot < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "f442578a4ccd1dfeedb50ee16378ebe6af88a9bca5f69b83bff3dfe22553baa6"
-    sha256 big_sur:       "70f9eee3b8dd11f6b28a3a448c8b4e4c9dc462cf18042e64289defa3688c1f66"
-    sha256 catalina:      "5f7dd1207561127110ab2780dba763c72de2922f7fda9ce91ebdaa1ce5af3a08"
-    sha256 mojave:        "c893d2df228231ad0e514857d03c967d2d2cd4b5d66030da2abf59f9fbfb5684"
+    sha256 arm64_big_sur: "a96a8720a2913ee6ee1ef325380d5f67934c57285fb78c1d6d8a6cd01fbd8054"
+    sha256 big_sur:       "fd8349d350cc120375f7f30443cee233a5899cf5a2e91403313143fe0945469c"
+    sha256 catalina:      "6fcb9afb5b187b2941bda8c7d5666fdd1c46d18f4286a7b531687da4d0558b7d"
+    sha256 mojave:        "ab53a7af5828bfe5e748764ea472ac9a53e157256f9b69d8dc1a5a8c3e141f91"
+    sha256 x86_64_linux:  "0255fb84e9c36cf633611abf7eb5ce1052dfed67e47a8d84814d38c80f3f0dd8"
   end
 
   head do
@@ -82,32 +83,11 @@ class Knot < Formula
   end
 
   plist_options startup: true
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>EnableTransactions</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_sbin}/knotd</string>
-        </array>
-        <key>StandardInPath</key>
-        <string>/dev/null</string>
-        <key>StandardOutPath</key>
-        <string>/dev/null</string>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/knot.log</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run opt_sbin/"knotd"
+    input_path "/dev/null"
+    log_path "/dev/null"
+    error_log_path var/"log/knot.log"
   end
 
   test do

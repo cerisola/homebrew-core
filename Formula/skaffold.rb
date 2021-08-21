@@ -2,16 +2,17 @@ class Skaffold < Formula
   desc "Easy and Repeatable Kubernetes Development"
   homepage "https://skaffold.dev/"
   url "https://github.com/GoogleContainerTools/skaffold.git",
-      tag:      "v1.26.1",
-      revision: "438dae66fbf35a1c9ee23f21a6f6e8d991c3edc6"
+      tag:      "v1.30.0",
+      revision: "dd7e764da6f11eba1047e0773570c1a8c12ff160"
   license "Apache-2.0"
   head "https://github.com/GoogleContainerTools/skaffold.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "115bbe72c18063e797631991c64a6d08da1c53c69564da769cb0c9f0b4f6d2a3"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ab5f75d57486e327482c5643182635c2f3eedc66420b7c6e6b5e1f9b84f45057"
-    sha256 cellar: :any_skip_relocation, catalina:      "99992e6cb978f1ab17153e5b99edfe98ed7d05cafeb4c475854c0b9ad91e1f6b"
-    sha256 cellar: :any_skip_relocation, mojave:        "43c654e8fe10c84e90a475e2107b84e2cb53c47ebf9ac613a0517036dee89d6f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c9131c2c6e450d6ac909e589ca397fc8e4173e999246d1f9c86d36b707ce85a3"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9187a5a041f63d418fc4e1dc76a032afc163d764b502aaf36d872b84d67c7d31"
+    sha256 cellar: :any_skip_relocation, catalina:      "ad802d83e992dfd751ea59c49cba4863473fd7d8c141a15e78c8515fea11cac4"
+    sha256 cellar: :any_skip_relocation, mojave:        "1ebf8c889ff1c17fb2e634cd76f86a227cd879144240ddd0f0edad9d9165908c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9635093c1f3d31a02ef1eb807578be5e19e94d04e8d4468a308d3a149edb467b"
   end
 
   depends_on "go" => :build
@@ -28,6 +29,6 @@ class Skaffold < Formula
   test do
     (testpath/"Dockerfile").write "FROM scratch"
     output = shell_output("#{bin}/skaffold init --analyze").chomp
-    assert_equal '{"dockerfiles":["Dockerfile"]}', output
+    assert_equal '{"builders":[{"name":"Docker","payload":{"path":"Dockerfile"}}]}', output
   end
 end

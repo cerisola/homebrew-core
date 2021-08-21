@@ -1,17 +1,28 @@
 class Zig < Formula
   desc "Programming language designed for robustness, optimality, and clarity"
   homepage "https://ziglang.org/"
-  # Re-enable C compilation test at 0.8.1
-  url "https://ziglang.org/download/0.8.0/zig-0.8.0.tar.xz"
-  sha256 "03a828d00c06b2e3bb8b7ff706997fd76bf32503b08d759756155b6e8c981e77"
   license "MIT"
+  revision 1
   head "https://github.com/ziglang/zig.git"
 
+  stable do
+    url "https://ziglang.org/download/0.8.0/zig-0.8.0.tar.xz"
+    sha256 "03a828d00c06b2e3bb8b7ff706997fd76bf32503b08d759756155b6e8c981e77"
+
+    # Fix compilation of C code on Mojave. Remove at version bump.
+    # https://github.com/ziglang/zig/pull/9427
+    patch do
+      url "https://github.com/ziglang/zig/commit/24bfd7bdddbf045c5568c1bb67a3f754c24eb8c4.patch?full_index=1"
+      sha256 "feda7d03502c073bd9874996453da6961dcf16f5a3e08b86d6df1d4cbc1475a7"
+    end
+  end
+
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "cbfe30a9fc41655c96d04c98a00d4dd451823ee8f55afaa9387c9cf367f66c62"
-    sha256 cellar: :any, big_sur:       "740bcf88640b02fa8b21a6719c62c21afe3dd59ea60bb2a8d5efd4a3826fd5c7"
-    sha256 cellar: :any, catalina:      "be1c5cab5438eede09322ff1e896202f0cbfaafb0641a596fdd04f0f4f6c6d48"
-    sha256 cellar: :any, mojave:        "207446cc593dd0b1c63716d26bbb552a2242bc94fe19033df177186f610872df"
+    sha256 cellar: :any,                 arm64_big_sur: "509462e2ab9377e1a1464e0204bad486e18c32908aca8ae3684d12f5a46039f7"
+    sha256 cellar: :any,                 big_sur:       "8b2243d6f8b4e25848592238ee8134af62d3db2eb855f73796066b96f4d4101e"
+    sha256 cellar: :any,                 catalina:      "c129c5da03f133d5d8ac1b0cf9f21e411778856152f94a488e0dbe2b7c8aafc9"
+    sha256 cellar: :any,                 mojave:        "f5986270bfca4ac26802df56f58c7d836d019bf133b6c885449fa6f088840ec4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "65514fee3818165516c30de75546f33e3beb632d401fa5de756b190940fd385a"
   end
 
   depends_on "cmake" => :build
@@ -40,11 +51,7 @@ class Zig < Formula
         return 0;
       }
     EOS
-    # Compiling C is broken on Mojave. Re-enable at 0.8.1.
-    # https://github.com/ziglang/zig/issues/8999
-    if MacOS.version > :mojave
-      system "#{bin}/zig", "cc", "hello.c", "-o", "hello"
-      assert_equal "Hello, world!", shell_output("./hello")
-    end
+    system "#{bin}/zig", "cc", "hello.c", "-o", "hello"
+    assert_equal "Hello, world!", shell_output("./hello")
   end
 end

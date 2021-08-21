@@ -3,15 +3,15 @@ class Jello < Formula
 
   desc "Filter JSON and JSON Lines data with Python syntax"
   homepage "https://github.com/kellyjonbrazil/jello"
-  url "https://files.pythonhosted.org/packages/ca/62/5b3b65ec36fb3cfc3894f16f1e00435c59aab87293326840a2f508190d69/jello-1.4.3.tar.gz"
-  sha256 "48dbbc8c4e09ba927f3a65fbd9c48a9f063a345d1306290071e026e432f781f9"
+  url "https://files.pythonhosted.org/packages/9e/8c/c625f0d6c824cf955a29d6d3df537fe310c4b65ead63afbb77ec10a1c729/jello-1.4.4.tar.gz"
+  sha256 "c42d5202282fa10b57f5830b8e4a74da7a75d585f000b812bbfd90bff28c2bfc"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d3c1e5243cc3b8ea7b6c627fd43c139bb2a5a39e25c3c4dc271cae40ee766f04"
-    sha256 cellar: :any_skip_relocation, big_sur:       "45601eaf044c94f9a2a8998bd6171d0a02368aff686f28f86ecbf73442a868dd"
-    sha256 cellar: :any_skip_relocation, catalina:      "45601eaf044c94f9a2a8998bd6171d0a02368aff686f28f86ecbf73442a868dd"
-    sha256 cellar: :any_skip_relocation, mojave:        "45601eaf044c94f9a2a8998bd6171d0a02368aff686f28f86ecbf73442a868dd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d3d3e11871eabe0bfe95e772a269adac4a07d1496e627631e71b91d59377ace9"
+    sha256 cellar: :any_skip_relocation, big_sur:       "7b214228da50b700cffea3a060c1345e0e4d0761e5b7c23d47a61cfaf0a1afc4"
+    sha256 cellar: :any_skip_relocation, catalina:      "7b214228da50b700cffea3a060c1345e0e4d0761e5b7c23d47a61cfaf0a1afc4"
+    sha256 cellar: :any_skip_relocation, mojave:        "7b214228da50b700cffea3a060c1345e0e4d0761e5b7c23d47a61cfaf0a1afc4"
   end
 
   depends_on "python@3.9"

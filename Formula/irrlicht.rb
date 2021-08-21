@@ -3,6 +3,10 @@ class Irrlicht < Formula
   homepage "https://irrlicht.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/irrlicht/Irrlicht%20SDK/1.8/1.8.4/irrlicht-1.8.4.zip"
   sha256 "f42b280bc608e545b820206fe2a999c55f290de5c7509a02bdbeeccc1bf9e433"
+  # Irrlicht is available under alternative license terms. See
+  # https://metadata.ftp-master.debian.org/changelogs//main/i/irrlicht/irrlicht_1.8.4+dfsg1-1.1_copyright
+  license "Zlib"
+  revision 1
   head "https://svn.code.sf.net/p/irrlicht/code/trunk"
 
   livecheck do
@@ -11,11 +15,11 @@ class Irrlicht < Formula
   end
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "394f0bc05d009f151597e258aa8cdbe851609ed16b69211a966f56ca150ddc23"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e6de4ddb816d9c40b176e8a8688ae8763058f1f4ae166e0d2b28f5560f451b8f"
-    sha256 cellar: :any_skip_relocation, catalina:      "aebe37e4576e3bb2e0d7ba9e5dcad1561db44b093ac97fb30edf4cb0b01192e6"
-    sha256 cellar: :any_skip_relocation, mojave:        "44aa81c059704060641612ff44097bcb48f2c5fdc8685aa8ebd12bdc3a7ffa29"
+    sha256 cellar: :any,                 arm64_big_sur: "7c88c45cbe80a489a1881fd3c6bb74d159c9ca7bc7dd5880ad9bb58c91915a19"
+    sha256 cellar: :any,                 big_sur:       "4140548f2ba1485fe7d374e13b6a70d39d6855cf5bbf463af621288e955706d8"
+    sha256 cellar: :any,                 catalina:      "d9ad006ffc814a0a491d479bfb1232f2d905e8dafebbba1de18ce2c2201a73f8"
+    sha256 cellar: :any,                 mojave:        "45479dc7a13d745a69dccf51c8bf1ebc4cc49fda9fb9e2d0f3a5bd0d67c2a091"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "153ae52b4f2d95488105918318ebdc9e83ae257eed0a04e893063285da3ac15f"
   end
 
   depends_on xcode: :build
@@ -42,10 +46,26 @@ class Irrlicht < Formula
         "#  error ZLIB_VERNUM != PNG_ZLIB_VERNUM \\",
         "#  warning ZLIB_VERNUM != PNG_ZLIB_VERNUM \\"
 
+      extra_args = []
+
+      # Fix "Undefined symbols for architecture arm64: "_png_init_filter_functions_neon"
+      # Reported 18 Nov 2020 https://sourceforge.net/p/irrlicht/bugs/452/
+      extra_args << "GCC_PREPROCESSOR_DEFINITIONS='PNG_ARM_NEON_OPT=0'" if Hardware::CPU.arm?
+
+      xcodebuild "-project", "source/Irrlicht/MacOSX/MacOSX.xcodeproj",
+                 "-configuration", "Release",
+                 "-target", "IrrFramework",
+                 "SYMROOT=build",
+                 *extra_args
+
       xcodebuild "-project", "source/Irrlicht/MacOSX/MacOSX.xcodeproj",
                  "-configuration", "Release",
                  "-target", "libIrrlicht.a",
-                 "SYMROOT=build"
+                 "SYMROOT=build",
+                 *extra_args
+
+      frameworks.install "source/Irrlicht/MacOSX/build/Release/IrrFramework.framework"
+      lib.install_symlink frameworks/"IrrFramework.framework/Versions/A/IrrFramework" => "libIrrlicht.dylib"
       lib.install "source/Irrlicht/MacOSX/build/Release/libIrrlicht.a"
       include.install "include" => "irrlicht"
     end
@@ -67,18 +87,14 @@ class Irrlicht < Formula
       lib.install "lib/Linux/libIrrlicht.a"
     end
 
-    on_linux do
-      (pkgshare/"examples").install "examples/01.HelloWorld"
-    end
+    (pkgshare/"examples").install "examples/01.HelloWorld"
   end
 
   test do
     on_macos do
       assert_match Hardware::CPU.arch.to_s, shell_output("lipo -info #{lib}/libIrrlicht.a")
     end
-    on_linux do
-      cp_r Dir["#{pkgshare}/examples/01.HelloWorld/*"], testpath
-      system ENV.cxx, "-I#{include}/irrlicht", "-L#{lib}", "-lIrrlicht", "main.cpp", "-o", "hello"
-    end
+    cp_r Dir["#{pkgshare}/examples/01.HelloWorld/*"], testpath
+    system ENV.cxx, "main.cpp", "-I#{include}/irrlicht", "-L#{lib}", "-lIrrlicht", "-o", "hello"
   end
 end

@@ -2,15 +2,16 @@ class ArgocdAutopilot < Formula
   desc "Opinionated way of installing Argo CD and managing GitOps repositories"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj-labs/argocd-autopilot.git",
-      tag:      "v0.2.7",
-      revision: "9b4e705e86c3334ceb42bffe3b7fd97d67e230ad"
+      tag:      "v0.2.13",
+      revision: "41313fecfa12f14bb9b9f0a221ccff5fb3a2bcd4"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1adb362df02fd45f248aa4337933754a13413d3323e2c2a915ee0c29cc2ce510"
-    sha256 cellar: :any_skip_relocation, big_sur:       "c1859eb14cc8aec6867dce0f976d0819d52cf903e90a9d518564afa67fb59bd8"
-    sha256 cellar: :any_skip_relocation, catalina:      "c4b723a950b0d7fa9a72ca40d6a0db42d7e259e223092d673b78f039bc4137b9"
-    sha256 cellar: :any_skip_relocation, mojave:        "f256f68a2b41e69d0cb88afbdbfb69642d64c7b85698523a6a7677ca65ea1f3c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9f121c01c526ab5a685f6a4bacdad2bf9918c8a5c50b5c1dfad9e5b7d71bcab9"
+    sha256 cellar: :any_skip_relocation, big_sur:       "9dae139c00ff3323ff0b6eb38bf2133761cae7cc097922cd619e1e99b256f5da"
+    sha256 cellar: :any_skip_relocation, catalina:      "6935584799f1e40ce90bbc76da99ac4b5664c9dd5884c2cf67050e846bc37651"
+    sha256 cellar: :any_skip_relocation, mojave:        "3181cfb27d2fc0896a1d25fe9ab72d2fbe33a466c4e3c6f437472233b78a5262"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "07a96fb3bb40b43ccb1257c145b4749b9edf43bea5ae95abfcf581b76619ab98"
   end
 
   depends_on "go" => :build
@@ -22,7 +23,8 @@ class ArgocdAutopilot < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/argocd-autopilot version")
-    assert_match "authentication failed",
-                 shell_output("#{bin}/argocd-autopilot repo create -o foo -n bar -t dummy 2>&1", 1)
+
+    assert_match "required flag(s) \\\"git-token\\\" not set\"",
+      shell_output("#{bin}/argocd-autopilot repo bootstrap --repo https://github.com/example/repo 2>&1", 1)
   end
 end

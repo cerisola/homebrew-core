@@ -11,10 +11,12 @@ class Jruby < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "e0182e32a400fc7f6e5f18c897c4e8f9ca0f9a7013cbbf4ba07a975eab0ab4e8"
-    sha256 cellar: :any, big_sur:       "74486e1c636a83f12ee42b200b1ffb44a8205ce4962616a212bc270223200093"
-    sha256 cellar: :any, catalina:      "74486e1c636a83f12ee42b200b1ffb44a8205ce4962616a212bc270223200093"
-    sha256 cellar: :any, mojave:        "74486e1c636a83f12ee42b200b1ffb44a8205ce4962616a212bc270223200093"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_big_sur: "b9cbf7f60606bcd04421d60bd03365183d3ee35d9e2fbe07c51d9b12c4234a36"
+    sha256 cellar: :any,                 big_sur:       "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
+    sha256 cellar: :any,                 catalina:      "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
+    sha256 cellar: :any,                 mojave:        "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb01de5d760d49ad6731630940ab02f9d8cb2a4ce070de9316f7bce886197381"
   end
 
   depends_on "openjdk"
@@ -25,7 +27,7 @@ class Jruby < Formula
 
     cd "bin" do
       # Prefix a 'j' on some commands to avoid clashing with other rubies
-      %w[ast rake rdoc ri testrb].each { |f| mv f, "j#{f}" }
+      %w[ast rake rdoc ri testrb racc].each { |f| mv f, "j#{f}" }
       # Delete some unnecessary commands
       rm "gem" # gem is a wrapper script for jgem
       rm "irb" # irb is an identical copy of jirb

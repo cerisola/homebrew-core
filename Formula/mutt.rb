@@ -10,15 +10,16 @@
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "https://bitbucket.org/mutt/mutt/downloads/mutt-2.1.0.tar.gz"
-  sha256 "80835bbcce920bccf4fc99676eda9e83f03a929b4022eada931d721ede330d37"
+  url "https://bitbucket.org/mutt/mutt/downloads/mutt-2.1.1.tar.gz"
+  sha256 "4ae6d60f7f19854c375cc1c27b5768b71e9f450c2adc10c22e45de8a27de524a"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_big_sur: "3708800ef95bc712e3ff62b752a905c4483193c7d7f67460f992cdac0c24f1d6"
-    sha256 big_sur:       "96bcbf14d4a5eb6f7d1afb926662177f9a7199bc0653fd715134005d552d1e20"
-    sha256 catalina:      "ecf8a12ae285db77cf7ba8ab53a51d483251cc81093dfa6cfcbe8fa739b10cd2"
-    sha256 mojave:        "3a8df5deb435a5a4222e88b4fe176899a05e83aed0c5942c36d83b57390ec986"
+    sha256 arm64_big_sur: "3e1768895cb4d1d141bc9336ffa3105a99050ee5987657fc7867714cea661478"
+    sha256 big_sur:       "b8fab1c1cf96feaacb9f5bdc438b3f2c7a708a43483af486df8f70818a54ce01"
+    sha256 catalina:      "f20ad44d5be6501d86b2a72d5cfafe77c66bb81112113bdd069d497a2de5d295"
+    sha256 mojave:        "e3f19993195fd4e2a19ebcf0d9ddac147b9a6ea27886cfbac9141c4e6ab1d744"
+    sha256 x86_64_linux:  "4be1f60e2c5659a3f4f95178daab698366a04578c99ad8a35e8171a9467bbc00"
   end
 
   head do
@@ -36,12 +37,12 @@ class Mutt < Formula
   depends_on "tokyo-cabinet"
 
   uses_from_macos "bzip2"
+  uses_from_macos "cyrus-sasl"
   uses_from_macos "krb5"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
-  conflicts_with "tin",
-    because: "both install mmdf.5 and mbox.5 man pages"
+  conflicts_with "tin", because: "both install mmdf.5 and mbox.5 man pages"
 
   def install
     user_in_mail_group = Etc.getgrnam("mail").mem.include?(ENV["USER"])

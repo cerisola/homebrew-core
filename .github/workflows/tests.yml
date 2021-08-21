@@ -13,41 +13,45 @@ env:
   HOMEBREW_CHANGE_ARCH_TO_ARM: 1
   HOMEBREW_RELOCATE_RPATHS: 1
 
+concurrency:
+  group: "tests-${{ github.ref }}"
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   tap_syntax:
     if: github.repository == 'Homebrew/homebrew-core'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu16.04:master
     env:
       HOMEBREW_SIMULATE_MACOS_ON_LINUX: 1
+    outputs:
+      testing_formulae: ${{ steps.formulae-detect.outputs.testing_formulae }}
+      added_formulae: ${{ steps.formulae-detect.outputs.added_formulae }}
+      deleted_formulae: ${{ steps.formulae-detect.outputs.deleted_formulae }}
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
 
-      - name: Cache Bundler RubyGems
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
-          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ${{ runner.os }}-rubygems-
-
-      - name: Install Bundler RubyGems
-        run: brew install-bundler-gems
-
       - run: brew test-bot --only-tap-syntax
 
-  pre_tests:
+      - run: brew test-bot --only-formulae-detect
+        if: github.event_name == 'pull_request'
+        id: formulae-detect
+
+  setup_tests:
     if: github.event_name == 'pull_request' && github.repository == 'Homebrew/homebrew-core'
     runs-on: ubuntu-latest
     needs: tap_syntax
     outputs:
-      runners: ${{ steps.check-labels.outputs.runners }}
-      container: ${{ steps.check-labels.outputs.container }}
       syntax-only: ${{ steps.check-labels.outputs.syntax-only }}
-      force-arm: ${{ steps.check-labels.outputs.force-arm }}
-      force-linux: ${{ steps.check-labels.outputs.force-linux }}
-      test-bot-fail-fast: ${{ steps.check-labels.outputs.test-bot-fail-fast }}
-      test-bot-skip-recursive-dependents: ${{ steps.check-labels.outputs.test-bot-skip-recursive-dependents }}
+      runners: ${{ steps.check-labels.outputs.runners }}
+      fail-fast: ${{ steps.check-labels.outputs.fail-fast }}
+      timeout-minutes: ${{ steps.check-labels.outputs.timeout-minutes }}
+      container: ${{ steps.check-labels.outputs.container }}
+      test-bot-formulae-args: ${{ steps.check-labels.outputs.test-bot-formulae-args }}
+      test-bot-dependents-args: ${{ steps.check-labels.outputs.test-bot-dependents-args }}
     steps:
       - name: Check for CI labels
         id: check-labels
@@ -63,74 +67,111 @@ jobs:
             const label_names = labels.map(label => label.name)
 
             if (label_names.includes('CI-syntax-only')) {
-              console.log('CI-syntax-only label found. Skipping tests.')
+              console.log('CI-syntax-only label found. Skipping tests job.')
               core.setOutput('syntax-only', 'true')
             } else {
-              console.log('No CI-syntax-only label found. Running tests.')
+              console.log('No CI-syntax-only label found. Running tests job.')
               core.setOutput('syntax-only', 'false')
             }
 
-            if (label_names.includes('CI-force-arm')) {
-              console.log('CI-force-arm label found. Running ARM builds.')
-              core.setOutput('force-arm', 'true')
-            } else {
-              console.log('No CI-force-arm label found. Not requiring ARM builds.')
-              core.setOutput('force-arm', 'false')
-            }
-
-            if (label_names.includes('CI-force-linux')) {
-              console.log('CI-force-linux label found. Running Linux builds.')
-              core.setOutput('force-linux', 'true')
-            } else {
-              console.log('No CI-force-linux label found. Not requiring Linux builds.')
-              core.setOutput('force-linux', 'false')
-            }
-
-            if (label_names.includes('CI-test-bot-fail-fast')) {
-              console.log('CI-test-bot-fail-fast label found. Passing --fail-fast to brew test-bot.')
-              core.setOutput('test-bot-fail-fast', '--fail-fast')
-            } else {
-              console.log('No CI-test-bot-fail-fast label found. Not passing --fail-fast to brew test-bot.')
-              core.setOutput('test-bot-fail-fast', '')
-            }
-
-            if (label_names.includes('CI-test-bot-skip-recursive-dependents')) {
-              console.log('CI-test-bot-skip-recursive-dependents label found. Passing --skip-recursive-dependents to brew test-bot.')
-              core.setOutput('test-bot-skip-recursive-dependents', '--skip-recursive-dependents')
-            } else {
-              console.log('No CI-test-bot-skip-recursive-dependents label found. Not passing --skip-recursive-dependents to brew test-bot.')
-              core.setOutput('test-bot-skip-recursive-dependents', '')
-            }
-
-            if (label_names.includes('CI-linux-wheezy')) {
-              console.log('CI-linux-wheezy label found. Running Linux wheezy builds.')
-              core.setOutput('container', 'homebrew/debian7:latest')
-            } else {
-              console.log('No CI-linux-wheezy label found. Not requiring Linux wheezy builds.')
-              core.setOutput('container', 'ghcr.io/homebrew/ubuntu16.04:master')
-            }
-
-            /* RUNNERS */
-
             const runners = ["11-arm64", "11", "10.15", "10.14"]
-
             if (label_names.includes('CI-linux-self-hosted')) {
               runners.push('linux-self-hosted-1')
             } else {
               runners.push('ubuntu-latest')
             }
-
             core.setOutput('runners', JSON.stringify(runners))
 
+            if (label_names.includes('CI-no-fail-fast')) {
+              console.log('CI-no-fail-fast label found. Continuing tests despite failing matrix builds.')
+              core.setOutput('fail-fast', 'false')
+            } else {
+              console.log('No CI-no-fail-fast label found. Stopping tests on first failing matrix build.')
+              core.setOutput('fail-fast', 'true')
+            }
+
+            if (label_names.includes('CI-long-timeout')) {
+              console.log('CI-long-timeout label found. Setting long GitHub Actions timeout.')
+              core.setOutput('timeout-minutes', '4320')
+            } else {
+              console.log('No CI-long-timeout label found. Setting short GitHub Actions timeout.')
+              core.setOutput('timeout-minutes', '60')
+            }
+
+            if (label_names.includes('CI-linux-wheezy')) {
+              console.log('CI-linux-wheezy label found. Using Linux Debian 7 (Wheezy) container.')
+              core.setOutput('container', 'homebrew/debian7:latest')
+            } else {
+              console.log('No CI-linux-wheezy label found. Using default Homebrew (Ubuntu 16.04) container.')
+              core.setOutput('container', 'ghcr.io/homebrew/ubuntu16.04:master')
+            }
+
+            const test_bot_formulae_args = ["--only-formulae", "--junit", "--only-json-tab", "--skip-dependents"]
+            test_bot_formulae_args.push('--testing-formulae=${{needs.tap_syntax.outputs.testing_formulae}}')
+            test_bot_formulae_args.push('--added-formulae=${{needs.tap_syntax.outputs.added_formulae}}')
+            test_bot_formulae_args.push('--deleted-formulae=${{needs.tap_syntax.outputs.deleted_formulae}}')
+
+            const test_bot_dependents_args = ["--only-formulae-dependents", "--junit"]
+            test_bot_dependents_args.push('--testing-formulae=${{needs.tap_syntax.outputs.testing_formulae}}')
+
+            if (label_names.includes('CI-force-arm')) {
+              console.log('CI-force-arm label found. Not passing --skip-unbottled-arm to brew test-bot.')
+            } else {
+              console.log('No CI-force-arm label found. Passing --skip-unbottled-arm to brew test-bot.')
+              test_bot_formulae_args.push('--skip-unbottled-arm')
+            }
+
+            if (label_names.includes('CI-force-linux')) {
+              console.log('CI-force-linux label found. Not passing --skip-unbottled-linux to brew test-bot.')
+            } else {
+              console.log('No CI-force-linux label found. Passing --skip-unbottled-linux to brew test-bot.')
+              test_bot_formulae_args.push('--skip-unbottled-linux')
+            }
+
+            if (label_names.includes('CI-test-bot-fail-fast')) {
+              console.log('CI-test-bot-fail-fast label found. Passing --fail-fast to brew test-bot.')
+              test_bot_formulae_args.push('--fail-fast')
+              test_bot_dependents_args.push('--fail-fast')
+            } else {
+              console.log('No CI-test-bot-fail-fast label found. Not passing --fail-fast to brew test-bot.')
+            }
+
+            if (label_names.includes('CI-skip-dependents')) {
+              console.log('CI-skip-dependents label found. Passing --skip-dependents to brew test-bot.')
+              test_bot_formulae_args.push('--skip-dependents')
+            } else {
+              console.log('No CI-skip-dependents label found. Not passing --skip-dependents to brew test-bot.')
+            }
+
+            if (label_names.includes('CI-build-dependents-from-source')) {
+              console.log('CI-build-dependents-from-source label found. Passing --build-dependents-from-source to brew test-bot.')
+              test_bot_dependents_args.push('--build-dependents-from-source')
+            } else {
+              console.log('No CI-build-dependents-from-source label found. Not passing --build-dependents-from-source to brew test-bot.')
+            }
+
+            if (label_names.includes('CI-skip-recursive-dependents')) {
+              console.log('CI-skip-recursive-dependents label found. Passing --skip-recursive-dependents to brew test-bot.')
+              test_bot_dependents_args.push('--skip-recursive-dependents')
+            } else {
+              console.log('No CI-skip-recursive-dependents label found. Not passing --skip-recursive-dependents to brew test-bot.')
+            }
+
+            core.setOutput('test-bot-formulae-args', test_bot_formulae_args.join(" "))
+            core.setOutput('test-bot-dependents-args', test_bot_dependents_args.join(" "))
+
   tests:
-    needs: pre_tests
-    if: github.event_name == 'pull_request' && needs.pre_tests.outputs.syntax-only == 'false'
+    needs: setup_tests
+    if: ${{github.event_name == 'pull_request' && fromJson(needs.setup_tests.outputs.syntax-only) == false}}
     strategy:
       matrix:
-        runner: ${{fromJson(needs.pre_tests.outputs.runners)}}
-      fail-fast: false
+        runner: ${{fromJson(needs.setup_tests.outputs.runners)}}
+      fail-fast: ${{fromJson(needs.setup_tests.outputs.fail-fast)}}
     runs-on: ${{matrix.runner}}
-    timeout-minutes: 4320
+    timeout-minutes: ${{fromJson(needs.setup_tests.outputs.timeout-minutes)}}
+    defaults:
+      run:
+        shell: /bin/bash -e {0}
     env:
       GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -140,17 +181,32 @@ jobs:
           if [ "$RUNNER_OS" = 'macOS' ]; then
             echo 'PATH=/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' >> $GITHUB_ENV
             echo 'GITHUB_ACTIONS_HOMEBREW_MACOS_SELF_HOSTED=1' >> $GITHUB_ENV
-            if [ '${{needs.pre_tests.outputs.force-arm}}' = 'false' ]; then
-              echo 'HOMEBREW_SKIP_UNBOTTLED_ARM_TESTS=1' >> $GITHUB_ENV
-            fi
           else
             # No PATH needed on Linux as set by Docker
-            echo 'HOMEBREW_CORE_GIT_REMOTE=${{github.event.repository.html_url}}' >> $GITHUB_ENV
             echo 'HOMEBREW_FORCE_HOMEBREW_ON_LINUX=1' >> $GITHUB_ENV
-            if [ '${{needs.pre_tests.outputs.force-linux}}' = 'false' ]; then
-              echo 'HOMEBREW_SKIP_UNBOTTLED_LINUX_TESTS=1' >> $GITHUB_ENV
-            fi
           fi
+
+      - name: Set up Linux Homebrew Docker container
+        if: runner.os == 'Linux'
+        env:
+          TAP_PATH: /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core
+        run: |
+          docker run \
+            --detach \
+            --user linuxbrew \
+            --name ${{github.sha}} \
+            --env-file <(env | egrep 'HOMEBREW|GITHUB') \
+            --workdir /tmp/bottles \
+            --pull always \
+            ${{needs.setup_tests.outputs.container}} \
+            sleep inf
+          # Fix working directory permissions
+          docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
+
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-url origin ${{github.event.repository.html_url}}
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git fetch origin ${{github.sha}} '+refs/heads/*:refs/remotes/origin/*'
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-head origin --auto
+          docker exec --workdir "$TAP_PATH" ${{github.sha}} git checkout --force -B master FETCH_HEAD
 
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -160,52 +216,53 @@ jobs:
       - if: runner.os == 'macOS'
         run: brew test-bot --only-cleanup-before
 
-      # `brew doctor` won't work on Linux (yet)
-      # TODO: reenable this when possible.
-      - if: runner.os == 'macOS'
-        run: brew test-bot --only-setup
-
-      - name: Run Docker container
-        if: runner.os == 'Linux'
+      - name: Run brew test-bot --only-setup
         run: |
-          docker run \
-            --detach \
-            --user linuxbrew \
-            --name ${{github.sha}} \
-            --env-file <(env | egrep 'HOMEBREW|GITHUB') \
-            --workdir /tmp/bottles \
-            ${{needs.pre_tests.outputs.container}} \
-            sleep inf
-          # Fix working directory permissions
-          docker exec --user root ${{github.sha}} chmod 777 /tmp/bottles
+          if [ "$RUNNER_OS" = 'macOS' ]; then
+            brew test-bot --only-setup
+          else
+            docker exec ${{github.sha}} brew test-bot --only-setup
+          fi
 
-      - name: Set up Homebrew in container
-        if: runner.os == 'Linux'
-        env:
-          TAP_PATH: /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/homebrew/homebrew-core
-        run: |
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-url origin ${{github.event.repository.html_url}}
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git fetch origin ${{github.sha}} '+refs/heads/*:refs/remotes/origin/*'
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git remote set-head origin --auto
-          docker exec --workdir "$TAP_PATH" ${{github.sha}} git checkout --force -B master FETCH_HEAD
-
-      - name: Run brew test-bot --only-json-tab --only-formulae ${{ needs.tap_syntax.outputs.test-bot-fail-fast }} ${{ needs.tap_syntax.outputs.test-bot-skip-recursive-dependents }}
+      - name: Run brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
+        id: brew-test-bot-formulae
         run: |
           if [ "$RUNNER_OS" = 'macOS' ]; then
             mkdir bottles
             cd bottles
-            brew test-bot --only-json-tab --only-formulae ${{ needs.pre_tests.outputs.test-bot-fail-fast }} ${{ needs.pre_tests.outputs.test-bot-skip-recursive-dependents }}
+            brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
           else
-            docker exec ${{github.sha}} brew test-bot --only-json-tab --only-formulae ${{ needs.pre_tests.outputs.test-bot-fail-fast }} ${{ needs.pre_tests.outputs.test-bot-skip-recursive-dependents }}
+            docker exec ${{github.sha}} brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
           fi
 
-      - name: Copy bottles from container
+      - name: Copy results from container
         if: always() && runner.os == 'Linux'
         run: docker cp ${{github.sha}}:/tmp/bottles .
 
-      - name: Output brew test-bot --only-json-tab --only-formulae ${{ needs.pre_tests.outputs.test-bot-fail-fast }} ${{ needs.pre_tests.outputs.test-bot-skip-recursive-dependents }} failures
+      - name: Failures summary for brew test-bot ${{ needs.setup_tests.outputs.test-bot-formulae-args }}
         if: always()
         run: |
+          touch bottles/steps_output.txt
+          cat bottles/steps_output.txt
+          rm bottles/steps_output.txt
+
+      - name: Run brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
+        run: |
+          if [ "$RUNNER_OS" = 'macOS' ]; then
+            cd bottles
+            brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
+          else
+            docker exec ${{github.sha}} brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
+          fi
+
+      - name: Copy results from container
+        if: always() && runner.os == 'Linux'
+        run: docker cp ${{github.sha}}:/tmp/bottles .
+
+      - name: Failures summary for brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
+        if: always()
+        run: |
+          touch bottles/steps_output.txt
           cat bottles/steps_output.txt
           rm bottles/steps_output.txt
 

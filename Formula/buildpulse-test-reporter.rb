@@ -1,16 +1,17 @@
 class BuildpulseTestReporter < Formula
   desc "Connect your CI to BuildPulse to detect, track, and rank flaky tests"
   homepage "https://buildpulse.io"
-  url "https://github.com/buildpulse/test-reporter/archive/refs/tags/v0.15.0.tar.gz"
-  sha256 "5119c189341bec12531fa85ac504a3c88b5ca08f090f2ee92d6cef667d66684d"
+  url "https://github.com/buildpulse/test-reporter/archive/refs/tags/v0.19.0.tar.gz"
+  sha256 "d78d09d68212fbe332f6e7ad5d2c645581d0b8f712e6a0c8feb344b14d3bc785"
   license "MIT"
   head "https://github.com/buildpulse/test-reporter.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d99ea6ed02c4778603f873bf3022c9855fa94cb5f50c424359a86b3952a0707c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "58b20d5b344f9eb1f1f0ec9dc0f7bf3593f070097d575afb8e3e500a66053d60"
-    sha256 cellar: :any_skip_relocation, catalina:      "afc2be1dc54b07069ea86809ce6ac3f6b2a7f2f1c6d9b25edad1019180e762af"
-    sha256 cellar: :any_skip_relocation, mojave:        "b663883aabeccfc1f035fbcbe8eb437d97e8c75dd798aa1293155ef9eecf4998"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0cb6602b09e1f55acc92f6bd1a466064bc7a87785ddd22ef8ee0b4db4ff3946e"
+    sha256 cellar: :any_skip_relocation, big_sur:       "15b578b8212ee55c591eb2ce13daecd396dfd15d4d13f341dbb3089670e02030"
+    sha256 cellar: :any_skip_relocation, catalina:      "84911c146f7a62a4d1044084d540e46926a27a0a5570944f92e34371a9565448"
+    sha256 cellar: :any_skip_relocation, mojave:        "fa39de65060f5554e42b68d6807167614ed4981ef4d7eec657df6e38148ba945"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a098ea6a0caa562d2ef283605bc9cf4956ddc49409570c8f1f2a828f8093fac"
   end
 
   depends_on "go" => :build

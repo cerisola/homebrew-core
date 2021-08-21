@@ -1,8 +1,8 @@
 class PythonAT38 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tar.xz"
-  sha256 "6af24a66093dd840bcccf371d4044a3027e655cf24591ce26e48022bc79219d9"
+  url "https://www.python.org/ftp/python/3.8.11/Python-3.8.11.tar.xz"
+  sha256 "fb1a1114ebfe9e97199603c6083e20b236a0e007a2c51f29283ffb50c1420fb2"
   license "Python-2.0"
 
   livecheck do
@@ -11,10 +11,11 @@ class PythonAT38 < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "fd104f16144653275b6210613bc551fdb5290e04df30b64f98dfa61c9161d2e7"
-    sha256 big_sur:       "52b3504c2c9e63ded764f97352194fd49f0f8e6b702be7d1d98b9687c79e0192"
-    sha256 catalina:      "1daa5551ae11b345d3f142cc9cf51384a49090dda3127423a163e2b789300e73"
-    sha256 mojave:        "574424cdfcc296cf4033e869337a4d87c5aa079bab411a51b8f8ad93fd4fa605"
+    sha256 arm64_big_sur: "65ecdcb83b557deb9a43ebca10de120fbb26eee538d342054ccfbccb8636948a"
+    sha256 big_sur:       "89be87388c1e29e0746891417c13d79d71294ddb78d494f1951d75109644d2cc"
+    sha256 catalina:      "6b74a3eb7a76afb1efd89b6fa9995010bd2f36fa73b672b0b2c68ae8a0950431"
+    sha256 mojave:        "f4ac46df3d769cbd28bb1b19457d7cb535575a06609a4f52ce8f37d32900e23c"
+    sha256 x86_64_linux:  "a5d51db034e7ac52ca48e271f24589a857e715987c79ab5c3b99102e6366791e"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -44,13 +45,13 @@ class PythonAT38 < Formula
              "bin/easy_install-3.7", "bin/easy_install-3.8"
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/f6/e9/19af16328705915233299f6f1f02db95899fb00c75ac9da4757aa1e5d1de/setuptools-56.0.0.tar.gz"
-    sha256 "08a1c0f99455307c48690f00d5c2ac2c1ccfab04df00454fef854ec145b81302"
+    url "https://files.pythonhosted.org/packages/88/fc/d17731c0cc67a5a8e385e4f47c3b0b186720e198b70f076ccb4676804a8f/setuptools-57.0.0.tar.gz"
+    sha256 "401cbf33a7bf817d08014d51560fc003b895c4cdc1a5b521ad2969e928a07535"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/94/b0/e10bdc8809c81796c80aa3644a8e3dc16594fb1bd68f5996929f26cad980/pip-21.1.1.tar.gz"
-    sha256 "51ad01ddcd8de923533b01a870e7b987c2eb4d83b50b89e1bf102723ff9fed8b"
+    url "https://files.pythonhosted.org/packages/4d/0c/3b63fe024414a8a48661cf04f0993d4b2b8ef92daed45636474c018cd5b7/pip-21.1.3.tar.gz"
+    sha256 "b5b1eb91b36894bd01b8e5a56a422c2f3838573da0b0a1c63a096bb454e3b23f"
   end
 
   resource "wheel" do
@@ -125,7 +126,7 @@ class PythonAT38 < Formula
     cflags         = []
     cflags_nodist  = ["-I#{HOMEBREW_PREFIX}/include"]
     ldflags        = []
-    ldflags_nodist = ["-L#{HOMEBREW_PREFIX}/lib"]
+    ldflags_nodist = ["-L#{HOMEBREW_PREFIX}/lib", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"]
     cppflags       = ["-I#{HOMEBREW_PREFIX}/include"]
 
     if MacOS.sdk_path_if_needed

@@ -1,15 +1,17 @@
 class Webdis < Formula
   desc "Redis HTTP interface with JSON output"
   homepage "https://webd.is/"
-  url "https://github.com/nicolasff/webdis/archive/0.1.15.tar.gz"
-  sha256 "6ef2ce437240b792442594968f149b5ddc6b4a8a0abd58f7b19374387373aed1"
+  url "https://github.com/nicolasff/webdis/archive/0.1.16.tar.gz"
+  sha256 "7aa3b741ca44595cf8113b40a161aa8bf55a1ecf338af7d1d078337f9212e9a6"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "9bad540c5e1122e2b6f94bfc8401cb3e4ec5a87beb7f85b67637d8adf0f876e4"
-    sha256 cellar: :any, big_sur:       "aa7ce60364d343a7c643c2d667ef6a447a0c0d062d30d3ad25b7d4d141f569ff"
-    sha256 cellar: :any, catalina:      "b9b7b70e46c81533e46032a90b8c8f23395ac5a15eb89c3dd8aadbf2b4c266af"
-    sha256 cellar: :any, mojave:        "eae3a12f74750e5b7593e4ef3aa1f7ba3173f4cf31ccc8a4bb865b010de098f0"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_big_sur: "55b4ee33b5296bcd27b91585b3356b9d7737fb24f7cda5adfcc30a4e586ac246"
+    sha256 cellar: :any,                 big_sur:       "e862565d496026523a3de7eee972498fb69de7af174f916e4782db1353f9aaba"
+    sha256 cellar: :any,                 catalina:      "b3b426e26ae5aeb0be4655e8d606ec7296212c2571ea2c6addac82244f15d242"
+    sha256 cellar: :any,                 mojave:        "5ccbedfbb540501c278e8924c49ed974b34491499785d1fca48f6ad33ae4bfa1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0d186746de1c08d6501c30f699fb7d9ba31cd1bbf449ecb4e2ea4eba20d187b"
   end
 
   depends_on "libevent"
@@ -30,33 +32,10 @@ class Webdis < Formula
     (var/"log").mkpath
   end
 
-  plist_options manual: "webdis #{HOMEBREW_PREFIX}/etc/webdis.json"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-              <string>#{opt_bin}/webdis</string>
-              <string>#{etc}/webdis.prod.json</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>KeepAlive</key>
-          <dict>
-              <key>SuccessfulExit</key>
-              <false/>
-          </dict>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"webdis", etc/"webdis.prod.json"]
+    keep_alive true
+    working_dir var
   end
 
   test do

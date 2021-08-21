@@ -4,7 +4,7 @@ class ClozureCl < Formula
   url "https://github.com/Clozure/ccl/archive/v1.12.1.tar.gz"
   sha256 "bd005fdb24cee2f7b20077cbca5e9174c10a82d98013df5cc3eabc7f31ccd933"
   license "Apache-2.0"
-  head "https://github.com/Clozure/ccl.git"
+  head "https://github.com/Clozure/ccl.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,8 +12,9 @@ class ClozureCl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "2e8a3a3d80b28ab52584b2b6314f4739e7b2747d4efb1fead8b66e18045826c8"
-    sha256 cellar: :any_skip_relocation, catalina: "1a61c4c36d12ea0707ddffb61456a65a7b585e009f900daafa9745b292384fd5"
+    sha256 cellar: :any_skip_relocation, big_sur:      "2e8a3a3d80b28ab52584b2b6314f4739e7b2747d4efb1fead8b66e18045826c8"
+    sha256 cellar: :any_skip_relocation, catalina:     "1a61c4c36d12ea0707ddffb61456a65a7b585e009f900daafa9745b292384fd5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "9d7ccfcd028e68959e5d105ef9f942febdd44ba2f47f18c93b259cae0a8c8806"
   end
 
   depends_on xcode: :build

@@ -6,8 +6,8 @@ class Cfengine < Formula
   license all_of: ["BSD-3-Clause", "GPL-2.0-or-later", "GPL-3.0-only", "LGPL-2.0-or-later"]
 
   livecheck do
-    url "https://cfengine.com/release-data/community/releases.json"
-    regex(/"version": ?"(\d+(?:\.\d+)+)"/i)
+    url "https://cfengine-package-repos.s3.amazonaws.com/release-data/community/releases.json"
+    regex(/["']version["']:\s*["'](\d+(?:\.\d+)+)["']/i)
   end
 
   bottle do
@@ -15,11 +15,16 @@ class Cfengine < Formula
     sha256 big_sur:       "369f0b971ef4b7968d2e1a8934ce03e4d841b88c9c0a789ca52e8e5d3b619acd"
     sha256 catalina:      "397a614052632c146a1a8668a5e0a1e8ab1569296d6bd94b411b5bf15a61c736"
     sha256 mojave:        "bc4f67e00fa8dc773ab0fcc1b9bb1376513f507fa958bceae50ef943ef5ff670"
+    sha256 x86_64_linux:  "c0182838df4ece465cc5e1084657b650bc1190c1272a0cd50a6af1f7562dae32"
   end
 
   depends_on "lmdb"
   depends_on "openssl@1.1"
   depends_on "pcre"
+
+  on_linux do
+    depends_on "linux-pam"
+  end
 
   resource "masterfiles" do
     url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-masterfiles-3.18.0.tar.gz"
@@ -27,13 +32,21 @@ class Cfengine < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-workdir=#{var}/cfengine",
-                          "--with-lmdb=#{Formula["lmdb"].opt_prefix}",
-                          "--with-pcre=#{Formula["pcre"].opt_prefix}",
-                          "--without-mysql",
-                          "--without-postgresql"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-workdir=#{var}/cfengine
+      --with-lmdb=#{Formula["lmdb"].opt_prefix}
+      --with-pcre=#{Formula["pcre"].opt_prefix}
+      --without-mysql
+      --without-postgresql
+    ]
+
+    on_linux do
+      args << "--with-systemd-service=no"
+    end
+
+    system "./configure", *args
     system "make", "install"
     (pkgshare/"CoreBase").install resource("masterfiles")
   end

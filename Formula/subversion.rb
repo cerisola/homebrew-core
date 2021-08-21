@@ -5,13 +5,14 @@ class Subversion < Formula
   mirror "https://archive.apache.org/dist/subversion/subversion-1.14.1.tar.bz2"
   sha256 "2c5da93c255d2e5569fa91d92457fdb65396b0666fad4fd59b22e154d986e1a9"
   license "Apache-2.0"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 arm64_big_sur: "b423d18ba80a53c6ed46b56d79a5a5de2ed481eaefd13517ad1f320a4ed9a722"
-    sha256 big_sur:       "06616fa9d0ad78cafa32614ed7a2058d8e0ab576df463e0b717ba7971c2f3950"
-    sha256 catalina:      "257063523f77a6107cd0e58cd93952a7f35b6cdb918f0d00ad4ca6ecaa287058"
-    sha256 mojave:        "4c5231f495c38edcf838878a256e65db321d8977bcae96877370cf80c6942bff"
+    sha256 arm64_big_sur: "8b21c6fa258c0b6222653e06d7a4e701bfb04845b494039a81058205201bc81a"
+    sha256 big_sur:       "d9c0205d04df5fb25d510b4e9a85de721de17ca152257d8850770f141e1a1f44"
+    sha256 catalina:      "c1a0c5bcf8a1fac3837c34f7bcff1897d8f3074e72f06fc541804599e73a492c"
+    sha256 mojave:        "5fb32f15610da2ab65ffc09ff298a479bf1ef8cd8aa964883e58937e85abe154"
+    sha256 x86_64_linux:  "2c19a4cdc9465a7bfe259153035beac3dba025f19cf678712b233b2c66c342b1"
   end
 
   head do

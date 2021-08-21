@@ -1,16 +1,17 @@
 class Maturin < Formula
   desc "Build and publish Rust crates as Python packages"
   homepage "https://github.com/PyO3/maturin"
-  url "https://github.com/PyO3/maturin/archive/refs/tags/v0.10.6.tar.gz"
-  sha256 "e6a9a67cc62ffe248654e60e7ec211bf23319c4c936ad87022f7a1fd0997430d"
+  url "https://github.com/PyO3/maturin/archive/refs/tags/v0.11.2.tar.gz"
+  sha256 "4c37b25c327fedf46c0b0833d0e8a5c69e9edcdfeb5b6c946b94198001044f1d"
   license "MIT"
   head "https://github.com/PyO3/maturin.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0b96d6bfd69d0b1726a021667888053153b9c4cc6cb254227ec9b0c185ddf233"
-    sha256 cellar: :any_skip_relocation, big_sur:       "369ba476ac12b625603e681735bb3799c3792ab84fbf95f39487d0f2b68e1ee6"
-    sha256 cellar: :any_skip_relocation, catalina:      "de6c2b01d717d2b5b425d8e3ac0ef9dde44db034f4ec47eefb8799b9562d45bf"
-    sha256 cellar: :any_skip_relocation, mojave:        "adf82a913822b390f34720b5ca060ee28eabd427761e8b6414f639ffb8528eff"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1d5d727dd07fb57ca4545a8c2d2fb3ab3c88a45c816de17777b5d5f33175fe30"
+    sha256 cellar: :any_skip_relocation, big_sur:       "2fcd4a193a7356d43647969bd54bc6504305ebbde84b493a2644e3cc5fdc1bc6"
+    sha256 cellar: :any_skip_relocation, catalina:      "8558b7555fd7200a9843645d957633bd9b513a19c4f122f05ad4024fa657d426"
+    sha256 cellar: :any_skip_relocation, mojave:        "e13ce6649031fb1388293570bae38374056ea82c3a6e1f9e917939ad14f60540"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eccaf6962552f9b766a0d75681896bdfa04c571e7cce9396b6e10ffe7911370f"
   end
 
   depends_on "python@3.9" => :test
@@ -18,14 +19,18 @@ class Maturin < Formula
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    bash_output = Utils.safe_popen_read(bin/"maturin", "completions", "bash")
+    (bash_completion/"maturin").write bash_output
+    zsh_output = Utils.safe_popen_read(bin/"maturin", "completions", "zsh")
+    (zsh_completion/"_maturin").write zsh_output
+    fish_output = Utils.safe_popen_read(bin/"maturin", "completions", "fish")
+    (fish_completion/"maturin.fish").write fish_output
   end
 
   test do
     system "cargo", "new", "hello_world", "--bin"
-    if File.readlines("hello_world/Cargo.toml").grep(/authors/).empty?
-      inreplace "hello_world/Cargo.toml", "[package]", "[package]\nauthors = [\"test\"]"
-    end
-    system "#{bin}/maturin", "build", "-m", "hello_world/Cargo.toml", "-b", "bin", "-o", "dist"
+    system bin/"maturin", "build", "-m", "hello_world/Cargo.toml", "-b", "bin", "-o", "dist", "--compatibility", "off"
     system "python3", "-m", "pip", "install", "hello_world", "--no-index", "--find-links", testpath/"dist"
     system "python3", "-m", "pip", "uninstall", "-y", "hello_world"
   end

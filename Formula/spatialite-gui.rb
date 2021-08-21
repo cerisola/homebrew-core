@@ -4,7 +4,7 @@ class SpatialiteGui < Formula
   url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
   sha256 "cb9cb1ede7f83a5fc5f52c83437e556ab9cb54d6ace3c545d31b317fd36f05e4"
   license "GPL-3.0-or-later"
-  revision 8
+  revision 9
 
   livecheck do
     url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/"
@@ -12,10 +12,11 @@ class SpatialiteGui < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "e1c8f91baf7afb92406e70a732d5af5c16f8671f3e8fb51aa5e8113b61790f9f"
-    sha256 cellar: :any, big_sur:       "6ab3c3a9ca5849231279f2651685f45ec0543d545f033f16906fe5af65fecbe4"
-    sha256 cellar: :any, catalina:      "7894a76f911b9bc9b0a0322983601a42845915a99945f642820d8a07e13a8a16"
-    sha256 cellar: :any, mojave:        "2123985cc139f7b5962879c9731094be26053bd3596bb689f2138a800d295f20"
+    sha256 cellar: :any,                 arm64_big_sur: "1798e180ff29ec05b186eaae415e7277ec7d1779b0a97cf06b5c311102e0c35b"
+    sha256 cellar: :any,                 big_sur:       "04e3fce9bfefa6945a34adef96ccacd6c66bcaad8a1607bc9de447677580bda8"
+    sha256 cellar: :any,                 catalina:      "670a668e9560d58127746708338d809a59f4961af89f917affc60ba8c32633e9"
+    sha256 cellar: :any,                 mojave:        "3a3678ffccb6de1b99a2bf2f1f4a0b918a854bbf39d415b6e6e1c6971274c8ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3ec2a26e83e966f207cc694dab91470d8215dcc650f50866f59ea20834a465c"
   end
 
   depends_on "pkg-config" => :build
@@ -25,7 +26,7 @@ class SpatialiteGui < Formula
   depends_on "libspatialite"
   depends_on "proj@7"
   depends_on "sqlite"
-  depends_on "wxmac@3.0"
+  depends_on "wxwidgets@3.0"
 
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/spatialite-gui/1.7.1.patch"
@@ -33,8 +34,8 @@ class SpatialiteGui < Formula
   end
 
   def install
-    wxmac = Formula["wxmac@3.0"]
-    ENV["WX_CONFIG"] = wxmac.opt_bin/"wx-config-#{wxmac.version.major_minor}"
+    wxwidgets = Formula["wxwidgets@3.0"]
+    ENV["WX_CONFIG"] = wxwidgets.opt_bin/"wx-config-#{wxwidgets.version.major_minor}"
 
     # Link flags for sqlite don't seem to get passed to make, which
     # causes builds to fatally error out on linking.

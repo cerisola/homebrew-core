@@ -1,8 +1,8 @@
 class Packer < Formula
   desc "Tool for creating identical machine images for multiple platforms"
   homepage "https://packer.io"
-  url "https://github.com/hashicorp/packer/archive/v1.7.3.tar.gz"
-  sha256 "f08e52321cc5a3ef6651107f8dff29f23cfc6e75f2fdfa87da33d2b5d73e0267"
+  url "https://github.com/hashicorp/packer/archive/v1.7.4.tar.gz"
+  sha256 "00a093fa302bde7b1eb01de85474524479126cc91309879f0c33f413918506a5"
   license "MPL-2.0"
   head "https://github.com/hashicorp/packer.git"
 
@@ -12,16 +12,20 @@ class Packer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "af333771d3b8e037efb0a30c42d6f4eec95226356e11d325681f736f17255dab"
-    sha256 cellar: :any_skip_relocation, big_sur:       "908d224f7b913c1c68efa613d015fa145a0e98da3ce84d4cbeba7160986138e4"
-    sha256 cellar: :any_skip_relocation, catalina:      "886f0a559d6c3858c0c8d463aa482c0a3607d7439fb99fab9023ed7b99a3c7c1"
-    sha256 cellar: :any_skip_relocation, mojave:        "ffabebc88441c9a07eaa1d3eda794b86af742931a14fa0601f5389b2c317726f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5857e3b4d569263e92c0215bfbbe0da92396d12573916efb2d8c214afd2c8a14"
+    sha256 cellar: :any_skip_relocation, big_sur:       "a3904f2fbc7fa390464436188302479a0612ed9ec80a771542d7c6dc54b797c0"
+    sha256 cellar: :any_skip_relocation, catalina:      "b0a55acb7d294f529db1cb83533d837154ac8d3c174d2ca089233a3bf27be06e"
+    sha256 cellar: :any_skip_relocation, mojave:        "9bdf0e9d68b8cace130ebd58e88821da155954f575893f2dbe9b97bec7e38562"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "28427704a6de254be710445deff553349ba3300416758559ecf8e74c065353e1"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")
+
+    # Allow packer to find plugins in Homebrew prefix
+    bin.env_script_all_files libexec/"bin", PACKER_PLUGIN_PATH: "$PACKER_PLUGIN_PATH:#{HOMEBREW_PREFIX/"bin"}"
 
     zsh_completion.install "contrib/zsh-completion/_packer"
   end

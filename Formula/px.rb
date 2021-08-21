@@ -4,15 +4,16 @@ class Px < Formula
   desc "Ps and top for human beings (px / ptop)"
   homepage "https://github.com/walles/px"
   url "https://github.com/walles/px.git",
-      tag:      "1.4.1",
-      revision: "318785165bca305f3e7e43c11513682326b231a7"
+      tag:      "1.5.2",
+      revision: "27799d890c4dc03e47591f342c7820362830ce7c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3b1bca94707b9bd59b441febe5958e2cd6e5db8b216a16d85dc0f6f21de25169"
-    sha256 cellar: :any_skip_relocation, big_sur:       "af55e8becbf0c312c58791ba215d240fe8a7e4ef049ff34bd7c594bbd7297e5a"
-    sha256 cellar: :any_skip_relocation, catalina:      "a62a5a26bc096307730c6cc41f797ab08e673423df447717df8f31d158dbeab1"
-    sha256 cellar: :any_skip_relocation, mojave:        "11b917fcf54df9846ec785644e1b1d038fd6f8f00423bde8697ec5e31b62d5d1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "55c991a17bc7b077c002db88cc5e5054ccda85f685fbddf906738264b00f0c6f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "bcbca3083026bb817b4349f8aabb0297e8775e0f4741141b8b2a2a7f51d8ab27"
+    sha256 cellar: :any_skip_relocation, catalina:      "aa1069f13b62a799375e3c3f3bee876553fab068551e27c8609e1bea4cc2c51b"
+    sha256 cellar: :any_skip_relocation, mojave:        "202f8e4ab4eb5c34f42b26f7f2b99461ea2d858dea1cb9ea71f972e5bda3f712"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5bb34877a7cc9385fa99b27542e66433e581414df53d690443448129661b76d0"
   end
 
   depends_on "python@3.9"
@@ -22,8 +23,8 @@ class Px < Formula
 
   # For updates: https://pypi.org/project/python-dateutil/#files
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/be/ed/5bbc91f03fa4c839c4c7360375da77f9659af5f7086b7a7bdda65771c8e0/python-dateutil-2.8.1.tar.gz"
-    sha256 "73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"
+    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
+    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
   end
 
   def install

@@ -4,6 +4,7 @@ class Libgcrypt < Formula
   url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.9.3.tar.bz2"
   sha256 "97ebe4f94e2f7e35b752194ce15a0f3c66324e0ff6af26659bbfb5ff2ec328fd"
   license "GPL-2.0-only"
+  revision 1
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/libgcrypt/"
@@ -11,11 +12,11 @@ class Libgcrypt < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_big_sur: "6ff63025955ee85e6ff10b955f32b1c583439860ad72da5d88acc60b1c9ecc73"
-    sha256 cellar: :any, big_sur:       "1848ca1e79f8c4315ba761eb4ad1022d237d6701d47a207130b09093d99f24ef"
-    sha256 cellar: :any, catalina:      "91ec702c7907c1ddd20998ff35299a63ac6108cb4f9a76df1c368a4c49da4a90"
-    sha256 cellar: :any, mojave:        "6a8fa532b2c12d89f2becc1a84e9b5d07fef25a080a607f2d7b341eea5e6081b"
+    sha256 cellar: :any,                 arm64_big_sur: "7ac0af3e86d07de27a266a4af024f884766b648cbbb7401b64ed284c2c5335f2"
+    sha256 cellar: :any,                 big_sur:       "20ad92478a6775e5f7a1eb47a5313acdd70f3ffd42bf8aef0e34ef525253f265"
+    sha256 cellar: :any,                 catalina:      "8f532353249ed8c616a9c8708ea1d050ba9b1cdc50e2aeaa374b94ddef184350"
+    sha256 cellar: :any,                 mojave:        "3cd2ad75c176919c00c7d49c9bcedbdcea319d9a09454df1a314680fd4f946a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a987d3b3397bc43404723e180fa5832273dc8bfc23087e6016de5a602fc8fb33"
   end
 
   depends_on "libgpg-error"
@@ -26,8 +27,10 @@ class Libgcrypt < Formula
                           "--enable-static",
                           "--prefix=#{prefix}",
                           "--disable-asm",
-                          "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}",
-                          "--disable-jent-support" # Requires ENV.O0, which is unpleasant.
+                          "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
+
+    # The jitter entropy collector must be built without optimisations
+    ENV.O0 { system "make", "-C", "random", "rndjent.o", "rndjent.lo" }
 
     # Parallel builds work, but only when run as separate steps
     system "make"

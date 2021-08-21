@@ -8,11 +8,11 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.16.18/bind-9.16.18.tar.xz"
-  sha256 "3c6263a4364eb5dce233f9f22b90acfa1ec2488d534f91d21663d0ac25ce5e65"
+  url "https://downloads.isc.org/isc/bind9/9.16.20/bind-9.16.20.tar.xz"
+  sha256 "4d0d93c0d0b63080609e84625f24ff8777f8d164e78a75b1c19c334ce42d5b58"
   license "MPL-2.0"
   version_scheme 1
-  head "https://gitlab.isc.org/isc-projects/bind9.git"
+  head "https://gitlab.isc.org/isc-projects/bind9.git", branch: "main"
 
   # BIND indicates stable releases with an even-numbered minor (e.g., x.2.x)
   # and the regex below only matches these versions.
@@ -22,10 +22,11 @@ class Bind < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "f2c34afdb879aefda5512ec66dc730089ddd515e0c6a7dce344875597a1a19f3"
-    sha256 big_sur:       "362d39db88df45d981596ecc9b2d9404d96a394228742b2762ee56eeb59dc558"
-    sha256 catalina:      "2015acd35604eb86f9d8fb58a8f18e5fbff5c6e414886578015870b604429fa0"
-    sha256 mojave:        "981698f4c1136e45ee1af16dc4cbea0f4be1ddc4d43f02d62aa4ccd7a0d9424b"
+    sha256 arm64_big_sur: "19958ee65cc7f72a5b208e87842d3794906e9274631a86cdde81a32284bf2e8a"
+    sha256 big_sur:       "aa31f3f084e61749d94b67a6888a8a9d2b978600c42b77b580037911ed4a4c5c"
+    sha256 catalina:      "5c610e1e4d8dadc5bab1492fb0b5ca477d62795bc11be2836ba2c5b89f0d2cb9"
+    sha256 mojave:        "b9a0030ed5645ccd7d2e82669e38f5f4a36f96a333a171ea7f6bbb19604f1f1d"
+    sha256 x86_64_linux:  "924639762a30df80035676a7ba9d5185ffc44d3f99763c52e1706e0aaf8f46fb"
   end
 
   depends_on "pkg-config" => :build
@@ -103,30 +104,8 @@ class Bind < Formula
 
   plist_options startup: true
 
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>EnableTransactions</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_sbin}/named</string>
-          <string>-f</string>
-          <string>-L</string>
-          <string>#{var}/log/named/named.log</string>
-        </array>
-        <key>ServiceIPC</key>
-        <false/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_sbin/"named", "-f", "-L", var/"log/named/named.log"]
   end
 
   test do

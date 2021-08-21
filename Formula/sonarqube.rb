@@ -1,8 +1,8 @@
 class Sonarqube < Formula
   desc "Manage code quality"
   homepage "https://www.sonarqube.org/"
-  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.1.44547.zip"
-  sha256 "f22d65a066848a4b7b7bfb255bc6f8c64c2a292718c09e23a1f7093f485ad00c"
+  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.0.1.46107.zip"
+  sha256 "cb27f3230c8126f7082b89a7d018734b59321821e150a50c016e5cb887e68c5c"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -11,46 +11,37 @@ class Sonarqube < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3716b856b58caac1530583ece1e225f649aff630b076f6ac99c9441d27359058"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5b873ec61473422655a4ee25de3399e821dc0036d3c14ee55062639cdb324d1a"
-    sha256 cellar: :any_skip_relocation, catalina:      "5b873ec61473422655a4ee25de3399e821dc0036d3c14ee55062639cdb324d1a"
-    sha256 cellar: :any_skip_relocation, mojave:        "b241fd1293ab3dc9ba5a914f9cf374493ae3a7a245d8dc66e556f1d66cf88421"
+    sha256 cellar: :any_skip_relocation, big_sur:      "25ed99650ddba6303a40c641d9a63d235ed69d159688c158195924743fdcd3c0"
+    sha256 cellar: :any_skip_relocation, catalina:     "25ed99650ddba6303a40c641d9a63d235ed69d159688c158195924743fdcd3c0"
+    sha256 cellar: :any_skip_relocation, mojave:       "c0b6fb89e3a481c89fcc5f67bdfa59898530831de4937833424a79a4c8ababe5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "22f5ad737ec068adbb0653a92209adaf193bcfec395fa496c879fffbc08de56d"
   end
 
+  # sonarqube ships pre-built x86_64 binaries
+  depends_on arch: :x86_64
   depends_on "openjdk@11"
 
   conflicts_with "sonarqube-lts", because: "both install the same binaries"
 
   def install
     # Delete native bin directories for other systems
-    rm_rf Dir["bin/{linux,windows}-*"]
+    remove = "linux"
+    keep = "macosx-universal"
+    on_linux do
+      remove = "macosx"
+      keep = "linux-x86"
+    end
+
+    rm_rf Dir["bin/{#{remove},windows}-*"]
 
     libexec.install Dir["*"]
 
-    (bin/"sonar").write_env_script libexec/"bin/macosx-universal-64/sonar.sh",
+    (bin/"sonar").write_env_script libexec/"bin/#{keep}-64/sonar.sh",
       Language::Java.overridable_java_home_env("11")
   end
 
-  plist_options manual: "sonar console"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-          <string>#{opt_bin}/sonar</string>
-          <string>start</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"sonar", "start"]
   end
 
   test do

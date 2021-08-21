@@ -1,16 +1,17 @@
 class Duckscript < Formula
   desc "Simple, extendable and embeddable scripting language"
   homepage "https://sagiegurari.github.io/duckscript"
-  url "https://github.com/sagiegurari/duckscript/archive/0.8.2.tar.gz"
-  sha256 "72d95513704aad927b858465f389136f75dbca0653813f9840707bb5691d2e1a"
+  url "https://github.com/sagiegurari/duckscript/archive/0.8.4.tar.gz"
+  sha256 "f46ed47df597246cde1f15039bb315a6c50d01b9fdc3a7c69328cdbaaf142f95"
   license "Apache-2.0"
   head "https://github.com/sagiegurari/duckscript.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a3ca2f6c89a1c90f840eeb06b7803dff21d6f84ff974a9848f8efe0c0bb91248"
-    sha256 cellar: :any_skip_relocation, big_sur:       "78113fd5721e77136e5716028dd64364d0250915638ae83566417341e5fc9ff1"
-    sha256 cellar: :any_skip_relocation, catalina:      "31c479e8f139af03ca9869778c0fa7ff01131bf8100fb62c5f08a961d1881324"
-    sha256 cellar: :any_skip_relocation, mojave:        "35949284d8a22eb7187266077ece7bfc557b77749165e6d37ed03581161ca49f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ff9b9fe004a132ec37e3e9eff2d2e09c4db80004a295b408b0e09cd629e83dea"
+    sha256 cellar: :any_skip_relocation, big_sur:       "c5b4e1caf43415f96c4ada23a6c68fdde675de6e2989efa3a70253fa60c65e45"
+    sha256 cellar: :any_skip_relocation, catalina:      "64b106dc9c6bfac3c7b6693d7c6ba450f4119f0680b7ed366d79f32693a457db"
+    sha256 cellar: :any_skip_relocation, mojave:        "54c8de15fe0a18005aa7413953ac53ac92776b061ba12cc3ecb059d813605b84"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6ebb3f290eb3bfcbad263b04f2ccf26990f0893aab6f17a46b28edd7cc699832"
   end
 
   depends_on "rust" => :build

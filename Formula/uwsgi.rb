@@ -18,10 +18,12 @@ class Uwsgi < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "59e4770011029a82e5f7e1c89e61909dcfc0909f4c450378b688b1e941c7e463"
-    sha256 big_sur:       "fa9547b417d0a9d2deaf55cf8ebad966798b81252d160921053ce21ca8aa5999"
-    sha256 catalina:      "22eff54752a60c52e2b21fd541f86a0e4949f6a16e6cc308052ae5d6d5b463bb"
-    sha256 mojave:        "eddfcd8b7114e8a8a68eeb9dc837475184799cd01712b318dd5950015964eabb"
+    rebuild 2
+    sha256 arm64_big_sur: "4326330a1880f7901c4168d85134a37f44de0e786e5fe76a9e9ecd16ed833a58"
+    sha256 big_sur:       "dd093fa094a07dba5ac53f040eaed23a9b61adc80b6cc50de246d160fcff0a34"
+    sha256 catalina:      "8194d4a365e0ce4d3ee5fd9764d008c6d0aabf6c804414d5a6b0733295f9d101"
+    sha256 mojave:        "2def48a9cc74853449722f5dc51a0224956d21906d8ff35e73a45fab3fc3faef"
+    sha256 x86_64_linux:  "acb0c806523fc521f4c703b5fe952b488f473a5eac99d5c877ac2fec2a117782"
   end
 
   depends_on "pkg-config" => :build
@@ -61,7 +63,7 @@ class Uwsgi < Formula
 
     system "python3", "uwsgiconfig.py", "--verbose", "--build", "brew"
 
-    plugins = %w[airbrake alarm_curl alarm_speech asyncio cache
+    plugins = %w[airbrake alarm_curl asyncio cache
                  carbon cgi cheaper_backlog2 cheaper_busyness
                  corerouter curl_cron cplusplus dumbloop dummy
                  echo emperor_amqp fastrouter forkptyrouter gevent
@@ -77,6 +79,9 @@ class Uwsgi < Formula
                  transformation_chunked transformation_gzip
                  transformation_offload transformation_tofile
                  transformation_toupper ugreen webdav zergpool]
+    on_macos do
+      plugins << "alarm_speech"
+    end
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
@@ -88,40 +93,11 @@ class Uwsgi < Formula
     bin.install "uwsgi"
   end
 
-  plist_options manual: "uwsgi"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>KeepAlive</key>
-          <true/>
-          <key>ProgramArguments</key>
-          <array>
-              <string>#{opt_bin}/uwsgi</string>
-              <string>--uid</string>
-              <string>_www</string>
-              <string>--gid</string>
-              <string>_www</string>
-              <string>--master</string>
-              <string>--die-on-term</string>
-              <string>--autoload</string>
-              <string>--logto</string>
-              <string>#{HOMEBREW_PREFIX}/var/log/uwsgi.log</string>
-              <string>--emperor</string>
-              <string>#{HOMEBREW_PREFIX}/etc/uwsgi/apps-enabled</string>
-          </array>
-          <key>WorkingDirectory</key>
-          <string>#{HOMEBREW_PREFIX}</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"uwsgi", "--uid", "_www", "--gid", "_www", "--master", "--die-on-term", "--autoload", "--logto",
+         HOMEBREW_PREFIX/"var/log/uwsgi.log", "--emperor", HOMEBREW_PREFIX/"etc/uwsgi/apps-enabled"]
+    keep_alive true
+    working_dir HOMEBREW_PREFIX
   end
 
   test do

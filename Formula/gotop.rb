@@ -1,25 +1,19 @@
 class Gotop < Formula
   desc "Terminal based graphical activity monitor inspired by gtop and vtop"
   homepage "https://github.com/xxxserxxx/gotop"
-  url "https://github.com/xxxserxxx/gotop/archive/v4.1.1.tar.gz"
-  sha256 "314dcfc4b0faa0bb735e5fa84b2406492bf94f7948af43e2b9d2982d69d542ed"
+  url "https://github.com/xxxserxxx/gotop/archive/v4.1.2.tar.gz"
+  sha256 "81518fecfdab4f4c25a4713e24d9c033ba8311bbd3e2c0435ba76349028356da"
   license "BSD-3-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "68a9b93c28c45595ed4955f7d47ae753e80ad90ef2db915a01c4919d946ffebe"
-    sha256 cellar: :any_skip_relocation, big_sur:       "dca175fc5fcd6cca0cdb2438adc60a5399aade2c3e1fe695261975692d5b2dd5"
-    sha256 cellar: :any_skip_relocation, catalina:      "e3d3c32d0ff9c302f30354fcccbf781b630efa580e8d6dba751b879ee0f8882e"
-    sha256 cellar: :any_skip_relocation, mojave:        "d72850a6aa640acce8e1df11168747586e791817042a2b73f183a341182e0a91"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "47c9145672b69c861a48673a6cbf28e3464151d7fab27b20fe89c9ab6cc9c0a1"
+    sha256 cellar: :any_skip_relocation, big_sur:       "efd1caec91fefb19d4954b99b1041d26637e7078b645a95c46831b62cb4b9883"
+    sha256 cellar: :any_skip_relocation, catalina:      "a7ddc70bd7959a66cef214cc166bd961d988d38be5c4f58a417da8411e0f73ed"
+    sha256 cellar: :any_skip_relocation, mojave:        "93f01869987239375db866d1560f0fa63284532404b481168b9718593dd01b19"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75142f7d992b17f2789a29de44b697c63be74b5eb6605f56e65d912c5aadc9da"
   end
 
   depends_on "go" => :build
-
-  # Apply https://github.com/xxxserxxx/gotop/pull/183 to build on M1
-  patch do
-    url "https://github.com/xxxserxxx/gotop/commit/5efc6ec054a65c3ec63ed5eb67631ca3becdeb50.patch?full_index=1"
-    sha256 "1dd66fc5e25d49396c2be000f35f2b7fe57083a63e093f54d3565a6d43467771"
-  end
 
   def install
     time = `date +%Y%m%dT%H%M%S`.chomp

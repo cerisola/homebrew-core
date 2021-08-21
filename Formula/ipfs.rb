@@ -2,8 +2,8 @@ class Ipfs < Formula
   desc "Peer-to-peer hypermedia protocol"
   homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-      tag:      "v0.9.0",
-      revision: "179d1d15079ab331648023670b766604c764dc17"
+      tag:      "v0.9.1",
+      revision: "dc2715af68b93611a116b83fca90714e7c5cb50b"
   license all_of: [
     "MIT",
     any_of: ["MIT", "Apache-2.0"],
@@ -16,10 +16,12 @@ class Ipfs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "082d26de8a7fb59d605f9d041bb60c73e018bc8d68bdb261ad96bfcb84cde64a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "cf27a87766f08ae1164b07e4764cc23022c90e61a7a09ef4933772ba780cf7be"
-    sha256 cellar: :any_skip_relocation, catalina:      "25fed340fbbb800032ade9a9b8e336dd1a281677d212b0045ad3ac5d25c8230b"
-    sha256 cellar: :any_skip_relocation, mojave:        "99ecea05edda6979e511ef1a81064beb45469b258d9ae6ddf9a551b1bbb44ed5"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1f86269d9a1876e97a32c76336d2ea58d402a021c6a1cf8f670f52a91e34634c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ae045bd716b0681a30c771460d551e23ed746b400e9306e6c787b8c9602b7e2e"
+    sha256 cellar: :any_skip_relocation, catalina:      "ab0184411e3ca42b3836b6ada3f68deccde4ebf8eef8de147aff12949c17c1b0"
+    sha256 cellar: :any_skip_relocation, mojave:        "b66473a6df6868a7b5eb26730f42908d8b949d6e1aea4fb786d1e6e46df02563"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3f07651c1b99b87bc12bfaac2cc2f825e507bcb75bcf504168ee66daad45adc3"
   end
 
   depends_on "go" => :build
@@ -31,26 +33,8 @@ class Ipfs < Formula
     bash_completion.install "misc/completion/ipfs-completion.bash"
   end
 
-  plist_options manual: "ipfs daemon"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/ipfs</string>
-          <string>daemon</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"ipfs", "daemon"]
   end
 
   test do

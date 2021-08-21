@@ -1,8 +1,8 @@
 class Composer < Formula
   desc "Dependency Manager for PHP"
   homepage "https://getcomposer.org/"
-  url "https://getcomposer.org/download/2.1.3/composer.phar"
-  sha256 "f8a72e98dec8da736d8dac66761ca0a8fbde913753e9a43f34112367f5174d11"
+  url "https://getcomposer.org/download/2.1.6/composer.phar"
+  sha256 "72524ccebcb071968eb83284507225fdba59f223719b2b3f333d76c8a9ac6b72"
   license "MIT"
 
   livecheck do
@@ -11,10 +11,18 @@ class Composer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "7ce70237cec9f4a40aa1ea6917d40258c010bf59b47026f32d0b31ede8c49188"
-    sha256 cellar: :any_skip_relocation, big_sur:       "4c852f706d4ead18bb1cf79a972783b169fa52ce24c348a1d5dd349db5b6f404"
-    sha256 cellar: :any_skip_relocation, catalina:      "4c852f706d4ead18bb1cf79a972783b169fa52ce24c348a1d5dd349db5b6f404"
-    sha256 cellar: :any_skip_relocation, mojave:        "4c852f706d4ead18bb1cf79a972783b169fa52ce24c348a1d5dd349db5b6f404"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2b4fec192c3276fc11f9c4bb593e7a28d42e1139107b7517377998f4040591ee"
+    sha256 cellar: :any_skip_relocation, big_sur:       "ded5ca31c045db4fa534d30a45ebea8b5aca70e31e32361b34565377b267ab14"
+    sha256 cellar: :any_skip_relocation, catalina:      "ded5ca31c045db4fa534d30a45ebea8b5aca70e31e32361b34565377b267ab14"
+    sha256 cellar: :any_skip_relocation, mojave:        "ded5ca31c045db4fa534d30a45ebea8b5aca70e31e32361b34565377b267ab14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2b4fec192c3276fc11f9c4bb593e7a28d42e1139107b7517377998f4040591ee"
+  end
+
+  uses_from_macos "php"
+
+  # Keg-relocation breaks the formula when it replaces `/usr/local` with a non-default prefix
+  on_macos do
+    pour_bottle? only_if: :default_prefix if Hardware::CPU.intel?
   end
 
   def install
@@ -41,7 +49,7 @@ class Composer < Formula
       }
     EOS
 
-    (testpath/"src/HelloWorld/greetings.php").write <<~EOS
+    (testpath/"src/HelloWorld/Greetings.php").write <<~EOS
       <?php
 
       namespace HelloWorld;

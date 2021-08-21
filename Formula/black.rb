@@ -3,8 +3,8 @@ class Black < Formula
 
   desc "Python code formatter"
   homepage "https://black.readthedocs.io/en/stable/"
-  url "https://files.pythonhosted.org/packages/26/37/66b198a6a660c72a85386592643b2911052c4feaa33b99681ed8c267bf1a/black-21.6b0.tar.gz"
-  sha256 "dc132348a88d103016726fe360cb9ede02cecf99b76e3660ce6c596be132ce04"
+  url "https://files.pythonhosted.org/packages/20/1b/e167bc0b94bebaa05bb337978b527f2a71bd67f8769ef5a8dbcb44b89c4b/black-21.7b0.tar.gz"
+  sha256 "c8373c6491de9362e39271630b65b964607bc5c79c83783547d76c839b3aa219"
   license "MIT"
 
   livecheck do
@@ -13,10 +13,11 @@ class Black < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b6c9892303d3642a15a615b9a17a8727868eeeef681f78d7c41aae747e10cfed"
-    sha256 cellar: :any_skip_relocation, big_sur:       "541018f7593f6fe3b95a7e71de16a62a192b403e7f8a097617261dcd2ad7a6ed"
-    sha256 cellar: :any_skip_relocation, catalina:      "b898c03f34985b39552b4eba1f51fd44fd200d281bb49f3db7a0480dc25ca82d"
-    sha256 cellar: :any_skip_relocation, mojave:        "025af14e678c25c407e1732b01dbe25ea507b3fdc318bf582819140cffc6e906"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "97a95202049c18ad1bd83f220492cbe342b06e3ff57ce47fdea2868a22eeec5d"
+    sha256 cellar: :any_skip_relocation, big_sur:       "cab87ba9fcc15b5d43d94a10f0618b31906b34a1e302bcbbda6cc00dd7ac4a13"
+    sha256 cellar: :any_skip_relocation, catalina:      "0e753b1b5e2d4876629911a2d8807da5bb9b4be20fe585853036ff2d46286345"
+    sha256 cellar: :any_skip_relocation, mojave:        "372d2251db51bb0245fa86ddd1b5da89963a3af1ba2392b732df5555a5b4c96e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f90022601c71213effaed7625ef4c599a85ef155c462d7c1827e92e4ab098fa"
   end
 
   depends_on "python@3.9"
@@ -77,13 +78,13 @@ class Black < Formula
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/38/3f/4c42a98c9ad7d08c16e7d23b2194a0e4f3b2914662da8bc88986e4e6de1f/regex-2021.4.4.tar.gz"
-    sha256 "52ba3d3f9b942c49d7e4bc105bb28551c44065f139a65062ab7912bef10c9afb"
+    url "https://files.pythonhosted.org/packages/c0/d1/ad6afa6000ab869f6af2c85985d40558ffb298d9fcb2ab04c0648436008f/regex-2021.7.6.tar.gz"
+    sha256 "8394e266005f2d8c6f0bc6780001f7afa3ef81a7a2111fa35058ded6fce79e4d"
   end
 
-  resource "toml" do
-    url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
-    sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+  resource "tomli" do
+    url "https://files.pythonhosted.org/packages/5f/9e/0aa632eb780a5e3ff22e3c125dd10859eaccb49404c64b49ce3d517f7e4c/tomli-1.0.4.tar.gz"
+    sha256 "be670d0d8d7570fd0ea0113bd7bb1ba3ac6706b4de062cc4c952769355c9c268"
   end
 
   resource "typing-extensions" do
@@ -119,7 +120,7 @@ class Black < Formula
     system bin/"black", "black_test.py"
     assert_equal "print(\"It works!\")\n", (testpath/"black_test.py").read
     port = free_port
-    fork { exec "#{bin}/blackd --bind-port #{port}" }
+    fork { exec "#{bin}/blackd --bind-host 127.0.0.1 --bind-port #{port}" }
     sleep 10
     assert_match "print(\"valid\")", shell_output("curl -s -XPOST localhost:#{port} -d \"print('valid')\"").strip
   end

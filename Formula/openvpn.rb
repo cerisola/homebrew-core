@@ -16,12 +16,12 @@ class Openvpn < Formula
     sha256 big_sur:       "2793ac511bf39ba8188d91f44ed4e54a3d4d7ebe343b12bc51ab5230527dafa5"
     sha256 catalina:      "934be2e38dcba81a70b32c075bde79d5bbe57f5f754c9216c24edb0c8a1a581f"
     sha256 mojave:        "e7b821dff3579fbb6e1d3b9c0ece0e2152ede9eac7ff98daec488300d92c50ac"
+    sha256 x86_64_linux:  "281d7c1a86b2f6bc73cd71b9c62a0796e155558c414dadce9b4a6d84efe86da3"
   end
 
   depends_on "pkg-config" => :build
   depends_on "lz4"
   depends_on "lzo"
-
   depends_on "openssl@1.1"
   depends_on "pkcs11-helper"
 
@@ -37,13 +37,14 @@ class Openvpn < Formula
                           "--with-crypto-library=openssl",
                           "--enable-pkcs11",
                           "--prefix=#{prefix}"
-    inreplace "sample/sample-plugins/Makefile",
-              HOMEBREW_SHIMS_PATH/"mac/super/pkg-config",
-              Formula["pkg-config"].opt_bin/"pkg-config"
+    inreplace "sample/sample-plugins/Makefile" do |s|
+      on_macos { s.gsub! HOMEBREW_SHIMS_PATH/"mac/super/pkg-config", Formula["pkg-config"].opt_bin/"pkg-config" }
+      on_linux { s.gsub! HOMEBREW_SHIMS_PATH/"linux/super/ld", "ld" }
+    end
     system "make", "install"
 
     inreplace "sample/sample-config-files/openvpn-startup.sh",
-              "/etc/openvpn", "#{etc}/openvpn"
+              "/etc/openvpn", etc/"openvpn"
 
     (doc/"samples").install Dir["sample/sample-*"]
     (etc/"openvpn").install doc/"samples/sample-config-files/client.conf"

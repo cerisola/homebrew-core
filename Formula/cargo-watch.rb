@@ -1,16 +1,17 @@
 class CargoWatch < Formula
   desc "Watches over your Cargo project's source"
   homepage "https://github.com/passcod/cargo-watch"
-  url "https://github.com/passcod/cargo-watch/archive/v7.8.0.tar.gz"
-  sha256 "9816b102e61c4257d6052ef4b196f67f40bab69143899f0178b5ccd9a29d384e"
+  url "https://github.com/passcod/cargo-watch/archive/v8.0.0.tar.gz"
+  sha256 "42d0acfc579e7deeda57e6c1252165a17b19e2fe7486d2fd17f24adfc2876e03"
   license "CC0-1.0"
-  head "https://github.com/passcod/cargo-watch.git"
+  head "https://github.com/passcod/cargo-watch.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "bb1111dc0d3cb395b88ce0213da3dae7019f908f6d89ae0f598126d1359c1bea"
-    sha256 cellar: :any_skip_relocation, big_sur:       "311f7f929ca790a0c091471bfd34157906b6d7a4a78bd4786162cf9fe512205e"
-    sha256 cellar: :any_skip_relocation, catalina:      "e81d05e4010d3ecdddd31e109871b849e1ebedf02241b8053b80b7ab343ba70a"
-    sha256 cellar: :any_skip_relocation, mojave:        "fd9f1123d863da4ad81fc80ba0a22a5e7b02cb2e14f6c700621e9c7c9ca1bb09"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "22dd85a3bbe42bf3fd00a18d14d105e9631e3ab559cd5cdbf28c5f10cc924047"
+    sha256 cellar: :any_skip_relocation, big_sur:       "2a3032b4c8b8b908d052feb8124585d8032ec56ff869f55704e9579f3042a9c9"
+    sha256 cellar: :any_skip_relocation, catalina:      "1d9e2b1b14358a022cfac4055b6c132ad775a805db684872dc90922ce313e120"
+    sha256 cellar: :any_skip_relocation, mojave:        "65f48f957aa607e3878d0d740a91ed75a22e3eedbe5f9e205a8430586586637b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "658ddde90d87b4abf4544690c78e0ddf5679977ec6550e6d2c52bf72b9de3596"
   end
 
   depends_on "rust" => [:build, :test]

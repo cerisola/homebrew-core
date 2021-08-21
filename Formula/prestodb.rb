@@ -1,8 +1,8 @@
 class Prestodb < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.256/presto-server-0.256.tar.gz"
-  sha256 "2326f3684dead9e44b2e3d7f5e7524345af41e9cd0168251eaefe413b857f290"
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.259.1/presto-server-0.259.1.tar.gz"
+  sha256 "5c6c04eeefbf143e64ed5cc35c88aaaa9bbe2bf5683e3eb6df9dcfcee56d27d9"
   license "Apache-2.0"
 
   # Upstream has said that we should check Maven for Presto version information
@@ -14,16 +14,15 @@ class Prestodb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "bb24e11246523ad80b74f2374dd97c609e9eb13a85bb1d5b323fdad836f265c3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "358a6b089b846a398aed701bb8d048ab57a74642d70cfc71309c9f2ef5b92512"
   end
 
   depends_on "openjdk"
 
-  conflicts_with "prestosql", because: "both install `presto` and `presto-server` binaries"
-
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.256/presto-cli-0.256-executable.jar"
-    sha256 "f0b8a665c0df452fc58aed4a9f6371812ee1ce9f5eff10a4e4b53e4cb1203639"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.259.1/presto-cli-0.259.1-executable.jar"
+    sha256 "4bcb2279c33322fcce18e400d8133c5b78dc552b87c9d8fe07594688a1e5eea7"
   end
 
   def install
@@ -80,31 +79,9 @@ class Prestodb < Formula
     EOS
   end
 
-  plist_options manual: "presto-server run"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
-      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>AbandonProcessGroup</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{opt_libexec}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/presto-server</string>
-            <string>run</string>
-          </array>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"presto-server", "run"]
+    working_dir opt_libexec
   end
 
   test do

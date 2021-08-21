@@ -1,8 +1,8 @@
 class TektoncdCli < Formula
   desc "CLI for interacting with TektonCD"
   homepage "https://github.com/tektoncd/cli"
-  url "https://github.com/tektoncd/cli/archive/v0.19.0.tar.gz"
-  sha256 "ff600937c122820572f718def7ad5b623fea5b4108d985bc367519364ae6b16b"
+  url "https://github.com/tektoncd/cli/archive/v0.20.0.tar.gz"
+  sha256 "91ef920cc37fd58479304ec104d4233a358f123ea2919cd8e111cd28aec7ce82"
   license "Apache-2.0"
 
   livecheck do
@@ -11,23 +11,23 @@ class TektoncdCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "119cc1700e7c18bcca61e637a2a88c9058de42b711eadf22367c9479e7940054"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6deafc37752f59a57f042a8aa7c37abbc0a383d34117ec60f8bdcc517c18d24e"
-    sha256 cellar: :any_skip_relocation, catalina:      "26d8781cd27fee60e2d9f4962ea9a3401cf55395906d1bc6958c324243374d13"
-    sha256 cellar: :any_skip_relocation, mojave:        "47a530f97f9896db3b4c4c1541f799da793621191d9c57bb8e9e6d49572ae0da"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b6010117f41dbbae009bc6df3415c0cc3efaac49e186e964f37239481760f1f2"
+    sha256 cellar: :any_skip_relocation, big_sur:       "23ff995156df7e4f8dcfb93021523bdfc9da375ae49f9c5cd4b0ce492963e1cc"
+    sha256 cellar: :any_skip_relocation, catalina:      "c27830c57e654803fb7a35dad330afc8085d72ac85249aa7fe10df8a94e3def2"
+    sha256 cellar: :any_skip_relocation, mojave:        "eedba2b8a0a5b9e3112538db8f7cf7857cc47f6874368dc7eb744478a3a8ddd3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b729cdc063f58d228a17a19b89e4bff34d581b6b27454831b6e3764c17c228ae"
   end
 
   depends_on "go" => :build
 
   def install
     system "make", "bin/tkn"
-
     bin.install "bin/tkn" => "tkn"
+
     output = Utils.safe_popen_read({ "SHELL" => "bash" }, bin/"tkn", "completion", "bash")
     (bash_completion/"tkn").write output
     output = Utils.safe_popen_read({ "SHELL" => "zsh" }, bin/"tkn", "completion", "zsh")
     (zsh_completion/"_tkn").write output
-    prefix.install_metafiles
   end
 
   test do

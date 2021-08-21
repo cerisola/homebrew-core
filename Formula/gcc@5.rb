@@ -12,7 +12,8 @@ class GccAT5 < Formula
   end
 
   bottle do
-    sha256 high_sierra: "dcc9059b725fd7c87842287bbedf60a28745417652d42a300dcd944e15986f36"
+    sha256 high_sierra:  "dcc9059b725fd7c87842287bbedf60a28745417652d42a300dcd944e15986f36"
+    sha256 x86_64_linux: "d6f20394b24f8bfeac86d4785e1c88f88c594f6157c93bcfb81de87c6e2d3beb"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -30,6 +31,7 @@ class GccAT5 < Formula
 
   on_linux do
     depends_on "binutils"
+    depends_on "glibc" if Formula["glibc"].any_version_installed?
   end
 
   # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
@@ -64,14 +66,16 @@ class GccAT5 < Formula
     end
   end
 
+  def version_suffix
+    version.major.to_s
+  end
+
   def install
     # GCC will suffer build errors if forced to use a particular linker.
     ENV.delete "LD"
 
     # C, C++, ObjC and Fortran compilers are always built
     languages = %w[c c++ fortran objc obj-c++]
-
-    version_suffix = version.major.to_s
 
     # Even when suffixes are appended, the info pages conflict when
     # install-info is run so pretend we have an outdated makeinfo

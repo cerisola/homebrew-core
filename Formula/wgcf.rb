@@ -1,16 +1,17 @@
 class Wgcf < Formula
   desc "Generate WireGuard profile from Cloudflare Warp account"
   homepage "https://github.com/ViRb3/wgcf"
-  url "https://github.com/ViRb3/wgcf/archive/v2.2.4.tar.gz"
-  sha256 "518ab709692bd87e2d6e4c3baff1cc09e5239f942ae1762fdb19dcb664d475fe"
+  url "https://github.com/ViRb3/wgcf/archive/v2.2.6.tar.gz"
+  sha256 "2721bb1cf8f1f6d3bf9d9d4cb6c289047f3180b3fa8eeda5272a36343992d5ca"
   license "MIT"
   head "https://github.com/ViRb3/wgcf.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "661af7987b3d6cccbb1411ba153e0a6edaac1a5b98ebd072eadf483308debf89"
-    sha256 cellar: :any_skip_relocation, big_sur:       "cd7f1f650844daf0fb7e3c2bc921248605c76df817119a0a391205736ea783f0"
-    sha256 cellar: :any_skip_relocation, catalina:      "0bdecda45a9f085e3ca91b04b410a64cfb4f45ae1ff13462c5255de9c075f184"
-    sha256 cellar: :any_skip_relocation, mojave:        "f3e0cb8c6e4173db279ddf93702dbf63b56f602836fb80eb45c892bd42db536a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f8237910482bafc69e8278381cf25d7ad262dabe3006f9ab49ae23c457e7d06c"
+    sha256 cellar: :any_skip_relocation, big_sur:       "6db9085289c734a59fc09273735be1acf1afc939f8f6a91f63ac5eab712bcaf3"
+    sha256 cellar: :any_skip_relocation, catalina:      "9b1a94ac81ee0f7f4984ba67989ad8fce1dea551a88935b7f1dd0bfc9be8a167"
+    sha256 cellar: :any_skip_relocation, mojave:        "fd3efd0bedd20e7dd8599913c6b259d99322b139cbeda88a4157a9fde1677b24"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0c408611bfc1a31759ca9ec3746bce7a74060149737116f088090f35857d4c5a"
   end
 
   depends_on "go" => :build

@@ -1,15 +1,16 @@
 class Cmark < Formula
   desc "Strongly specified, highly compatible implementation of Markdown"
   homepage "https://commonmark.org/"
-  url "https://github.com/commonmark/cmark/archive/0.30.0.tar.gz"
-  sha256 "d708a045bd31506e03bddc49f262201ff14921cdfa26768854dc03937c44349b"
+  url "https://github.com/commonmark/cmark/archive/0.30.1.tar.gz"
+  sha256 "9609506bd7473e769452488ef981eb53f082011b1ec6c9b6c73ed57062e25ee6"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "2a6421e2a5c12e65151d7ee68588825f4989e446c02a331178d9cf80da959cdb"
-    sha256 cellar: :any, big_sur:       "e62c5f9e7b4e142d7fc333f74a37e9f7369edf99e3311f104921d55063dd46d9"
-    sha256 cellar: :any, catalina:      "aad5f683d644f5a1197f735d7b3af3dc4764f8ad7e19c3de87974d3a80cf3645"
-    sha256 cellar: :any, mojave:        "2c610141e4791ff7407b12065a492a058da98f9a4841ff65be6a998c603006e6"
+    sha256 cellar: :any,                 arm64_big_sur: "ec28a38ef4b4258032a844a6187a53e57066275e3b10f8e65ce4fb5700c94f9d"
+    sha256 cellar: :any,                 big_sur:       "65f35e66526411e2395b4999db27d59583e3560d405e22b3c61e37c32a108bbe"
+    sha256 cellar: :any,                 catalina:      "fe9a9768097191a61fa9cc4547f537b96b57628d543af20b4090a99b3d436675"
+    sha256 cellar: :any,                 mojave:        "83385257cf867a29845c112fefea84e7648fdf0414ce3c519634985e008bc8e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1fd63b0ce8bc3056aba365a89b5608f6e6f0c8304ba08159928c9e88c094b6ac"
   end
 
   depends_on "cmake" => :build

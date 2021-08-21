@@ -2,7 +2,7 @@ class Bash < Formula
   desc "Bourne-Again SHell, a UNIX command interpreter"
   homepage "https://www.gnu.org/software/bash/"
   license "GPL-3.0-or-later"
-  head "https://git.savannah.gnu.org/git/bash.git"
+  head "https://git.savannah.gnu.org/git/bash.git", branch: "master"
 
   stable do
     url "https://ftp.gnu.org/gnu/bash/bash-5.1.tar.gz"
@@ -69,6 +69,7 @@ class Bash < Formula
     sha256 big_sur:       "62569d2e8452dd3cb61168ffc2581193989503f0e419c3cf1c32984d165ce139"
     sha256 catalina:      "751ffc4d6980a91d4a73dd8758465f519770519d0a4b39ab798062d228b6f8e4"
     sha256 mojave:        "ecb50a94d925314cc09f4e5f016538143edeba3b3fb7235397286b97cc016e14"
+    sha256 x86_64_linux:  "b81e0a2f8cd9aa8f742926742a462fa57ee8aceafc5492fa5fefc96394d44041"
   end
 
   def install

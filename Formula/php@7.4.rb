@@ -2,16 +2,22 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.20.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.20.tar.xz"
-  sha256 "1fa46ca6790d780bf2cb48961df65f0ca3640c4533f0bca743cd61b71cb66335"
+  url "https://www.php.net/distributions/php-7.4.22.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.22.tar.xz"
+  sha256 "8e078cd7d2f49ac3fcff902490a5bb1addc885e7e3b0d8dd068f42c68297bde8"
   license "PHP-3.01"
 
+  livecheck do
+    url "https://www.php.net/downloads"
+    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
+  end
+
   bottle do
-    sha256 arm64_big_sur: "1a16f58da5ab0f6f0d44f7e11a1b86900cc7664fa416b2b8d6aa136f0f97c90a"
-    sha256 big_sur:       "41f4b9372fcc41d78a7afaac0acc62d96716ed859cd9f4405929cd7e03253b01"
-    sha256 catalina:      "8545e5177648e082eb19a1db0bceb965103616cd185bdd850185b59cd40c62f1"
-    sha256 mojave:        "ec4d1b42da2a49db620b78fc6ff125df47e38dcbc1c8e16a75b87cfb8d187056"
+    sha256 arm64_big_sur: "ec0e177443c2b69eabfade075671514663fd1fd44944be815e948c796eac786a"
+    sha256 big_sur:       "b5eee7f153292aececd3d703e55ac48f7ff727a0677cef9945cc69560b6567b4"
+    sha256 catalina:      "71b8f62438872360e058853ba59cf57fdc38ba840a4ca49d469d088bc1a5119e"
+    sha256 mojave:        "1442332a72c07986ee6bd98c77f22f0792b31b28cdcc0310b55b2b415bb13222"
+    sha256 x86_64_linux:  "2f98f679f7f1aa1dc00390835d859009206e3e96271de9cc508ac279d3aba23b"
   end
 
   keg_only :versioned_formula
@@ -316,32 +322,11 @@ class PhpAT74 < Formula
     EOS
   end
 
-  plist_options manual: "php-fpm"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <true/>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_sbin}/php-fpm</string>
-            <string>--nodaemonize</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/php-fpm.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_sbin/"php-fpm", "--nodaemonize"]
+    keep_alive true
+    working_dir var
+    error_log_path var/"log/php-fpm.log"
   end
 
   test do
@@ -431,7 +416,7 @@ class PhpAT74 < Formula
       Process.wait(pid)
 
       fpm_pid = fork do
-        exec sbin/"php-fpm", "--allow-to-run-as-root", "-y", "fpm.conf"
+        exec sbin/"php-fpm", "-y", "fpm.conf"
       end
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"

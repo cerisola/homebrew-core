@@ -2,16 +2,15 @@ class StellarCore < Formula
   desc "Backbone of the Stellar (XLM) network"
   homepage "https://www.stellar.org/"
   url "https://github.com/stellar/stellar-core.git",
-      tag:      "v17.1.0",
-      revision: "fbc0325759ff75dd250cb5e175978669cdb4e90a"
+      tag:      "v17.3.0",
+      revision: "0b4c12a37b207dff0bfe5785ead403a000ca0f13"
   license "Apache-2.0"
   head "https://github.com/stellar/stellar-core.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "c72f92f94fc7e1ee0595501024d12716dd72c93c8313ed45f8d2cd400f0d1daa"
-    sha256 cellar: :any, big_sur:       "5513cb2162bd6b3022a5a73d02bd29c777990ea4b399a34d30df96438734ef2c"
-    sha256 cellar: :any, catalina:      "5e985581748fbbdc299a8f4e6e99116b19cd71d5047e21060d61fcf7f61a03bb"
-    sha256 cellar: :any, mojave:        "b581b4584522263215991bef051f745715a34ff892db8072999bd6d0eb5c38f1"
+    sha256 cellar: :any, arm64_big_sur: "0f4a64af4d39cd840a59ff1883688c2fe38ba239484c34591006d0c76e837984"
+    sha256 cellar: :any, big_sur:       "790a62b146163d9fbe795a272cd44c0393328d16e81b3b933369af1118df7092"
+    sha256 cellar: :any, catalina:      "bc4b019510fbff3711db51beb7cfb74f63a5fa215c0f068cae657fe307202609"
   end
 
   depends_on "autoconf" => :build
@@ -23,6 +22,7 @@ class StellarCore < Formula
   depends_on "libpq"
   depends_on "libpqxx"
   depends_on "libsodium"
+  depends_on macos: :catalina # Requires C++17 filesystem
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build

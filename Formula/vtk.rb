@@ -1,18 +1,16 @@
 class Vtk < Formula
   desc "Toolkit for 3D computer graphics, image processing, and visualization"
   homepage "https://www.vtk.org/"
-  url "https://www.vtk.org/files/release/9.0/VTK-9.0.1.tar.gz"
-  sha256 "1b39a5e191c282861e7af4101eaa8585969a2de05f5646c9199a161213a622c7"
+  url "https://www.vtk.org/files/release/9.0/VTK-9.0.3.tar.gz"
+  sha256 "bc3eb9625b2b8dbfecb6052a2ab091fc91405de4333b0ec68f3323815154ed8a"
   license "BSD-3-Clause"
-  revision 9
   head "https://github.com/Kitware/VTK.git"
 
   bottle do
-    rebuild 1
-    sha256 arm64_big_sur: "8ab6a9fcb8a0f194bf70226b494d7ced7500f0bb767af969f33f2c29441f6e7c"
-    sha256 big_sur:       "fa479befb5c73d21e6a5262f3fe8043adee7343548c1e8442df1211bb2ca745e"
-    sha256 catalina:      "9fb9bd8a35735a863e715f9010767d98a97d679b64e3397f549bc474a96cbfb9"
-    sha256 mojave:        "793df59b482ff9a4ec0026d94c35f6305212f76d9031fa369e04edb4264b60a5"
+    sha256 arm64_big_sur: "fde272807de4be00a73385e08f95daa26568d82b2bd8e49c0632d908fbf14788"
+    sha256 big_sur:       "030677a7748f0fc0d4116424db9225ecf3d805476c08da3d07e65e381ff21589"
+    sha256 catalina:      "beb7e778df907e3763363ad51579b4e004b1b2b745a395621cbc1f2800340d81"
+    sha256 mojave:        "d466d33fd7932aedd24fce9c5b791e7e97cf375db629180718171a2df4b97153"
   end
 
   depends_on "cmake" => [:build, :test]

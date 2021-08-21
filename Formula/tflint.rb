@@ -1,16 +1,17 @@
 class Tflint < Formula
   desc "Linter for Terraform files"
   homepage "https://github.com/terraform-linters/tflint"
-  url "https://github.com/terraform-linters/tflint/archive/v0.29.1.tar.gz"
-  sha256 "09ce37790ec0df7f9e0a6d3d9d207e8a0081799fac0fea46d14bdf35ee1267ed"
+  url "https://github.com/terraform-linters/tflint/archive/v0.31.0.tar.gz"
+  sha256 "3a8a3aeae3d4b09df3c5c9eed07c2da1680191e6493c31642e0fa3f518c341da"
   license "MPL-2.0"
   head "https://github.com/terraform-linters/tflint.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1e060e0b20235adcee9ab0b4b6abde7a192eabdd77b3738a30674934183108d9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e01ac3515617dd70d63b7ec71581adfe52f2a9f6eff3ec531c1e7e6bd08db1a3"
-    sha256 cellar: :any_skip_relocation, catalina:      "47f1cf2ae35d3e92408c4ac05681c3dee333f8ea5e76c683454e44be3316f1d2"
-    sha256 cellar: :any_skip_relocation, mojave:        "bf07e18a2aded917879823ac1a1e240caeaa2995a587a1b61dc52570387b7331"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5ec327d9213b538cb3dd338e1131ff2d4e6b12816289ccf88a82c3515fb041cb"
+    sha256 cellar: :any_skip_relocation, big_sur:       "0029f11368d1908036175629d54245816e7d3b2aca2b5797385a4e4b139c16cb"
+    sha256 cellar: :any_skip_relocation, catalina:      "46b711343a6c4d84d16681d918795993f82b469f1360f50473164bf4d4797d7b"
+    sha256 cellar: :any_skip_relocation, mojave:        "3b1815305dd1f9077d120f9100471331469e27980ce32ff98f0162229fd91ba6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "09768ffed517264e27032efe2749e71213bfa981f46ded8d468ff793eeae4111"
   end
 
   depends_on "go" => :build

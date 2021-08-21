@@ -6,6 +6,11 @@ class Systemd < Formula
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
   head "https://github.com/systemd/systemd.git"
 
+  bottle do
+    rebuild 1
+    sha256 x86_64_linux: "b25b499f5620249c7676a4ba6cd8b575bdc4c1a6125574298e39a20034033ac1"
+  end
+
   depends_on "coreutils" => :build
   depends_on "docbook-xsl" => :build
   depends_on "gettext" => :build
@@ -18,6 +23,7 @@ class Systemd < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "rsync" => :build
   depends_on "expat"
   depends_on "libcap"
   depends_on :linux
@@ -25,6 +31,7 @@ class Systemd < Formula
   depends_on "openssl@1.1"
   depends_on "util-linux" # for libmount
   depends_on "xz"
+  depends_on "zstd"
 
   def install
     args = %W[

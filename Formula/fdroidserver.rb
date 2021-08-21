@@ -3,32 +3,29 @@ class Fdroidserver < Formula
 
   desc "Create and manage Android app repositories for F-Droid"
   homepage "https://f-droid.org"
-  url "https://files.pythonhosted.org/packages/73/c0/f8f71f507384e3f3875957d6fe6c4d9e1554dfe8e86dfab022b33fb98ed0/fdroidserver-2.0.2.tar.gz"
-  sha256 "0782ee5fbe00e6571ca68221d943e5cfa45d17096cf2d7bbaa0c5a9a2c8bb051"
+  url "https://files.pythonhosted.org/packages/16/2c/b301fe0f1dbc40fa00bf16891bf01549c0c99e9eb6eaac7febcea58dd30c/fdroidserver-2.0.3.tar.gz"
+  sha256 "220ea8dd563229fcb2c3f6d6d7da0c7854b46a08e7b4b8a5be05576c83c72ebf"
   license "AGPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "ab60544b3cad381e7a238b21a894f8f7071a5f7472a143887cea59e2394f15f8"
-    sha256 cellar: :any, big_sur:       "5a8587dca17252d8606cfe95576d42a472abaa6dccd63a05a17111f4087d7062"
-    sha256 cellar: :any, catalina:      "3c811ae6452e2a3414253697d6485106852ea58dfb98835ec3d8ca98aead0c0b"
-    sha256 cellar: :any, mojave:        "34d6924287d6d4bf4cfd02d348c9e6005245e0bf1033c214c5bcac592d91ad84"
+    sha256 cellar: :any,                 arm64_big_sur: "965470f82e41611d7468954099ba32f34fe81708a49caca6977115c8d065ed82"
+    sha256 cellar: :any,                 big_sur:       "d7cca25272060e21ef45c98df991665959781754bc6203343b877de4ddd37439"
+    sha256 cellar: :any,                 catalina:      "2181447563528090ec53e2da5080cf8c8ceeb719e0d9f1ac0a162b3821c515e3"
+    sha256 cellar: :any,                 mojave:        "4c5de5e0b97618a0027ff05d5dbb705c9bd21e4f5fb21a511af2166e4e34f3a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "da7a65fd8b5dd446f765422d48f647156810a3e827dcd21595f449d5b323db83"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
-  depends_on "freetype"
-  depends_on "jpeg-turbo"
-  depends_on "libtiff"
   depends_on "numpy"
   depends_on "openssl@1.1"
+  depends_on "pillow"
   depends_on "python@3.9"
   depends_on "s3cmd"
-  depends_on "tcl-tk"
-  depends_on "webp"
 
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
-  uses_from_macos "zlib"
 
   on_macos do
     resource "appnope" do
@@ -123,8 +120,8 @@ class Fdroidserver < Formula
   end
 
   resource "GitPython" do
-    url "https://files.pythonhosted.org/packages/59/d1/e89344ca079f92546558bb5cedb26b4f7ad4afe5319586f49b722c4d99b0/GitPython-3.1.17.tar.gz"
-    sha256 "ee24bdc93dce357630764db659edaf6b8d664d4ff5447ccfeedd2dc5c253f41e"
+    url "https://files.pythonhosted.org/packages/29/22/3d591875078c1c5e7e11b478616821995053968a74b76043c55448c46381/GitPython-3.1.18.tar.gz"
+    sha256 "b838a895977b45ab6f0cc926a9045c8d1c44e2b653c1fcc39fe91f42c6e8f05b"
   end
 
   resource "idna" do
@@ -133,8 +130,8 @@ class Fdroidserver < Formula
   end
 
   resource "ipython" do
-    url "https://files.pythonhosted.org/packages/6d/45/2e3faec0b406a1ee43ea363bec8ce1d629c8e5be9e988e31290a983ce211/ipython-7.24.0.tar.gz"
-    sha256 "a171caa3d3d4c819a1c0742e3abecfd5a2b8ab525ca1c9f114b40b76b0679ab1"
+    url "https://files.pythonhosted.org/packages/73/fe/0250e9e85629f7eba7182490364174e50c48d1eac98bc5e81f993cf1a11e/ipython-7.25.0.tar.gz"
+    sha256 "54bbd1fe3882457aaf28ae060a5ccdef97f212a741754e420028d4ec5c2291dc"
   end
 
   resource "ipython_genutils" do
@@ -207,14 +204,9 @@ class Fdroidserver < Formula
     sha256 "87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca"
   end
 
-  resource "Pillow" do
-    url "https://files.pythonhosted.org/packages/21/23/af6bac2a601be6670064a817273d4190b79df6f74d8012926a39bc7aa77f/Pillow-8.2.0.tar.gz"
-    sha256 "a787ab10d7bb5494e5f76536ac460741788f1fbce851068d73a87ca7c35fc3e1"
-  end
-
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/f7/e0/47738dadee0ec15ffbfa926f01586db2397201e0af3e06a0e669adfd6f2f/prompt_toolkit-3.0.18.tar.gz"
-    sha256 "e1b4f11b9336a28fa11810bc623c357420f69dfdb6d2dac41ca2c21a55c033bc"
+    url "https://files.pythonhosted.org/packages/88/4b/2c0f9e2b52297bdeede91c8917c51575b125006da5d0485521fa2b1e0b75/prompt_toolkit-3.0.19.tar.gz"
+    sha256 "08360ee3a3148bdb5163621709ee322ec34fc4375099afa4bbf751e9b7b7fa4f"
   end
 
   resource "ptyprocess" do
@@ -273,8 +265,8 @@ class Fdroidserver < Formula
   end
 
   resource "qrcode" do
-    url "https://files.pythonhosted.org/packages/19/d5/6c7d4e103d94364d067636417a77a6024219c58cd6e9f428ece9b5061ef9/qrcode-6.1.tar.gz"
-    sha256 "505253854f607f2abf4d16092c61d4e9d511a3b4392e60bff957a68592b04369"
+    url "https://files.pythonhosted.org/packages/c8/1b/d5e0ad4ca933213fa1491c1038cbcdca14906618b339d29c380f6e3b6d01/qrcode-7.1.tar.gz"
+    sha256 "59ba630fa2adb637b06571e6ceec1bb0ecf372c458c4447ceba763061bd3af72"
   end
 
   resource "requests" do
@@ -288,13 +280,13 @@ class Fdroidserver < Formula
   end
 
   resource "ruamel.yaml" do
-    url "https://files.pythonhosted.org/packages/fd/6b/b83bdc8fb9aad62f6469117874e7c11b64d94ba9e8557f73ca1f28c2df7d/ruamel.yaml-0.17.7.tar.gz"
-    sha256 "5c3fa739bbedd2f23769656784e671c6335d17a5bf163c3c3901d8663c0af287"
+    url "https://files.pythonhosted.org/packages/83/59/4f576abb336d30b3d47061717224be714a9dc39c774061c34cb41c1795cf/ruamel.yaml-0.17.10.tar.gz"
+    sha256 "106bc8d6dc6a0ff7c9196a47570432036f41d556b779c6b4e618085f57e39e67"
   end
 
   resource "ruamel.yaml.clib" do
-    url "https://files.pythonhosted.org/packages/fa/a1/f9c009a633fce3609e314294c7963abe64934d972abea257dce16a15666f/ruamel.yaml.clib-0.2.2.tar.gz"
-    sha256 "2d24bd98af676f4990c4d715bcdc2a60b19c56a3fb3a763164d2d8ca0e806ba7"
+    url "https://files.pythonhosted.org/packages/b7/81/c04fb9be62657d4dce8aa2d99fde258a3af1cd77ec72af525593e9560127/ruamel.yaml.clib-0.2.4.tar.gz"
+    sha256 "f997f13fd94e37e8b7d7dbe759088bb428adc6570da06b64a913d932d891ac8d"
   end
 
   resource "six" do
@@ -313,8 +305,8 @@ class Fdroidserver < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/94/40/c396b5b212533716949a4d295f91a4c100d51ba95ea9e2d96b6b0517e5a5/urllib3-1.26.5.tar.gz"
-    sha256 "a7acd0977125325f516bda9735fa7142b909a8d01e8b2e4c8108d0984e6e0098"
+    url "https://files.pythonhosted.org/packages/4f/5a/597ef5911cb8919efe4d86206aa8b2658616d676a7088f0825ca08bd7cb8/urllib3-1.26.6.tar.gz"
+    sha256 "f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
   end
 
   resource "wcwidth" do
@@ -333,33 +325,7 @@ class Fdroidserver < Formula
   end
 
   def install
-    bash_completion.install "completion/bash-completion" => "fdroid"
     venv = virtualenv_create(libexec, "python3")
-
-    resource("Pillow").stage do
-      inreplace "setup.py" do |s|
-        s.gsub! "openjpeg.h", "probably_not_a_header_called_this_eh.h"
-        s.gsub! "xcb.h", "probably_not_a_header_called_this_eh.h"
-        on_macos do
-          sdkprefix = MacOS.sdk_path_if_needed ? MacOS.sdk_path : ""
-          s.gsub! "ZLIB_ROOT = None",
-                  "ZLIB_ROOT = ('#{sdkprefix}/usr/lib', '#{sdkprefix}/usr/include')"
-        end
-        on_linux do
-          zlib = Formula["zlib"].opt_prefix
-          s.gsub! "ZLIB_ROOT = None", "ZLIB_ROOT = ('#{zlib}/lib', '#{zlib}/include')"
-        end
-        s.gsub! "JPEG_ROOT = None",
-                "JPEG_ROOT = ('#{Formula["jpeg-turbo"].opt_prefix}/lib', '#{Formula["jpeg-turbo"].opt_prefix}/include')"
-        s.gsub! "FREETYPE_ROOT = None",
-                "FREETYPE_ROOT = ('#{Formula["freetype"].opt_prefix}/lib', " \
-                                 "'#{Formula["freetype"].opt_prefix}/include')"
-      end
-
-      # avoid triggering "helpful" distutils code that doesn't recognize Xcode 7 .tbd stubs
-      ENV.delete "SDKROOT"
-      venv.pip_install Pathname.pwd
-    end
 
     # Fix "ld: file not found: /usr/lib/system/libsystem_darwin.dylib" for lxml
     ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :sierra
@@ -377,13 +343,14 @@ class Fdroidserver < Formula
     venv.pip_install resource("cffi") # or bcrypt fails to build
     venv.pip_install resource("wheel") # or kiwisolver fails to build
 
-    res = resources.map(&:name).to_set - %w[cffi lxml Pillow ptyprocess wheel]
+    res = resources.map(&:name).to_set - %w[cffi lxml ptyprocess wheel]
 
     res.each do |r|
       venv.pip_install resource(r)
     end
 
     venv.pip_install_and_link buildpath
+    bash_completion.install "completion/bash-completion" => "fdroid"
     doc.install "examples"
   end
 

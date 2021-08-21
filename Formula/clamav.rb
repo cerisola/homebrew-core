@@ -16,6 +16,7 @@ class Clamav < Formula
     sha256 big_sur:       "0336a74d46b95394919ed3de66e3fe02a1e58993892f3e5221dea29ad56c301b"
     sha256 catalina:      "5b0e6cc76e434d7ebfb9301f4b6de21b647f7c0cb3a89d7ca7d6d92c37c34600"
     sha256 mojave:        "a7ebd59427dddd39419a5dceb5f6c85f55d6040d41878e4fca931e384f906fe2"
+    sha256 x86_64_linux:  "f921185f5319873958091bd65bd535d33cb9230a3a9a94fd73041b42d7ed4074"
   end
 
   head do
@@ -28,7 +29,6 @@ class Clamav < Formula
 
   depends_on "pkg-config" => :build
   depends_on "json-c"
-  depends_on "libiconv"
   depends_on "libtool"
   depends_on "openssl@1.1"
   depends_on "pcre2"
@@ -38,6 +38,10 @@ class Clamav < Formula
   uses_from_macos "curl"
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "libiconv"
+  end
 
   skip_clean "share/clamav"
 
@@ -50,14 +54,14 @@ class Clamav < Formula
       --sysconfdir=#{etc}/clamav
       --disable-zlib-vcheck
       --with-llvm=no
-      --with-libiconv-prefix=#{Formula["libiconv"].opt_prefix}
-      --with-iconv=#{Formula["libiconv"].opt_prefix}
       --with-libjson=#{Formula["json-c"].opt_prefix}
       --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
       --with-pcre=#{Formula["pcre2"].opt_prefix}
     ]
 
     on_macos do
+      args << "--with-libiconv-prefix=#{Formula["libiconv"].opt_prefix}"
+      args << "--with-iconv=#{Formula["libiconv"].opt_prefix}"
       args << "--with-zlib=#{MacOS.sdk_path_if_needed}/usr"
       args << "--with-libbz2-prefix=#{MacOS.sdk_path_if_needed}/usr"
       args << "--with-xml=#{MacOS.sdk_path_if_needed}/usr"

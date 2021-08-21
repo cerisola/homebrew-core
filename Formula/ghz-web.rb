@@ -1,15 +1,20 @@
 class GhzWeb < Formula
   desc "Web interface for ghz"
   homepage "https://ghz.sh"
-  url "https://github.com/bojand/ghz/archive/v0.95.0.tar.gz"
-  sha256 "c41af7b43027d2af3a2aeb0b28353f59995cf295ae013ae15ad952590b9d265a"
+  url "https://github.com/bojand/ghz/archive/v0.100.0.tar.gz"
+  sha256 "59db1c8a167e638e003fc6ba028e0e64aa3c3e4d5a921138b6b1c0bef1b0aa40"
   license "Apache-2.0"
 
+  livecheck do
+    formula "ghz"
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8b7ae272239f41f91ed0c9b3d9a1957808d778d0b53486f51703c39d5d576fcc"
-    sha256 cellar: :any_skip_relocation, big_sur:       "29328462152039538f12493e77b0e6aecd9d717d1679707c993e0d44a75e1d8e"
-    sha256 cellar: :any_skip_relocation, catalina:      "3cf03a23253c23bafd386724e8ae5f48eaa4154996a6a0deb9122cb63798d568"
-    sha256 cellar: :any_skip_relocation, mojave:        "98846937b0d70bde0f57498365258dd6e6721c9f482ed0ac2de17e15b6f86963"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2fb863d76bd1ba2ce75f4c3458cac031320567b3615da1902e44286331947980"
+    sha256 cellar: :any_skip_relocation, big_sur:       "50f110f346d2917bbf2c75f4a89289d0402ad8c194acb7a31cdaf47404903dcc"
+    sha256 cellar: :any_skip_relocation, catalina:      "22b7a6e36ad835bb9d9aa5d7a1b1d8118bd69755591c23f3e07eca936b86a421"
+    sha256 cellar: :any_skip_relocation, mojave:        "3325ec9804f4419f546afc2ad9653b7185126ef2c78ca763f0ee04a16f346c91"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6c741364e81c880751060f905ff68c0dec52548f33b0203cb5e15a214630a007"
   end
 
   depends_on "go" => :build

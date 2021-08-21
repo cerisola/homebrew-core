@@ -4,6 +4,7 @@ class MingwW64 < Formula
   url "https://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/mingw-w64-v9.0.0.tar.bz2"
   sha256 "1929b94b402f5ff4d7d37a9fe88daa9cc55515a6134805c104d1794ae22a4181"
   license "ZPL-2.1"
+  revision 2
 
   livecheck do
     url :stable
@@ -11,11 +12,11 @@ class MingwW64 < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_big_sur: "f43962df7e535f8c565a7eee2f4c1604abbf28c8776803a6bb4c2e07a39c4a80"
-    sha256 big_sur:       "84b4ca7599738fc93e93d9a6d141b7b70d73af378fa9b801da78d2b9d80688e8"
-    sha256 catalina:      "7c91f7ffdbcd7d3eacd541998f6afd8dcc2470abe020ad729c358cbac2bed5e6"
-    sha256 mojave:        "22b6c647df655f8c76f55ce1209cca02827f60433bfaff8fc915bfd4ed44f31d"
+    sha256 arm64_big_sur: "6a226bcd216aa4689fb1426c3459caeaa7ee6a2403276c124956f222e9bdc6c9"
+    sha256 big_sur:       "0a48943bac581260148704b796a27aafc21d7650a0dd7b60c9d64dbec148be93"
+    sha256 catalina:      "780144a43e99c22058a07d76668e83107a2bb5e89b651d694c1756174ca65ca3"
+    sha256 mojave:        "55243318eb8179bb7f962c83cb0a35a03fa728e9e444848f4948e82f4e0039c8"
+    sha256 x86_64_linux:  "0976e76105c70de683c1f4f2283248bf70521858d3bd91737e0e6bd01099af17"
   end
 
   # Apple's makeinfo is old and has bugs
@@ -27,15 +28,15 @@ class MingwW64 < Formula
   depends_on "mpfr"
 
   resource "binutils" do
-    url "https://ftp.gnu.org/gnu/binutils/binutils-2.36.1.tar.xz"
-    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.36.1.tar.xz"
-    sha256 "e81d9edf373f193af428a0f256674aea62a9d74dfe93f65192d4eae030b0f3b0"
+    url "https://ftp.gnu.org/gnu/binutils/binutils-2.37.tar.xz"
+    mirror "https://ftpmirror.gnu.org/binutils/binutils-2.37.tar.xz"
+    sha256 "820d9724f020a3e69cb337893a0b63c2db161dadcb0e06fc11dc29eb1e84a32c"
   end
 
   resource "gcc" do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.1.0/gcc-11.1.0.tar.xz"
-    sha256 "4c4a6fb8a8396059241c2e674b85b351c26a5d678274007f076957afa1cc9ddf"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
+    sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
 
     # Remove when upstream has Apple Silicon support
     if Hardware::CPU.arm?

@@ -4,13 +4,14 @@ class Cfssl < Formula
   url "https://github.com/cloudflare/cfssl/archive/v1.6.0.tar.gz"
   sha256 "9694e84b42bf3fc547fa5ac5b15099da28129b9b274b3aad3534d7145ca1cc04"
   license "BSD-2-Clause"
-  head "https://github.com/cloudflare/cfssl.git"
+  head "https://github.com/cloudflare/cfssl.git", branch: "master"
 
   bottle do
     sha256 cellar: :any_skip_relocation, arm64_big_sur: "637f4d77e1d9504dd8c8bc9e9e3635191de063898630b2b17fa84dfb27c6294f"
     sha256 cellar: :any_skip_relocation, big_sur:       "b2626630c57a40160555ae195b187284a6ea65bfeca30a0506ac24fe4764f77f"
     sha256 cellar: :any_skip_relocation, catalina:      "06b89c2bb37493bf060d0632cc3d30d7b82ee1c432af8b7a6d22d144afddaf05"
     sha256 cellar: :any_skip_relocation, mojave:        "12c889e31ea954b04e73a764e6879d0993a533de5daabcbdf6a6d995d9531289"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0ed6a9422bc3f93102b8b91422e2a6d384c0c820b3379ac23a26874902aa0848"
   end
 
   depends_on "go" => :build

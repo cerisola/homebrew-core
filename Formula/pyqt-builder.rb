@@ -3,13 +3,13 @@ class PyqtBuilder < Formula
 
   desc "Tool to build PyQt"
   homepage "https://www.riverbankcomputing.com/software/pyqt-builder/intro"
-  url "https://files.pythonhosted.org/packages/00/a4/67939cced6487b1856dfda5cafa4e7eb179df917f4964918a202c8ba46d3/PyQt-builder-1.10.1.tar.gz"
-  sha256 "967b0c7bac0331597e9f8c5b336660f173a9896830b721d6d025e14bde647e17"
+  url "https://files.pythonhosted.org/packages/27/c2/9fcaf0f4eb96dc06dc38ca66e4f1bb890b9852f62b93069b81646f7bff65/PyQt-builder-1.10.3.tar.gz"
+  sha256 "6ade47445b7d8c08eb96e91ebda5f8b3494b3e7a9da2be343b9d0704419cb5c7"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
   head "https://www.riverbankcomputing.com/hg/PyQt-builder", using: :hg
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4e222c1e8f6070c918eef3af8c3ea4f1a48cc35047dccffd0c773bc194881700"
+    sha256 cellar: :any_skip_relocation, all: "4bf0bfe85d4757efb26a251811caff5ee7223da6174ee8e457c42d6d31219aff"
   end
 
   depends_on "python@3.9"

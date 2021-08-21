@@ -1,38 +1,30 @@
 class Julia < Formula
   desc "Fast, Dynamic Programming Language"
   homepage "https://julialang.org/"
+  url "https://github.com/JuliaLang/julia/releases/download/v1.6.2/julia-1.6.2.tar.gz"
+  sha256 "d56422ac75cbd00a9f69ca9ffd5b6b35c8aeded8312134ef45ffbba828918b5e"
   license all_of: ["MIT", "BSD-3-Clause", "Apache-2.0", "BSL-1.0"]
+  revision 1
   head "https://github.com/JuliaLang/julia.git"
 
-  stable do
-    url "https://github.com/JuliaLang/julia/releases/download/v1.6.1/julia-1.6.1.tar.gz"
-    sha256 "366b8090bd9b2f7817ce132170d569dfa3435d590a1fa5c3e2a75786bd5cdfd5"
-
-    # https://github.com/JuliaLang/julia/issues/36617
-    depends_on arch: :x86_64
-
-    # Allow flisp to be built against system utf8proc. Remove in 1.6.2
-    # https://github.com/JuliaLang/julia/pull/37723
-    patch do
-      url "https://github.com/JuliaLang/julia/commit/ba653ecb1c81f1465505c2cea38b4f8149dd20b3.patch?full_index=1"
-      sha256 "e626ee968e2ce8207c816f39ef9967ab0b5f50cad08a46b1df15d7bf230093cb"
-    end
-  end
-
   bottle do
-    sha256 cellar: :any, big_sur:  "d010756c2b3e9bdc72edda8e27078399d779f3b56a2b1c78b28c47f89f269559"
-    sha256 cellar: :any, catalina: "750cec427377d71a4f8b537a19976e2a63df820216244a0d7d9a8f0a913266f0"
-    sha256 cellar: :any, mojave:   "b5e9f67413ecebdbc92fec00940b84c032ec0f25f1f0a4c1398fad4ed591ef1f"
+    rebuild 1
+    sha256 cellar: :any,                 big_sur:      "07cef06b083672c8335143c4bde3f9e857d8c644140080a105b9812f77fcba8c"
+    sha256 cellar: :any,                 catalina:     "3a1b8e8ff03cfed29f2ea415d4782a38444d99c14100d1e85cae37c48e4965c1"
+    sha256 cellar: :any,                 mojave:       "a54f0feda6477176f7018675a1439976016e4b93ea607221dec01091b0300fc1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f01075ce69503a29a8246a939bcc29e7cffc747d368c658f941baf1bbc79c1ef"
   end
 
   depends_on "python@3.9" => :build
+  # https://github.com/JuliaLang/julia/issues/36617
+  depends_on arch: :x86_64
   depends_on "curl"
   depends_on "gcc" # for gfortran
   depends_on "gmp"
   depends_on "libgit2"
   depends_on "libssh2"
   depends_on "llvm"
-  depends_on "mbedtls"
+  depends_on "mbedtls@2"
   depends_on "mpfr"
   depends_on "nghttp2"
   depends_on "openblas"
@@ -47,16 +39,25 @@ class Julia < Formula
 
   on_linux do
     depends_on "patchelf" => :build
+
+    # This dependency can be dropped when upstream resolves
+    # https://github.com/JuliaLang/julia/issues/30154
     depends_on "libunwind"
   end
+
+  fails_with gcc: "5"
 
   def install
     # Build documentation available at
     # https://github.com/JuliaLang/julia/blob/v#{version}/doc/build/build.md
+    #
+    # Remove `USE_SYSTEM_SUITESPARSE` in 1.7.0
+    # https://github.com/JuliaLang/julia/commit/835f65d9b9f54e0a8dd856fc940a188f87a48cda
     args = %W[
       VERBOSE=1
       USE_BINARYBUILDER=0
       prefix=#{prefix}
+      USE_SYSTEM_CSL=1
       USE_SYSTEM_LLVM=1
       USE_SYSTEM_PCRE=1
       USE_SYSTEM_OPENLIBM=1
@@ -65,6 +66,7 @@ class Julia < Formula
       USE_SYSTEM_GMP=1
       USE_SYSTEM_MPFR=1
       USE_SYSTEM_SUITESPARSE=1
+      USE_SYSTEM_LIBSUITESPARSE=1
       USE_SYSTEM_UTF8PROC=1
       USE_SYSTEM_MBEDTLS=1
       USE_SYSTEM_LIBSSH2=1
@@ -83,13 +85,6 @@ class Julia < Formula
       MACOSX_VERSION_MIN=#{MacOS.version}
     ]
 
-    # ARM gcc does not provide `libquadmath`
-    args << "USE_SYSTEM_CSL=1" unless Hardware::CPU.arm?
-
-    # `USE_SYSTEM_SUITESPARSE` was renamed in
-    # https://github.com/JuliaLang/julia/commit/835f65d9b9f54e0a8dd856fc940a188f87a48cda
-    args << "USE_SYSTEM_LIBSUITESPARSE=1" if build.head?
-
     # Stable uses `libosxunwind` which is not in Homebrew/core
     # https://github.com/JuliaLang/julia/pull/39127
     on_macos { args << "USE_SYSTEM_LIBUNWIND=1" if build.head? }
@@ -103,7 +98,7 @@ class Julia < Formula
       deps.map(&:to_formula).select(&:keg_only?).map(&:opt_lib).each do |libdir|
         ENV.append "LDFLAGS", "-Wl,-rpath,#{libdir}"
       end
-      ENV.append "LDFLAGS", "-Wl,-rpath,#{gcclibdir}" unless Hardware::CPU.arm?
+      ENV.append "LDFLAGS", "-Wl,-rpath,#{gcclibdir}"
       # List these two last, since we want keg-only libraries to be found first
       ENV.append "LDFLAGS", "-Wl,-rpath,#{HOMEBREW_PREFIX}/lib"
       ENV.append "LDFLAGS", "-Wl,-rpath,/usr/lib"
@@ -112,6 +107,13 @@ class Julia < Formula
     on_linux do
       ENV.append "LDFLAGS", "-Wl,-rpath,#{opt_lib}"
       ENV.append "LDFLAGS", "-Wl,-rpath,#{opt_lib}/julia"
+
+      # Help Julia find our libunwind. Remove when upstream replace this with LLVM libunwind.
+      (lib/"julia").mkpath
+      Formula["libunwind"].opt_lib.glob(shared_library("libunwind", "*")) do |so|
+        (buildpath/"usr/lib").install_symlink so
+        (lib/"julia").install_symlink so
+      end
     end
 
     inreplace "Make.inc" do |s|
@@ -133,17 +135,26 @@ class Julia < Formula
 
     system "make", *args, "install"
 
-    if args.include? "USE_SYSTEM_CSL=1"
-      # Create copies of the necessary gcc libraries in `buildpath/"usr/lib"`
-      system "make", "-C", "deps", "USE_SYSTEM_CSL=1", "install-csl"
-      # Install gcc library symlinks where Julia expects them
-      gcclibdir.glob(shared_library("*")) do |so|
-        next unless (buildpath/"usr/lib"/so.basename).exist?
+    on_linux do
+      # Replace symlinks referencing Cellar paths with ones using opt paths
+      deps.reject(&:build?).map(&:to_formula).map(&:opt_lib).each do |libdir|
+        (lib/"julia").children.each do |so|
+          next unless (libdir/so.basename).exist?
 
-        # Use `ln_sf` instead of `install_symlink` to avoid referencing
-        # gcc's full version and revision number in the symlink path
-        ln_sf gcclibdir.relative_path_from(lib/"julia")/so.basename, lib/"julia"
+          ln_sf (libdir/so.basename).relative_path_from(lib/"julia"), lib/"julia"
+        end
       end
+    end
+
+    # Create copies of the necessary gcc libraries in `buildpath/"usr/lib"`
+    system "make", "-C", "deps", "USE_SYSTEM_CSL=1", "install-csl"
+    # Install gcc library symlinks where Julia expects them
+    gcclibdir.glob(shared_library("*")) do |so|
+      next unless (buildpath/"usr/lib"/so.basename).exist?
+
+      # Use `ln_sf` instead of `install_symlink` to avoid referencing
+      # gcc's full version and revision number in the symlink path
+      ln_sf so.relative_path_from(lib/"julia"), lib/"julia"
     end
 
     # Some Julia packages look for libopenblas as libopenblas64_
@@ -156,5 +167,11 @@ class Julia < Formula
   test do
     assert_equal "4", shell_output("#{bin}/julia -E '2 + 2'").chomp
     system bin/"julia", "-e", 'Base.runtests("core")'
+
+    (lib/"julia").children.each do |so|
+      next unless so.symlink?
+
+      assert_predicate so, :exist?, "Broken linkage with #{so.basename}"
+    end
   end
 end

@@ -4,7 +4,7 @@ class ScummvmTools < Formula
   url "https://downloads.scummvm.org/frs/scummvm-tools/2.2.0/scummvm-tools-2.2.0.tar.xz"
   sha256 "1e72aa8f21009c1f7447c755e7f4cf499fe9b8ba3d53db681ea9295666cb48a4"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 3
   head "https://github.com/scummvm/scummvm-tools.git"
 
   livecheck do
@@ -13,9 +13,9 @@ class ScummvmTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "bcc9ac03c2702194f66f8671a11d381dd4d297e6863aba2562d390ebcfee117a"
-    sha256 cellar: :any, catalina: "e2a31dc63a2ed04029a80d03fe3a273b82a4bcd7e4231a339c92067f09c018f9"
-    sha256 cellar: :any, mojave:   "c65273ff136c4f13931a5e1c30918e5410c8419b09dc3fd9e53057489b21ede1"
+    sha256 cellar: :any, big_sur:  "08b599a5a43c08ac6bf0b1d9e1595eb20e930f9c5f25bc916b94529f0fab3941"
+    sha256 cellar: :any, catalina: "996875778890186143218b023d6bd1cb53c518d9e98e6f7409fb19b50c745be4"
+    sha256 cellar: :any, mojave:   "221fd9eaf4604bb37fc3c204008232d7feed8b93af246772f5c436902bec8ba2"
   end
 
   depends_on "boost"
@@ -24,10 +24,22 @@ class ScummvmTools < Formula
   depends_on "libpng"
   depends_on "libvorbis"
   depends_on "mad"
-  depends_on "wxmac@3.0"
+  depends_on "wxwidgets@3.0"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    # configure will happily carry on even if it can't find wxwidgets,
+    # so let's make sure the install method keeps working even when
+    # the wxwidgets dependency version changes
+    wxwidgets = deps.find { |dep| dep.name.match?(/^wxwidgets(@\d+(\.\d+)?)?$/) }
+                    .to_formula
+
+    # The configure script needs a little help finding our wx-config
+    wxconfig = "wx-config-#{wxwidgets.version.major_minor}"
+    inreplace "configure", /^_wxconfig=wx-config$/, "_wxconfig=#{wxconfig}"
+
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-debug",
+                          "--enable-verbose-build"
     system "make", "install"
   end
 

@@ -1,15 +1,16 @@
 class Anyenv < Formula
   desc "All in one for **env"
   homepage "https://anyenv.github.io/"
-  url "https://github.com/anyenv/anyenv/archive/v1.1.3.tar.gz"
-  sha256 "df792ebb210417accb7d39cf5b00fe8a4b621058f5dccc4c286ae51e641fc666"
+  url "https://github.com/anyenv/anyenv/archive/v1.1.4.tar.gz"
+  sha256 "efb5663ea44ba53c692bb1db439f4b9cf69099614030d0950fdd083f07a2e3c7"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e29c4f22d906b1a84c4ba3a088d5e4ffee99254cd528fb94e1a1a3d8d60bb307"
-    sha256 cellar: :any_skip_relocation, big_sur:       "381377f93374c1b1c1b0154c5f08c91dbf33a948a2ac47933a4bbd5d7c0d8ee8"
-    sha256 cellar: :any_skip_relocation, catalina:      "381377f93374c1b1c1b0154c5f08c91dbf33a948a2ac47933a4bbd5d7c0d8ee8"
-    sha256 cellar: :any_skip_relocation, mojave:        "381377f93374c1b1c1b0154c5f08c91dbf33a948a2ac47933a4bbd5d7c0d8ee8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "64a65deada2b73eea41aaf1072d015c193e46cc38d524e3770d8e319b56b54fe"
+    sha256 cellar: :any_skip_relocation, big_sur:       "3cbde52463957a85f70e02c7c4e4ae793a3d5cbd6a44db6ec930f6f370db8b66"
+    sha256 cellar: :any_skip_relocation, catalina:      "3cbde52463957a85f70e02c7c4e4ae793a3d5cbd6a44db6ec930f6f370db8b66"
+    sha256 cellar: :any_skip_relocation, mojave:        "3cbde52463957a85f70e02c7c4e4ae793a3d5cbd6a44db6ec930f6f370db8b66"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "64a65deada2b73eea41aaf1072d015c193e46cc38d524e3770d8e319b56b54fe"
   end
 
   def install
@@ -35,7 +36,7 @@ class Anyenv < Formula
         rbenv install --list
       EOS
       cmds.split("\n").each do |cmd|
-        shell_output("source #{profile} && #{cmd}")
+        shell_output(". #{profile} && #{cmd}")
       end
     end
   end

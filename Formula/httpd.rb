@@ -7,10 +7,12 @@ class Httpd < Formula
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_big_sur: "8dedff70f78bdd4d43b4c700e592c46dd864098b22d0c59cd2c57ad61b98deda"
-    sha256 big_sur:       "06ed80da371f4d6f76b63792c1c611b18305350d48c21ef0772f41b0a069d6df"
-    sha256 catalina:      "cc4bbda7430f0dd430962000f442f9db50cc3faa7fb08acd479adf53ab0fe7d0"
-    sha256 mojave:        "3861ab8553999ab6c77b1604e03b2923480d1c4cae0b34daaed2ce7f27ee1ddc"
+    rebuild 1
+    sha256 arm64_big_sur: "51a6c522ddeb1cb3a306a31c97d8711fbc8a485cda066adda63b3cf4fa09ef88"
+    sha256 big_sur:       "98e4dd6f6f5a5703ceda01113a0e712946bcd299872ea97b54eb55952d5d2fbf"
+    sha256 catalina:      "88b47898aa5933e66564b76b53365d52bdcf05aba6738a13c5f6c54973d63c9f"
+    sha256 mojave:        "9a498201ae55ce42f3f072572c181b31593e3ed4c8290556939283495a7d9fc7"
+    sha256 x86_64_linux:  "08b378464786b56467ef0ea35d46eebd3a7afabe5f65fd3a43917636c6bed8cd"
   end
 
   depends_on "apr"
@@ -20,6 +22,7 @@ class Httpd < Formula
   depends_on "openssl@1.1"
   depends_on "pcre"
 
+  uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
   def install
@@ -43,6 +46,10 @@ class Httpd < Formula
       s.gsub! "${datadir}/icons",   "#{pkgshare}/icons"
     end
 
+    libxml2 = "#{MacOS.sdk_path_if_needed}/usr"
+    on_linux { libxml2 = Formula["libxml2"].opt_prefix }
+    zlib = "#{MacOS.sdk_path_if_needed}/usr"
+    on_linux { zlib = Formula["zlib"].opt_prefix }
     system "./configure", "--enable-layout=Slackware-FHS",
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
@@ -63,15 +70,16 @@ class Httpd < Formula
                           "--with-apr=#{Formula["apr"].opt_prefix}",
                           "--with-apr-util=#{Formula["apr-util"].opt_prefix}",
                           "--with-brotli=#{Formula["brotli"].opt_prefix}",
-                          "--with-libxml2=#{MacOS.sdk_path_if_needed}/usr",
+                          "--with-libxml2=#{libxml2}",
                           "--with-mpm=prefork",
                           "--with-nghttp2=#{Formula["nghttp2"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl@1.1"].opt_prefix}",
                           "--with-pcre=#{Formula["pcre"].opt_prefix}",
-                          "--with-z=#{MacOS.sdk_path_if_needed}/usr",
+                          "--with-z=#{zlib}",
                           "--disable-lua",
                           "--disable-luajit"
     system "make"
+    on_linux { ENV.deparallelize }
     system "make", "install"
 
     # suexec does not install without root
@@ -100,12 +108,14 @@ class Httpd < Formula
       s.gsub! prefix, opt_prefix
     end
 
+    os = "mac"
+    on_linux { os = "linux" }
     inreplace "#{lib}/httpd/build/config_vars.mk" do |s|
       pcre = Formula["pcre"]
       s.gsub! pcre.prefix.realpath, pcre.opt_prefix
       s.gsub! "${prefix}/lib/httpd/modules",
               "#{HOMEBREW_PREFIX}/lib/httpd/modules"
-      s.gsub! "#{HOMEBREW_SHIMS_PATH}/mac/super",
+      s.gsub! "#{HOMEBREW_SHIMS_PATH}/#{os}/super",
               "#{HOMEBREW_PREFIX}/bin"
     end
   end

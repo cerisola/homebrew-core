@@ -14,6 +14,7 @@ class PerconaXtrabackup < Formula
     sha256 big_sur:       "7678afb4036a12a8a57ecc72544ad01ee8daf1987da5e6b9fd15644e13e163e0"
     sha256 catalina:      "ac2777de2bced8fc020ef76f1275da999f11cb3c60481d97006f8cbac9403a97"
     sha256 mojave:        "880abb4be9f118120660818a079cdc4562cc7411a1a9070d3ef005c8aee23f35"
+    sha256 x86_64_linux:  "bbe0e5b72dc9bd03415c999aaa45a8ed4d30294f56bad35200fbdbc8d1f552df"
   end
 
   depends_on "cmake" => :build
@@ -28,10 +29,17 @@ class PerconaXtrabackup < Formula
   depends_on "protobuf"
   depends_on "zstd"
 
+  uses_from_macos "vim" => :build # needed for xxd
   uses_from_macos "curl"
+  uses_from_macos "cyrus-sasl"
   uses_from_macos "libedit"
   uses_from_macos "perl"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "patchelf" => :build
+    depends_on "libaio"
+  end
 
   # Should be installed before DBD::mysql
   resource "Devel::CheckLib" do
@@ -39,12 +47,10 @@ class PerconaXtrabackup < Formula
     sha256 "f21c5e299ad3ce0fdc0cb0f41378dca85a70e8d6c9a7599f0e56a957200ec294"
   end
 
-  # In Mojave, this is not part of the system Perl anymore
-  if MacOS.version >= :mojave
-    resource "DBI" do
-      url "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz"
-      sha256 "8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa"
-    end
+  # This is not part of the system Perl on Linux and on macOS since Mojave
+  resource "DBI" do
+    url "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz"
+    sha256 "8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa"
   end
 
   resource "DBD::mysql" do
@@ -114,8 +120,10 @@ class PerconaXtrabackup < Formula
 
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
-    # In Mojave, this is not part of the system Perl anymore
-    if MacOS.version >= :mojave
+    # This is not part of the system Perl on Linux and on macOS since Mojave
+    install_dbi = (MacOS.version >= :mojave)
+    on_linux { install_dbi = true }
+    if install_dbi
       resource("DBI").stage do
         system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
         system "make", "install"

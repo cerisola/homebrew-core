@@ -1,16 +1,16 @@
 class Inxi < Formula
   desc "Full featured CLI system information tool"
   homepage "https://smxi.org/docs/inxi.htm"
-  url "https://github.com/smxi/inxi/archive/3.3.04-1.tar.gz"
-  sha256 "1f029f5f667e0396ab9f6ba2c51cf7937ea38bf504d1621a8c50e19205a7a671"
+  url "https://github.com/smxi/inxi/archive/3.3.06-1.tar.gz"
+  sha256 "39161866ef737c9fca4a4fb16d7c07cab14987bf3b22ea346c51609772f76b08"
   license "GPL-3.0-or-later"
   head "https://github.com/smxi/inxi.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8b73c5f42d790f29d92980369bae01bca56ce8b63ff77648f30d2ea3238c2bc2"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ae0178948f7f5f7ab4a70754e4f95cb7ed665c1fdffa94643ae9496bad625788"
-    sha256 cellar: :any_skip_relocation, catalina:      "ae0178948f7f5f7ab4a70754e4f95cb7ed665c1fdffa94643ae9496bad625788"
-    sha256 cellar: :any_skip_relocation, mojave:        "ae0178948f7f5f7ab4a70754e4f95cb7ed665c1fdffa94643ae9496bad625788"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "11f1cab9a4fa594cc294c7a2af45560cf31b403d64727008abed78e64c9c2f9f"
+    sha256 cellar: :any_skip_relocation, big_sur:       "56c4ac39c896f43df8d7e929e1b96c4d260b6ebafdc87df8c91287b9bbd0a5e3"
+    sha256 cellar: :any_skip_relocation, catalina:      "56c4ac39c896f43df8d7e929e1b96c4d260b6ebafdc87df8c91287b9bbd0a5e3"
+    sha256 cellar: :any_skip_relocation, mojave:        "56c4ac39c896f43df8d7e929e1b96c4d260b6ebafdc87df8c91287b9bbd0a5e3"
   end
 
   def install

@@ -3,16 +3,17 @@ class Ipython < Formula
 
   desc "Interactive computing in Python"
   homepage "https://ipython.org/"
-  url "https://files.pythonhosted.org/packages/73/fe/0250e9e85629f7eba7182490364174e50c48d1eac98bc5e81f993cf1a11e/ipython-7.25.0.tar.gz"
-  sha256 "54bbd1fe3882457aaf28ae060a5ccdef97f212a741754e420028d4ec5c2291dc"
+  url "https://files.pythonhosted.org/packages/f8/3a/ed8de8c506df3e580ac08e154239c20fa651c5d73df173dfe30fa30fd4dc/ipython-7.26.0.tar.gz"
+  sha256 "0cff04bb042800129348701f7bd68a430a844e8fb193979c08f6c99f28bb735e"
   license "BSD-3-Clause"
   head "https://github.com/ipython/ipython.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "3add12cfc5cc3aed5ea37da9eb901ee5c66803ccbf0be5f6d592543447634594"
-    sha256 cellar: :any, big_sur:       "898c6725202a6d7e8c086aa2a5d1cf0041a01642ae138cb28e4d8684696c1c32"
-    sha256 cellar: :any, catalina:      "51763ab53bd44b00bf45e2efe804a6f15388f4e2ac3d35086d9c0f6109263f94"
-    sha256 cellar: :any, mojave:        "171e4f4266cd4d1407c00638d2744e4b25fffd0408ecf8d7a655ab70137ff5e7"
+    sha256 cellar: :any,                 arm64_big_sur: "6f2ed9cea92e82b9f4b7007b53e8040c8c051cd8a8db165bc9d4833dcf2fffcb"
+    sha256 cellar: :any,                 big_sur:       "ff41c2ded028647f5e1c62dba1540cedcc72336dd8040062afabc02bd5514d4b"
+    sha256 cellar: :any,                 catalina:      "ab8fea8d9a3ca1751b91476b6318cb892540fc2495392569fd0265128ae45695"
+    sha256 cellar: :any,                 mojave:        "1de20fd81cf3e023290b4f0d29a50e06ecf13634823fa800107821e679756d2f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90aee8f0d3d624a1e44a548c624a5dfaa9d08532a4fb211ffa6a2d1e5d33bc00"
   end
 
   depends_on "python@3.9"
@@ -30,14 +31,19 @@ class Ipython < Formula
     sha256 "5cbdbf27be5e7cfadb448baf0aa95508f91f2bbc6c6437cd9cd06e2a4c215e1e"
   end
 
+  resource "debugpy" do
+    url "https://files.pythonhosted.org/packages/33/75/ef3f07dab89949e1c252c49e33a3ae94dab17f95be9e4b6d86bec57fee0f/debugpy-1.4.1.zip"
+    sha256 "889316de0b8ff3732927cb058cfbd3371e4cd0002ecc170d34c755ad289c867c"
+  end
+
   resource "decorator" do
     url "https://files.pythonhosted.org/packages/4f/51/15a4f6b8154d292e130e5e566c730d8ec6c9802563d58760666f1818ba58/decorator-5.0.9.tar.gz"
     sha256 "72ecfba4320a893c53f9706bebb2d55c270c1e51a28789361aa93e4a21319ed5"
   end
 
   resource "ipykernel" do
-    url "https://files.pythonhosted.org/packages/6a/9d/7b8f426f6ad54303a2bfc080816f6adc48eb9ebab50927bbe65b4d7d587b/ipykernel-5.5.5.tar.gz"
-    sha256 "e976751336b51082a89fc2099fb7f96ef20f535837c398df6eab1283c2070884"
+    url "https://files.pythonhosted.org/packages/fa/95/b97ef5aef28de3d1cefc9b07304e85a35bce64da18be365df95db6ef2756/ipykernel-6.0.3.tar.gz"
+    sha256 "0df34a78c7e1422800d6078cde65ccdcdb859597046c338c759db4dbc535c58f"
   end
 
   resource "ipython_genutils" do
@@ -101,8 +107,8 @@ class Ipython < Formula
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/be/ed/5bbc91f03fa4c839c4c7360375da77f9659af5f7086b7a7bdda65771c8e0/python-dateutil-2.8.1.tar.gz"
-    sha256 "73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"
+    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
+    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
   end
 
   resource "pyzmq" do
@@ -131,7 +137,11 @@ class Ipython < Formula
 
     # install other resources
     ipykernel = resource("ipykernel")
-    (resources - [ipykernel]).each do |r|
+    res = resources - [ipykernel]
+    on_linux do
+      res -= [resource("appnope")]
+    end
+    res.each do |r|
       r.stage do
         system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -161,6 +171,9 @@ class Ipython < Formula
         "PYTHONPATH": "#{ENV["PYTHONPATH"]}"
       }
     EOS
+
+    pydevd_vendor_dir = libexec/"vendor"/Language::Python.site_packages("python3")/"debugpy/_vendored/pydevd"
+    pydevd_vendor_dir.rmtree # remove pre-built binaries
   end
 
   def post_install

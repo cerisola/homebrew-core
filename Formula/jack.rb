@@ -1,8 +1,8 @@
 class Jack < Formula
   desc "Audio Connection Kit"
   homepage "https://jackaudio.org/"
-  url "https://github.com/jackaudio/jack2/archive/v1.9.18.tar.gz"
-  sha256 "5a1d64118034d58529d68a9af42710f9d4843536257c496118065ea3d3e4ae2c"
+  url "https://github.com/jackaudio/jack2/archive/v1.9.19.tar.gz"
+  sha256 "9030f4dc11773351b6ac96affd9c89803a5587ebc1b091e5ff866f433327e4b0"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,10 +11,11 @@ class Jack < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "177463669a498f6d799f00e35e735349683eb04245cc1320bdc174e3bd2c80a2"
-    sha256 big_sur:       "b975e32278ec862b2ac8811e347d841c18930529fc47c96fa8861ff3015a04e3"
-    sha256 catalina:      "9ebcf7c9b083d2b3a268f743268c7c649c90ed7ab472073fa65814f7a42e67f9"
-    sha256 mojave:        "c6ae412a1b0911052894464e87398feca20a1a60a07bebcad5d6053d80781993"
+    rebuild 1
+    sha256 arm64_big_sur: "ffbab9c78a68d9500801476cc963340ed638795d9d31cf0f20162380216f03b2"
+    sha256 big_sur:       "5fdfbe4b083a1fb96c2a6d66d8a32bff2eda70dd5488b5cd3f75c088f4e2c158"
+    sha256 catalina:      "03952b355f2868cafb1dc5b726ae9910602ae06454ed8f757402cb6c7b540dda"
+    sha256 mojave:        "bb3a77a180f342d3eafc91705996d7346331cbdc36efbb41022433a7dd2084c7"
   end
 
   depends_on "autoconf" => :build
@@ -36,38 +37,11 @@ class Jack < Formula
     system Formula["python@3.9"].opt_bin/"python3", "./waf", "install"
   end
 
-  plist_options manual: "jackd -X coremidi -d coreaudio"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>WorkingDirectory</key>
-        <string>#{opt_prefix}</string>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>PATH</key>
-          <string>/usr/bin:/bin:/usr/sbin:/sbin:#{HOMEBREW_PREFIX}/bin</string>
-        </dict>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/jackd</string>
-          <string>-X</string>
-          <string>coremidi</string>
-          <string>-d</string>
-          <string>coreaudio</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <true/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"jackd", "-X", "coremidi", "-d", "coreaudio"]
+    keep_alive true
+    working_dir opt_prefix
+    environment_variables PATH: "/usr/bin:/bin:/usr/sbin:/sbin:#{HOMEBREW_PREFIX}/bin"
   end
 
   test do

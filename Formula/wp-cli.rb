@@ -15,6 +15,14 @@ class WpCli < Formula
     sha256 cellar: :any_skip_relocation, big_sur:       "67acd9816806eef402f59f1904fcebd2e23e6d6cb7657604430e299cf21bd300"
     sha256 cellar: :any_skip_relocation, catalina:      "67acd9816806eef402f59f1904fcebd2e23e6d6cb7657604430e299cf21bd300"
     sha256 cellar: :any_skip_relocation, mojave:        "67acd9816806eef402f59f1904fcebd2e23e6d6cb7657604430e299cf21bd300"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a3538f32afa8bef557e659322b49734e90e0420cd96561ea56119f71d91d813c"
+  end
+
+  uses_from_macos "php"
+
+  # Keg-relocation breaks the formula when it replaces `/usr/local` with a non-default prefix
+  on_macos do
+    pour_bottle? only_if: :default_prefix if Hardware::CPU.intel?
   end
 
   def install

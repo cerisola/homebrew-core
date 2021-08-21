@@ -4,18 +4,21 @@ class Newsboat < Formula
   url "https://newsboat.org/releases/2.24/newsboat-2.24.tar.xz"
   sha256 "62420688cca25618859548d10ff6df9ac75b9cf766699f37edd3e324d67c6ffb"
   license "MIT"
+  revision 1
   head "https://github.com/newsboat/newsboat.git"
 
   bottle do
-    sha256 arm64_big_sur: "9922dbecd7634ea61585f74f49f4775db60c7dcbc76a3a246c79ccb9f59a8335"
-    sha256 big_sur:       "e9bfb69e519287ae177ed85f541ab52935b9ac17f185d60dd781f80da4cb87a5"
-    sha256 catalina:      "3b0d83f8cbbb313d096f707c75bf533a770401f15f682e40e47f5f56fe05c718"
-    sha256 mojave:        "c45ac94247954d6122b78d721856a798bc47b78d59256eed38faa7f11dc5fb2a"
+    sha256 arm64_big_sur: "56dfe1b2c6f47820764638c40cd9551b3c251a07baba3834479ae2fde9cbfd53"
+    sha256 big_sur:       "dd32e75e07680644d5cef9736e77366f3373b69f5dfa471fc1890df98988862b"
+    sha256 catalina:      "409cf4cb21d90f201508b289336782010a51bcaf024e4a127b3163c12fc392dd"
+    sha256 mojave:        "c90b373c50ff225cd8e78a68fdf966227b9ac29b980974f239095071a1040548"
+    sha256 x86_64_linux:  "f990df0f3f7abca0a2a440940593f0f6935c72d98a356a52a2217a05ec58388a"
   end
 
   depends_on "asciidoctor" => :build
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
+  depends_on "xz" => :build
   depends_on "gettext"
   depends_on "json-c"
   depends_on "libstfl"
@@ -23,6 +26,7 @@ class Newsboat < Formula
   uses_from_macos "curl"
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
+  uses_from_macos "sqlite"
 
   def install
     gettext = Formula["gettext"]

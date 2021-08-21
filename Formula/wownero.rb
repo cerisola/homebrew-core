@@ -2,16 +2,17 @@ class Wownero < Formula
   desc "Official wallet and node software for the Wownero cryptocurrency"
   homepage "https://wownero.org"
   url "https://git.wownero.com/wownero/wownero.git",
-      tag:      "v0.9.3.3",
-      revision: "e2d2b9a447502e22467af9df20e0732b3dd4ac4c"
+      tag:      "v0.10.0.3",
+      revision: "2bdd70d65d266beeca043f207ebb1964463f4a3b"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "71d3fe6d4c0736cc7105242ae739105f1ace548de3c685d47c7c7b22d4992689"
-    sha256 cellar: :any, big_sur:       "52132bd354e8e20487628a30ba539a6a1bd4a1a1c0ddf7962ec6979d9505e2d8"
-    sha256 cellar: :any, catalina:      "3237f37e93216a467d63f916466a9f7a4bc8e70feb49f1e19a60bff853d7182b"
-    sha256 cellar: :any, mojave:        "9aad2bb430ded851f20ad8580754ad5c4f8cd38e80d8a31e5e73227d3cf00d34"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_big_sur: "0faaed980b9edadc285a0110e6a12219636f49ca2cc20c5a00d2cfa3259426ac"
+    sha256 cellar: :any,                 big_sur:       "9c12417ea6310d12b295ae3df4f2a099673509062a307eeb840ec89bb9e04001"
+    sha256 cellar: :any,                 catalina:      "a743feb558aeac26118636c893a5e3bd422b606b5b121ed2eb9c2e94a696f7b7"
+    sha256 cellar: :any,                 mojave:        "7f7e40f2aa800e7db13f4f582e47e76905cafae8d9cccc2b6090491ee2e3dffb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce96a0d3b3c105269ab805c518a4a18446d2e76a5dede3b2ce2bb076ff4460e5"
   end
 
   depends_on "cmake" => :build
@@ -25,7 +26,6 @@ class Wownero < Formula
   depends_on "unbound"
   depends_on "zeromq"
 
-  conflicts_with "miniupnpc", because: "wownero ships its own copy of miniupnpc"
   conflicts_with "monero", because: "both install a wallet2_api.h header"
 
   # Boost 1.76 compatibility
@@ -35,41 +35,19 @@ class Wownero < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
-
-    # Fix conflict with miniupnpc.
-    # This has been reported at https://github.com/monero-project/monero/issues/3862
-    rm lib/"libminiupnpc.a"
   end
 
-  plist_options manual: "wownerod --non-interactive"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/wownerod</string>
-          <string>--non-interactive</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"wownerod", "--non-interactive"]
   end
 
   test do
     cmd = "yes '' | #{bin}/wownero-wallet-cli --restore-deterministic-wallet " \
-      "--password brew-test --restore-height 238084 --generate-new-wallet wallet " \
-      "--electrum-seed 'maze vixen spiders luggage vibrate western nugget older " \
-      "emails oozed frown isolated ledge business vaults budget " \
-      "saucepan faxed aloof down emulate younger jump legion saucepan'" \
-      "--command address"
+          "--password brew-test --restore-height 238084 --generate-new-wallet wallet " \
+          "--electrum-seed 'maze vixen spiders luggage vibrate western nugget older " \
+          "emails oozed frown isolated ledge business vaults budget " \
+          "saucepan faxed aloof down emulate younger jump legion saucepan'" \
+          "--command address"
     address = "Wo3YLuTzJLTQjSkyNKPQxQYz5JzR6xi2CTS1PPDJD6nQAZ1ZCk1TDEHHx8CRjHNQ9JDmwCDGhvGF3CZXmmX1sM9a1YhmcQPJM"
     assert_equal address, shell_output(cmd).lines.last.split[1]
   end

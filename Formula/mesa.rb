@@ -3,8 +3,8 @@ class Mesa < Formula
 
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://archive.mesa3d.org/mesa-21.1.3.tar.xz"
-  sha256 "cbe221282670875ffd762247b6a2c95dcee91d0a34c29802c75ef761fc891e69"
+  url "https://mesa.freedesktop.org/archive/mesa-21.2.0.tar.xz"
+  sha256 "0cb3c802f4b8e7699b1602c08c29d06a4d532ab5b8f7a64676c4ca6bb8f4d426"
   license "MIT"
   head "https://gitlab.freedesktop.org/mesa/mesa.git", branch: "main"
 
@@ -14,10 +14,11 @@ class Mesa < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "c7907e55c7e5c96769c6bfee399b6561200492a7a2ade0267ee662c9b7a40544"
-    sha256 big_sur:       "b8e5a44cde3fa42be9dd467d1f9dec8819b63523cc65f7bcbe75a0519674c524"
-    sha256 catalina:      "dc9dae9f087cc09fcb9c66904dde648095a453f2e0c472eb602d163347b7faac"
-    sha256 mojave:        "69ac1af2a4c12811a0efabfef9d33b3ccb8abaa61385b8edbfc4cc6a1ab36fd6"
+    sha256 arm64_big_sur: "65138ca70442cf7485ff98c028864eacced13c7b2fc62146f9026b2e7f501e05"
+    sha256 big_sur:       "6bed8a72c96b4844286c7e9666b8ea0c887891a6b867904900faf6ffd61d875e"
+    sha256 catalina:      "af5a8c808d643c0d64f70e33543a6a9c18c771152fbac4f5b8dad86167c053ed"
+    sha256 mojave:        "7308951bd120ed6de6cb3838cbc358f0b210f61e102ff366cb1b8a5c988b9ded"
+    sha256 x86_64_linux:  "066e8c5709d5cae301b73348f43f72897203286e4b5d7115070ccc58bb68c5b6"
   end
 
   depends_on "meson" => :build
@@ -38,6 +39,7 @@ class Mesa < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "gcc"
     depends_on "lm-sensors"
     depends_on "libelf"
     depends_on "libxfixes"
@@ -53,6 +55,8 @@ class Mesa < Formula
     depends_on "wayland-protocols"
   end
 
+  fails_with gcc: "5"
+
   resource "Mako" do
     url "https://files.pythonhosted.org/packages/5c/db/2d2d88b924aa4674a080aae83b59ea19d593250bfe5ed789947c21736785/Mako-1.1.4.tar.gz"
     sha256 "17831f0b7087c313c0ffae2bcbbd3c1d5ba9eeac9c38f2eb7b50e8c99fe9d5ab"
@@ -66,11 +70,6 @@ class Mesa < Formula
   resource "gl_wrap.h" do
     url "https://gitlab.freedesktop.org/mesa/demos/-/raw/faaa319d704ac677c3a93caadedeb91a4a74b7a7/src/util/gl_wrap.h"
     sha256 "c727b2341d81c2a1b8a0b31e46d24f9702a1ec55c8be3f455ddc8d72120ada72"
-  end
-
-  patch do
-    url "https://gitlab.freedesktop.org/mesa/mesa/-/commit/50064ad367449afad03c927f7e572c138b05c5d4.diff"
-    sha256 "2f17f8f03a54350025fff65ec6d410b1c2f924a30199551457a0f43a9bada7b6"
   end
 
   def install

@@ -3,16 +3,18 @@ class Pyinstaller < Formula
 
   desc "Bundle a Python application and all its dependencies"
   homepage "https://www.pyinstaller.org"
-  url "https://files.pythonhosted.org/packages/b6/27/a006fcadba0db30819c968eb8decb4937cda398ca7a44d8874172cdc228a/pyinstaller-4.3.tar.gz"
-  sha256 "5ecf8bbc230d7298a796e52bb745b95eee12878d141f1645612c99246ecd23f2"
+  url "https://files.pythonhosted.org/packages/56/68/fcf288abb7985d17c4d5802aa76cbc6e00cd85d084230338cf4ef8696a38/pyinstaller-4.4.tar.gz"
+  sha256 "af3ef0b9f265a2d3859357a25ab16743fbb6143c89fd7c3570cb84b8d24db0ba"
   license "GPL-2.0-or-later"
   head "https://github.com/pyinstaller/pyinstaller.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "292e4fe62bbd4c2c59af1e78efd679928b0c4e01cd089547d70382fec7c990fc"
-    sha256 cellar: :any_skip_relocation, big_sur:       "06978aedae4293f278b0f729727ce21b612ababb90339b76dd3ad2a58fd42eb1"
-    sha256 cellar: :any_skip_relocation, catalina:      "b8f2786b1aa933009cd69f8254e4529f55f1fc07b398b34a0473a07619e28c64"
-    sha256 cellar: :any_skip_relocation, mojave:        "d2270fa53effbfb5842f5e66d89fbbcde05acc125056ec4660f5e717119855f7"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "3f62cafb5efa21e3134de45dfff0fb8d3c2ed6f715d3ae9df4486e0aee791193"
+    sha256 cellar: :any_skip_relocation, big_sur:       "03823e8b8f5ca5abc9415cd09711b3e8bc89f517d99921c25a04a2c521e890a3"
+    sha256 cellar: :any_skip_relocation, catalina:      "c318c0284d2222ec06f90cbd33202a923e530edb3d7577c64b58f72d9ffb1b95"
+    sha256 cellar: :any_skip_relocation, mojave:        "71cabd305a504f8fbdd6ef48ab4f5583bfb17cc7980b835bb7dc293e6a328103"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a70f2e6a43c9257ca7f705ef9ee794b0df61983f5e92a6739337b074930442d"
   end
 
   depends_on "python@3.9"
@@ -28,11 +30,18 @@ class Pyinstaller < Formula
   end
 
   resource "pyinstaller-hooks-contrib" do
-    url "https://files.pythonhosted.org/packages/70/4b/453588ea48782e7c3e531d2fc016aa88248687123bfac9d5c72f57a4def6/pyinstaller-hooks-contrib-2021.1.tar.gz"
-    sha256 "892310e6363655838485ee748bf1c5e5cade7963686d9af8650ee218a3e0b031"
+    url "https://files.pythonhosted.org/packages/eb/fa/fe062e44776ab8edb4ac62daca1a02bb744ebdd556ec7a75c19c717e80b4/pyinstaller-hooks-contrib-2021.2.tar.gz"
+    sha256 "7f5d0689b30da3092149fc536a835a94045ac8c9f0e6dfb23ac171890f5ea8f2"
   end
 
+  # Work around to create native thin bootloader using `--no-universal2` flag
+  # Upstream ref: https://github.com/pyinstaller/pyinstaller/issues/6091
+  patch :DATA
+
   def install
+    cd "bootloader" do
+      system "python3", "./waf", "all", "--no-universal2", "STRIP=/usr/bin/strip"
+    end
     virtualenv_install_with_resources
   end
 
@@ -49,3 +58,16 @@ class Pyinstaller < Formula
     assert_predicate testpath/"dist/easy_install", :exist?
   end
 end
+
+__END__
+--- a/bootloader/wscript
++++ b/bootloader/wscript
+@@ -360,7 +360,7 @@ def set_arch_flags(ctx):
+             if ctx.options.macos_universal2:
+                 mac_arch = UNIVERSAL2_FLAGS
+             else:
+-                mac_arch = ['-arch', 'x86_64']
++                mac_arch = []
+         ctx.env.append_value('CFLAGS', mac_arch)
+         ctx.env.append_value('CXXFLAGS', mac_arch)
+         ctx.env.append_value('LINKFLAGS', mac_arch)

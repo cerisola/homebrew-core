@@ -1,15 +1,21 @@
 class Fcp < Formula
   desc "Significantly faster alternative to the classic Unix cp(1) command"
   homepage "https://github.com/Svetlitski/fcp/"
-  url "https://github.com/Svetlitski/fcp/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "7e4e69bdb7f1f831dc52cd517afdd5722313d3dece3afd7dad418d224d4badd1"
+  url "https://github.com/Svetlitski/fcp/archive/refs/tags/v0.2.1.tar.gz"
+  sha256 "e835d014849f5a3431a0798bcac02332915084bf4f4070fb1c6914b1865295f2"
   license "BSD-3-Clause"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "dead76c3970ca3234354847c718ccefb8b1ec6b5316e7b0dad386a907a531665"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a1ab4eee959861298d34c1d83b20bc5ed75013d28d5b35bedfd773b08e80c13c"
-    sha256 cellar: :any_skip_relocation, catalina:      "89c5d3ff8c34dbbc6052b68b4eb1a58420d08e0fc6cb1b4ffbac60126ba85091"
-    sha256 cellar: :any_skip_relocation, mojave:        "70db6ca6787f72fee1020d0c5c0b3a3070a6cd3c269ce6f4aecf5e9db6609114"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2694de15f2cc9a32797a01cfde7f79a235a195fc65409582577a0c98977b1494"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5e60b6a0d189ab71e4411a719ebdb2a7d8e15db7bc54c5a74ff47b2676a09cca"
+    sha256 cellar: :any_skip_relocation, catalina:      "890ab9d94808f3b3534a9f2610f9502ac35a57ff827f9b12363ec9a5de52d50f"
+    sha256 cellar: :any_skip_relocation, mojave:        "e54a5a79e09a561e2693dcef311856bfac90ae9221ebd30452d2812637fcea63"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "28c1e011bfdcb00954015a72ab6b8b24f2eeffb48ad95199fd169730e1235b28"
   end
 
   depends_on "rust" => :build

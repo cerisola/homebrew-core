@@ -1,15 +1,15 @@
 class Lmod < Formula
   desc "Lua-based environment modules system to modify PATH variable"
   homepage "https://lmod.readthedocs.io"
-  url "https://github.com/TACC/Lmod/archive/8.5.7.tar.gz"
-  sha256 "e714eb63522a6f1b10bd7c40737bd698ab19349d0262c2f615e2e1413c5170f3"
+  url "https://github.com/TACC/Lmod/archive/8.5.12.tar.gz"
+  sha256 "17efba0b36c94c03b394247dc39e67703d3584e29682e4eb366e1b4e0f26091a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "84334b39c5731872c51e7313ff3f7becf5fb386e75f65958a04c03e96030adbe"
-    sha256 cellar: :any_skip_relocation, big_sur:       "645f9ad347e3806095ca73edb100b037bd35b5e793b9bbd2c191c75223fc7f89"
-    sha256 cellar: :any_skip_relocation, catalina:      "454634e0f9ced396e139cea1847a7bcf9b2a9e1925f090b16e319173d5d6c211"
-    sha256 cellar: :any_skip_relocation, mojave:        "d142a50a1faab563d3a433db38fddd5a71dc6bea92aa7d140604d0c611579333"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "35e3bbace8eb0d22134ad918a5110f04878eea7b80758ccd456ab5ce1ecad786"
+    sha256 cellar: :any_skip_relocation, big_sur:       "8035460e6095a1cfcdb4951017a5d85c38ac60f8ca7878deb4ef796b7e4884b3"
+    sha256 cellar: :any_skip_relocation, catalina:      "0637b962f2313fd81b0c5050931baaf1a326820409763e6670ed9df4f106be43"
+    sha256 cellar: :any_skip_relocation, mojave:        "6053c3d0dad4ed0e6f72461dd54c1001dc34f3fa0ae2c3be90d45f43cbf5a11b"
   end
 
   depends_on "luarocks" => :build

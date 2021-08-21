@@ -10,6 +10,7 @@ class JenkinsJobBuilder < Formula
     sha256 cellar: :any_skip_relocation, big_sur:       "69c8972dffda3834ad3f2f88de9644b709019f0caebdc9845befa8e89345da8b"
     sha256 cellar: :any_skip_relocation, catalina:      "aa8129b03faa3af6f24a123059e18a179522de86c8db75cdb05bf2fdace0cc06"
     sha256 cellar: :any_skip_relocation, mojave:        "c987e38ace62b50528df2ff117d949b6299715e96214bfd77a96b1fa14ecf5f7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "89bb62398cb41dbbf562e95e74f934e7858acd00d74217df6559f60c5aeb9cd2"
   end
 
   depends_on "python@3.9"
@@ -101,8 +102,16 @@ class JenkinsJobBuilder < Formula
   end
 
   test do
-    assert_match("Managed by Jenkins Job Builder",
-                 pipe_output("#{bin}/jenkins-jobs test /dev/stdin",
-                             "- job:\n    name: test-job\n\n", 0))
+    on_macos do
+      assert_match("Managed by Jenkins Job Builder",
+                   pipe_output("#{bin}/jenkins-jobs test /dev/stdin",
+                               "- job:\n    name: test-job\n\n", 0))
+    end
+
+    on_linux do
+      assert_match("WARNING:jenkins_jobs.config:Config file",
+               pipe_output("#{bin}/jenkins-jobs test /dev/stdin 2>&1",
+                           "- job:\n    name: test-job\n\n", 1))
+    end
   end
 end
