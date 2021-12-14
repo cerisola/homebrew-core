@@ -1,20 +1,27 @@
 class Scs < Formula
   desc "Conic optimization via operator splitting"
   homepage "https://web.stanford.edu/~boyd/papers/scs.html"
-  url "https://github.com/cvxgrp/scs/archive/v2.1.3.tar.gz"
-  sha256 "cb139aa8a53b8f6a7f2bacec4315b449ce366ec80b328e823efbaab56c847d20"
+  url "https://github.com/cvxgrp/scs/archive/v3.0.0.tar.gz"
+  sha256 "95ab61495db72b18d6bb690cd2ae2ce88134d078c473da6cb8750857ea17f732"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "31f24806066b7875a7f95449334dc87db7469a8e9bf16e6e3af2e08477a7a18c"
-    sha256 cellar: :any, big_sur:       "02a9439a63388387cde336365b7fa8ce72dee8b007cb5b4738187cc3d8450d15"
-    sha256 cellar: :any, catalina:      "9557d174fd285c18d2196035dad66ad22781727da8ee450d2a1c6a8a591ade72"
-    sha256 cellar: :any, mojave:        "8a0b90a351d6f54549b6aca70f3a19353bf33732d15cbcdb827962bed0f0cc52"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "7396232a2441de245f2833b8b1503a9ccb892ba74d32a0fe791aec30a3f2950a"
+    sha256 cellar: :any,                 arm64_big_sur:  "1e0d76bd37e43f488204b8601b3d2d34cfb6bdac82ee1c0f9d326ca06b14b1a4"
+    sha256 cellar: :any,                 monterey:       "77ed8f0663cfa9f7784a75481115d10342fed9f3e6b701cdb71bb38d4ad6ebeb"
+    sha256 cellar: :any,                 big_sur:        "5956182473063c3d2e47270913d4d007545ac06b03b14889dcf0393579882639"
+    sha256 cellar: :any,                 catalina:       "f4bb9a6a92cf7fbdae23f4cc939c89b39d0bd8c2dfb55eb179805a7e94446a21"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39d905ace10ceac5e2e8137afb6cdfe09c4c9dd8d920b0a9377836de182447a9"
+  end
+
+  on_linux do
+    depends_on "openblas"
   end
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
-    pkgshare.install "test/data/small_random_socp"
+    pkgshare.install "test/problems/random_prob"
   end
 
   test do
@@ -23,13 +30,15 @@ class Scs < Formula
       #include <scs.h>
       #include <util.h>
       int main() {
-        ScsData *data; ScsCone *cone;
-        const int status = scs_read_data("#{pkgshare}/small_random_socp",
-                                         &data, &cone);
-        ScsSolution *solution = scs_calloc(1, sizeof(ScsSolution));
+        ScsData *d; ScsCone *k; ScsSettings *stgs;
+        ScsSolution *sol = scs_calloc(1, sizeof(ScsSolution));
         ScsInfo info;
-        const int result = scs(data, cone, solution, &info);
-        scs_free_data(data, cone); scs_free_sol(solution);
+        scs_int result;
+
+        scs_read_data("#{pkgshare}/random_prob", &d, &k, &stgs);
+        result = scs(d, k, stgs, sol, &info);
+
+        scs_free_data(d, k, stgs); scs_free_sol(sol);
         return result - SCS_SOLVED;
       }
     EOS

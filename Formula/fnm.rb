@@ -1,10 +1,10 @@
 class Fnm < Formula
   desc "Fast and simple Node.js version manager"
-  homepage "https://fnm.vercel.app"
-  url "https://github.com/Schniz/fnm/archive/v1.26.0.tar.gz"
-  sha256 "fedb9745d6c82fa6e0593856b1b995b286782f52f3497861839c6ee46559c881"
+  homepage "https://github.com/Schniz/fnm"
+  url "https://github.com/Schniz/fnm/archive/v1.28.2.tar.gz"
+  sha256 "02bec72f9978fc2fd7b2671b25cc2bb019a64c0f2d2fe7ab72ec0add91288599"
   license "GPL-3.0-only"
-  head "https://github.com/Schniz/fnm.git"
+  head "https://github.com/Schniz/fnm.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,11 +12,12 @@ class Fnm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f222bc246bb34b6e6b01287cbdcb52f78fd1cf9c0220ca79e0db2307c84cd8ed"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ef6680b7f1c89f9864e8fbbb7ceed6dac81d237ddf001f4808200a2524c3e005"
-    sha256 cellar: :any_skip_relocation, catalina:      "3e6d64efd270f7d081de052f6380ded8a1ebb436cba26fbb41d1a32098652f5b"
-    sha256 cellar: :any_skip_relocation, mojave:        "ce025c6632c739424486532bcd3c460571366e9933392b31d153bc5a8084eae4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75b4b360ff4565c3a6ceed6381373702b3cec7b842d5170fe6d39b57116618d5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3f6ee5ae14fc036bc1989af6d83416c3793e091f63b54c4af462e3409f09cdc7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2c5620a20e911f6467dfc7b56d0e50ccceecb5be10745c26f305d277253ee706"
+    sha256 cellar: :any_skip_relocation, monterey:       "49bedcc76bb5488f235e7304e36ca7d5d364d441d805d9ba983872c5312a74ad"
+    sha256 cellar: :any_skip_relocation, big_sur:        "eff23089c17c17df042730f1125174053abfd8d91eac6a2fffe434cc728efc7e"
+    sha256 cellar: :any_skip_relocation, catalina:       "0bacd34d125aa95236c003806e70214749c51be3c0c1ef74298d38d8a281aba4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab90af7e99ac6bb83bd05de1ac4f0c7cd38dec616b3081979ee4b490986accfd"
   end
 
   depends_on "rust" => :build
@@ -26,13 +27,13 @@ class Fnm < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    (bash_completion/"fnm").write Utils.safe_popen_read("#{bin}/fnm", "completions", "--shell=bash")
-    (fish_completion/"fnm.fish").write Utils.safe_popen_read("#{bin}/fnm", "completions", "--shell=fish")
-    (zsh_completion/"_fnm").write Utils.safe_popen_read("#{bin}/fnm", "completions", "--shell=zsh")
+    (bash_completion/"fnm").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=bash")
+    (fish_completion/"fnm.fish").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=fish")
+    (zsh_completion/"_fnm").write Utils.safe_popen_read(bin/"fnm", "completions", "--shell=zsh")
   end
 
   test do
-    system("#{bin}/fnm", "install", "12.0.0")
+    system bin/"fnm", "install", "12.0.0"
     assert_match "v12.0.0", shell_output("#{bin}/fnm exec --using=12.0.0 -- node --version")
   end
 end

@@ -1,9 +1,9 @@
 class Libopenmpt < Formula
   desc "Software library to decode tracked music files"
   homepage "https://lib.openmpt.org/libopenmpt/"
-  url "https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.5.10+release.autotools.tar.gz"
-  version "0.5.10"
-  sha256 "59a8fa28d8b8df69cb7fa5972bdf931081dab4e1e1156c69a1a53b65c2be9ffa"
+  url "https://lib.openmpt.org/files/libopenmpt/src/libopenmpt-0.5.14+release.autotools.tar.gz"
+  version "0.5.14"
+  sha256 "a979c1a763dcb420d40004eaeadd5532153b63493e6bfb71362204ee8a75abdc"
   license "BSD-3-Clause"
 
   livecheck do
@@ -12,10 +12,12 @@ class Libopenmpt < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "75145d9635ac938c7ba553d3f51f66f44cf0c0aeff681fdc06472bd7cee708a9"
-    sha256 cellar: :any, big_sur:       "a3f50c4544b5fe6b7494ed6a10dc73d95fe60b8d2148ac8de16e1acf1fcf886a"
-    sha256 cellar: :any, catalina:      "982ab967c30a8c3090f85cc7fa0a4978ce6db9d52c3590e88fd6aefb27cb006b"
-    sha256 cellar: :any, mojave:        "cec457bc736a126acf909c3a25283c6e0643018e548366b1e127c0517f349f61"
+    sha256 cellar: :any,                 arm64_monterey: "045be27a84133e369746336645852290d50469116fadb1a1d51c9ef26c06f565"
+    sha256 cellar: :any,                 arm64_big_sur:  "cfd024497f2b07f58c64509eb62340da4dc18e0daff8babc16cc64b6106ca4db"
+    sha256 cellar: :any,                 monterey:       "b02d8b4fb57ed35a9bb5aea15980a625d925c3e768d1bb9ad00792c7b1344da6"
+    sha256 cellar: :any,                 big_sur:        "7c153427e2faaa18fef196a869a13567395936419ddf904e959c6175142828fa"
+    sha256 cellar: :any,                 catalina:       "cf2ce3d2302c2eabf1c910453beb20fcc9b058bec2a6b7b748aabefbfc219200"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bbbfcf34a10e5a71726b324e3b8e35f2bfb9281a4358739e9c3c2293b12aaef1"
   end
 
   depends_on "pkg-config" => :build
@@ -30,13 +32,13 @@ class Libopenmpt < Formula
   uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc" # for C++17
+    depends_on "gcc"
     depends_on "pulseaudio"
   end
 
-  fails_with gcc: "5"
+  fails_with gcc: "5" # needs C++17
 
-  resource "mystique.s3m" do
+  resource "homebrew-mystique.s3m" do
     url "https://api.modarchive.org/downloads.php?moduleid=54144#mystique.s3m"
     sha256 "e9a3a679e1c513e1d661b3093350ae3e35b065530d6ececc0a96e98d3ffffaf4"
   end
@@ -47,13 +49,12 @@ class Libopenmpt < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--without-vorbisfile"
-
     system "make"
     system "make", "install"
   end
 
   test do
-    resource("mystique.s3m").stage do
+    resource("homebrew-mystique.s3m").stage do
       output = shell_output("#{bin}/openmpt123 --probe mystique.s3m")
       assert_match "Success", output
     end

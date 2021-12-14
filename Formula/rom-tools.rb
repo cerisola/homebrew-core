@@ -1,22 +1,23 @@
 class RomTools < Formula
   desc "Tools for Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  # NOTE: Please keep these values in sync with mame.rb when updating.
-  url "https://github.com/mamedev/mame/archive/mame0234.tar.gz"
-  version "0.234"
-  sha256 "6b729494c0e63fd974061c11e860667164e85c20890f60eade048e3e4e5c00cd"
+  url "https://github.com/mamedev/mame/archive/mame0238.tar.gz"
+  version "0.238"
+  sha256 "13aa880b097832acf6cda43629f9253bcc8a340748db071028903358ffbe7faf"
   license "GPL-2.0-or-later"
-  head "https://github.com/mamedev/mame.git"
+  head "https://github.com/mamedev/mame.git", branch: "master"
 
   livecheck do
     formula "mame"
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "730f585c4716e3ddb66e44c47889908397f4c430b15bfe8f92fd1d4095cfa587"
-    sha256 cellar: :any, big_sur:       "c5d0c3988a0388c9eb045f715071f78ff50c6af4407f4d0fbcc2594525547d1c"
-    sha256 cellar: :any, catalina:      "51011662224677d68ccb885d1ae0958d3cb451aafeed54c61c941b6c7339e745"
-    sha256 cellar: :any, mojave:        "1cc1911ec0f509de922dbffb9b86217da1718765f50d860fbdcadca37e95d801"
+    sha256 cellar: :any,                 arm64_monterey: "6f67fb3e2158a7e0090c8c64108225df29eb6f7e304e2caacad975cd9ae1cebe"
+    sha256 cellar: :any,                 arm64_big_sur:  "fc7e548acac09d0c5656c54583aeba2b981af5f3da166b6bc234731120e5f633"
+    sha256 cellar: :any,                 monterey:       "2e501ed12efb13a7664c20c0989409b5e1eeac7b343f22aeb5372222e56d279f"
+    sha256 cellar: :any,                 big_sur:        "a32450560cf6f6cfd235ab82f842712af4562a40f7e9ef0fbd19d6c128f90bf1"
+    sha256 cellar: :any,                 catalina:       "6cf38e287e0ef339de2f280530a09830cf603c0bd23a8c35a577edb2c6b6aa61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "26ca3cf000347477ace3e10dc8912e84b1b50f58770c9d8be64f1a6c81d44afa"
   end
 
   depends_on "pkg-config" => :build
@@ -30,25 +31,46 @@ class RomTools < Formula
   uses_from_macos "expat"
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "portaudio" => :build
+    depends_on "portmidi" => :build
+    depends_on "pulseaudio" => :build
+    depends_on "qt@5" => :build
+    depends_on "sdl2_ttf" => :build
+    depends_on "gcc" # for C++17
+  end
+
+  fails_with gcc: "5"
+  fails_with gcc: "6"
+
   def install
     # Cut sdl2-config's invalid option.
     inreplace "scripts/src/osd/sdl.lua", "--static", ""
 
     # Use bundled asio instead of latest version.
     # See: <https://github.com/mamedev/mame/issues/5721>
-    system "make", "PYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3",
-                   "TOOLS=1",
-                   "USE_LIBSDL=1",
-                   "USE_SYSTEM_LIB_EXPAT=1",
-                   "USE_SYSTEM_LIB_ZLIB=1",
-                   "USE_SYSTEM_LIB_ASIO=",
-                   "USE_SYSTEM_LIB_FLAC=1",
-                   "USE_SYSTEM_LIB_UTF8PROC=1"
+    args = %W[
+      PYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3
+      TOOLS=1
+      USE_LIBSDL=1
+      USE_SYSTEM_LIB_EXPAT=1
+      USE_SYSTEM_LIB_ZLIB=1
+      USE_SYSTEM_LIB_ASIO=
+      USE_SYSTEM_LIB_FLAC=1
+      USE_SYSTEM_LIB_UTF8PROC=1
+    ]
+    if OS.linux?
+      args << "USE_SYSTEM_LIB_PORTAUDIO=1"
+      args << "USE_SYSTEM_LIB_PORTMIDI=1"
+    end
+    system "make", *args
+
     bin.install %w[
-      aueffectutil castool chdman floptool imgtool jedutil ldresample ldverify
+      castool chdman floptool imgtool jedutil ldresample ldverify
       nltool nlwav pngcmp regrep romcmp srcclean testkeys unidasm
     ]
     bin.install "split" => "rom-split"
+    bin.install "aueffectutil" if OS.mac?
     man1.install Dir["docs/man/*.1"]
   end
 

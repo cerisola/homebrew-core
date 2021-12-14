@@ -1,32 +1,42 @@
 class Yarn < Formula
   desc "JavaScript package manager"
   homepage "https://yarnpkg.com/"
-  url "https://yarnpkg.com/downloads/1.22.11/yarn-v1.22.11.tar.gz"
-  sha256 "2c320de14a6014f62d29c34fec78fdbb0bc71c9ccba48ed0668de452c1f5fe6c"
+  url "https://yarnpkg.com/downloads/1.22.17/yarn-v1.22.17.tar.gz"
+  sha256 "267982c61119a055ba2b23d9cf90b02d3d16c202c03cb0c3a53b9633eae37249"
   license "BSD-2-Clause"
+  revision 1
 
   livecheck do
     skip("1.x line is frozen and features/bugfixes only happen on 2.x")
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "27d2f4cae93bd17d2038871f7ac6bc8b04d181ebcebd9f976e1701a3def55c8d"
+    sha256 cellar: :any_skip_relocation, all: "620296420d997ae8a3d50c4cd029c6f9188b1711ebfe41dd8614b72817232e96"
   end
 
-  depends_on "node"
+  depends_on "node" => :test
 
   conflicts_with "hadoop", because: "both install `yarn` binaries"
+  conflicts_with "corepack", because: "both install `yarn` and `yarnpkg` binaries"
 
   def install
-    libexec.install Dir["*"]
-    (bin/"yarn").write_env_script "#{libexec}/bin/yarn.js",
-      PREFIX:            HOMEBREW_PREFIX,
-      NPM_CONFIG_PYTHON: "/usr/bin/python"
-    (bin/"yarnpkg").write_env_script "#{libexec}/bin/yarn.js",
-      PREFIX:            HOMEBREW_PREFIX,
-      NPM_CONFIG_PYTHON: "/usr/bin/python"
-    inreplace "#{libexec}/lib/cli.js", "/usr/local", HOMEBREW_PREFIX
-    inreplace "#{libexec}/package.json", '"installationMethod": "tar"', '"installationMethod": "homebrew"'
+    libexec.install buildpath.glob("*")
+    (bin/"yarn").write_env_script libexec/"bin/yarn.js",
+                                  PREFIX:            HOMEBREW_PREFIX,
+                                  NPM_CONFIG_PYTHON: "python3"
+    (bin/"yarnpkg").write_env_script libexec/"bin/yarn.js",
+                                      PREFIX:            HOMEBREW_PREFIX,
+                                      NPM_CONFIG_PYTHON: "python3"
+    inreplace libexec/"lib/cli.js", "/usr/local", HOMEBREW_PREFIX
+    inreplace libexec/"package.json", '"installationMethod": "tar"',
+                                      "\"installationMethod\": \"#{tap.user.downcase}\""
+  end
+
+  def caveats
+    <<~EOS
+      yarn requires a Node installation to function. You can install one with:
+        brew install node
+    EOS
   end
 
   test do

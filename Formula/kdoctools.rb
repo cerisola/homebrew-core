@@ -1,21 +1,29 @@
 class Kdoctools < Formula
   desc "Create documentation from DocBook"
   homepage "https://api.kde.org/frameworks/kdoctools/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.85/kdoctools-5.85.0.tar.xz"
-  sha256 "c1c5505c42c221f2387b93e756c2d611f2494bb888af9c3d09993b57ccfd7d05"
+  url "https://download.kde.org/stable/frameworks/5.89/kdoctools-5.89.0.tar.xz"
+  sha256 "e1319af7ee5d108c651e3acb70ab28328d24be009de174646a233e2d7c2118f5"
   license all_of: [
     "BSD-3-Clause",
     "GPL-2.0-or-later",
     "LGPL-2.1-or-later",
     any_of: ["LGPL-2.1-only", "LGPL-3.0-only"],
   ]
-  head "https://invent.kde.org/frameworks/kdoctools.git"
+  head "https://invent.kde.org/frameworks/kdoctools.git", branch: "master"
+
+  # We check the tags from the `head` repository because the latest stable
+  # version doesn't seem to be easily available elsewhere.
+  livecheck do
+    url :head
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "221115c17f13849895f84303f7bd273fbcd83965b2022e3fb3384c5c4b624327"
-    sha256 cellar: :any, big_sur:       "567506508a4a1d149940099002999bae8b9d3290972f61eb35c8ba94aa20f0da"
-    sha256 cellar: :any, catalina:      "3bd773d0e86dd406fb9474507cab4e6973b764bddc127eeefa02236d2ec20eb3"
-    sha256 cellar: :any, mojave:        "8ed273e3eb3a294571b7f7f46ea883415751cccd6c051db0db7fc241e3e41523"
+    sha256 cellar: :any, arm64_monterey: "f03b4805a558725723787c83dc3c7792a09bc8d17151df46108ad063d91455b4"
+    sha256 cellar: :any, arm64_big_sur:  "c17f99e1138e0d3b160033a6a192ea21d81d2a447943078655c3e5299def5786"
+    sha256 cellar: :any, monterey:       "3f6c605b7c06e3cd00219223b69fd4efc71d52f84417aba2de53f31b4495de2d"
+    sha256 cellar: :any, big_sur:        "381abee82d6de9da15f9594f127625cd50db7e074dec10b91e762ebb9136a1c5"
+    sha256 cellar: :any, catalina:       "378c73f3d38425efb566e76364e5f40d39bb27a9a0d6656efb016e37c78134ac"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -49,10 +57,9 @@ class Kdoctools < Formula
     args << "-DBUILD_TESTING=OFF"
     args << "-DBUILD_QCH=ON"
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     pkgshare.install ["cmake", "autotests", "tests"]
   end

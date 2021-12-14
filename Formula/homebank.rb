@@ -4,6 +4,7 @@ class Homebank < Formula
   url "http://homebank.free.fr/public/homebank-5.5.3.tar.gz"
   sha256 "073607918a9610087791f36f59e70d1261fee8e4e1146a5cfd5871a1d2d91093"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "http://homebank.free.fr/public/"
@@ -11,11 +12,12 @@ class Homebank < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "a1aaa55de58c02e3d231bf3405d9d08e3ad95f11805627d668563e10b8bbaedb"
-    sha256 big_sur:       "e5b90fc6091d2fdb03ce91eddf19a7dbbc9858414d582872ad285d3cec89e7cd"
-    sha256 catalina:      "7dae6924cc50f1f445550ffb09a45518821936e5f6320661700e3b001c645f3e"
-    sha256 mojave:        "9effe333c729e3b2c3622d1595f27ef6e187d20a7917adad53cfb922d83f9b91"
-    sha256 x86_64_linux:  "d19777f6595d8b37ec6242b66f75c9297bbceea976eddd3fc4bf1d127c351d60"
+    rebuild 1
+    sha256 arm64_big_sur: "9886da1f9d7dfb98b13ac1808b4318864282a055269b25da19e5f1453cc1a588"
+    sha256 monterey:      "f2899fa483e5da1fa95a8e97946a9c555c94b6be3fe6455151fa92e741c40441"
+    sha256 big_sur:       "5936596838042fc63daec2e53293f5b3bae29fe78f196ebd3ecca9101f1dacb8"
+    sha256 catalina:      "d9c3421acd5e7aa1e3bce9ef2ac4009a7fa3d93941b5ae11fd60e48e9dd8dfe0"
+    sha256 x86_64_linux:  "d61e170159b6d68f64712b5fae3cc50d881c670f444df0fbf1133d845129a957"
   end
 
   depends_on "intltool" => :build
@@ -27,10 +29,10 @@ class Homebank < Formula
   depends_on "gtk+3"
   depends_on "hicolor-icon-theme"
   depends_on "libofx"
-  depends_on "libsoup"
+  depends_on "libsoup@2"
 
   def install
-    on_linux do
+    if OS.linux?
       # Needed to find intltool (xml::parser)
       ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5"
       ENV["INTLTOOL_PERL"] = Formula["perl"].bin/"perl"

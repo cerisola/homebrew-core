@@ -1,10 +1,10 @@
 class NodeExporter < Formula
   desc "Prometheus exporter for machine metrics"
   homepage "https://prometheus.io/"
-  url "https://github.com/prometheus/node_exporter/archive/v1.2.2.tar.gz"
-  sha256 "3b7b710dad97d9d2b4cb8c3f166ee1c86f629cce59062b09d4fb22459163ec86"
+  url "https://github.com/prometheus/node_exporter/archive/v1.3.1.tar.gz"
+  sha256 "66856b6b8953e094c46d7dd5aabd32801375cf4d13d9fe388e320cbaeaff573a"
   license "Apache-2.0"
-  head "https://github.com/prometheus/node_exporter.git"
+  head "https://github.com/prometheus/node_exporter.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,11 +12,12 @@ class NodeExporter < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "10c3e725f35828e54645d90f4e8865068de1122cd0f55b2fbde812e871c2e45d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "f1c1467f8db86b9578363d2e0705b2b150ac5843a7a780d82db57c4bab305574"
-    sha256 cellar: :any_skip_relocation, catalina:      "69c66da1f5837d53c694ec8210807fdec373fbcda411ef9e567339713a9c6431"
-    sha256 cellar: :any_skip_relocation, mojave:        "df2e4a99a7060703980b73f23ae1d7628a74d5f6ce098577dc0877ce5ec7fd23"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ae95a4372832bd1bd2f76ffadf74ba51db0437c6731e5cc29719b7eb0c83806"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8e99e508cef6d2a24256e593f93b74e2963ad1cc7e5c2afd00a5b8c2ac8ba58d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bfba63c91460b85b51c1ca10677b201c07660c1b707dc8ab3c43512dbd86ed34"
+    sha256 cellar: :any_skip_relocation, monterey:       "fe501d109da5207288495fff1bdb82c38b5d3d4cdf7f2ecfa9a2752f8af1c8c8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6258be13386a4e8808db92a0a0f7d993abbd28d3cf73ffba6ad34ddaacee867d"
+    sha256 cellar: :any_skip_relocation, catalina:       "5778761dad16f4f576128aaa00c021a127e01cd8a76314d7d1ec277ed083822d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f6f7e18658d6272d00d15335fc02d9c8a3e521868cb20a7a5aaca68d7e4aa23"
   end
 
   depends_on "go" => :build
@@ -46,31 +47,11 @@ class NodeExporter < Formula
     EOS
   end
 
-  plist_options manual: "node_exporter"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-        <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/node_exporter_brew_services</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>KeepAlive</key>
-          <false/>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/node_exporter.err.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/node_exporter.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"node_exporter_brew_services"]
+    keep_alive false
+    log_path var/"log/node_exporter.log"
+    error_log_path var/"log/node_exporter.err.log"
   end
 
   test do

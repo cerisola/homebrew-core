@@ -2,24 +2,25 @@ class Vim < Formula
   desc "Vi 'workalike' with many additional features"
   homepage "https://www.vim.org/"
   # vim should only be updated every 50 releases on multiples of 50
-  url "https://github.com/vim/vim/archive/v8.2.3350.tar.gz"
-  sha256 "f705470b5c95a2c02f96344d6b3c570f8f0eee23893b9118370cb7812815f9ce"
+  url "https://github.com/vim/vim/archive/v8.2.3800.tar.gz"
+  sha256 "5580c31980558612e7a1f85d0d73402b3feacc8ff174a70554cd2d0a44cd2966"
   license "Vim"
-  head "https://github.com/vim/vim.git"
+  head "https://github.com/vim/vim.git", branch: "master"
 
   bottle do
-    sha256 arm64_big_sur: "5c67e5167efd0fea36b3f99cdf8fe149a9834496d15c116620be9e3b8468da54"
-    sha256 big_sur:       "556a574a53633a0ba4d7dfbe36856590227504d185b0225446cd6d4845314325"
-    sha256 catalina:      "3341d122c9cde85167ea6e1257a13e52679fb4726a40c707c166f527229874e1"
-    sha256 mojave:        "12de00eaf17ad46c900b694de20dfae5319b2c95fbb051120fe0c394ef31a1fb"
-    sha256 x86_64_linux:  "c0980c4674c4a6cffd4d464befdfd6c90402b46cf2959fa99e35d2523deaa399"
+    sha256 arm64_monterey: "d9e4d4065ef0a4f458000c6aeafaf4625279a8da4a97229e457cc24208f9649c"
+    sha256 arm64_big_sur:  "391a607bfd78d4c9d8e174c42cdf5fa8fef168618f8e8c361afe9675b91a009e"
+    sha256 monterey:       "3e03cca209d9dd8de8f4e218cf0fe606617e40d862840d629ffd36a7a434b0d4"
+    sha256 big_sur:        "68dd1feb9a54dda0f325c56f9ee30f10e0211f3f3e731b22df2d08023278f651"
+    sha256 catalina:       "fcac711b10bfe559420a280f040cecbd835453d303d45e82ff37c4370df86b46"
+    sha256 x86_64_linux:   "8a8007b665f686ca2def6751bad0388c4f0c13e670fe78a2ff4463a9e0089e8f"
   end
 
   depends_on "gettext"
   depends_on "lua"
   depends_on "ncurses"
   depends_on "perl"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "ruby"
 
   conflicts_with "ex-vi",
@@ -29,7 +30,7 @@ class Vim < Formula
     because: "vim and macvim both install vi* binaries"
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.9"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.10"].opt_libexec/"bin"
 
     # https://github.com/Homebrew/homebrew-core/pull/1046
     ENV.delete("SDKROOT")

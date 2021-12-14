@@ -1,16 +1,17 @@
 class Hubble < Formula
   desc "Network, Service & Security Observability for Kubernetes using eBPF"
   homepage "https://github.com/cilium/hubble"
-  url "https://github.com/cilium/hubble/archive/refs/tags/v0.8.1.tar.gz"
-  sha256 "ebb54783c57e7997986dcc5a73f4f845015920b857dd348abd7a02e5d3af65ec"
+  url "https://github.com/cilium/hubble/archive/refs/tags/v0.9.0.tar.gz"
+  sha256 "4de209eb1cb54eb764efd4569b2fa59a4a92ef5c86055eff90805dad7a0dde6f"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "113047c23ad679c1f20bc2677b8cf4b8358088847c669642d056b2560acfae5c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6388ff464e1778aafb74b83fc86c7c812e971ccf67bf85cb9c54909c6a9242fd"
-    sha256 cellar: :any_skip_relocation, catalina:      "10f774f91b48cd518944070f13668920948e62faf93340a10dc66f12bdda989c"
-    sha256 cellar: :any_skip_relocation, mojave:        "10be5c09d955f9a54ab7f92742093906077df7c13ae54b7c0c72589bf16357a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c14ac1d48f9db3af7711eb16baba0f36de2adb5c748fbcf1684ddacf7232141b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "96ee50ebdf0b2c30e32d0592525f4a2cf3df70fadce4cb364e3f7f32d678e283"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2389500d861bcb47df9b7c5a159f686bb1ae52261de7e9ead299b98eb48f1464"
+    sha256 cellar: :any_skip_relocation, monterey:       "6921898f83ac3f2cd4416b4ef7b7cd1abef57171f892b357540f173cf68ffe8b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7401646b648ca09c7536c4f84391ee9ed5d6f2dd1a6f862d377a4566e35d1414"
+    sha256 cellar: :any_skip_relocation, catalina:       "dcb62e2b92ad49850a6914ebf1e7325bc9256a4e6bf4c5a3cc37d0cf26f50718"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4c8ee1f06b389c5d2a132cd8e42898abbe6723e537358999d8e0e492ed346aa"
   end
 
   depends_on "go" => :build

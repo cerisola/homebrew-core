@@ -1,23 +1,24 @@
 class Bibtexconv < Formula
   desc "BibTeX file converter"
   homepage "https://www.uni-due.de/~be0001/bibtexconv/"
-  url "https://github.com/dreibh/bibtexconv/archive/bibtexconv-1.2.0.tar.gz"
-  sha256 "0ace3aa17eedbc4c4950e5ef8763b1dd58bfa2d33cd00fa2b35f07febb6df940"
+  url "https://github.com/dreibh/bibtexconv/archive/bibtexconv-1.3.2.tar.gz"
+  sha256 "6eb1c82a8287ae749ac129d48c241c558881385a792dcc800a30809caf2a2109"
   license "GPL-3.0-or-later"
   head "https://github.com/dreibh/bibtexconv.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "e1695a1a03185cbf7f50c031cfab3d77777a6c8bd47c88ea1799fd097d4b8dfa"
-    sha256 cellar: :any,                 big_sur:       "aaab664beb497d6f9c7e84e7e3cf72fb68bbd813c3398e7b561b7fd611a5ed8a"
-    sha256 cellar: :any,                 catalina:      "5b9d6cc6d178116fe7e18d87c807cd4427d105e450feb0bd10a1649d64f61ed7"
-    sha256 cellar: :any,                 mojave:        "01522a08151261c2fb84298b690e00ad4699285ccfd2e2b021baedb1b6174bb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5bf8980f28f51667f569e7da89965e97adeffd5aa0212b12b047c84c9a53a8c3"
+    sha256 cellar: :any,                 arm64_monterey: "eae3c4722d3b824dcaeb36ee02f1ab5fbd7e837ca540a98ac37a68a95ca66084"
+    sha256 cellar: :any,                 arm64_big_sur:  "32369759a62181680a6146a975b36f7712ca2dc96a2d645772903d20d1394eb2"
+    sha256 cellar: :any,                 monterey:       "0e738cb15ae6d4c43221401bba7501138159ca03b53f78271e73a0394729697a"
+    sha256 cellar: :any,                 big_sur:        "0e216e19ab0dc2b63c660892b8503f493f101437386da8239ea2c18b5b511ebf"
+    sha256 cellar: :any,                 catalina:       "d1a4b531a508711d1524b89ef21d2a1a1818453548c14d99c4ed09b1d05bbd09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d4960851c348c9a2bd2b981fd110ef2de2d1aa0ea6d2ea2a588ad1328a74c10"
   end
 
+  depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "openssl@1.1"
 
-  uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "curl"
 

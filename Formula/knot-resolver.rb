@@ -1,8 +1,8 @@
 class KnotResolver < Formula
   desc "Minimalistic, caching, DNSSEC-validating DNS resolver"
   homepage "https://www.knot-resolver.cz"
-  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.4.1.tar.xz"
-  sha256 "fb8b962dd9ef744e2551c4f052454bc2a30e39c1f662f4f3522e8f221d8e3d66"
+  url "https://secure.nic.cz/files/knot-resolver/knot-resolver-5.4.3.tar.xz"
+  sha256 "488729eb93190336b6bca10de0d78ecb7919f77fcab105debc0a644aa7d0a506"
   license all_of: ["CC0-1.0", "GPL-3.0-or-later", "LGPL-2.1-or-later", "MIT"]
   head "https://gitlab.labs.nic.cz/knot/knot-resolver.git"
 
@@ -12,11 +12,12 @@ class KnotResolver < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "c4cd7cccb96bd54ceb76b8f04c95269fc639474c85c917eb03206eaf6d8aee34"
-    sha256 big_sur:       "3ee0b70bb08e528285d2c1c211a0e933324b1f742c8499b42f3b1f17f141c425"
-    sha256 catalina:      "550aa7baeabf7ab4ad234cd8ec60112e56c43b9023cc66b9b456e1a9c2a93491"
-    sha256 mojave:        "78a20463807a612d481736d6e5dc8f9dacf6cbc6df96006bd1fd022efa9088b6"
-    sha256 x86_64_linux:  "0ba3e84407b27a59138f60f1e08df6ffc830e0fb87247ad156c991c5a5478e3f"
+    sha256 arm64_monterey: "52f65d3c9bbabfdc92a811ac45bbe2ba1748d9e686c9d5169ac38b170bcb5ef8"
+    sha256 arm64_big_sur:  "4f6e6586cddb3a3d4ac9a6abfdabf021b49e8ecca72f6045845e60b4d4333c25"
+    sha256 monterey:       "2cd27fef96a55ee3b441a5766adc27db908ee7b7356698142a0aec2ae7d46f59"
+    sha256 big_sur:        "8505a179f4b2752c2368f3274fcbbd5f89406e9b0f71202a4738457da5ea00bc"
+    sha256 catalina:       "3dbbb7600e370ab1257cca131062df27f6b91d969516f4c8229281627b346dff"
+    sha256 x86_64_linux:   "f10362034e3e83b3e970edd07e77d2c23ff0bc4392206aad36b5cc8331f66ffe"
   end
 
   depends_on "meson" => :build
@@ -24,6 +25,7 @@ class KnotResolver < Formula
   depends_on "pkg-config" => :build
   depends_on "gnutls"
   depends_on "knot"
+  depends_on "libnghttp2"
   depends_on "libuv"
   depends_on "lmdb"
   depends_on "luajit-openresty"
@@ -35,9 +37,7 @@ class KnotResolver < Formula
 
   def install
     args = std_meson_args + ["--default-library=static"]
-    on_linux do
-      args << "-Dsystemd_files=enabled"
-    end
+    args << "-Dsystemd_files=enabled" if OS.linux?
 
     mkdir "build" do
       system "meson", *args, ".."

@@ -1,10 +1,9 @@
 class Abyss < Formula
   desc "Genome sequence assembler for short reads"
   homepage "https://www.bcgsc.ca/resources/software/abyss"
-  url "https://github.com/bcgsc/abyss/releases/download/2.3.1/abyss-2.3.1.tar.gz"
-  sha256 "664045e7903e9732411effc38edb9ebb1a0c1b7636c64b3a14a681f465f43677"
+  url "https://github.com/bcgsc/abyss/releases/download/2.3.3/abyss-2.3.3.tar.gz"
+  sha256 "4b14642989e84f331d8d1a854cca67bdede95e90bd6813836c173a951d71405c"
   license all_of: ["GPL-3.0-only", "LGPL-2.1-or-later", "MIT", "BSD-3-Clause"]
-  revision 1
 
   livecheck do
     url :stable
@@ -12,11 +11,12 @@ class Abyss < Formula
   end
 
   bottle do
-    sha256                               arm64_big_sur: "21d1cb2d31fa162cefea32db0630fc6011f8d3d0bb7ababa31f8e772820d1c7f"
-    sha256 cellar: :any,                 big_sur:       "e56ce6b9bf533fb34bd2f87e87fb1019e3cccdcdc94d0e665e144121c95ddcad"
-    sha256 cellar: :any,                 catalina:      "5a95037e8675013c34f4119d5a2914706ec3b99f522426878a19f27031ad4d79"
-    sha256 cellar: :any,                 mojave:        "fc1208b6ff7dbcdc23d621076a271a40f1090cab41690ce35433c81425984494"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "36113b6fa458aaf594892cf86bbce9e0c6098285d42a3477dd9ffd85ecf06982"
+    sha256 cellar: :any,                 arm64_monterey: "ecb144d0ac3aa901b601a7feaceca7ca3dd15f109b509680234f77a1d6d733ce"
+    sha256 cellar: :any,                 arm64_big_sur:  "c616dc93d3c6e3815cc3552780c90a5c151e10492388ceb132b29c005954ad28"
+    sha256 cellar: :any,                 monterey:       "483ae98a1d98b13273e05cb41e8bed12c7a79578065390750aac0c4c89d85be7"
+    sha256 cellar: :any,                 big_sur:        "5f6eb38e8fb09b0fd44b5a009da45c614ebce39d067ed61d0de319e816f02654"
+    sha256 cellar: :any,                 catalina:       "4c1c980211e1e2f6a214746ea2c1386afb47d10dbb0ab00ea478784668815e52"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c145191f987d15368189ea9b83b2bd2bf03f63d5494dafbbe32fa5880f57f30c"
   end
 
   head do
@@ -58,10 +58,10 @@ class Abyss < Formula
   test do
     testpath.install resource("testdata")
     if which("column")
-      system "#{bin}/abyss-pe", "k=25", "name=ts", "in=reads1.fastq reads2.fastq"
+      system "#{bin}/abyss-pe", "B=2G", "k=25", "name=ts", "in=reads1.fastq reads2.fastq"
     else
       # Fix error: abyss-tabtomd: column: not found
-      system "#{bin}/abyss-pe", "unitigs", "scaffolds", "k=25", "name=ts", "in=reads1.fastq reads2.fastq"
+      system "#{bin}/abyss-pe", "B=2G", "unitigs", "scaffolds", "k=25", "name=ts", "in=reads1.fastq reads2.fastq"
     end
     system "#{bin}/abyss-fac", "ts-unitigs.fa"
   end

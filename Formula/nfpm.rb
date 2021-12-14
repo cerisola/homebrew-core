@@ -1,23 +1,24 @@
 class Nfpm < Formula
   desc "Simple deb and rpm packager"
   homepage "https://nfpm.goreleaser.com/"
-  url "https://github.com/goreleaser/nfpm/archive/v2.6.0.tar.gz"
-  sha256 "d5d4433e4a2767f990bec48845dd8f04839ea13989271a67674821737713af91"
+  url "https://github.com/goreleaser/nfpm/archive/v2.10.0.tar.gz"
+  sha256 "8de4e2f4224ee209c24afb3d7fac9720e8f296cd8009ce43160a5526c41490f3"
   license "MIT"
-  head "https://github.com/goreleaser/nfpm.git"
+  head "https://github.com/goreleaser/nfpm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "11cc7fe2db9485e1823d15379796c9fcb4b9414cc830fa5d18d55230f96e4365"
-    sha256 cellar: :any_skip_relocation, big_sur:       "f94b0b5098dbf8a031916f9531760a2eb09a49ef5f58e9d38ff80a20f6a053d9"
-    sha256 cellar: :any_skip_relocation, catalina:      "b37c0e27d6f4e2f52a51335c11bf01eea3f710948d35e2a6eb46d8e79aa04176"
-    sha256 cellar: :any_skip_relocation, mojave:        "59675cc7634574f6df007cb48a85a4e334eb1ede73386c68bf96f2640014c8e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e83c3694f29669594ed1d0e0664ab03356da8da2a2a73386c2c21244358cc03"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "246c6d427917970962075e8356751bdf26b4d61702b7b3d3ee791337b9824252"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4a2a507a504f4ab759ae64d04045a716140afb80602640307d884cee2f6d96a9"
+    sha256 cellar: :any_skip_relocation, monterey:       "974c44048451b60a582386265866e4c7bbf8d5f49897ec6ab102b74138a10948"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3a3f7f00ed980e0c64c69cc276e20777e514f6b6ab0f27b5728c5fd75c563fff"
+    sha256 cellar: :any_skip_relocation, catalina:       "690d1b987921646311b40f7655a88e8a283ddb7065d7d41d1bdcebe3f8779c6d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a39707115d896117be3fec23fee0c68c5d5bd584bb6732db9d1a3e5728e98467"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-X main.version=v#{version}", *std_go_args, "./cmd/nfpm"
+    system "go", "build", *std_go_args(ldflags: "-X main.version=v#{version}"), "./cmd/nfpm"
   end
 
   test do

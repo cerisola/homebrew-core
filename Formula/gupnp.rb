@@ -3,16 +3,16 @@ class Gupnp < Formula
 
   desc "Framework for creating UPnP devices and control points"
   homepage "https://wiki.gnome.org/Projects/GUPnP"
-  url "https://download.gnome.org/sources/gupnp/1.2/gupnp-1.2.7.tar.xz"
-  sha256 "8441276f1afd0176e6f595026a3a507eed1809abfa04026bad3f21622b3523ec"
+  url "https://download.gnome.org/sources/gupnp/1.4/gupnp-1.4.1.tar.xz"
+  sha256 "899196b5e66f03b8e25f046a7a658cd2a6851becb83f2d55345ab3281655dc0c"
   license "LGPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "d9eb370676152358aab46a6eb4a2113c35393da0532e8777758fe86c58cfe68d"
-    sha256 cellar: :any, big_sur:       "2e6e2cf75b268a9b15ba5ab0218feb821b8fcfd3484b0392d1a61fbfb7b4024f"
-    sha256 cellar: :any, catalina:      "ad1eb9712b22a8cf129e2b1e655da5024904fbb4d9d05ac4642a74a169437e44"
-    sha256 cellar: :any, mojave:        "7a4029599f45eba6591d4dc62cfb4327e38ad97cd95f846ebc603b217d0e8939"
-    sha256               x86_64_linux:  "53a859d7651aeb8446bf5d16257dd40b640a1fba65eed609897fa65328295be4"
+    sha256 cellar: :any, arm64_big_sur: "9b270d05df62f6bb354888d53059f287934a7cb1db49d95314554737786ecc10"
+    sha256 cellar: :any, monterey:      "d0e643180b88c91bab346be63fe5c6704133b78d7466542e0bfc4a2aa26d02c6"
+    sha256 cellar: :any, big_sur:       "eea3bf0a0fdc4acd29c2ad0dd52ae961511fdd481da10d020ad1a6f491d5e89b"
+    sha256 cellar: :any, catalina:      "5c50ff780df02b5770ceeafc4425eb697c2ed4d1e11ec5f69af38d498436f8b4"
+    sha256               x86_64_linux:  "10b763c702998b668f8b44a58b9a76015ec72f2c35533525390af4f95e0fcbe1"
   end
 
   depends_on "docbook-xsl" => :build
@@ -20,13 +20,19 @@ class Gupnp < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "vala" => :build
   depends_on "gettext"
   depends_on "glib"
   depends_on "gssdp"
-  depends_on "libsoup"
+  depends_on "libsoup@2"
+  depends_on "libxml2"
   depends_on "python@3.9"
 
   def install
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libsoup@2"].opt_lib/"pkgconfig"
+    ENV.prepend_path "XDG_DATA_DIRS", Formula["libsoup@2"].opt_share
+    ENV.prepend_path "XDG_DATA_DIRS", HOMEBREW_PREFIX/"share"
+
     mkdir "build" do
       ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
@@ -74,7 +80,7 @@ class Gupnp < Formula
            "-I#{Formula["glib"].opt_lib}/glib-2.0/include",
            "-L#{Formula["glib"].opt_lib}",
            "-lglib-2.0", "-lgobject-2.0",
-           "-I#{Formula["libsoup"].opt_include}/libsoup-2.4",
+           "-I#{Formula["libsoup@2"].opt_include}/libsoup-2.4",
            libxml2, "-o", testpath/"test"
     system "./test"
   end

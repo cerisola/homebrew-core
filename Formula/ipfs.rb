@@ -2,8 +2,8 @@ class Ipfs < Formula
   desc "Peer-to-peer hypermedia protocol"
   homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-      tag:      "v0.9.1",
-      revision: "dc2715af68b93611a116b83fca90714e7c5cb50b"
+      tag:      "v0.11.0",
+      revision: "67220edaaef4a938fe5fba85d793bfee59db3256"
   license all_of: [
     "MIT",
     any_of: ["MIT", "Apache-2.0"],
@@ -16,12 +16,12 @@ class Ipfs < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1f86269d9a1876e97a32c76336d2ea58d402a021c6a1cf8f670f52a91e34634c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ae045bd716b0681a30c771460d551e23ed746b400e9306e6c787b8c9602b7e2e"
-    sha256 cellar: :any_skip_relocation, catalina:      "ab0184411e3ca42b3836b6ada3f68deccde4ebf8eef8de147aff12949c17c1b0"
-    sha256 cellar: :any_skip_relocation, mojave:        "b66473a6df6868a7b5eb26730f42908d8b949d6e1aea4fb786d1e6e46df02563"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3f07651c1b99b87bc12bfaac2cc2f825e507bcb75bcf504168ee66daad45adc3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2ff080a3e25cc5f6ad62948039dbaaaebe1be58cf553de6ea1989d69a8a2241"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3bf45662b9350f70b706bd22e8018a3975d16b3aec29b97b07c02990ef24d953"
+    sha256 cellar: :any_skip_relocation, monterey:       "3ff1a3d219552f778912f08ad791800d43b2600f0e39a8b0a966db48b8c67069"
+    sha256 cellar: :any_skip_relocation, big_sur:        "241568d148a8a0b4701820b8ce11a186fc7d6302174f3cbc27d69961f7e2d634"
+    sha256 cellar: :any_skip_relocation, catalina:       "03a432f02fe5b35016e839733c6669612a5555b3af20a8e9c5f5da1b46bc9d64"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "778cd577024337b5f730272c5a8a06b9640050514cd6d4ed333d29436851acbc"
   end
 
   depends_on "go" => :build
@@ -30,7 +30,8 @@ class Ipfs < Formula
     system "make", "build"
     bin.install "cmd/ipfs/ipfs"
 
-    bash_completion.install "misc/completion/ipfs-completion.bash"
+    bash_output = Utils.safe_popen_read(bin/"ipfs", "commands", "completion", "bash")
+    (bash_completion/"ipfs-completion.bash").write bash_output
   end
 
   service do

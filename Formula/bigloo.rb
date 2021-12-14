@@ -1,8 +1,8 @@
 class Bigloo < Formula
   desc "Scheme implementation with object system, C, and Java interfaces"
   homepage "https://www-sop.inria.fr/indes/fp/Bigloo/"
-  url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo-4.4b.tar.gz"
-  sha256 "a313922702969b0a3b3d803099ea05aca698758be6bd0aae597caeb6895ce3cf"
+  url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo-4.4c.tar.gz"
+  sha256 "6646b76382f56d320135a4f6b8eba3e2133d53256f9ff3646b97866a2576062c"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,9 +11,9 @@ class Bigloo < Formula
   end
 
   bottle do
-    sha256 big_sur:  "4ec0eade2fd256f4d25e4026200158b7ccc1a06b4c9554b503daaa9e7b0e8cab"
-    sha256 catalina: "a64de44ab2d8674bde6500e0ac8646950f930d3296597ac6afee994ef3752096"
-    sha256 mojave:   "73d13d970992f108d38bfac032f9ee0d37414e7bb6a8af093e199a69fc08bee5"
+    sha256 monterey: "065f60592a082b1eee01474e340c8c0f0e37ae8d15924c7b55af77b19fa43e96"
+    sha256 big_sur:  "5936c6ee277a018c104dc82e23517229725df62e960135ad93429d18d5bdbbdd"
+    sha256 catalina: "76981333f401b289c59e90f44b107f0b799511a790b5af4cf962763781c09e2b"
   end
 
   depends_on "autoconf" => :build
@@ -28,13 +28,6 @@ class Bigloo < Formula
   depends_on "openjdk"
   depends_on "openssl@1.1"
   depends_on "pcre"
-
-  # Fix a configure script bug. Remove when this lands in a release:
-  # https://github.com/manuel-serrano/bigloo/pull/65
-  patch do
-    url "https://github.com/manuel-serrano/bigloo/commit/e74d7b3443171c974b032fb74d965c8ac4578237.patch?full_index=1"
-    sha256 "9177d80b6bc647d08710a247a9e4016471cdec1ae35b390aceb04de44f5b4738"
-  end
 
   def install
     # Force bigloo not to use vendored libraries

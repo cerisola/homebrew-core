@@ -1,17 +1,15 @@
 class Pstoedit < Formula
   desc "Convert PostScript and PDF files to editable vector graphics"
   homepage "http://www.pstoedit.net/"
-  url "https://downloads.sourceforge.net/project/pstoedit/pstoedit/3.75/pstoedit-3.75.tar.gz"
-  sha256 "b7b5d8510b40a5b148f7751268712fcfd0c1ed2bb46f359f655b6fcdc53364cf"
+  url "https://downloads.sourceforge.net/project/pstoedit/pstoedit/3.78/pstoedit-3.78.tar.gz"
+  sha256 "8cc28e34bc7f88d913780f8074e813dd5aaa0ac2056a6b36d4bf004a0e90d801"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_big_sur: "62d09abcd35a1d933545c501578d9583978eac45569bb7b3702f6fd1b5cbea9a"
-    sha256 big_sur:       "1eb7bdc1ab76c8ae40450b686b1948f3e037ca871d7c505657489d501e073a5a"
-    sha256 catalina:      "f048d902c088f0625c0c9e18d84b159493775b40e742812b040e7b517900260a"
-    sha256 mojave:        "1f3ec91e58d95e08081694b43e031ed83f13a73cecff15c55c532268282b0ad1"
-    sha256 high_sierra:   "22710dd8997d40cec3492c40960a9966b80b386bdbd3fed46515c66bb25053d7"
-    sha256 x86_64_linux:  "ffd83f20edd888753d7c981c90ebfd5d590078e93551c44d4ead593fe1b37371"
+    sha256 arm64_big_sur: "93f094bcabc8c0d24377e8cf6e6567cdb3b40f4e8eed2eb38961b28c44f15346"
+    sha256 big_sur:       "d0e97ac142787f5b0c16c0138675c476f747403e4b94b6c12dad23c70e05d268"
+    sha256 catalina:      "cdc3a9c75a626efd0562e786f08fd57dada5b764f9d39dec61c748eca707ccc9"
+    sha256 x86_64_linux:  "9b5b7269382d2ed28060b51eb8ab82339127121675df1a73de76aabedcb088ff"
   end
 
   depends_on "pkg-config" => :build
@@ -20,15 +18,14 @@ class Pstoedit < Formula
   depends_on "plotutils"
 
   on_linux do
-    depends_on "gcc" => :build
+    depends_on "gcc"
   end
 
   # "You need a C++ compiler, e.g., g++ (newer than 6.0) to compile pstoedit."
   fails_with gcc: "5"
-  fails_with gcc: "6"
 
   def install
-    on_macos { ENV.cxx11 }
+    ENV.cxx11 if OS.mac?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end

@@ -2,8 +2,8 @@ class Fluxctl < Formula
   desc "Command-line tool to access Weave Flux, the Kubernetes GitOps operator"
   homepage "https://github.com/fluxcd/flux"
   url "https://github.com/fluxcd/flux.git",
-      tag:      "1.24.0",
-      revision: "b7cc57ee6875ca15f8c9a7e154da762ba715fb5d"
+      tag:      "1.24.3",
+      revision: "27b83e1a07df8b14d1edb08fea181980fe979baa"
   license "Apache-2.0"
 
   livecheck do
@@ -12,17 +12,18 @@ class Fluxctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e3e25eb43fbd2870e76e4a9fbafc9f474bfe0d95b29ec6f094de2b8763ffe092"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1cc70fa6b1af33aa23edfa983e82ab33630418bd4bd2330bc5dae22580a9e080"
-    sha256 cellar: :any_skip_relocation, catalina:      "b98657dffe0ad6c5885a321f598bf82bbba21a6a7ee7ce648ac2a0a2ee8dff8f"
-    sha256 cellar: :any_skip_relocation, mojave:        "83ddfb17fa9a3a3bffc08bf4ab615f52082b290bdf20f76014df9eb5ff8c584d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55a391f7f98c396fbf2a4fb0a890494b72d8a6de5524f183e9bd12bb76d9bf88"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ae8e2c8069e639637d65e48db682208ba716b4d929628b61b35adf6b603203c4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b0dc50dd0ec5bfc3e424ad1499bfcb2b30e152ca160a36122b60709ec62511d5"
+    sha256 cellar: :any_skip_relocation, monterey:       "4957ff9c31c8c72b43905654c5bd59e1e12d547fe3d1a46f0e278e1e8aabc834"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3db920028523a47b8cb5fee6f4fe03c7afee0e7eae0e9c3a4f52f54104b376b8"
+    sha256 cellar: :any_skip_relocation, catalina:       "0aea620bee684d2b921180ee9c9f5759906703d3e7d0fdf552ac3b8830756f37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b7c15e6212aa67cd451b89620f65ff330fdcb8ac392310b9503534482a0c64f7"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-ldflags", "-s -w -X main.version=#{version}", "./cmd/fluxctl"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "./cmd/fluxctl"
   end
 
   test do

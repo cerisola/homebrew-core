@@ -1,17 +1,18 @@
 class Pspg < Formula
   desc "Unix pager optimized for psql"
   homepage "https://github.com/okbob/pspg"
-  url "https://github.com/okbob/pspg/archive/5.3.4.tar.gz"
-  sha256 "598c672d955b4f9ae6ddfe638b2f2604830525b4d871f0ff360a451ff7af4fda"
+  url "https://github.com/okbob/pspg/archive/5.5.2.tar.gz"
+  sha256 "9c0e2ed924e0cfd4df9e7cb566a1826a081d36f5aa17a314657d9caba93628d4"
   license "BSD-2-Clause"
-  head "https://github.com/okbob/pspg.git"
+  head "https://github.com/okbob/pspg.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "1300e45afdc2c3463a9b500e66a46e6294c6a7d03619b36abe04bcb12212efc5"
-    sha256 cellar: :any,                 big_sur:       "3d43fa8aa638c1e4250b96099193d891e4e78d424765e289b12c25d529e73fb6"
-    sha256 cellar: :any,                 catalina:      "47ae8a25ac576705f7222ff4bee35ae9a077ebb1905b95a7b9e79545f3eca432"
-    sha256 cellar: :any,                 mojave:        "f2ec18b523f1356cf6393621ed1d78ae34baac9d7017e73b56b047f2c91349c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90648d5627fb4bfb2c11cdecb4b60b62bbe0a128df2a8671c2585854b4b18c3e"
+    sha256 cellar: :any,                 arm64_monterey: "f4c0dd8da5296900184b512e00ae6111c8cfa0bf34717c80cfa3e45b1f54afd8"
+    sha256 cellar: :any,                 arm64_big_sur:  "df23b53135092f3e1f244279928f6aabe74613e03043df43e7c6a4bd04c2b02d"
+    sha256 cellar: :any,                 monterey:       "fb1031c34f418e2616216bf4d9cdbc416d4efe3e32a81bfda52769ffaf114b49"
+    sha256 cellar: :any,                 big_sur:        "194fcc895333db39d65dc3ce9d1bfe1a148a72c5ec194fd971f9638068ceb174"
+    sha256 cellar: :any,                 catalina:       "ae02a90ac1ea7d3a88c41e5994e2739461ef425a6962dc07444a9d391d081f56"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1cc8f081229089d49369574531d2f8aaf695c1c7510fb5b414be9e61fc67ea3"
   end
 
   depends_on "libpq"

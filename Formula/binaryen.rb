@@ -1,21 +1,23 @@
 class Binaryen < Formula
   desc "Compiler infrastructure and toolchain library for WebAssembly"
   homepage "https://webassembly.org/"
-  url "https://github.com/WebAssembly/binaryen/archive/version_101.tar.gz"
-  sha256 "5d7cdec89957549f01b7c93f080d08827c87bbd4789a34694c740d15d077c041"
+  url "https://github.com/WebAssembly/binaryen/archive/version_103.tar.gz"
+  sha256 "568fb4a09a9ce4a21f62ac8596f393c2e89f39b96457d5e7c1f67db0fe74a88d"
   license "Apache-2.0"
   head "https://github.com/WebAssembly/binaryen.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "7c9f6e7464dd612d8fd5ecf97eb28be3a0e785807656971760355dbaee2ab308"
-    sha256 cellar: :any,                 big_sur:       "b5b7f3d6275bcbb2497135dbaa92856172def96355c2e1c4dd3f6d11cbdd4f77"
-    sha256 cellar: :any,                 catalina:      "3c1ec0bef52f4113e4898aec902fb3a631aa36b4ee82c4cbd9732357c5f6f79d"
-    sha256 cellar: :any,                 mojave:        "d69a70807fee88c855c53594d135d358e9b51a4a7d9b50518c7ea09b0df76dc6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8f95c9ed168f39f4e5bea1ba2316257b42025ba80ffe9fb8208177e7a83b1e29"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "d95f63433c51b451734614567d3d1c6ab17855a6aa1dc003004fa8bfb8cdf983"
+    sha256 cellar: :any,                 arm64_big_sur:  "124ba8c446249721a2ea62dfa6ea325f058b9c4550333f6f2edc4ba8aa1be569"
+    sha256 cellar: :any,                 monterey:       "2e55a4f849802ed9476a42590d3ba216b86a2648bb18f618a118dc13abe66853"
+    sha256 cellar: :any,                 big_sur:        "00563db446a76fcf45b6c80aa1e06b111398446608ad7d908a963bd7d1564ee8"
+    sha256 cellar: :any,                 catalina:       "f78575ded7f2a516700aae31a15ceaa131155cc67464ce50cfcb803c3f8241d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40347a762a1d1262c5d3bbe8dcf73002c41ca12140ca06a6ba6461ec43c4baf3"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   on_linux do
     depends_on "gcc"
@@ -33,6 +35,7 @@ class Binaryen < Formula
   end
 
   test do
-    system "#{bin}/wasm-opt", "-O", "#{pkgshare}/test/passes/O.wast", "-o", "1.wast"
+    system "#{bin}/wasm-opt", "-O", "#{pkgshare}/test/passes/O1_print-stack-ir.wast", "-o", "1.wast"
+    assert_match "stacky-help", File.read("1.wast")
   end
 end

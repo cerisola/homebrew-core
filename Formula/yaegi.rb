@@ -1,23 +1,24 @@
 class Yaegi < Formula
   desc "Yet another elegant Go interpreter"
   homepage "https://github.com/containous/yaegi"
-  url "https://github.com/containous/yaegi/archive/v0.9.23.tar.gz"
-  sha256 "52394e495b36b87d67f40b9104889da3e50eda5dfe5dc5b9eb2795e40c4be135"
+  url "https://github.com/containous/yaegi/archive/v0.11.1.tar.gz"
+  sha256 "2d442f32e3a7beac3d41ef73be96c1e7a8d349c63abbe666adf3038857a7b26d"
   license "Apache-2.0"
-  head "https://github.com/containous/yaegi.git"
+  head "https://github.com/containous/yaegi.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c888e4e19d18e059e8d54c3d9197a2f873677828360317d0e3762c4b63b9a203"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3bece0545912d85a10600edb69c68fe9daba633c3c9361dc9bc0c7b04854fb5e"
-    sha256 cellar: :any_skip_relocation, catalina:      "b25fd4279ffd50071f3a83f1274160ebf6be1c6b7f2c0cadf836a42aaf5ae02f"
-    sha256 cellar: :any_skip_relocation, mojave:        "9e863d07455fa41b632d353f6ca7c18e0456a354a65a1dab29ee3e637a78f03f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8318733872a80ebbdcceeabe665d27624aef078a7f5f57e820fe2daa73e01a07"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d85345acd82b5acd71f203b920e446a8767464efa0936c0f0c74a4b61e82a0c2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8dd0addba8d3057dd32038c6cf889b742b9b843cf685e03b8abf76dec590a264"
+    sha256 cellar: :any_skip_relocation, monterey:       "e0907b89625ea7a62b7e4df315a1d72d2bc3e725012ede19c5a2c2663f07f429"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e0b34b91c195e41e2e3a50ac0577baf963510aa4c9cdd985dd1706b3a8801a74"
+    sha256 cellar: :any_skip_relocation, catalina:       "7952d22dd03b3a2982ac12dff47103c2f822b46aee35cab7bd5b6e6191f18968"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38833502a774b2ad4acce38d012431e559efabeb42c9569391cca39639dd61e6"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "./cmd/yaegi"
+    system "go", "build", *std_go_args(ldflags: "-X=main.version=#{version}"), "./cmd/yaegi"
   end
 
   test do

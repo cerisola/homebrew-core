@@ -1,10 +1,11 @@
 class Srtp < Formula
   desc "Implementation of the Secure Real-time Transport Protocol"
   homepage "https://github.com/cisco/libsrtp"
-  url "https://github.com/cisco/libsrtp/archive/v2.4.0.tar.gz"
-  sha256 "713c5c1dc740707422307f39834c0b0fbb76769168d87e92c438a3cca8233d3d"
+  url "https://github.com/cisco/libsrtp/archive/v2.4.2.tar.gz"
+  sha256 "3b1bcb14ebda572b04b9bdf07574a449c84cb924905414e4d94e62837d22b628"
   license "BSD-3-Clause"
-  head "https://github.com/cisco/libsrtp.git"
+  revision 1
+  head "https://github.com/cisco/libsrtp.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,17 +13,19 @@ class Srtp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "406c99da58c7402c0eab7f98a07b3b6ec2989ec0705e953969810a5c5bd560fc"
-    sha256 cellar: :any,                 big_sur:       "be0566d1d89b9d9ccf62eab28136db6ccc822f0982133efb656e3221a5366f79"
-    sha256 cellar: :any,                 catalina:      "ff098e6709a973779536b3908fcc263f549cdb221c955bfc736c8b09ca96dc81"
-    sha256 cellar: :any,                 mojave:        "caddbc3415ff272cc130b8aa796f7d07553de8a9f6f490a2fc6d60ae4ce3a975"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d815739fbd0f968ebc7cdcb77330dc459d5d19c80058ec86631a2ed05314755d"
+    sha256 cellar: :any,                 arm64_monterey: "4e8db729f069ebd07a19f506d28a3f491328e6d6521d81f3176617fcdfcba2b9"
+    sha256 cellar: :any,                 arm64_big_sur:  "da78f2f142b179a51309a70d2a823960198086609fc6f38dfc45559b2e581e13"
+    sha256 cellar: :any,                 monterey:       "b27445521d7cf59ccecbb3842fab8f6b89c54b98fb22eb8707ec68bc9f2926f8"
+    sha256 cellar: :any,                 big_sur:        "1b530260c922cc08de98cad6dc62e124ed05efd190a79364809268cfe566e7a6"
+    sha256 cellar: :any,                 catalina:       "ec45e12636b266303efe3ca1d4cb3cc595955c62ff197a900e6f0f0519bb51e0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6916cca964b049c777c87efd01272c76a246349cd93306e57fc68a8edaae426b"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "openssl@1.1"
 
   def install
-    system "./configure", "--disable-debug", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--enable-openssl"
     system "make", "test"
     system "make", "shared_library"
     system "make", "install" # Can't go in parallel of building the dylib

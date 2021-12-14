@@ -1,10 +1,10 @@
 class RancherCli < Formula
   desc "Unified tool to manage your Rancher server"
   homepage "https://github.com/rancher/cli"
-  url "https://github.com/rancher/cli/archive/v2.4.11.tar.gz"
-  sha256 "c16d552bf07d45c3eaf3d3290fcca2e6c5aaacf4aaa82491a01832b5ea2506ea"
+  url "https://github.com/rancher/cli/archive/v2.6.0.tar.gz"
+  sha256 "6821730df16cc1c5b012ee0be54f480de70b373a6b95379b6bbf99243aedad5b"
   license "Apache-2.0"
-  head "https://github.com/rancher/cli.git"
+  head "https://github.com/rancher/cli.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,11 +12,12 @@ class RancherCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "bd57269ac33e17ddbf907d18ef7ef177800689bf4790c48e83d56d6652d9104e"
-    sha256 cellar: :any_skip_relocation, big_sur:       "edfa744550563d18207ef12d174131f7ba0486711bd7ccb252f12850efd2ae81"
-    sha256 cellar: :any_skip_relocation, catalina:      "bfb880e1663556643a7d6c687e2d0d51fefe1ed36163d66d42274046d80f1862"
-    sha256 cellar: :any_skip_relocation, mojave:        "ec162d2372ff7bbc244d2785e33b849fbd4773f37322b586bcc20f2aa9ad08a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c17d2305a33ff71e15d2bf513e875c124e09b6ec7aace4ef536104ee84a36ae8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b397d2ad74522057780cc9b13ff34a659f88be1cbdc3cf317f6525412d6844c9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "26fa0a39de61895d4cd5605115d13cdf107d50b295c66389d0677b65d86c82d9"
+    sha256 cellar: :any_skip_relocation, monterey:       "8d9e68b84185c5d84dc29f08e6abbe8634211376008105e538b7cc19c994d9f0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "33a3f0c8a3ec2c4afc7214a8e8436af6d8359a503892935b4f57b60fce49b49a"
+    sha256 cellar: :any_skip_relocation, catalina:       "409f6e114c3dcabbe8a02fac709ece676537419a4327c7cfb8734a87ad57814c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "74f4ad722b06ee9209a9a8304cc941de7ad7452cc32dc99a338114fbe8a94414"
   end
 
   depends_on "go" => :build

@@ -3,28 +3,29 @@ class Pylint < Formula
 
   desc "It's not just a linter that annoys you!"
   homepage "https://github.com/PyCQA/pylint"
-  url "https://files.pythonhosted.org/packages/47/18/d148ae88f254cbb9a8763beae34027bc603dc6f57b29c48f7cb3f2e28cde/pylint-2.9.6.tar.gz"
-  sha256 "8b838c8983ee1904b2de66cce9d0b96649a91901350e956d78f289c3bc87b48e"
+  url "https://files.pythonhosted.org/packages/9d/6b/732db4470fb03760af3aada21189c95676c0ec514c3b044b42929e018224/pylint-2.12.2.tar.gz"
+  sha256 "9d945a73640e1fec07ee34b42f5669b770c759acd536ec7b16d7e4b87a9c9ff9"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fd34fefac850b0d4b49362b40e4cc30b1ea428687d965449c97f00842fc2ed67"
-    sha256 cellar: :any_skip_relocation, big_sur:       "c163c1c84d79581a703e90cc1ebb316f511b04d50770702edbdc073c3750da22"
-    sha256 cellar: :any_skip_relocation, catalina:      "62e8223d87c63c373c9e20e7b3d2d530f4e1f43461e923ce178810a9d2045bf0"
-    sha256 cellar: :any_skip_relocation, mojave:        "8faed05e9fdb4b120941b736d91d9e60c777be629652b8650402d68094275751"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1bddca867f04c4b05cb155bc92f4d3eea0f47fdc354cabe1e1c0f24f7320c41f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "94e0f9f440551868538020ba70353549098b2a24f1efacad60e65bc57c590d64"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1c8eff0bc833f4ff9a174adb90b8eec02b932544a7313f3540f4fb57e96e3919"
+    sha256 cellar: :any_skip_relocation, monterey:       "56b92e4cca0605bec9458d1d69ccb89162985d09dd54afaedb49434f2b9608b9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2f9de43a5f2d35f9f1fe81b32db776a161ad393b376b8bfb95db4deea2a6a30b"
+    sha256 cellar: :any_skip_relocation, catalina:       "17d01397a009b7f539e639b8d26310d1ded227de25ac2b343ff718176d916130"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "27f6b25e17a6b926ea0d0f764103b20a3c4c894b17e42665938598cae861015b"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   resource "astroid" do
-    url "https://files.pythonhosted.org/packages/89/e7/69f2b466eaf494f90f9aee9f802ab9305e2af1b9cd6aebdfdf36800706c8/astroid-2.6.5.tar.gz"
-    sha256 "83e494b02d75d07d4e347b27c066fd791c0c74fc96c613d1ea3de0c82c48168f"
+    url "https://files.pythonhosted.org/packages/ee/9b/b1d4515d1a969e96954d888df4e274d487c277812573ccbbb137109b066e/astroid-2.9.0.tar.gz"
+    sha256 "5939cf55de24b92bda00345d4d0659d01b3c7dafb5055165c330bc7c568ba273"
   end
 
   resource "isort" do
-    url "https://files.pythonhosted.org/packages/ac/2a/87e6a7d3c3953ddfb37c6da3fd951490425a60d2ab0be059b321d5788dc8/isort-5.9.2.tar.gz"
-    sha256 "f65ce5bd4cbc6abdfbe29afc2f0245538ab358c14590912df638033f157d555e"
+    url "https://files.pythonhosted.org/packages/ab/e9/964cb0b2eedd80c92f5172f1f8ae0443781a9d461c1372a3ce5762489593/isort-5.10.1.tar.gz"
+    sha256 "e8443a5e7a020e9d7f97f1d7d9cd17c88bcb3bc7e218bf9cf5095fe550be2951"
   end
 
   resource "lazy-object-proxy" do
@@ -37,14 +38,19 @@ class Pylint < Formula
     sha256 "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"
   end
 
+  resource "platformdirs" do
+    url "https://files.pythonhosted.org/packages/4b/96/d70b9462671fbeaacba4639ff866fb4e9e558580853fc5d6e698d0371ad4/platformdirs-2.4.0.tar.gz"
+    sha256 "367a5e80b3d04d2428ffa76d33f124cf11e8fff2acdaa9b43d545f5c7d661ef2"
+  end
+
   resource "toml" do
     url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
     sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
   end
 
   resource "wrapt" do
-    url "https://files.pythonhosted.org/packages/82/f7/e43cefbe88c5fd371f4cf0cf5eb3feccd07515af9fd6cf7dbf1d1793a797/wrapt-1.12.1.tar.gz"
-    sha256 "b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"
+    url "https://files.pythonhosted.org/packages/eb/f6/d81ccf43ac2a3c80ddb6647653ac8b53ce2d65796029369923be06b815b8/wrapt-1.13.3.tar.gz"
+    sha256 "1fea9cd438686e6682271d36f3481a9f3636195578bab9ca3382e2f5f01fc185"
   end
 
   def install

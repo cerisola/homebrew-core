@@ -1,34 +1,33 @@
 class Mmark < Formula
   desc "Powerful markdown processor in Go geared towards the IETF"
   homepage "https://mmark.miek.nl/"
-  url "https://github.com/mmarkdown/mmark/archive/v2.2.10.tar.gz"
-  sha256 "1fc9d26b4c2910e72c7ee94c80d2fb1707aaae2d278204c68557ccd1802a2c08"
+  url "https://github.com/mmarkdown/mmark/archive/v2.2.23.tar.gz"
+  sha256 "8c4ebb780f86f17647de1d81532bf6900498ec48edcdf03de6ef6e68287ae510"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5b3ad3d847d107bea295ae82ede2123ad3f7404bafd23be0ed13e89d2da147dd"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0c8b1e5790cf95425c1b929177150c9fe9859146e14670fc0b2e80b3a6d67020"
-    sha256 cellar: :any_skip_relocation, catalina:      "30e4ee4ae7c5c24cb7a0aa4380a9bb6c0757bd8ab501b5137beaf645c71c101f"
-    sha256 cellar: :any_skip_relocation, mojave:        "e874bd258951d5df18a3b059007ada27d8e43be623077f2b11900cdbf37f0b7c"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "d48a18e114f676ff7f7676fce7ca7d4bf6c1dcce7c9949e9161348d536a4aec1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39d5de2a2d76377d8f1559914a4362ef580d850c9632dde8d043976d49ca5f80"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ed37f2dd8412440e7b460e92e629a7e860c4e2ce8b40b4f0fca34f0e2b05753"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0ed37f2dd8412440e7b460e92e629a7e860c4e2ce8b40b4f0fca34f0e2b05753"
+    sha256 cellar: :any_skip_relocation, monterey:       "caa5d44555fad4046fe925a9bdf9c8c9a8217733dee4b2748ad751bcac979f2c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "caa5d44555fad4046fe925a9bdf9c8c9a8217733dee4b2748ad751bcac979f2c"
+    sha256 cellar: :any_skip_relocation, catalina:       "caa5d44555fad4046fe925a9bdf9c8c9a8217733dee4b2748ad751bcac979f2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a8ea7ef73c56800f20ed439507dd985ca6b8c71107792f3c48ae7de769918b8"
   end
 
   depends_on "go" => :build
 
-  resource "test" do
-    url "https://raw.githubusercontent.com/mmarkdown/mmark/v2.2.10/rfc/2100.md"
-    sha256 "0b5383917a0fbc0d2a4ef009d6ccd787444ce2e80c1ea06088cb96269ecf11f0"
+  resource "homebrew-test" do
+    url "https://raw.githubusercontent.com/mmarkdown/mmark/v2.2.19/rfc/2100.md"
+    sha256 "0e12576b4506addc5aa9589b459bcc02ed92b936ff58f87129385d661b400c41"
   end
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-trimpath", "-o", bin/"mmark"
+    system "go", "build", *std_go_args(ldflags: "-s -w")
     man1.install "mmark.1"
-    prefix.install_metafiles
   end
 
   test do
-    resource("test").stage do
+    resource("homebrew-test").stage do
       assert_match "The Naming of Hosts", shell_output("#{bin}/mmark -ast 2100.md")
     end
   end

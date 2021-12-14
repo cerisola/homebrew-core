@@ -1,17 +1,23 @@
 class Just < Formula
   desc "Handy way to save and run project-specific commands"
   homepage "https://github.com/casey/just"
-  url "https://github.com/casey/just/archive/0.10.0.tar.gz"
-  sha256 "e566c333771697d61c6257f61d85fe8ff0a5993e66f050b2d10e80bd99d5fac0"
+  url "https://github.com/casey/just/archive/0.10.5.tar.gz"
+  sha256 "02e452c0045879161ce820dc66e60d10b3e2cb9b8b152ff86cdd9221eb65d1b2"
   license "CC0-1.0"
-  head "https://github.com/casey/just.git"
+  head "https://github.com/casey/just.git", branch: "master"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8efc5dbc67be4237ef77bd83820f6b38d348299899174b1a42b432128ea57ca3"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ba11becd200c62303d831f2dbe79f75230f34ec8725b059bb514f69b97937bf8"
-    sha256 cellar: :any_skip_relocation, catalina:      "3f217c1a6cbfbeddf5e45d794244d1acc12aa7ddd9c961c3389096b7381c47d0"
-    sha256 cellar: :any_skip_relocation, mojave:        "15d43706357660a24295ff81e400578f21a1b2fe978067e94411e236d18e7bba"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e629d91e84b4ee76a110333fcb4926b99e94cbf3942748fd2df79c469e0b6f7b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "123d4bd7492b348ac8085d28d945fad7c99de20ba97013f22bd479133e95474f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0db2388f20c62c83222a86573765874cfdf7886952670f25dc58d969db441b14"
+    sha256 cellar: :any_skip_relocation, monterey:       "f7f118824a68f084bff602bfae694c952b7714e70c2ea7cf59aa61df678f3cd9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "da6919e878953362cf0070f9bd4fcd8d5eb59c2a694899dedef59ee919cea029"
+    sha256 cellar: :any_skip_relocation, catalina:       "5bfe28f0fd7e67574277e6b0edbef6c427da9b7d2248ab522675a888df21c6b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba4650a96bbbcd7f5e071f88522073271d6d3d2800ed793d3eefb01a8d29343b"
   end
 
   depends_on "rust" => :build

@@ -3,22 +3,23 @@ class Osc < Formula
 
   desc "Command-line interface to work with an Open Build Service"
   homepage "https://openbuildservice.org"
-  url "https://github.com/openSUSE/osc/archive/0.174.0.tar.gz"
-  sha256 "9be35b347fa07ac1235aa364b0e1229c00d5e98e202923d7a8a796e3ca2756ad"
+  url "https://github.com/openSUSE/osc/archive/0.175.0.tar.gz"
+  sha256 "6802efaf1c1b2c89cc0de856c5754a1aecb045d2193a3a42b7a5775ccdbf70fd"
   license "GPL-2.0-or-later"
-  head "https://github.com/openSUSE/osc.git"
+  head "https://github.com/openSUSE/osc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "aff25f27cf63f10915f491f01a2404eb471e7c1f5a0e6215d3f663d57aa4636e"
-    sha256 cellar: :any,                 big_sur:       "ee1547c7ef76a888a2a4f46d1880b3b3761be549be7bb93cfe803ae4e5eb2e42"
-    sha256 cellar: :any,                 catalina:      "8c62deae5e597d7171b97ac60240d1d4ff7d40bb65bb454aae52cd2371ee8aeb"
-    sha256 cellar: :any,                 mojave:        "924fb9bb84421ee725308f4fe541e3ba6a0699897a2c4c600c35a9a69ec4b2ff"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6bdd10f479f73e5e308859e2184595b096a5311cfc54ccde497545eaba05d168"
+    sha256 cellar: :any,                 arm64_monterey: "b1bb6399a8354b54ec662312050225f4a930ca5e84ff0c92727df410ca25235e"
+    sha256 cellar: :any,                 arm64_big_sur:  "968b82656b91621ef571880ae7998983fea24799216844027cd63f43760d1dde"
+    sha256 cellar: :any,                 monterey:       "c272b3e8927e3007f1c5f0103907622441231154b1ff2d452a21e67593dfe05c"
+    sha256 cellar: :any,                 big_sur:        "47e13a499a78af0b3cee0d71b5c5bb959a453d42f1ac1cf9e91a408ac6805da1"
+    sha256 cellar: :any,                 catalina:       "c3eb01e94ec3160f91086673286935de0e9f0867217a4f20357f4b06ed692419"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "948efff33f57394d660641f6f05c43452d0af7974c936a7c08e5e05d178b3007"
   end
 
   depends_on "swig" => :build
   depends_on "openssl@1.1"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   uses_from_macos "curl"
 

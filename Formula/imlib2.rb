@@ -1,16 +1,17 @@
 class Imlib2 < Formula
   desc "Image loading and rendering library"
   homepage "https://sourceforge.net/projects/enlightenment/"
-  url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.7.3/imlib2-1.7.3.tar.bz2"
-  sha256 "158d0b8c20bc11221af9e77a64a116fca7051b03cdea2c4f31d31f469382f997"
+  url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.7.5/imlib2-1.7.5.tar.xz"
+  sha256 "458d8300aa7a6d4ce35351838bba5d9fdfb08844bd5b153c5938ecfe43ff360a"
   license "Imlib2"
 
   bottle do
-    sha256 arm64_big_sur: "007b2a5fe1988a71c0b777005279529fc3ff424e93ddb245506f3e33f65f0d0b"
-    sha256 big_sur:       "094ebe201daab125409112a9ae7b94439409e8bba008fc6aeb47095b90a52ad4"
-    sha256 catalina:      "74a5fbf8693ed51834ff3739d231aa0c9e515b232b5493aaa24936f7ee91173d"
-    sha256 mojave:        "a86557a75ee60e00aa9443bb0aa04832f071b068d8064cf23c78e5c2e76169b5"
-    sha256 x86_64_linux:  "39bc543b39068aaf137b2671e8eb8b8609f0e809a36a445ab85cdfdd24782681"
+    sha256 arm64_monterey: "42ce6444ed4ea88182a2224bd9bc41678f3c5b1541643d00a927194fd008564b"
+    sha256 arm64_big_sur:  "8819e6881ab37a4ed403a09907bd4e2b50c58fe95a49f9e7eb01ee1273f22902"
+    sha256 monterey:       "acfdb90aedcf59df54b9b4c6401e3a953453ae395267145d8f0e94ea2536ad02"
+    sha256 big_sur:        "4d307ed31a85d37607ff47a074a98feed643a5ce3cb01a7bce7ea1726d1a915d"
+    sha256 catalina:       "ec75b72d588f58183ee2aee240a7125799c517bbf8e4b6862e7c495dcaf88cce"
+    sha256 x86_64_linux:   "9ad7868a77d3a89b8fed50b2fd0571e531c406a7a783dfab35c7eb33ad946944"
   end
 
   depends_on "pkg-config" => :build
@@ -22,6 +23,12 @@ class Imlib2 < Formula
   depends_on "libx11"
   depends_on "libxcb"
   depends_on "libxext"
+
+  # Fix -flat_namespace being used on Big Sur and later.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  end
 
   def install
     args = %W[

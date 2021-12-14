@@ -2,22 +2,23 @@ class Packetbeat < Formula
   desc "Lightweight Shipper for Network Data"
   homepage "https://www.elastic.co/products/beats/packetbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.14.0",
-      revision: "e127fc31fc6c00fdf8649808f9421d8f8c28b5db"
+      tag:      "v7.16.1",
+      revision: "7e56c4a053a2fe26c0cac168dd974780428a2aa6"
   license "Apache-2.0"
-  head "https://github.com/elastic/beats.git"
+  head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c68f6098509af8777faf45a9bf3816817af5549dc0072b21bae4742bf6487b0c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "8b8da72ce166ceafd3091ec20682a886ac2eb27dfacf63a3577bf9c3d776346c"
-    sha256 cellar: :any_skip_relocation, catalina:      "f2aa4114f1857d76bf110cc8d1f2dca1d1ac3eb61ca7593e078d612eb3691313"
-    sha256 cellar: :any_skip_relocation, mojave:        "c0ad59975d41df6c764ad983741b2610acd727b7ba77327499daa20bec854ac7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d48873c24d487788fad5273af475fa77932dc93e7289614eecde38bfa4b57dc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5b12dbccf7975a58bc1d9cd3851e4eab335f211932c7a980cccf18eeacf80434"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "86203d818413057263e4b42d8adf0568ab5a98b3fbc429fbd4dcebbc98af73fe"
+    sha256 cellar: :any_skip_relocation, monterey:       "bb52262bab08e804cd35b5e87ad68a67aa6552475766500552c289b1737b538c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "467342c142f8def7ebb85fa98bf2028abc3424c54b156a23153ecb58c9d729cb"
+    sha256 cellar: :any_skip_relocation, catalina:       "4eb39734746cb0516b801acd02160e74654c5f3d795acf441c6be4b011e20048"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "31b590e1c198dc5daa5615cf05b2c755320c7bf8c4eff1d5c6a64fb6c5c9dba7"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   uses_from_macos "libpcap"
 
@@ -55,8 +56,11 @@ class Packetbeat < Formula
   end
 
   test do
-    eth = "en"
-    on_linux { eth = "eth" }
+    eth = if OS.mac?
+      "en"
+    else
+      "eth"
+    end
     assert_match "0: #{eth}0", shell_output("#{bin}/packetbeat devices")
     assert_match version.to_s, shell_output("#{bin}/packetbeat version")
   end

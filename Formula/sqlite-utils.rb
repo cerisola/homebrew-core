@@ -2,16 +2,17 @@ class SqliteUtils < Formula
   include Language::Python::Virtualenv
   desc "CLI utility for manipulating SQLite databases"
   homepage "https://sqlite-utils.datasette.io/"
-  url "https://files.pythonhosted.org/packages/c1/80/5fdd80679e4190ee2ff5cd8dc1e18bee08a409eed79f20766d2056c54aa3/sqlite-utils-3.16.tar.gz"
-  sha256 "11d7b975a66b3fcf3b08b3298b2f9726896cf5915c72f2c37086dfc671f834d8"
+  url "https://files.pythonhosted.org/packages/5e/12/901cfe4b227727b5686d3d644707f2e0acd11caeb3fc7faf64236a253910/sqlite-utils-3.19.tar.gz"
+  sha256 "509099fce5f25faada6e76b6fb90e8ef5ba0f1715177933a816718be0c8e7244"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e41a7a9ea04dc5ae11597f29874d0a98ded3055de10ceb3322534da1048a9907"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a11f9a5a5da4a1f52c65a0782d0a6a67170c281cfa80e7bbf1005eead2143c11"
-    sha256 cellar: :any_skip_relocation, catalina:      "638298385470b6313b963fb3fcc4ae1e4e12c4ceaa13cfb44b5e6800f0911736"
-    sha256 cellar: :any_skip_relocation, mojave:        "1c537fe06650a51b528fad3993a3452fea2647141a15b4fdc1e763997db51452"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e211973d28732feda17a5f2fbf97a5f73b350e437fd24f281df4c62f9d1318c1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "97a6e1c9b94df616f4ad41d92e66f97223079afd82ee0592b9e49308e6a3dad9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "683976c1cd5e759b6b2e3c65f23d25d1e5ce7b9836e3808a6d9bfa517e0e1880"
+    sha256 cellar: :any_skip_relocation, monterey:       "01a9cc7b3ca3181c11e982610e2e1eef91df057f4405b3bef1d42377e8a73118"
+    sha256 cellar: :any_skip_relocation, big_sur:        "13ce859637aad7ed6877776df508ba540974368d6ae8fa5ab04afa094213b68b"
+    sha256 cellar: :any_skip_relocation, catalina:       "b74314540648b7cc6ef24ad220c530506805430d4be6c69c3f53c3ef9b82fa16"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8f9e0b6454c5e12cf303e0f331799147076acd7363481ff86bc26580f464973a"
   end
 
   depends_on "python-tabulate"
@@ -19,8 +20,8 @@ class SqliteUtils < Formula
   depends_on "six"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/21/83/308a74ca1104fe1e3197d31693a7a2db67c2d4e668f20f43a2fca491f9f7/click-8.0.1.tar.gz"
-    sha256 "8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"
+    url "https://files.pythonhosted.org/packages/f4/09/ad003f1e3428017d1c3da4ccc9547591703ffea548626f47ec74509c5824/click-8.0.3.tar.gz"
+    sha256 "410e932b050f5eed773c4cda94de75971c89cdb3155a72a0831139a79e5ecb5b"
   end
 
   resource "click-default-group" do
@@ -28,19 +29,9 @@ class SqliteUtils < Formula
     sha256 "d9560e8e8dfa44b3562fbc9425042a0fd6d21956fcc2db0077f63f34253ab904"
   end
 
-  resource "dateutils" do
-    url "https://files.pythonhosted.org/packages/70/2e/a2d1337ac0ebb32b3b4ad921d9621f8b2f6bb20de0da47ec5d3734f08ce2/dateutils-0.6.12.tar.gz"
-    sha256 "03dd90bcb21541bd4eb4b013637e4f1b5f944881c46cc6e4b67a6059e370e3f1"
-  end
-
   resource "python-dateutil" do
     url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
     sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
-  end
-
-  resource "pytz" do
-    url "https://files.pythonhosted.org/packages/b0/61/eddc6eb2c682ea6fd97a7e1018a6294be80dba08fa28e7a3570148b4612d/pytz-2021.1.tar.gz"
-    sha256 "83a4a90894bf38e243cf052c8b58f381bfe9a7a483f6a9cab140bc7f702ac4da"
   end
 
   resource "sqlite-fts4" do

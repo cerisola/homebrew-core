@@ -1,10 +1,10 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.32.3.tar.xz"
-  sha256 "be2ffff884eaecf61806f89b195a373f767a62e5bf2cc02ff1f55e41a55f8b84"
+  url "https://notmuchmail.org/releases/notmuch-0.34.2.tar.xz"
+  sha256 "c1f2ceee47f689711222d7205af2a3fe7a4a9d8c32e4e0b24ad66f88df6a47d3"
   license "GPL-3.0-or-later"
-  head "https://git.notmuchmail.org/git/notmuch", using: :git
+  head "https://git.notmuchmail.org/git/notmuch", using: :git, branch: "master"
 
   livecheck do
     url "https://notmuchmail.org/releases/"
@@ -12,11 +12,10 @@ class Notmuch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "e13c489d00794e356ea17ed0eb8ac5d6fc65fd73b8b7b769caea5d48a21c44e5"
-    sha256 cellar: :any,                 big_sur:       "ab48fa2614607d8ad60e976228ddbabad2dae2068b410e6778c6278a5b12e505"
-    sha256 cellar: :any,                 catalina:      "a3538ce7df6bfc87e7de8f04e39deccf0a3da86bf39d4abf3f7fcd345bc9c2e6"
-    sha256 cellar: :any,                 mojave:        "676529294a50937d672b84f343a14bb8cd07058000a43918d6a33f7c9a9c80ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "573817bbf53e950e2a6e6a1f30e268492575697f28024b06bc146c596a60df37"
+    sha256 cellar: :any,                 arm64_big_sur: "5a7bfd7f244db282f65841785c43dbe17323ff77fcaec1ba08082457382c4391"
+    sha256 cellar: :any,                 big_sur:       "30e4d76890270e345700e2de3c96fd5bae99836e209625b28a9f2facd37c5587"
+    sha256 cellar: :any,                 catalina:      "971f1b03b954c5e146486575e720b5f69047aebfb6e1dfd5d852dd2190d5f925"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "591ec53cb35f9d70c6d79f8ac08ba94e52fe4fa8477a956abaf03eb5262cd37d"
   end
 
   depends_on "doxygen" => :build
@@ -44,6 +43,7 @@ class Notmuch < Formula
     ]
 
     ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"lib/python3.9/site-packages"
+    ENV.cxx11 if OS.linux?
 
     system "./configure", *args
     system "make", "V=1", "install"

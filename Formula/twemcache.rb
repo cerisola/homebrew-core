@@ -5,7 +5,7 @@ class Twemcache < Formula
   sha256 "ab05927f7d930b7935790450172187afedca742ee7963d5db1e62164e7f4c92b"
   license "BSD-3-Clause"
   revision 1
-  head "https://github.com/twitter/twemcache.git"
+  head "https://github.com/twitter/twemcache.git", branch: "master"
 
   bottle do
     sha256 cellar: :any,                 arm64_big_sur: "9fc117b9ed7036aa0a69fb94ee4c66e768f663bfd41cf4e626839f003ed5b9cd"
@@ -16,6 +16,8 @@ class Twemcache < Formula
     sha256 cellar: :any,                 sierra:        "ec7e5d41f887db3a41d89eadb64d16119a2d86427afd45de92e7a8ca55ce7ef2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "ebed07a9f27fb7c462c9e313dc51dcfb326804fd7715119a32151ee48b4e815d"
   end
+
+  deprecate! date: "2021-12-11", because: :repo_archived
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

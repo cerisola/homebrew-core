@@ -1,10 +1,10 @@
 class IncludeWhatYouUse < Formula
   desc "Tool to analyze #includes in C and C++ source files"
   homepage "https://include-what-you-use.org/"
-  url "https://include-what-you-use.org/downloads/include-what-you-use-0.16.src.tar.gz"
-  sha256 "8d6fc9b255343bc1e5ec459e39512df1d51c60e03562985e0076036119ff5a1c"
+  url "https://include-what-you-use.org/downloads/include-what-you-use-0.17.src.tar.gz"
+  sha256 "eca7c04f8b416b6385ed00e33669a7fa4693cd26cb72b522cde558828eb0c665"
   license "NCSA"
-  revision 1
+  head "https://github.com/include-what-you-use/include-what-you-use.git", branch: "master"
 
   # This omits the 3.3, 3.4, and 3.5 versions, which come from the older
   # version scheme like `Clang+LLVM 3.5` (25 November 2014). The current
@@ -16,39 +16,36 @@ class IncludeWhatYouUse < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "bffb1d8b8722c218fe29f272414c535805b48f317b6ecb9737093247998b6513"
-    sha256 cellar: :any,                 big_sur:       "94fb1c650d15b9f2af08a4cafb924b0619af872dee33e0345fb0a2f692c62cf6"
-    sha256 cellar: :any,                 catalina:      "86bf4452a7a1692b730c1286383762e862a938245c78bc5b8ae581282bfca02c"
-    sha256 cellar: :any,                 mojave:        "847acb0d8a7fa1b4e2ae4e9973b213a535d17acfa2f0d2b1a57c4f0a751e0685"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bbca09d4ae951ffb3be87b585ba20f5c82f4cb5a8f15f14bc9a72ba2ee378507"
+    sha256 cellar: :any,                 arm64_monterey: "c849e210107d49902d6cefe58ca3af7afc4a1a197f1239da4d26639e6eef4a49"
+    sha256 cellar: :any,                 arm64_big_sur:  "47ced9c1ae76704cb14d2ea2d3e1ab29c66d650387576d1f931b102ee44c96ed"
+    sha256 cellar: :any,                 monterey:       "0a84098cd52678381ca12ee9986e59c6cda595a10877ecb974d4445251017fe6"
+    sha256 cellar: :any,                 big_sur:        "657ab0dd0639344d923f288e3ab5130b1ad6094d516eea05526dc4fc966dc230"
+    sha256 cellar: :any,                 catalina:       "e817cfbf7abeced52eb5596dc1b2a59da1c624b7adcb276677a9d7ed71762ef2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "257d7f45e2b1c30d46254a6b7786b38eefb483853ab599995a296b230908d128"
   end
 
   depends_on "cmake" => :build
-  depends_on "llvm" # include-what-you-use 0.16 is compatible with llvm 12.0
+  depends_on "llvm"
 
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
-  def install
-    llvm = Formula["llvm"]
+  fails_with gcc: "5" # LLVM is built with GCC
 
+  def llvm
+    deps.map(&:to_formula).find { |f| f.name.match? "^llvm(@\d+(\.\d+)*)?$" }
+  end
+
+  def install
     # We do not want to symlink clang or libc++ headers into HOMEBREW_PREFIX,
     # so install to libexec to ensure that the resource path, which is always
     # computed relative to the location of the include-what-you-use executable
     # and is not configurable, is also located under libexec.
-    args = std_cmake_args + %W[
-      -DCMAKE_INSTALL_PREFIX=#{libexec}
-      -DCMAKE_PREFIX_PATH=#{llvm.opt_lib}
-      -DCMAKE_CXX_FLAGS=-std=gnu++14
-    ]
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args(install_prefix: libexec)
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-    mkdir "build" do
-      system "cmake", *args, ".."
-      system "make"
-      system "make", "install"
-    end
-
-    bin.write_exec_script Dir["#{libexec}/bin/*"]
+    bin.write_exec_script libexec.glob("bin/*")
 
     # include-what-you-use needs a copy of the clang and libc++ headers to be
     # located in specific folders under its resource path. These may need to be
@@ -58,9 +55,9 @@ class IncludeWhatYouUse < Formula
     # locate stddef.h and/or stdlib.h when running the test block below.
     # https://clang.llvm.org/docs/LibTooling.html#libtooling-builtin-includes
     (libexec/"lib").mkpath
-    ln_sf llvm.opt_lib.relative_path_from(libexec/"lib")/"clang", libexec/"lib"
+    ln_sf (llvm.opt_lib/"clang").relative_path_from(libexec/"lib"), libexec/"lib"
     (libexec/"include").mkpath
-    ln_sf llvm.opt_include.relative_path_from(libexec/"include")/"c++", libexec/"include"
+    ln_sf (llvm.opt_include/"c++").relative_path_from(libexec/"include"), libexec/"include"
   end
 
   test do

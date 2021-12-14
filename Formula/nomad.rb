@@ -1,8 +1,8 @@
 class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
-  url "https://github.com/hashicorp/nomad/archive/v1.1.3.tar.gz"
-  sha256 "18eb2b7fcd4d32952546b3d8b052e755dedc4c63e36527404db6abdce01b197d"
+  url "https://github.com/hashicorp/nomad/archive/v1.2.3.tar.gz"
+  sha256 "36e074f34091043a2b5d115496f371fb9df048134f402bb5943e17bcb2f911ff"
   license "MPL-2.0"
   head "https://github.com/hashicorp/nomad.git", branch: "main"
 
@@ -12,51 +12,26 @@ class Nomad < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "424df70a9e612b47fba9b72761ce032f5c9a96ca80f14978ba0703cf8c652130"
-    sha256 cellar: :any_skip_relocation, big_sur:       "93ea67be1eea3da7e0c0f5e2e13e9791e87a1dbdb66e8a1517ca27532fce5df7"
-    sha256 cellar: :any_skip_relocation, catalina:      "5a07c7a9eda30d79b35bac0bba71fd073598dd1dc9fb16c3e61ef453a9d50148"
-    sha256 cellar: :any_skip_relocation, mojave:        "4ba52bf3457e756b1d5a82961ad94f43ddedbce33685fce67a0731535c486ea2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f9a4e1206128677c5a20f3245d2d6668e0e1766778f1ea72aace09555e19312e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ced34a285f1f317e28e59809ad78b3151e4c10c114e53d50d783dc6b116cd90"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9fd655a91bfd0d20dd954b112af8ccf48bc0c336d7a54feb869f70c0070b181f"
+    sha256 cellar: :any_skip_relocation, monterey:       "1096e7716f8a93d6071d71f74b053b4e3f39ab328627c06c0bc5139bbfe931c1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "47fbdb3ddedc8956077eb628dac4d4c19ab6f2d9882be13549366fc581c732c2"
+    sha256 cellar: :any_skip_relocation, catalina:       "43c3f4e76a6a666cf083b38987068d91a1f4c9e0a1c8886a0e87a30914ea5687"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b40387a36f755f2a1cff2b26937eae50ac99c8c801d745bf0c9f5b0cecd9e84"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-tags", "ui"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "-tags", "ui"
   end
 
-  plist_options manual: "nomad agent -dev"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <dict>
-            <key>SuccessfulExit</key>
-            <false/>
-          </dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/nomad</string>
-            <string>agent</string>
-            <string>-dev</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/nomad.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/nomad.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"nomad", "agent", "-dev"]
+    keep_alive true
+    working_dir var
+    log_path var/"log/nomad.log"
+    error_log_path var/"log/nomad.log"
   end
 
   test do

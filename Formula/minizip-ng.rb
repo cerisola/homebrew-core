@@ -1,17 +1,18 @@
 class MinizipNg < Formula
   desc "Zip file manipulation library with minizip 1.x compatibility layer"
   homepage "https://github.com/zlib-ng/minizip-ng"
-  url "https://github.com/zlib-ng/minizip-ng/archive/3.0.2.tar.gz"
-  sha256 "6ba4b6629c107c27ab526e517bdb105612232f0965a6747f60150e5a04c2fe5a"
+  url "https://github.com/zlib-ng/minizip-ng/archive/3.0.4.tar.gz"
+  sha256 "2ab219f651901a337a7d3c268128711b80330a99ea36bdc528c76b591a624c3c"
   license "Zlib"
   head "https://github.com/zlib-ng/minizip-ng.git", branch: "dev"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any, arm64_big_sur: "0bc8e68ed7dcf20dfd58f566ca03861e850754054e377c9ef05ba7cef4ef4fa5"
-    sha256 cellar: :any, big_sur:       "4f631f11f24ba348c72f5458facff917a313248eb9a8365539d79c30e1bb3657"
-    sha256 cellar: :any, catalina:      "e431dc66a25e00ed03478da0440fd63985af97d0f77d1db76739f7075990c089"
-    sha256 cellar: :any, mojave:        "985fec3cb378278cf5b311d1e32669cd63639cfd04e52f55cb0beb34fd55e811"
+    sha256 cellar: :any,                 arm64_monterey: "ae8c49783a26f6dad84e7631a095c2c5171b8464a6b35c3fe308936e574e5d34"
+    sha256 cellar: :any,                 arm64_big_sur:  "6f22989c5000fdfe78bcf91d301b91af32d18a59dbb937da48e3401b207d1ab1"
+    sha256 cellar: :any,                 monterey:       "b450f04c3f51f25628b37994a175d09ff0d2dac77bb380bc760445632d859e19"
+    sha256 cellar: :any,                 big_sur:        "49c832e22964616d4186b84a674502c12f605249d446677cadb3258e981fe398"
+    sha256 cellar: :any,                 catalina:       "0018fe1fcc0c4d84b7e4bf3e86376f4ca6a4cdcef58406b7fe3e1cc1aded8605"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fae25a36cbd160439f73ccd4c26d056ecd99055ff16f65c33feeff179108da1d"
   end
 
   depends_on "cmake" => :build
@@ -20,8 +21,11 @@ class MinizipNg < Formula
   depends_on "zstd"
 
   uses_from_macos "bzip2"
-  uses_from_macos "libiconv"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "openssl@1.1"
+  end
 
   conflicts_with "minizip",
     because: "both install a `libminizip.a` library"
@@ -46,6 +50,7 @@ class MinizipNg < Formula
   test do
     (testpath/"test.c").write <<~EOS
       #include <stdlib.h>
+      #include <stdint.h>
       #include <time.h>
       #include "mz_zip.h"
       #include "mz_compat.h"
@@ -55,10 +60,25 @@ class MinizipNg < Formula
         return hZip != NULL && mz_zip_close(NULL) == MZ_PARAM_ERROR ? 0 : 1;
       }
     EOS
+
+    lib_flags = if OS.mac?
+      %W[
+        -lz -lbz2 -liconv -lcompression
+        -L#{Formula["zstd"].opt_lib} -lzstd
+        -L#{Formula["xz"].opt_lib} -llzma
+        -framework CoreFoundation -framework Security
+      ]
+    else
+      %W[
+        -L#{Formula["zlib"].opt_lib} -lz
+        -L#{Formula["bzip2"].opt_lib} -lbz2
+        -L#{Formula["zstd"].opt_lib} -lzstd
+        -L#{Formula["xz"].opt_lib} -llzma
+      ]
+    end
+
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}",
-                   "-lminizip", "-lz", "-lbz2", "-liconv", "-lcompression",
-                   "-L#{Formula["zstd"].opt_lib}", "-lzstd", "-llzma",
-                   "-framework", "CoreFoundation", "-framework", "Security", "-o", "test"
+                   "-lminizip", *lib_flags, "-o", "test"
     system "./test"
   end
 end

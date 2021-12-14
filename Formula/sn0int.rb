@@ -1,16 +1,17 @@
 class Sn0int < Formula
   desc "Semi-automatic OSINT framework and package manager"
   homepage "https://github.com/kpcyrd/sn0int"
-  url "https://github.com/kpcyrd/sn0int/archive/v0.21.2.tar.gz"
-  sha256 "f76ac3311a123431b17222b1e6de656604c338a4bb3c567137dde7a211e5d906"
+  url "https://github.com/kpcyrd/sn0int/archive/v0.24.1.tar.gz"
+  sha256 "557080235b04f47a693ed5263a7218cb5c3f5ddc273cac9185145c1bbe4b8ceb"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "b92b03632a362c9e58bf520f2b32aa3f4cd1adedca52227d4dfac77612412b46"
-    sha256 cellar: :any,                 big_sur:       "0feb4eb85dc71fb422586160548a2f1ab7859db2960ae3832b7684b235d5e1fc"
-    sha256 cellar: :any,                 catalina:      "ee81122a7fdb127d319635582d5daaf68ce5e9f9d7ff42a2774d9732d27e6c0a"
-    sha256 cellar: :any,                 mojave:        "5a3bee08093299cd1cc454de68927afa595bdfb122c77f97ca5df7a94ae6a41c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b85c6416f70c5021bc56515d3a0405cf7616400df7b4eb507759128cf6a30f7c"
+    sha256 cellar: :any,                 arm64_monterey: "429da6e54ec03a70ac372adafbd8946c7e3d789f1a3e6d93a1c2512d30aea5ba"
+    sha256 cellar: :any,                 arm64_big_sur:  "d087d55a98a85e0a411a5cf6df47683320df2b449998d3750ba1dfbbb6b95114"
+    sha256 cellar: :any,                 monterey:       "e4cc74da30b6bfeec00982d2aa8aae8cf7ddb90c20d2c802c481e1bfeafc0249"
+    sha256 cellar: :any,                 big_sur:        "d835232a9d71bc3c3f8b7f6811803cf6d2c11222964d8bda61ffc3f0571d1316"
+    sha256 cellar: :any,                 catalina:       "358fd9af2fed3952846b5318cc989e28fd35e8b41c1321beac7f4d9f203c2f5e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f71bbd348854c63e8f0c74946d733ade3a0ce5c5f53f52fd4c05def7a52ab91"
   end
 
   depends_on "pkg-config" => :build

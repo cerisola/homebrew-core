@@ -1,10 +1,9 @@
 class Pypy3 < Formula
   desc "Implementation of Python 3 in Python"
   homepage "https://pypy.org/"
-  url "https://downloads.python.org/pypy/pypy3.7-v7.3.5-src.tar.bz2"
-  sha256 "d920fe409a9ecad9d074aa8568ca5f3ed3581be66f66e5d8988b7ec66e6d99a2"
+  url "https://downloads.python.org/pypy/pypy3.7-v7.3.7-src.tar.bz2"
+  sha256 "2ed02ac9e710859c41bc82deafb08619792bb9a27eeaa1676c741ededd214dd7"
   license "MIT"
-  revision 1
   head "https://foss.heptapod.net/pypy/pypy", using: :hg, branch: "py3.7"
 
   livecheck do
@@ -13,10 +12,10 @@ class Pypy3 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 big_sur:      "3d8907b569ced4b4a0893bb52c2624f9fdc37f095836bae48b1fff7685a47f1f"
-    sha256 cellar: :any,                 catalina:     "7fe0a93d651ded514ad89691a4f5b94485c875e010ede43ff8d8a570dac28c8b"
-    sha256 cellar: :any,                 mojave:       "bcdd791348b1d5132ec3bbcdc9d592623b04d02e0b22f5afd5b34d3bc5826b70"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "993244a124f5643d23a81a95b0b23a842f098188c37cb3dc94e4852d2565e326"
+    sha256 cellar: :any,                 monterey:     "d5e18214c56907c960277e72b5d1ab9688e42e3323db29e94789ff6e17be3e38"
+    sha256 cellar: :any,                 big_sur:      "f4980891d9687298103d5e53f2f783a106d2de25d3b5187da6e11f307a63464d"
+    sha256 cellar: :any,                 catalina:     "a42821d5afbdf003b7f5ad607881713b23f3a098eb452d7351ad0c3f28aa42f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "e76f45f6f97329af492c51067b6b9e4dc1835fe9a66eaf41e739f213716d5d98"
   end
 
   depends_on "pkg-config" => :build
@@ -36,13 +35,13 @@ class Pypy3 < Formula
   uses_from_macos "zlib"
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/cf/79/1a19c2f792da00cbead7b6caa176afdddf517522cb9163ce39576025b050/setuptools-57.1.0.tar.gz"
-    sha256 "cfca9c97e7eebbc8abe18d5e5e962a08dcad55bb63afddd82d681de4d22a597b"
+    url "https://files.pythonhosted.org/packages/1e/5c/3d7b3d91a86d71faf5038c5d259ed36b5d05b7804648e2c43251d574a6e6/setuptools-58.2.0.tar.gz"
+    sha256 "2c55bdb85d5bb460bd2e3b12052b677879cffcf46c0c688f2e5bf51d36001145"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/4d/0c/3b63fe024414a8a48661cf04f0993d4b2b8ef92daed45636474c018cd5b7/pip-21.1.3.tar.gz"
-    sha256 "b5b1eb91b36894bd01b8e5a56a422c2f3838573da0b0a1c63a096bb454e3b23f"
+    url "https://files.pythonhosted.org/packages/00/5f/d6959d6f25f202e3e68e3a53b815af42d770c829c19382d0acbf2c3e2112/pip-21.3.tar.gz"
+    sha256 "741a61baab1dbce2d8ca415effa48a2b6a964564f81a9f4f1fce4c433346c034"
   end
 
   # Build fixes:
@@ -50,8 +49,6 @@ class Pypy3 < Formula
   #   When tcl-tk is not found, it uses unversioned `-ltcl -ltk`, which breaks build.
   # - Disable building cffi imports with `--embed-dependencies`, which compiles and
   #   statically links a specific OpenSSL version.
-  # - Add flag `--no-make-portable` to package.py so that we can disable portable build.
-  #   Portable build is default on macOS and copies tcl-tk/sqlite dylibs into bottle.
   # Upstream issue ref: https://foss.heptapod.net/pypy/pypy/-/issues/3538
   patch :DATA
 
@@ -85,7 +82,7 @@ class Pypy3 < Formula
 
     (libexec/"lib").install libexec/"bin/#{shared_library("libpypy3-c")}" => shared_library("libpypy3-c")
 
-    on_macos do
+    if OS.mac?
       MachO::Tools.change_install_name("#{libexec}/bin/pypy3",
                                        "@rpath/libpypy3-c.dylib",
                                        "#{libexec}/lib/libpypy3-c.dylib")
@@ -106,7 +103,7 @@ class Pypy3 < Formula
 
     # Delete two files shipped which we do not want to deliver
     # These files make patchelf fail
-    on_linux do
+    if OS.linux?
       rm_f libexec/"bin/libpypy3-c.so.debug"
       rm_f libexec/"bin/pypy3.debug"
     end
@@ -222,14 +219,3 @@ __END__
                  argv = [filename, '--embed-dependencies']
              else:
                  argv = [filename,]
---- a/pypy/tool/release/package.py
-+++ b/pypy/tool/release/package.py
-@@ -358,7 +358,7 @@ def package(*args, **kwds):
-                         default=(ARCH in ('darwin', 'aarch64', 'x86_64')),
-                         help='whether to embed dependencies in CFFI modules '
-                         '(default on OS X)')
--    parser.add_argument('--make-portable',
-+    parser.add_argument('--make-portable', '--no-make-portable',
-                         dest='make_portable',
-                         action=NegateAction,
-                         default=(ARCH in ('darwin',)),

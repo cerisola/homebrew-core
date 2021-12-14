@@ -1,30 +1,27 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "https://www.veripool.org/wiki/verilator"
-  url "https://www.veripool.org/ftp/verilator-4.200.tgz"
-  sha256 "773913f4410512a7a51de3d04964766438dc11fc22b213eab5c6c29730df3e36"
+  url "https://github.com/verilator/verilator/archive/refs/tags/v4.216.tar.gz"
+  sha256 "64e5093b629a7e96178e3b2494f208955f218dfac6f310a91e4fc07d050c980b"
   license any_of: ["LGPL-3.0-only", "Artistic-2.0"]
 
-  livecheck do
-    url "https://github.com/verilator/verilator.git"
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
-  end
-
   bottle do
-    sha256 arm64_big_sur: "fe191d41a9bf04fd0536c7564cf1368535e22a0e1245e5c1672bc5e056848181"
-    sha256 big_sur:       "cd3937360e860cc0792fbf109cd245d3f48b0cb70d489bfda7db170eb1451e1a"
-    sha256 catalina:      "e2825ec3ef68a3344f102d15fd5a5c7915a18bacaf57d9ffdd1dc870e1e152e7"
-    sha256 mojave:        "f777b5823ce0aeb7fae25d6f8040d29aebd8f02e02a588b78773f7702bf83e7c"
-    sha256 x86_64_linux:  "6eb4b51aeef84c2dc4a6bb9a8becd6ab31fa8ee0d569a1bfc3bc82db1a2c5393"
+    sha256 arm64_monterey: "64e904c9c83ab057476ed63a80277656df6d554f30d589c82b42333ca2ec9866"
+    sha256 arm64_big_sur:  "7b9d457edce98a8703f88ed0f646c0a1cb33f6a51d9cfc2778e61040ea76cf80"
+    sha256 monterey:       "26efe02e1808eee8ebc6bc480c27bd886f4024a49f4ced13c56655eec2acf4a6"
+    sha256 big_sur:        "40459e084b741bffc67f6e7b72cf0c701428415434ad23ba635cf3fda9840276"
+    sha256 catalina:       "e0158aa800c6028a36f456d7e60a4b1ef102c863e03e8f4b83dd0a6261cf898d"
+    sha256 x86_64_linux:   "f337bdd7247fbb8a3245d28fa4531d69af420047e0058557f601ea8eefad9661"
   end
 
   head do
-    url "https://git.veripool.org/git/verilator", using: :git
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
+    url "https://github.com/verilator/verilator.git", using: :git
   end
 
-  depends_on "python@3.9" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "python@3.10" => :build
+  depends_on "cmake" => :test
 
   uses_from_macos "bison"
   uses_from_macos "flex"
@@ -33,7 +30,7 @@ class Verilator < Formula
   skip_clean "bin" # Allows perl scripts to keep their executable flag
 
   def install
-    system "autoconf" if build.head?
+    system "autoconf"
     system "./configure", "--prefix=#{prefix}"
     # `make` and `make install` need to be separate for parallel builds
     system "make"
@@ -57,9 +54,16 @@ class Verilator < Formula
           exit(0);
       }
     EOS
-    system "/usr/bin/perl", bin/"verilator", "-Wall", "--cc", "test.v", "--exe", "test.cpp"
-    cd "obj_dir" do
-      system "make", "-j", "-f", "Vtest.mk", "Vtest"
+    (testpath/"CMakeLists.txt").write <<~EOS
+      project(test)
+      cmake_minimum_required(VERSION 3.12)
+      find_package(verilator)
+      add_executable(Vtest test.cpp)
+      verilate(Vtest SOURCES test.v)
+    EOS
+    system "cmake", "-B", "build", "."
+    system "cmake", "--build", "build", "--"
+    cd "build" do
       expected = <<~EOS
         Hello World
         - test.v:2: Verilog $finish

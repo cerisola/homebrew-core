@@ -1,9 +1,10 @@
 class LinkGrammar < Formula
   desc "Carnegie Mellon University's link grammar parser"
   homepage "https://www.abisource.com/projects/link-grammar/"
-  url "https://www.abisource.com/downloads/link-grammar/5.9.1/link-grammar-5.9.1.tar.gz"
-  sha256 "e03febaa820696f47eabb033f04d713d849040c24c45579133d1d021b8ecb0ba"
+  url "https://www.abisource.com/downloads/link-grammar/5.10.2/link-grammar-5.10.2.tar.gz"
+  sha256 "28cec752eaa0e3897ae961333b6927459f8b69fefe68c2aa5272983d7db869b6"
   license "LGPL-2.1"
+  head "https://github.com/opencog/link-grammar.git", branch: "master"
 
   livecheck do
     url :homepage
@@ -11,11 +12,13 @@ class LinkGrammar < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "93066eeefacc4e8095976cd3fc192dd4d9c9f3f6b6d24a7ad49d1de501ba92ac"
-    sha256 big_sur:       "c80d1bef9073e1761f04074d636936036657c7347c12b1f313dbb16d3e3971db"
-    sha256 catalina:      "dbd8dee3d34417e1be978ff916f7159ba77036c9a2af069d8dab23dc11243a38"
-    sha256 mojave:        "8eb72ea314d9e6d5b99df22a0e7635eb5fa26e809010bdcaf2cd5f53ae6ebdc1"
-    sha256 x86_64_linux:  "cf949ec99c89825d66a94e83b4cb183a49d172d4a73acf66ee95db8279245e7d"
+    rebuild 1
+    sha256 arm64_monterey: "2497cfab315f6c199b5a4d751d08354e3997b0ab7d2bf139b1f433765f26b877"
+    sha256 arm64_big_sur:  "58f608417bce28f09eb9af4ecaf696ef8dc81085c41b6d41e9226026000dd79b"
+    sha256 monterey:       "84b1c36c5cdfb1dbce496d3ea10c7182a6b1deb66369146088a9cf77fde7e2c4"
+    sha256 big_sur:        "45fd5772d8e9438a0d4a82055bea5b32ae0cb2ded6942ae455b6ceedf4042547"
+    sha256 catalina:       "690244f41acdcc0dc7821d0f3ca6d8453c82a8ba237f185bf18b3f79efa67791"
+    sha256 x86_64_linux:   "d183af52518aa19ed2e0628496fb925b0c355b3310a37997b83a7f281874c5ba"
   end
 
   depends_on "ant" => :build
@@ -24,21 +27,22 @@ class LinkGrammar < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   uses_from_macos "sqlite"
 
   def install
     ENV["PYTHON_LIBS"] = "-undefined dynamic_lookup"
-    inreplace "bindings/python/Makefile.am",
-      "$(PYTHON_LDFLAGS) -module -no-undefined",
-      "$(PYTHON_LDFLAGS) -module"
-    system "autoreconf", "-fiv"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-regexlib=c"
-    system "make", "install"
+    inreplace "bindings/python/Makefile.am", "$(PYTHON_LDFLAGS) -module -no-undefined",
+                                             "$(PYTHON_LDFLAGS) -module"
+    system "autoreconf", "--verbose", "--install", "--force"
+    system "./configure", *std_configure_args, "--with-regexlib=c"
+
+    # Work around error due to install using detected path inside Python formula.
+    # install: .../site-packages/linkgrammar.pth: Operation not permitted
+    site_packages = prefix/Language::Python.site_packages("python3")
+    system "make", "install", "pythondir=#{site_packages}",
+                              "pyexecdir=#{site_packages}"
   end
 
   test do

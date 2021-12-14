@@ -1,17 +1,18 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "https://www.scipy.org"
-  url "https://files.pythonhosted.org/packages/47/33/a24aec22b7be7fdb10ec117a95e1e4099890d8bbc6646902f443fc7719d1/scipy-1.7.1.tar.gz"
-  sha256 "6b47d5fa7ea651054362561a28b1ccc8da9368a39514c1bbf6c0977a1c376764"
+  url "https://files.pythonhosted.org/packages/61/67/1a654b96309c991762ee9bc39c363fc618076b155fe52d295211cf2536c7/scipy-1.7.3.tar.gz"
+  sha256 "ab5875facfdef77e0a47d5fd39ea178b58e60e454a4c85aa1e52fcb80db7babf"
   license "BSD-3-Clause"
-  head "https://github.com/scipy/scipy.git"
+  head "https://github.com/scipy/scipy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "65e79aed434b4c9dc97445916046490023e91a578583089d06cd97b96251f1df"
-    sha256 cellar: :any, big_sur:       "7273e64702e01f65615143059f6af35f5226fc938d1ef7d048a644f329dfb93e"
-    sha256 cellar: :any, catalina:      "27ade676309a263bab19e497b66941c18969285318846033213b9af9ea4c2150"
-    sha256 cellar: :any, mojave:        "8e2729704d6789206056dc8887dc110d94cda11f2c6b1e8e0a3485d47e4f678b"
-    sha256               x86_64_linux:  "da77380c3ac02a0a27c6b9c4560af76cf2815adf3129c87a1ef26777d9d2259e"
+    sha256 cellar: :any, arm64_monterey: "731732e5ab4c433ae847981e764d8820c86a4445e8d1734c17b5bbc171741dfb"
+    sha256 cellar: :any, arm64_big_sur:  "ef45dabf237da28bbc5dd2ffb8bd11b1ba8cb7409a4d9aad96f4cbb7a4df99b7"
+    sha256 cellar: :any, monterey:       "f6e6a33b62026f23e673585416a9954fb85704c84a08ea711d127786c8dd874a"
+    sha256 cellar: :any, big_sur:        "fae9c01b7711dc23bb7a9b68c9107fe2baaf8622d3af02671c1e8980334134c7"
+    sha256 cellar: :any, catalina:       "9f96da5ad40e75275727c2ceb0417399b08924cd9b6c4c24b26fb5fdb446fab0"
+    sha256               x86_64_linux:   "e20ebace88671c5a3382ed15d64248603f86fae882978bda8e9e4d96d2d457ec"
   end
 
   depends_on "cython" => :build
@@ -28,10 +29,6 @@ class Scipy < Formula
   fails_with gcc: "5"
 
   def install
-    # Fix for current GCC on Big Sur, which does not like 11 as version value
-    # (reported at https://github.com/iains/gcc-darwin-arm64/issues/31#issuecomment-750343944)
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = "11.0" if MacOS.version == :big_sur
-
     openblas = Formula["openblas"].opt_prefix
     ENV["ATLAS"] = "None" # avoid linking against Accelerate.framework
     ENV["BLAS"] = ENV["LAPACK"] = "#{openblas}/lib/#{shared_library("libopenblas")}"

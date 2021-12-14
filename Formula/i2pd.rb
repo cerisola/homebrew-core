@@ -1,15 +1,17 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/2.38.0.tar.gz"
-  sha256 "8452f5323795a1846d554096c08fffe5ac35897867b93a5079605df8f80a3089"
+  url "https://github.com/PurpleI2P/i2pd/archive/2.40.0.tar.gz"
+  sha256 "4443f484ad40753e892170a26c8ee8126e8338bf416d04eab0c55c1c94a4e193"
   license "BSD-3-Clause"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any, big_sur:  "6f4fbf91b730856beeec98a44f8084b03433ff3318e5a560a0b79eafb6559165"
-    sha256 cellar: :any, catalina: "45730f081ee685ce4bca5c53ceb353e01b4d480c59d3edbf59d18b63f0cfa846"
-    sha256 cellar: :any, mojave:   "c4a4454b4532969106e5fb1e3b504e4f9056c15a62665354b3f19bb5c588ac17"
+    sha256 cellar: :any, arm64_monterey: "550dc26ffd266bbf7b913f132fe4aba1c04e94a43e3604f32e99a0205109726c"
+    sha256 cellar: :any, arm64_big_sur:  "df56a21abd4fd938d18861b89a3b3c2915de281d0d48691b252aa2a2995d8216"
+    sha256 cellar: :any, monterey:       "0eeb3cb89d507c2bc2c5e2efc3b723f1353fb957fd652e03053cbdd7042d049e"
+    sha256 cellar: :any, big_sur:        "518e30dd51f2bfa19f0a4919fa54cb1ce1b426ba9fb8c8af759ad193cba6e00d"
+    sha256 cellar: :any, catalina:       "57cbbd26efba51eba1391e59f1499e066971ae6842c8eb95c3079cedba37c2a1"
   end
 
   depends_on "boost"
@@ -17,8 +19,16 @@ class I2pd < Formula
   depends_on "openssl@1.1"
 
   def install
-    system "make", "install", "DEBUG=no", "HOMEBREW=1", "USE_UPNP=yes",
-                              "USE_AENSI=no", "USE_AVX=no", "PREFIX=#{prefix}"
+    args = %W[
+      DEBUG=no
+      HOMEBREW=1
+      USE_UPNP=yes
+      PREFIX=#{prefix}
+    ]
+
+    args << "USE_AESNI=no" if Hardware::CPU.arm?
+
+    system "make", "install", *args
 
     # preinstall to prevent overwriting changed by user configs
     confdir = etc/"i2pd"
@@ -51,11 +61,11 @@ class I2pd < Formula
   end
 
   test do
-    pid = fork do
-      exec "#{bin}/i2pd", "--datadir=#{testpath}", "--daemon"
-    end
+    pidfile = testpath/"i2pd.pid"
+    system bin/"i2pd", "--datadir=#{testpath}", "--pidfile=#{pidfile}", "--daemon"
     sleep 5
-    Process.kill "TERM", pid
     assert_predicate testpath/"router.keys", :exist?, "Failed to start i2pd"
+    pid = pidfile.read.chomp.to_i
+    Process.kill "TERM", pid
   end
 end

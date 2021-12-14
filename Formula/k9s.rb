@@ -2,26 +2,38 @@ class K9s < Formula
   desc "Kubernetes CLI To Manage Your Clusters In Style!"
   homepage "https://k9scli.io/"
   url "https://github.com/derailed/k9s.git",
-      tag:      "v0.24.15",
-      revision: "8e41b76edf15f7eddc46cd75fd45d27a30dc9ebe"
+      tag:      "v0.25.10",
+      revision: "e64dcbcbdc35b60edc37cc8753ff7023e1a6bf18"
   license "Apache-2.0"
   head "https://github.com/derailed/k9s.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "305a97fe97ba71a162d600c434b34305f2bd43cbefb0e9370a2efd369b2284b4"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5ee6617c05cd4c0d16c49f1b8b5a5708af72ce9e0559153f30bc251eed1da7d4"
-    sha256 cellar: :any_skip_relocation, catalina:      "704682ea3b389486d1be05d3ad78a6bf44235320a220891c76d6a8d49a7d1477"
-    sha256 cellar: :any_skip_relocation, mojave:        "46fef9ab5f81a433883c452621b0fe0b96d53c4acc018eb8ee42d095d3abd9f7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31b743e853265a6a9eba71830360cd73a90a9b3514176e509f835c57ca6bebd6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "589845aef33d793ec217a4bbd24bab2f5a0966c496c63d655cb521c52db61195"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1f9a58bf3065bca351325788d5914c71d3e62d934bcf8307bc773ebd68e4e385"
+    sha256 cellar: :any_skip_relocation, monterey:       "d1c001aba1a66c878882bdbe9b04cd03270933d688cf891e944177d52fa1adcc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9180c080f0c8b7dbd8650010f4e7c5965d90ab345f3150a0c98724b8406852c2"
+    sha256 cellar: :any_skip_relocation, catalina:       "630797655446bbced141a3288fcad89521e71c0007063cfb5c82d9b3c301d128"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8339e3c4e0bfac24b13a6087e6d9fab56714eb063044fbc28977c252fb028b32"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags",
-             "-s -w -X github.com/derailed/k9s/cmd.version=#{version}
-             -X github.com/derailed/k9s/cmd.commit=#{Utils.git_head}",
-             *std_go_args
+    ldflags = %W[
+      -s -w
+      -X github.com/derailed/k9s/cmd.version=#{version}
+      -X github.com/derailed/k9s/cmd.commit=#{Utils.git_head}
+    ]
+    system "go", "build", *std_go_args(ldflags: ldflags)
+
+    bash_output = Utils.safe_popen_read(bin/"k9s", "completion", "bash")
+    (bash_completion/"k9s").write bash_output
+
+    zsh_output = Utils.safe_popen_read(bin/"k9s", "completion", "zsh")
+    (zsh_completion/"_k9s").write zsh_output
+
+    fish_output = Utils.safe_popen_read(bin/"k9s", "completion", "fish")
+    (fish_completion/"k9s.fish").write fish_output
   end
 
   test do

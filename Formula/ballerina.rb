@@ -1,8 +1,8 @@
 class Ballerina < Formula
   desc "Programming Language for Network Distributed Applications"
   homepage "https://ballerina.io"
-  url "https://dist.ballerina.io/downloads/1.2.18/ballerina-1.2.18.zip"
-  sha256 "87b697bd0ea97a69eb4b8071b77c65e936acc95d245e97c2d607b7f0834b7f7e"
+  url "https://dist.ballerina.io/downloads/1.2.22/ballerina-1.2.22.zip"
+  sha256 "7ffc5dbf43fdeb16febe118dbce7aa2820c026e25d047d4e15214b0ad3edffb2"
   license "Apache-2.0"
 
   livecheck do
@@ -11,10 +11,9 @@ class Ballerina < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "6b6d95eb2d4bee6e81037498f9244bb4c907b4e3f865eb37163ea45126053f87"
+    sha256 cellar: :any_skip_relocation, all: "e57ac1df23f5296aa7e39578bca7f64ece57f130295cd7b4463361c03c9fc7b1"
   end
 
-  depends_on arch: :x86_64 # openjdk@8 does not have ARM support
   depends_on "openjdk@8"
 
   def install

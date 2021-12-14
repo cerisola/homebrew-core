@@ -3,8 +3,8 @@ class Pnpm < Formula
 
   desc "📦🚀 Fast, disk space efficient package manager"
   homepage "https://pnpm.io/"
-  url "https://registry.npmjs.org/pnpm/-/pnpm-6.13.0.tgz"
-  sha256 "5154c901d48d54da5d4879c3aa1bc6d5b3252163ae9ae47c9859abe41ed93a5f"
+  url "https://registry.npmjs.org/pnpm/-/pnpm-6.24.0.tgz"
+  sha256 "2540d2376190543462d7e3d30cedec3093d27bd423231f40bf1eec0b19f127b6"
   license "MIT"
 
   livecheck do
@@ -13,14 +13,17 @@ class Pnpm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "52d1cbcba6a433d4f18eef3d3efafe44ac46b41fcbbc6be1956109ce69cb305f"
-    sha256 cellar: :any_skip_relocation, big_sur:       "93331513f2b08f1ef030092b63e75b0526e14aa0edb6222825ec8353dd279675"
-    sha256 cellar: :any_skip_relocation, catalina:      "93331513f2b08f1ef030092b63e75b0526e14aa0edb6222825ec8353dd279675"
-    sha256 cellar: :any_skip_relocation, mojave:        "93331513f2b08f1ef030092b63e75b0526e14aa0edb6222825ec8353dd279675"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52d1cbcba6a433d4f18eef3d3efafe44ac46b41fcbbc6be1956109ce69cb305f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3d9f8185ddbb85437e43b7b33475c5991dbbbb998991eff49b2cef7bcf4f0ca8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d9f8185ddbb85437e43b7b33475c5991dbbbb998991eff49b2cef7bcf4f0ca8"
+    sha256 cellar: :any_skip_relocation, monterey:       "f942f62304e5d54053862221674c1a734c94233c9d48af340f90024a7cf366a2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "de3bdcf0762cd93bf3a1c754330eb14bd09e2b7e7ba6d3228927a5682f110b0e"
+    sha256 cellar: :any_skip_relocation, catalina:       "de3bdcf0762cd93bf3a1c754330eb14bd09e2b7e7ba6d3228927a5682f110b0e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3d9f8185ddbb85437e43b7b33475c5991dbbbb998991eff49b2cef7bcf4f0ca8"
   end
 
   depends_on "node"
+
+  conflicts_with "corepack", because: "both installs `pnpm` and `pnpx` binaries"
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)

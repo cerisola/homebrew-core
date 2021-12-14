@@ -1,15 +1,17 @@
 class Mpi4py < Formula
   desc "Python bindings for MPI"
-  homepage "https://mpi4py.readthedocs.io"
-  url "https://bitbucket.org/mpi4py/mpi4py/downloads/mpi4py-3.1.1.tar.gz"
-  sha256 "e11f8587a3b93bb24c8526addec664b586b965d83c0882b884c14dc3fd6b9f5c"
+  homepage "https://mpi4py.github.io/"
+  url "https://github.com/mpi4py/mpi4py/releases/download/3.1.3/mpi4py-3.1.3.tar.gz"
+  sha256 "f1e9fae1079f43eafdd9f817cdb3fd30d709edc093b5d5dada57a461b2db3008"
+  license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "8b7ad2f636c83307d0e95c1e8810d81072354ca20c49726689fd09d053c671d0"
-    sha256 cellar: :any, big_sur:       "b7ca05b0d8ddcc698e1ee29e6108f169cff4f4552ca80842469a63c0a6e90de1"
-    sha256 cellar: :any, catalina:      "9019d4011822668326aec24352f2a743457e727d83d3903b1bee00a1bbfd6751"
-    sha256 cellar: :any, mojave:        "19b22755d25aab224777f996e12cbcb16a8156f1bf98123a607d648b676d7af4"
-    sha256               x86_64_linux:  "25b6d3d54394801fcbb646690cf145e0cae56c9aee9ed43da210c25f65cee914"
+    sha256 cellar: :any, arm64_monterey: "9e0dc01ca3c56bd8307b84a344531150afdaa466f75579b57755d2a5e2a6dd5f"
+    sha256 cellar: :any, arm64_big_sur:  "5e87a7ce5f7b2e702272c825e1ce772e66d1c9765524d38f8cb0c9650ca505e3"
+    sha256 cellar: :any, monterey:       "8aad47e805537da4625fab7f300fb8be6e3ada89116c134c31e7bba07bfcc0f6"
+    sha256 cellar: :any, big_sur:        "3e42d2f36fba22025e3c7c9a01096e4f79eb0872b449fb00ef0a1cf4a5c703a1"
+    sha256 cellar: :any, catalina:       "f851c6383fabf7db02ed5570a4605d0b1bcb926f27be04ce2cda08b68c87ef4d"
+    sha256               x86_64_linux:   "eef31e997cf6327384c7c9b861dfe7133c91448f30382c45cef0e8e1f4a31b21"
   end
 
   depends_on "cython" => :build
@@ -33,9 +35,9 @@ class Mpi4py < Formula
     system python, "-c", "import mpi4py.MPI"
     system python, "-c", "import mpi4py.futures"
 
-    system "mpiexec", "-n", ENV.make_jobs,
+    system "mpiexec", "-n", ENV.make_jobs, "--use-hwthread-cpus",
            python, "-m", "mpi4py.run", "-m", "mpi4py.bench", "helloworld"
-    system "mpiexec", "-n", ENV.make_jobs,
+    system "mpiexec", "-n", ENV.make_jobs, "--use-hwthread-cpus",
            python, "-m", "mpi4py.run", "-m", "mpi4py.bench", "ringtest", "-l", "10", "-n", "1024"
   end
 end

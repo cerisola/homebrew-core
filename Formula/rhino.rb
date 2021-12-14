@@ -7,12 +7,15 @@ class Rhino < Formula
 
   livecheck do
     url :stable
-    strategy :github_latest
-    regex(%r{href=.*?/tag/.*?>Rhino (\d+(?:\.\d+)+)<}i)
+    regex(/^(?:Rhino[._-]?)v?(\d+(?:[._]\d+)+)[._-]Release$/i)
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }
+    end
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0ee2cee36979875331df35909efc3757c8734e540f6ed82f8449193d8579587d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "6e4b37521b15f564ab82aad7b1a727b9158becee6472af1a26a21884d2baf44d"
   end
 
   depends_on "openjdk@11"

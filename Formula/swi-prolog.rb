@@ -1,10 +1,10 @@
 class SwiProlog < Formula
   desc "ISO/Edinburgh-style Prolog interpreter"
   homepage "https://www.swi-prolog.org/"
-  url "https://www.swi-prolog.org/download/stable/src/swipl-8.2.4.tar.gz"
-  sha256 "f4bcc78437f9080ab089762e9e6afa7071df7f584c14999b92b9a90a4efbd7d8"
+  url "https://www.swi-prolog.org/download/stable/src/swipl-8.4.1.tar.gz"
+  sha256 "30bb6542b7767e47b94bd92e8e8a7d7a8a000061044046edf45fc864841b69c4"
   license "BSD-2-Clause"
-  head "https://github.com/SWI-Prolog/swipl-devel.git"
+  head "https://github.com/SWI-Prolog/swipl-devel.git", branch: "master"
 
   livecheck do
     url "https://www.swi-prolog.org/download/stable/src/"
@@ -12,11 +12,12 @@ class SwiProlog < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "3a899873b22a6e4e380498ec855d2c0c7919c848872087da676d385745e39179"
-    sha256 big_sur:       "1a5384ec31ca1088eff1e16d1977a4120f12e8c15e3703ef3c80c564848e2e5c"
-    sha256 catalina:      "06c31b007436027785e73cdbf16d82dd6356766b821580a4fceda8db5eb4c86c"
-    sha256 mojave:        "1deeaab4064bf3da632a28e539f46790252cfec839ae932bc729ecc239e347c3"
-    sha256 x86_64_linux:  "ff38c8fe29849c427abfaa36dcf7193f379c0b0fe1e498ba597f7a44404351bf"
+    sha256 arm64_monterey: "4af9b87b533dbb62f3d3c258545c46bb63ee70ce6179664ec262326b71dbe6d8"
+    sha256 arm64_big_sur:  "c5a8c3feaa65511402f394196b865252e2f2a83183a3580efdb90c84697bde35"
+    sha256 monterey:       "263745a44d64ec8b046f17d2b1f4b3fcd3c0ff736e2810a571f0725c94c09ea3"
+    sha256 big_sur:        "7dc70f763a0996705c79131a7b0b2702fc420d80149374046b559a8ab22001ab"
+    sha256 catalina:       "90ccd979ddc504d65ffb98bca1662074b43f01073c68fc66b7978e5e0a0c591f"
+    sha256 x86_64_linux:   "d235fcf99631b69ba0c910c08152c884a1d72643f1d7aa34244d47e4dd32aefc"
   end
 
   depends_on "cmake" => :build
@@ -33,7 +34,7 @@ class SwiProlog < Formula
 
   def install
     # Remove shim paths from binary files `swipl-ld` and `libswipl.so.*`
-    on_linux do
+    if OS.linux?
       inreplace "cmake/Params.cmake" do |s|
         s.gsub! "${CMAKE_C_COMPILER}", "\"gcc\""
         s.gsub! "${CMAKE_CXX_COMPILER}", "\"g++\""

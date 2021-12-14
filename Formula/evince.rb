@@ -1,15 +1,15 @@
 class Evince < Formula
   desc "GNOME document viewer"
   homepage "https://wiki.gnome.org/Apps/Evince"
-  url "https://download.gnome.org/sources/evince/40/evince-40.4.tar.xz"
-  sha256 "33420500e0e060f178a435063197d42dae7b67e39cc437a96510a33ddf7e95fb"
+  url "https://download.gnome.org/sources/evince/41/evince-41.3.tar.xz"
+  sha256 "3346b01f9bdc8f2d5ffea92f110a090c64a3624942b5b543aad4592a9de33bb0"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_big_sur: "0b857551882828d6169395ef9b6232462fb3b421a489b528e81c69cbb4c16987"
-    sha256 big_sur:       "c121140000b1f012f76a8a36cc98ac388c47197814a7ad33c029729de7bc24bc"
-    sha256 catalina:      "a3530de6c041916c4d7080e3693c6ff27230ba6bfe34c8b9c98690ea0f5627b8"
-    sha256 mojave:        "312e6831954556798dc9e171f9787b467d19357b14f60b92780656fe01ffe519"
+    sha256 arm64_big_sur: "dab0eba135eefc60c69d8781a29940ef9a92a947843aabcf29d02d0085d165bf"
+    sha256 monterey:      "b3c8f7fdde11e14d57e09d4d82e39c78de7b8f2548395c642898b9f94c70c4c3"
+    sha256 big_sur:       "6df0eb2d7dcce978a49bf186629ea345285cb2c5bff4d87682557ebaa5b211e5"
+    sha256 catalina:      "340bd9932eaf6b9e3c476103b49d1d26816e889041201c9c8228a8d8e1b26b7a"
   end
 
   depends_on "gobject-introspection" => :build
@@ -35,15 +35,16 @@ class Evince < Formula
 
     args = %w[
       -Dnautilus=false
-      -Ddjvu=enabled
-      -Dgxps=enabled
       -Dcomics=enabled
+      -Ddjvu=enabled
+      -Dpdf=enabled
+      -Dps=enabled
+      -Dtiff=enabled
+      -Dxps=enabled
       -Dgtk_doc=false
       -Dintrospection=true
-      -Dbrowser_plugin=false
-      -Dgspell=enabled
       -Ddbus=false
-      -Dps=enabled
+      -Dgspell=enabled
     ]
 
     mkdir "build" do

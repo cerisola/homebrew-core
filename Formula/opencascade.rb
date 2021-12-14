@@ -1,15 +1,14 @@
 class Opencascade < Formula
   desc "3D modeling and numerical simulation software for CAD/CAM/CAE"
   homepage "https://dev.opencascade.org/"
-  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_5_1;sf=tgz"
-  version "7.5.1"
-  sha256 "3a43d8b50df78ade72786fa63bc8808deac6380189333663e7b4ef8558ae7739"
+  url "https://git.dev.opencascade.org/gitweb/?p=occt.git;a=snapshot;h=refs/tags/V7_6_0;sf=tgz"
+  version "7.6.0"
+  sha256 "e7f989d52348c3b3acb7eb4ee001bb5c2eed5250cdcceaa6ae97edc294f2cabd"
   license "LGPL-2.1-only"
-  revision 1
 
   # The first-party download page (https://dev.opencascade.org/release)
   # references version 7.5.0 and hasn't been updated for later maintenance
-  # releases (e.g., 7.5.1, 7.5.2), so we check the Git tags instead. Release
+  # releases (e.g., 7.6.0, 7.5.2), so we check the Git tags instead. Release
   # information is posted at https://dev.opencascade.org/forums/occt-releases
   # but the text varies enough that we can't reliably match versions from it.
   livecheck do
@@ -21,10 +20,11 @@ class Opencascade < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "6e9743bf2f4d14d386fae64998a2dc1970d87de03700062560e4f83aabda6fed"
-    sha256 cellar: :any, big_sur:       "ad919403c283553abdfdf73aff6dae11dcb61b4033135e92ed5320e3a62a9158"
-    sha256 cellar: :any, catalina:      "93c10007c53833aaae139fe70fb4ea77486087d81489496a3e3463adb3d7a502"
-    sha256 cellar: :any, mojave:        "494a2b145f132c19af59a46ebbf5c39d8eebda7e46a41c409f2e7abf3f7bb4a7"
+    sha256 cellar: :any, arm64_monterey: "8bd148a271b072e03832d13a54b7d745aa7624e09865adbe26f0fb1506c7a39c"
+    sha256 cellar: :any, arm64_big_sur:  "7a37380befdf19fab8e3e8eaa5287af50b7ab51094b36649c47410edc8df11f9"
+    sha256 cellar: :any, monterey:       "451d3560824746a8dd1b8a34c9a99371ba21df396339f85cfa7566c334dbe4de"
+    sha256 cellar: :any, big_sur:        "1349c8f8a7baa5ea8c01401de40b1ee2d29379cd8626ae9b53496cdc589a9819"
+    sha256 cellar: :any, catalina:       "f1c22070ff63571066b1308b1bc31271155dcb91c6125f7834f7a6ccab2d5ebf"
   end
 
   depends_on "cmake" => :build

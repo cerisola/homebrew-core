@@ -1,16 +1,17 @@
 class Driftctl < Formula
   desc "Detect, track and alert on infrastructure drift"
   homepage "https://driftctl.com"
-  url "https://github.com/cloudskiff/driftctl/archive/v0.14.0.tar.gz"
-  sha256 "c5b573de08016de28bcdd95e1b0cf9a0524a5c3a97a2adfa66c66749831df3d7"
+  url "https://github.com/cloudskiff/driftctl/archive/v0.17.0.tar.gz"
+  sha256 "e50c84cf26b29cf0738fc960fc3afd34a0f784714c2abbc26259a34ed6ed854e"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "905ea80d55401ee7bdb9b14d156badccc41ca4dd272647669546fcb4cb38b16e"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a4b030c5bf151d80cb14f7d944ec3895b0c7e289f50d9a540caea9d5d056eb85"
-    sha256 cellar: :any_skip_relocation, catalina:      "a4b030c5bf151d80cb14f7d944ec3895b0c7e289f50d9a540caea9d5d056eb85"
-    sha256 cellar: :any_skip_relocation, mojave:        "a4b030c5bf151d80cb14f7d944ec3895b0c7e289f50d9a540caea9d5d056eb85"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "600106c9b7e1ade10359415b43bd6ca3536baf2e93c562ff33635a86aaa898bb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "93f7811326d5f6bd1569c068c4510b8549fb2edabb0b3ea881a2a7ea6e0e8ed5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "93f7811326d5f6bd1569c068c4510b8549fb2edabb0b3ea881a2a7ea6e0e8ed5"
+    sha256 cellar: :any_skip_relocation, monterey:       "f69711dca11c51f7fa9b21c6459ca1f120eb881232b68e61874bc23cc88d0937"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f69711dca11c51f7fa9b21c6459ca1f120eb881232b68e61874bc23cc88d0937"
+    sha256 cellar: :any_skip_relocation, catalina:       "f69711dca11c51f7fa9b21c6459ca1f120eb881232b68e61874bc23cc88d0937"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "32d6babab2f20af53df693e03746605247f444b9cea9eede8aa81604cdc14fa7"
   end
 
   depends_on "go" => :build
@@ -22,7 +23,7 @@ class Driftctl < Formula
       -s -w
       -X github.com/cloudskiff/driftctl/build.env=release
       -X github.com/cloudskiff/driftctl/pkg/version.version=v#{version}
-    ].join(" ")
+    ]
 
     system "go", "build", *std_go_args(ldflags: ldflags)
 

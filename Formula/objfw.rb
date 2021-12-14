@@ -1,8 +1,14 @@
 class Objfw < Formula
   desc "Portable, lightweight framework for the Objective-C language"
-  homepage "https://heap.zone/objfw/"
-  url "https://heap.zone/objfw/downloads/objfw-0.90.2.tar.gz"
+  homepage "https://objfw.nil.im/doc/trunk/README.md"
+  url "https://objfw.nil.im/downloads/objfw-0.90.2.tar.gz"
   sha256 "4de24703d45638093a5196eba278a05b3643e8be0ae2eece5c81ba3e2c20bdbb"
+  license any_of: ["QPL-1.0", "GPL-2.0-only", "GPL-3.0-only"]
+
+  livecheck do
+    url "https://objfw.nil.im/wiki?name=Releases"
+    regex(/href=.*?objfw[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
     sha256 arm64_big_sur: "59dd4798a6017b6062614f70004c87feb3bbf7aecb9ac2165b5b6f92353c6361"
@@ -13,7 +19,15 @@ class Objfw < Formula
     sha256 sierra:        "2369c4233bafe95aeea87f678cc5e0f0b001d36b5aeff6a7b6512f766d77eb5e"
   end
 
+  head do
+    url "https://github.com/ObjFW/ObjFW.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   def install
+    system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

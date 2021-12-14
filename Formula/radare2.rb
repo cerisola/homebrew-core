@@ -1,17 +1,23 @@
 class Radare2 < Formula
   desc "Reverse engineering framework"
   homepage "https://radare.org"
-  url "https://github.com/radareorg/radare2/archive/5.3.1.tar.gz"
-  sha256 "f95cbbba27f427bc3da41e9296e632c4bba1c47d107a9c911e82a524c136c406"
+  url "https://github.com/radareorg/radare2/archive/5.5.2.tar.gz"
+  sha256 "aee036d10a6dc953840795a4ee964c30eda6845c36dac4cd179351ba1af5c86b"
   license "LGPL-3.0-only"
-  head "https://github.com/radareorg/radare2.git"
+  head "https://github.com/radareorg/radare2.git", branch: "master"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 arm64_big_sur: "fb6a2b27a04b3c58eb9cc9f3c11966c6497190f8500a574610d48b1df8884416"
-    sha256 big_sur:       "52563870e763b9012aa676db4751232ecbfeee0c3b3d57c7ac4f968fca7114b4"
-    sha256 catalina:      "8e96a5811ccc5fd5898459442a7c70b9c143246374bb1801d472ecf779a23123"
-    sha256 mojave:        "f7f4295250789184496dde21eda27a2145e3df37629f9a90ffe93d69f901044a"
-    sha256 x86_64_linux:  "5d3d0fe84731029da2a36fb1140ef84065752fd9c41cbcda6f0c648d71ebc848"
+    sha256 arm64_monterey: "3307607ab4338b71f3d645603e2543863428438d50fa004a40f88324a39949f8"
+    sha256 arm64_big_sur:  "f3a4b73f56eadb264e37480bf8801739baebffc18251881fcee2020a08a93c37"
+    sha256 monterey:       "b01a7b16f077570ef01bab78d5bdc145b32aba63d1562bc03372108ef2fc3e76"
+    sha256 big_sur:        "76de4ebf8b22dda6cd51705dd310bb6247ca0d8f004e94b9a0c0a2ee5cdf5e32"
+    sha256 catalina:       "be085c2b01cc2db625be44788a0157f3e0ce8e6616110b2b2e19e253662ea2b8"
+    sha256 x86_64_linux:   "1ed1edbbcb7d8360a6876c649893ed96a932c458da067e61f36fb59117fc09e6"
   end
 
   def install
@@ -21,6 +27,6 @@ class Radare2 < Formula
   end
 
   test do
-    assert_match "radare2 #{version}", shell_output("#{bin}/r2 -version")
+    assert_match "radare2 #{version}", shell_output("#{bin}/r2 -v")
   end
 end

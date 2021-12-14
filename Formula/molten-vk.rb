@@ -1,18 +1,21 @@
 class MoltenVk < Formula
   desc "Implementation of the Vulkan graphics and compute API on top of Metal"
   homepage "https://github.com/KhronosGroup/MoltenVK"
-  url "https://github.com/KhronosGroup/MoltenVK/archive/v1.1.4.tar.gz"
-  sha256 "f9bba6d3bf3648e7685c247cb6d126d62508af614bc549cedd5859a7da64967e"
+  url "https://github.com/KhronosGroup/MoltenVK/archive/v1.1.6.tar.gz"
+  sha256 "b60df3ac93b943eb14377019445533b5c451fffd6b1df86187b1b9ac7d6dba6b"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "0ba0530a306310f1c9508d1c87661df6b488ec2db5a32ce35e3613f550b6132e"
-    sha256 cellar: :any, big_sur:       "d0fb5ac702f4119ee0a4c294af47b4621f33da63e872ecfc83c00a57d986cfa3"
-    sha256 cellar: :any, catalina:      "8731818bcaae271c0583867531674e2ef91be1a4c5c87baaf97ac6b6eff60d38"
+    rebuild 1
+    sha256 cellar: :any, arm64_monterey: "b418bafc1442c5f28c8d333f8aa282f7371037a2d4bce1bd901756ab66c8cf3d"
+    sha256 cellar: :any, arm64_big_sur:  "c69e79e50663066064bfa257dffe0043740738ddbe3460e50f4ea66e4ca4ea20"
+    sha256 cellar: :any, monterey:       "7d6e9e6e96983ea03c155cfaa9869d7416d7aebba685837dece49008675b4419"
+    sha256 cellar: :any, big_sur:        "f075e4e91d443eabf19305df8fec19004711dca462bc6f2302c2760cc3a7aeee"
+    sha256 cellar: :any, catalina:       "542ad9e876724b948bd66956316fcffb42b97c3deaec8a26689e5f4bc285a703"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on xcode: ["11.7", :build]
   # Requires IOSurface/IOSurfaceRef.h.
   depends_on macos: :sierra
@@ -29,37 +32,37 @@ class MoltenVk < Formula
   resource "Vulkan-Headers" do
     # ExternalRevisions/Vulkan-Headers_repo_revision
     url "https://github.com/KhronosGroup/Vulkan-Headers.git",
-        revision: "37164a5726f7e6113810f9557903a117498421cf"
+        revision: "8c1c27d5a9b9de8a17f500053bd08c7ca6bba19c"
   end
 
   resource "SPIRV-Cross" do
     # ExternalRevisions/SPIRV-Cross_repo_revision
     url "https://github.com/KhronosGroup/SPIRV-Cross.git",
-        revision: "9cdeefb5e322fc26b5fed70795fe79725648df1f"
+        revision: "7c3cb0b12c9965497b08403c82ac1b82846fa7be"
   end
 
   resource "glslang" do
     # ExternalRevisions/glslang_repo_revision
     url "https://github.com/KhronosGroup/glslang.git",
-        revision: "ae2a562936cc8504c9ef2757cceaff163147834f"
+        revision: "c9706bdda0ac22b9856f1aa8261e5b9e15cd20c5"
   end
 
   resource "SPIRV-Tools" do
     # External/glslang/known_good.json
     url "https://github.com/KhronosGroup/SPIRV-Tools.git",
-        revision: "5dd2f76918bb2d0d67628e338f60f724f3e02e13"
+        revision: "21e3f681e2004590c7865bc8c0195a4ab8e66c88"
   end
 
   resource "SPIRV-Headers" do
     # External/glslang/known_good.json
     url "https://github.com/KhronosGroup/SPIRV-Headers.git",
-        revision: "07f259e68af3a540038fa32df522554e74f53ed5"
+        revision: "814e728b30ddd0f4509233099a3ad96fd4318c07"
   end
 
   resource "Vulkan-Tools" do
     # ExternalRevisions/Vulkan-Tools_repo_revision
     url "https://github.com/KhronosGroup/Vulkan-Tools.git",
-        revision: "dbd221b2bc7acbfe993be40fbfbf4f4a0a1ed816"
+        revision: "691252756218fcbd1f0f8d7cc14e753123f08940"
   end
 
   def install
@@ -84,7 +87,8 @@ class MoltenVk < Formula
     end
 
     # Build ExternalDependencies
-    xcodebuild "-project", "ExternalDependencies.xcodeproj",
+    xcodebuild "ARCHS=#{Hardware::CPU.arch}", "ONLY_ACTIVE_ARCH=YES",
+               "-project", "ExternalDependencies.xcodeproj",
                "-scheme", "ExternalDependencies-macOS",
                "-derivedDataPath", "External/build",
                "SYMROOT=External/build", "OBJROOT=External/build",
@@ -109,8 +113,10 @@ class MoltenVk < Formula
                            "Release/Platform/libglslang.a"
 
     # Build MoltenVK Package
-    xcodebuild "-project", "MoltenVKPackaging.xcodeproj",
+    xcodebuild "ARCHS=#{Hardware::CPU.arch}", "ONLY_ACTIVE_ARCH=YES",
+               "-project", "MoltenVKPackaging.xcodeproj",
                "-scheme", "MoltenVK Package (macOS only)",
+               "-derivedDataPath", "#{buildpath}/build",
                "SYMROOT=#{buildpath}/build", "OBJROOT=build",
                "build"
 

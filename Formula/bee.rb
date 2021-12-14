@@ -1,16 +1,14 @@
 class Bee < Formula
   desc "Tool for managing database changes"
   homepage "https://github.com/bluesoft/bee"
-  url "https://github.com/bluesoft/bee/releases/download/1.80/bee-1.80.zip"
-  sha256 "42441cd6e48f1dc491b33384e4c80e72425bca660f4fb1c6e830840c3a397e7d"
+  url "https://github.com/bluesoft/bee/releases/download/1.84/bee-1.84.zip"
+  sha256 "e93bf876ef9701381b677892eea5080faf8c53c2bd8bb96fa99ed31f27167e13"
   license "MPL-1.1"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d4224f9390bdaaa778b634dd75e0b5092ba049626b8e9d9dc33f89aa9cfbdefd"
+    sha256 cellar: :any_skip_relocation, all: "373b0d51bd283feb4af1f7fee4dd6e7c9664d759c14812bbf65875dce9711e5e"
   end
 
-  depends_on arch: :x86_64 # openjdk@8 doesn't support ARM
   depends_on "openjdk@8"
 
   def install

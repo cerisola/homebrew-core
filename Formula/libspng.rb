@@ -1,16 +1,17 @@
 class Libspng < Formula
   desc "C library for reading and writing PNG format files"
   homepage "https://libspng.org/"
-  url "https://github.com/randy408/libspng/archive/v0.6.3.tar.gz"
-  sha256 "381e4073221a8fbdb54b3022ac7ede6a62ec944dcf30599e4565ebb52b311dd8"
+  url "https://github.com/randy408/libspng/archive/v0.7.1.tar.gz"
+  sha256 "0726a4914ad7155028f3baa94027244d439cd2a2fbe8daf780c2150c4c951d8e"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "6d41eb3e6c1938743b2214d4a18c7bb13a4908582380cf7583e7cfd74ab0f038"
-    sha256 cellar: :any, big_sur:       "8cba8c9454c2d9892b39cd4b4dff9e32974f82ea5c220dc1e0aa90eb19406711"
-    sha256 cellar: :any, catalina:      "9b5f9ce7f8e56210f9cce38d641517f5bf43dc5d9f45b75c6be9bc5ad76c1f1f"
-    sha256 cellar: :any, mojave:        "8c2f036cc0b40a540d0aab26486f8f66b03b075fa78c7b39e912321115007bfd"
-    sha256               x86_64_linux:  "1366686af344099f1a802870d56e7fdf86edb52beec4520f8deb2ed6b6cf7583"
+    sha256 cellar: :any, arm64_monterey: "113f103b85fb26b23deea38dba6952e43eb5f66a7b487435bb6192cc226afdd8"
+    sha256 cellar: :any, arm64_big_sur:  "3dab6addd815f5c2581819f6898a5b89697749e6430bec257070427e16b0ab48"
+    sha256 cellar: :any, monterey:       "f3ad98cd2b7c1cfc01016b7971b02d35d3a96625e2846b52a4b08c0f8429b49b"
+    sha256 cellar: :any, big_sur:        "348a4922588fdaac780287189ac57df2e0f8161eb52c433279fff1c91c83fd79"
+    sha256 cellar: :any, catalina:       "2b901c432dee3e6cc812445d71801fd4454cd1c1950214bf4654a97de358fdc6"
+    sha256               x86_64_linux:   "3512ae373da63acb54044f904e61e00a3a674e2b4d30153498f65bbda91a8c78"
   end
 
   depends_on "meson" => :build

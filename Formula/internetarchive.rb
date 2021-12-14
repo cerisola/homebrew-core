@@ -3,38 +3,35 @@ class Internetarchive < Formula
 
   desc "Python wrapper for the various Internet Archive APIs"
   homepage "https://github.com/jjjake/internetarchive"
-  url "https://files.pythonhosted.org/packages/d5/3f/924b6b400a3f1fb32a5e080509b3f39590ecc73111033dcc397f1917e5a9/internetarchive-2.0.3.tar.gz"
-  sha256 "2ce0ab89fea37e5b2311bc7d163955e84f73f6beeac3942e17e9d51ad7cc9ffa"
+  url "https://files.pythonhosted.org/packages/ec/0f/0f7ad6c290a7768912650d59262084ccc33899e7b443a624ee92793b2282/internetarchive-2.2.0.tar.gz"
+  sha256 "ebd11ecd038c71e75a3aef8d87750b46480169ecaefb23074c4ae48440bf2836"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "444c7b0950abc32a994677a26baea3552b38657cc8282850ed3af8400affe40d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "4795f5dbef8f8c5e8c07ec878dfe308273b4e346922b76ac128396921071cb56"
-    sha256 cellar: :any_skip_relocation, catalina:      "ff92b8523de18c71521b8245a08d7eae83d33c0292536c3551d9571b40c9adf4"
-    sha256 cellar: :any_skip_relocation, mojave:        "1b7333d8a28ae74c4d20cfa387fa524de5bb2e2b8928db61be9ac51c73dcc97f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "326a5ed35f1665f2daeaeefbeba624b8724aef01aadfac7a8a109cc0c1989cd2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "60df33e39fb7e07a8103c0e52805e25ed55055cebe0f310de4a06e027b4830b8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "323441be8f43e001c768c744179ffe77abd8554d400e0dd125dbe4b71b2d29b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "ab84d6e1c85f799f50d3685089784c42816e289a5c2f3dbb5cad98f99870f2aa"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d85ce174aa02aaa75503c2a60dc9f8c52f589e54cd2f7a8537d1816919cd4b66"
+    sha256 cellar: :any_skip_relocation, catalina:       "3df9cf7129c10878b3603e3ff93463e8bde3c2a4a0428c99908336c3372d04d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "847259701891e2ade731bdc84383c5dda8c53470836b280574a106fe6def2da1"
   end
 
-  depends_on "python@3.9"
-
-  resource "backports.csv" do
-    url "https://files.pythonhosted.org/packages/79/0c/d0eaa9380189a292121acab65199ac95b9209b45006ad8aa5266abd36943/backports.csv-1.0.7.tar.gz"
-    sha256 "1277dfff73130b2e106bf3dd347adb3c5f6c4340882289d88f31240da92cbd6d"
-  end
+  depends_on "python@3.10"
+  depends_on "six"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/06/a9/cd1fd8ee13f73a4d4f491ee219deeeae20afefa914dfb4c130cfc9dc397a/certifi-2020.12.5.tar.gz"
-    sha256 "1a4995114262bffbc2413b159f2a1a480c969de6e6eb13ee966d470af86af59c"
+    url "https://files.pythonhosted.org/packages/6c/ae/d26450834f0acc9e3d1f74508da6df1551ceab6c2ce0766a593362d6d57f/certifi-2021.10.8.tar.gz"
+    sha256 "78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"
   end
 
-  resource "chardet" do
-    url "https://files.pythonhosted.org/packages/ee/2d/9cdc2b527e127b4c9db64b86647d567985940ac3698eeabc7ffaccb4ea61/chardet-4.0.0.tar.gz"
-    sha256 "0d6f53a15db4120f2b08c94f11e7d93d2c911ee118b6b30a04ec3ee8310179fa"
+  resource "charset-normalizer" do
+    url "https://files.pythonhosted.org/packages/9f/c5/334c019f92c26e59637bb42bd14a190428874b2b2de75a355da394cf16c1/charset-normalizer-2.0.7.tar.gz"
+    sha256 "e019de665e2bcf9c2b64e2e5aa025fa991da8720daa3c1138cadd2fd1856aed0"
   end
 
   resource "contextlib2" do
-    url "https://files.pythonhosted.org/packages/02/54/669207eb72e3d8ae8b38aa1f0703ee87a0e9f88f30d3c0a47bebdb6de242/contextlib2-0.6.0.post1.tar.gz"
-    sha256 "01f490098c18b19d2bd5bb5dc445b2054d2fa97f09a4280ba2c5f3c394c8162e"
+    url "https://files.pythonhosted.org/packages/c7/13/37ea7805ae3057992e96ecb1cffa2fa35c2ef4498543b846f90dd2348d8f/contextlib2-21.6.0.tar.gz"
+    sha256 "ab1e2bfe1d01d968e1b7e8d9023bc51ef3509bba217bb730cee3827e1ee82869"
   end
 
   resource "docopt" do
@@ -43,8 +40,8 @@ class Internetarchive < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/ea/b7/e0e3c1c467636186c39925827be42f16fee389dc404ac29e930e9136be70/idna-2.10.tar.gz"
-    sha256 "b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"
+    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
+    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
   end
 
   resource "jsonpatch" do
@@ -53,13 +50,13 @@ class Internetarchive < Formula
   end
 
   resource "jsonpointer" do
-    url "https://files.pythonhosted.org/packages/6b/35/400557d3df63269a4c010cbd4865910b3c1718fbfe8d83210b216cd3efcf/jsonpointer-2.1.tar.gz"
-    sha256 "5a34b698db1eb79ceac454159d3f7c12a451a91f6334a4f638454327b7a89962"
+    url "https://files.pythonhosted.org/packages/29/7f/e6b5930e6dd1f461ad412dfc40bc94e5235011f6bbf73cafa8074617c203/jsonpointer-2.2.tar.gz"
+    sha256 "f09f8deecaaa5aea65b5eb4f67ca4e54e1a61f7a11c75085e360fe6feb6a48bf"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/6b/47/c14abc08432ab22dc18b9892252efaf005ab44066de871e72a38d6af464b/requests-2.25.1.tar.gz"
-    sha256 "27973dd4a904a4f13b263a19c866c13b92a39ed1c964655f025f3f8d3d75b804"
+    url "https://files.pythonhosted.org/packages/e7/01/3569e0b535fb2e4a6c384bdbed00c55b9d78b5084e0fb7f4d0bf523d7670/requests-2.26.0.tar.gz"
+    sha256 "b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"
   end
 
   resource "schema" do
@@ -67,19 +64,14 @@ class Internetarchive < Formula
     sha256 "fbb6a52eb2d9facf292f233adcc6008cffd94343c63ccac9a1cb1f3e6de1db17"
   end
 
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz"
-    sha256 "30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"
-  end
-
   resource "tqdm" do
-    url "https://files.pythonhosted.org/packages/35/35/bd5af89c97ad5177ed234d9e79d01a984f8b5226b8ffc8b5d3c4fc8e157d/tqdm-4.60.0.tar.gz"
-    sha256 "ebdebdb95e3477ceea267decfc0784859aa3df3e27e22d23b83e9b272bf157ae"
+    url "https://files.pythonhosted.org/packages/e3/c1/b3e42d5b659ca598508e2a9ef315d5eef0a970f874ef9d3b38d4578765bd/tqdm-4.62.3.tar.gz"
+    sha256 "d359de7217506c9851b7869f3708d8ee53ed70a1b8edbba4dbcb47442592920d"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/cb/cf/871177f1fc795c6c10787bc0e1f27bb6cf7b81dbde399fd35860472cecbc/urllib3-1.26.4.tar.gz"
-    sha256 "e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"
+    url "https://files.pythonhosted.org/packages/80/be/3ee43b6c5757cabea19e75b8f46eaf05a2f5144107d7db48c7cf3a864f73/urllib3-1.26.7.tar.gz"
+    sha256 "4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"
   end
 
   def install

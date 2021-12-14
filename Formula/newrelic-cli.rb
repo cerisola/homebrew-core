@@ -1,16 +1,18 @@
 class NewrelicCli < Formula
   desc "Command-line interface for New Relic"
   homepage "https://github.com/newrelic/newrelic-cli"
-  url "https://github.com/newrelic/newrelic-cli/archive/v0.33.1.tar.gz"
-  sha256 "4c6007881b67df4b479e3e89f8e06a256951b1957cdf8f1fee24a7da8e52704f"
+  url "https://github.com/newrelic/newrelic-cli/archive/v0.40.3.tar.gz"
+  sha256 "74cf60d0e89e587da22cfba0b937dd3669f9c8cf5e41f41b329115a09353f5c4"
   license "Apache-2.0"
-  head "https://github.com/newrelic/newrelic-cli.git"
+  head "https://github.com/newrelic/newrelic-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "f7e2904354b81fd5e4271f69ba5779652f338af76c15dae84213bb692527bdf9"
-    sha256 cellar: :any_skip_relocation, catalina:      "97aea9005ed2236c124e082e9380fc109270c45361b60e6b6141e5f1badd44a3"
-    sha256 cellar: :any_skip_relocation, mojave:        "d42c46eec15270db37afee23ecfb898cec1421e591e9e243b1a8fbbaa0f79a57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ec5f50a4a9f2ecfdf5d24c11333fbc2cd6ad0f6e5f8ebd7d1799956084c49bec"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e4bc9bed814ddae39166d30f1d402e0c876ad3c0b9ec764b01a8acbaffc6b621"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f067ca88ab30db1e99e42ef057f945d9dab10b652085a70a7160cecc81545cdf"
+    sha256 cellar: :any_skip_relocation, monterey:       "60f61eb288dfdbaf39f85f272896e9965794c744875b229b4547ce5185ef4543"
+    sha256 cellar: :any_skip_relocation, big_sur:        "55fae3f16cad139dbc9c67a441c577b332dfd07e093f1de3499271464a57cab5"
+    sha256 cellar: :any_skip_relocation, catalina:       "2cfc6e6bcf67c0cc31ce902581bb595dd2a66a1930d1b2b226fe20ecd8b66f44"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8191a17fa19464a313e27720967f2cc970fe91886c898ae9addb4e8bf069766c"
   end
 
   depends_on "go" => :build
@@ -18,12 +20,7 @@ class NewrelicCli < Formula
   def install
     ENV["PROJECT_VER"] = version
     system "make", "compile-only"
-    on_macos do
-      bin.install "bin/darwin/newrelic"
-    end
-    on_linux do
-      bin.install "bin/linux/newrelic"
-    end
+    bin.install "bin/#{OS.kernel_name.downcase}/newrelic"
 
     output = Utils.safe_popen_read("#{bin}/newrelic", "completion", "--shell", "bash")
     (bash_completion/"newrelic").write output

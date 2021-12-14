@@ -1,16 +1,18 @@
 class FluidSynth < Formula
   desc "Real-time software synthesizer based on the SoundFont 2 specs"
   homepage "https://www.fluidsynth.org"
-  url "https://github.com/FluidSynth/fluidsynth/archive/v2.2.2.tar.gz"
-  sha256 "695aedbfd53160fef7a9a1f66cd6d5cc8a5da0fd472eee458d82b848b6065f9a"
+  url "https://github.com/FluidSynth/fluidsynth/archive/v2.2.4.tar.gz"
+  sha256 "83cb1dba04c632ede74f0c0717018b062c0e00b639722203b23f77a961afd390"
   license "LGPL-2.1-or-later"
   head "https://github.com/FluidSynth/fluidsynth.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "8fe2aca69644b92a6af1d741d1fe9b22676b5410ac19fc6c1a720de4a6d9663d"
-    sha256 cellar: :any, big_sur:       "fc6be35f952494164dbed22d99b3be8a3271e45cba3cef64f1b4125d401d49ab"
-    sha256 cellar: :any, catalina:      "b151673f02fe9138e5b9eb47d6064b45ad81ca81db355fae45648a49233f0fd7"
-    sha256 cellar: :any, mojave:        "ab830fe18dcde94ad7c7bb87c64b94f46a6f617549bf9f19b1d3e78988a747c4"
+    sha256 cellar: :any,                 arm64_monterey: "293adfc90a45fc9f7428090379879ab399aab32cb7ffe7d77ca3c47ce4124de3"
+    sha256 cellar: :any,                 arm64_big_sur:  "cda7c1ad9e2489a6c6b02e7b758e7074e3e1f5b2d7f874b6b446984d1ce122cc"
+    sha256 cellar: :any,                 monterey:       "c7058ff2abcc96941852d03f876d09d74eb9f1cb09878afbaeba356c320f7535"
+    sha256 cellar: :any,                 big_sur:        "b992c40a8813ac566457f36cb9ca527c332971f2873195d421764720c7039314"
+    sha256 cellar: :any,                 catalina:       "262da53696871ab8a46996c5af8611e0d40ca3e5b0dbc550efc1ed290426c0e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "440d60315a01f4e0fcee54e8e30a20bcd9d27efcf6e8246240ead3697a0c1f1d"
   end
 
   depends_on "cmake" => :build
@@ -19,7 +21,7 @@ class FluidSynth < Formula
   depends_on "libsndfile"
   depends_on "portaudio"
 
-  resource "example_midi" do
+  resource "homebrew-test" do
     url "https://upload.wikimedia.org/wikipedia/commons/6/61/Drum_sample.mid"
     sha256 "a1259360c48adc81f2c5b822f221044595632bd1a76302db1f9d983c44f45a30"
   end
@@ -43,7 +45,7 @@ class FluidSynth < Formula
 
   test do
     # Synthesize wav file from example midi
-    resource("example_midi").stage testpath
+    resource("homebrew-test").stage testpath
     wavout = testpath/"Drum_sample.wav"
     system bin/"fluidsynth", "-F", wavout, pkgshare/"sf2/VintageDreamsWaves-v2.sf2", testpath/"Drum_sample.mid"
     assert_predicate wavout, :exist?

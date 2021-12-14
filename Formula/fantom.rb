@@ -1,12 +1,13 @@
 class Fantom < Formula
   desc "Object oriented, portable programming language"
   homepage "https://fantom.org/"
-  url "https://github.com/fantom-lang/fantom/releases/download/v1.0.76/fantom-1.0.76.zip"
-  sha256 "805befd635700ad2d85993ef02abc6c8df4c8be57b688302ce62f45a693117d3"
+  url "https://github.com/fantom-lang/fantom/releases/download/v1.0.77/fantom-1.0.77.zip"
+  sha256 "f53ed7d3f0fc1b406ae65bc841a66756076563b57c783e1b097ab94f72da6825"
   license "AFL-3.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "7e9e4d0966690f028f05ffdee9bc2c9f52e1337933da4fe6b4e7c4bd9ff146ff"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "d3a9833136f2595a1eb31a154d64faea7ad6f04501b168df82a13239dc9006c2"
   end
 
   depends_on "openjdk"

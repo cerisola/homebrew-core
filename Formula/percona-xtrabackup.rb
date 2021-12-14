@@ -10,11 +10,13 @@ class PerconaXtrabackup < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "45e372cb3dbc06e4598b9730a2d966b7b5acdbf26f1cdd1fec476c9343a76264"
-    sha256 big_sur:       "7678afb4036a12a8a57ecc72544ad01ee8daf1987da5e6b9fd15644e13e163e0"
-    sha256 catalina:      "ac2777de2bced8fc020ef76f1275da999f11cb3c60481d97006f8cbac9403a97"
-    sha256 mojave:        "880abb4be9f118120660818a079cdc4562cc7411a1a9070d3ef005c8aee23f35"
-    sha256 x86_64_linux:  "bbe0e5b72dc9bd03415c999aaa45a8ed4d30294f56bad35200fbdbc8d1f552df"
+    sha256 arm64_monterey: "8fb924ae54f28708933b9afcd06423e45b40f9a33b0c6dd72d0156a430c3f43a"
+    sha256 arm64_big_sur:  "45e372cb3dbc06e4598b9730a2d966b7b5acdbf26f1cdd1fec476c9343a76264"
+    sha256 monterey:       "3fe3ef97609466a2213e6d301584bfa0071cf13b30fdfb3c6252283075f59bf9"
+    sha256 big_sur:        "7678afb4036a12a8a57ecc72544ad01ee8daf1987da5e6b9fd15644e13e163e0"
+    sha256 catalina:       "ac2777de2bced8fc020ef76f1275da999f11cb3c60481d97006f8cbac9403a97"
+    sha256 mojave:         "880abb4be9f118120660818a079cdc4562cc7411a1a9070d3ef005c8aee23f35"
+    sha256 x86_64_linux:   "bbe0e5b72dc9bd03415c999aaa45a8ed4d30294f56bad35200fbdbc8d1f552df"
   end
 
   depends_on "cmake" => :build
@@ -64,6 +66,13 @@ class PerconaXtrabackup < Formula
     sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
   end
 
+  # Fix build on Monterey.
+  # Remove with the next version.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/fcbea58e245ea562fbb749bfe6e1ab178fd10025/mysql/monterey.diff"
+    sha256 "6709edb2393000bd89acf2d86ad0876bde3b84f46884d3cba7463cd346234f6f"
+  end
+
   def install
     cmake_args = %W[
       -DBUILD_CONFIG=xtrabackup_release
@@ -103,7 +112,7 @@ class PerconaXtrabackup < Formula
     # remove conflicting library that is already installed by mysql
     rm lib/"libmysqlservices.a"
 
-    on_macos do
+    if OS.mac?
       # Remove libssl copies as the binaries use the keg anyway and they create problems for other applications
       rm lib/"libssl.dylib"
       rm lib/"libssl.1.1.dylib"
@@ -121,9 +130,7 @@ class PerconaXtrabackup < Formula
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
     # This is not part of the system Perl on Linux and on macOS since Mojave
-    install_dbi = (MacOS.version >= :mojave)
-    on_linux { install_dbi = true }
-    if install_dbi
+    if OS.linux? || MacOS.version >= :mojave
       resource("DBI").stage do
         system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
         system "make", "install"

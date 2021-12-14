@@ -1,8 +1,8 @@
 class Metabase < Formula
   desc "Business intelligence report server"
   homepage "https://www.metabase.com/"
-  url "https://downloads.metabase.com/v0.40.2/metabase.jar"
-  sha256 "4d5cd90c7c12b459510dc7955c2d5a8db5845c0ed3bb8dcdc6f548182374e8e9"
+  url "https://downloads.metabase.com/v0.41.4/metabase.jar"
+  sha256 "8a14b5db169f2f66d8fcc0d9de597822e83a1f250c3cff57d4dddf384f2314f7"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,7 +11,7 @@ class Metabase < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "384dd21aef0dfea69ff324c4995db2c4427ff526ae5b3a0aa5975b18ac9ff3ff"
+    sha256 cellar: :any_skip_relocation, all: "392d993c155475413f245a2a506754210ab23d25a5897430ac3a4256f2cdbe26"
   end
 
   head do
@@ -37,33 +37,13 @@ class Metabase < Formula
     bin.write_jar_script libexec/"metabase.jar", "metabase", java_version: "11"
   end
 
-  plist_options startup: true, manual: "metabase"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/metabase</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{var}/metabase</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/metabase/server.log</string>
-        <key>StandardErrorPath</key>
-        <string>/dev/null</string>
-      </dict>
-      </plist>
-    EOS
+  plist_options startup: true
+  service do
+    run opt_bin/"metabase"
+    keep_alive true
+    working_dir var/"metabase"
+    log_path var/"metabase/server.log"
+    error_log_path "/dev/null"
   end
 
   test do

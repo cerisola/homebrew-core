@@ -1,17 +1,18 @@
 class Flarectl < Formula
   desc "CLI application for interacting with a Cloudflare account"
   homepage "https://github.com/cloudflare/cloudflare-go/tree/master/cmd/flarectl"
-  url "https://github.com/cloudflare/cloudflare-go/archive/v0.20.0.tar.gz"
-  sha256 "aa817fbda630e141a03507d8a28a3ffe66d41e91d435b906039eabe44add662f"
+  url "https://github.com/cloudflare/cloudflare-go/archive/v0.28.0.tar.gz"
+  sha256 "39b77f35a0d8d9b573436d65a2ca8cc36ad835956a00df64d524fed02f4a40a5"
   license "BSD-3-Clause"
   head "https://github.com/cloudflare/cloudflare-go.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "69f908570ab55ff781d572295fb1484907c7df26554fe5ca96d69e44269adf95"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d797f82595302d4240955988835ca23ab59a8d2894995667110ee8e5dd8392fd"
-    sha256 cellar: :any_skip_relocation, catalina:      "6ad60831572fafc18c5a89a52acd0ed76a858d69372eff819d2a90fe54f3da05"
-    sha256 cellar: :any_skip_relocation, mojave:        "b9f01eae281325c595e882a023ee4d2c5a1445c330a6ba82060e2c4cfa47668c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0047137a5fefe80aecdb60ba6aa28f1e70b5a2361d7292bc45d77511b920d16e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "db3363e64a9a9c25c7c66bebb369558f4684713152e9907438f642622639c39b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b9fc17fa82dcae782321ac1f649ecba7d448baee0a30e940ac042dd7c0cc9631"
+    sha256 cellar: :any_skip_relocation, monterey:       "8287c2177d371e02999d5ea3a77d61e091634681d3efae727b1abad0b757b0a7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a334927978703968123e7823fa42e60723f31baa493e98078c96d48a941da046"
+    sha256 cellar: :any_skip_relocation, catalina:       "5bb0aa9a05fa24f5dd8a3a15fbbe2796b1d887f818c103698f9e824df6ec0801"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a52bd8ba2b403783e7e3471c10aab9e49e4c48f068763f4cd7ad635ddbefde9"
   end
 
   depends_on "go" => :build

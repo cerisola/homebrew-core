@@ -1,8 +1,8 @@
 class Lxc < Formula
   desc "CLI client for interacting with LXD"
   homepage "https://linuxcontainers.org"
-  url "https://linuxcontainers.org/downloads/lxd/lxd-4.17.tar.gz"
-  sha256 "54524a25398e366d7ff20726e3bd59a3ac9a4da34b49a370e27ff0599e7ff5cf"
+  url "https://linuxcontainers.org/downloads/lxd/lxd-4.21.tar.gz"
+  sha256 "7a6745b50a5914d6f7812ee1def103373b38ea4759593302a0eded2787a652ac"
   license "Apache-2.0"
 
   livecheck do
@@ -11,22 +11,20 @@ class Lxc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "37b46913ca4af3a6de2423432f38e6e894db775ea2c802496b2d14608cf124d2"
-    sha256 cellar: :any_skip_relocation, big_sur:       "9f755f476ad13aca974fe9ce0aa8f6fb24a0ebbd8aa8eeee90c6f0908cf6178f"
-    sha256 cellar: :any_skip_relocation, catalina:      "cbd593b852065b84524ec5ba2b5a887915de7b8d3e6be5ac3df206932627e7ff"
-    sha256 cellar: :any_skip_relocation, mojave:        "741ab3a57abc315b92f8e831609598721ac1ad98b01e4161b914d9e5c630e915"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cd354e5877ab407ea981bb9cc86d0a581770b580e3e7027ee62e8b991dddba19"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "623d8a0313916bb2c65d9cf19ae8dc84f7e0c275c17fbddb5a7d59a458fe88ec"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "584ecaa377f8a94f5a349901ca9202866c8fd9dc224af1e37eac040501336da4"
+    sha256 cellar: :any_skip_relocation, monterey:       "dd045c9cccbeede2fb2567c6b92c6ad226c29e25f4d53d1afa538a07ac2a241b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5aede4fbe90c7eaab0eb5301c1846ab35b170892594db3f43bef246c6220c015"
+    sha256 cellar: :any_skip_relocation, catalina:       "e837d6b9412ea1431cbf107ad8c04416d53640968da5bbd42609ed1a665b48e9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82ac35fa6e9bf9dcd9d92160a986f45f80f4db2352a8cf70cf8d7d76ca594ac7"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["GOPATH"] = buildpath
     ENV["GOBIN"] = bin
-    ENV["GO111MODULE"] = "auto"
 
-    ln_s buildpath/"_dist/src", buildpath/"src"
-    system "go", "install", "-v", "github.com/lxc/lxd/lxc"
+    system "go", "build", *std_go_args, "./lxc"
   end
 
   test do

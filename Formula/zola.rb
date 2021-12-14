@@ -1,16 +1,17 @@
 class Zola < Formula
   desc "Fast static site generator in a single binary with everything built-in"
   homepage "https://www.getzola.org/"
-  url "https://github.com/getzola/zola/archive/v0.14.0.tar.gz"
-  sha256 "15dfdcfbf35123c62551d515eb1c9f6e5235a8b502f9abfdb09746a163de1404"
+  url "https://github.com/getzola/zola/archive/v0.15.2.tar.gz"
+  sha256 "9f6b1527e728cef3536e42a18fbc06647b388fb34fc07cc7aca82e44f4fa3447"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1ca07c70636c4e522960376758427ccaf5ac06771fbd20c5dad4f9e0fbbd8d92"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5a192bd23baa5ca550f13f2e0d6886ee678f47eac3317268c72b10382c54fc03"
-    sha256 cellar: :any_skip_relocation, catalina:      "d70e314ad7e829bbc6aa3a06cd7a0092cf957b8ec3bedc6f91eba6dfed402971"
-    sha256 cellar: :any_skip_relocation, mojave:        "deb06f0987009ec46ed28b0c6ea7b1470f80ad84fbe44f62662833f949c973b8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "764d1515f6d9d4402dfdbfe071b5b8c8a4987c8f0a86580e352bdd8e5209a0fe"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "484ed75a7e0fe476838a0e22d6fa5951f555e73038a8ff4fdb1ce63ed916c8f1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c44647285e3bcefc042fa9b849bb76a15ee4da2f1e628b14f0598f7b83532928"
+    sha256 cellar: :any_skip_relocation, monterey:       "f78e2b19a6e15679174f7e73cb25b5acedc9df6bc614bd516959f899e331891e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "48e5918533bad8f6f991a767277cb4bce47c49ced14b3a19adc5a037dccc1b10"
+    sha256 cellar: :any_skip_relocation, catalina:       "ed0881b8ec633af70bc9e61a2d7b6f128be4d3235bced0c10b38984233f27799"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0b686f57d2bcf975daa5b350a7b84a5f9c5a916149e2d4b77620e4097991b9b"
   end
 
   depends_on "cmake" => :build
@@ -21,9 +22,7 @@ class Zola < Formula
   end
 
   def install
-    on_linux do
-      ENV["OPENSSL_DIR"] = Formula["openssl@1.1"].opt_prefix
-    end
+    ENV["OPENSSL_DIR"] = Formula["openssl@1.1"].opt_prefix if OS.linux?
     system "cargo", "install", *std_cargo_args
 
     bash_completion.install "completions/zola.bash"

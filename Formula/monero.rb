@@ -2,10 +2,9 @@ class Monero < Formula
   desc "Official Monero wallet and CPU miner"
   homepage "https://www.getmonero.org/"
   url "https://github.com/monero-project/monero.git",
-      tag:      "v0.17.2.0",
-      revision: "f6e63ef260e795aacd408c28008398785b84103a"
+      tag:      "v0.17.3.0",
+      revision: "ab18fea3500841fc312630d49ed6840b3aedb34d"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url :stable
@@ -13,12 +12,12 @@ class Monero < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_big_sur: "21d82b457eb630d78444ca29db2cf335f47a449e217730f84a8934faf5252e94"
-    sha256 cellar: :any,                 big_sur:       "f552779fb0f41d5ce12ee4cebe58d58859237fdece35c25f9a71268f87920d22"
-    sha256 cellar: :any,                 catalina:      "fe9009da078f04dd65f204298fb58c6c4ba6e195307cc64bf0443f6184fbd5b9"
-    sha256 cellar: :any,                 mojave:        "9efd453269f2dea7bff2061320e2f0db8a4f45ba804187439b77c1eb4098323f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b112de4eda42a1a024d2ae26d1dca6341cb616306ca096f6357bddc0b711543"
+    sha256 cellar: :any,                 arm64_monterey: "c5ef11da201b984a0767a34e2dcfdbc3849e1267f7c06f3a0468969bfd644265"
+    sha256 cellar: :any,                 arm64_big_sur:  "f397c7157d783257bb9348e216fc2395f88a4a1829704a358fc4f0020d0c0df8"
+    sha256 cellar: :any,                 monterey:       "2e61e95086330b51639b5530aec47c9dff88d0eb21de2c606ec0bf7a175e9429"
+    sha256 cellar: :any,                 big_sur:        "6a8fa0820db60ec3b032e904ec4a791abecff6074879f8d54b4fbffc4f403f8f"
+    sha256 cellar: :any,                 catalina:       "4d7e17dcaa1bfee714b30acdabe51f1e6ecb567d89611a8926b429f094676b82"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2c120fc94fac14c59bf202f8ffe18d09016b707bddc48097029d40a003bc136"
   end
 
   depends_on "cmake" => :build
@@ -34,39 +33,13 @@ class Monero < Formula
 
   conflicts_with "wownero", because: "both install a wallet2_api.h header"
 
-  # Boost 1.76 compatibility
-  # https://github.com/loqs/monero/commit/5e902e5e32c672661dfe5677c4a950c4dd409198
-  patch :DATA
-
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
-
-    # Fix conflict with miniupnpc.
-    # This has been reported at https://github.com/monero-project/monero/issues/3862
-    rm lib/"libminiupnpc.a"
   end
 
-  plist_options manual: "monerod"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/monerod</string>
-          <string>--non-interactive</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"monerod", "--non-interactive"]
   end
 
   test do
@@ -80,18 +53,3 @@ class Monero < Formula
     assert_equal address, shell_output(cmd).lines.last.split[1]
   end
 end
-
-__END__
-diff --git a/contrib/epee/include/storages/portable_storage.h b/contrib/epee/include/storages/portable_storage.h
-index 1e68605ab..801bb2c34 100644
---- a/contrib/epee/include/storages/portable_storage.h
-+++ b/contrib/epee/include/storages/portable_storage.h
-@@ -40,6 +40,8 @@
- #include "span.h"
- #include "int-util.h"
-
-+#include <boost/mpl/contains.hpp>
-+
- namespace epee
- {
-   namespace serialization

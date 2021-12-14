@@ -3,18 +3,18 @@ require "language/node"
 class TreeSitter < Formula
   desc "Parser generator tool and incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/v0.20.0.tar.gz"
-  sha256 "4a8070b9de17c3b8096181fe8530320ab3e8cca685d8bee6a3e8d164b5fb47da"
+  url "https://github.com/tree-sitter/tree-sitter/archive/v0.20.1.tar.gz"
+  sha256 "12a3f7206af3028dbe8a0de50d8ebd6d7010bf762db918acae76fc7585f1258d"
   license "MIT"
-  head "https://github.com/tree-sitter/tree-sitter.git"
+  head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_big_sur: "cbf44029649cea921fe3334545ede3adc7620449cf6110fdf29fdd47e8fff166"
-    sha256 cellar: :any,                 big_sur:       "bca73c6fabacffbfb96a5b953096e81fca5a0a24a55d545baa5da0aebb9657cc"
-    sha256 cellar: :any,                 catalina:      "e161adbd53340e764920272a32ae14fb116ffd42b5933b442a9e5b0b1695ed58"
-    sha256 cellar: :any,                 mojave:        "7a8114f4d71105d93fb63db37ea3dc557e09993d66862eeadd36b1d0c8277ace"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2ca5f4559c6aca25064b3866f9bd0e54bdcdb19229291b8bc676f9021d92c76b"
+    sha256 cellar: :any,                 arm64_monterey: "97339409b6fc51f5db33633fa563f60de778b5bce732ab2079e43cd2fcbc2132"
+    sha256 cellar: :any,                 arm64_big_sur:  "a2de5338a614bea1152bab80d9545fc43681a422c84bb69520a8bbefc35b8d1d"
+    sha256 cellar: :any,                 monterey:       "ec802e84633532f8524b56c68956d6e5fb8bca8e06eb8340e2d8b04a6174d12b"
+    sha256 cellar: :any,                 big_sur:        "d4c89927faf3a4cc8bdff8a610728286f364a874db4779a87b9a6954dac246a4"
+    sha256 cellar: :any,                 catalina:       "1b0b0a0b17deee94650445012f00e38cc53bb8bab01c95343f5efded43343c92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef83da037ec0ae5d47d57d50d3bed4903b4691184caa04e8a378cd1b808d4617"
   end
 
   depends_on "emscripten" => [:build, :test]

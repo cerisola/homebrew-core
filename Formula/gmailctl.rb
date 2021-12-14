@@ -1,37 +1,30 @@
 class Gmailctl < Formula
   desc "Declarative configuration for Gmail filters"
   homepage "https://github.com/mbrt/gmailctl"
-  url "https://github.com/mbrt/gmailctl/archive/v0.8.0.tar.gz"
-  sha256 "13aa443b50910546c5dc8987f3f1ed7d1138571d1d0a0199e18e02122d404044"
+  url "https://github.com/mbrt/gmailctl/archive/v0.10.0.tar.gz"
+  sha256 "ebc3f13b71363e49b804daadc3e1fff394cf42769429e4b081de86100fb5f685"
   license "MIT"
+  head "https://github.com/mbrt/gmailctl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "ca176f471c5358025d9fcdc158a732e9e64232e5c2f7aaab53efbbb846920e57"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e72f9006fd0c10ef79ecd4c2f875d1ee984d6ee40a6a717894b29cae9d3324fb"
-    sha256 cellar: :any_skip_relocation, catalina:      "e191cdefb1f75f799f610aeaadd454c27d3aa90527d3bbf69ee804ca5c94dfa8"
-    sha256 cellar: :any_skip_relocation, mojave:        "57d9dc005423a078971fd79d5c2382c07f17b4536a445d571cef47d025d28ffb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "58ce36e464f9c0d38c8bba1c2bb46bbdcc1e8bb848808da06b04a35007e763e1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "befd99284ddcbfaf6f5b67e74022cb36e52cd831add1ef8cd6cbd2227ecbb695"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7155b35cdbc2190d4aa939968a1edeb794a53e10760352fa51050f8b486adf85"
+    sha256 cellar: :any_skip_relocation, monterey:       "24e13ac28cf47782ff714d3039d0bd3a4dfb6984572fe0b195264902f7a178a7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "37309984d78e4bcd5018bff9ecf22a6a82e19283b6c30bf2412679f193020e09"
+    sha256 cellar: :any_skip_relocation, catalina:       "ed33cc60a35a08564666178242bd182b2e1a7f1f0ca1a8a5712cc6a3fa2ebe1e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9bf8787bdca7979656460081c3d8fd6b72ace1d7e3e353851e64d25336cf95f2"
   end
 
   depends_on "go" => :build
 
-  # patch go.sum
-  # remove in next release
-  patch do
-    url "https://github.com/chenrui333/gmailctl/commit/63504e4.patch?full_index=1"
-    sha256 "e93ebc411b590c4966c115dfbf567271a77c51a4e3ae5b93fd114cf18ef4ecdd"
-  end
-
   def install
-    system "go", "build", "-ldflags", "-s -w -X main.version=#{version}", *std_go_args, "cmd/gmailctl/main.go"
-    pkgshare.install ["default-config.jsonnet", "gmailctl.libsonnet"]
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}"), "cmd/gmailctl/main.go"
   end
 
   test do
-    cp pkgshare/"default-config.jsonnet", testpath
-    cp pkgshare/"gmailctl.libsonnet", testpath
-
-    assert_includes shell_output("#{bin}/gmailctl init --config #{testpath} 2>&1"),
+    assert_includes shell_output("#{bin}/gmailctl init --config #{testpath} 2>&1", 1),
       "The credentials are not initialized"
+
+    assert_match version.to_s, shell_output("#{bin}/gmailctl version")
   end
 end

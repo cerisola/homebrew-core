@@ -3,18 +3,27 @@ class HgFastExport < Formula
 
   desc "Fast Mercurial to Git converter"
   homepage "https://repo.or.cz/fast-export.git"
-  url "https://github.com/frej/fast-export/archive/v201029.tar.gz"
-  sha256 "f7c374ae683e188adbe72f1c3731e69e2209323439accbf84ed27ae8207f39b4"
+  url "https://github.com/frej/fast-export/archive/v210917.tar.gz"
+  sha256 "168f51301f01b4a2572bb00dd9474ee9a50b85f24aa5ed5a7b8abb12896d951a"
   license "GPL-2.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "56d64846dd77c2fd96474a24d51531e52aaae557f39c4ee4ee69259f6e9a5349"
+    sha256 cellar: :any_skip_relocation, all: "1c3c08a5e4f6fbb7790d42d5721db3d8b4927a5595056fbc27b90d6171b9c8b4"
   end
 
   depends_on "mercurial"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   def install
+    # The Python executable is tested from PATH
+    # Prepend ours Python to the executable candidate list (python2 python python3)
+    # See https://github.com/Homebrew/homebrew-core/pull/90709#issuecomment-988548657
+    %w[hg-fast-export.sh hg-reset.sh].each do |f|
+      inreplace f, "for python_cmd in ",
+                   "for python_cmd in '#{which("python3")}' "
+    end
+
     libexec.install Dir["*"]
 
     %w[hg-fast-export.py hg-fast-export.sh hg-reset.py hg-reset.sh hg2git.py].each do |f|

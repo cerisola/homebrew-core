@@ -1,8 +1,8 @@
 class AnycableGo < Formula
   desc "WebSocket server with action cable protocol"
   homepage "https://github.com/anycable/anycable-go"
-  url "https://github.com/anycable/anycable-go/archive/v1.1.2.tar.gz"
-  sha256 "4df04424a8e9ed54e7a8f6794d0de7ff6e66a4b008d7e477c5434bd70dcee5da"
+  url "https://github.com/anycable/anycable-go/archive/v1.1.4.tar.gz"
+  sha256 "a9a4afe32d7d8269dbb0f5f4aaaa4b63710e4193ccc757877f5be66a5854a4ea"
   license "MIT"
   head "https://github.com/anycable/anycable-go.git", branch: "master"
 
@@ -12,11 +12,12 @@ class AnycableGo < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "5bdd66f06bb0ac31df254482c903d552792183665092c618508d30ee16598028"
-    sha256 cellar: :any_skip_relocation, big_sur:       "19f2fdb065fb764dc1301b3c60d63e3831b0edfe6958b17bc4b47677a5b55302"
-    sha256 cellar: :any_skip_relocation, catalina:      "54212b45fd6fa767cf47eea5864bcd2af78cffb6444165737ed4db913b2d5af4"
-    sha256 cellar: :any_skip_relocation, mojave:        "36dda5259c67971aae789e6952858135cda3fc79bd07b5f2e310ce99622e9af5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "58215768e7b85dced8f35809d93e7958278ff1816f374d71fa43dd52cb0af928"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b726157cdfbd5ec8a52f64a79f31d56b17087102e0aef4e14a1c68ab102171e8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ea4de387eaae1a0731e3e5df76455ddd027e76f5cd8d9d313b6329622821c6c"
+    sha256 cellar: :any_skip_relocation, monterey:       "107efe7cb0d3ed62a8295bb28602a4bd6e48fc8d42e37a84c3c128abb9a35d13"
+    sha256 cellar: :any_skip_relocation, big_sur:        "91d22bec92d9c266febeb88cb4729922444917d560d96aadd9b706091e3decf2"
+    sha256 cellar: :any_skip_relocation, catalina:       "6764ce391e0e78cd115890d09e59021de2a3aae9a71902eed4d730f68ecb2b8c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "730c420e2b9805d6fe56873c6cd1c3bd8552a139783dabf56a685c736cb04a3a"
   end
 
   depends_on "go" => :build
@@ -31,7 +32,7 @@ class AnycableGo < Formula
       "-X github.com/anycable/anycable-go/utils.version=#{version}"
     end
 
-    system "go", "build", "-mod=vendor", "-ldflags", ldflags.join(" "), *std_go_args,
+    system "go", "build", "-mod=vendor", *std_go_args(ldflags: ldflags),
                           "-v", "github.com/anycable/anycable-go/cmd/anycable-go"
   end
 

@@ -1,16 +1,19 @@
 class Mpv < Formula
   desc "Media player based on MPlayer and mplayer2"
   homepage "https://mpv.io"
-  url "https://github.com/mpv-player/mpv/archive/v0.33.1.tar.gz"
-  sha256 "100a116b9f23bdcda3a596e9f26be3a69f166a4f1d00910d1789b6571c46f3a9"
+  url "https://github.com/mpv-player/mpv/archive/v0.34.0.tar.gz"
+  sha256 "f654fb6275e5178f57e055d20918d7d34e19949bc98ebbf4a7371902e88ce309"
   license :cannot_represent
+  revision 1
   head "https://github.com/mpv-player/mpv.git"
 
   bottle do
-    sha256 arm64_big_sur: "dd487a80e5586c93ccde6942170d026e9eba5b403d95e409ad55282cea818790"
-    sha256 big_sur:       "76b0fc9d207aee16f65b8b1782bc35dec5a870952ebba6ae7a74e6ede9bdd34a"
-    sha256 catalina:      "8ab98fffc330dea03f2732fa17c7f53753601c49c3f9dec2a7d727bdc901c484"
-    sha256 mojave:        "87df95e8f4f723a5b6fe163d5ac740fef9f5ffa9c318c82c9a6b0844aa7203b9"
+    sha256 arm64_monterey: "4083cfb8a3d0908c63c62c23951932d663703ba66ef91df47002af8864e6edac"
+    sha256 arm64_big_sur:  "d6bca807a546f8b3505734b5ac62eb65cd466fcba2ce57e96eba28ffe3e1ba66"
+    sha256 monterey:       "d5c641939402378abb3c47b4a9c4ea3e6a105ea19d1d6726d6488b8ffc49f51f"
+    sha256 big_sur:        "62a615dfaafea9a9d387ca3f4ee482926a7d30b1946f0ca8b7d08d61634f7e0c"
+    sha256 catalina:       "53eaaf54ab725c8752b1a1e7355aedc27830d35606f3de743f526d4f9762d820"
+    sha256 x86_64_linux:   "1290a1aef5db97fb730405394fdcae19ac6fb9c88b56180ba0727beef7343cb0"
   end
 
   depends_on "docutils" => :build
@@ -27,7 +30,7 @@ class Mpv < Formula
   depends_on "mujs"
   depends_on "uchardet"
   depends_on "vapoursynth"
-  depends_on "youtube-dl"
+  depends_on "yt-dlp"
 
   def install
     # LANG is unset by default on macOS and causes issues when calling getlocale
@@ -62,7 +65,7 @@ class Mpv < Formula
   end
 
   test do
-    system bin/"mpv", "--ao=null", test_fixtures("test.wav")
+    system bin/"mpv", "--ao=null", "--vo=null", test_fixtures("test.wav")
     assert_match "vapoursynth", shell_output(bin/"mpv --vf=help")
   end
 end

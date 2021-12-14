@@ -4,27 +4,36 @@ class Libgccjit < Formula
     # Branch from the Darwin maintainer of GCC with Apple Silicon support,
     # located at https://github.com/iains/gcc-darwin-arm64 and
     # backported with his help to gcc-11 branch. Too big for a patch.
-    url "https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.1.0-arm-20210504.tar.gz"
-    sha256 "ce862b4a4bdc8f36c9240736d23cd625a48af82c2332d2915df0e16e1609a74c"
+    url "https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211124.tar.gz"
+    sha256 "d7f8af7a0d9159db2ee3c59ffb335025a3d42547784bee321d58f2b4712ca5fd"
     version "11.2.0"
   else
     url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
     mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
     sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
+
+    # Darwin 21 (Monterey) support
+    patch do
+      url "https://github.com/iains/gcc-darwin-arm64/commit/20f61faaed3b335d792e38892d826054d2ac9f15.patch?full_index=1"
+      sha256 "c0605179a856ca046d093c13cea4d2e024809ec2ad4bf3708543fc3d2e60504b"
+    end
   end
   homepage "https://gcc.gnu.org/"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
-  head "https://gcc.gnu.org/git/gcc.git"
+  revision 1
+  head "https://gcc.gnu.org/git/gcc.git", branch: "master"
 
   livecheck do
     formula "gcc"
   end
 
   bottle do
-    sha256 arm64_big_sur: "7ea976a3eac574118aa769d054443ffb1c1987c6ca431d2ea6b2a91c05e99604"
-    sha256 big_sur:       "a2aea5ac05ce16b497cd7f508ecda8f592aa387e8efc1544e8ed5ca5d72a535f"
-    sha256 catalina:      "2aaa68904eff16c3608e20f71ffc167c3e47df6db8c403acd706cc5c38b1c960"
-    sha256 mojave:        "47ae6d2fc53939abf4fe94dc282f280a64d2268091c0b8497aba3bea0c8157eb"
+    rebuild 1
+    sha256 arm64_monterey: "7b5c768fc2f10513e7f3e2f8586f555a58e4319da9cad99d7c776ccd05952a95"
+    sha256 arm64_big_sur:  "c2d958d5156ebb71a25bdef33701faf393c2a4dce788a46fdcb3f046b86612c3"
+    sha256 monterey:       "7abf6d27997972fc32e1846c8008b5bd9823d34638c5fcd1f67b920fec21b503"
+    sha256 big_sur:        "f7226e1d4230ee0ee059bab2d7b489b4c64aaf8c4bc15903d50f331b03303f38"
+    sha256 catalina:       "ca16e3b69b15df1ced2a9b1d853c4560e16a27695d337621bd15b0032d42b456"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -55,6 +64,7 @@ class Libgccjit < Formula
       --libdir=#{lib}/gcc/#{version.major}
       --disable-nls
       --enable-checking=release
+      --with-gcc-major-version-only
       --with-gmp=#{Formula["gmp"].opt_prefix}
       --with-mpfr=#{Formula["mpfr"].opt_prefix}
       --with-mpc=#{Formula["libmpc"].opt_prefix}

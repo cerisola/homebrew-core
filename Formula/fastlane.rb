@@ -1,8 +1,8 @@
 class Fastlane < Formula
   desc "Easiest way to build and release mobile apps"
   homepage "https://fastlane.tools"
-  url "https://github.com/fastlane/fastlane/archive/2.191.0.tar.gz"
-  sha256 "ce69c4110805f0847d112e1214fad4739b2449d8b981bae64341e43667ac4efc"
+  url "https://github.com/fastlane/fastlane/archive/2.199.0.tar.gz"
+  sha256 "ba94f6de55121ea40ff06cd3355e891143395b4e47c2593f6e1868406b6e3698"
   license "MIT"
   head "https://github.com/fastlane/fastlane.git"
 
@@ -12,11 +12,12 @@ class Fastlane < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "7420e0c87f24d728d151893c4934bb60012e60febaeefd3c2b69b151eaff8752"
-    sha256 cellar: :any,                 big_sur:       "9aace3baa420e9c02297be7843fa2c8a08a4221fcd21a083fcbf4b6a71fd607c"
-    sha256 cellar: :any,                 catalina:      "1b89f60e7ac60e302e4a733e1bc95c15f098efe5957dff01967d37859d6b9886"
-    sha256 cellar: :any,                 mojave:        "ef9b142b3224cd7a08a62e56555c07f68dffeee4125a434be2d3c08662e96809"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6183f1def58023a80285c8bf0985514177a9b5d8d5b0082ed629fce6f4bd0f96"
+    sha256 cellar: :any,                 arm64_monterey: "1e14775696bb04c7a39c82993957593208d2288dc969feb688f5a2204c48f49f"
+    sha256 cellar: :any,                 arm64_big_sur:  "2f83661022e1a4ade114775a22a1235d5a5e744968151dabfe275d9f57d1e6f4"
+    sha256 cellar: :any,                 monterey:       "9879096dd3b0695226c554c42ca63924cb6bf011f020d4dc9fe8a1b2f1b3f5aa"
+    sha256 cellar: :any,                 big_sur:        "76adb63bc86e1a82317783e2f99be298bdb9b3961e24ac133f82abc400117c64"
+    sha256 cellar: :any,                 catalina:       "775a482e0791041175ca1dff2dbd80eaf103cae17621392072c74074e3dd47e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0dc66caedaf9e0a327e4875ea93858b280f74f33d042a84a9b85c1152923f151"
   end
 
   depends_on "ruby"
@@ -42,7 +43,7 @@ class Fastlane < Formula
     terminal_notifier_dir = libexec.glob("gems/terminal-notifier-*/vendor/terminal-notifier").first
     (terminal_notifier_dir/"terminal-notifier.app").rmtree
 
-    on_macos do
+    if OS.mac?
       ln_sf(
         (Formula["terminal-notifier"].opt_prefix/"terminal-notifier.app").relative_path_from(terminal_notifier_dir),
         terminal_notifier_dir,

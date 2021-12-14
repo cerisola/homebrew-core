@@ -2,10 +2,10 @@ class FaasCli < Formula
   desc "CLI for templating and/or deploying FaaS functions"
   homepage "https://www.openfaas.com/"
   url "https://github.com/openfaas/faas-cli.git",
-      tag:      "0.13.13",
-      revision: "72816d486cf76c3089b915dfb0b66b85cf096634"
+      tag:      "0.14.1",
+      revision: "d94600d2d2be52a66e0a15c219634f3bcac27318"
   license "MIT"
-  head "https://github.com/openfaas/faas-cli.git"
+  head "https://github.com/openfaas/faas-cli.git", branch: "master"
 
   livecheck do
     url :stable
@@ -13,22 +13,19 @@ class FaasCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9ad9ec0034403fce9774851822c992a81bdd83672a51b6a9e62d17211a64125f"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5fa34425406dbec94aea6103568213cd4f6f53f6958c79f002b0cd97130c16b6"
-    sha256 cellar: :any_skip_relocation, catalina:      "92f0eacb01bfbc1e6630b92adca5a6a7ad25c18786481d1449b006def8524422"
-    sha256 cellar: :any_skip_relocation, mojave:        "976de92ce4afe1702a868d03f27165accc2ef00003ed0cb4b386aa60374061b1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6396752fe835cc7254f5e59af86fec12cf8c9d1543a26df62a654e37c2319f6b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "435219b6667d560184d060d7c86f1b2ff03a143231baa1924f3e689d15039f7b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6004ec50f64194b4e12461851f30e77277f2bd34ee18f527aaf68cccf002f0d1"
+    sha256 cellar: :any_skip_relocation, monterey:       "c273efc9a263dc814e01b77235ba5ea18733e45a3243103a667eb23fc7a7f164"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0b084d949a0e2df90d15457e962812240aa36b8bd1306e4eb417387724f564c8"
+    sha256 cellar: :any_skip_relocation, catalina:       "383a8e56921825d12c018bff8766d1722e1387fb6bfe410973ecef476c08f6da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64f600410435b59160f6d16b2047e625e09910b48a30237bc17ce720f5e64ff7"
   end
 
   depends_on "go" => :build
 
   def install
-    os = "darwin"
-    on_linux do
-      os = "linux"
-    end
-    ENV["XC_OS"] = os
-    ENV["XC_ARCH"] = "amd64"
+    ENV["XC_OS"] = OS.kernel_name.downcase
+    ENV["XC_ARCH"] = Hardware::CPU.intel? ? "amd64" : Hardware::CPU.arch.to_s
     project = "github.com/openfaas/faas-cli"
     ldflags = %W[
       -s -w

@@ -1,16 +1,22 @@
 class Meilisearch < Formula
   desc "Ultra relevant, instant and typo-tolerant full-text search API"
   homepage "https://docs.meilisearch.com/"
-  url "https://github.com/meilisearch/MeiliSearch/archive/v0.20.0.tar.gz"
-  sha256 "a3873f9bf180184c7b9cad0c6106daea9daea47643c130dc29b6d0a8206e9bda"
+  url "https://github.com/meilisearch/MeiliSearch/archive/v0.24.0.tar.gz"
+  sha256 "35254c739830d17953194c5817e6b6684d716e3046b2d78f4c89a03ae9c88f4e"
   license "MIT"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "98f84b8cc9e1a98ae5fd209602079c2877655fed22f357c8d87f04751286cc3a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "55a6830696ba4b3fd3801be99180c95305e8b8d6c88e222068be8ecf528a1ca4"
-    sha256 cellar: :any_skip_relocation, catalina:      "2b6572a94c06b50750ecf5e9d2a39ec2fe502213f12c8efe10e0dbbba4b003af"
-    sha256 cellar: :any_skip_relocation, mojave:        "87df8e1be817662fce7d9a570bb1d0482edfe3338c7e642b2f2603436e2be236"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a82957fd490d1cf26a896dab2736561cdef8bd9ba44e0e48f62863f04f601c21"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5bda44bb3624f70ad5028b9c2c4c8c0e2e234e23203f9560ffb54516a7ab4ca4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3ff63030e0002c68d46e0d4338a0fdafe4abd3f0678211854accd4c608eb76df"
+    sha256 cellar: :any_skip_relocation, monterey:       "f5e041424211b26948eaa482717287f4b698858e0e9f3440f9bd9c591949856b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b2b3854d72d1c4b80555c652ea31a7bd66ea59adb0051a3bf04ce0fe473af66f"
+    sha256 cellar: :any_skip_relocation, catalina:       "ae35aea30e946852fa1f3c09dddcf8ff94658d37fc85d61b7465a9ceef9d1e71"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e45dc54e12985166082be01aad04effb77b3dd518b3801389d35424afd8f778"
   end
 
   depends_on "rust" => :build
@@ -21,35 +27,12 @@ class Meilisearch < Formula
     end
   end
 
-  plist_options manual: "meilisearch"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <false/>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/meilisearch</string>
-            <string>--db-path</string>
-            <string>#{var}/meilisearch/data.ms</string>
-          </array>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/meilisearch.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/meilisearch.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"meilisearch", "--db-path", "#{var}/meilisearch/data.ms"]
+    keep_alive false
+    working_dir var
+    log_path var/"log/meilisearch.log"
+    error_log_path var/"log/meilisearch.log"
   end
 
   test do

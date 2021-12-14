@@ -1,17 +1,18 @@
 class Hamlib < Formula
   desc "Ham radio control libraries"
   homepage "http://www.hamlib.org/"
-  url "https://github.com/Hamlib/Hamlib/releases/download/4.2/hamlib-4.2.tar.gz"
-  sha256 "e200b22f307e9a0c826187c2b08fe81c7d0283cf07056e6db3463d1481580fd5"
+  url "https://github.com/Hamlib/Hamlib/releases/download/4.4/hamlib-4.4.tar.gz"
+  sha256 "8bf0107b071f52f08587f38e2dee8a7848de1343435b326f8f66d95e1f8a2487"
   license "LGPL-2.1-or-later"
   head "https://github.com/hamlib/hamlib.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "c7dfb2164dc7bbe147c948b265d944e2a41c9ab9f294214bc9165b7ad4614537"
-    sha256 cellar: :any,                 big_sur:       "f1fa8a3f93559bbbd1ad1b755f8eb2ce5921b92fef9f518272bc6899839598d9"
-    sha256 cellar: :any,                 catalina:      "ac504c6406287a191b5a2f1db43825834565d3c6449dbe2c53223dac7a852710"
-    sha256 cellar: :any,                 mojave:        "b13365794825287c71d659ef7314e3321c7123b0451e68b34fb1995292a8ee6a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4949924decbe7c6347c3096b97e9356eab6756d19858ee9c5d477f7dc13dacb4"
+    sha256 cellar: :any,                 arm64_monterey: "402e4d11f14737861fc0e1b848b3750dd244155148a1e7d209368c52c536f492"
+    sha256 cellar: :any,                 arm64_big_sur:  "d2bca238a57f8c159b5056efbc65d4ebe596369e335593462631792ec7152fe4"
+    sha256 cellar: :any,                 monterey:       "5de56256bb7d46ca8b2adb77bb47489a53a97d9dfa030f5789f8384d548f0f39"
+    sha256 cellar: :any,                 big_sur:        "b048dc58043838aa534d497f1c53fd4ce98a7a430aca691068e828d5b226fbc6"
+    sha256 cellar: :any,                 catalina:       "20a4202b385772556054237968690744b850fa3174fe59eaed862489042024bd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e10e9c3dd40872ff78d3382aa8040339ddde307ba7cb4253dee08bfd342b8f95"
   end
 
   depends_on "autoconf" => :build

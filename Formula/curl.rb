@@ -1,9 +1,13 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
   homepage "https://curl.se"
-  url "https://curl.se/download/curl-7.78.0.tar.bz2"
-  sha256 "98530b317dc95ccb324bbe4f834f07bb642fbc393b794ddf3434f246a71ea44a"
+  url "https://curl.se/download/curl-7.80.0.tar.bz2"
+  mirror "https://github.com/curl/curl/releases/download/curl-7_80_0/curl-7.80.0.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/curl-7.80.0.tar.bz2"
+  mirror "http://fresh-center.net/linux/www/legacy/curl-7.80.0.tar.bz2"
+  sha256 "dd0d150e49cd950aff35e16b628edf04927f0289df42883750cf952bb858189c"
   license "curl"
+  revision 1
 
   livecheck do
     url "https://curl.se/download/"
@@ -11,11 +15,12 @@ class Curl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "5b3ffcee1ea579b665fedfc19841ace3f068f0b065d9362bb093cf6fb30a743e"
-    sha256 cellar: :any,                 big_sur:       "875acbe04343e88db8fae96aab1d178b5e71cb39f737dd60472c9f18b7b60129"
-    sha256 cellar: :any,                 catalina:      "d64577e04b6f1aa1279034d64a5634c8619b1c0f0da038539284dc71c119b0d6"
-    sha256 cellar: :any,                 mojave:        "ff5c7e7cd9ac4b61a482d733ab9081f540ca38d3a875f00106cf3a0f8c6db3bd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce92e4bb455dd60dbcc197602fcd2935e1f0e9083ea224ab859917d72e828f20"
+    sha256 cellar: :any,                 arm64_monterey: "ebc127b7deba2fa4ecb2fd084ca2a77896917489c1f0f267541293611933f156"
+    sha256 cellar: :any,                 arm64_big_sur:  "87953b899cb953cf39ef8d3827a7c7e09d81183c7bf7437810c30e281abd02f0"
+    sha256 cellar: :any,                 monterey:       "09eceb07be36e526ed08c0fdae0fdac799466828a4a84afd2df79afde20a0f30"
+    sha256 cellar: :any,                 big_sur:        "fcfc53d0117e56105009fd8609ccbc9dc6472c56c0e6cf59f1f13ab7e4dc08ff"
+    sha256 cellar: :any,                 catalina:       "665bb69230d188c36248a2c493ced5eb2610bd62b9566160e93e2aa7895859bb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d38adc63685eee2196aed86d79f0c8274184bb28015452430ba12e7a1d4fee93"
   end
 
   head do
@@ -31,8 +36,8 @@ class Curl < Formula
   depends_on "pkg-config" => :build
   depends_on "brotli"
   depends_on "libidn2"
+  depends_on "libnghttp2"
   depends_on "libssh2"
-  depends_on "nghttp2"
   depends_on "openldap"
   depends_on "openssl@1.1"
   depends_on "rtmpdump"
@@ -61,12 +66,10 @@ class Curl < Formula
       --without-libpsl
     ]
 
-    on_macos do
-      args << "--with-gssapi"
-    end
-
-    on_linux do
-      args << "--with-gssapi=#{Formula["krb5"].opt_prefix}"
+    args << if OS.mac?
+      "--with-gssapi"
+    else
+      "--with-gssapi=#{Formula["krb5"].opt_prefix}"
     end
 
     system "./configure", *args

@@ -1,8 +1,8 @@
 class RubyAT27 < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.4.tar.xz"
-  sha256 "2a80824e0ad6100826b69b9890bf55cfc4cf2b61a1e1330fccbcb30c46cef8d7"
+  url "https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.5.tar.xz"
+  sha256 "d216d95190eaacf3bf165303747b02ff13f10b6cfab67a9031b502a49512b516"
   license "Ruby"
 
   livecheck do
@@ -11,11 +11,12 @@ class RubyAT27 < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "c69d8b9a90e4ec60cbefc2dfea8bda47e4eb02102f00b527df040a1f822f2f6b"
-    sha256 big_sur:       "81b7afe251434a03c0da4654afc07bd0c2f36ecc16bc6c34847564b124167724"
-    sha256 catalina:      "f55efd7734e36bb91b3fda9d30819f9d6e9bd731ad32ea1bc775586723e1e201"
-    sha256 mojave:        "b297b0ae4295e6757efb79a9c6634a80c8fff68f5399bf45e5d179b1c25cbe8e"
-    sha256 x86_64_linux:  "4114feae001b41fe15163cfe307b241f1a9034988d745f49fb55380eb188f233"
+    sha256 arm64_monterey: "d8c9aded81bad1b4c0a02c77416a5cfe2c781ae7ef4fd875a13dcc431c863a46"
+    sha256 arm64_big_sur:  "4ebd01ffb6558f9f32efa209b1142ed6c238af312dd7af99387161da114630a1"
+    sha256 monterey:       "3cd2c86c5a74cfa1c9eee07749ffcb649f3f4ec7a710f61475c24a56075661bc"
+    sha256 big_sur:        "dfe8b9f8490d362bc9063ce6aba89337ecf0170e68063f608f6191149aff11fe"
+    sha256 catalina:       "11ed255dd542265b600a5e3719f890282db7f55a7faad715522d84facb7e5ca0"
+    sha256 x86_64_linux:   "76f0e1305defee984188fb940c6ea1e823edfe850dde97ec76c81ddd156e5c7f"
   end
 
   keg_only :versioned_formula
@@ -57,9 +58,7 @@ class RubyAT27 < Formula
       --with-opt-dir=#{paths.join(":")}
       --without-gmp
     ]
-    on_macos do
-      args << "--disable-dtrace" unless MacOS::CLT.installed?
-    end
+    args << "--disable-dtrace" if OS.mac? && !MacOS::CLT.installed?
 
     # Correct MJIT_CC to not use superenv shim
     args << "MJIT_CC=/usr/bin/#{DevelopmentTools.default_compiler}"

@@ -1,16 +1,18 @@
 class Toast < Formula
   desc "Tool for running tasks in containers"
   homepage "https://github.com/stepchowfun/toast"
-  url "https://github.com/stepchowfun/toast/archive/v0.40.0.tar.gz"
-  sha256 "4359af64bb0d9c98ecb5de9e10f9f7f4cdfc23dfd352e1026c20be75bcee4d2c"
+  url "https://github.com/stepchowfun/toast/archive/v0.45.2.tar.gz"
+  sha256 "9d1a4c785f62f68effa362c39eab1e0802fd40402416e8938ea7a7d4088945d0"
   license "MIT"
+  head "https://github.com/stepchowfun/toast.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0f8e5e72fbcf0d4cf9f7f6802c5830d349e0c6097708cde29031c918da8ec947"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3d743030f31ee5c74dadde0da038afcc26db559a12caa6310fcf632544de090f"
-    sha256 cellar: :any_skip_relocation, catalina:      "be9b92f2c9d8c5aef19ea21144179308fe176eb8c2c7da8e1fbfaa33dacab8de"
-    sha256 cellar: :any_skip_relocation, mojave:        "35cb012a2dada83cf0d99c2a24923155e0c0dc3b6da4db01d47229a673f50ee1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3da5a9de3222c320dee014a10f7cd957dca64dc28b0f87106c4326f3d279a1c6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "97161beba2abc503bc51f59c411ed9f86bd84edca8cdc04d40e514cf58249dca"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "245c20fd184e13be021424cc410ff4e7e406811aced31708bd96043648a8b20e"
+    sha256 cellar: :any_skip_relocation, monterey:       "1a14c3fc0f142010dda00b10e87cb540195101cf7a87645787fafd41998852e2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "079c6bf9e5dca0b1c8e472f36852946c083f0a37a0bcb3694d83c0eed562c410"
+    sha256 cellar: :any_skip_relocation, catalina:       "300b34eb3f9a1aa01dc7264301a35a061575016b80b1d103b768e21eb86406fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c588647d27171b86a3515943a9bd473f841057262d748f840c8b3c2f45889212"
   end
 
   depends_on "rust" => :build
@@ -24,6 +26,7 @@ class Toast < Formula
       image: alpine
       tasks:
         homebrew_test:
+          description: brewtest
           command: echo hello
     EOS
 

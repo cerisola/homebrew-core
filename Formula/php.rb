@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.0.9.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.0.9.tar.xz"
-  sha256 "71a01b2b56544e20e28696ad5b366e431a0984eaa39aa5e35426a4843e172010"
+  url "https://www.php.net/distributions/php-8.1.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.0.tar.xz"
+  sha256 "a1317eff0723a2b3d3122bbfe107a1158570ea2822dc35a5fb360086db0f6bbc"
   license "PHP-3.01"
 
   livecheck do
@@ -13,11 +13,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "486b101dd43b658040a87952d76ee2e7436ff3935bee29621bd87c0ca40e1454"
-    sha256 big_sur:       "6afd14f34982c983f863a1bc281dca48c9de8294cbcd1778eb43bc7fd1e6191a"
-    sha256 catalina:      "e2107f99f687496970c1d820d5d961a9a9f90aa16e8f380edd7b497b99dbc241"
-    sha256 mojave:        "48cf18f9c20f8703113346a367205b9a9f4656354cd269b9e7935605830633a3"
-    sha256 x86_64_linux:  "f0cba6cf42bdafbe348b9837a6a7cd98bc712080d5fc16f3e0b5da87102f0ec8"
+    sha256 arm64_monterey: "2d627a06d5a7dbae1c216449e9896c939570264029017e8242e77162bfd3f877"
+    sha256 arm64_big_sur:  "abe0441e184aabb2a7b580a4bfe2cc42aa40ef188d5648f9ef21e0a5a1d25c01"
+    sha256 monterey:       "dbbf3f0e595af9a72f6dcf7fef1890c6152bf9fb1be83f166b467393176c4aa5"
+    sha256 big_sur:        "fb4818dcf9ae1decd01351726e183a484441801f57238073b78e4a9016b9e528"
+    sha256 catalina:       "65e67a892c86fb49a5532b932617f10fa7dfa0b3e23d66c24f415a0d4ac8a9cb"
+    sha256 x86_64_linux:   "9df665d7ec2259fe639ae52aec1bf3100afdc721c38dc84c37bd4583bc2251c2"
   end
 
   head do
@@ -38,12 +39,10 @@ class Php < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
-  depends_on "glib"
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "jpeg-turbo"
   depends_on "krb5"
-  depends_on "libffi"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -58,6 +57,7 @@ class Php < Formula
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
@@ -69,9 +69,9 @@ class Php < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac? && (MacOS.version == :el_capitan || MacOS.version == :sierra)
       # Ensure that libxml2 will be detected correctly in older MacOS
-      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+      ENV["SDKROOT"] = MacOS.sdk_path
     end
 
     # buildconf required due to system library linking bug patch
@@ -108,11 +108,10 @@ class Php < Formula
 
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "
-    on_macos do
+    if OS.mac?
       ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
       ENV["SASL_LIBS"] = "-lsasl2"
-    end
-    on_linux do
+    else
       ENV["SQLITE_CFLAGS"] = "-I#{Formula["sqlite"].opt_include}"
       ENV["SQLITE_LIBS"] = "-lsqlite3"
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
@@ -120,10 +119,7 @@ class Php < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = ""
-    on_macos do
-      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
-    end
+    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     args = %W[
       --prefix=#{prefix}
@@ -193,12 +189,11 @@ class Php < Formula
       --with-zlib
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--enable-dtrace"
       args << "--with-ldap-sasl"
       args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
-    end
-    on_linux do
+    else
       args << "--disable-dtrace"
       args << "--without-ldap-sasl"
       args << "--without-ndbm"

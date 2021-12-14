@@ -6,11 +6,6 @@ class Libstfl < Formula
   license "LGPL-3.0-or-later"
   revision 13
 
-  livecheck do
-    url :homepage
-    regex(/href=.*?stfl[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
     sha256 cellar: :any,                 arm64_big_sur: "0b1fd6b1765f50e9761dbdeac4f600cdb93be3e3a43e50c26fd4f5fa6ba334ea"
     sha256 cellar: :any,                 big_sur:       "76ddf39817cb57cd96f41b932f9f26cbe2d351ef5d8bbb3a28fe400bab623326"
@@ -18,6 +13,8 @@ class Libstfl < Formula
     sha256 cellar: :any,                 mojave:        "ad965ea1d3ccce63a01d2951182a5f9a87c81a08d72ff99a509e5977d68c49a0"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "877cdb8227cbb5322b392b55cce951a46f6f5af2f8545998e72fb9daaf7b2117"
   end
+
+  deprecate! date: "2021-11-26", because: :repo_removed
 
   depends_on "python@3.9" => [:build, :test]
   depends_on "swig" => :build
@@ -31,7 +28,7 @@ class Libstfl < Formula
   patch :DATA
 
   def install
-    on_macos do
+    if OS.mac?
       ENV.append "LDLIBS", "-liconv"
       ENV.append "LIBS", "-lncurses -lruby -liconv"
 
@@ -47,9 +44,7 @@ class Libstfl < Formula
 
       # Fix ncurses linkage for Perl bundle
       inreplace "perl5/Makefile.PL", "-lncursesw", "-L#{MacOS.sdk_path}/usr/lib -lncurses"
-    end
-
-    on_linux do
+    else
       ENV.append "LIBS", "-lncursesw -lruby"
       inreplace "Makefile", "$(LDLIBS) $^", "$^ $(LDLIBS)"
     end
@@ -63,7 +58,7 @@ class Libstfl < Formula
       s.change_make_var! "PYTHON_SITEARCH", lib/"python#{xy}/site-packages"
       s.gsub! "gcc", "gcc #{py_cflags}"
 
-      on_macos do
+      if OS.mac?
         s.gsub! "-lncursesw", "-lncurses -liconv"
         s.gsub! "gcc", "gcc -undefined dynamic_lookup"
       end
@@ -78,9 +73,7 @@ class Libstfl < Formula
     system "make"
     system "make", "install", "prefix=#{prefix}"
 
-    on_linux do
-      lib.install_symlink "libstfl.so.#{version}" => "libstfl.so.#{version.major}"
-    end
+    lib.install_symlink "libstfl.so.#{version}" => "libstfl.so.#{version.major}" if OS.linux?
   end
 
   test do
@@ -110,7 +103,7 @@ __END__
 @@ -40,7 +40,7 @@ else
  FOUND_PERL5 = 0
  endif
- 
+
 -ifneq ($(shell python -c 'print 1' 2>/dev/null),)
 +ifneq ($(shell python -c 'print(1)' 2>/dev/null),)
  FOUND_PYTHON = 1
@@ -119,7 +112,7 @@ __END__
 --- a/python/Makefile.snippet
 +++ b/python/Makefile.snippet
 @@ -33,8 +33,6 @@ python/_stfl.so python/stfl.py python/stfl.pyc: libstfl.a stfl.h python/stfl.i s
- 
+
  install_python: python/_stfl.so python/stfl.py python/stfl.pyc
  	mkdir -p $(DESTDIR)$(PYTHON_SITEARCH)/
 -	mkdir -p $(DESTDIR)$(PYTHON_SITEARCH)/lib-dynload/
@@ -127,18 +120,17 @@ __END__
 -	cp python/stfl.pyc $(DESTDIR)$(PYTHON_SITEARCH)/
 +	cp python/_stfl.so $(DESTDIR)$(PYTHON_SITEARCH)/
  	cp python/stfl.py $(DESTDIR)$(PYTHON_SITEARCH)/
- 
+
 --- a/ruby/Makefile.snippet
 +++ b/ruby/Makefile.snippet
 @@ -25,9 +25,9 @@ install: install_ruby
- 
+
  ruby/build_ok: libstfl.a stfl.h ruby/stfl.i swig/*.i
  	cd ruby && swig -ruby stfl.i && ruby extconf.rb
 -	$(MAKE) -C ruby clean && $(MAKE) -C ruby LIBS+="../libstfl.a -lncursesw" CFLAGS+="-pthread -I.." DLDFLAGS+="-pthread" DESTDIR=$(DESTDIR) prefix=$(prefix) sitedir=$(prefix)/$(libdir)/ruby
 +	$(MAKE) -C ruby clean && $(MAKE) -C ruby LIBS+="../libstfl.a -lncursesw" CFLAGS+="-pthread -I.." DLDFLAGS+="-pthread" DESTDIR=$(DESTDIR) prefix=$(prefix) sitedir=$(prefix)/$(libdir)/ruby/site_ruby
  	touch ruby/build_ok
- 
+
  install_ruby: ruby/build_ok
 -	$(MAKE) -C ruby DESTDIR=$(DESTDIR) prefix=$(prefix) sitedir='$(DESTDIR)$(prefix)/$(libdir)/ruby' install
 +	$(MAKE) -C ruby DESTDIR=$(DESTDIR) prefix=$(prefix) sitedir='$(DESTDIR)$(prefix)/$(libdir)/ruby/site_ruby' install
- 

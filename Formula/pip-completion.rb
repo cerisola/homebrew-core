@@ -5,7 +5,7 @@ class PipCompletion < Formula
       revision: "321d8bd2c56bb1565ac20210367bd272a111a1aa"
   version "20200731"
   license "MIT"
-  head "https://github.com/ekalinin/pip-bash-completion.git"
+  head "https://github.com/ekalinin/pip-bash-completion.git", branch: "master"
 
   # There currently aren't any versions of pip-completion and the formula
   # simply uses a revision from the upstream GitHub repo. The YYYYMMDD version
@@ -25,6 +25,6 @@ class PipCompletion < Formula
 
   test do
     assert_match "-F _pip",
-      shell_output("source #{bash_completion}/pip && complete -p pip")
+      shell_output("bash -c 'source #{bash_completion}/pip && complete -p pip'")
   end
 end

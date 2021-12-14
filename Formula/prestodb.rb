@@ -1,8 +1,8 @@
 class Prestodb < Formula
   desc "Distributed SQL query engine for big data"
   homepage "https://prestodb.io"
-  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.259.1/presto-server-0.259.1.tar.gz"
-  sha256 "5c6c04eeefbf143e64ed5cc35c88aaaa9bbe2bf5683e3eb6df9dcfcee56d27d9"
+  url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-server/0.266/presto-server-0.266.tar.gz"
+  sha256 "1e1d4b0dd99956f026dccaaade8007c846168b30644a7402d61c65248b56edfa"
   license "Apache-2.0"
 
   # Upstream has said that we should check Maven for Presto version information
@@ -14,15 +14,15 @@ class Prestodb < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "358a6b089b846a398aed701bb8d048ab57a74642d70cfc71309c9f2ef5b92512"
+    sha256 cellar: :any_skip_relocation, all: "f783260296f4f971d169a7facf5c9c1dc9922a8324b9a5b4a6842794bee232b6"
   end
 
+  depends_on :macos # Seems to require Python2
   depends_on "openjdk"
 
   resource "presto-cli" do
-    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.259.1/presto-cli-0.259.1-executable.jar"
-    sha256 "4bcb2279c33322fcce18e400d8133c5b78dc552b87c9d8fe07594688a1e5eea7"
+    url "https://search.maven.org/remotecontent?filepath=com/facebook/presto/presto-cli/0.266/presto-cli-0.266-executable.jar"
+    sha256 "b7832e2b6905c59e56c295c0bf15f418cd160d968a57ad710ff1ee5941d6fd98"
   end
 
   def install
@@ -66,6 +66,13 @@ class Prestodb < Formula
       libexec.install "presto-cli-#{version}-executable.jar"
       bin.write_jar_script libexec/"presto-cli-#{version}-executable.jar", "presto"
     end
+
+    # Remove incompatible pre-built binaries
+    libprocname_dirs = libexec.glob("bin/procname/*")
+    # Keep the Linux-x86_64 directory to make bottles identical
+    libprocname_dirs.reject! { |dir| dir.basename.to_s == "Linux-x86_64" }
+    libprocname_dirs.reject! { |dir| dir.basename.to_s == "#{OS.kernel_name}-#{Hardware::CPU.arch}" }
+    libprocname_dirs.map(&:rmtree)
   end
 
   def post_install

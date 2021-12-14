@@ -1,23 +1,24 @@
 class Gosec < Formula
   desc "Golang security checker"
   homepage "https://securego.io/"
-  url "https://github.com/securego/gosec/archive/v2.8.1.tar.gz"
-  sha256 "54820f7120265745710f54246ea5cde0fbdd6a9024cec8147f34b3c1855bdcec"
+  url "https://github.com/securego/gosec/archive/v2.9.5.tar.gz"
+  sha256 "7c6fd7e05e8ae8b8c8816616f61cf334f44e17dff0b3b1294daea0f04aa92f01"
   license "Apache-2.0"
   head "https://github.com/securego/gosec.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "4452d763462f9558721289ee8c1d9fbba04e36fb2b2eb1c9bf8ac59edaf759d9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "54e7772a0413cc7ba0e45e3476ae51b7cb13b4b8232b52540a56a4eb9bb4059f"
-    sha256 cellar: :any_skip_relocation, catalina:      "805fce42a1339373b7cda4ed947ab57f0808600f3f02ffcd59567df2877e1e3f"
-    sha256 cellar: :any_skip_relocation, mojave:        "1c334b925541f89af00c3fe31194f67446dcf75beae2506713625e55376685c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0482159716aee50b31fc9e6327e41750a032089e4ac3087447b4c50d3812779e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1abb42c11452494d96d362d730a6940ad8e5928addbf539d4f37f19b30e8c88b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "af14edb4cadc0ffabb08c954fd6e2deeab5c8fdb960afbc2957030342a5d125d"
+    sha256 cellar: :any_skip_relocation, monterey:       "e50eb802df27f163de4ea235c3813baf84df3af4621f441c7f2c3450e3bebc0e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e37d5b497a3600de18c73ebec64caff0e5fcdd4a110a65aa3591d2226cb3b84c"
+    sha256 cellar: :any_skip_relocation, catalina:       "54a41e0b7cf04640a2d6d7e6c4d0c4b6b5b500f7fff61bc3d073e9855bd7e351"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "059a54dea77916ae4d8fd5feb847380e7013747d1240d0883c85bcdac6ba0a56"
   end
 
   depends_on "go"
 
   def install
-    system "go", "build", *std_go_args, "-ldflags", "-X main.version=v#{version}", "./cmd/gosec"
+    system "go", "build", *std_go_args(ldflags: "-X main.version=v#{version}"), "./cmd/gosec"
   end
 
   test do

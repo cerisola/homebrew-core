@@ -1,20 +1,21 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
   homepage "https://www.dre.vanderbilt.edu/~schmidt/ACE.html"
-  url "https://github.com/DOCGroup/ACE_TAO/releases/download/ACE%2BTAO-7_0_3/ACE-7.0.3.tar.bz2"
-  sha256 "68a4b12982763a6c420c7c01adf50c7a74fd2d8cc5607e4fdd1f2afd086433e7"
+  url "https://github.com/DOCGroup/ACE_TAO/releases/download/ACE%2BTAO-7_0_5/ACE-7.0.5.tar.bz2"
+  sha256 "438bf41e184a5262e2b79f95edb6fd8384fb7ea69e249c54e75daf059a8d9757"
   license "DOC"
 
   livecheck do
     url :stable
-    strategy :github_latest
-    regex(%r{href=.*?/tag/ACE(?:%2B[A-Z]+)*?[._-]v?(\d+(?:[._]\d+)+)["' >]}i)
+    regex(/^ACE(?:\+[A-Z]+)*?[._-]v?(\d+(?:[._]\d+)+)$/i)
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }
+    end
   end
 
   bottle do
-    sha256 cellar: :any, big_sur:  "bdd856d91186406ba290bbf4b31ad75a6c3452149b15272d378c76c99e51e66a"
-    sha256 cellar: :any, catalina: "a831aa6f9782156d4cbfb448bb040d5022176e122c7376d4fe83c7f409a4d5a9"
-    sha256 cellar: :any, mojave:   "19b845b6dffcae5d3949c28af0157a5e11983cd48a4ee33bd7b18145321186a1"
+    sha256 cellar: :any, big_sur:  "a8b07fff8fefb939f8eac8844f818403c865ea25d0d21ed5acdd830491ad07dc"
+    sha256 cellar: :any, catalina: "29e541be09f367e3fbfb9b4828a02664a9aff2b3c2105f09b110c7b278b7673d"
   end
 
   def install
@@ -37,7 +38,7 @@ class Ace < Formula
                    "static_libs=0",
                    "install"
 
-    system "make", "-C", "examples"
+    system "make", "-C", "examples/Log_Msg"
     pkgshare.install "examples"
   end
 

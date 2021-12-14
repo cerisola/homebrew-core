@@ -1,22 +1,23 @@
 class Delve < Formula
   desc "Debugger for the Go programming language"
   homepage "https://github.com/go-delve/delve"
-  url "https://github.com/go-delve/delve/archive/v1.7.1.tar.gz"
-  sha256 "0734b86d48291749ba2537fa6c03e4c3451628f630055c877789e0346db8d67d"
+  url "https://github.com/go-delve/delve/archive/v1.7.3.tar.gz"
+  sha256 "961642eb4cd97e11093dda81273971a45e64abb2fe7db39165072c7145f4fcec"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9ac2fc52c2967468cd727ea1ddc9083f39210882d0f3f2ce41cfa68a47a083b9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6647269bec6a937e78224010ea51c25573103e3c2357c186dc44f230cb31dc50"
-    sha256 cellar: :any_skip_relocation, catalina:      "d56a6e6c6b36044cd7c1e120bc17abfd52903cc1cfa5a29afd1f0945245312a4"
-    sha256 cellar: :any_skip_relocation, mojave:        "95589cb592c41dc1187d43b148962ad0b24fe0e8278438205654e17f4786d1a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1cbbeb8a43d2429cedf0c7d9cd77cfbe9284f763dcfd377311cce3cab186ea7d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "344c9c5af1215e7d57657a27b91aeaf87fd84ebfa5eb25cd551d77f51a1f53ee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8a8c509ddd8e5738c8dcea0b1c9cf781788be59e863ca78293bbcb057a85e77a"
+    sha256 cellar: :any_skip_relocation, monterey:       "7771bed18dce5d8fed2c1d27408f248a9d4de6e1767ad4f9c2459d401680bf18"
+    sha256 cellar: :any_skip_relocation, big_sur:        "255034c5727b5abead6d84089e9aa19e0b1e25cce1935898b366250196f4f8c1"
+    sha256 cellar: :any_skip_relocation, catalina:       "ec0e38cedf3fc0cf04753700cd4916412dff4a8c7c11adda2ff255cfef16f9e0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "233be0622385b6ecba034413b538b6df62a79c71b720d10a433b9b2126b4580f"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-o", bin/"dlv", "./cmd/dlv"
+    system "go", "build", *std_go_args(output: bin/"dlv"), "./cmd/dlv"
   end
 
   test do

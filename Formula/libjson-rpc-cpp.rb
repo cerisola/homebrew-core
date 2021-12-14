@@ -1,19 +1,18 @@
 class LibjsonRpcCpp < Formula
   desc "C++ framework for json-rpc"
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
-  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v1.3.0.tar.gz"
-  sha256 "cf132ad9697b034f22ff37d12a1f1c6f2647ec2236701de5e76f6036ab664156"
+  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v1.4.1.tar.gz"
+  sha256 "7a057e50d6203e4ea0a10ba5e4dbf344c48b177e5a3bf82e850eb3a783c11eb5"
   license "MIT"
-  revision 2
   head "https://github.com/cinemast/libjson-rpc-cpp.git"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_big_sur: "0fdc2ac320638aff5068d94d4115182edebd6f705a4d705924abcfb26d4b602a"
-    sha256 cellar: :any,                 big_sur:       "96c5a539ae83af10f043b89d47dd4e433089a658c3676a9533716e3e04edb440"
-    sha256 cellar: :any,                 catalina:      "451b43048c296d53ea5ca91c6894cbc638710cfc6006426ebc536f143d8c1f04"
-    sha256 cellar: :any,                 mojave:        "88c6224dddcb78a2662b1fdecaae8944132fc7b3aec8b0b69b78b73134b52342"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e14796431b71d7f7c6a450e8b585c1ac60d3e70a94de41acfc175c7394749167"
+    sha256 cellar: :any,                 arm64_monterey: "92aa868394bc65515e1c39a53afa9a28b5ce68fbad43cc41fbb89850567b5b01"
+    sha256 cellar: :any,                 arm64_big_sur:  "38c70b350ea44a23e38ce549b998e7314dd85528bb89f63acc92c31f983e5ceb"
+    sha256 cellar: :any,                 monterey:       "44c292ca252bd482fce41e1b0587a55671a3c5085ee46d55345357b3d2386079"
+    sha256 cellar: :any,                 big_sur:        "e7e1d233b08f2f8475c41caa0976b0543c7208f6ce946d9b2e9700ec9bf35bbc"
+    sha256 cellar: :any,                 catalina:       "7812baf2337ad266cd66c113461f79f0fd1035a1ef44c698178efe6415f4285c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72909ebf97a0de14f83f54bc1ac1d6cc8b1cfce2bb96754e522705fad66412d3"
   end
 
   depends_on "cmake" => :build
@@ -23,12 +22,6 @@ class LibjsonRpcCpp < Formula
   depends_on "libmicrohttpd"
 
   uses_from_macos "curl"
-
-  # Fix for https://github.com/cinemast/libjson-rpc-cpp/issues/298
-  patch do
-    url "https://github.com/cinemast/libjson-rpc-cpp/commit/fa163678134aced775651558f91a006791e26ef8.patch?full_index=1"
-    sha256 "80a8cdfa40aba3dc71fbab77b0137f7f03bb9c969b9845e68f83181b4d8550f6"
-  end
 
   def install
     system "cmake", ".", *std_cmake_args, "-DCOMPILE_EXAMPLES=OFF", "-DCOMPILE_TESTS=OFF"

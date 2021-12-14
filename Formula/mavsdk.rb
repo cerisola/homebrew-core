@@ -4,9 +4,10 @@ class Mavsdk < Formula
   desc "API and library for MAVLink compatible systems written in C++17"
   homepage "https://mavsdk.mavlink.io"
   url "https://github.com/mavlink/MAVSDK.git",
-      tag:      "v0.42.0",
-      revision: "562b3f6fbbab83f8976b6f86b65b8abb0ce5ed49"
+      tag:      "v0.44.0",
+      revision: "ee84bd93b7e0ef802963503a34783772e31eb10e"
   license "BSD-3-Clause"
+  revision 3
 
   livecheck do
     url :stable
@@ -14,11 +15,12 @@ class Mavsdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "56cfcbc85ac7bdf5c55d5892c71cb5e6c3226288ab594f7c348e5501b6a99d20"
-    sha256 cellar: :any,                 big_sur:       "bb7461ecc88798cb2cac6721a222864f298c7d5e7183e7052bfa60fe8cbea592"
-    sha256 cellar: :any,                 catalina:      "f94e44f65c25b903b87d753936e4ba11a2c30a97a2f4ed21f5af5b838cdc3bb1"
-    sha256 cellar: :any,                 mojave:        "338e7114bca614e49a06da1bb036492a0a1137baff38cb0a5bf4ad464a4e035b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9898fc326371ca5d8671928b2e4791cefe3db745162b9ad14d8a64b9f20e35f4"
+    sha256 cellar: :any,                 arm64_monterey: "928fb3c9698ee162b9c29846a07480ed5547f17316536860da21758310059716"
+    sha256 cellar: :any,                 arm64_big_sur:  "8efc2c8f4778869b1aac15aedd4210675a25ebf2cedf33d28bde0eada84f7c97"
+    sha256 cellar: :any,                 monterey:       "d025f0cc86f21b419b0d99f9dc0e906a974dd622dfb73f9b79592e437ec14b6f"
+    sha256 cellar: :any,                 big_sur:        "7d6f693c3931d8fd7030f39c8c215675f8d10f60d45208e9a0402dafa94532a9"
+    sha256 cellar: :any,                 catalina:       "5985853529f6b626d6e577c11505fbd68051c184023e1667b9db486af1852b35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba5cb80cdecc7ad6d273b761162429953bc82e5bc71a2d4d70a0e68fb0c73fee"
   end
 
   depends_on "cmake" => :build
@@ -71,9 +73,7 @@ class Mavsdk < Formula
     # Fix version being reported as `v#{version}-dirty`
     inreplace "CMakeLists.txt", "OUTPUT_VARIABLE VERSION_STR", "OUTPUT_VARIABLE VERSION_STR_IGNORED"
 
-    on_macos do
-      ENV.llvm_clang if DevelopmentTools.clang_build_version <= 1100
-    end
+    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
     # Install protoc-gen-mavsdk deps
     venv_dir = buildpath/"bootstrap"
@@ -108,7 +108,7 @@ class Mavsdk < Formula
 
   test do
     # Force use of Clang on Mojave
-    on_macos { ENV.clang }
+    ENV.clang if OS.mac?
 
     (testpath/"test.cpp").write <<~EOS
       #include <iostream>

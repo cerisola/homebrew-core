@@ -1,17 +1,18 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "https://www.musicpd.org/"
-  url "https://www.musicpd.org/download/mpd/0.22/mpd-0.22.10.tar.xz"
-  sha256 "07c82535e9999c3d4a099d8e652c88724635125b3c9f265ba9b6f2974ff9e614"
+  url "https://www.musicpd.org/download/mpd/0.23/mpd-0.23.5.tar.xz"
+  sha256 "f22c2c25093a05f4566f9cd7207cfbcd8405af67ed29a989bcf8905f80b7a299"
   license "GPL-2.0-or-later"
-  revision 2
-  head "https://github.com/MusicPlayerDaemon/MPD.git"
+  head "https://github.com/MusicPlayerDaemon/MPD.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "4f09ccdef7ef6dbab50b77c270ffcb55967181641313167d418ada86f62570e0"
-    sha256 cellar: :any, big_sur:       "94b46393a81c4f7901998f3cd8158e5ed55ee1bb123ed7618621cc16b35e8bca"
-    sha256 cellar: :any, catalina:      "74bc9b9b08386f85647e1dbd5c4df637b828bdce3d8065af3a1f05ab0b6fa237"
-    sha256 cellar: :any, mojave:        "640c1132db68cca3a02e5ccb332e1b47691713ed854648b26db8da717285f11c"
+    sha256 cellar: :any, arm64_monterey: "05a1bfc7e55dc393d896b8e8df22fde32687ff5c7bf56c8077bbe2e460e66921"
+    sha256 cellar: :any, arm64_big_sur:  "4c5cbed8ed3b290d312cd4461f3395aeac17736c66ee707ba3ac2e4b4aa8ce63"
+    sha256 cellar: :any, monterey:       "2c2f446e3de739cef30d96e46781b552c058f4dc2d7fb455c607038b88f747e8"
+    sha256 cellar: :any, big_sur:        "0ce780601f044697ec980c61205eaf786b8a45ed9650eeb5e1397162af0c1364"
+    sha256 cellar: :any, catalina:       "58662cd464e559a839be065b0bc991cd090d9324dda727d052037d6b4ee462c7"
+    sha256               x86_64_linux:   "54558ea9e806fe7f00ba3e569915aa478d5a73d870653dbddd7e346d8b7173e9"
   end
 
   depends_on "boost" => :build
@@ -23,6 +24,7 @@ class Mpd < Formula
   depends_on "ffmpeg"
   depends_on "flac"
   depends_on "fluid-synth"
+  depends_on "fmt"
   depends_on "glib"
   depends_on "icu4c"
   depends_on "lame"
@@ -55,7 +57,6 @@ class Mpd < Formula
 
     args = std_meson_args + %W[
       --sysconfdir=#{etc}
-      -Dlibwrap=disabled
       -Dmad=disabled
       -Dmpcdec=disabled
       -Dsoundcloud=disabled
@@ -66,7 +67,7 @@ class Mpd < Formula
       -Dfluidsynth=enabled
       -Dnfs=enabled
       -Dshout=enabled
-      -Dupnp=enabled
+      -Dupnp=pupnp
       -Dvorbisenc=enabled
     ]
 
@@ -91,6 +92,7 @@ class Mpd < Formula
   service do
     run [opt_bin/"mpd", "--no-daemon"]
     keep_alive true
+    process_type :interactive
     working_dir HOMEBREW_PREFIX
   end
 

@@ -1,15 +1,16 @@
 class Scrcpy < Formula
   desc "Display and control your Android device"
   homepage "https://github.com/Genymobile/scrcpy"
-  url "https://github.com/Genymobile/scrcpy/archive/v1.18.tar.gz"
-  sha256 "2995d74409e9a486e4f69d0f623299ebf615d9427d8e974dfd82355538a313e9"
+  url "https://github.com/Genymobile/scrcpy/archive/v1.21.tar.gz"
+  sha256 "76e16a894bdb483b14b7ae7dcc1be8036ec17924dfab070cf0cb3b47653a6822"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_big_sur: "0fd6c2d4d56cdbc09df21e7a8aabbeaa75a7658f99eb8478bdfd6b97d510dad6"
-    sha256 big_sur:       "6c960c8555c710cd1058e256b34e6c93be8b3294a6b34bbc58ead2344d6da740"
-    sha256 catalina:      "c6262834293a4667e870ec7977e90fe1b5dda59d646555f9c71435195ac4a970"
-    sha256 mojave:        "1c5e721c141ecb90418ccf5500756c94bf48c2dc1ead190e6cc16024b5449430"
+    sha256 arm64_monterey: "1493098a11c7ec1ae351fca71a817e5203b3a5398ecfb522bc80c92c68b06cde"
+    sha256 arm64_big_sur:  "7fadf0708fd9f2b220b69753778bee7c9eb36567d36ec6d715a5d6c7bef4c6da"
+    sha256 monterey:       "6e0ad67e3469cee34e8c1ba584630200a57d366531e1f732532f6cff8b351e2b"
+    sha256 big_sur:        "cf5c7c1bd463e1654a0a4d795dbf6700a9cfebb6a409aa315cd758a070073afa"
+    sha256 catalina:       "5eb45bf3851d6b3d79f04429977c54c02fd915c6d01f399a5ccdbc95d25d8618"
   end
 
   depends_on "meson" => :build
@@ -19,8 +20,8 @@ class Scrcpy < Formula
   depends_on "sdl2"
 
   resource "prebuilt-server" do
-    url "https://github.com/Genymobile/scrcpy/releases/download/v1.18/scrcpy-server-v1.18"
-    sha256 "641c5c6beda9399dfae72d116f5ff43b5ed1059d871c9ebc3f47610fd33c51a3"
+    url "https://github.com/Genymobile/scrcpy/releases/download/v1.21/scrcpy-server-v1.21"
+    sha256 "dbcccab523ee26796e55ea33652649e4b7af498edae9aa75e4d4d7869c0ab848"
   end
 
   def install
@@ -49,18 +50,23 @@ class Scrcpy < Formula
   test do
     fakeadb = (testpath/"fakeadb.sh")
 
-    # When running, scrcpy calls adb three times:
-    #  - adb push ... (to push scrcpy-server.jar)
-    #  - adb reverse ... tcp:PORT ...
-    #  - adb shell ...
-    # However, exiting on $1 = shell didn't work properly, so instead
-    # fakeadb exits on $1 = reverse
+    # When running, scrcpy calls adb four times:
+    #  - adb get-serialno
+    #  - adb -s SERIAL push ... (to push scrcpy-server.jar)
+    #  - adb -s SERIAL reverse ... tcp:PORT ...
+    #  - adb -s SERIAL shell ...
+    # However, exiting on $3 = shell didn't work properly, so instead
+    # fakeadb exits on $3 = reverse
 
     fakeadb.write <<~EOS
       #!/bin/sh
       echo $@ >> #{testpath/"fakeadb.log"}
 
-      if [ "$1" = "reverse" ]; then
+      if [ "$1" = "get-serialno" ]; then
+        echo emulator-1337
+      fi
+
+      if [ "$3" = "reverse" ]; then
         exit 42
       fi
     EOS

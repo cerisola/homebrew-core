@@ -1,15 +1,15 @@
 class MscGenerator < Formula
   desc "Draws signalling charts from textual description"
   homepage "https://sourceforge.net/p/msc-generator"
-  url "https://downloads.sourceforge.net/project/msc-generator/msc-generator/v6.x/msc-generator-6.3.10.tar.gz"
-  sha256 "0ed111f00d3638774458fc4fe48314f1223b2c85233d5ed3a8dd3bfbaafdb1f8"
+  url "https://downloads.sourceforge.net/project/msc-generator/msc-generator/v7.x/msc-generator-7.1.tar.gz"
+  sha256 "cecd1d3ef2dd2018eb95ee1ece5dea37f5f2f7811da2fe6f4a6884898c1eb489"
   license "AGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "c26637f30249c3307c8da6d8cb0b74912084d738b8adb809f25f1433127ef634"
-    sha256 cellar: :any, big_sur:       "2d2550736b6a08b3a4dd2ab633d83bb97c61e90fff3320f59533a256663e2a01"
-    sha256 cellar: :any, catalina:      "5c495074651edf5843b55d27a050b4ed0e105826437117761c386a0bf0c51e55"
-    sha256 cellar: :any, mojave:        "8f0f5c54980b9eb4eb308ba3c62439f7eadb5db52f902802c594a72ca34b43f4"
+    sha256 cellar: :any, arm64_big_sur: "93a94d78c635a6eb3cb5f001b0edde020cff8161a9dbc7a0b1e49abcc355e0cf"
+    sha256 cellar: :any, monterey:      "d2a801331d157692f0e9e8799aa23508f1212a9c5bd72b2fbb2d1e0131c9d763"
+    sha256 cellar: :any, big_sur:       "45731f37d92771b0065740a1bafe2cead12863e10be89d921961bcbd9db0a1a6"
+    sha256 cellar: :any, catalina:      "98eb2f5b8a2c8f247dced6ee8c23a794575cd2d389a4cb4c254241ad4e8c052c"
   end
 
   depends_on "autoconf" => :build
@@ -18,8 +18,12 @@ class MscGenerator < Formula
   depends_on "help2man" => :build
   depends_on "pkg-config" => :build
   depends_on "cairo"
+  depends_on "gcc"
   depends_on "glpk"
   depends_on "graphviz"
+  depends_on "sdl2"
+
+  fails_with :clang # needs std::range
 
   def install
     system "./configure", "--prefix=#{prefix}"

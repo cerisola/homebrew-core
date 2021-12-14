@@ -1,16 +1,18 @@
 class Texmath < Formula
   desc "Haskell library for converting LaTeX math to MathML"
   homepage "https://johnmacfarlane.net/texmath.html"
-  url "https://hackage.haskell.org/package/texmath-0.12.3/texmath-0.12.3.tar.gz"
-  sha256 "1d215c20f8b0be2779752f36ee5837ef1b5b37042716713335456bc8b57d0b52"
+  url "https://hackage.haskell.org/package/texmath-0.12.3.3/texmath-0.12.3.3.tar.gz"
+  sha256 "c80e796a22e17faf29253ce733046a12670c173a10dbfdbd8182821fccb28c7d"
   license "GPL-2.0-or-later"
+  head "https://github.com/jgm/texmath.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "820604565c309184e9c3627f2846f5a1715fdf1607fa6647f65e1b1f7bdbee38"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5103aa3afe5577ee258878a49075f887c10f704a3267e005b6be77518d27e871"
-    sha256 cellar: :any_skip_relocation, catalina:      "821d782521b756be6628037d9848a1080f3acd98cf75585241d3a73f70841dcb"
-    sha256 cellar: :any_skip_relocation, mojave:        "9f1fc7ee11583a51ccb981bd0ec238b19b963054e5b58bf47edd5e86098c78d4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0898fbd78de26c2058503760b1c53c1c9d9d230f0f71fdf1ee3032a7e1642bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bd309254d09195d0e4ba97524e9e04c90e3908549c34edda349e97d43c6beb44"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e9c94034cf4beeae96d1b3dfad6296e5dce855dbc09f9b4b4f84ae709d6040d8"
+    sha256 cellar: :any_skip_relocation, monterey:       "0000aeb75eb82fa3579c408ae160cf5c086cdc384b3024ae2724392f1d0c2ba0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b106414d482730265d80ae31920b336446bf11bc894967d6a5d721c43d600061"
+    sha256 cellar: :any_skip_relocation, catalina:       "625411f1d3d42c8236c28f3834a496722eb79a6906219e8358d5e40b20fbe9a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "12145edcc663839ca6a48b9b3c45116b2c481ca736cc948309c0fbd0ad7c4d3c"
   end
 
   depends_on "cabal-install" => :build

@@ -1,19 +1,21 @@
 class Qpdf < Formula
   desc "Tools for and transforming and inspecting PDF files"
   homepage "https://github.com/qpdf/qpdf"
-  url "https://github.com/qpdf/qpdf/releases/download/release-qpdf-10.3.2/qpdf-10.3.2.tar.gz"
-  sha256 "062808c40ef8741ec8160ae00168638a712cfa1d4bf673e8e595ab5eba1da947"
+  url "https://github.com/qpdf/qpdf/releases/download/release-qpdf-10.4.0/qpdf-10.4.0.tar.gz"
+  sha256 "9ac6e691cc3f35a9fe44632e3fba727e1b6ef21181c0a883287abf5cf97ae222"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "705a38342dd732f78053f1bbeee0fdcabc7907db7451a15616d12d0ea0015894"
-    sha256 cellar: :any,                 big_sur:       "d58a95848a41828fd8a8cf0f1bbc2965f7d5c4b253a359d99750e53c01777c63"
-    sha256 cellar: :any,                 catalina:      "2896a1a0b6edd8b19b1f596439d60081325f63a4d6ed6cfd859f28790ca8f4d7"
-    sha256 cellar: :any,                 mojave:        "d017c72291915e439affa7000b113169fd3e48bdd1b2d31760fdfe2f3d1950fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b856a4f28b9a0377c40251172c09763548faff2aacd50c5f1e03f9c680434eb"
+    sha256 cellar: :any,                 arm64_monterey: "e9c0330ed2141fc0d002c713ebdc7eed450eb3983689d2d061dad9136b7fb0d7"
+    sha256 cellar: :any,                 arm64_big_sur:  "74e4f00d627fff311d1732e9f279f1f3f6acd2374b0c741b8c83c97f1e1327b4"
+    sha256 cellar: :any,                 monterey:       "f7086d5e00f0e00f76336ced17b7bcf9f3e16a178b0c67eb404656cb24ee7336"
+    sha256 cellar: :any,                 big_sur:        "2baa98138a4f3375d126ddd336e98a1f95ffd21f43504a672d07f4d7a4ba36ff"
+    sha256 cellar: :any,                 catalina:       "5902aa492e2acf73237342c57f86007fdaff0fd333fc4de0514cb7390e4ae4bd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c18e99ac413881dd927c712b1a56261922a39d2cb4034ec99b0d129412e3e3e6"
   end
 
   depends_on "jpeg-turbo"
+  depends_on "openssl@1.1"
 
   uses_from_macos "zlib"
 

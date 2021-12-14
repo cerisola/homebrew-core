@@ -14,16 +14,34 @@ env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
   FORMULAE: |
     ack
+    angular-cli
     apidoc
     argo
     artifactory
+    autorest
+    aws-cdk
     b3sum
+    bcoin
     buildkit
     bundletool
+    cadence
+    calicoctl
+    cargo-audit
+    cargo-bloat
+    cargo-c
+    cargo-edit
+    cargo-instruments
+    cargo-llvm-lines
+    cargo-outdated
+    cargo-watch
+    cdk8s
     chezmoi
+    circleci
+    clair
     cliclick
     consul
     consul-template
+    cubejs-cli
     detekt
     detox
     devspace
@@ -33,13 +51,20 @@ env:
     docker-slim
     doctl
     envconsul
+    esbuild
+    eslint
     etcd
+    exploitdb
     fennel
+    firebase-cli
     fuse-overlayfs
+    gatsby-cli
     gitleaks
+    glooctl
     gofish
     golang-migrate
     goreleaser
+    gosec
     gostatic
     hcloud
     helm
@@ -56,28 +81,49 @@ env:
     lazydocker
     lexbor
     liboqs
+    marked
+    marp-cli
     mdbook
     mdcat
+    metabase
     micro
     minikube
     mmctl
+    nativefier
+    navi
+    ncc
     neofetch
+    netlify-cli
     nng
+    node-sass
     nomad
     nushell
+    octant
     okteto
+    oxipng
     pnpm
+    rollup
+    selene
+    serverless
     skaffold
     skopeo
     starship
     stress-ng
+    svgo
     syncthing
     teleport
     termshark
     terraform-ls
+    toast
     traefik
     vale
+    vercel-cli
     virgil
+    vite
+    vue-cli
+    webpack
+    webtorrent-cli
+    whistle
 
 jobs:
   autobump:
@@ -93,11 +139,11 @@ jobs:
       - name: Configure Git user
         uses: Homebrew/actions/git-user-config@master
         with:
-          username: BrewTestBot
+          username: ${{ (github.event_name == 'workflow_dispatch' && github.actor) || 'BrewTestBot' }}
 
       - name: Bump formulae
         uses: Homebrew/actions/bump-formulae@master
         continue-on-error: true
         with:
-          token: ${{secrets.HOMEBREW_CORE_REPO_WORKFLOW_TOKEN}}
-          formulae: ${{github.event.inputs.formulae || env.FORMULAE}}
+          token: ${{ secrets.HOMEBREW_CORE_REPO_WORKFLOW_TOKEN }}
+          formulae: ${{ github.event.inputs.formulae || env.FORMULAE }}

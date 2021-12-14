@@ -2,16 +2,18 @@ class Kn < Formula
   desc "Command-line interface for managing Knative Serving and Eventing resources"
   homepage "https://github.com/knative/client"
   url "https://github.com/knative/client.git",
-      tag:      "v0.25.0",
-      revision: "035150ec4cbfd36fdbd3eab4d93608a92ebc6ecd"
+      tag:      "v0.27.0",
+      revision: "a1cf5bf81f77b9602607735af286fb3cefb3fee2"
   license "Apache-2.0"
   head "https://github.com/knative/client.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fe261babfd9fb7486041fd28a56e647ad30f7b4b7cdde8648de4604c5c62df2a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "87013c10636a08a28c6bbf36426690e5208003f022881b952c06b689e0b529dd"
-    sha256 cellar: :any_skip_relocation, catalina:      "87013c10636a08a28c6bbf36426690e5208003f022881b952c06b689e0b529dd"
-    sha256 cellar: :any_skip_relocation, mojave:        "87013c10636a08a28c6bbf36426690e5208003f022881b952c06b689e0b529dd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec177ff2ce1896e01a1c1738b4b3878c59256684ac2197ee577ff4ef8cfc6bd1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ec177ff2ce1896e01a1c1738b4b3878c59256684ac2197ee577ff4ef8cfc6bd1"
+    sha256 cellar: :any_skip_relocation, monterey:       "1a6d04c55b1a6d412f79af7950adca99ca6dd0307b322ae9ecec435ad6c14a26"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1a6d04c55b1a6d412f79af7950adca99ca6dd0307b322ae9ecec435ad6c14a26"
+    sha256 cellar: :any_skip_relocation, catalina:       "1a6d04c55b1a6d412f79af7950adca99ca6dd0307b322ae9ecec435ad6c14a26"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "985b9e76ffc877ecc940b57a791cb84c830ac9427caa6cabab1874ecb0caa64a"
   end
 
   depends_on "go" => :build
@@ -23,7 +25,7 @@ class Kn < Formula
       -X knative.dev/client/pkg/kn/commands/version.Version=v#{version}
       -X knative.dev/client/pkg/kn/commands/version.GitRevision=#{Utils.git_head(length: 8)}
       -X knative.dev/client/pkg/kn/commands/version.BuildDate=#{time.iso8601}
-    ].join(" ")
+    ]
 
     system "go", "build", "-mod=vendor", *std_go_args(ldflags: ldflags), "./cmd/..."
   end

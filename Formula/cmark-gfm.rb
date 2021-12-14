@@ -1,23 +1,23 @@
 class CmarkGfm < Formula
   desc "C implementation of GitHub Flavored Markdown"
   homepage "https://github.com/github/cmark-gfm"
-  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.0.tar.gz"
-  version "0.29.0.gfm.0"
-  sha256 "6a94aeaa59a583fadcbf28de81dea8641b3f56d935dda5b2447a3c8df6c95fea"
+  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.2.tar.gz"
+  version "0.29.0.gfm.2"
+  sha256 "66d92c8bef533744674c5b64d8744227584b12704bcfebbe16dab69f81e62029"
   license "BSD-2-Clause"
-  revision 2
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_big_sur: "5704adaff97225f3119dc9249b6d0fd6655c323aa6389473066435ad0a6b1e40"
-    sha256 cellar: :any,                 big_sur:       "718e29fe5b922ee5c55dae56a8614832bd6dccb974bd83bb0aee39f02f20db31"
-    sha256 cellar: :any,                 catalina:      "c5a339c14cee2d08621b8ce8913462e24193b3bb9247a5a207c6b60c0b9a28de"
-    sha256 cellar: :any,                 mojave:        "27144ced3954fbd19c2f7a12ce91c86cc1d8b91425109457b06a87fded64741d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d3486676c02016e58b30ba0f4d9fd7e968d0766b0a961d4d9a3b403997fb5c9"
+    sha256 cellar: :any,                 arm64_monterey: "884ea077983251b7212dcda36413dc028ab39dfd12427f955236f16a02f8e8c8"
+    sha256 cellar: :any,                 arm64_big_sur:  "cb732cbea0738d7488da9e5bb2694d87bf1a18db9c39eed7bae428e7b7d7c79a"
+    sha256 cellar: :any,                 monterey:       "20d3b7cdb732305873fb9a9fccee3c971383a4172e792bfc89c9b0457532ef81"
+    sha256 cellar: :any,                 big_sur:        "0d3a07d3aa0c2498ad2e095e0ee4879b2d56282f9a935e7720dce864b92b4eb1"
+    sha256 cellar: :any,                 catalina:       "e955d7646385f7b8fc87ca4b5b253ffee1b9f56036fcdc49d850d04bd7a0c1af"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac57b71b5630072f81e9a76b22736ce112336681a8b2a2fd84ea87f942cb277f"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   conflicts_with "cmark", because: "both install a `cmark.h` header"
 

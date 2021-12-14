@@ -1,10 +1,9 @@
 class HaskellLanguageServer < Formula
   desc "Integration point for ghcide and haskell-ide-engine. One IDE to rule them all"
   homepage "https://github.com/haskell/haskell-language-server"
-  url "https://github.com/haskell/haskell-language-server/archive/1.3.0.tar.gz"
-  sha256 "9be31ead3fb1c0ca761de80185a23665dfe167457baaba642cf62885df98f6a1"
+  url "https://github.com/haskell/haskell-language-server/archive/1.5.1.tar.gz"
+  sha256 "fa2b1d39d413283202ee1f75e4ad9fc44544535741370d6f1e63afd5878d9e40"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/haskell/haskell-language-server.git"
 
   # we need :github_latest here because otherwise
@@ -15,10 +14,12 @@ class HaskellLanguageServer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "85cabaa13ef4e27a16059c26db1a4dbfea9338e8ab6ed49e01309553b8c59ff8"
-    sha256 cellar: :any_skip_relocation, big_sur:       "c77b850f178e9499b4496474adfbedacc4aba5703a936d337496810b3e972cff"
-    sha256 cellar: :any_skip_relocation, catalina:      "d40c16a158f1645c724b609420b7f1c1237a6b4e1627c39aa1372786593c382e"
-    sha256 cellar: :any_skip_relocation, mojave:        "abe628ac3b30dc4da554011c7419ed3b28fe9c21a8552fa2130c22aece655c3d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1a1af899ccff618cd5461b26b5af64db7361f3626c7a3b63a130eb323ecb7f65"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "23e6513586c02b6053e9591c2b111502640742fea5705be5684cd45fe6e77db9"
+    sha256 cellar: :any_skip_relocation, monterey:       "27d80ef80a6988cdbde053d39c25fb9461c20811cb109e3592fd2370243d3f6d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a9f6ee6100f166fb7804dbbc0ed991f1e1e7a93c911c5d2e36c5630a18035e41"
+    sha256 cellar: :any_skip_relocation, catalina:       "67da1bed090719a7a37e0bcfc60b8d01d7235adb4b7daea5122c0be17d3131df"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3847655ae8f0663df52e1571bda9ba1b5aacc21a14c3b3e4af1e8776cae725ce"
   end
 
   depends_on "cabal-install" => [:build, :test]
@@ -28,6 +29,9 @@ class HaskellLanguageServer < Formula
     depends_on "ghc@8.6" => [:build, :test]
     depends_on "ghc@8.8" => [:build, :test]
   end
+
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
 
   def ghcs
     deps.map(&:to_formula)

@@ -1,8 +1,8 @@
 class OpenlibertyMicroprofile4 < Formula
   desc "Lightweight open framework for Java (Micro Profile 4)"
   homepage "https://openliberty.io"
-  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/2021-07-27_1323/openliberty-microProfile4-21.0.0.8.zip"
-  sha256 "53a4d10b77fc6b21a6c387ced1829c16b975224597048a84697b16cd9f40ff44"
+  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/2021-11-17_1256/openliberty-microProfile4-21.0.0.12.zip"
+  sha256 "44724b776d20e25b26a509f8d431d985cd88c5c1b06cfefd82593cdac63fc05e"
   license "EPL-1.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class OpenlibertyMicroprofile4 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "9047e5e900a069b2b88af52b403c36892dcf4dac675437ec7c0cdd1a085cbd7e"
+    sha256 cellar: :any_skip_relocation, all: "de269f86b6517e1837eaf3b360cf48a87023c262e116a9000ecb1bc7b617638b"
   end
 
   depends_on "openjdk"
@@ -43,6 +43,6 @@ class OpenlibertyMicroprofile4 < Formula
     end
 
     refute_predicate testpath/"servers/.pid/defaultServer.pid", :exist?
-    assert_match "<feature>microProfile-4.0</feature>", (testpath/"servers/defaultServer/server.xml").read
+    assert_match "<feature>microProfile-4.1</feature>", (testpath/"servers/defaultServer/server.xml").read
   end
 end

@@ -2,8 +2,8 @@ class Clusterctl < Formula
   desc "Home for the Cluster Management API work, a subproject of sig-cluster-lifecycle"
   homepage "https://cluster-api.sigs.k8s.io"
   url "https://github.com/kubernetes-sigs/cluster-api.git",
-      tag:      "v0.4.1",
-      revision: "f6fd5ed7dc0fa75788f76f17c64ae82976fcc70b"
+      tag:      "v1.0.2",
+      revision: "89db44e9a462028267ed49295359fe9db2a6a10a"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "master"
 
@@ -19,11 +19,12 @@ class Clusterctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d4fec53cb661771a6dcb2e4f2e3c860a79656a120ed332a1c1555998a3e27a3c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "fb2e59764b383900968a5193c3fbc7b797c5c5722bdb03a3204e5f5d7640fd3e"
-    sha256 cellar: :any_skip_relocation, catalina:      "7f74e4c464c11673784f7331ed832b30f7006e0cce38fef385e630d09b84e995"
-    sha256 cellar: :any_skip_relocation, mojave:        "6f5e794cab422d4cfb2550d1b4ce82cfe0ea7d0ecd9cebe5959dc9500103a72d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2dae7988970564497806f8e0daeb5d0c50e337b95301507f559a392ae10d2470"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "96c367c28466aa43f1a577125746ca4deda9255424450169d5ce8fb2bf127b21"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a7e38de66ef3dd64901b3f6ddbd6b4c6765d0c6449e7da43d3101cad9cd0e69"
+    sha256 cellar: :any_skip_relocation, monterey:       "c160d942e3fb67a072070274fa84aecaef27f35a1bcaf11ce8a2d48779ddfdb5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d3d8e364efb5a6b159b21cd985584071d9d306e288cc006625c5d2db18879b35"
+    sha256 cellar: :any_skip_relocation, catalina:       "d3414a8a100bdfdcaf60e3680cd18af16266dcc4702aabefba41ad9d0a55e07a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3dca2997eae33562d0f94141942c50a37c0d30bba7a8121e711ec0cb6ecfea9"
   end
 
   depends_on "go" => :build
@@ -34,6 +35,12 @@ class Clusterctl < Formula
 
     system "make", "clusterctl"
     prefix.install "bin"
+
+    bash_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "bash")
+    (bash_completion/"clusterctl").write bash_output
+
+    zsh_output = Utils.safe_popen_read(bin/"clusterctl", "completion", "zsh")
+    (zsh_completion/"_clusterctl").write zsh_output
   end
 
   test do

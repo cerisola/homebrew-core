@@ -1,20 +1,22 @@
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-10.2.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-10.2.tar.xz"
-  sha256 "aaa1223d534c9b700a8bec952d9748ee1977513f178727e1bee520ee000b4f29"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-11.1.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-11.1.tar.xz"
+  sha256 "cccfcc407b20d343fb320d4a9a2110776dd3165118ffd41f4b1b162340333f94"
   license "GPL-3.0-or-later"
-  head "https://sourceware.org/git/binutils-gdb.git"
+  revision 1
+  head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
   bottle do
-    sha256 big_sur:      "31de67be9674e5bd363a554e7f02002687a5ac9734526983e0430b041acea042"
-    sha256 catalina:     "66f0ab39e075db4f5de3403c0f8125b54be84b7d009491e0b8e040d774721c3b"
-    sha256 mojave:       "f1392338a52a0e3d74b3b4f9f1ad4e70977d80ad672789a1371bed545d5528e4"
-    sha256 x86_64_linux: "5f21f90491812fec4b5408fa7c0a308b3a7e60f12b435733364f635b9ae88cc9"
+    sha256 monterey:     "eeca01c6f1aa84f53433bb3708b6b3b6dd87dee6aae34fde17ef032df30b9ea5"
+    sha256 big_sur:      "e4a089c37a6666d0c7888965b1fa3c3fc00a4bab7b2562ededeb2e75a16b0a1a"
+    sha256 catalina:     "bf220e52b7bb0054cdfff14d8454b2b3d319cd0da241f00cd619b1308094676a"
+    sha256 x86_64_linux: "1cca500a1415dbf29917773f35aaee5a97c43fb24947e431c1145db28c33a6ff"
   end
 
-  depends_on "python@3.9"
+  depends_on "gmp"
+  depends_on "python@3.10"
   depends_on "xz" # required for lzma support
 
   uses_from_macos "texinfo" => :build
@@ -44,7 +46,7 @@ class Gdb < Formula
       --disable-debug
       --disable-dependency-tracking
       --with-lzma
-      --with-python=#{Formula["python@3.9"].opt_bin}/python3
+      --with-python=#{Formula["python@3.10"].opt_bin}/python3
       --disable-binutils
     ]
 
@@ -62,11 +64,7 @@ class Gdb < Formula
       gdb requires special privileges to access Mach ports.
       You will need to codesign the binary. For instructions, see:
 
-        https://sourceware.org/gdb/wiki/BuildingOnDarwin
-
-      On 10.12 (Sierra) or later with SIP, you need to run this:
-
-        echo "set startup-with-shell off" >> ~/.gdbinit
+        https://sourceware.org/gdb/wiki/PermissionsDarwin
     EOS
   end
 

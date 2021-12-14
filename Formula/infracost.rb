@@ -1,17 +1,18 @@
 class Infracost < Formula
   desc "Cost estimates for Terraform"
   homepage "https://www.infracost.io/docs/"
-  url "https://github.com/infracost/infracost/archive/v0.9.5.tar.gz"
-  sha256 "34bc174e31f28fd951e33110f376240654504e7945d500b491e26117952c34a7"
+  url "https://github.com/infracost/infracost/archive/v0.9.15.tar.gz"
+  sha256 "1a0239c140e762987687f1e52fef929e434d15566f18008ca3251876a9f9cc03"
   license "Apache-2.0"
   head "https://github.com/infracost/infracost.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "a1a9d10cc8d2e0f80cf4497452f666e89affbf4205be6279df1f76d903ee5f54"
-    sha256 cellar: :any_skip_relocation, big_sur:       "fbf4c99007613e04fe228c0dd171098711bf607dafabe202a01132136ba6fc78"
-    sha256 cellar: :any_skip_relocation, catalina:      "fbf4c99007613e04fe228c0dd171098711bf607dafabe202a01132136ba6fc78"
-    sha256 cellar: :any_skip_relocation, mojave:        "fbf4c99007613e04fe228c0dd171098711bf607dafabe202a01132136ba6fc78"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1fd9b76284a60a15d126627376ee91f99c87f501bd71f7ea94f961fda361684e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e86567448661737333dbb278e50caccaddecba83a1d3476594d2eee38c885f63"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e86567448661737333dbb278e50caccaddecba83a1d3476594d2eee38c885f63"
+    sha256 cellar: :any_skip_relocation, monterey:       "678bddd844510552180b922e145d8b8f6b3030ab2dc4bee43281424c727e08e7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "678bddd844510552180b922e145d8b8f6b3030ab2dc4bee43281424c727e08e7"
+    sha256 cellar: :any_skip_relocation, catalina:       "678bddd844510552180b922e145d8b8f6b3030ab2dc4bee43281424c727e08e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dcbd86bcb50cc6d6e984ae70a8babd29b52698eea825902be100e02c2285d804"
   end
 
   depends_on "go" => :build
@@ -20,7 +21,7 @@ class Infracost < Formula
   def install
     ENV["CGO_ENABLED"] = "0"
     ldflags = "-X github.com/infracost/infracost/internal/version.Version=v#{version}"
-    system "go", "build", *std_go_args, "-ldflags", ldflags, "./cmd/infracost"
+    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/infracost"
   end
 
   test do

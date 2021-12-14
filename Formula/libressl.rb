@@ -2,9 +2,9 @@ class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "https://www.libressl.org/"
   # Please ensure when updating version the release is from stable branch.
-  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.3.3.tar.gz"
-  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.3.3.tar.gz"
-  sha256 "a471565b36ccd1a70d0bd7d37c6e95c43a26a62829b487d9d2cdebfe58be3066"
+  url "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.4.2.tar.gz"
+  mirror "https://mirrorservice.org/pub/OpenBSD/LibreSSL/libressl-3.4.2.tar.gz"
+  sha256 "cb82ca7d547336917352fbd23db2fc483c6c44d35157b32780214ec74197b3ce"
   license "OpenSSL"
 
   livecheck do
@@ -13,11 +13,12 @@ class Libressl < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "f4fa458d148637619331ff2ed9e58cd6af8aa2930d1c05f0deddc066c9decb66"
-    sha256 big_sur:       "580f06f61b53fcbcc66a55e1a176b581701fb7f83c22bd8d1429520dfd314a8c"
-    sha256 catalina:      "1665bf0da8764d6f3e2be97354db769c6f39fd7b2788429e58a81e6172e6185d"
-    sha256 mojave:        "b4eca6067e1ee105ab1798c35f7415a608a4c23baa316a91b6e855ce99885fe7"
-    sha256 x86_64_linux:  "a88a65bab85c2fd2fdd6ee9186412a895c1997295f4141e1f1e0db11787ae2d8"
+    sha256 arm64_monterey: "932d4139fd7c519e637555dcd7646ce074410dfe819cf1e959582e92e9d2629b"
+    sha256 arm64_big_sur:  "0b41497bd24cafddac59ad896f3bd0651f809368ec7a273a9a587c7be25c66ec"
+    sha256 monterey:       "99dcff0a05aa91c512cc84634da127314e18965a5415cfc5bf89cfac2d11f525"
+    sha256 big_sur:        "ab9076500642384eb5af15e8e89e5a2c08c0cbd61286cf7d53770d777995a6cd"
+    sha256 catalina:       "4fbe195f7dd1c0456912892a6dd2f91a3e53601b3f26a8352bbf58951d92eee1"
+    sha256 x86_64_linux:   "2a795ad39e27b921e4afd4e9a2e65cd04ddb86ba49193eaf8826349ab3c4e9e1"
   end
 
   head do
@@ -51,7 +52,7 @@ class Libressl < Formula
   end
 
   def post_install
-    on_macos do
+    if OS.mac?
       ohai "Regenerating CA certificate bundle from keychain, this may take a while..."
 
       keychains = %w[

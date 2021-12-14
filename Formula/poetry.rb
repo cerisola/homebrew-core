@@ -3,28 +3,30 @@ class Poetry < Formula
 
   desc "Python package management tool"
   homepage "https://python-poetry.org/"
-  url "https://files.pythonhosted.org/packages/86/c2/8fb98b8197ff6a96263eb3f39029942a412c5148c03f319c31eee8f4b03e/poetry-1.1.8.tar.gz"
-  sha256 "6dc82e85d919ab99a0b18baea1933a00a40d85eedce24f80a6099909e387914e"
+  url "https://files.pythonhosted.org/packages/2e/90/0905a0ad5bb1a9eb8a820337e7c629cde76060fc1dc934e7b8ed450241b8/poetry-1.1.12.tar.gz"
+  sha256 "5c66e2357fe37b552462a88b7d31bfa2ed8e84172208becd666933c776252567"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e693d8c10b3124081dfd546bcd673b040a25866be2238229c824cc3ec8186f2c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "421db5db4179425fd5d87aa8ba8b637a7d1afc59f3964ba93b84286f46e9db8e"
-    sha256 cellar: :any_skip_relocation, catalina:      "a5871ffdef73bcc0e57cfac4d0f61a3d578760c2ba3906d93f9e6d8ed9cd89c4"
-    sha256 cellar: :any_skip_relocation, mojave:        "f1daa00e6bc598d850a685a334153ff563b48c68c3e97e5d500a897baa53e0df"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35b1fe3afb54a9588c8f7cc341f8bfce328e6579bd99786f7e1a11a51e559e56"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ee4fa6b7ddecfcf7185c42b3f8e7ddb29fef23587a1408072ca1246b57f50ab0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "191b4a9f4e37240d74e1e4226ee026a9d58199d04df2c386ae584e2dfb6ac98a"
+    sha256 cellar: :any_skip_relocation, monterey:       "46d30d5f79a12ba55e8e48f1348804b19203802f844bf3468fae1d26dfa6022d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "57baa0d49e3cc9f1c141e7f2461f6d2bde78a75cb5ba9c26839991cd1dfbca3b"
+    sha256 cellar: :any_skip_relocation, catalina:       "c6ea236191fce2561dc25585ea45627ce15776d74a710d5e8b01ebc0c878a2c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f3be9d90d02183859da5cc63f29f990fa87b05a7f80214c32186018b07f3762"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
+  depends_on "six"
 
   resource "backports.entry-points-selectable" do
-    url "https://files.pythonhosted.org/packages/e4/7e/249120b1ba54c70cf988a8eb8069af1a31fd29d42e3e05b9236a34533533/backports.entry_points_selectable-1.1.0.tar.gz"
-    sha256 "988468260ec1c196dab6ae1149260e2f5472c9110334e5d51adcb77867361f6a"
+    url "https://files.pythonhosted.org/packages/71/16/edd003270daaab0168f7dbac6e22b055322e9ba66fb2cc951f58d1ed158b/backports.entry_points_selectable-1.1.1.tar.gz"
+    sha256 "914b21a479fde881635f7af5adc7f6e38d6b274be32269070c53b698c60d5386"
   end
 
   resource "CacheControl" do
-    url "https://files.pythonhosted.org/packages/44/b9/9a1d4349824ae14de4052e84802a0c372fff1fd2bd6668f7e9efe91ac11d/CacheControl-0.12.6.tar.gz"
-    sha256 "be9aa45477a134aee56c8fac518627e1154df063e85f67d4f83ce0ccc23688e8"
+    url "https://files.pythonhosted.org/packages/d0/74/3748ee1144234a525d84c4905002a5f39795d265bcdecca74142a8df5206/CacheControl-0.12.10.tar.gz"
+    sha256 "d8aca75b82eec92d84b5d6eb8c8f66ea16f09d2adb09dbca27fe2d5fc8d3732d"
   end
 
   resource "cachy" do
@@ -33,13 +35,13 @@ class Poetry < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/6d/78/f8db8d57f520a54f0b8a438319c342c61c22759d8f9a1cd2e2180b5e5ea9/certifi-2021.5.30.tar.gz"
-    sha256 "2bbf76fd432960138b3ef6dda3dde0544f27cbf8546c458e60baf371917ba9ee"
+    url "https://files.pythonhosted.org/packages/6c/ae/d26450834f0acc9e3d1f74508da6df1551ceab6c2ce0766a593362d6d57f/certifi-2021.10.8.tar.gz"
+    sha256 "78884e7c1d4b00ce3cea67b44566851c4343c120abd683433ce934a68ea58872"
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/e7/4e/2af0238001648ded297fb54ceb425ca26faa15b341b4fac5371d3938666e/charset-normalizer-2.0.4.tar.gz"
-    sha256 "f23667ebe1084be45f6ae0538e4a5a865206544097e4e8bbcacf42cd02a348f3"
+    url "https://files.pythonhosted.org/packages/2f/39/5d8ff929409113e9ff402e405a7c7880ab1fa6f118a4ab72443976a01711/charset-normalizer-2.0.8.tar.gz"
+    sha256 "735e240d9a8506778cd7a453d97e817e536bb1fc29f4f6961ce297b9c7a917b0"
   end
 
   resource "cleo" do
@@ -58,13 +60,13 @@ class Poetry < Formula
   end
 
   resource "distlib" do
-    url "https://files.pythonhosted.org/packages/45/97/15fdbef466e12c890553cebb1d8b1995375202e30e0c83a1e51061556143/distlib-0.3.2.zip"
-    sha256 "106fef6dc37dd8c0e2c0a60d3fca3e77460a48907f335fa28420463a6f799736"
+    url "https://files.pythonhosted.org/packages/56/ed/9c876a62efda9901863e2cc8825a13a7fcbda75b4b498103a4286ab1653b/distlib-0.3.3.zip"
+    sha256 "d982d0751ff6eaaab5e2ec8e691d949ee80eddf01a62eaa96ddb11531fe16b05"
   end
 
   resource "filelock" do
-    url "https://files.pythonhosted.org/packages/14/ec/6ee2168387ce0154632f856d5cc5592328e9cf93127c5c9aeca92c8c16cb/filelock-3.0.12.tar.gz"
-    sha256 "18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59"
+    url "https://files.pythonhosted.org/packages/79/3f/aae4a951dc5bd2738901e053c057f4b317bf12199f09351f63a002442117/filelock-3.4.0.tar.gz"
+    sha256 "93d512b32a23baf4cac44ffd72ccf70732aeff7b8050fcaf6d3ec406d954baf4"
   end
 
   resource "html5lib" do
@@ -73,13 +75,8 @@ class Poetry < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/cb/38/4c4d00ddfa48abe616d7e572e02a04273603db446975ab46bbcd36552005/idna-3.2.tar.gz"
-    sha256 "467fbad99067910785144ce333826c71fb0e63a425657295239737f7ecd125f3"
-  end
-
-  resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/aa/b9/514816064db3028d7370f2ce02e8e8f5d9bc68f6f9a41b04d19176aba70e/importlib_metadata-4.6.4.tar.gz"
-    sha256 "7b30a78db2922d78a6f47fb30683156a14f3c6aa5cc23f77cc8967e9ab2d002f"
+    url "https://files.pythonhosted.org/packages/62/08/e3fc7c8161090f742f504f40b1bccbfc544d4a4e09eb774bf40aafce5436/idna-3.3.tar.gz"
+    sha256 "9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"
   end
 
   resource "keyring" do
@@ -93,8 +90,8 @@ class Poetry < Formula
   end
 
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/59/04/87fc6708659c2ed3b0b6d4954f270b6e931def707b227c4554f99bd5401e/msgpack-1.0.2.tar.gz"
-    sha256 "fae04496f5bc150eefad4e9571d1a76c55d021325dcd484ce45065ebbdd00984"
+    url "https://files.pythonhosted.org/packages/61/3c/2206f39880d38ca7ad8ac1b28d2d5ca81632d163b2d68ef90e46409ca057/msgpack-1.0.3.tar.gz"
+    sha256 "51fdc7fb93615286428ee7758cecc2f374d5ff363bdd884c7ea622a7a327a81e"
   end
 
   resource "packaging" do
@@ -113,18 +110,18 @@ class Poetry < Formula
   end
 
   resource "pkginfo" do
-    url "https://files.pythonhosted.org/packages/23/3f/f2251c754073cda0f00043a707cba7db103654722a9afed965240a0b2b43/pkginfo-1.7.1.tar.gz"
-    sha256 "e7432f81d08adec7297633191bbf0bd47faf13cd8724c3a13250e51d542635bd"
+    url "https://files.pythonhosted.org/packages/53/d9/4e2eb4da1841689cf6ace8bb23fae6ac546b46c71f127ffbd894715b59e4/pkginfo-1.8.1.tar.gz"
+    sha256 "65175ffa2c807220673a41c371573ac9a1ea1b19ffd5eef916278f428319934f"
   end
 
   resource "platformdirs" do
-    url "https://files.pythonhosted.org/packages/58/cb/ee4234464290e3dee893cf37d1adc87c24ade86ff6fc55f04a9bf9f1ec4f/platformdirs-2.2.0.tar.gz"
-    sha256 "632daad3ab546bd8e6af0537d09805cec458dce201bccfe23012df73332e181e"
+    url "https://files.pythonhosted.org/packages/4b/96/d70b9462671fbeaacba4639ff866fb4e9e558580853fc5d6e698d0371ad4/platformdirs-2.4.0.tar.gz"
+    sha256 "367a5e80b3d04d2428ffa76d33f124cf11e8fff2acdaa9b43d545f5c7d661ef2"
   end
 
   resource "poetry-core" do
-    url "https://files.pythonhosted.org/packages/05/a5/87320d85c550bfaed61bd9bdd6c8b7170147995a7513c9defd8df24982fd/poetry-core-1.0.4.tar.gz"
-    sha256 "4b3847ad3e7b5deb88a35b23fa19762b9cef26828770cef3a5b47ffb508119c1"
+    url "https://files.pythonhosted.org/packages/40/d0/adc9ab25f68d9382f32c355627423a32135efaa5aaeebd6dec6d19e6b0af/poetry-core-1.0.7.tar.gz"
+    sha256 "98c11c755a16ef6c5673c22ca94a3802a7df4746a0853a70b6fae8b9f5cac206"
   end
 
   resource "ptyprocess" do
@@ -138,8 +135,8 @@ class Poetry < Formula
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/c1/47/dfc9c342c9842bbe0036c7f763d2d6686bcf5eb1808ba3e170afdb282210/pyparsing-2.4.7.tar.gz"
-    sha256 "c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1"
+    url "https://files.pythonhosted.org/packages/ab/61/1a1613e3dcca483a7aa9d446cb4614e6425eb853b90db131c305bd9674cb/pyparsing-3.0.6.tar.gz"
+    sha256 "d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"
   end
 
   resource "requests" do
@@ -157,29 +154,19 @@ class Poetry < Formula
     sha256 "4855c2458d6904829bd34c299f11fdeed7cfefbf8a2c522e4caea6cd76b3171e"
   end
 
-  resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
-  end
-
   resource "tomlkit" do
     url "https://files.pythonhosted.org/packages/65/ed/7b7216101bc48627b630693b03392f33827901b81d4e1360a76515e3abc4/tomlkit-0.7.2.tar.gz"
     sha256 "d7a454f319a7e9bd2e249f239168729327e4dd2d27b17dc68be264ad1ce36754"
   end
 
-  resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/aa/55/62e2d4934c282a60b4243a950c9dbfa01ae7cac0e8d6c0b5315b87432c81/typing_extensions-3.10.0.0.tar.gz"
-    sha256 "50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"
-  end
-
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/4f/5a/597ef5911cb8919efe4d86206aa8b2658616d676a7088f0825ca08bd7cb8/urllib3-1.26.6.tar.gz"
-    sha256 "f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
+    url "https://files.pythonhosted.org/packages/80/be/3ee43b6c5757cabea19e75b8f46eaf05a2f5144107d7db48c7cf3a864f73/urllib3-1.26.7.tar.gz"
+    sha256 "4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"
   end
 
   resource "virtualenv" do
-    url "https://files.pythonhosted.org/packages/6d/89/9691b0d0521c069bd238585ccb7f4035b8393d843a50491270e7dae0209e/virtualenv-20.7.2.tar.gz"
-    sha256 "9ef4e8ee4710826e98ff3075c9a4739e2cb1040de6a2a8d35db0055840dc96a0"
+    url "https://files.pythonhosted.org/packages/c7/3e/b11275c99dd779e4fc87931f7c82ce93767080249bfa4d7aea7ea748800e/virtualenv-20.10.0.tar.gz"
+    sha256 "576d05b46eace16a9c348085f7d0dc8ef28713a2cabaa1cf0aea41e8f12c9218"
   end
 
   resource "webencodings" do
@@ -187,44 +174,13 @@ class Poetry < Formula
     sha256 "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"
   end
 
-  resource "zipp" do
-    url "https://files.pythonhosted.org/packages/3a/9f/1d4b62cbe8d222539a84089eeab603d8e45ee1f897803a0ae0860400d6e7/zipp-3.5.0.tar.gz"
-    sha256 "f5812b1e007e48cff63449a5e9f4e7ebea716b4111f9c4f9a645f91d579bf0c4"
-  end
-
   def install
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-
-    vendor_site_packages = libexec/"vendor/lib/python#{xy}/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", vendor_site_packages
-    resources.each do |r|
-      r.stage do
-        system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec/"vendor")
-      end
-    end
-
-    site_packages = libexec/"lib/python#{xy}/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", site_packages
-    system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(libexec)
-
-    # We don't hardcode Homebrew Python here on purpose. See
-    # https://github.com/Homebrew/homebrew-core/issues/62910
-    (bin/"poetry").write <<~PYTHON
-      #!/usr/bin/env python3
-      import sys
-
-      sys.path.insert(0, "#{site_packages}")
-      sys.path.insert(0, "#{vendor_site_packages}")
-
-      if __name__ == "__main__":
-          from poetry.console import main
-          main()
-    PYTHON
+    virtualenv_install_with_resources
 
     # Install shell completions
-    (bash_completion/"poetry").write Utils.safe_popen_read("#{libexec}/bin/poetry", "completions", "bash")
-    (fish_completion/"poetry.fish").write Utils.safe_popen_read("#{libexec}/bin/poetry", "completions", "fish")
-    (zsh_completion/"_poetry").write Utils.safe_popen_read("#{libexec}/bin/poetry", "completions", "zsh")
+    (bash_completion/"poetry").write Utils.safe_popen_read(libexec/"bin/poetry", "completions", "bash")
+    (fish_completion/"poetry.fish").write Utils.safe_popen_read(libexec/"bin/poetry", "completions", "fish")
+    (zsh_completion/"_poetry").write Utils.safe_popen_read(libexec/"bin/poetry", "completions", "zsh")
   end
 
   test do

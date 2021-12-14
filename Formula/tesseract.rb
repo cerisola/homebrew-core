@@ -1,10 +1,10 @@
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
-  url "https://github.com/tesseract-ocr/tesseract/archive/4.1.1.tar.gz"
-  sha256 "2a66ff0d8595bff8f04032165e6c936389b1e5727c3ce5a27b3e059d218db1cb"
+  url "https://github.com/tesseract-ocr/tesseract/archive/4.1.3.tar.gz"
+  sha256 "83dc56b544be938983f528c777e4e1d906205b0f6dc0110afc223f2cc1cec6d3"
   license "Apache-2.0"
-  head "https://github.com/tesseract-ocr/tesseract.git"
+  head "https://github.com/tesseract-ocr/tesseract.git", branch: "main"
 
   livecheck do
     url :stable
@@ -12,12 +12,12 @@ class Tesseract < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "038495152035dbed8ed578eab3c98c911d608ff50ac02ceb8f8408c762d01a27"
-    sha256 cellar: :any,                 big_sur:       "6d49823b55a5093041b94bad0fb34e3a06c13d7ec0c677765ee64a88a3608fc0"
-    sha256 cellar: :any,                 catalina:      "81ff467946d9c85151c86819034cd183a983b4a3fa10374c7f039a5ec3ef0d82"
-    sha256 cellar: :any,                 mojave:        "34eee505fccec07eaab30f14c46f9688db9f3aa578306d47bbcd31801b0b849d"
-    sha256 cellar: :any,                 high_sierra:   "6b64585454bcca9b62945b284000723d76afad15b5e80109ca6cdc699ae50e25"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66b1efe4ccce2f26b0a64b293260042fce0f2b0d5fcdf4a5f63c2887ba5bee11"
+    sha256 cellar: :any,                 arm64_monterey: "b4c8d0a135ad213fe5b92913c645ee957fc117453e05b7297cc2156688c5bfa4"
+    sha256 cellar: :any,                 arm64_big_sur:  "7eabb9d6a6cd2a45a76c0c986b718781589310c31c2a374a39ba8e12d457b443"
+    sha256 cellar: :any,                 monterey:       "431a3f7e56b41324490cf53e9b5adf2bd28f250d3b61bb8c12f01c81aa5d4aff"
+    sha256 cellar: :any,                 big_sur:        "1b67091dce98b42c6c561981a01738fe01c19ac69a1dc4de6d8e43fe885177f0"
+    sha256 cellar: :any,                 catalina:       "2ba16f094a3752d79c0d1d2cf47a85ec823caf29568ae184bdc170898f64ae87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad761056605931d1ee29ab29dbebc85b562d518c595808f34cbb9778744aaa32"
   end
 
   depends_on "autoconf" => :build
@@ -43,7 +43,7 @@ class Tesseract < Formula
     sha256 "36f772980ff17c66a767f584a0d80bf2302a1afa585c01a226c1863afcea1392"
   end
 
-  resource "testfile" do
+  resource "test_resource" do
     url "https://raw.githubusercontent.com/tesseract-ocr/test/6dd816cdaf3e76153271daf773e562e24c928bf5/testing/eurotext.tif"
     sha256 "7b9bd14aba7d5e30df686fbb6f71782a97f48f81b32dc201a1b75afe6de747d6"
   end
@@ -78,7 +78,7 @@ class Tesseract < Formula
   end
 
   test do
-    resource("testfile").stage do
+    resource("test_resource").stage do
       system bin/"tesseract", "./eurotext.tif", "./output", "-l", "eng"
       assert_match "The (quick) [brown] {fox} jumps!\n", File.read("output.txt")
     end

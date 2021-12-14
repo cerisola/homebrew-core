@@ -2,17 +2,18 @@ class Gojq < Formula
   desc "Pure Go implementation of jq"
   homepage "https://github.com/itchyny/gojq"
   url "https://github.com/itchyny/gojq.git",
-      tag:      "v0.12.4",
-      revision: "244f9f7c71b2ad0e151f63fc9aaf781f7949e18b"
+      tag:      "v0.12.6",
+      revision: "886515fe1b7e28bf5193778770619dce4787d85c"
   license "MIT"
   head "https://github.com/itchyny/gojq.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "24c07fb252a398a169b1a53471ff741f50fc23b4b00a4a369f3875bba3e45323"
-    sha256 cellar: :any_skip_relocation, big_sur:       "587ab333143477da61713132f77b07c06d63c532082bb4aed1631447d58c9af3"
-    sha256 cellar: :any_skip_relocation, catalina:      "587ab333143477da61713132f77b07c06d63c532082bb4aed1631447d58c9af3"
-    sha256 cellar: :any_skip_relocation, mojave:        "587ab333143477da61713132f77b07c06d63c532082bb4aed1631447d58c9af3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b30bdac0ae58cb8c0a8680f14a1896adc30035abcacbcb330634a31ee5ae90be"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "caf7bede815438e456d70e06320a1978446458eb5d04d7be58774a18819cfb18"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "caf7bede815438e456d70e06320a1978446458eb5d04d7be58774a18819cfb18"
+    sha256 cellar: :any_skip_relocation, monterey:       "b54989ae9bb2edc65694af274051d280cc2b334cd3a1f67f945b2293163d210c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b54989ae9bb2edc65694af274051d280cc2b334cd3a1f67f945b2293163d210c"
+    sha256 cellar: :any_skip_relocation, catalina:       "b54989ae9bb2edc65694af274051d280cc2b334cd3a1f67f945b2293163d210c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b9aa91a2f8dd3cd1e9d7ea0aac5364d2292ff167f75a8dbabba30a54720be09"
   end
 
   depends_on "go" => :build
@@ -23,7 +24,7 @@ class Gojq < Formula
       -s -w
       -X github.com/itchyny/gojq/cli.revision=#{revision}
     ]
-    system "go", "build", "-ldflags", ldflags.join(" "), *std_go_args, "./cmd/gojq"
+    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/gojq"
     zsh_completion.install "_gojq"
   end
 

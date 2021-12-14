@@ -2,15 +2,17 @@ class Ponyc < Formula
   desc "Object-oriented, actor-model, capabilities-secure programming language"
   homepage "https://www.ponylang.org/"
   url "https://github.com/ponylang/ponyc.git",
-      tag:      "0.43.1",
-      revision: "14edd81469d3c4e4af9dc478911601cadf785502"
+      tag:      "0.45.1",
+      revision: "24ed8367791520f8bd68883305ba79ef5ddad589"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "86d30578e51e294be0d6b20e4b145ec138a8234555771e675d7d5ae123d3a431"
-    sha256 cellar: :any_skip_relocation, catalina:     "4c167edc07f753e2a118575d4cc3146949fe907993e26fd30ddf0a3ba3d1a8f7"
-    sha256 cellar: :any_skip_relocation, mojave:       "b4a829497a0e202e44640ec71f96ddea2358f518359c95cfabce33a6a0195fa2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "19f2bbdaace1fe667065141d58e12ad0fb6291325d01c89a20ddfff2c6afbf1d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7d3a26ca61e0fb9fb1cd22f006a98c3773731f677066e254fbf312678ba763f6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a53d2ac94c65485805a31d48217faf1972b612ef59d011cb8c1e8759225347bd"
+    sha256 cellar: :any_skip_relocation, monterey:       "eee4ea3bbe1a994f3df2f9b8846c6b9ebe2a06e931b471fd0d037e456b4f9213"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c240a884c1cd385a565da1d41dab923b52d15f40c425299279535150f999b2e9"
+    sha256 cellar: :any_skip_relocation, catalina:       "02d1fcebb37d7e6985ef849b699da1376c6ff6c0899232620b9d687c65cbf5ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "155bbc527fd280a89cea1353ec95fc24d7d36b9220b0c6832c8ef46ca30fd08a"
   end
 
   depends_on "cmake" => :build
@@ -20,9 +22,7 @@ class Ponyc < Formula
   def install
     ENV.cxx11
 
-    on_linux do
-      inreplace "CMakeLists.txt", "PONY_COMPILER=\"${CMAKE_C_COMPILER}\"", "PONY_COMPILER=\"#{ENV.cc}\""
-    end
+    inreplace "CMakeLists.txt", "PONY_COMPILER=\"${CMAKE_C_COMPILER}\"", "PONY_COMPILER=\"#{ENV.cc}\"" if OS.linux?
 
     ENV["MAKEFLAGS"] = "build_flags=-j#{ENV.make_jobs}"
     system "make", "libs"

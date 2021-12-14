@@ -3,32 +3,33 @@ class Xonsh < Formula
 
   desc "Python-powered, cross-platform, Unix-gazing shell language and command prompt"
   homepage "https://xon.sh/"
-  url "https://files.pythonhosted.org/packages/e8/7d/ca09bfc9882d5d467568f8683252130c9eacf615ab6646f3ad229865a104/xonsh-0.10.1.tar.gz"
-  sha256 "00409804fc38111800dbca40274224e069e4ef5af6020c27ad58f966ca3025e3"
+  url "https://files.pythonhosted.org/packages/12/5c/b6143c3d6a3007450f2126a5188a86d7524122c761bf1652428c3393dfd2/xonsh-0.11.0.tar.gz"
+  sha256 "0d9c3d9a4e8b8199ae697fbc9d1e0ae55085cdbdd4306d04813350996f9c15dc"
   license "BSD-2-Clause-Views"
   head "https://github.com/xonsh/xonsh.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "df4ca8c7e7cdfdb2314a3018d27b3787c8d594ce9f5bad9cf583f14bd9295bd9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b96dcb718e62f228ea031c38b656298c558b49d1abf8e1d4ecabe752ebf4db3c"
-    sha256 cellar: :any_skip_relocation, catalina:      "af9dcd14698845e5337ed0c5f2234f3c1aad78757dbab8b8cc04065663e6859d"
-    sha256 cellar: :any_skip_relocation, mojave:        "e4709834c3eb2329ac36cc3188dd1c4671c12a4106c2f5e55186234c5470c3af"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52e156607d5c1ced17090d426ceff44594c4cffd2a42782b29302363f0a9823e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "06af4f708d6d754355fd8dab959d0833142dc33b229f1421bb0f77ff7b2d5d1b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d685043c048c2862f26257596e1138fce31bc6437eb06af08210a0bbf65785e4"
+    sha256 cellar: :any_skip_relocation, monterey:       "812da8c14878d72f5eaaaef32eb585ca98a8040e4b5cb0f23d0ffce05ec350bb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0e2832390e930c870aa83dfe55a8ba4efaf835d5b533d84bcd4edceefd03ea81"
+    sha256 cellar: :any_skip_relocation, catalina:       "e8e7d350fcfe24c80fe7603851fac5c33fd1d9417bb52153bba7ae88fbd6b3cd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c5af7744fa6a39c0ffeea9db4e61d9f42e3b43a6985b2aaddfa168235964930b"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   # Resources based on `pip3 install xonsh[ptk,pygments,proctitle]`
   # See https://xon.sh/osx.html#dependencies
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/88/4b/2c0f9e2b52297bdeede91c8917c51575b125006da5d0485521fa2b1e0b75/prompt_toolkit-3.0.19.tar.gz"
-    sha256 "08360ee3a3148bdb5163621709ee322ec34fc4375099afa4bbf751e9b7b7fa4f"
+    url "https://files.pythonhosted.org/packages/53/96/b3bff620964869c07252fc2eac4e7e2dd48aea07314d932d21cfd92428da/prompt_toolkit-3.0.22.tar.gz"
+    sha256 "449f333dd120bd01f5d296a8ce1452114ba3a71fae7288d2f0ae2c918764fa72"
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/ba/6e/7a7c13c21d8a4a7f82ccbfe257a045890d4dbf18c023f985f565f97393e3/Pygments-2.9.0.tar.gz"
-    sha256 "a18f47b506a429f6f4b9df81bb02beab9ca21d0a5fee38ed15aef65f0545519f"
+    url "https://files.pythonhosted.org/packages/b7/b3/5cba26637fe43500d4568d0ee7b7362de1fb29c0e158d50b4b69e9a40422/Pygments-2.10.0.tar.gz"
+    sha256 "f398865f7eb6874156579fdf36bc840a03cab64d1cde9e93d68f46a425ec52c6"
   end
 
   resource "pyperclip" do

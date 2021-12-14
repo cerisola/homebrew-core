@@ -1,9 +1,10 @@
 class Alpine < Formula
   desc "News and email agent"
   homepage "https://alpine.x10host.com/alpine/release/"
-  url "https://alpine.x10host.com/alpine/release/src/alpine-2.24.tar.xz"
-  sha256 "651a9ffa0a29e2b646a0a6e0d5a2c8c50f27a07a26a61640b7c783d06d0abcef"
+  url "https://alpine.x10host.com/alpine/release/src/alpine-2.25.tar.xz"
+  sha256 "658a150982f6740bb4128e6dd81188eaa1212ca0bf689b83c2093bb518ecf776"
   license "Apache-2.0"
+  revision 1
   head "https://repo.or.cz/alpine.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,12 @@ class Alpine < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "273db81b08b89a37f782da98e32134526682146c05221bfa230bfbf63220f899"
-    sha256 big_sur:       "bc7e92be45c91c784791a4be2cc2569bed0b686d132f4cdfd0d0233be091643d"
-    sha256 catalina:      "8a856082da848d13cc4019f3bed974e896144b0cf192125285e20a7250a72295"
-    sha256 mojave:        "43533b14f530c72a3f89dbaebf2c4efcd66c8c7fc89349e56d714ff15f2af02e"
-    sha256 high_sierra:   "bed10deca1df682e23ffec4b21af9f837db1dbf011879ab0df579efc81116db1"
-    sha256 x86_64_linux:  "6d153e2a1bf60fda3eae6de5fb9b5a67e3168df9fb4eb1b253f1e6fc01765ab3"
+    sha256 arm64_monterey: "3a621168a6ff0929d1c7b96f90dc615d7b2c660ed2265610909d4d9d2936c4d6"
+    sha256 arm64_big_sur:  "5e75a022adadeb7ee0dd88e659d942b3b7f0bafcad8187f047003bfb890b4f57"
+    sha256 monterey:       "eed2a5fd405f54e9a21d46a47420a958ff39ba766b0dccfa943a1539b91b8161"
+    sha256 big_sur:        "05dacac37d8b60fbc1fa0948616ee1d60217d5f875cd565760c8ab15527bad15"
+    sha256 catalina:       "d25bcb132a6750abd2f584c19b8297b57e4439cb4f72f9b38678c499e3346096"
+    sha256 x86_64_linux:   "e3116ae644715c257f63dc8ce743a0a4b7b79de5375c349db0a9e942b8c1cb5f"
   end
 
   depends_on "openssl@1.1"

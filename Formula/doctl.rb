@@ -1,17 +1,18 @@
 class Doctl < Formula
   desc "Command-line tool for DigitalOcean"
   homepage "https://github.com/digitalocean/doctl"
-  url "https://github.com/digitalocean/doctl/archive/v1.64.0.tar.gz"
-  sha256 "ad3ff9afac67e6065a602bca783da0d86747a66fde24e542e4947f73b794380b"
+  url "https://github.com/digitalocean/doctl/archive/v1.68.0.tar.gz"
+  sha256 "63bf2c754cc6da01eeacf43c139cab3dd04458d16be4047f5a1f238b9e0e5cb9"
   license "Apache-2.0"
   head "https://github.com/digitalocean/doctl.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "018b0dba263e6e35b089a1a0e3223f45122574c6aa848a73c3f288a9ca40d7b4"
-    sha256 cellar: :any_skip_relocation, big_sur:       "12dd6a47099ae90ed410df6fe9b14a53cfa06464121423744cd646a9ef7628e5"
-    sha256 cellar: :any_skip_relocation, catalina:      "835594f4124830d4b4dd1d03f06852f49d91e8ff2419bd6ac08e78035c32954d"
-    sha256 cellar: :any_skip_relocation, mojave:        "4e431077053da6d575e2f09f9e77c73a2a3e66a7ab63ed53ee30dba6983d0210"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a2db9535cd82a899c0824ee75bddfb5845c2a823941320aaa1afafc0d0f5af0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a4030122905cd98a819e91e15996d0cc3077f655061c40bbe9b46ec809c2d836"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "486e01ea4f99c67149a1268f4f4c9d37150152ccd967ac7b6667d94fcd2da302"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f627d402d3f0d8790d43ed31b6fcba7831c4537895432c7d7d0d04a01cda87c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5708fee1340122a6489efc688d94628146ffc16c504c471202f795ac661e05e5"
+    sha256 cellar: :any_skip_relocation, catalina:       "bff41e64b2e8640720e142e6285c8e2b488c676968c90e4d21b8bfa963059e91"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd91fcdc19af6ec4111f6c6e1c53dfb5b362f1cbf47839a41173e5eb92626858"
   end
 
   depends_on "go" => :build
@@ -23,9 +24,9 @@ class Doctl < Formula
       #{base_flag}.Minor=#{version.minor}
       #{base_flag}.Patch=#{version.patch}
       #{base_flag}.Label=release
-    ].join(" ")
+    ]
 
-    system "go", "build", "-ldflags", ldflags, *std_go_args, "github.com/digitalocean/doctl/cmd/doctl"
+    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/doctl"
 
     (bash_completion/"doctl").write `#{bin}/doctl completion bash`
     (zsh_completion/"_doctl").write `#{bin}/doctl completion zsh`

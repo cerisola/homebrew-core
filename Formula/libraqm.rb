@@ -1,38 +1,32 @@
 class Libraqm < Formula
   desc "Library for complex text layout"
   homepage "https://github.com/HOST-Oman/libraqm"
-  url "https://github.com/HOST-Oman/libraqm/archive/v0.7.1.tar.gz"
-  sha256 "3a80118fde37b8c07d35b0d40465e68190bdbd6e984ca6fe5c8192c521bb076d"
+  url "https://github.com/HOST-Oman/libraqm/archive/v0.8.0.tar.gz"
+  sha256 "6429e35f69f5e7d514877624fb73ae6d07a7e9ac746ae6a1cf2bf1277bb5b68d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "9f76c8377e47263458e8e09ed5e616687b25dc51821296dcefe386eb63f4eb05"
-    sha256 cellar: :any,                 big_sur:       "433cfa09f493996f697e288318dddb9f887caaa505e89f54e6258efca30c31c5"
-    sha256 cellar: :any,                 catalina:      "4c45ed51cac6ceb29ea7d7c6c7461b54b5e7f5ecc708e6fbba4396a26489c743"
-    sha256 cellar: :any,                 mojave:        "d104c74c838f567086230184854a18444c570437434a001adc6ada04ce9a68a9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "af27b1207ed36d2a07d90f9cec96cc5c60b3cfd129af48411b134d2b99d12535"
+    sha256 cellar: :any, arm64_monterey: "23048011f5f6d2fa3873cf87782cba708deb09fe1e5c06e21f4e1dbfb3ab498e"
+    sha256 cellar: :any, arm64_big_sur:  "4d741a5af66aa2e094bb55cd2592ffa2e6ac5f38e064e99eeb16faec7a324866"
+    sha256 cellar: :any, monterey:       "df6c8ca6fb30b138e31e998c646aee64673f5083294d96074f3c094818f2a00f"
+    sha256 cellar: :any, big_sur:        "aa6b25d03cd705846e465ff578a6fea2a2cb2249cef9092cdfb08d79c563cf5e"
+    sha256 cellar: :any, catalina:       "a954e77a4271fb93d16dbeb178913d294fc2eb90370d8367a9bf7b21e373be49"
+    sha256               x86_64_linux:   "0d5b7bb663f0c7325333ddf8c70b53f6fb1124f22afaf4bd67bfd2d3afb9b746"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "gtk-doc" => :build
-  depends_on "libtool" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "fribidi"
   depends_on "harfbuzz"
 
   def install
-    ENV["LIBTOOL"] = Formula["libtool"].bin
-    ENV["PKG_CONFIG"] = Formula["pkg-config"].bin/"pkg-config"
-
-    # for the docs
-    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
-
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}", "--enable-gtk-doc"
-    system "make"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja"
+      system "ninja", "install"
+    end
   end
 
   test do

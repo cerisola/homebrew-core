@@ -1,16 +1,17 @@
 class Cobalt < Formula
   desc "Static site generator written in Rust"
   homepage "https://cobalt-org.github.io/"
-  url "https://github.com/cobalt-org/cobalt.rs/archive/v0.16.5.tar.gz"
-  sha256 "2586568420d2d75c0b2c23467e6bdce7fef653f5823c8ef223d0699611efc96e"
+  url "https://github.com/cobalt-org/cobalt.rs/archive/v0.17.5.tar.gz"
+  sha256 "17603490ba4817ec6ab3c486e39ac5863dd8625b58d8f8bfb534c83d7af334ef"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e4d835eab621d0ac1f25654172e15acec1cf8d6c7a175257fcd8f2e2b3c82f90"
-    sha256 cellar: :any_skip_relocation, big_sur:       "5ca1b479a6a57d582035a3012bee0405c41d675c95669fa28de6dd7a3f28cb45"
-    sha256 cellar: :any_skip_relocation, catalina:      "c3f7b8fcf776fe439bbcf1766db0b7da4088a20c05f3864d0f06c8bfd19f1ab1"
-    sha256 cellar: :any_skip_relocation, mojave:        "25ab3e8ef46a1eaf6f7032d68f5930696783bb75add7d0b918b82cfb9fa58535"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "06be19fe98b9bf3d3129a63fbef010fbbcb28c7f43a234904dbe53dd0b5ab2b4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a30f9e2d852af5188fd2ca401d9fedc6e144cfd4396443e090f348d66c6fd046"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fcb27c0f93d84fd91df1880b990170533a8465eb502a456395c4bdb2b234b1cf"
+    sha256 cellar: :any_skip_relocation, monterey:       "0f3cef0a5fd121d1e201e2ea4ee5a1710b3dd74c9050206007813a0ffb86ad8a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4faa2823f4e77bee6fd4eb0c33e812ac70ef146a08cee217ff6bee0187372e2b"
+    sha256 cellar: :any_skip_relocation, catalina:       "b6ec26eb9641e547d6ab8ecd4bc22b75ffb9141b1bad4e14b5e4b8b161241744"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "133bf757f77fd3bbfe47cacd434fd0faed6b1b15b123f60a7aa986fd8f9b5a3b"
   end
 
   depends_on "rust" => :build

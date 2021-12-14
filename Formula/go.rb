@@ -1,23 +1,24 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
-  homepage "https://golang.org"
-  url "https://golang.org/dl/go1.16.6.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.16.6.src.tar.gz"
-  sha256 "a3a5d4bc401b51db065e4f93b523347a4d343ae0c0b08a65c3423b05a138037d"
+  homepage "https://go.dev/"
+  url "https://go.dev/dl/go1.17.5.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.17.5.src.tar.gz"
+  sha256 "3defb9a09bed042403195e872dcbc8c6fae1485963332279668ec52e80a95a2d"
   license "BSD-3-Clause"
-  head "https://go.googlesource.com/go.git"
+  head "https://go.googlesource.com/go.git", branch: "master"
 
   livecheck do
-    url "https://golang.org/dl/"
+    url "https://go.dev/dl/"
     regex(/href=.*?go[._-]?v?(\d+(?:\.\d+)+)[._-]src\.t/i)
   end
 
   bottle do
-    sha256 arm64_big_sur: "af21bd9994caca9ab8279caea54a3aa3385357638c5e57356a6d670e217d4a8a"
-    sha256 big_sur:       "91fded3b19303d0438ae8844c962c996d05c13d6e4d9407564142f9f2d3d8c78"
-    sha256 catalina:      "71e0325bfb484880a680f253ef83e5b4ba2d8321bfd7a7ae8043178b0e5484ec"
-    sha256 mojave:        "707d70b5d6315e4163096f9eae1a8c9509c967da68a4826233c9f1362be48dbf"
-    sha256 x86_64_linux:  "628b09d4f733727a633440710d89bbf359552adad4281643bf9a4d56311133ce"
+    sha256 arm64_monterey: "cd05f3051847e937f7815a680d2d8ff0fe22419d734351cc525b6f02117150a7"
+    sha256 arm64_big_sur:  "7e2046951817ef831fd777cbd0dcafc6ce3062fdf6fae50496cf6805982db8b5"
+    sha256 monterey:       "7f516d52e4d009e7508fb708ed527674ba8ca447b259a4103a97bf78798309a9"
+    sha256 big_sur:        "5eb2d6ef9cd248b4536c7e7c4526ca112fd497a6671df9f4156ab79642204cfc"
+    sha256 catalina:       "e77c18923898c8e141296d754841953138fd44008f93b3be3eb3c31d69e19206"
+    sha256 x86_64_linux:   "8d9bb7712c31258ef4272fd668faf27163976839f35fa6adbae15319b25215b6"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.
@@ -35,9 +36,15 @@ class Go < Formula
     end
 
     on_linux do
-      url "https://storage.googleapis.com/golang/go1.16.linux-amd64.tar.gz"
-      version "1.16"
-      sha256 "013a489ebb3e24ef3d915abe5b94c3286c070dfe0818d5bca8108f1d6e8440d2"
+      if Hardware::CPU.arm?
+        url "https://storage.googleapis.com/golang/go1.16.linux-arm64.tar.gz"
+        version "1.16"
+        sha256 "3770f7eb22d05e25fbee8fb53c2a4e897da043eb83c69b9a14f8d98562cd8098"
+      else
+        url "https://storage.googleapis.com/golang/go1.16.linux-amd64.tar.gz"
+        version "1.16"
+        sha256 "013a489ebb3e24ef3d915abe5b94c3286c070dfe0818d5bca8108f1d6e8440d2"
+      end
     end
   end
 

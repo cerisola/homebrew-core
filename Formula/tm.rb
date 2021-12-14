@@ -1,17 +1,18 @@
 class Tm < Formula
   desc "TriggerMesh CLI to work with knative objects"
   homepage "https://triggermesh.com"
-  url "https://github.com/triggermesh/tm/archive/v1.8.0.tar.gz"
-  sha256 "d81509a6771ecb42a39be8ca740de05ee2758e40759ad3b3ffe87b8ec60442c8"
+  url "https://github.com/triggermesh/tm/archive/v1.12.0.tar.gz"
+  sha256 "33132477d595bab475f4ef7b2d60b971b2e1031f37b262216fdd60f11a9cfcb5"
   license "Apache-2.0"
-  head "https://github.com/triggermesh/tm.git"
+  head "https://github.com/triggermesh/tm.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2c5ccef8f90c04a67b29e27584b8827709d441b04220717a66dfab0a9361e310"
-    sha256 cellar: :any_skip_relocation, big_sur:       "97a35e359354f4a509ce7a050a3f9748b61c4cce6b47d02ac5bbf485e2b7cb8c"
-    sha256 cellar: :any_skip_relocation, catalina:      "51889f38a8d5a166c3e26804f8c53a1279cdd406bdc82a688eacad25fd460d87"
-    sha256 cellar: :any_skip_relocation, mojave:        "0ee5d6783bc66be56ae9d4f2ab1cfda7dc4c46c49904c174a7ef145841087791"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e81140d7724a339041f4b0523b7b652de67fbc5f2acec70263560983fa663ed"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7070f94d34159ce7b01dbb92fc2b60904c0c74181a733844a22024e1b48403de"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3bc5301e8d8a7b69b141d5fd35532cb291581ae9ed0c5527ea616a7d5629a9c6"
+    sha256 cellar: :any_skip_relocation, monterey:       "794efa6b502fe00a1c85ac832c34925f5cb5a2962e872e13d7f1f2e3c42ef134"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b2ebb6f6d1b57643639fd28b955f4ebacd1142366f119696e566b3a233675b54"
+    sha256 cellar: :any_skip_relocation, catalina:       "86ffbc39f432451cdf042994d9912958ddaf11d67b35955bd497681d9a970f19"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee2936f679c2a86b54d5f222179bf88824007fe42278e6bb873c448f32168c49"
   end
 
   depends_on "go" => :build
@@ -20,9 +21,9 @@ class Tm < Formula
     ldflags = %W[
       -s -w
       -X github.com/triggermesh/tm/cmd.version=v#{version}
-    ]
+    ].join(" ")
 
-    system "go", "build", *std_go_args, "-ldflags", ldflags.join(" ")
+    system "go", "build", *std_go_args(ldflags: ldflags)
   end
 
   test do

@@ -3,20 +3,21 @@ class PythonMarkdown < Formula
 
   desc "Python implementation of Markdown"
   homepage "https://python-markdown.github.io"
-  url "https://files.pythonhosted.org/packages/49/02/37bd82ae255bb4dfef97a4b32d95906187b7a7a74970761fca1360c4ba22/Markdown-3.3.4.tar.gz"
-  sha256 "31b5b491868dcc87d6c24b7e3d19a0d730d59d3e46f4eea6430a321bed387a49"
+  url "https://files.pythonhosted.org/packages/15/06/d60f21eda994b044cbd496892d4d4c5c708aa597fcaded7d421513cb219b/Markdown-3.3.6.tar.gz"
+  sha256 "76df8ae32294ec39dcf89340382882dfa12975f87f45c3ed1ecdb1e8cefc7006"
   license "BSD-3-Clause"
-  head "https://github.com/Python-Markdown/markdown.git"
+  head "https://github.com/Python-Markdown/markdown.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "43873534a708de73d549d2c4d0bc5b9bd096f3f1e75ea3e143aa82925ef3e6f2"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b4ef9a4f29b3c51b03907e50b89b0a9ef7f2a87951c624956beba0e1627f4618"
-    sha256 cellar: :any_skip_relocation, catalina:      "689b8240e4c6c352ba8d00bbb736a4e0bfa9854a4ab3b741231df6dc670a172f"
-    sha256 cellar: :any_skip_relocation, mojave:        "aefbd3f47aa88aadf990c0d3ae108da38a89cdbab7cf7bcfd1e81eadbca06340"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b513443497e90f6932d03abce5d7c186a02478ba7700c730798dde2973aa1dd6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a185b719ea180907172dc532619b7d8f537c39b313670caf747ec5cb65b0972e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "206bb9e8d0326b6832ef71e9833aed85427b644aefde375370a03e217c907d23"
+    sha256 cellar: :any_skip_relocation, monterey:       "7b27f2ea884b0a028259baf5d2bb18a3439065b82fc7a1ff7649df9041c9f216"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8693cd64c46b53aad595b4730b47a17cd9ff867e7bab2364aca05c1f83b1dab2"
+    sha256 cellar: :any_skip_relocation, catalina:       "20c03905cf6184166c3b5dc52729712a9fa704ea40f17854aa5431a946c4ed25"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38987a75010f130e12a1130c01a179a39ad849647ae966a6634e8705b1c855ac"
   end
 
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   def install
     virtualenv_install_with_resources

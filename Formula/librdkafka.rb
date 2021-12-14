@@ -1,8 +1,8 @@
 class Librdkafka < Formula
   desc "Apache Kafka C/C++ library"
   homepage "https://github.com/edenhill/librdkafka"
-  url "https://github.com/edenhill/librdkafka/archive/v1.7.0.tar.gz"
-  sha256 "c71b8c5ff419da80c31bb8d3036a408c87ad523e0c7588e7660ee5f3c8973057"
+  url "https://github.com/edenhill/librdkafka/archive/refs/tags/v1.8.2.tar.gz"
+  sha256 "6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6"
   license "BSD-2-Clause"
   head "https://github.com/edenhill/librdkafka.git"
 
@@ -12,15 +12,17 @@ class Librdkafka < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "39f230cfacc4a83227ddd04269a10aec5e3ff8dbe843ddc77615c6163eed9de0"
-    sha256                               big_sur:       "3ec79e37ef21015419739012106ec51199fa50ec71a5843bf97a9bbcd3dd0fc5"
-    sha256                               catalina:      "40a7854b189f58305028f1977497b9f9d979ebb1f941835b31898da3e5b64e08"
-    sha256                               mojave:        "1d640334758e0049452c87e1dbf264dcbe2f951334f5c49e6e0760480ead6379"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e16dd5a3da2f4360890b21c6899cefb1803317345f0ec6fb8cd074f815c426e"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "62d464f0c91804cbc7e243d2947a3684fbe7f984fed62a61911c4e758274b213"
+    sha256 cellar: :any,                 arm64_big_sur:  "f173038bf4ca75233c4d323dd07743d04accce68aa8513284b4ec1465a689589"
+    sha256                               monterey:       "a3852aef4d08f02186ac10d3ac20dbbf5270b1ded8c8a2ceac004bfde3936488"
+    sha256                               big_sur:        "40c00838eb97e3781930de8c4c743319fb126cbfd63195cd3ccc561380835c02"
+    sha256                               catalina:       "00b5f82f5bdc5e71d80355125634e30ec04059fce88dac2b4560259bdabbe990"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e11b1becd5dc7eabf9f453e92cd4a9f71fa0e16ff92a07baa265021f4efebd99"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "lz4"
   depends_on "lzlib"
   depends_on "openssl@1.1"

@@ -1,17 +1,18 @@
 class Okteto < Formula
   desc "Build better apps by developing and testing code directly in Kubernetes"
   homepage "https://okteto.com"
-  url "https://github.com/okteto/okteto/archive/1.13.4.tar.gz"
-  sha256 "99d7be227edb80c20fb4326ecd7cc735d1cfcf8fe6d6f6d61f8b997dc331b582"
+  url "https://github.com/okteto/okteto/archive/1.14.8.tar.gz"
+  sha256 "69473bb9814e4a95d6a63065ef77025e51ef85f6324a75f133c5cb4de1c1a30a"
   license "Apache-2.0"
-  head "https://github.com/okteto/okteto.git"
+  head "https://github.com/okteto/okteto.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "1e7e6947ecb9ef56116466c60bbf956a22bfcdc7bb369db2510eeab0ae051013"
-    sha256 cellar: :any_skip_relocation, big_sur:       "fc329cad94c67f02902e1a4e4c8388f780a390ff27c1ed68015d3a2490568005"
-    sha256 cellar: :any_skip_relocation, catalina:      "e6e5ccfa4f8c9451dfa4f879cd0d1f6370902f203939ec2ca1be0a5b560f725b"
-    sha256 cellar: :any_skip_relocation, mojave:        "2119fb09239705ae39f8e87fd89ef98b03f03e2bebddf9c88c22cc4452e0e841"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0586436c4482c5523e8042948ea948955b7d3390be68a326a0301f567ed415ef"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ff643feb7ff1cfdc761b3afa7687a7a25aece5700e52529f4dec9ded1f6b6e83"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "480144680010a69e6a6a8c04e885892fcf43ca4114052872deb738aa550a3ebd"
+    sha256 cellar: :any_skip_relocation, monterey:       "7cfa1c4a3958f7d07b4750544516cadf993cddec3b4afd67f1b7b55dd668c38a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b6c638a3e7c2314a6acaa693b64859f22fd78d98c7de035eb78f4215f2baba63"
+    sha256 cellar: :any_skip_relocation, catalina:       "3f9e917e1e9c826441b23aae246ef4050f2fdfd274e0277a3d1212a842b4be6d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aceed0cfcd8bbfa64b953141a03072b1071c57c1e047dcb3937ca5b6b1697c67"
   end
 
   depends_on "go" => :build
@@ -25,8 +26,10 @@ class Okteto < Formula
   test do
     assert_match "okteto version #{version}", shell_output("#{bin}/okteto version")
 
-    touch "test.rb"
-    assert_match "Failed to load your local Kubeconfig",
-      shell_output("echo | #{bin}/okteto init --overwrite --file test.yml 2>&1")
+    assert_match "Please run 'okteto context' to select one context",
+      shell_output(bin/"okteto init --context test 2>&1", 1)
+
+    assert_match "No contexts are available.",
+      shell_output(bin/"okteto context list 2>&1", 1)
   end
 end

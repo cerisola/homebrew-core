@@ -1,9 +1,9 @@
 class ApacheArrowGlib < Formula
   desc "GLib bindings for Apache Arrow"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-5.0.0/apache-arrow-5.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-5.0.0/apache-arrow-5.0.0.tar.gz"
-  sha256 "c3b4313eca594c20f761a836719721aaf0760001af896baec3ab64420ff9910a"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-6.0.1/apache-arrow-6.0.1.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-6.0.1/apache-arrow-6.0.1.tar.gz"
+  sha256 "3786b3d2df954d078b3e68f98d2e5aecbaa3fa2accf075d7a3a13c187b9c5294"
   license "Apache-2.0"
   head "https://github.com/apache/arrow.git", branch: "master"
 
@@ -12,11 +12,12 @@ class ApacheArrowGlib < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "37c2b194b6c0648b40a2627dabdf9073ef280bcb85c3633a1b528636b00ef9e7"
-    sha256 cellar: :any, big_sur:       "feb4e5e5d8257e0ab042fe905f999ff425cf219641d64bb98e5b6f4226104436"
-    sha256 cellar: :any, catalina:      "5017136d50cb3b2159370f6c2f2d2824607504e6e7f317b5a7c55a7f02437884"
-    sha256 cellar: :any, mojave:        "40980b2ef3e926109475f08522df24aa409f7d40252738ee7f5d2fd32a8b0bd9"
-    sha256               x86_64_linux:  "00de00e057ffeafdc424efb6fb102fd233e349e589d1954fd347ae7e0f05157d"
+    sha256 cellar: :any, arm64_monterey: "2e57e2a2438b26fb99701f65c577d273d5862b9b6423fdcf306e92b1f128deee"
+    sha256 cellar: :any, arm64_big_sur:  "8c53f4079f63fdc6d499c5755528a4ce3505929d66a313dc6f329c341c402d0d"
+    sha256 cellar: :any, monterey:       "ddc063396bc6f048c60f879b13bb10d12b8ba54e2093e02206e6b246e603fa82"
+    sha256 cellar: :any, big_sur:        "f30c78e9f4ec073ed688663ccbb66f2a388bd075d12c2073a2b1946e712e23a6"
+    sha256 cellar: :any, catalina:       "c4f2d1d02e6da94dce987ca76315df11153e6a88357de0836b361d0c2cc10f5c"
+    sha256               x86_64_linux:   "1c32e471157af08284b5ad0c08f5b3ef9a720d8785c1e7c6022c1a4d44d3abb0"
   end
 
   depends_on "gobject-introspection" => :build
@@ -25,6 +26,12 @@ class ApacheArrowGlib < Formula
   depends_on "pkg-config" => :build
   depends_on "apache-arrow"
   depends_on "glib"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   def install
     mkdir "build" do

@@ -1,8 +1,8 @@
 class Spot < Formula
   desc "Platform for LTL and ω-automata manipulation"
   homepage "https://spot.lrde.epita.fr/"
-  url "https://www.lrde.epita.fr/dload/spot/spot-2.9.8.tar.gz"
-  sha256 "b7f404bb90a335a5914384ecc3fc3a2021ff22c57ee97a40c07bb2ab40e20cf9"
+  url "https://www.lrde.epita.fr/dload/spot/spot-2.10.2.tar.gz"
+  sha256 "c1c4ba4f1c87919b3d2749280c7e9959a7d82a4a43a97a19eca0a3ca22605066"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,14 +11,21 @@ class Spot < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "5dbf5d0dedb42c6b09a17138231dbb85de9af3ac848dd3a61f2aa46ac1e7fbf1"
-    sha256 cellar: :any,                 big_sur:       "398a47ee8ccc65155f9ab9074a1b7a8d1c4823c111de6fe0502e5d87f5e30d90"
-    sha256 cellar: :any,                 catalina:      "6cbe99616b0bde6a2f13f29b9bee34dc8e38a115a854aa9d73ed13e3c3f3e0d8"
-    sha256 cellar: :any,                 mojave:        "d0a079961910d2ed596521f43fbc9e05f881d69ef07ed10ceaa366d6de7d1618"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "24705073b0eafec8b6d70f979ac4fde1d273e7390f5dbacb7c0b1962fb1b9427"
+    sha256 cellar: :any,                 arm64_monterey: "5466087357a3cd15f862ee0548383657dcda00439bc74d7b2401779c2307e271"
+    sha256 cellar: :any,                 arm64_big_sur:  "7ac2ac95c502e721cfface5e2514875cb0029b28d7e253bc8832de3f1dabe126"
+    sha256 cellar: :any,                 monterey:       "74a0288b1ce8613d57bad11f5787bb67c10ac4710714e5965e9004cda2b5b685"
+    sha256 cellar: :any,                 big_sur:        "cec705086835f3d0de204d7ad3c6a42195197a936bc58b451128b73dee94316e"
+    sha256 cellar: :any,                 catalina:       "379351b53d1d4309e6f3af4e97355f570c7a7f6655540ecbad0e623ccd349091"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e04b51c8e9bea74d0371749f7ea50d1d16ac806536f548b0ce1b26eb44e7cea4"
   end
 
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5" # C++17
 
   def install
     system "./configure", *std_configure_args, "--disable-silent-rules"

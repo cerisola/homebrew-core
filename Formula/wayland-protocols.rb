@@ -1,25 +1,31 @@
 class WaylandProtocols < Formula
   desc "Additional Wayland protocols"
   homepage "https://wayland.freedesktop.org"
-  url "https://wayland.freedesktop.org/releases/wayland-protocols-1.21.tar.xz"
-  sha256 "b99945842d8be18817c26ee77dafa157883af89268e15f4a5a1a1ff3ffa4cde5"
+  url "https://wayland.freedesktop.org/releases/wayland-protocols-1.24.tar.xz"
+  sha256 "bff0d8cffeeceb35159d6f4aa6bab18c807b80642c9d50f66cba52ecf7338bc2"
   license "MIT"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "f1744e0eccc76810d17efaf1d05599140667a48731ac8c1409fd4dbbab7232c6"
+  livecheck do
+    url "https://wayland.freedesktop.org/releases.html"
+    regex(/href=.*?wayland-protocols[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "620063d8f8eda5758eac194db2e42604f38d1eb6ac618953bf68cfe6d94d0941"
+  end
+
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "wayland" => :build
   depends_on :linux
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
-                          "--localstatedir=#{var}",
-                          "--disable-silent-rules"
-    system "make"
-    system "make", "install"
+    mkdir "build" do
+      system "meson", *std_meson_args, ".."
+      system "ninja", "-v"
+      system "ninja", "install", "-v"
+    end
   end
 
   test do

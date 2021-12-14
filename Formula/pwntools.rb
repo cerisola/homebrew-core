@@ -3,17 +3,19 @@ class Pwntools < Formula
 
   desc "CTF framework used by Gallopsled in every CTF"
   homepage "https://github.com/Gallopsled/pwntools"
-  url "https://files.pythonhosted.org/packages/87/ea/08f8330ff56040736ed0778264b37d9a5bc7c5c3dc52e005812882d5d791/pwntools-4.6.0.tar.gz"
-  sha256 "1569e613e5e06ed473b60a3fc71376c4ad5bcf56216ea772c25ad0200347030c"
+  url "https://files.pythonhosted.org/packages/db/b8/fe3ea322af7401959b33137e61da32bff45d328e5a495bf35c84748a5a75/pwntools-4.7.0.tar.gz"
+  sha256 "74388e28675e7a1929f763df5a1cec6a3d589641049b6cf476bb1c56ec50a88e"
   license "MIT"
-  head "https://github.com/Gallopsled/pwntools.git"
+  head "https://github.com/Gallopsled/pwntools.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "143657053018415215fad77e716682c0fc114055c338febd31006bebcb2b1fb8"
-    sha256 cellar: :any,                 big_sur:       "e6bc7620c4f2effbbf96b82b894c8a1de9628c9dec20abe8df92547832d6e293"
-    sha256 cellar: :any,                 catalina:      "a5d932617fce6b54e2abacea43f45e783d267612c5299efdf12c35e9ceb2794a"
-    sha256 cellar: :any,                 mojave:        "5c871e9dbf5f1b85ac5ada15472d56b3c49250e629028152ef2b0bfc8319f512"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "992a1cf19ad66059e40d8e2287a8911a0fc1fd4f557f875ee6c1f71c459caf45"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "abf134f61d284e22cd44501aabccfa7baa5c2adf5faa6d3aaa48fb10cba15919"
+    sha256 cellar: :any,                 arm64_big_sur:  "5cc358992d6177a428a43659fc69cbd397bd603659d846239f6024c133b0761a"
+    sha256 cellar: :any,                 monterey:       "74ce5219ab986e793cb3b9dba4f0f0f666fd517218a80f4565f9e750f822813d"
+    sha256 cellar: :any,                 big_sur:        "966c6739490a9387afefa0d47ebcd6aa8c6ccd884c285c4a4f167880bbafe339"
+    sha256 cellar: :any,                 catalina:       "882c6972ea268aff52a7d04f558bd5fbae620deed690097c7cf3955ac591560c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e77978ce54b7e18c9a7eed5e4eb099203a3f0f5caa62fcf572a9353c0cd22fe"
   end
 
   depends_on "rust" => :build

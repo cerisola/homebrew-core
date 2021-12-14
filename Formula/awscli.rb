@@ -3,36 +3,18 @@ class Awscli < Formula
 
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
+  url "https://github.com/aws/aws-cli/archive/2.4.6.tar.gz"
+  sha256 "20aed6f4eb0ae0a57fe8949c60d2c189af6459fc5b551dd15ca2abe675aca63e"
   license "Apache-2.0"
-
-  stable do
-    url "https://github.com/aws/aws-cli/archive/2.2.31.tar.gz"
-    sha256 "620b072289706e6af0af598f0e237df820b0593a0620a121b1220fa5f7c48e72"
-
-    # Botocore v2 is not available on PyPI and version commits are not tagged. One way to update:
-    # 1. Get `botocore` version at https://github.com/aws/aws-cli/blob/#{version}/setup.py
-    # 2. Get commit matching version at https://github.com/boto/botocore/commits/v2
-    resource "botocore" do
-      url "https://github.com/boto/botocore/archive/4ff5fcab9a3482ed9e2c3a39eec908bad460de5f.tar.gz"
-      sha256 "d133745f468efafc4b33b416cb6c6a1a597a743541810bb46471aa92ad7168bc"
-      version "2.0.0dev139"
-    end
-  end
+  head "https://github.com/aws/aws-cli.git", branch: "v2"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "206c2f0b0a6df8fac2f131409becb86296b34a2507f736cfd1892805a3a58be5"
-    sha256 cellar: :any,                 big_sur:       "0ac140fd090e1fca564849447ad33bd007cf861ac647aeed2f5e5805392c82f7"
-    sha256 cellar: :any,                 catalina:      "e02a5f50d7eac2bf918462525187367c31229cb92a23d2bffdbd24ff2b20003b"
-    sha256 cellar: :any,                 mojave:        "b622267e3843ff11db1027bffc5e5c5a2d13b2d4af03c4d831f8405fc1265804"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b74e6fc67944d391aef65290b6f9051882dd96385f84892b027ba4a8ab040932"
-  end
-
-  head do
-    url "https://github.com/aws/aws-cli.git", branch: "v2"
-
-    resource "botocore" do
-      url "https://github.com/boto/botocore.git", branch: "v2"
-    end
+    sha256 cellar: :any,                 arm64_monterey: "35020b96d1bda67f8ca0c2e3ff967b33f8a0dd751a377a0358a3d10443878a91"
+    sha256 cellar: :any,                 arm64_big_sur:  "8768ef5838e07545cae6c41951872854b2f2df03d049c89af96069b5b76b34f1"
+    sha256 cellar: :any,                 monterey:       "f72b96b744f63f5dcab657688cc2c651e17bdf5179141dc09c4095b3549dbf93"
+    sha256 cellar: :any,                 big_sur:        "c65e0cb220fb7d5b787a0f08154edb3b1a1056f6e8ccfdd4c1f3ea4032a805c7"
+    sha256 cellar: :any,                 catalina:       "91d6b462c066a0ca38250d10edd132147347b1a252b8d9d05cf0dc39a5c7751a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca4c4904dabe8257572c2a3dfe20469279cae2d49afd4624d9db79d3f2869ccd"
   end
 
   depends_on "cmake" => :build
@@ -41,20 +23,19 @@ class Awscli < Formula
 
   uses_from_macos "groff"
 
-  # Python resources should be updated based on setup.py. One possible way is:
+  # Python resources should be updated based on setup.cfg. One possible way is:
   # 1. Download source tarball
-  # 2. Remove `botocore` from setup.py
-  # 3. At top of source directory, run `pipgrip . --sort`
-  # 4. Ignore old `botocore` v1 and `six`. Update all other PyPI packages
+  # 2. At top of source directory, run `pipgrip . --sort`
+  # 3. Ignore `six`. Update all other PyPI packages
 
   resource "awscrt" do
-    url "https://files.pythonhosted.org/packages/9f/e2/5a0b096fb73f2b33ad2cc7392d33d365d3b78b295b21dda5792dd481b38f/awscrt-0.11.24.tar.gz"
-    sha256 "b8aa68bca404bf0085be0570eff5b542d01f7e8e3c0f9b0859abfe5e070162ff"
+    url "https://files.pythonhosted.org/packages/e3/62/aaf36ad07eb01e36d6a0b5bfe2782ab1b2577e59421b351063e5b2c0a77f/awscrt-0.12.4.tar.gz"
+    sha256 "6ad69336bc5277f501bd7e33f82e11db2665370c7d279496ee39fe2f369baeb2"
   end
 
   resource "cffi" do
-    url "https://files.pythonhosted.org/packages/2e/92/87bb61538d7e60da8a7ec247dc048f7671afe17016cd0008b3b710012804/cffi-1.14.6.tar.gz"
-    sha256 "c9a875ce9d7fe32887784274dd533c57909b7b1dcadcc128a2ac21331a9765dd"
+    url "https://files.pythonhosted.org/packages/00/9e/92de7e1217ccc3d5f352ba21e52398372525765b2e0c4530e6eb2ba9282a/cffi-1.15.0.tar.gz"
+    sha256 "920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954"
   end
 
   resource "colorama" do
@@ -88,8 +69,8 @@ class Awscli < Formula
   end
 
   resource "pycparser" do
-    url "https://files.pythonhosted.org/packages/0f/86/e19659527668d70be91d0369aeaa055b4eb396b0f387a4f92293a20035bd/pycparser-2.20.tar.gz"
-    sha256 "2d475327684562c3a96cc71adf7dc8c4f0565175cf86b6d7a404ff4c771f15f0"
+    url "https://files.pythonhosted.org/packages/5e/0b/95d387f5f4433cb0f53ff7ad859bd2c6051051cebbb564f139a999ab46de/pycparser-2.21.tar.gz"
+    sha256 "e644fdec12f7872f86c58ff790da456218b10f863970249516d60a5eaca77206"
   end
 
   resource "python-dateutil" do
@@ -102,14 +83,9 @@ class Awscli < Formula
     sha256 "8e42f3067a59e819935a2926e247170ed93c8f0b2ab64526f888e026854db2e4"
   end
 
-  resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/27/90/f467e516a845cf378d85f0a51913c642e31e2570eb64b352c4dc4c6cbfc7/s3transfer-0.4.2.tar.gz"
-    sha256 "cb022f4b16551edebbb31a377d3f09600dbada7363d8c5db7976e7f47732e1b2"
-  end
-
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/4f/5a/597ef5911cb8919efe4d86206aa8b2658616d676a7088f0825ca08bd7cb8/urllib3-1.26.6.tar.gz"
-    sha256 "f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"
+    url "https://files.pythonhosted.org/packages/80/be/3ee43b6c5757cabea19e75b8f46eaf05a2f5144107d7db48c7cf3a864f73/urllib3-1.26.7.tar.gz"
+    sha256 "4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"
   end
 
   resource "wcwidth" do
@@ -123,14 +99,15 @@ class Awscli < Formula
     # This causes installation to fail while running `scripts/gen-ac-index` with error:
     # ImportError: _awscrt.cpython-39-x86_64-linux-gnu.so: undefined symbol: EVP_CIPHER_CTX_init
     # As workaround, add relative path to local libcrypto.a before openssl's so it gets picked.
-    on_linux do
+    if OS.linux?
       ENV.prepend "CFLAGS", "-I./build/deps/install/include"
       ENV.prepend "LDFLAGS", "-L./build/deps/install/lib"
     end
+
     virtualenv_install_with_resources
     pkgshare.install "awscli/examples"
 
-    rm Dir["#{bin}/{aws.cmd,aws_bash_completer,aws_zsh_completer.sh}"]
+    rm Dir[bin/"{aws.cmd,aws_bash_completer,aws_zsh_completer.sh}"]
     bash_completion.install "bin/aws_bash_completer"
     zsh_completion.install "bin/aws_zsh_completer.sh"
     (zsh_completion/"_aws").write <<~EOS
@@ -141,8 +118,6 @@ class Awscli < Formula
         if [[ -f $e ]]; then source $e; fi
       }
     EOS
-
-    system libexec/"bin/python3", "scripts/gen-ac-index", "--include-builtin-index"
   end
 
   def caveats
@@ -154,7 +129,7 @@ class Awscli < Formula
 
   test do
     assert_match "topics", shell_output("#{bin}/aws help")
-    assert_includes Dir["#{libexec}/lib/python3.9/site-packages/awscli/data/*"],
+    assert_includes Dir[libexec/"lib/python3.9/site-packages/awscli/data/*"],
                     "#{libexec}/lib/python3.9/site-packages/awscli/data/ac.index"
   end
 end

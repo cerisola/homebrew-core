@@ -3,12 +3,13 @@ class Gitg < Formula
   homepage "https://wiki.gnome.org/Apps/Gitg"
   url "https://download.gnome.org/sources/gitg/3.32/gitg-3.32.1.tar.xz"
   sha256 "24a4aabf8a42aa2e783e1fb5996ebb3c2a82a01b9689269f1329517ef124ef5a"
-  revision 6
+  revision 7
 
   bottle do
-    sha256 big_sur:  "b2451ec4e4ef9126af4cb262d58d03beda0a06fcad12c9200f206af46b277bd2"
-    sha256 catalina: "6f9af292508a1a80622bc544f2aa182a46b63345ed8c9dc89e3034a9e2a2178d"
-    sha256 mojave:   "c771ecd10a224156e0810d46d3834421c548a75080d6d239d30b714875a21065"
+    rebuild 1
+    sha256 arm64_big_sur: "2ded594592e0592f7dfc47f3591e653dd7f6e1855baae68e13de5d88675e1fda"
+    sha256 big_sur:       "15678226c2eb5d7cd620185f0855df633dd68479defee7bb9173b24446adfdd0"
+    sha256 catalina:      "e3b41287764238e5cee518835288ca288ad0b048407b5678a9641a2fab9a34b2"
   end
 
   depends_on "intltool" => :build
@@ -28,7 +29,7 @@ class Gitg < Formula
   depends_on "libgit2-glib"
   depends_on "libpeas"
   depends_on "libsecret"
-  depends_on "libsoup"
+  depends_on "libsoup@2"
 
   # Fix libgitg compile on macOS from https://gitlab.gnome.org/GNOME/gitg/-/merge_requests/142
   # Remove for next version
@@ -80,7 +81,7 @@ class Gitg < Formula
     libgit2 = Formula["libgit2"]
     libgit2_glib = Formula["libgit2-glib"]
     libpng = Formula["libpng"]
-    libsoup = Formula["libsoup"]
+    libsoup = Formula["libsoup@2"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
     flags = %W[

@@ -1,24 +1,25 @@
 class Elvish < Formula
   desc "Friendly and expressive shell"
   homepage "https://github.com/elves/elvish"
-  url "https://github.com/elves/elvish/archive/v0.15.0.tar.gz"
-  sha256 "761739307c68fcbc51fd46c052c0a20ae848a30dba1ce3fbb6d27f99672f58e0"
+  url "https://github.com/elves/elvish/archive/v0.17.0.tar.gz"
+  sha256 "0e255849723129d8c4dc24f67656e651b4e4b7566bc16009109ba76099681fa1"
   license "BSD-2-Clause"
-  head "https://github.com/elves/elvish.git"
+  head "https://github.com/elves/elvish.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "79c48f95ff206c058f77401f776ca9696d68528eab1e1df26023eeab986646f5"
-    sha256 cellar: :any_skip_relocation, big_sur:       "4f94ee1690a4e64a5d8d6e3bac2494f8a1936ca9d9e3dece173ffc1e870e9a19"
-    sha256 cellar: :any_skip_relocation, catalina:      "5699b736a32e20ce52ad1ec440af26cb409be9bcb09512d82939d3ae743a51f1"
-    sha256 cellar: :any_skip_relocation, mojave:        "f39264950f60b3c7aeac77f179818d111ceebaea86f1e07cf914ff035d524d17"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "06e8b256ecc5a841eea28db7a7e76acb5c66d83af4473bdff931cf507c8b60f3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "33e1bd7c5b826d749e9d9c5230061a750e99c1412a0eccd240526442d161de96"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "beb963831ef475de4031c539af501109a1d3feb4da3354abd2ade85ffc50ba79"
+    sha256 cellar: :any_skip_relocation, monterey:       "322407431bcee76924ecee9f066d6aa15e6f474b73cf85263cd90e708087394c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "27500b6c67ee49bc28c2c52c46cd52a8e50f37f13f7a323057d22fbbc6522dd7"
+    sha256 cellar: :any_skip_relocation, catalina:       "e388fef325ccae706bd8d1e5807bd90ea60d3067bd386f1343f9f59e6e8afc16"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "908e3198e823605e9704f43db9a34e201f6ca7481f2adf0f5b78abd63777d50e"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-ldflags",
-           "-X github.com/elves/elvish/pkg/buildinfo.Version=#{version}"
+    system "go", "build",
+      *std_go_args(ldflags: "-s -w -X src.elv.sh/pkg/buildinfo.VersionSuffix="), "./cmd/elvish"
   end
 
   test do

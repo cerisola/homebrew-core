@@ -1,16 +1,17 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.13.1/deno_src.tar.gz"
-  sha256 "d35d2e09106aa3ce8afde6f5be7663eb775f073a2494bf0e37526e6377b04d3b"
+  url "https://github.com/denoland/deno/releases/download/v1.16.4/deno_src.tar.gz"
+  sha256 "f2f64009ea18e6b9b541f2b62a01e9b06e2a672ff652887e6c0087ffceb3a61e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "767d084741d236dd2ead5b98c9eeb5ea6a7c5b3e678098735e1861e6ac168a4b"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1a87f331f79ae3242b1e8aa6c63cec6d2d50fd9fff011bbc1dc0af1bcfdb2b70"
-    sha256 cellar: :any_skip_relocation, catalina:      "8e151a51fd116096a27ae27050823c89556d1f67d9aea5e8c5b8718ad0217973"
-    sha256 cellar: :any_skip_relocation, mojave:        "913dd4b70f2852e82add752b412342b3bc9fd3d86151d11f9be7c7e4affb6fe1"
-    sha256                               x86_64_linux:  "6dd1299cd145eaaccf931df057425281f6f9582a97c15e35d53f205a9053d00d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7856a8a88cad481a301d07934e21e393fd505297c2fa29a5fa0bb7a944a123e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0925c538e4086c842d64339acbcac9bec6e4a34beea8e42531b8ef4dcfeac004"
+    sha256 cellar: :any_skip_relocation, monterey:       "aa2c9ae1c81253129874c98171e35aa011c4186691fec4b13ac1a1f24c7a4a8f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "dc5f158c6f08f6fcb7c234ffee8ae139542a0909190af94f7ce0085dc42b4eff"
+    sha256 cellar: :any_skip_relocation, catalina:       "b84ec93bb80bfacc1195df310ac5c3779050e9e3aa937bffa49e7819a0fa004f"
+    sha256                               x86_64_linux:   "440fb57e4d83f802ad67d15848879ab038e16e4cd157f50d461784ffc342de41"
   end
 
   depends_on "llvm" => :build
@@ -26,6 +27,7 @@ class Deno < Formula
 
   on_linux do
     depends_on "pkg-config" => :build
+    depends_on "gcc"
     depends_on "glib"
   end
 
@@ -42,9 +44,9 @@ class Deno < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac? && (MacOS.version < :mojave)
       # Overwrite Chromium minimum SDK version of 10.15
-      ENV["FORCE_MAC_SDK_MIN"] = MacOS.version if MacOS.version < :mojave
+      ENV["FORCE_MAC_SDK_MIN"] = MacOS.version
     end
 
     # env args for building a release build with our python3, ninja and gn

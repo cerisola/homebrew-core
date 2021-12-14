@@ -2,29 +2,28 @@ class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
   url "https://github.com/duckdb/duckdb.git",
-      tag:      "v0.2.8",
-      revision: "a8fd73b37bfc249b76b2aaa488d52dfdb39bb3d9"
+      tag:      "v0.3.1",
+      revision: "88aa81c6b1b851c538145e6431ea766a6e0ef435"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "0d7a874d4ef6c80616b6495dcd8cfd89ae092c9e5dae7ec677a4bca2a184de20"
-    sha256 cellar: :any,                 big_sur:       "614f4b26481b51f9aa98c185eeca064f6df58610b6a6187c6603098de047fd34"
-    sha256 cellar: :any,                 catalina:      "22786e74a4bf3212375b066d18cfa3fc507dd6699e86f7dc46a0eef102dd7c7d"
-    sha256 cellar: :any,                 mojave:        "263f3d4b4815b8db217f4e17787d5304c73e742dbae51cbfd2a02b1d0ac90b36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5fa7cf67a5d8884b153f9d9520770eb767453d6c0ba0b4fa2089521b74df4456"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "c07a6abae9638a85c29ae922971822e38f701d534b45891d6f30b9245d0a596e"
+    sha256 cellar: :any,                 arm64_big_sur:  "661c449ddd0a85274cc67ee13e3f879bfcabe230eeda89eecf7efe872b2a7a61"
+    sha256 cellar: :any,                 monterey:       "7aa321e06da4a0da135725d1ae7abf488355e8da4fbc5aacd644e25947329acf"
+    sha256 cellar: :any,                 big_sur:        "eeb0655de2512da9dc757c0b1db4dfe8d9a01318a57edb78b1a1dbf3ee7d7d23"
+    sha256 cellar: :any,                 catalina:       "e1b1b561d7b1e90b19d97ec92540d62569534b710ef78910513703ec4feb8261"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b995635848717ace446342a51e8c2d6d25140ad282ac9fd5a5f56abce68011e8"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "utf8proc"
 
   def install
-    on_linux do
-      ENV.deparallelize # amalgamation builds take GBs of RAM
-    end
+    ENV.deparallelize if OS.linux? # amalgamation builds take GBs of RAM
     mkdir "build/amalgamation"
-    system Formula["python@3.9"].opt_bin/"python3", "scripts/amalgamation.py", "--extended"
+    system Formula["python@3.10"].opt_bin/"python3", "scripts/amalgamation.py", "--extended"
     cd "build/amalgamation" do
       system "cmake", "../..", *std_cmake_args, "-DAMALGAMATION_BUILD=ON"
       system "make"

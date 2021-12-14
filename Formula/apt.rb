@@ -1,8 +1,8 @@
 class Apt < Formula
   desc "Advanced Package Tool"
-  homepage "https://wiki.debian.org/apt"
-  url "https://deb.debian.org/debian/pool/main/a/apt/apt_2.3.8.tar.xz"
-  sha256 "485af1430c75e3158b715e4424dbf96d1b5641dc4dccc50f571b2c779a837f2c"
+  homepage "https://wiki.debian.org/Apt"
+  url "https://deb.debian.org/debian/pool/main/a/apt/apt_2.3.13.tar.xz"
+  sha256 "e519e55f1015d656425e68f8c7c7bebd1908df3ac87836eb6e7b6b58ce3f965d"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,7 +11,7 @@ class Apt < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "71d8ed0117cde50f392d2765de490afadd5d8eb9c34d5b04b4268046f02c242a"
+    sha256 x86_64_linux: "544eb0e792fa64a71f43f0698b6fef688c2c07733705ce3fad923a56bab1be3f"
   end
 
   depends_on "cmake" => :build

@@ -1,15 +1,17 @@
 class Latexindent < Formula
   desc "Add indentation to LaTeX files"
   homepage "https://ctan.org/pkg/latexindent"
-  url "https://github.com/cmhughes/latexindent.pl/archive/V3.11.tar.gz"
-  sha256 "83caf8dcf3f0ab343aa21ce364984ecb265312dc9c2a0502d24e576a3a4259dd"
+  url "https://github.com/cmhughes/latexindent.pl/archive/V3.13.3.tar.gz"
+  sha256 "cc6df51754f2bed022eaaecb00576162c9a1127c6ca7beb67218ac9278aff132"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fd9c120b2a11689cf0a59f0e47915263f5c66287547b8da883fc91060e4d69b9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "25c832684409866a5035e68d5151b953cc9670693353cd78c9e046b97f81e92a"
-    sha256 cellar: :any_skip_relocation, catalina:      "19de50e1dbcd487c918746707fdeedd26f37f926858978049d9f9586697f35c3"
-    sha256 cellar: :any_skip_relocation, mojave:        "b505eb430cbea0e8ea0a724736e03e62f2fe5797c633d55b34b3f6453b777597"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e69478a9f7207d543ae575e68089260e4b8ef97ed674a30c6fdee18d4da2c2cf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "36d1bb44237cefec5ac2f9c33bf6590ebab86e2c53ecca4984d00a787f59d40a"
+    sha256 cellar: :any_skip_relocation, monterey:       "bf6634d153575ac61c775e7f250225e5137fcaec7cff4e6c663ceac1adae4e1d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ac1be530e2ebf11c34c17a2066b19662198bab28211da3aae2490b5981bf4384"
+    sha256 cellar: :any_skip_relocation, catalina:       "b763d9ba1b392ac2b47624a1a38ea6fd1f9c93c2fbc4a959d856a647b8623717"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9df67d4ef01f4377bcab8b468d80fbb71bdf2e75867a9e88e4af3aaea11c9f41"
   end
 
   depends_on "perl"
@@ -22,13 +24,13 @@ class Latexindent < Formula
   end
 
   resource "B::Hooks::EndOfScope" do
-    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.24.tar.gz"
-    sha256 "03aa3dfe5d0aa6471a96f43fe8318179d19794d4a640708f0288f9216ec7acc6"
+    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/B-Hooks-EndOfScope-0.25.tar.gz"
+    sha256 "da1b6a9f7c7424776363182f9673e666b06136f13dc744241f7adce3d1ad0c1a"
   end
 
   resource "Class::Data::Inheritable" do
-    url "https://cpan.metacpan.org/authors/id/T/TM/TMTM/Class-Data-Inheritable-0.08.tar.gz"
-    sha256 "9967feceea15227e442ec818723163eb6d73b8947e31f16ab806f6e2391af14a"
+    url "https://cpan.metacpan.org/authors/id/R/RS/RSHERER/Class-Data-Inheritable-0.09.tar.gz"
+    sha256 "44088d6e90712e187b8a5b050ca5b1c70efe2baa32ae123e9bd8f59f29f06e4d"
   end
 
   resource "Devel::GlobalDestruction" do
@@ -147,8 +149,8 @@ class Latexindent < Formula
   end
 
   resource "Try::Tiny" do
-    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.30.tar.gz"
-    sha256 "da5bd0d5c903519bbf10bb9ba0cb7bcac0563882bcfe4503aee3fb143eddef6b"
+    url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.31.tar.gz"
+    sha256 "3300d31d8a4075b26d8f46ce864a1d913e0e8467ceeba6655d5d2b2e206c11be"
   end
 
   resource "Unicode::LineBreak" do

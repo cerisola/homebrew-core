@@ -1,10 +1,9 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "https://www.lighttpd.net/"
-  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.59.tar.xz"
-  sha256 "fb953db273daef08edb6e202556cae8a3d07eed6081c96bd9903db957d1084d5"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.63.tar.xz"
+  sha256 "2aef7f0102ebf54a1241a1c3ea8976892f8684bfb21697c9fffb8de0e2d6eab9"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url "https://download.lighttpd.net/lighttpd/releases-1.4.x/"
@@ -12,11 +11,12 @@ class Lighttpd < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "90126bdf4f218c93f4e798d2bf1fae4b0df1cc9c5a72f12f64ad30196447f2ba"
-    sha256 big_sur:       "d76f607afaac9310f3a40d72e88b852b7ca58a587e6cb53c741f65c542398e1e"
-    sha256 catalina:      "411c12216cef3a44baef0cd0cea7442a036def56085ec8cce38fc5152ee4cd5d"
-    sha256 mojave:        "6b828d77deca242fb203b73e64ee419b9f8d490a6448d04142933fec985964e3"
-    sha256 x86_64_linux:  "e36f634ea317d26b3ab77a056e45d9f0ef5aaa8a88cb7d5b7738ed9392d6408e"
+    sha256 arm64_monterey: "ac2231f844afae0a9f19eec7fe218cc2464ad872d52ba26cfcd11335501ce0a7"
+    sha256 arm64_big_sur:  "8c428e23989126dcaf38dc6cc1ffe10c9a6099cce0ca93d011de61d43ed04928"
+    sha256 monterey:       "80ba67158d72a6517df08a4a8c9f88108e05d014fffe2acc3524a02b405fb3b0"
+    sha256 big_sur:        "1deefed2b413575a107a8aa28597221197945a2707d0fa00d243c7b8cfb23e31"
+    sha256 catalina:       "ad0bd2601b5fe42ef3cca5af694c03fc4df9f2fea76b54dbaf72f64254ba9062"
+    sha256 x86_64_linux:   "3909172c937696725005c3d8ce36df9c7715c4f925564a137d57a33b0b9b5ab5"
   end
 
   depends_on "autoconf" => :build
@@ -83,11 +83,11 @@ class Lighttpd < Formula
 
         s.sub!(/^server\.username\s*=\s*".+"$/, 'server.username  = "_www"')
         s.sub!(/^server\.groupname\s*=\s*".+"$/, 'server.groupname = "_www"')
-        s.sub!(/^server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
+        s.sub!(/^#server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
 
         # "max-connections == max-fds/2",
         # https://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
-        s.sub!(/^server\.max-connections = .+$/, "server.max-connections = " + (MAX_FDS / 2).to_s)
+        s.sub!(/^#server\.max-connections = .+$/, "server.max-connections = " + (MAX_FDS / 2).to_s)
       end
     end
 

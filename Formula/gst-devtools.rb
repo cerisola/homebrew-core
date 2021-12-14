@@ -3,9 +3,10 @@ class GstDevtools < Formula
 
   desc "GStreamer development and validation tools"
   homepage "https://gstreamer.freedesktop.org/modules/gstreamer.html"
-  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.18.4.tar.xz"
-  sha256 "ffbd194c40912cb5e7fca2863648bf9dd8257b7af97d3a60c4fcd4efd8526ccf"
+  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.18.5.tar.xz"
+  sha256 "fecffc86447daf5c2a06843c757a991d745caa2069446a0d746e99b13f7cb079"
   license "LGPL-2.1-or-later"
+  revision 1
   head "https://gitlab.freedesktop.org/gstreamer/gst-devtools.git"
 
   livecheck do
@@ -14,10 +15,12 @@ class GstDevtools < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "8eb42ba8a37c3148ddb08bac4f6da532079cfd2b48f7a60fee705ba553eaa533"
-    sha256 big_sur:       "c9112da83d65e0993e5b5ce4a87ae72e85093c57ad21c7b99e52a69cc36a8b1a"
-    sha256 catalina:      "b01a80a014c19658e7a3d8b3a8f54db3f98bec9314ba887690b632a28b492fbb"
-    sha256 mojave:        "4537802ab817fc7b4c74f9968363bec97aafdabc8439935fc905dc46dd473a60"
+    sha256 arm64_monterey: "dbfdd09bb918e3fbe4df2c93141a7543e8ad71523bddf244c7e02aa9f86fb32e"
+    sha256 arm64_big_sur:  "c14e530f942070ab7693c4e0580736e8dadae3112c1e2beddf396cf852cdddc6"
+    sha256 monterey:       "251eba4493f8165ea9f389806951517194a603597a48d58a206582e52bab4183"
+    sha256 big_sur:        "3645c1d620984983e11d4e4f35ad94ad4dd113a8c011e6c27b925116270a2866"
+    sha256 catalina:       "0ecb1a377906fd2eb1595dd755b72b21d475d5ab2861a25925b61f5939e9eeaa"
+    sha256 x86_64_linux:   "6d5f9c2e9d45ab4276161c07571cd7a6f3fe01610592632a07a75d7e9cbdcc6e"
   end
 
   depends_on "gobject-introspection" => :build

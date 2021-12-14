@@ -1,8 +1,8 @@
 class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
-  url "https://github.com/hashicorp/consul/archive/refs/tags/v1.10.1.tar.gz"
-  sha256 "c840ba7b52df3ec6105a7febe900e52dde504a33bd1fa4e2e1985a88b6072d41"
+  url "https://github.com/hashicorp/consul/archive/refs/tags/v1.10.5.tar.gz"
+  sha256 "a8ce6c406be07e5d6fe6caace67b19a9567b8b3cc95220348d530baf8af5ef62"
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Consul < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "bfa296b80c62e1b65e08a35377006fa13f7e08d3c4bf08927bf17415d5f76e76"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0ad0aaae9a9383437df77a9914fd55936d33c98f40f85868c190741fb8446f1b"
-    sha256 cellar: :any_skip_relocation, catalina:      "ffb5d14e56cc6474ef68014d060eaffb107dc32cae89c2dbbfa5a1a8e4ecd4e4"
-    sha256 cellar: :any_skip_relocation, mojave:        "cf0ebdbd3b73ef08e238da3d077553834a5503066022be851e900c793b8fc7f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c1cfb622303c035d5d4eff8aefd59003c466fcb090aec0c3859bceb45952008e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "337bf587b80d52344f7a54f362feea72a6abf10272bf31f79992e26899e04f67"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "44769eae47120a01c8ddc6fed6c9065579b0c51a1f50dcad8c300cdb1254e7cf"
+    sha256 cellar: :any_skip_relocation, monterey:       "e60900604b909a2a3ce2f7d1e7131eda6e1744a9b5792d677072fb9661d39641"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b1155021f4b267a8827dea43fa7a7253cf00fd788d94ff2375224eb8bb540eb0"
+    sha256 cellar: :any_skip_relocation, catalina:       "8d9ab8e9042b692cc6796f0437c7bb8cf905803599a973812075469bc500e22c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47a344262080c9ada94cf0ea5726fc808a68bb4ddabbeeb96326f0414347edfb"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class Haproxy < Formula
   desc "Reliable, high performance TCP/HTTP load balancer"
   homepage "https://www.haproxy.org/"
-  url "https://www.haproxy.org/download/2.4/src/haproxy-2.4.3.tar.gz"
-  sha256 "ce479380be5464faa881dcd829618931b60130ffeb01c88bc2bf95e230046405"
+  url "https://www.haproxy.org/download/2.5/src/haproxy-2.5.0.tar.gz"
+  sha256 "16a5ed6256ca3670e41b76366a892b08485643204a3ce72b6e7a2d9a313aa225"
   license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -11,11 +11,12 @@ class Haproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "403746eb35c067fa0223271a2ccf809b3863c5eb4fee1a670fa2f73b8a3c93f9"
-    sha256 cellar: :any,                 big_sur:       "a0040d3c7a43b6f88cd7c3f781d53836395bdd3b056ac286e4dbbb6d0b925c05"
-    sha256 cellar: :any,                 catalina:      "1097602fdf302fde146b708e61b97c5bcf1461180ffffa1af1e3feecbea9fd28"
-    sha256 cellar: :any,                 mojave:        "8e68913c94c421080e8fd931824add73bb3ba2e49c29ef5e82e5fa483809b21e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7af7d982e0be49774ad7dc957a213f36d004103d98b62675595183d144b28237"
+    sha256 cellar: :any,                 arm64_monterey: "48a1ed81c14881aac3e60060ec6d7a412b04ff2a8bc28c6632163f53a7451888"
+    sha256 cellar: :any,                 arm64_big_sur:  "28b67e055109a5c292b91971e962644a47ca70352b26d1f0613c879d11d37084"
+    sha256 cellar: :any,                 monterey:       "179a3d71b7a837705e44307ce349e63e2122328ae09b0cfce4de20660bbd7b43"
+    sha256 cellar: :any,                 big_sur:        "105a9ac4bc7bafc3000751a9ffd8908e53bda4571012e0ffb1d169f7e798f93c"
+    sha256 cellar: :any,                 catalina:       "b6372103b1f0cba85d41aacd06ef1b82bda43fb596cd7db56820da30d43eec84"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2a8d1809e22454b7fd15e4951c34c501f4ec36e8171e33affde918b64d921446"
   end
 
   depends_on "openssl@1.1"
@@ -32,12 +33,11 @@ class Haproxy < Formula
       USE_ZLIB=1
       ADDLIB=-lcrypto
     ]
-    on_macos do
+    if OS.mac?
       args << "TARGET=generic"
       # BSD only:
       args << "USE_KQUEUE=1"
-    end
-    on_linux do
+    else
       args << "TARGET=linux-glibc"
     end
 

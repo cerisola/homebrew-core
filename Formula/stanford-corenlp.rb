@@ -1,17 +1,20 @@
 class StanfordCorenlp < Formula
   desc "Java suite of core NLP tools"
   homepage "https://stanfordnlp.github.io/CoreNLP/"
-  url "https://nlp.stanford.edu/software/stanford-corenlp-4.2.2.zip"
-  sha256 "42f0bd84b815b15658a17aeabe5ab8c5ba1d4e5a3785969fe7be8588209f02cc"
+  url "https://nlp.stanford.edu/software/stanford-corenlp-4.3.2.zip"
+  sha256 "2432016930c0180f31eb411d6d64757fe11720d9fedef437b346d8ae2bb9c630"
   license "GPL-2.0-or-later"
 
+  # The first-party website only links to an unversioned archive file from
+  # nlp.stanford.edu (stanford-corenlp-latest.zip), so we match the version
+  # in the Maven link instead.
   livecheck do
     url :homepage
-    regex(/href=.*?stanford-corenlp[._-]v?(\d+(?:\.\d+)+)\.zip/i)
+    regex(%r{href=.*?/stanford-corenlp/v?(\d+(?:\.\d+)+)/jar}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "b1aef7cf97ac8eb8d3bf5dfde284ebf5ea812343217c27caa9ef2a051b87606c"
+    sha256 cellar: :any_skip_relocation, all: "e02517aab8c6cf1a2de00f0ff9ae17c88f33237ae556706d35e3edc36d411cec"
   end
 
   depends_on "openjdk"

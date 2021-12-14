@@ -1,10 +1,10 @@
 class Rdkit < Formula
   desc "Open-source chemoinformatics library"
   homepage "https://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/Release_2021_03_4.tar.gz"
-  sha256 "bed309df7f1e2ea25736a986cf951325681142ee49468b1c62d020a109d2ef52"
+  url "https://github.com/rdkit/rdkit/archive/Release_2021_09_3.tar.gz"
+  sha256 "3d9d47e9ea3f7563ca83bf24fc6d3419c3892ea77d831e1cf68d81f602ad1afc"
   license "BSD-3-Clause"
-  head "https://github.com/rdkit/rdkit.git"
+  head "https://github.com/rdkit/rdkit.git", branch: "master"
 
   livecheck do
     url :stable
@@ -15,11 +15,12 @@ class Rdkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "93d9b4598f4d66ee6ac7d4c6fbeaa6d9fef2bc0929d4d403f40fb273310b5750"
-    sha256 cellar: :any,                 big_sur:       "e580f50002c683bda22c367b8354484741ec16651b631d67f12e5a670379a456"
-    sha256 cellar: :any,                 catalina:      "9758cd582b479ef9e6ac2de5df083754bf0c0bec39c71a12c38f14f1bfb51f3a"
-    sha256 cellar: :any,                 mojave:        "e40831307c5d620bd2709a2182d1dc0cb70e8b487580ada9f661de0837af0799"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a57ed2fa6ef2de3fab1301e8d4194a69dcd34c9ed82fc0c44c0f33ccde1e9874"
+    sha256 cellar: :any,                 arm64_monterey: "7b0f16353ac9d13b8d4844b3384baabede7db340661671ac2767918ac88f047b"
+    sha256 cellar: :any,                 arm64_big_sur:  "5e5e9c310a2e6256afd3be51bde73d5ada47aa842481d1ff79a745e21a8b6189"
+    sha256 cellar: :any,                 monterey:       "b023e1b6c62628d5b7c23a6d550de6ae2a01c837d1d5cd2fa53771e185eb5e90"
+    sha256 cellar: :any,                 big_sur:        "1e51cb4bf7700e66825524f5c4418176ac1eea404c16b5e32c95fc5949e344a4"
+    sha256 cellar: :any,                 catalina:       "97db69d9cdedf2646a92a0a00b28b12442893eb3e4346fe9e68e3fcf0929fb2e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "86ed6137f5afdff12a4a8caa30e056b309a1896684f22f34aa348cafdf0419ce"
   end
 
   depends_on "cmake" => :build
@@ -42,9 +43,10 @@ class Rdkit < Formula
     # Get Python location
     python_executable = Formula["python@3.9"].opt_bin/"python3"
     py3ver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    py3prefix = Formula["python@3.9"].opt_frameworks/"Python.framework/Versions/#{py3ver}"
-    on_linux do
-      py3prefix = Formula["python@3.9"].opt_prefix
+    py3prefix = if OS.mac?
+      Formula["python@3.9"].opt_frameworks/"Python.framework/Versions/#{py3ver}"
+    else
+      Formula["python@3.9"].opt_prefix
     end
     py3include = "#{py3prefix}/include/python#{py3ver}"
     numpy_include = Formula["numpy"].opt_lib/"python#{py3ver}/site-packages/numpy/core/include"

@@ -1,9 +1,26 @@
 class Strongswan < Formula
   desc "VPN based on IPsec"
   homepage "https://www.strongswan.org"
-  url "https://download.strongswan.org/strongswan-5.9.3.tar.bz2"
-  sha256 "9325ab56a0a4e97e379401e1d942ce3e0d8b6372291350ab2caae0755862c6f7"
   license "GPL-2.0-or-later"
+  revision 1
+
+  stable do
+    url "https://download.strongswan.org/strongswan-5.9.4.tar.bz2"
+    sha256 "45fdf1a4c2af086d8ff5b76fd7b21d3b6f0890f365f83bf4c9a75dda26887518"
+
+    # Fix -flat_namespace being used on Big Sur and later.
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+    end
+
+    # Fix Installation of virtual IPs in strongSwan failing on macOS Monterey
+    # Remove from `not_a_binary_url_prefix_allowlist.json` when this patch is removed.
+    patch do
+      url "https://github.com/Homebrew/homebrew-core/files/7503555/macos-12-tun-fix.txt"
+      sha256 "733a6868f18d7e28ad90d41fde4dfedd2b975ccaf9bb98ede31eac00685a697a"
+    end
+  end
 
   livecheck do
     url "https://download.strongswan.org/"
@@ -11,10 +28,11 @@ class Strongswan < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "0f1e4ce71721da3159ae758863a23e94daf4830d3c84eb431d8edfb673b1a51c"
-    sha256 big_sur:       "210a8f1fe7469c4f660259de33605226f5fa6c02436888754a581e0f35c8f607"
-    sha256 catalina:      "bec3e5c02784130c788a861c3ac78e88b8080f825e9ac3ec9a575891a341de6d"
-    sha256 mojave:        "307035e5a5807685ba2c960a4ec68d533039d3a3157adf351108e63b7db551c2"
+    sha256 arm64_monterey: "5c263f7bdc0f889d3ab6ab9390e55e82116afbed1d498cbc99e54ea40ba28990"
+    sha256 arm64_big_sur:  "6e319f2ec766a4095d53f98d9c8e7974c7e13c5ad1d629884c34abc96fa5f4f0"
+    sha256 monterey:       "c149f692c40982c2ae6fab672bbd378a16b3747d82edc12c7783ff32301537be"
+    sha256 big_sur:        "3686b4aecc7b5a1ce8d085dfe2572b15ec5f1585b64be464411b7e1379ee875f"
+    sha256 catalina:       "19214f5451b8e000f74761a1fc55f72b9c1793a145fb168b2d889de0931d9893"
   end
 
   head do
@@ -48,10 +66,8 @@ class Strongswan < Formula
       --enable-ikev1
       --enable-ikev2
       --enable-kernel-pfkey
-      --enable-kernel-pfroute
       --enable-nonce
       --enable-openssl
-      --enable-osx-attr
       --enable-pem
       --enable-pgp
       --enable-pkcs1
@@ -69,6 +85,8 @@ class Strongswan < Formula
       --enable-x509
       --enable-xauth-generic
     ]
+
+    args << "--enable-kernel-pfroute" << "--enable-osx-attr" if OS.mac?
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

@@ -10,10 +10,10 @@ class Kettle < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "cdd9fda5c818bf2c51a61b508a21c20b93a036d1c2bce66d98ee3185b499b561"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "0ccda9f659deb86487578d026cf3e82dfd26bd2c3850d6ef486c6fa2d44de07f"
   end
 
-  depends_on arch: :x86_64
   depends_on "openjdk@8"
 
   def install
@@ -33,38 +33,12 @@ class Kettle < Formula
     end
   end
 
-  plist_options manual: "pdicarte #{HOMEBREW_PREFIX}/etc/kettle/carte-config.xml"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
-      "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/pdicarte</string>
-            <string>#{etc}/kettle/carte-config.xml</string>
-          </array>
-          <key>EnvironmentVariables</key>
-          <dict>
-            <key>KETTLE_HOME</key>
-            <string>#{etc}/kettle</string>
-          </dict>
-          <key>WorkingDirectory</key>
-          <string>#{etc}/kettle</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/kettle/carte.log</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/kettle/carte.log</string>
-          <key>RunAtLoad</key>
-          <true/>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"pdicarte", etc/"kettle/carte-config.xml"]
+    working_dir etc/"kettle"
+    log_path var/"log/kettle/carte.log"
+    error_log_path var/"log/kettle/carte.log"
+    environment_variables KETTLE_HOME: etc/"kettle"
   end
 
   test do

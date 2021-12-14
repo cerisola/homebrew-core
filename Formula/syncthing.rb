@@ -1,8 +1,8 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing/archive/v1.18.1.tar.gz"
-  sha256 "808a373c3fed3eae7631bbf1edbced14abb050240b1a0ff6caff0980af7f0f01"
+  url "https://github.com/syncthing/syncthing/archive/v1.18.5.tar.gz"
+  sha256 "2abef26c60f012b7dd53553ffe61ee94cc2d0dfe495e615d9520cbce39bcd312"
   license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git", branch: "main"
 
@@ -12,11 +12,12 @@ class Syncthing < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "93408ed3d13d1a9b7d4388b7857e43e43c734c3f36d20aabf7f2fb64292116b7"
-    sha256 cellar: :any_skip_relocation, big_sur:       "97cfcafe079181f9a20e0673770d5561cd1dda8d0ee8926069000138c0f8738d"
-    sha256 cellar: :any_skip_relocation, catalina:      "90fc7936bc0cff2f2f72e92ebcc20c1d26cf59fbcc619cecefb7319ed20799c1"
-    sha256 cellar: :any_skip_relocation, mojave:        "134db0b81f91e980ef4308458f36bb752cf26decd5089f1a27194408ab5195d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "864f0e8513996dd076feddddf35068ea78165951aba089acc5b87dea8abc04b2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2716b529c9ba864dad68903832b81bd73154f0af8995a75cd0dc8ace706c50db"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "392dce7ba7760ee6911e28c63bee32d6f1654bca29ad622764481cfe5ea50b3f"
+    sha256 cellar: :any_skip_relocation, monterey:       "0549260b88f0590f1f8a1e8687fd20997a1dec58de66c43c44f890b7442b67a2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d45568f42ca6c5ca3f97003959a25c5b2be18e970c871f55e19df1b2c06d8dfa"
+    sha256 cellar: :any_skip_relocation, catalina:       "780b76573ec224359ce3dabdf4c4caebc2e16f392baeecce72174f4acc85a645"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b126544fc1bb916cbccaa05910813c867b9d22b1f1fb848c022824b5234a2f4"
   end
 
   depends_on "go" => :build
@@ -31,38 +32,11 @@ class Syncthing < Formula
     man7.install Dir["man/*.7"]
   end
 
-  plist_options manual: "syncthing"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/syncthing</string>
-            <string>-no-browser</string>
-            <string>-no-restart</string>
-          </array>
-          <key>KeepAlive</key>
-          <dict>
-            <key>Crashed</key>
-            <true/>
-            <key>SuccessfulExit</key>
-            <false/>
-          </dict>
-          <key>ProcessType</key>
-          <string>Background</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/syncthing.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/syncthing.log</string>
-        </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"syncthing", "-no-browser", "-no-restart"]
+    keep_alive true
+    log_path var/"log/syncthing.log"
+    error_log_path var/"log/syncthing.log"
   end
 
   test do

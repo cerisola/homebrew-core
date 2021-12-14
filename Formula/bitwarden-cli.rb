@@ -3,23 +3,24 @@ require "language/node"
 class BitwardenCli < Formula
   desc "Secure and free password manager for all of your devices"
   homepage "https://bitwarden.com/"
-  url "https://registry.npmjs.org/@bitwarden/cli/-/cli-1.18.0.tgz"
-  sha256 "286d0ecc294c6ab1986e44469da82863027a58bc0ba1c34f0053f579d80caab5"
+  url "https://registry.npmjs.org/@bitwarden/cli/-/cli-1.20.0.tgz"
+  sha256 "7c2fe1cd213c36fa8d86205e0300ddc5557857d11ab73fa41e34bc9fe51a1003"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "313a4cb82859f4b4bb84878af56318cfb5a5b83b4ceddb6ba6b1ed257f266268"
-    sha256 cellar: :any_skip_relocation, big_sur:       "426dece72db63b5ebcc08dc6c646aee2d4875e8c8243a85b9ab80886fc06bdf6"
-    sha256 cellar: :any_skip_relocation, catalina:      "426dece72db63b5ebcc08dc6c646aee2d4875e8c8243a85b9ab80886fc06bdf6"
-    sha256 cellar: :any_skip_relocation, mojave:        "426dece72db63b5ebcc08dc6c646aee2d4875e8c8243a85b9ab80886fc06bdf6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "313a4cb82859f4b4bb84878af56318cfb5a5b83b4ceddb6ba6b1ed257f266268"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "80b4f63387acf25a7da830f20f8e1c64a82fd4285373997a9907df10136fa8ed"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "80b4f63387acf25a7da830f20f8e1c64a82fd4285373997a9907df10136fa8ed"
+    sha256 cellar: :any_skip_relocation, monterey:       "54907b3055dba87d70e082a99cd3c3508327aaceb5b0266c48bbd0563f013eb0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "54907b3055dba87d70e082a99cd3c3508327aaceb5b0266c48bbd0563f013eb0"
+    sha256 cellar: :any_skip_relocation, catalina:       "54907b3055dba87d70e082a99cd3c3508327aaceb5b0266c48bbd0563f013eb0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80b4f63387acf25a7da830f20f8e1c64a82fd4285373997a9907df10136fa8ed"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink Dir[libexec/"bin/*"]
   end
 
   test do

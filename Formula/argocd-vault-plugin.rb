@@ -1,17 +1,18 @@
 class ArgocdVaultPlugin < Formula
   desc "Argo CD plugin to retrieve secrets from Secret Management tools"
-  homepage "https://ibm.github.io/argocd-vault-plugin"
+  homepage "https://argocd-vault-plugin.readthedocs.io"
   url "https://github.com/IBM/argocd-vault-plugin.git",
-      tag:      "v1.2.0",
-      revision: "44a1e9a75d64dd3d5410acfd525128ece1ab1726"
+      tag:      "v1.6.0",
+      revision: "947668d260d7e630b3dbc7d9dadfc4ed0650ccd3"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "9018b5a9e630fd660f49193e51d2dd43b4a2a0d751cdcca4ca85a42cca22d16b"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7ff5b5b148a9399665f8a58c0b9567ae4449d3754fee9eadabadd42c927aff2e"
-    sha256 cellar: :any_skip_relocation, catalina:      "7ff5b5b148a9399665f8a58c0b9567ae4449d3754fee9eadabadd42c927aff2e"
-    sha256 cellar: :any_skip_relocation, mojave:        "7ff5b5b148a9399665f8a58c0b9567ae4449d3754fee9eadabadd42c927aff2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "255735a047513406afe27b380422dc8f3fca65f082a77314a18f212fab6dd2e3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0fca747871620bbde74fbe76f32b631ac60dcd9c55d8ca9c92d7556381bc8080"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0fca747871620bbde74fbe76f32b631ac60dcd9c55d8ca9c92d7556381bc8080"
+    sha256 cellar: :any_skip_relocation, monterey:       "f1584c2d9557be4446e6469d2adf5d1f10bad618b8984369416210233eca2397"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f1584c2d9557be4446e6469d2adf5d1f10bad618b8984369416210233eca2397"
+    sha256 cellar: :any_skip_relocation, catalina:       "f1584c2d9557be4446e6469d2adf5d1f10bad618b8984369416210233eca2397"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "60985ce9f2a62e449e0c2d111542d5cff3043ab355c04dd599ffc3638bfff528"
   end
 
   depends_on "go" => :build
@@ -24,13 +25,13 @@ class ArgocdVaultPlugin < Formula
       -X github.com/IBM/argocd-vault-plugin/version.Version=#{version}
       -X github.com/IBM/argocd-vault-plugin/version.BuildDate=#{time.iso8601}
       -X github.com/IBM/argocd-vault-plugin/version.CommitSHA=#{Utils.git_head}
-    ].join(" ")
+    ]
 
     system "go", "build", *std_go_args(ldflags: ldflags)
   end
 
   test do
-    assert_match "This is a plugin to replace <wildcards> with Vault secrets",
+    assert_match "This is a plugin to replace <placeholders> with Vault secrets",
       shell_output("#{bin}/argocd-vault-plugin --help")
 
     touch testpath/"empty.yaml"

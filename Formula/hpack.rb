@@ -1,17 +1,18 @@
 class Hpack < Formula
   desc "Modern format for Haskell packages"
   homepage "https://github.com/sol/hpack"
-  url "https://github.com/sol/hpack/archive/0.34.4.tar.gz"
-  sha256 "65862a5ebef8efe236d44ea54229742766d26fe1e39220b7b98f3486cc0adcaa"
+  url "https://github.com/sol/hpack/archive/0.34.6.tar.gz"
+  sha256 "c2a6dc1f3db7bd97ef34d1f40b51d81e6f3775a99082c2d5186abf8f88e48e62"
   license "MIT"
   head "https://github.com/sol/hpack.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e8189942eff2e520bd69abbab6952def3781d2cee4c98e1d97f27cc14e362241"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a2e901e85d547afaead51bf4d2c33d27033c74e2eeb4e6eca418339e4782e3e6"
-    sha256 cellar: :any_skip_relocation, catalina:      "0368b8c4ab5eef0197b563c10852bcd8ab6456d59d6c9e34f48e36e0400803f6"
-    sha256 cellar: :any_skip_relocation, mojave:        "5ebb44b4700c69ba46807cad1a04d43db91f87246818611403dcd7963762ef1d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5930fc9ba975f18ba0db9bcbf1258a18c602c547c955db693e85e0bc4ac83178"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4547d44abc0430152312179e3add1b5992177a5370b4c464d7111b60c455064b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "262e9631bc059b760ebaf90d9c19d2d5b7ca08c545775a8bebdf9f72ff121ea9"
+    sha256 cellar: :any_skip_relocation, monterey:       "eb09a7631dfd336c6c413594d147e9b9256786e6dd95527f0dc6f72b230e1d1f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6d25241104086d39f58c6b57af690d88e5b50d6427528eaef58f2955d910b6c3"
+    sha256 cellar: :any_skip_relocation, catalina:       "7b5badf2e34c119540f82194c1fd55bf85a67af7f48083d2a839af86cde740db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3057ec78424d592bcb1a3e9173a119573ab6648187f50ffea9b7370dd1e80d7e"
   end
 
   depends_on "cabal-install" => :build

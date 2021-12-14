@@ -2,23 +2,22 @@ class AliyunCli < Formula
   desc "Universal Command-Line Interface for Alibaba Cloud"
   homepage "https://github.com/aliyun/aliyun-cli"
   url "https://github.com/aliyun/aliyun-cli.git",
-    tag:      "v3.0.88",
-    revision: "017637745ad7ae86c5422f1f9e2e6d78771bd080"
+      tag:      "v3.0.101",
+      revision: "7575a1fabb236fae0f8f25536c2778f156984b16"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "009a58a705375672f47cbc0b5c26daa9faa6ea1f357d123a7663928815fc7644"
-    sha256 cellar: :any_skip_relocation, big_sur:       "7a4e6c8c11da7178bb492035e91dcfe858b023c8d9e67bfbbffbb61773a7dd78"
-    sha256 cellar: :any_skip_relocation, catalina:      "f459ec6a75c8e371e0f77d463e246afe6095b0d8a44d00b43406662e63b2a4b9"
-    sha256 cellar: :any_skip_relocation, mojave:        "8787c2937c3ed1daa3e63701c43921432beddb191001ad61dd0e2fba0069e82e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "be82c1aced7090d2f59348c5ccad62427ceb71a2ce62a32aa2bc2d8ebc62ba65"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ff3ef658a051510d5082722d80d140b7f54265d6614f43c3489a136d6826e192"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "560ef3d90cd0ac55d2e2e3fab1e8dab3d0d280826905c769f1988bba25f260cf"
+    sha256 cellar: :any_skip_relocation, monterey:       "b91d386983d3be68a82282ece2fd82c0855762ba73821e539d672d0d55593265"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3b9de01eb02d19ba8191beb7652744c4815b8bd16febc2850ab4f61156ae3040"
+    sha256 cellar: :any_skip_relocation, catalina:       "843d9a9851d53f783d802e7bd7e6240c6678acb81bad44415bc65ed89bfd8b1c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "daa26a2bd63039b619e023dffa4932f4e79325b16238cd401eef6a63ae40202b"
   end
 
   depends_on "go" => :build
-  depends_on "go-bindata" => :build
 
   def install
-    system "make", "metas"
     system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/aliyun/aliyun-cli/cli.Version=#{version}"),
                           "-o", bin/"aliyun", "main/main.go"
   end

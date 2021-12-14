@@ -3,22 +3,18 @@ class Mesa < Formula
 
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://mesa.freedesktop.org/archive/mesa-21.2.0.tar.xz"
-  sha256 "0cb3c802f4b8e7699b1602c08c29d06a4d532ab5b8f7a64676c4ca6bb8f4d426"
+  url "https://mesa.freedesktop.org/archive/mesa-21.3.1.tar.xz"
+  sha256 "2b0dc2540cb192525741d00f706dbc4586349185dafc65729c7fda0800cc474d"
   license "MIT"
   head "https://gitlab.freedesktop.org/mesa/mesa.git", branch: "main"
 
-  livecheck do
-    url "https://www.mesa3d.org/news/"
-    regex(/>\s*Mesa v?(\d+(?:\.\d+)+) is released\s*</i)
-  end
-
   bottle do
-    sha256 arm64_big_sur: "65138ca70442cf7485ff98c028864eacced13c7b2fc62146f9026b2e7f501e05"
-    sha256 big_sur:       "6bed8a72c96b4844286c7e9666b8ea0c887891a6b867904900faf6ffd61d875e"
-    sha256 catalina:      "af5a8c808d643c0d64f70e33543a6a9c18c771152fbac4f5b8dad86167c053ed"
-    sha256 mojave:        "7308951bd120ed6de6cb3838cbc358f0b210f61e102ff366cb1b8a5c988b9ded"
-    sha256 x86_64_linux:  "066e8c5709d5cae301b73348f43f72897203286e4b5d7115070ccc58bb68c5b6"
+    sha256 arm64_monterey: "0b24328f86e2ec2abc0b94ff2ad93b6a8e5e9c990da9713080f0afad33c3f30a"
+    sha256 arm64_big_sur:  "28d4473154c77c6fd26c5a29291af6b8af2ae4e9b0cba443e2c825bca7fcacad"
+    sha256 monterey:       "6d61cc330d58ed3876bb4b9deb6c12272bef628894ccd6d17a6f75bc03b359f8"
+    sha256 big_sur:        "4c6846d55c0b46196b5f689ceeafc6dbb4b7ec55f02b68d439f2956533a8817b"
+    sha256 catalina:       "0be7bf943d14e317ceb1c380bec5c2f89839654c57d704f2649b5f650b0d3679"
+    sha256 x86_64_linux:   "a6d24f2f891c0209c70e2cedc13a152caa3abb652d67393c0ae4f243324398e0"
   end
 
   depends_on "meson" => :build
@@ -39,18 +35,18 @@ class Mesa < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "elfutils"
     depends_on "gcc"
-    depends_on "lm-sensors"
-    depends_on "libelf"
+    depends_on "libdrm"
+    depends_on "libva"
+    depends_on "libvdpau"
     depends_on "libxfixes"
     depends_on "libxrandr"
     depends_on "libxshmfence"
     depends_on "libxv"
     depends_on "libxvmc"
     depends_on "libxxf86vm"
-    depends_on "libva"
-    depends_on "libvdpau"
-    depends_on "libdrm"
+    depends_on "lm-sensors"
     depends_on "wayland"
     depends_on "wayland-protocols"
   end
@@ -58,8 +54,8 @@ class Mesa < Formula
   fails_with gcc: "5"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/5c/db/2d2d88b924aa4674a080aae83b59ea19d593250bfe5ed789947c21736785/Mako-1.1.4.tar.gz"
-    sha256 "17831f0b7087c313c0ffae2bcbbd3c1d5ba9eeac9c38f2eb7b50e8c99fe9d5ab"
+    url "https://files.pythonhosted.org/packages/af/b6/42cd322ae555aa770d49e31b8c5c28a243ba1bbb57ad927e1a5f5b064811/Mako-1.1.6.tar.gz"
+    sha256 "4e9e345a41924a954251b95b4b28e14a301145b544901332e658907a7464b6b2"
   end
 
   resource "glxgears.c" do
@@ -84,7 +80,7 @@ class Mesa < Formula
     mkdir "build" do
       args = ["-Db_ndebug=true"]
 
-      on_linux do
+      if OS.linux?
         args << "-Dplatforms=x11,wayland"
         args << "-Dglx=auto"
         args << "-Ddri3=true"
@@ -96,7 +92,7 @@ class Mesa < Formula
         args << "-Dopengl=true"
         args << "-Dgles1=true"
         args << "-Dgles2=true"
-        args << "-Dxvmc=true"
+        args << "-Dgallium-xvmc=disabled"
         args << "-Dvalgrind=false"
         args << "-Dtools=drm-shim,etnaviv,freedreno,glsl,nir,nouveau,xvmc,lima"
       end
@@ -106,7 +102,7 @@ class Mesa < Formula
       system "ninja", "install"
     end
 
-    on_linux do
+    if OS.linux?
       # Strip executables/libraries/object files to reduce their size
       system("strip", "--strip-unneeded", "--preserve-dates", *(Dir[bin/"**/*", lib/"**/*"]).select do |f|
         f = Pathname.new(f)

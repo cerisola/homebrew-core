@@ -3,17 +3,18 @@ require "language/node"
 class FirebaseCli < Formula
   desc "Firebase command-line tools"
   homepage "https://firebase.google.com/docs/cli/"
-  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-9.16.5.tgz"
-  sha256 "fb8b8910944bff6af6535ea00d762203b4d81749c82e37ecf9ffdc9d3ef37ff9"
+  url "https://registry.npmjs.org/firebase-tools/-/firebase-tools-9.23.1.tgz"
+  sha256 "ec0138165685b995a59dbf549c7f7f3b1cd86f14bd9f7ccc5eb6e17ee5c9a8ff"
   license "MIT"
   head "https://github.com/firebase/firebase-tools.git"
 
   bottle do
-    sha256                               arm64_big_sur: "3b2b692eed01ad3880557bbfb9df49eda402ea7b8cde95c98149e56b2c8dc7b7"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3dc152b35da67fe5a6d7710cc481dbef082377ac35236cf67ca48b65bf615a90"
-    sha256 cellar: :any_skip_relocation, catalina:      "3dc152b35da67fe5a6d7710cc481dbef082377ac35236cf67ca48b65bf615a90"
-    sha256 cellar: :any_skip_relocation, mojave:        "3dc152b35da67fe5a6d7710cc481dbef082377ac35236cf67ca48b65bf615a90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e9f91b73164ba6a6092fed0948a1cc971340b17534c7cd120303b097fef18f7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "33a76fe91fe6eba105135bfd4bcead856af418557315941d632e13dddc0db718"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "33a76fe91fe6eba105135bfd4bcead856af418557315941d632e13dddc0db718"
+    sha256 cellar: :any_skip_relocation, monterey:       "d5cf3a4a067982e5b7d27e552a0dc0327ae6cc17d0562b1a074a8646655d9d63"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d5cf3a4a067982e5b7d27e552a0dc0327ae6cc17d0562b1a074a8646655d9d63"
+    sha256 cellar: :any_skip_relocation, catalina:       "d5cf3a4a067982e5b7d27e552a0dc0327ae6cc17d0562b1a074a8646655d9d63"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d957844fba5924bebad4e2924e226d4a3f2ec199eb41cbffa4861e4f36eec451"
   end
 
   depends_on "node"
@@ -31,7 +32,7 @@ class FirebaseCli < Formula
     term_size_vendor_dir = libexec/"lib/node_modules/firebase-tools/node_modules/term-size/vendor"
     term_size_vendor_dir.rmtree # remove pre-built binaries
 
-    on_macos do
+    if OS.mac?
       macos_dir = term_size_vendor_dir/"macos"
       macos_dir.mkpath
       # Replace the vendored pre-built term-size with one we build ourselves

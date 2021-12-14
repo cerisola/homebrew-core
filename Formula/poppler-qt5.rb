@@ -1,20 +1,21 @@
 class PopplerQt5 < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-21.08.0.tar.xz"
-  sha256 "e9cf5dc5964bce4bb0264d1c4f8122706c910588b421cfc30abc97d6b23e602d"
+  url "https://poppler.freedesktop.org/poppler-21.12.0.tar.xz"
+  sha256 "acb840c2c1ec07d07e53c57c4b3a1ff3e3ee2d888d44e1e9f2f01aaf16814de7"
   license "GPL-2.0-only"
-  head "https://gitlab.freedesktop.org/poppler/poppler.git"
+  head "https://gitlab.freedesktop.org/poppler/poppler.git", branch: "master"
 
   livecheck do
     formula "poppler"
   end
 
   bottle do
-    sha256 arm64_big_sur: "181a35eecaf33701813460d60d71595d9924aee2c2750d42273952428f18c710"
-    sha256 big_sur:       "b90868c632e319845acf6412e280fd9ba07fa25b986415886ccfa95ee69e065c"
-    sha256 catalina:      "7cd81e1ff43fbad733203084ea386bc1d7ecb04a29d958dd873592142dd161be"
-    sha256 mojave:        "73d297ab2e685cb9af25373bf6d19fda06d1ecd20f9bcdd2f73abbc6127b79d0"
+    sha256                               arm64_monterey: "5e7760ac4779c66600e014a0477d1f7571f27691d3ad4f58390507ac4d5ebe2e"
+    sha256                               arm64_big_sur:  "62bf056d997fa5d3ee8363eb76d860e61add4c9efb94d20bf2966855640d472e"
+    sha256                               big_sur:        "cbad439cb6109040157a700389ed9cb28da5bf1842c23b35838b41fe07f97a3e"
+    sha256                               catalina:       "7dfee6ecdcdd7fe7148fb672cf3a066713bc4804f70e29ae5ea4c8ad0dab3161"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38253fa009bac07459160e50cc9816ff67efc2ef1760838bd7582ef46ad63ffd"
   end
 
   keg_only "it conflicts with poppler"
@@ -38,9 +39,15 @@ class PopplerQt5 < Formula
   uses_from_macos "gperf" => :build
   uses_from_macos "curl"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   resource "font-data" do
-    url "https://poppler.freedesktop.org/poppler-data-0.4.10.tar.gz"
-    sha256 "6e2fcef66ec8c44625f94292ccf8af9f1d918b410d5aa69c274ce67387967b30"
+    url "https://poppler.freedesktop.org/poppler-data-0.4.11.tar.gz"
+    sha256 "2cec05cd1bb03af98a8b06a1e22f6e6e1a65b1e2f3816cb3069bb0874825f08c"
   end
 
   def install
@@ -69,7 +76,7 @@ class PopplerQt5 < Formula
       system "make", "install", "prefix=#{prefix}"
     end
 
-    on_macos do
+    if OS.mac?
       libpoppler = (lib/"libpoppler.dylib").readlink
       [
         "#{lib}/libpoppler-cpp.dylib",

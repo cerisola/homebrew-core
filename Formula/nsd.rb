@@ -1,8 +1,8 @@
 class Nsd < Formula
   desc "Name server daemon"
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
-  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.3.7.tar.gz"
-  sha256 "fd3b9ec53bbd168d567a0bfcdf140c966511fdaf78bd539d091c1a13c13be8ad"
+  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.3.9.tar.gz"
+  sha256 "531549f09289ecbd05829e14bb34563294d85b9edde2c613a00f597af2135e8d"
   license "BSD-3-Clause"
 
   # We check the GitHub repo tags instead of
@@ -14,11 +14,12 @@ class Nsd < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "1e0473c4f7aa04a657fc961695785f3141e096a9492a0325325aa913384eaeb8"
-    sha256 big_sur:       "d47418395b19b1d079cc1c15dbb0984dbc8c9e0dfcd2d4003f571c0dfaa6702d"
-    sha256 catalina:      "af75943145733afcb9d40b08ac04f3f27387ec5ecbd9feb642f659d688269f39"
-    sha256 mojave:        "c443e9e09186eca5e52e7fe24847913de0f2faa21d83f44ffb47f50ef2a974f9"
-    sha256 x86_64_linux:  "831286168eae3f0c4d3c2ec18cbfd4b962b593fc5ce03664d8bce614a62768c2"
+    sha256 arm64_monterey: "a75d4f82d5adf8b493df619a1e2ff3bdf6e4efa370f6c363566db90d5ded9796"
+    sha256 arm64_big_sur:  "b0d394e6bc604fb4e52a8c1730bf6c0665986f4afb95cd55ff29a5d743ba093e"
+    sha256 monterey:       "824511e5a658720ad80b03f4c8b98eb3e3699c809f4b29e8886ead96e6025d79"
+    sha256 big_sur:        "04ff576c47eb9dc4f7e20117eaf00700b7528cce6ff7de40185c26349bd46711"
+    sha256 catalina:       "34c70f1bc9fb1cb18eb35236f8eb454f2c4626870e94a1f795b49d8d6df3cb48"
+    sha256 x86_64_linux:   "ad813fa010bca886e76c7b6e4be20b7dba027993b1aa1c242a5206aa5a01a32b"
   end
 
   depends_on "libevent"

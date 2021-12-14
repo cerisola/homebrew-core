@@ -1,16 +1,17 @@
 class Mydumper < Formula
   desc "How MySQL DBA & support engineer would imagine 'mysqldump' ;-)"
   homepage "https://launchpad.net/mydumper"
-  url "https://github.com/maxbube/mydumper/archive/v0.10.7-2.tar.gz"
-  sha256 "2e7cbd5e22422c418f2803755e1735878c060a2eff61c036799b2fc1443c751c"
+  url "https://github.com/mydumper/mydumper/archive/v0.11.3-5.tar.gz"
+  sha256 "94b3165378196e84ba271e152fb77d9a6ea944fd3707124bb35bfefaa41cf5fd"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "1921386bcc29a182633c60e570e8cd2fe64bc657a8fd043094bfdaba3066e1d1"
-    sha256 cellar: :any,                 big_sur:       "50437e47484abc3294969b9eeffcd8373bc62b53e59636d2e56d2c386192d00e"
-    sha256 cellar: :any,                 catalina:      "4bccea5099be96d94719a79360b48ef71876c57c7836a17455d4612817e34888"
-    sha256 cellar: :any,                 mojave:        "9e4ca09a18d4bc8d44b64748445bf3dafc32b0d84092e74cb460acac5e898fb8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27e718cb5914fe9a3c479024351520231515e969e94d4e7743004773a90c5d57"
+    sha256 cellar: :any,                 arm64_monterey: "0b76f39b06fe7d920c2eb887d66b8f973dbc9bcee72050416ebed400e5e5c47c"
+    sha256 cellar: :any,                 arm64_big_sur:  "994895cd10f2346ee9ecbb81fb9f00349a79d6a47ce0b7353ed6f4d454685fbf"
+    sha256 cellar: :any,                 monterey:       "0f12923ed5a1e58ac730d14930a599b8ac46c86946639ee2ae2826fff97bf8cc"
+    sha256 cellar: :any,                 big_sur:        "621d2b1f2daf3fdec0e8cf0043b4827b7481ca4893da7068b1d201a97070f8d8"
+    sha256 cellar: :any,                 catalina:       "d7a865fc96e394e9d42e73a8b69e85617f03d517244806d46605fdc352bbf384"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5012c978efdd639d94994f3363ce45f9727d20b53c928bc71dda899167e10ee1"
   end
 
   depends_on "cmake" => :build
@@ -23,6 +24,12 @@ class Mydumper < Formula
 
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   def install
     # Override location of mysql-client
     args = std_cmake_args + %W[
@@ -31,7 +38,7 @@ class Mydumper < Formula
     ]
     # find_package(ZLIB) has trouble on Big Sur since physical libz.dylib
     # doesn't exist on the filesystem.  Instead provide details ourselves:
-    on_macos do
+    if OS.mac?
       args << "-DCMAKE_DISABLE_FIND_PACKAGE_ZLIB=1"
       args << "-DZLIB_INCLUDE_DIRS=/usr/include"
       args << "-DZLIB_LIBRARIES=-lz"

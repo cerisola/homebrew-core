@@ -1,27 +1,29 @@
 class Step < Formula
   desc "Crypto and x509 Swiss-Army-Knife"
   homepage "https://smallstep.com"
-  url "https://github.com/smallstep/cli/releases/download/v0.16.1/step_0.16.1.tar.gz"
-  sha256 "09a90d5731c98e96e63af754a9bfcc00f6d0584f954505c305b52974094dc430"
+  url "https://github.com/smallstep/cli/releases/download/v0.18.0/step_0.18.0.tar.gz"
+  sha256 "fe0cd35b86588435c975f65002fe9cecaf08595a1f5551fed3548d472dea7200"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e3150b89b4c083e63b7330417b7d5ebc4e1ac884fced45cefa251a9058f5c2f9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ffc856f090795a346911b0ec07ee654ae142d7fa7beca51d91e54ab0233f481b"
-    sha256 cellar: :any_skip_relocation, catalina:      "7cb397f326d74fcb368d4fcd76653fd5cc6d0c334d79f3afe2d1fbbeb030ffd3"
-    sha256 cellar: :any_skip_relocation, mojave:        "d248be3b4c75184c52f5937381c544898b97ea08017b22f669603e6ae7b8670e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "867edbfb1f69e5128fed3cbdaf343a4691b16db576bec6f7df8531d9f8973c91"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c42599530d8a064770f84c733533a5eb32b9d934a0df1cf1435453ab56159dc1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2759a0ad98cd7508832f6ce8badd6dea2f79485bef5919ab6f4944b2916acbd6"
+    sha256 cellar: :any_skip_relocation, monterey:       "dfb6c1dd9d096a9869a4154ae7b88f656f3155b826b8e4c19769987eb3a3c3e8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e48f110754a6aaa22a86b11b591fdf65baf99467ec71bc0d0f3a16db9887ffd7"
+    sha256 cellar: :any_skip_relocation, catalina:       "5ef8054e17ce61fd327d2bff88106b6b9134c52ec565c6f13978e0c4dad41738"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35960f161393594a4a78256631a7b805bb4c9c0bdef1cafe41d99692cb4ce930"
   end
 
   depends_on "go" => :build
 
   resource "certificates" do
-    url "https://github.com/smallstep/certificates/releases/download/v0.16.0/step-ca_0.16.0.tar.gz"
-    sha256 "d4f333bd972eb5b6bd2cf4a4fa403574e6dceffaa54109c0f8251cf37f1dfa48"
+    url "https://github.com/smallstep/certificates/releases/download/v0.18.0/step-ca_0.18.0.tar.gz"
+    sha256 "c683893c926fb997791fbc62d03a9ea6411840d75c2970044ae8e7cf42c9cd14"
   end
 
   def install
     ENV["VERSION"] = version.to_s
+    ENV["CGO_OVERRIDE"] = "CGO_ENABLED=1"
     system "make", "build"
     bin.install "bin/step" => "step"
     bash_completion.install "autocomplete/bash_autocomplete" => "step"
@@ -29,6 +31,7 @@ class Step < Formula
 
     resource("certificates").stage do |r|
       ENV["VERSION"] = r.version.to_s
+      ENV["CGO_OVERRIDE"] = "CGO_ENABLED=1"
       system "make", "build"
       bin.install "bin/step-ca" => "step-ca"
     end

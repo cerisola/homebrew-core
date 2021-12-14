@@ -1,32 +1,24 @@
 class CloudNuke < Formula
   desc "CLI tool to nuke (delete) cloud resources"
   homepage "https://gruntwork.io/"
-  url "https://github.com/gruntwork-io/cloud-nuke/archive/v0.4.0.tar.gz"
-  sha256 "18cc93a7245420ed86dedf5a604afea238e6bde953ea4e938b0c43939c59c5ab"
+  url "https://github.com/gruntwork-io/cloud-nuke/archive/v0.7.1.tar.gz"
+  sha256 "79e05807b6f9282749eb4459e49c00671d76c7b0d87e234b6dfc949c634b283d"
   license "MIT"
   head "https://github.com/gruntwork-io/cloud-nuke.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8217bdcf73183837cbb9b9fb36ca20ea5f19954705d5d4dce76dd2b6b3579d3d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "a9cfc97d98c8aed64662f8d4cf7981f701a46b70919a06a5fa651bd6f33d58be"
-    sha256 cellar: :any_skip_relocation, catalina:      "dfcb3e982dced216ec225edff2a29e8d4eb3d1d2b55ec8105af43f1eab42f443"
-    sha256 cellar: :any_skip_relocation, mojave:        "0273736dec55fc74114c34ab650a4bad25f70a6fdb04f08749d4a8dd52ddc679"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52c21a7bb29a70a2b485d483d41869c70731702a9d198176e3567b48a943f6a7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b1c0edd97757d23958ade7f40f68dc3efd9a757724f91724cfaaeeeb7f59f1f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe31aee5dcdc0ebc350a3f03a807b798cd8b2e6cfbba0abc895f21104d581cc6"
+    sha256 cellar: :any_skip_relocation, monterey:       "388223af6af90d90b6ee58f74180ffcc5e894fe839dc3a51f19d98578ce23e00"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4e592efd575169f17123ef4b0ac472ad18c6309cedb72a6e345d58fb8ffddf5d"
+    sha256 cellar: :any_skip_relocation, catalina:       "9eeab20bc75c932234c55c83ffd2a68e285bbb0958e0f742277f7c168b0433a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "171027b0d68cd0a19d22b2958c8b149c35539f958c6eaabfa80927d27c8e5945"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-ldflags", "-s -w -X main.VERSION=v#{version}", *std_go_args
-  end
-
-  def caveats
-    <<~EOS
-      Before you can use these tools, you must export some variables to your $SHELL.
-        export AWS_ACCESS_KEY="<Your AWS Access ID>"
-        export AWS_SECRET_KEY="<Your AWS Secret Key>"
-        export AWS_REGION="<Your AWS Region>"
-    EOS
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.VERSION=v#{version}")
   end
 
   test do

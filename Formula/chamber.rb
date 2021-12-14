@@ -1,8 +1,8 @@
 class Chamber < Formula
   desc "CLI for managing secrets through AWS SSM Parameter Store"
   homepage "https://github.com/segmentio/chamber"
-  url "https://github.com/segmentio/chamber/archive/v2.10.2.tar.gz"
-  sha256 "50e8bf541aac590a7eefbee7fe4d064a4bf23ddc8d83bbb81921f8b38c497299"
+  url "https://github.com/segmentio/chamber/archive/v2.10.7.tar.gz"
+  sha256 "51af2fff232d8839ae772de7700c39f26f7a2428e02aaa185f06c18defa592f0"
   license "MIT"
   head "https://github.com/segmentio/chamber.git", branch: "master"
 
@@ -13,11 +13,12 @@ class Chamber < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "31f0d821fb9e59a7a952d39d609fe74287effe5c8ac615efabbad60ad41afc3b"
-    sha256 cellar: :any_skip_relocation, big_sur:       "37c54803cedaf1e0c702503bc11f87d32fe14a492b723e96a018251b1afdcf75"
-    sha256 cellar: :any_skip_relocation, catalina:      "3a7e09e668fb968d96558e7844cd4c236b1c5fe483401de44e0dbe42eb0eac11"
-    sha256 cellar: :any_skip_relocation, mojave:        "9061f09b07a75474c1dcfbab79df1a6c63510c84f7dd7f0d2aec573e27c17eba"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62f777d6fbe944f59565e31814b19187c2c65672a20f0cae1f6653b8e4cdb60f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "69b6be491b4e21f5402f3d12c5b0bb293ef294275dab83b2ff8c377174fc9b7d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "357f3da41c7a1ede875502401f41e7577598bd1997e7401375eb229915fc25b7"
+    sha256 cellar: :any_skip_relocation, monterey:       "1dc9300e75c3b3b6133eeb06e85477fd1d87976187630a046dbce49492b25602"
+    sha256 cellar: :any_skip_relocation, big_sur:        "89a69a5d0e587d2ec4c98e04646c790ee34364efa8c16fdee57ba901fe55c88c"
+    sha256 cellar: :any_skip_relocation, catalina:       "58a73003ee6317a20b1a7640117bc12b1203e2f15222722063a1f383167762f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3196c8dbea0cb52c1122ceb7ad314534151980da1055ee1f4bb7c127f6f9c52"
   end
 
   depends_on "go" => :build

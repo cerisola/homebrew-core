@@ -1,17 +1,18 @@
 class Fd < Formula
   desc "Simple, fast and user-friendly alternative to find"
   homepage "https://github.com/sharkdp/fd"
-  url "https://github.com/sharkdp/fd/archive/v8.2.1.tar.gz"
-  sha256 "429de7f04a41c5ee6579e07a251c72342cd9cf5b11e6355e861bb3fffa794157"
+  url "https://github.com/sharkdp/fd/archive/v8.3.0.tar.gz"
+  sha256 "3c5a8a03c4f6ade73b92432ed0ba51591db19b0d136073fa3ccfa99d63403d52"
   license "Apache-2.0"
   head "https://github.com/sharkdp/fd.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "b50a503fc0bddc9c82d6ebc42198071160426ee6247c122f8fb81b1f9ecc4aeb"
-    sha256 cellar: :any_skip_relocation, big_sur:       "378bf3b71edf7c09a80cd8815bd068f6c2b8abaf2df149fc23f33f52acecc817"
-    sha256 cellar: :any_skip_relocation, catalina:      "1fef32a7cd0c80f62343b4caf6a0979f89bacfa7434ed54ffede6adb85ace329"
-    sha256 cellar: :any_skip_relocation, mojave:        "160cdfc22b5d0ac9694ce8dd95f7e22a7bdc95f6d376344d15f924f9ef67149b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d2387b3ee1027e1e6e06050edfd302d7dda1d13d3f4c646408ee57d968f07f5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "89f7c27602bf8d146b8cbac9545bc25089f155e193fd30a3812cf17478937b5a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "686721369e2c5b542853d31948b45798ee80bede3b8b9b08f782819d1c9d9927"
+    sha256 cellar: :any_skip_relocation, monterey:       "f5a165261b87aa903db6c04c3f663998259c2753faf38cd091c4ff9a2ca485f5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "328371581788b9bd7024a560e2adf70d08b62ebc183c81db3f1624b96e379d65"
+    sha256 cellar: :any_skip_relocation, catalina:       "310755363e8ddb08c0662747adf686ca18fe3bd7dc3fa2aa983b7d4e160efa50"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c21c8c076f322a5a513f0d0dda9ce9a48057a7945f222ebaadaa0bfc6bf3db7f"
   end
 
   depends_on "rust" => :build
@@ -28,6 +29,6 @@ class Fd < Formula
   test do
     touch "foo_file"
     touch "test_file"
-    assert_equal "test_file", shell_output("#{bin}/fd test").chomp
+    assert_equal "./test_file", shell_output("#{bin}/fd test").chomp
   end
 end

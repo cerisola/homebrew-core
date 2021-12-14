@@ -1,16 +1,17 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
   homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-6.3.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-6.3.0.tar.xz"
-  sha256 "fb472cb957c748670391cbc3385ff230cf44832bc314fee359e43c69cf9da5ef"
+  url "https://ftp.gnu.org/gnu/octave/octave-6.4.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-6.4.0.tar.xz"
+  sha256 "6c1555f5aff0e655b88cad8e8bc2b740ec3a6f3f61898e4997359c2af55e5d20"
   license "GPL-3.0-or-later"
+  revision 1
 
   bottle do
-    sha256 arm64_big_sur: "6bf235731cccb20bba3e58414147bcb63f3b2d3c8f33a2f05d4ca139f9b8f55a"
-    sha256 big_sur:       "ffb80919aab7e5224ae38873397a6e7d292dd3cfe6b74cba3972c7f7093ebb58"
-    sha256 catalina:      "4360b1bae83bcb42203b12e52da2ffa8c15a56df7a0a49f3cdf10e78d463c57b"
-    sha256 mojave:        "b6932ada3ff047d5911bedad215b37c191fb2018101e18c322f4288741a8625e"
+    sha256 arm64_big_sur: "142423c2700e341d524291d668230a872811cd42a3a474d845912d7c176511e6"
+    sha256 big_sur:       "7d30b44ae67c570f9408414a6f94ccfa1259335ed806ac9c009b6ede9922f559"
+    sha256 catalina:      "31f5f6eaafc15d1f9ee86a7c6b6c5a7576474ae87264e6807109ed28de3977a4"
+    sha256 x86_64_linux:  "372020c01a1f1f8e49cf18fa23c4e12ee259ceb1594a5abed899c4de1f9869ca"
   end
 
   head do
@@ -68,6 +69,8 @@ class Octave < Formula
   # Dependencies use Fortran, leading to spurious messages about GCC
   cxxstdlib_check :skip
 
+  fails_with gcc: "5"
+
   def install
     # Default configuration passes all linker flags to mkoctfile, to be
     # inserted into every oct/mex build. This is unnecessary and can cause
@@ -101,7 +104,7 @@ class Octave < Formula
             "--with-portaudio",
             "--with-sndfile"]
 
-    on_linux do
+    if OS.linux?
       # Explicitly specify aclocal and automake without versions
       args << "ACLOCAL=aclocal"
       args << "AUTOMAKE=automake"
@@ -136,5 +139,22 @@ class Octave < Formula
     system bin/"octave", "--eval", "(22/7 - pi)/pi"
     # This is supposed to crash octave if there is a problem with BLAS
     system bin/"octave", "--eval", "single ([1+i 2+i 3+i]) * single ([ 4+i ; 5+i ; 6+i])"
+    # Test basic compilation
+    (testpath/"oct_demo.cc").write <<~EOS
+      #include <octave/oct.h>
+      DEFUN_DLD (oct_demo, args, /*nargout*/, "doc str")
+      { return ovl (42); }
+    EOS
+    system bin/"octave", "--eval", <<~EOS
+      mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', 'oct_demo.cc');
+      assert(oct_demo, 42)
+    EOS
+    # Test FLIBS environment variable
+    system bin/"octave", "--eval", <<~EOS
+      args = strsplit (mkoctfile ('-p', 'FLIBS'));
+      args = args(~cellfun('isempty', args));
+      mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', args{:}, 'oct_demo.cc');
+      assert(oct_demo, 42)
+    EOS
   end
 end

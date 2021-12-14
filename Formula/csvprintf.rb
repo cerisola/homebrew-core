@@ -1,16 +1,17 @@
 class Csvprintf < Formula
   desc "Command-line utility for parsing CSV files"
   homepage "https://github.com/archiecobbs/csvprintf"
-  url "https://github.com/archiecobbs/csvprintf/archive/1.1.0.tar.gz"
-  sha256 "a64e48a81a4416f47c224a67b9554c93763429e25e4b15e0d23f3067bd6a0ffc"
+  url "https://github.com/archiecobbs/csvprintf/archive/1.3.0.tar.gz"
+  sha256 "f15737526f0505f0a26dbdd7799f7f3acc950001c64b18a5b233b8b0fd301b0c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "8afbe3e5b8700c87735bc13b57bfcd617e4fb3a1520fa775c8166fd5ca82281d"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3a11cedca73677e40d9ce558e0b00e7709574dc2dd631a054121b7607c1261e2"
-    sha256 cellar: :any_skip_relocation, catalina:      "42b91fd076c4f85bc0ec69ba1c9ae4d32a5a64b4070eb5859ee1e71199049f0f"
-    sha256 cellar: :any_skip_relocation, mojave:        "5fb842063d45968a558825af7a4dffcf5ef8258c9bd0c29c1b94657ac8fbab9f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8586df7d62cef4aca13955d98d0b661b2b2c93906060ac564dc4b81ad38d60a4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a0deb73adb1572880c61657134b72e178905b24523cf95554e1743ee9f1e02c2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ea130e438188f6e4a1d772d371c2d1c8136e0a8c4f78be7ec6b318ed22ba7d35"
+    sha256 cellar: :any_skip_relocation, monterey:       "d3ec11cb1b89680e8bfb76d6ccf9ed9922b02d2c113e98e837dd02f1a807a309"
+    sha256 cellar: :any_skip_relocation, big_sur:        "22721ae04799a69f22502e084131297ab50bcb7ea7ee9008e2af4bf77a6a92e1"
+    sha256 cellar: :any_skip_relocation, catalina:       "d2530b77936aa91b7e5cc904c241dc4a1a947a0c398e54911fb4040a8b6c812c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34fe20b34ade273df7d26b1ffe86f0173a4cee029c03ad515aff2c6aa5e65129"
   end
 
   depends_on "autoconf" => :build
@@ -18,10 +19,14 @@ class Csvprintf < Formula
 
   uses_from_macos "libxslt"
 
+  # Fix for missing 'u_char', remove in next version
+  patch do
+    url "https://github.com/archiecobbs/csvprintf/commit/c8798ed8.patch?full_index=1"
+    sha256 "94142117ec45922d8f6aa001ef17421e76600f761689e096015448fd3424f301"
+  end
+
   def install
-    on_macos do
-      ENV.append "LDFLAGS", "-liconv"
-    end
+    ENV.append "LDFLAGS", "-liconv" if OS.mac?
 
     system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

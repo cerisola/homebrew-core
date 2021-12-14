@@ -1,9 +1,10 @@
 class Libvirt < Formula
   desc "C virtualization API"
-  homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-7.6.0.tar.xz"
-  sha256 "8f967106d00aabb3cd692724bdd4a9c09e71cb2245053b98193690ee01766141"
+  homepage "https://libvirt.org/"
+  url "https://libvirt.org/sources/libvirt-7.10.0.tar.xz"
+  sha256 "cb318014af097327928c6e3d72922e3be02a3e6401247b2aa52d9ab8e0b480f9"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
+  head "https://gitlab.com/libvirt/libvirt.git", branch: "master"
 
   livecheck do
     url "https://libvirt.org/sources/"
@@ -11,17 +12,14 @@ class Libvirt < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_big_sur: "8f86ccc81d09112ce826c382bfefb74880c9dabfe186b9c83bf6d935eba1611d"
-    sha256 big_sur:       "5bd53310057ed0d72695cb176005bc8ad1bb320f4cb67c9b74cb1a2582631103"
-    sha256 catalina:      "dd979706fd043654f4393ee331607c325df0ca0012b3eecc8579223cbbd53bfd"
-    sha256 mojave:        "ba7df55e6bcb315e6ab46111a1e4a0824ab72c44888cd01f2d4821860f163dd3"
-    sha256 x86_64_linux:  "e31b155ea6e7e306875c78d43e28828ebc01b5a5210fd0a1bacbbf271a6f30dd"
+    sha256 arm64_monterey: "9a3965e2aeac2e96d1dd8d145d1b816b3b2b58a991e9439a7eedb29b08669598"
+    sha256 arm64_big_sur:  "1f0aeb8d5f8290bb9c4f934120c686000f9e4a44e754b4af7a060940c24b23da"
+    sha256 monterey:       "69e8451e0d24773bb7212d46a96fa99fdd9ac0fe827c10c87b256adf64ca98a7"
+    sha256 big_sur:        "2ff2402e0b97c6db4c18a70bd0afbe464c6d041668c3b43ee24edbc5c4ec3b2d"
+    sha256 catalina:       "be50ad0a90b7140d72c6ffc8cad5743a1277c2ceedb68e55b7e661f7a2d771a8"
+    sha256 x86_64_linux:   "1d45a7ce93bcb5dac4878e2d7059bbcc0d15a31921f19b69834ec91f68bae098"
   end
 
-  head do
-    url "https://github.com/libvirt/libvirt.git"
-  end
   depends_on "docutils" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
@@ -57,7 +55,9 @@ class Libvirt < Formula
         --sysconfdir=#{etc}
         -Ddriver_esx=enabled
         -Ddriver_qemu=enabled
+        -Ddriver_network=enabled
         -Dinit_script=none
+        -Dqemu_datadir=#{Formula["qemu"].opt_pkgshare}
       ]
       system "meson", *std_meson_args, *args, ".."
       system "meson", "compile"

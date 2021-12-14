@@ -2,23 +2,24 @@ class Lc0 < Formula
   desc "Open source neural network based chess engine"
   homepage "https://lczero.org/"
   url "https://github.com/LeelaChessZero/lc0.git",
-      tag:      "v0.27.0",
-      revision: "6bb93fbd1ac94b8e64943e520630c2f1db9d7813"
+      tag:      "v0.28.2",
+      revision: "fa5864bb5838e131d832ad63300517f4684913e7"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "e9dc041c748fee70f187c04373ca80ba8c274d1b4b9a38ee135e6b4d6ce419fc"
-    sha256 cellar: :any_skip_relocation, big_sur:       "0966b60547f4f559ed7bd03cdd0bbe41abfed8e8a69b8553eb790e120aac0e24"
-    sha256 cellar: :any_skip_relocation, catalina:      "ca05132c5b944255ce14f18960a59fa657d3dae1b9c088ff526b8763af793efc"
-    sha256 cellar: :any_skip_relocation, mojave:        "7578de28c6a91e884166aa033e4682a3d4992390c85fd74c811acb584b1b3f45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f827ee54a8c9ccd546720c78b71dae3af5cde850ebeb5483ca7e04fae09cdc2c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1a83e9b10fbf460f31a0df65c3b650a178138008d01ac9dd446e50f5e164f80c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "09ecbab2c6d063f3faaf28ab7883d3986e76df47bc9a47f540503a7782dae42a"
+    sha256 cellar: :any_skip_relocation, monterey:       "cbb8e63d14255f4f2f5b032f1a9c466289580c1faabdf5b7f5a66add4dfa0700"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4b88db3933ab2b18877650e80ce1bce7daf540169299d09d9880926a6e8e71a8"
+    sha256 cellar: :any_skip_relocation, catalina:       "29d1b566cea4427f9c80f3ba73bc004793ba0ac7baa1c947accac694124b1372"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e5c6976da22a52679ab67a261bc74aecfe92b29d0903871c63a2b2177e61011"
   end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build # required to compile .pb files
+  depends_on "python@3.10" => :build # required to compile .pb files
   depends_on "eigen"
 
   uses_from_macos "zlib"
@@ -35,16 +36,9 @@ class Lc0 < Formula
     sha256 "12df03a12919e6392f3efbe6f461fc0ff5451b4105f755503da151adc7ab6d67"
   end
 
-  # Fix compile error due to missing #include <condition_variable>
-  # Remove in the next release
-  patch do
-    url "https://github.com/LeelaChessZero/lc0/commit/997257a16fc74c848ab55e475c4d233d78838506.patch?full_index=1"
-    sha256 "5f4fb6b730a04bfd36567302bc4ad9d22f7f69c55c6fad35047a18d514210758"
-  end
-
   def install
     args = ["-Dgtest=false"]
-    on_linux do
+    if OS.linux?
       args << "-Dopenblas_include=#{Formula["openblas"].opt_include}"
       args << "-Dopenblas_libdirs=#{Formula["openblas"].opt_lib}"
     end

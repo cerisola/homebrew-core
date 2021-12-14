@@ -1,16 +1,16 @@
 class Imgproxy < Formula
   desc "Fast and secure server for resizing and converting remote images"
   homepage "https://imgproxy.net"
-  url "https://github.com/imgproxy/imgproxy/archive/v2.16.7.tar.gz"
-  sha256 "a86c60134fc06999c2bf038e0f12d73dd7452125764bf127b8adafc31db5426a"
+  url "https://github.com/imgproxy/imgproxy/archive/v3.1.1.tar.gz"
+  sha256 "7dccb461ad7bf7cce5477715049d9915ba75fde2a09b0310ad9741b162aa0b93"
   license "MIT"
   head "https://github.com/imgproxy/imgproxy.git"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "ec7baaa49e8e557f3caec444dc89cd728d9b3a954b293a93f20582fdc48340fb"
-    sha256 cellar: :any, big_sur:       "267e63891e7efe226cfcacd5efc557497392d53b2a0d0f51d1bbc9f4f18adad5"
-    sha256 cellar: :any, catalina:      "3776427cf853631d1fe9167745eb872dd03804d7546701a153f86f0fe776e689"
-    sha256 cellar: :any, mojave:        "b3bf3f5ebbee3badecd323cbfb24d6b6bf363057515bfab312250c99aedd1af7"
+    sha256 cellar: :any, arm64_big_sur: "47e9165144e9e39c11901b2039115d5f0309022935763ddff9fe22801a0ce631"
+    sha256 cellar: :any, monterey:      "43d00ac7a86610b9b7c2441d9091e6471379adc7e6604388d97c65e962d3f273"
+    sha256 cellar: :any, big_sur:       "5910cfb726fc0965edb80eaafd21f7735edc255fefe06d12961d117ad8d0eea0"
+    sha256 cellar: :any, catalina:      "4f2f2a56ae0b33626daafa43417770e69cd9dc12337a25d950d8ebd21526de10"
   end
 
   depends_on "go" => :build
@@ -40,13 +40,12 @@ class Imgproxy < Formula
     output = testpath/"test-converted.png"
 
     system "curl", "-s", "-o", output,
-           "http://127.0.0.1:#{port}/insecure/fit/100/100/no/0/plain/local:///test.jpg@png"
-    assert_equal 0, $CHILD_STATUS
+           "http://127.0.0.1:#{port}/insecure/resize:fit:100:100:true/plain/local:///test.jpg@png"
     assert_predicate output, :exist?
 
     file_output = shell_output("file #{output}")
     assert_match "PNG image data", file_output
-    assert_match "1 x 1", file_output
+    assert_match "100 x 100", file_output
   ensure
     Process.kill("TERM", pid)
     Process.wait(pid)

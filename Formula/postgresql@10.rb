@@ -1,9 +1,10 @@
 class PostgresqlAT10 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v10.18/postgresql-10.18.tar.bz2"
-  sha256 "57477c2edc82c3f86a74747707b3babc1f301f389315ae14e819e025c0ba3801"
+  url "https://ftp.postgresql.org/pub/source/v10.19/postgresql-10.19.tar.bz2"
+  sha256 "6eb830b428b60e84ae87e20436bce679c4d9d0202be7aec0e41b0c67d9134239"
   license "PostgreSQL"
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -11,11 +12,11 @@ class PostgresqlAT10 < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "b78fbea6a1a9b4181e2a2ef2c7bd436c23628f88dd822338573e724a817b2b2c"
-    sha256 big_sur:       "af833896d178d006d4bdc48eafdc270a23d7b1f62dbcd8fd88e7e63269f0adcf"
-    sha256 catalina:      "36cbf68eb8dab89c51d6d4e11dc7935e776572a5d04466b9515b655980ead968"
-    sha256 mojave:        "a5a7b07196fb7f5bb79fe04e85f5efea62500d167f2a82fd199bf40d21ff894f"
-    sha256 x86_64_linux:  "10c73ffb3f8afcea15586546d26797e800caab91039904024de3c184bc5c9786"
+    sha256 arm64_monterey: "d03b4afd640f4c3b00f9f00ab4713271f73dfef8264a8c9d0b0914b7f1bccd2e"
+    sha256 arm64_big_sur:  "a412b46666e8faece8064ba341a8798b4d9930885639b10a9a7c9bb20a548942"
+    sha256 monterey:       "995e4ac807dfc85963522ba63f10f9ab4d760d23744bb4c9d6ebb660e52c99c5"
+    sha256 big_sur:        "d7cbefbbcf76cb78b19d208ae131ec30cd67644410ca1838ff2f5e5226722fdc"
+    sha256 catalina:       "635a8c72855cab2239e763b2523fab9c40f5982cc616630f72b4b00486ddfcfa"
   end
 
   keg_only :versioned_formula
@@ -60,7 +61,7 @@ class PostgresqlAT10 < Formula
       --with-perl
       --with-uuid=e2fs
     ]
-    on_macos do
+    if OS.mac?
       args += %w[
         --with-bonjour
         --with-tcl
@@ -85,7 +86,7 @@ class PostgresqlAT10 < Formula
     # Attempting to fix that by adding a dependency on `open-sp` doesn't
     # work and the build errors out on generating the documentation, so
     # for now let's simply omit it so we can package Postgresql for Mojave.
-    on_macos do
+    if OS.mac?
       if DevelopmentTools.clang_build_version >= 1000
         system "make", "all"
         system "make", "-C", "contrib", "install", "all", *dirs
@@ -93,8 +94,7 @@ class PostgresqlAT10 < Formula
       else
         system "make", "install-world", *dirs
       end
-    end
-    on_linux do
+    else
       system "make", "all"
       system "make", "-C", "contrib", "install", "all", *dirs
       system "make", "install", "all", *dirs

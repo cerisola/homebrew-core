@@ -1,17 +1,18 @@
 class Xmake < Formula
   desc "Cross-platform build utility based on Lua"
   homepage "https://xmake.io/"
-  url "https://github.com/xmake-io/xmake/releases/download/v2.5.6/xmake-v2.5.6.tar.gz"
-  sha256 "79e65766761642d574ac24f50c4df2b896a3d9fb649a37746a9d9c67073d5998"
+  url "https://github.com/xmake-io/xmake/releases/download/v2.6.1/xmake-v2.6.1.tar.gz"
+  sha256 "97837c2388f1b841100b70afa087e6bbb1bb9fe804f6a9ff5b1519a94def8c8d"
   license "Apache-2.0"
-  head "https://github.com/xmake-io/xmake.git"
+  head "https://github.com/xmake-io/xmake.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "373e4b13ef927cc2e77121f6d537cec372c1cb2d1f1db8ca896e099945afd49a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "3c7768b7fd7494ce8881e5838f425010c9d1be2beab396a52c4d33cc307549f0"
-    sha256 cellar: :any_skip_relocation, catalina:      "39fc10b7da100af608f5827984802e0b361cc83642e7aee075ff3c9a699307b4"
-    sha256 cellar: :any_skip_relocation, mojave:        "2cd75a4ab1469fbc121ca9f9205cd36fea45dd659bbd99d44f81193948857188"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0bb06f6a0bb057afafffea00687581550ffae76a14afa49cfcc44f221a409763"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2bdce80b841e3745b70a0b76fc9d0815f72f78bf16789e1de87221f3633bfd0b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2bdce80b841e3745b70a0b76fc9d0815f72f78bf16789e1de87221f3633bfd0b"
+    sha256 cellar: :any_skip_relocation, monterey:       "76c9c177c438f37e42100e581016a504d69857fd371983c839927aaa82617228"
+    sha256 cellar: :any_skip_relocation, big_sur:        "14f3fed3d7fb77715b5d7edaadb04b369c6bcf0e15b3fcf0e46593761c16e7cf"
+    sha256 cellar: :any_skip_relocation, catalina:       "28ac6935bcabf82d70acaa38b70eadac05bd1bbe9209436c82e78a1766d06bf7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "620e5d52ed7eb72c7bab501543219aa405841be32f210a979020268601fcbf90"
   end
 
   on_linux do
@@ -19,9 +20,7 @@ class Xmake < Formula
   end
 
   def install
-    on_linux do
-      ENV["XMAKE_ROOT"] = "y" if ENV["HOMEBREW_GITHUB_ACTIONS"]
-    end
+    ENV["XMAKE_ROOT"] = "y" if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     system "make"
     system "make", "install", "prefix=#{prefix}"

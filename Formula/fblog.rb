@@ -1,18 +1,18 @@
 class Fblog < Formula
   desc "Small command-line JSON log viewer"
   homepage "https://github.com/brocode/fblog"
-  url "https://github.com/brocode/fblog/archive/v2.3.0.tar.gz"
-  sha256 "6933f9cb826449a456198581eeeff37ec257a33098748b514937106ff74f885d"
+  url "https://github.com/brocode/fblog/archive/v3.1.2.tar.gz"
+  sha256 "a5cf45d9dbe3b5803edc8d6d100d1e995df35dda7b0a8b14dbc4e2b0f881da76"
   license "WTFPL"
   head "https://github.com/brocode/fblog.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "0db7ff023c0be59803cb2d7e4bafd73e5b582b55b5c11a8bca7d24cd1697747f"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1f7f7bc4090b60cef5e30c70e12b476e7664e7c4910f49dbb51255d4d81c4050"
-    sha256 cellar: :any_skip_relocation, catalina:      "18a0a07a3af24fa74b4590385f297441379005a0e4e3f6c79895b38c5cef6ccf"
-    sha256 cellar: :any_skip_relocation, mojave:        "b8da5a81c66d27b82d8e604444dd31807b4c567e73c8c80a84704df402e6ec56"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "8e7bf6bf388b11ebcf78a0f6442b2dd2673ca7e99b93282f59a38103e2ee3293"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e2672eb2839cade14d1702c5aaf2a5e4c3192b5294562d5ea43ed6ae3741a122"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "024bfa3d837322d3a476984de0fbc6c597d7af5515273ad4384cf73ba908ecff"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4b2922f7031c2ec7a117b61f4da0b0eb011752c374e3f2b26ad371b72f98b544"
+    sha256 cellar: :any_skip_relocation, monterey:       "2364c94051c5b2161dde8fe9669de0b8b3b0cfb3d6f6b9001e5880c04584957d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "bdfee75a46131864ae36c46f4f1464f1071c0e4dd54062ea83ac2cb035cfcfcc"
+    sha256 cellar: :any_skip_relocation, catalina:       "628f9a7e7b15693dea3c41be9d1de737e3e759d297a4ea1a8ff5e0c93149a333"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "29ffacdeb616212ab7899e3dde7a888b421cd46e45bd07e4fca2edd9f2021304"
   end
 
   depends_on "rust" => :build

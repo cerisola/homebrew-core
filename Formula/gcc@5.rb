@@ -4,7 +4,7 @@ class GccAT5 < Formula
   url "https://ftp.gnu.org/gnu/gcc/gcc-5.5.0/gcc-5.5.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-5.5.0/gcc-5.5.0.tar.xz"
   sha256 "530cea139d82fe542b358961130c69cfde8b3d14556370b65823d2f91f0ced87"
-  revision 6
+  revision 7
 
   livecheck do
     url :stable
@@ -12,8 +12,7 @@ class GccAT5 < Formula
   end
 
   bottle do
-    sha256 high_sierra:  "dcc9059b725fd7c87842287bbedf60a28745417652d42a300dcd944e15986f36"
-    sha256 x86_64_linux: "d6f20394b24f8bfeac86d4785e1c88f88c594f6157c93bcfb81de87c6e2d3beb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "14a5443ed549cc911a8b589f5fa2cda7cfe97c1ffe8c87674d67836406d25878"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -85,6 +84,7 @@ class GccAT5 < Formula
     args = [
       "--prefix=#{prefix}",
       "--libdir=#{lib}/gcc/#{version_suffix}",
+      "--with-gcc-major-version-only",
       "--enable-languages=#{languages.join(",")}",
       # Make most executables versioned to avoid conflicts.
       "--program-suffix=-#{version_suffix}",
@@ -105,7 +105,7 @@ class GccAT5 < Formula
       "--with-bugurl=#{tap.issues_url}",
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--build=x86_64-apple-darwin#{OS.kernel_version}"
       args << "--enable-multilib"
       args << "--with-system-zlib"
@@ -120,9 +120,7 @@ class GccAT5 < Formula
       # Ensure correct install names when linking against libgcc_s;
       # see discussion in https://github.com/Homebrew/homebrew/pull/34303
       inreplace "libgcc/config/t-slibgcc-darwin", "@shlib_slibdir@", "#{HOMEBREW_PREFIX}/lib/gcc/#{version_suffix}"
-    end
-
-    on_linux do
+    else
       # Fix cc1: error while loading shared libraries: libisl.so.15
       args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV["LDFLAGS"]}"
       args << "--disable-multilib"
@@ -142,17 +140,16 @@ class GccAT5 < Formula
       system "../configure", *args
       system "make", "bootstrap"
 
-      on_macos do
+      if OS.mac?
         system "make", "install"
-      end
+      else
 
-      on_linux do
         system "make", "install-strip"
       end
 
       # Add symlinks for libgcc, libgomp, libquadmath and libstdc++ so that bottles
       # built in CI can find these libraries when using brewed gcc@5
-      on_linux do
+      if OS.linux?
         lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.so"
         lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.a"
         lib.install_symlink lib/"gcc/#{version_suffix}/libgcc_s.so.1"
@@ -183,7 +180,7 @@ class GccAT5 < Formula
   end
 
   def post_install
-    on_linux do
+    if OS.linux?
       gcc = "#{bin}/gcc-#{version_suffix}"
       libgcc = Pathname.new(Utils.safe_popen_read(gcc, "-print-libgcc-file-name")).parent
       raise "command failed: #{gcc} -print-libgcc-file-name" if $CHILD_STATUS.exitstatus.nonzero?
@@ -239,6 +236,7 @@ class GccAT5 < Formula
       #     Noted that it should only be passed for the `gcc@*` formulae.
       #   * `-L#{HOMEBREW_PREFIX}/lib` instructs gcc to find the rest
       #     brew libraries.
+      #     Note: *link will silently add #{libdir} first to the RPATH
       libdir = HOMEBREW_PREFIX/"lib/gcc/#{version_suffix}"
       specs.write specs_string + <<~EOS
         *cpp_unique_options:
@@ -248,9 +246,12 @@ class GccAT5 < Formula
         #{glibc_installed ? "-nostdlib -L#{libgcc}" : "+"} -L#{libdir} -L#{HOMEBREW_PREFIX}/lib
 
         *link:
-        + --dynamic-linker #{HOMEBREW_PREFIX}/lib/ld.so -rpath #{libdir} -rpath #{HOMEBREW_PREFIX}/lib
+        + --dynamic-linker #{HOMEBREW_PREFIX}/lib/ld.so -rpath #{libdir}
 
+        *homebrew_rpath:
+        -rpath #{HOMEBREW_PREFIX}/lib
       EOS
+      inreplace(specs, " %o ", "\\0%(homebrew_rpath) ")
 
       # Symlink ligcc_s.so.1 where glibc can find it.
       # Fix the error: libgcc_s.so.1 must be installed for pthread_cancel to work

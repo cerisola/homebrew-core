@@ -1,17 +1,19 @@
 class Kahip < Formula
   desc "Karlsruhe High Quality Partitioning"
   homepage "https://algo2.iti.kit.edu/documents/kahip/index.html"
-  url "https://github.com/KaHIP/KaHIP/archive/v3.11.tar.gz"
-  sha256 "347575d48c306b92ab6e47c13fa570e1af1e210255f470e6aa12c2509a8c13e3"
+  url "https://github.com/KaHIP/KaHIP/archive/v3.13a.tar.gz"
+  version "3.13a"
+  sha256 "038beb588f27155da700130c895692a44ae85c45ce3ee99cc929d5fbe1b3ca2c"
   license "MIT"
   head "https://github.com/KaHIP/KaHIP.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "7dd775db6db3f292630fef80ed2372b302e6d2caaaa1aa36259f9c9cd316bc42"
-    sha256 cellar: :any,                 big_sur:       "b020b5b9e72805576099c1a4cd13c5bf0ac07c7451f22150bb8b1213029ac83f"
-    sha256 cellar: :any,                 catalina:      "9d37b651ac2a278ec406cdab07d9c61fbc4ee5fc18b299d9fc640d13ddd3e01e"
-    sha256 cellar: :any,                 mojave:        "3426ae40721153a746e297e6fc0ceceb6f07fd6df88f2ebdcca830ccc16e9c73"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0258d4bb8fc771b98528c7f45c014985d65b1ffd23e7f3628a2c424985f37b94"
+    sha256 cellar: :any,                 arm64_monterey: "ff4e9bd0b76d7fd28461265bdd37f2a649bb15045c1ee724a89ad43b6d8081be"
+    sha256 cellar: :any,                 arm64_big_sur:  "a676f98f7478c94f26858f908d41925cc2ca41973feabf047c96cf970759777e"
+    sha256 cellar: :any,                 monterey:       "7d02776c8a7eee5747c9f9b93c1bc2cbcdae286912dda6a59df0fa8a7cca59ab"
+    sha256 cellar: :any,                 big_sur:        "b300ca67e943f079bf93526f746808a5621b585e0a65fff0562a85c1c445e52a"
+    sha256 cellar: :any,                 catalina:       "81043fe57a6778018ceb47fbfc1b46a72244d63bca4ac312226e6b97dbf55f53"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "770cadf4665dfd5b6ce54a6d542509a0e4b5b05b0cfb40757711ae3998ce6615"
   end
 
   depends_on "cmake" => :build
@@ -22,7 +24,7 @@ class Kahip < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac?
       gcc_major_ver = Formula["gcc"].any_installed_version.major
       ENV["CC"] = Formula["gcc"].opt_bin/"gcc-#{gcc_major_ver}"
       ENV["CXX"] = Formula["gcc"].opt_bin/"g++-#{gcc_major_ver}"

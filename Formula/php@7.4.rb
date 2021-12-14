@@ -2,10 +2,11 @@ class PhpAT74 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.4.22.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.4.22.tar.xz"
-  sha256 "8e078cd7d2f49ac3fcff902490a5bb1addc885e7e3b0d8dd068f42c68297bde8"
+  url "https://www.php.net/distributions/php-7.4.26.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.4.26.tar.xz"
+  sha256 "e305b3aafdc85fa73a81c53d3ce30578bc94d1633ec376add193a1e85e0f0ef8"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -13,16 +14,18 @@ class PhpAT74 < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "ec0e177443c2b69eabfade075671514663fd1fd44944be815e948c796eac786a"
-    sha256 big_sur:       "b5eee7f153292aececd3d703e55ac48f7ff727a0677cef9945cc69560b6567b4"
-    sha256 catalina:      "71b8f62438872360e058853ba59cf57fdc38ba840a4ca49d469d088bc1a5119e"
-    sha256 mojave:        "1442332a72c07986ee6bd98c77f22f0792b31b28cdcc0310b55b2b415bb13222"
-    sha256 x86_64_linux:  "2f98f679f7f1aa1dc00390835d859009206e3e96271de9cc508ac279d3aba23b"
+    rebuild 1
+    sha256 arm64_monterey: "81a8032238791f23f887349d6943f90ceb3da52e3f417d78b189775d38e85357"
+    sha256 arm64_big_sur:  "5a1944f50b0518a2eed2de990b6a5308521fd01f1ab775c212b5a60fa1419521"
+    sha256 monterey:       "4765467db60ec6b29d2bed89d4e66bc8dd0894940d6af3abc3ad725153a4525b"
+    sha256 big_sur:        "66b6be0e17e1d0f53ff422957528961949b123bb2d2b5e9cd6bf2d0213ae6a6d"
+    sha256 catalina:       "45a68b2e359fe3372935101ee7adcf62931e9f73705fdac11e1777c80be1fdce"
+    sha256 x86_64_linux:   "8492d5186d18cb547ce9d21e87aa9961a5c0aa340c9401c8bbde2d5ff8184c32"
   end
 
   keg_only :versioned_formula
 
-  deprecate! date: "2022-11-28", because: :versioned_formula
+  disable! date: "2022-11-28", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -35,11 +38,9 @@ class PhpAT74 < Formula
   depends_on "freetds"
   depends_on "gd"
   depends_on "gettext"
-  depends_on "glib"
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "krb5"
-  depends_on "libffi"
   depends_on "libpq"
   depends_on "libsodium"
   depends_on "libzip"
@@ -54,6 +55,7 @@ class PhpAT74 < Formula
   uses_from_macos "xz" => :build
   uses_from_macos "bzip2"
   uses_from_macos "libedit"
+  uses_from_macos "libffi", since: :catalina
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
   uses_from_macos "zlib"
@@ -65,9 +67,9 @@ class PhpAT74 < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac? && (MacOS.version == :el_capitan || MacOS.version == :sierra)
       # Ensure that libxml2 will be detected correctly in older MacOS
-      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+      ENV["SDKROOT"] = MacOS.sdk_path
     end
 
     # buildconf required due to system library linking bug patch
@@ -108,11 +110,10 @@ class PhpAT74 < Formula
 
     # system pkg-config missing
     ENV["KERBEROS_CFLAGS"] = " "
-    on_macos do
+    if OS.mac?
       ENV["SASL_CFLAGS"] = "-I#{MacOS.sdk_path_if_needed}/usr/include/sasl"
       ENV["SASL_LIBS"] = "-lsasl2"
-    end
-    on_linux do
+    else
       ENV["SQLITE_CFLAGS"] = "-I#{Formula["sqlite"].opt_include}"
       ENV["SQLITE_LIBS"] = "-lsqlite3"
       ENV["BZIP_DIR"] = Formula["bzip2"].opt_prefix
@@ -120,10 +121,7 @@ class PhpAT74 < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = ""
-    on_macos do
-      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
-    end
+    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     args = %W[
       --prefix=#{prefix}
@@ -193,12 +191,11 @@ class PhpAT74 < Formula
       --with-zlib
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--enable-dtrace"
       args << "--with-ldap-sasl"
       args << "--with-os-sdkpath=#{MacOS.sdk_path_if_needed}"
-    end
-    on_linux do
+    else
       args << "--disable-dtrace"
       args << "--without-ldap-sasl"
       args << "--without-ndbm"

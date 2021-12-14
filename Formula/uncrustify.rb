@@ -1,23 +1,31 @@
 class Uncrustify < Formula
   desc "Source code beautifier"
   homepage "https://uncrustify.sourceforge.io/"
-  url "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.72.0.tar.gz"
-  sha256 "d6fff70bc7823fac4c77013055333b79a4839909094e8eee8a14ee8f1777374e"
+  url "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.74.0.tar.gz"
+  sha256 "b7d24e256e7f919aa96289ac8167ac98340df7faa2d34b60d2242dc54700caaa"
   license "GPL-2.0-or-later"
-  head "https://github.com/uncrustify/uncrustify.git"
+  head "https://github.com/uncrustify/uncrustify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "327603c90e291b6f9f8c5bf837bfe4f22295cdf18dc397e012537eab2e7ca9b2"
-    sha256 cellar: :any_skip_relocation, big_sur:       "ee6e6b6d193ed163cd8365382bc56dd621f5c8f6c3776f52e4b0b2aeb1b90329"
-    sha256 cellar: :any_skip_relocation, catalina:      "c22df6af4af60a023f95f2cdce327fffe740264e44382e5bcd97e6ea9245bdb7"
-    sha256 cellar: :any_skip_relocation, mojave:        "3340dd41ba1ad700ba8014225ac005c9a171d16b990ff275257f9c4f30097861"
-    sha256 cellar: :any_skip_relocation, high_sierra:   "2af96b34e949ec3034f0c66c90918ac69b6b3f312e32ce4c27b0dfe158bfef40"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5248221b155171b5f909e80b0883dc0b74cb23079c8128d235e5c95903d26d29"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c6f05dbc5d1c74f955fbad667a8258ad89b9d1657955c17e262f6bbe353a53f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7fdaef8b0935162c29e8279f7f4559d8c5a8382dd2ce3cf95a9d4dfba6f6ebd2"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f5afcca86615e0b5a6ea200faa8f90d07bf0cde70b1e8dd9c7b3c0bb06b255d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9e6d96d4bdb8fa09eb9c02098b02ee8400b8f3c916a5fdfe93bc33b37e9bf103"
+    sha256 cellar: :any_skip_relocation, catalina:       "018ad95d5ce9c1f1fb4e390ce3b36fcf67a124307d21d2876cae7f5524f3a72b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59c736cd3bd26f6c5b96e234fdcc0be031251e2c6e7212d055112ec7f5218339"
   end
 
   depends_on "cmake" => :build
 
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
   def install
+    ENV.cxx11
+
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"

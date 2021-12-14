@@ -2,27 +2,22 @@ class PhpAT73 < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-7.3.29.tar.xz"
-  mirror "https://fossies.org/linux/www/php-7.3.29.tar.xz"
-  sha256 "7db2834511f3d86272dca3daee3f395a5a4afce359b8342aa6edad80e12eb4d0"
+  url "https://www.php.net/distributions/php-7.3.33.tar.xz"
+  mirror "https://fossies.org/linux/www/php-7.3.33.tar.xz"
+  sha256 "166eaccde933381da9516a2b70ad0f447d7cec4b603d07b9a916032b215b90cc"
   license "PHP-3.01"
   revision 1
 
-  livecheck do
-    url "https://www.php.net/downloads"
-    regex(/href=.*?php[._-]v?(#{Regexp.escape(version.major_minor)}(?:\.\d+)*)\.t/i)
-  end
-
   bottle do
-    sha256 big_sur:      "5932ad49302d7cd20e502eee51cfb091838d90c665e594c4e1c2c9f274c0af4a"
-    sha256 catalina:     "b5057607a78bf0aebbd5f55e8dcbff9835e9f6552228c7b979d626d144e3ec81"
-    sha256 mojave:       "fc756662888e4b7273c08e696c9f8b0f335de82322ed1518a260a5713068c5e8"
-    sha256 x86_64_linux: "234ee1ba07960222370fd6dbaf1b8747d0cacb3efb277ceed14dc37b6b0815bd"
+    sha256 monterey:     "93126a75527f2ebb61854eca3d828a2c85be368810d958891e82d01079186fcc"
+    sha256 big_sur:      "e1e2f43e53f5324dd918cb3c53ced792eb39d1a328fdc995df2cc11377c24f4f"
+    sha256 catalina:     "7a1587d14a448ec6c748c93dddde0bded32778dda5c9ee0321f3b9f610a7ffb9"
+    sha256 x86_64_linux: "98174faad5ea86e2bb3c29772d50cd9b62aeb684817bb8aa07fb06f59d66973a"
   end
 
   keg_only :versioned_formula
 
-  deprecate! date: "2021-12-06", because: :versioned_formula
+  disable! date: "2021-12-06", because: :versioned_formula
 
   depends_on "httpd" => [:build, :test]
   depends_on "pkg-config" => :build
@@ -36,7 +31,6 @@ class PhpAT73 < Formula
   depends_on "freetds"
   depends_on "freetype"
   depends_on "gettext"
-  depends_on "glib"
   depends_on "gmp"
   depends_on "icu4c"
   depends_on "jpeg-turbo"
@@ -64,9 +58,9 @@ class PhpAT73 < Formula
   end
 
   def install
-    on_macos do
+    if OS.mac? && (MacOS.version == :el_capitan || MacOS.version == :sierra)
       # Ensure that libxml2 will be detected correctly in older MacOS
-      ENV["SDKROOT"] = MacOS.sdk_path if MacOS.version == :el_capitan || MacOS.version == :sierra
+      ENV["SDKROOT"] = MacOS.sdk_path
     end
 
     # buildconf required due to system library linking bug patch
@@ -110,10 +104,8 @@ class PhpAT73 < Formula
 
     # Each extension that is built on Mojave needs a direct reference to the
     # sdk path or it won't find the headers
-    headers_path = ""
-    on_macos do
-      headers_path = "=#{MacOS.sdk_path_if_needed}/usr"
-    end
+
+    headers_path = "=#{MacOS.sdk_path_if_needed}/usr" if OS.mac?
 
     args = %W[
       --prefix=#{prefix}
@@ -182,7 +174,7 @@ class PhpAT73 < Formula
       --with-xmlrpc
     ]
 
-    on_macos do
+    if OS.mac?
       args << "--enable-dtrace"
       args << "--with-ldap-sasl#{headers_path}"
       args << "--with-zlib#{headers_path}"
@@ -192,7 +184,7 @@ class PhpAT73 < Formula
       args << "--with-libxml-dir#{headers_path}"
       args << "--with-xsl#{headers_path}"
     end
-    on_linux do
+    if OS.linux?
       args << "--disable-dtrace"
       args << "--with-zlib=#{Formula["zlib"].opt_prefix}"
       args << "--with-bz2=#{Formula["bzip2"].opt_prefix}"

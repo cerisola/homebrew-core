@@ -1,9 +1,9 @@
 class Gpsd < Formula
   desc "Global Positioning System (GPS) daemon"
   homepage "https://gpsd.gitlab.io/gpsd/"
-  url "https://download.savannah.gnu.org/releases/gpsd/gpsd-3.23.tar.xz"
-  mirror "https://download-mirror.savannah.gnu.org/releases/gpsd/gpsd-3.23.tar.xz"
-  sha256 "e36429b9f6fc42004894dff3dc4453f5b43f95af8533b96d3d135987418da9df"
+  url "https://download.savannah.gnu.org/releases/gpsd/gpsd-3.23.1.tar.xz"
+  mirror "https://download-mirror.savannah.gnu.org/releases/gpsd/gpsd-3.23.1.tar.xz"
+  sha256 "ca2c466df783c57b8a07ad3f5c67943186d05befdc377de938ed111d1358a8c1"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,15 +12,17 @@ class Gpsd < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "51fae36422568cde2845dfbd6e9f48ec38ac6d84ed0c3412581bee1612331340"
-    sha256 cellar: :any,                 big_sur:       "b8d992eb67763ca693525720a70f546b2944b913ec93aee936a7c084995f5ceb"
-    sha256 cellar: :any,                 catalina:      "7e347f09e9780efed87f483d2d1663655405539f32ef3741d5377909857b481f"
-    sha256 cellar: :any,                 mojave:        "619c8ba68ab43aae14deb1ba148ed91e4d50e2eae5971893ed1f3a60165c39c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0fb25eed89a7918bc5c84cc061f1308c24b43a6877be98da240a15d8bc7184dc"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "363e6a7e67b050a027ff46ae2c444c7f1125d39f515fe77e39cc9041656c7977"
+    sha256 cellar: :any,                 arm64_big_sur:  "3b9099d2a71d641a8f1c935fa7a02b9535968fd2edef5584fc7143bc0f04d6b7"
+    sha256 cellar: :any,                 monterey:       "df2284611cbdcd349ba5fdf8d7a0a21b710d41b7f8b770231fd70bdd76e3519f"
+    sha256 cellar: :any,                 big_sur:        "328535be408821bb68bd55cf385c978b28043d4a561168a8f7dd3a200a41ae02"
+    sha256 cellar: :any,                 catalina:       "f38c863774029e15c3a4a17213b470e82f1ca167cd1221d0d3b7efb2c953f92f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1a8f97e40f3f2bf07d67731dcaee835fa0d9f211a05542a5420e363ef35d266"
   end
 
   depends_on "asciidoctor" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "scons" => :build
 
   uses_from_macos "ncurses"

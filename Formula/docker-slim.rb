@@ -1,8 +1,8 @@
 class DockerSlim < Formula
   desc "Minify and secure Docker images"
   homepage "https://dockersl.im"
-  url "https://github.com/docker-slim/docker-slim/archive/1.36.1.tar.gz"
-  sha256 "8a8fc989db310a3cb589509836219f2bff333da30129e64986a28718fa6719e0"
+  url "https://github.com/docker-slim/docker-slim/archive/1.37.3.tar.gz"
+  sha256 "6c8bb386314b9e3674c28b4b3a3baf2a62656999374d93d7c741f9cc9a594a7c"
   license "Apache-2.0"
 
   livecheck do
@@ -11,11 +11,12 @@ class DockerSlim < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "d7fe324dd837b56f9eb610850e3ae0af123a64b16e2bc1617ecec366f55585e1"
-    sha256 cellar: :any_skip_relocation, big_sur:       "b26187e10d9c9648b373065d01e03a5674e65fd177408d42e833cdd2f0c7701a"
-    sha256 cellar: :any_skip_relocation, catalina:      "b26187e10d9c9648b373065d01e03a5674e65fd177408d42e833cdd2f0c7701a"
-    sha256 cellar: :any_skip_relocation, mojave:        "b26187e10d9c9648b373065d01e03a5674e65fd177408d42e833cdd2f0c7701a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "70ce787fa0e398cfd5df85e6258b3ddf0c059ef13baf8d15c9c8764b8f4b2e90"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "873e3bcbe01bda68937b930e569e75cb44e82c88fdaadcdd5d4186da29ac8998"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "873e3bcbe01bda68937b930e569e75cb44e82c88fdaadcdd5d4186da29ac8998"
+    sha256 cellar: :any_skip_relocation, monterey:       "df87009035951ec38e0ea41d9e16bd50380270eed26b218dbce04cabde178372"
+    sha256 cellar: :any_skip_relocation, big_sur:        "df87009035951ec38e0ea41d9e16bd50380270eed26b218dbce04cabde178372"
+    sha256 cellar: :any_skip_relocation, catalina:       "df87009035951ec38e0ea41d9e16bd50380270eed26b218dbce04cabde178372"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19f2f87b66b944d5e7aa4ba66de5bbbe159494c3bc99dc5caaeda7dbaa4619f6"
   end
 
   depends_on "go" => :build

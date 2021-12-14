@@ -1,17 +1,18 @@
 class Glfw < Formula
   desc "Multi-platform library for OpenGL applications"
   homepage "https://www.glfw.org/"
-  url "https://github.com/glfw/glfw/archive/3.3.4.tar.gz"
-  sha256 "cc8ac1d024a0de5fd6f68c4133af77e1918261396319c24fd697775a6bc93b63"
+  url "https://github.com/glfw/glfw/archive/3.3.6.tar.gz"
+  sha256 "ed07b90e334dcd39903e6288d90fa1ae0cf2d2119fec516cf743a0a404527c02"
   license "Zlib"
   head "https://github.com/glfw/glfw.git"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "254fab48c4f812c65cc73a046a664b0a914ef745c832ab01c8706ee77de6a195"
-    sha256 cellar: :any,                 big_sur:       "cc2a5ebed503daa988847659ce72bcbafd44387ecebb55fa422631edb731cade"
-    sha256 cellar: :any,                 catalina:      "b6505ca02cb672280ce332952dd188b7ffd139b4b48b1afb33a1619143bfd126"
-    sha256 cellar: :any,                 mojave:        "fb4c73abb6b230ffc2cacf187114584a1e589e67f399b78a56396911b2e1b483"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8b8d18377e4dcf96cfdd986f9580ccab2a283707f7820d3024487a038ed4c0a"
+    sha256 cellar: :any,                 arm64_monterey: "8f155b434f74ac11c303fab7887b5b41b2ea6440f438e101172b2b0a813ca004"
+    sha256 cellar: :any,                 arm64_big_sur:  "dca3eaac840e35f4e56f57a0825b557e932fcdc1bc9963b98fa18bf90c0af647"
+    sha256 cellar: :any,                 monterey:       "0eca3ff0166f1ece7deceb367e65b4edfbca79796b39675c6cb5e97e062908c2"
+    sha256 cellar: :any,                 big_sur:        "9cbe17a177731240a8fc404aa28610f9377001e6b22c0d9824f06ba7079a6177"
+    sha256 cellar: :any,                 catalina:       "843ed388610abf58783e081e47974eaa000cd67a1146b5795df6e17fba4c2062"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0f4bed83bf9ff81bb0bb0d78b35b07c6405777e5ad82b9e8e73606ab4f24677"
   end
 
   depends_on "cmake" => :build

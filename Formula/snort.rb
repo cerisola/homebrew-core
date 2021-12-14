@@ -1,18 +1,19 @@
 class Snort < Formula
   desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://github.com/snort3/snort3/archive/3.1.10.0.tar.gz"
-  mirror "https://fossies.org/linux/misc/snort3-3.1.10.0.tar.gz"
-  sha256 "6bd1c2c243ff69f9222aee6fb5d48998c7e24acaa4d2349115af324f9810bb01"
+  url "https://github.com/snort3/snort3/archive/3.1.18.0.tar.gz"
+  mirror "https://fossies.org/linux/misc/snort3-3.1.18.0.tar.gz"
+  sha256 "6e45c16b1815d832b5d6edcd2b705e7838e25c76bfd54b3e86c55ecba6de420a"
   license "GPL-2.0-only"
-  head "https://github.com/snort3/snort3.git"
+  head "https://github.com/snort3/snort3.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "58986cae6a7edcb337c8f719e38d38b5c6656414df138814a191135ec6196d43"
-    sha256 cellar: :any,                 big_sur:       "5b1749b31605e7c22eeb1f90edc4979b7674324754a2230f7f8d1440bf1aa808"
-    sha256 cellar: :any,                 catalina:      "d25dd4a9b0a6d6596848d40de190c59f9b4cce3b5e8797ac0d27a39801bc93af"
-    sha256 cellar: :any,                 mojave:        "5aa32bd5221b932274c2cbb322b0315cd42242f626b4b29d2203882739764a4f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d55b8760ed186928055e3470a4ab02134a4765c64faf986cc7e2a8f8a3f18576"
+    sha256 cellar: :any,                 arm64_monterey: "972f0a3ff887f055050169e35b5d32b31a717300f91d70e0f39f51668d592c7c"
+    sha256 cellar: :any,                 arm64_big_sur:  "d77a3d13da44e54317f12610dbdf4c9750d3302adc3d494d2fdcc4e0de300c9b"
+    sha256 cellar: :any,                 monterey:       "8af4f3099ad5528080491555cedf31b0434b877fd4624cb9ec363dceec42de50"
+    sha256 cellar: :any,                 big_sur:        "a5a969dc0473a98fef08a83b78cf5846bd9552fe947a70be2a1d9f049b10ef2d"
+    sha256 cellar: :any,                 catalina:       "173da28ada2c4e1670ce1038deb6dc0ccc17031189ee5d503cfae73e23c2f743"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3b10da9988a743bb4ab2b390861c70c09ac1e4990d24445ae8891284a35bb97"
   end
 
   depends_on "cmake" => :build
@@ -25,16 +26,25 @@ class Snort < Formula
   # Hyperscan improves IPS performance, but is only available for x86_64 arch.
   depends_on "hyperscan" if Hardware::CPU.intel?
   depends_on "libdnet"
+  depends_on "libpcap" # macOS version segfaults
   depends_on "luajit-openresty"
   depends_on "openssl@1.1"
   depends_on "pcre"
   depends_on "xz" # for lzma.h
 
-  uses_from_macos "libpcap"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "libunwind"
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
+
+  # PR ref, https://github.com/snort3/snort3/pull/225
+  patch do
+    url "https://github.com/snort3/snort3/commit/704c9d2127377b74d1161f5d806afa8580bd29bf.patch?full_index=1"
+    sha256 "4a96e428bd073590aafe40463de844069a0e6bbe07ada5c63ce1746a662ac7bd"
   end
 
   def install
@@ -43,7 +53,7 @@ class Snort < Formula
     inreplace "cmake/FindLuaJIT.cmake", " -pagezero_size 10000 -image_base 100000000\"", "\""
 
     mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DENABLE_STATIC_DAQ=OFF", "-DENABLE_TCMALLOC=ON"
+      system "cmake", "..", *std_cmake_args, "-DENABLE_TCMALLOC=ON"
       system "make", "install"
     end
   end

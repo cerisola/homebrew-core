@@ -1,8 +1,9 @@
 class Glslang < Formula
   desc "OpenGL and OpenGL ES reference compiler for shading languages"
   homepage "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/"
-  url "https://github.com/KhronosGroup/glslang/archive/11.5.0.tar.gz"
-  sha256 "fd0b5e3bda591bb08bd3049655a99a0a55f0de4059b9c8f7b397e4b19cf5d51f"
+  url "https://github.com/KhronosGroup/glslang/archive/11.7.1.tar.gz"
+  sha256 "ab2e2ddc507bb418b9227cbe6f443eb06e89e2387944f42026d82c0b4ef79b0a"
+  license all_of: ["BSD-3-Clause", "GPL-3.0-or-later", "MIT", "Apache-2.0"]
   head "https://github.com/KhronosGroup/glslang.git"
 
   livecheck do
@@ -11,15 +12,17 @@ class Glslang < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "112df1a4b0cea8b4a1260e30f357ca6fcbe4d78139a7e2540fe579e62f1c1382"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1a6c187d34130acbc0da05869d045fd28ebb58a7665160bbb629cf44385e39d8"
-    sha256 cellar: :any_skip_relocation, catalina:      "138cdfa0948e7b98a1f9cfec590002abd883ce0c4ce9a1e463769a78c39e1087"
-    sha256 cellar: :any_skip_relocation, mojave:        "32bdbcf7595e0a5cd83e84117caca3dd210c0f2a0de4cad1a18a6ee33086c8db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4768d834ffbf9c4bdd64461271c5fb652aec519803b85174d86c785bfc81640f"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "356d8643bd47d5491a211f08eb60b71906cb130ce0410f022bc9f20047a1e125"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "41ebe421a85b8d4e4db6d476229fc0ccee58c235d663fa842c6a25d693ade86e"
+    sha256 cellar: :any_skip_relocation, monterey:       "81d64330922d10a64c39cbc1079d0c9722033df07072e97d5f8f29d3eeb60153"
+    sha256 cellar: :any_skip_relocation, big_sur:        "76ffccb9839cc757d9549dd48090f139d240d44f9f27e87834d1dabb46b33fa9"
+    sha256 cellar: :any_skip_relocation, catalina:       "57299a244ba4da3aca66912f11c7b0a902e498d15d257ad31da9ec3942dc6bf6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "455298aa998f5f656feb5526f5846a2d950aac9fd7cdba95918df9795c346e5a"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   def install
     args = %w[

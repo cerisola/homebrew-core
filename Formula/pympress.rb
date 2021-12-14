@@ -3,18 +3,23 @@ class Pympress < Formula
 
   desc "Simple and powerful dual-screen PDF reader designed for presentations"
   homepage "https://github.com/Cimbali/pympress/"
-  url "https://files.pythonhosted.org/packages/9b/69/9b60fab9cddc63ea11d3d16d07dc375951015cf2f360af1dbca2fff7fe15/pympress-1.6.3.tar.gz"
-  sha256 "7fe3a3134c7fdf27c960708b07ea27ed34fb309daf36ef3b487462ebba850c23"
+  url "https://files.pythonhosted.org/packages/3f/33/56f8e84cc3079f866d8b3fdd2d9ef538fab7a9a0cfc7b0e02c5cf65b95fb/pympress-1.7.1.tar.gz"
+  sha256 "bfdc228cb14862dba943abf9ece92d9e966c433e566ba514985739966f838ee3"
   license "GPL-2.0-or-later"
-  head "https://github.com/Cimbali/pympress.git"
+  head "https://github.com/Cimbali/pympress.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:  "d23e94203938b9d59f818dec35e88d80bf66fe166578287fafad6b5739b58261"
-    sha256 cellar: :any_skip_relocation, catalina: "37212a6eb034ba941c1ad102504687e22f115d4629dd629c156449fe3b22a9cd"
-    sha256 cellar: :any_skip_relocation, mojave:   "0f9e466b229aca78d61beab31c3bcea13641f7b367ac680d4b19716bbe1561da"
+    sha256 cellar: :any_skip_relocation, monterey: "269509fc2d58e1d0319bb0799556287b57d4d25e5a7e2481d70a3ebc70dd27bf"
+    sha256 cellar: :any_skip_relocation, big_sur:  "ead363489a8fbe39769636a5e5acf5ccc062daa5fc83d4ec27e6218c595faae6"
+    sha256 cellar: :any_skip_relocation, catalina: "99da6a30b038eccc64d69c514f0c6e60212389bac7e6c2ba94f86d8089484154"
   end
 
   depends_on "gobject-introspection"
+  depends_on "gst-plugins-bad"
+  depends_on "gst-plugins-base"
+  depends_on "gst-plugins-good"
+  depends_on "gst-plugins-ugly"
+  depends_on "gstreamer"
   depends_on "gtk+3"
   depends_on "libyaml"
   depends_on "poppler"
@@ -22,8 +27,8 @@ class Pympress < Formula
   depends_on "python@3.9"
 
   resource "watchdog" do
-    url "https://files.pythonhosted.org/packages/f5/c2/d1ff8343cd38138561d2f08aba7b0566020485346097019f3a87773c96fc/watchdog-2.1.3.tar.gz"
-    sha256 "e5236a8e8602ab6db4b873664c2d356c365ab3cac96fbdec4970ad616415dd45"
+    url "https://files.pythonhosted.org/packages/e8/a8/fc4edd7d768361b00ea850e5310211d157df6b5a1db6148dd434e787d898/watchdog-2.1.6.tar.gz"
+    sha256 "a36e75df6c767cbf46f61a91c70b3ba71811dfa0aca4a324d9407a06a8b7a2e7"
   end
 
   def install

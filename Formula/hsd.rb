@@ -3,8 +3,8 @@ require "language/node"
 class Hsd < Formula
   desc "Handshake Daemon & Full Node"
   homepage "https://handshake.org"
-  url "https://github.com/handshake-org/hsd/archive/v2.4.0.tar.gz"
-  sha256 "8de104d55fd50c458d7a1d3e3fc1fa6e9398b97f9b639416a01b19f853dfcf60"
+  url "https://github.com/handshake-org/hsd/archive/v3.0.1.tar.gz"
+  sha256 "2952dd9fe5c1d5db448e0881cc1656c5efaa61cb6030c4bc629e04f53feec3b4"
   license "MIT"
 
   livecheck do
@@ -13,12 +13,13 @@ class Hsd < Formula
   end
 
   bottle do
-    sha256 big_sur:  "2d849b6056ad70220df056474d22acc75f67d7393e791de5cd03be373cb38daa"
-    sha256 catalina: "66dc553d9f6889a82ffd8994e7403fd106bc9f388ba9fb29c06ee770739d90ee"
-    sha256 mojave:   "22148799a8b3f468ba46236e9686d0130bbea86b0cc1ed01b1db022ec9dd6e2e"
+    rebuild 1
+    sha256 monterey: "aaebc4a1b12cede16789eb794d9351d638ddebc3bde2332ee1b80e0fcf84480c"
+    sha256 big_sur:  "2c55dd9db7cd9e0cd53aaeb684211fa5a83ecd3f2feec5233aa4087f6750da26"
+    sha256 catalina: "734bc1a659c1c148299eb76eb099247709079a0d21aa0c807cde6dc7d88a4cf3"
   end
 
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "node@10"
   depends_on "unbound"
 

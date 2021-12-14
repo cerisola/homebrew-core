@@ -1,21 +1,22 @@
 class GitDelta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  url "https://github.com/dandavison/delta/archive/0.8.3.tar.gz"
-  sha256 "cf48d52d20a12e11a3a6afd436a75550e78fc39c358e85a75caa08b39e4e75c6"
+  url "https://github.com/dandavison/delta/archive/0.11.2.tar.gz"
+  sha256 "7dff2a7cc69277b757c08c7398931cb13372458891f1dd992beb2dae8ee42411"
   license "MIT"
   head "https://github.com/dandavison/delta.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c1863678cb96ffb95451fc4677cea5ef2fb2280d61efe7061884e21fddc0c4f9"
-    sha256 cellar: :any_skip_relocation, big_sur:       "784f02aca241d3055f7932a4ebdc983955dbfa1551cf96b99a67c67da382e9e5"
-    sha256 cellar: :any_skip_relocation, catalina:      "50954d3cc47cdf353f050ca12f378779e827f724c41a48e40b3d4b6a7ebb53d6"
-    sha256 cellar: :any_skip_relocation, mojave:        "45420b913807614d341c14e715253be518ac9b77ebaa947af2b32528c3ed0382"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b20c3983f9578a40a3644fa9b6078bf4cc77c63e18ac80ef2c751104b5f91c5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3ff4746c857dcca439f95969a1635497ee0fc94d0aa4b8752c732270824b7296"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f1afc760c011b51015b9ff4e1462a65e9175691d52620811f5d391d030918552"
+    sha256 cellar: :any_skip_relocation, monterey:       "76b91c07b5cba89e37a6be69157627a7b884efbf37688c949bffdaaf48227ae8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7567832d48263d7e8ba6bf13739c8718b496484ea207443ac0fa53bfdd0cd1e9"
+    sha256 cellar: :any_skip_relocation, catalina:       "f16debd0836eb842214751176f4659090a6fc645f82db2732c299e8b16945f60"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee876759a709ff17116a611795af0791d0e2cba2e052356fa75262fb38ae9cd3"
   end
 
   depends_on "rust" => :build
-  uses_from_macos "llvm"
+  uses_from_macos "zlib"
 
   conflicts_with "delta", because: "both install a `delta` binary"
 

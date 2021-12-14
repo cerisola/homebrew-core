@@ -4,6 +4,7 @@ class PerconaServer < Formula
   url "https://www.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.25-15/source/tarball/percona-server-8.0.25-15.tar.gz"
   sha256 "447168d0cda3a0ef82ae0d20aa5af2fccfe5697c0f298262f1e8e315ac5c2dec"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url "https://www.percona.com/downloads/Percona-Server-LATEST/"
@@ -11,11 +12,10 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "74a341ae970dee92cf8613f6dd371bc05ee5b91328a62e343a68c152a99ac826"
-    sha256 big_sur:       "878942f42c4477365b9c316ccb59f2e7b0fe0165892ee23d753ddf8995626548"
-    sha256 catalina:      "f8da24e9ea607aaee0c84dcb479d9af176906512912a9c196c117f60dff9b5af"
-    sha256 mojave:        "fe725d6eefdda4ff0a69eb8c43e6cccd838ebc644bd6445b632b456a15827ea6"
-    sha256 x86_64_linux:  "26a08e9d78d44958e3c5357ab5c77a7c3df8e1bbf585b294a8baf03d7259f75e"
+    sha256 arm64_big_sur: "e1056ae13a6ead2b01731fffd0bd8cdb4a0e2b0ddca16748b81e5670b242b2f2"
+    sha256 big_sur:       "a5b4062a285c2c28c17022ed5c6237b4fe09a0f5e76b66aff67f51087c42c4bd"
+    sha256 catalina:      "35b00843d2323c04c1eb6fb1683675f0d669b4e02e3bf89a187a45fc8ef66dba"
+    sha256 x86_64_linux:  "d567bc1e5753b819d88081fceb3f2d5bf64ddadf34fa5230d861a111f1fd0b10"
   end
 
   pour_bottle? do
@@ -59,6 +59,13 @@ class PerconaServer < Formula
   resource "boost" do
     url "https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.bz2"
     sha256 "4eb3b8d442b426dc35346235c8733b5ae35ba431690e38c6a8263dce9fcbb402"
+  end
+
+  # Fix build on Monterey.
+  # Remove with the next version.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/fcbea58e245ea562fbb749bfe6e1ab178fd10025/mysql/monterey.diff"
+    sha256 "6709edb2393000bd89acf2d86ad0876bde3b84f46884d3cba7463cd346234f6f"
   end
 
   # Where the database files should be located. Existing installs have them
@@ -119,11 +126,11 @@ class PerconaServer < Formula
       test_args = ["--vardir=#{Dir.mktmpdir}"]
       # For Linux, disable failing on warning: "Setting thread 31563 nice to 0 failed"
       # Docker containers lack CAP_SYS_NICE capability by default.
-      on_linux { test_args << "--nowarnings" }
+      test_args << "--nowarnings" if OS.linux?
       system "./mysql-test-run.pl", "status", *test_args
     end
 
-    on_macos do
+    if OS.mac?
       # Remove libssl copies as the binaries use the keg anyway and they create problems for other applications
       rm lib/"libssl.dylib"
       rm lib/"libssl.1.1.dylib"
@@ -232,11 +239,11 @@ __END__
 --- a/plugin/auth_ldap/CMakeLists.txt
 +++ b/plugin/auth_ldap/CMakeLists.txt
 @@ -36,7 +36,7 @@ IF(WITH_LDAP)
- 
+
    # libler?
    MYSQL_ADD_PLUGIN(authentication_ldap_simple ${ALP_SOURCES_SIMPLE}
 -    LINK_LIBRARIES ldap_r MODULE_ONLY MODULE_OUTPUT_NAME "authentication_ldap_simple")
 +    LINK_LIBRARIES ldap MODULE_ONLY MODULE_OUTPUT_NAME "authentication_ldap_simple")
- 
+
    IF(UNIX)
      IF(INSTALL_MYSQLTESTDIR)

@@ -2,15 +2,17 @@ class Xcbeautify < Formula
   desc "Little beautifier tool for xcodebuild"
   homepage "https://github.com/thii/xcbeautify"
   url "https://github.com/thii/xcbeautify.git",
-      tag:      "0.9.1",
-      revision: "21c64495bb3eb9a46ecc9b5eea056d06383eb17c"
+      tag:      "0.10.2",
+      revision: "d818e734052c6cf373aa6aa0456ef6e69149975a"
   license "MIT"
-  head "https://github.com/thii/xcbeautify.git"
+  head "https://github.com/thii/xcbeautify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "07f7226da16337b9947871edf3e6112e042d9371872eea692877cd83e3f4e18c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "1b95942893695e6ea3d30c17064939161f6e573243cc92035e930b4e1a39deef"
-    sha256 cellar: :any_skip_relocation, catalina:      "5b053728e2ee73f3542cf2b7178af1a5d309970f5374fd1342da93e6dfcb57af"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6afcab16ef4b9a3420ba4a46f4610500c56bfc7d4e19758c1f3f8833d83a186e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2d5718c40f8afef7434f9973ffea2d3a295be7686060b8f69e03467a8ca09fd"
+    sha256 cellar: :any_skip_relocation, monterey:       "a78cfef4c52a33f2c0dc92621622517f3540b8d836ab964f2b66f11bffb68ba4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b680a00564c777c17694c9026180fbd465360e102f9f586bc07df012005624ab"
+    sha256 cellar: :any_skip_relocation, catalina:       "6898d7915d127bfd915062051c3ca1f86812b8f8e318af59cbac4ef1b2d7cd53"
   end
 
   depends_on xcode: ["11.4", :build]

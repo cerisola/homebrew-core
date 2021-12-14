@@ -3,16 +3,18 @@ class Pywhat < Formula
 
   desc "🐸 Identify anything: emails, IP addresses, and more 🧙"
   homepage "https://github.com/bee-san/pyWhat"
-  url "https://files.pythonhosted.org/packages/ed/52/5b08d8417e4b9711e7cefed9ca6499beec84401117f55e9c86e251b3360b/pywhat-3.3.0.tar.gz"
-  sha256 "f62e16ae0f0a6cd1abbbe2ba56f28946e3b83a5ceec6ad6f0f1358540a00740d"
-  license "GPL-3.0-or-later"
+  url "https://files.pythonhosted.org/packages/ae/31/57bb23df3d3474c1e0a0ae207f8571e763018fa064823310a76758eaef81/pywhat-5.1.0.tar.gz"
+  sha256 "8a6f2b3060f5ce9808802b9ca3eaf91e19c932e4eaa03a4c2e5255d0baad85c4"
+  license "MIT"
   head "https://github.com/bee-san/pyWhat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "2dd5fa32877e896e9a3394a002af1c845b15592d9d3e35ab19a56ddead220a1c"
-    sha256 cellar: :any_skip_relocation, big_sur:       "d7df846ffcc04a6216233627dd7fd5f71ae14bbb3a0a2620c22d68c919158a55"
-    sha256 cellar: :any_skip_relocation, catalina:      "6ec50cddeeefe152b13fa31e4784f55f4b862d626c6c68a6c9b0465b7b58b91e"
-    sha256 cellar: :any_skip_relocation, mojave:        "d90df27e0be6d69edea374a1d4c7c5a9cd6ec3943fa1c537884e42e770428cc1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "27b1582d6d0698e476f9e722f3c67e60483134a9cc74ce9b79464e1874954e72"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aed0ee97bf2ddc0b1e48c1192352085fc3c905b378c935f418530f84b38bc9b0"
+    sha256 cellar: :any_skip_relocation, monterey:       "ede6fb9b948995d480d42c1e0ea0f90e4e75d72cb8464ab7df379b485c963c8a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "692a27aff6dbf8f3935249f3a1331bc4af3157e3e2c7b730aed002fd2f1a52ee"
+    sha256 cellar: :any_skip_relocation, catalina:       "316420a160cb83f1955e7f6f0ae85cd8169e4529f860cf189a3e2953b39ffc70"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c5f013a729f6502c20523a9f34cad99d37cb804707c8dee2c0ead3e9efd191d4"
   end
 
   depends_on "python@3.9"
@@ -34,13 +36,13 @@ class Pywhat < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/ba/6e/7a7c13c21d8a4a7f82ccbfe257a045890d4dbf18c023f985f565f97393e3/Pygments-2.9.0.tar.gz"
-    sha256 "a18f47b506a429f6f4b9df81bb02beab9ca21d0a5fee38ed15aef65f0545519f"
+    url "https://files.pythonhosted.org/packages/b7/b3/5cba26637fe43500d4568d0ee7b7362de1fb29c0e158d50b4b69e9a40422/Pygments-2.10.0.tar.gz"
+    sha256 "f398865f7eb6874156579fdf36bc840a03cab64d1cde9e93d68f46a425ec52c6"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/72/f5/1f06eb039318ae8eb4d13e4abe52dd0b1fdd466b35cf9e52a2e505509532/rich-10.6.0.tar.gz"
-    sha256 "128261b3e2419a4ef9c97066ccc2abbfb49fa7c5e89c3fe4056d00aa5e9c1e65"
+    url "https://files.pythonhosted.org/packages/8f/22/6241daa2750061ef726ff6b4ebdb9b774166f241997b256620cf20b14da5/rich-10.15.2.tar.gz"
+    sha256 "1dded089b79dd042b3ab5cd63439a338e16652001f0c16e73acdcf4997ad772d"
   end
 
   def install

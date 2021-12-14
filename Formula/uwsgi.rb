@@ -2,8 +2,8 @@ class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.io/en/latest/"
   license "GPL-2.0-or-later"
-  revision 1
-  head "https://github.com/unbit/uwsgi.git"
+  revision 2
+  head "https://github.com/unbit/uwsgi.git", branch: "master"
 
   stable do
     url "https://files.pythonhosted.org/packages/c7/75/45234f7b441c59b1eefd31ba3d1041a7e3c89602af24488e2a22e11e7259/uWSGI-2.0.19.1.tar.gz"
@@ -18,12 +18,12 @@ class Uwsgi < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 arm64_big_sur: "4326330a1880f7901c4168d85134a37f44de0e786e5fe76a9e9ecd16ed833a58"
-    sha256 big_sur:       "dd093fa094a07dba5ac53f040eaed23a9b61adc80b6cc50de246d160fcff0a34"
-    sha256 catalina:      "8194d4a365e0ce4d3ee5fd9764d008c6d0aabf6c804414d5a6b0733295f9d101"
-    sha256 mojave:        "2def48a9cc74853449722f5dc51a0224956d21906d8ff35e73a45fab3fc3faef"
-    sha256 x86_64_linux:  "acb0c806523fc521f4c703b5fe952b488f473a5eac99d5c877ac2fec2a117782"
+    sha256 arm64_monterey: "8165b1f5c4e155fbb114f1f7dfa02802528531874c5364bb44acb21d13d6f284"
+    sha256 arm64_big_sur:  "26fab6fdc9ceeec301ef5fd5cbcfadfcfbe7166ef327229467ba90c6a787a4e6"
+    sha256 monterey:       "ad2fae7eefbe577c898841750ce6867e73185445730f3ff974e135ab57b00e99"
+    sha256 big_sur:        "a2a58236a725f7b14d68b0cd5defb7b186827b7e1008f6b8ea118f9b5365c524"
+    sha256 catalina:       "32b2ae6a83e6b18be219052bac8dee129eef3aae9881a455486abaa0d3e3c904"
+    sha256 x86_64_linux:   "ba0b90b81f4b8bcb207ccb2b473f47fb0d9facb0520a0af5824adf4ed486a665"
   end
 
   depends_on "pkg-config" => :build
@@ -79,9 +79,7 @@ class Uwsgi < Formula
                  transformation_chunked transformation_gzip
                  transformation_offload transformation_tofile
                  transformation_toupper ugreen webdav zergpool]
-    on_macos do
-      plugins << "alarm_speech"
-    end
+    plugins << "alarm_speech" if OS.mac?
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|

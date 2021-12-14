@@ -12,17 +12,19 @@ class MbedtlsAT2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_big_sur: "ad0abc939b4b50be556177673fe5bb3a08a4a8725936d106c0c2bf599b81387d"
-    sha256 cellar: :any,                 big_sur:       "1ee8bd0e453c70b8751f9f1fb307e7915f0eaf22bfcc2c39c3fc75af9344d310"
-    sha256 cellar: :any,                 catalina:      "fb6db7177cbeefc4478a32b1a1a78cc0442db7ec96cfc1760d15d221cea3b92d"
-    sha256 cellar: :any,                 mojave:        "8c8611c1a3dec140495803b9dd847e1ef5dc044deab964181124309cd0be950a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "01a1ec575605f743ba0eb7d1e3dc9548c056d6c32da85aad2cc51c3d07463c51"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_monterey: "d46cb00c4bd0655bd8ed88faccdf7381d8f6de212c47150d2fdb318932a0fab1"
+    sha256 cellar: :any,                 arm64_big_sur:  "0e7f6871d94c4c709831f9ddc0364caa291e6d7f159e66e31acef232800c3c92"
+    sha256 cellar: :any,                 monterey:       "fcbc93653e427071f72ba6a4c6eb60dea32ef2dc90af67fd193fb83c40b732c5"
+    sha256 cellar: :any,                 big_sur:        "027c29a6d01c264dda1f1cd5d3ab4d2eda44af5860127f8e3fd68f9ca3f08400"
+    sha256 cellar: :any,                 catalina:       "c95b68840f4f3043264176301f9f57e6804973847ba5a013afa09265fd27c81b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb08fb04635126b9f35a98f04d590828de5b4bc2536203447c3217a6394166e7"
   end
 
   keg_only :versioned_formula
 
   depends_on "cmake" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
 
   def install
     inreplace "include/mbedtls/config.h" do |s|
@@ -32,11 +34,17 @@ class MbedtlsAT2 < Formula
       s.gsub! "//#define MBEDTLS_THREADING_C", "#define MBEDTLS_THREADING_C"
     end
 
-    system "cmake", "-DUSE_SHARED_MBEDTLS_LIBRARY=On",
-                    "-DPython3_EXECUTABLE=#{Formula["python@3.9"].opt_bin}/python3",
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DUSE_SHARED_MBEDTLS_LIBRARY=On",
+                    "-DPython3_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3",
                     *std_cmake_args
-    system "make"
-    system "make", "install"
+    system "cmake", "--build", "build"
+    # We run CTest because this is a crypto library. Running tests in parallel causes failures.
+    # https://github.com/ARMmbed/mbedtls/issues/4980
+    with_env(CC: DevelopmentTools.locate(DevelopmentTools.default_compiler)) do
+      system "ctest", "--parallel", "1", "--test-dir", "build", "--rerun-failed", "--output-on-failure"
+    end
+    system "cmake", "--install", "build"
 
     # Why does Mbedtls ship with a "Hello World" executable. Let's remove that.
     rm_f bin/"hello"

@@ -1,23 +1,24 @@
 class Muffet < Formula
   desc "Fast website link checker in Go"
   homepage "https://github.com/raviqqe/muffet"
-  url "https://github.com/raviqqe/muffet/archive/v2.4.2.tar.gz"
-  sha256 "89912b4af0abf532dca40eda404b4dcd301c677bf5a8b0d22e73963cb134a770"
+  url "https://github.com/raviqqe/muffet/archive/v2.4.8.tar.gz"
+  sha256 "82277a99a854fbf5dc84ac0a7eb2f43e46b93d690a121ae972ec07f7879b5585"
   license "MIT"
-  head "https://github.com/raviqqe/muffet.git"
+  head "https://github.com/raviqqe/muffet.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "19d2e5d34d60dbcbc1bd68b630f6a910f71f51212245bfe1eca03a53c9aa4a11"
-    sha256 cellar: :any_skip_relocation, big_sur:       "71345b0533fc6a2f4e923a76cf179617cee16511295734b1e5b263cd919605e6"
-    sha256 cellar: :any_skip_relocation, catalina:      "114262fa636aee768296d61e84d87cbc6c0b2fe163ac415cafe94b19a16633a8"
-    sha256 cellar: :any_skip_relocation, mojave:        "03aecf8deeaf6655a9b9d8988c95e6501a5434492fb9ab809f7d5fbcb48d226f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ae37686a8199862819c4b0631eee42922e955a1d1e10d57f86dea3518bac212"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d645af551cf6ac8e8f3303f6473fde6e80595843c003b7f3217a1d1be9614c20"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a016741345993a6acfe701c687fa94652b0f91aa733461ad0d4fbbdcc3adbe8"
+    sha256 cellar: :any_skip_relocation, monterey:       "c6a75fcda18098c883eec4e702a50d7a130f5a571a5b5537c04e0843217e9791"
+    sha256 cellar: :any_skip_relocation, big_sur:        "33c5f38df044aff19bd0a0623770e0d099bd725ec31cd2a91eeb84bd94b09264"
+    sha256 cellar: :any_skip_relocation, catalina:       "fe5e809693933bf8335a54196e575381b6d9960935ae6ea87726cf05736c47db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e4d2b84eddac85126f5f48ed8a4d20d0b761f115a787e91e1e576368cc4656d"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args
+    system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   test do

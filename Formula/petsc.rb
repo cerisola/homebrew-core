@@ -1,8 +1,8 @@
 class Petsc < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (real)"
   homepage "https://www.mcs.anl.gov/petsc/"
-  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.15.3.tar.gz"
-  sha256 "483028088020001e6f8d57b78a7fc880ed52d6693f57d627779c428f55cff73d"
+  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.16.2.tar.gz"
+  sha256 "7ab257ae150d4837ac8d3872a1d206997962578785ec2427639ceac46d131bbc"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,10 +11,11 @@ class Petsc < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "c404df7e571237518c3eb3a121b8bf4a2a1e9ee99f0f4efcf7b72cddb7ec3770"
-    sha256 big_sur:       "2ea8e6e22a1fc5a00c408b02318e8e2b2eb5bc802afdcde13bff0cb4ce9150e8"
-    sha256 catalina:      "73cf9b184dea474a8a498adee3335c91449fadbaf6258c0313ae0fe94589cea3"
-    sha256 mojave:        "a17ab56433905c6acebe3411d4104cf2d7c8afc1df269e0c65a42f1bb7d55fca"
+    sha256 arm64_monterey: "ce005c68a53cf6bc5f20660f099d978f0f83f544a62ecfa7bf81ee8becf7fce9"
+    sha256 arm64_big_sur:  "8badf45e7b98ad8ddb924fd0e33e34299584862d2171dd47834050e92c45cdc3"
+    sha256 monterey:       "e2c76b2361ce0942c67b82fa637b9a460ebe1f02efa597f1e73430c15667f1d7"
+    sha256 big_sur:        "ecd018fcf1607a2511b4bfaeb775a5b23401d2f458d9676bac6226d5cf179a1c"
+    sha256 catalina:       "6deba00ca40bf661dfcc786ea23a01024c8713dd8bb80a50d1d67476554d3b0f"
   end
 
   depends_on "hdf5"
@@ -44,14 +45,10 @@ class Petsc < Formula
     # Avoid references to Homebrew shims
     rm_f lib/"petsc/conf/configure-hash"
 
-    on_macos do
-      inreplace lib/"petsc/conf/petscvariables", "#{HOMEBREW_SHIMS_PATH}/mac/super/", ""
-    end
-
-    on_linux do
-      if File.readlines("#{lib}/petsc/conf/petscvariables").grep(/#{HOMEBREW_SHIMS_PATH}/o).any?
-        inreplace lib/"petsc/conf/petscvariables", "#{HOMEBREW_SHIMS_PATH}/linux/super/", ""
-      end
+    if OS.mac?
+      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
+    elsif File.readlines("#{lib}/petsc/conf/petscvariables").grep(Superenv.shims_path.to_s).any?
+      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
     end
   end
 

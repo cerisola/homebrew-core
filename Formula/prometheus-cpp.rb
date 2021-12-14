@@ -2,17 +2,18 @@ class PrometheusCpp < Formula
   desc "Prometheus Client Library for Modern C++"
   homepage "https://github.com/jupp0r/prometheus-cpp"
   url "https://github.com/jupp0r/prometheus-cpp.git",
-      tag:      "v0.12.3",
-      revision: "84388828ae80556f57e11249dbd0063043991fb4",
-      shallow:  false
+      tag:      "v1.0.0",
+      revision: "4ea303fa66e4c26dc4df67045fa0edf09c2f3077"
   license "MIT"
-  head "https://github.com/jupp0r/prometheus-cpp.git"
+  head "https://github.com/jupp0r/prometheus-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "024fed12ca3ab93cffda6808e10119299e13a9b8c2ce179a69af2660c4b2a85e"
-    sha256 cellar: :any_skip_relocation, big_sur:       "68159b406986696076a65a2867d57fa91af2a9a853ee893cd9958da85d91ca63"
-    sha256 cellar: :any_skip_relocation, catalina:      "4157a3eb2ae75658e4ec076b598e77270d9637a577c00ec8ab408c03d3558918"
-    sha256 cellar: :any_skip_relocation, mojave:        "1743131428f90ef3bf324532b7d7b1324e4bb92f1f0e5d7e7d1f5082a4680964"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "87d558548dd4ad4d524b4258aab438e67b85d8ada77e5a3454c8763ca7cd4fb0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e2166b03d24bd56a20e415db89ffecffa621908f39a04ee701cc9fd02ac7ecd9"
+    sha256 cellar: :any_skip_relocation, monterey:       "0b903d8b4abab0c2862a88ef7216c1e8d6ac8f002a0e2cc67db64690825ad908"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d18c21cde436b1689154d821062bd879c9c8eb35170bb0222040dc53a02329f2"
+    sha256 cellar: :any_skip_relocation, catalina:       "e245520c33f7a4fbebac3a38899f21f3e1114c62d73e5bdbd043435c3c0efa14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "252bfd884db18a5b743270fb5d51ef1450c5b4d153223d45b5df75efaaf24fc9"
   end
 
   depends_on "cmake" => :build
@@ -26,7 +27,7 @@ class PrometheusCpp < Formula
 
   test do
     (testpath/"test.cpp").write <<~EOS
-      #include <prometheus/Registry.h>
+      #include <prometheus/registry.h>
       int main() {
         prometheus::Registry reg;
         return 0;

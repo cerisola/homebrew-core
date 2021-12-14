@@ -1,19 +1,22 @@
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/v2021.08.02.00.tar.gz"
-  sha256 "8994793334422d5101a087aadec55aa2d73979c0b4b63368dfc1a9ac5e547a2d"
-  license "Apache-2.0"
-  revision 1
-  head "https://github.com/facebook/watchman.git"
+  url "https://github.com/facebook/watchman/archive/v2021.12.13.00.tar.gz"
+  sha256 "9ded67fa3fcd41245f3205bfdf45c413054a45951f43ee12e52001a86cf9be08"
+  license "MIT"
+  head "https://github.com/facebook/watchman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "896a77c6c7289380d1a173b0c97b2e64418e5a4098cf01c882a8c75748a4b074"
-    sha256 cellar: :any, big_sur:       "c744264cd104d9881b39ae9262305c2ebc788c1914a5228fbe856450e9e07ff4"
-    sha256 cellar: :any, catalina:      "31d96cf969b3827beacae1ae9be47b92adddcede3b2903c51361155d6170f438"
-    sha256 cellar: :any, mojave:        "e8fc3b77dfe13f30a87e2235222f66f91d3f0f313331633d6ccfbcd608086996"
-    sha256               x86_64_linux:  "dad1d7f0d9cc4a79b06fda5d235ab623f4a54558d2cc8999bfad2c3569df364b"
+    sha256 cellar: :any, arm64_monterey: "5746b26d67e6baeebaf3f28267fd54aa0496d18ebc1206ecdd4e71e8ae406855"
+    sha256 cellar: :any, arm64_big_sur:  "f9d324f6d47ac5f818b0c6e4f2ed01294642d9aee41f9eb7df01f87ffca61083"
+    sha256 cellar: :any, monterey:       "03e726d8bedcb6f43c31d49647a449a70422629e69b7ac1317f5fc4ff07be063"
+    sha256 cellar: :any, big_sur:        "b1d825f2db951c3c49be96a1da5e55a8bcf4fa33ae8d6e50c6c37b8b940b13dc"
+    sha256 cellar: :any, catalina:       "5c7dd3a139616d506fef6cffeb9361b7351bc3f073ef598c462903af73e61bda"
+    sha256               x86_64_linux:   "15cb97b16bf68db9823fbbb8e88ba864a0c5f17b9bafacfb09670cb8f60ae799"
   end
+
+  # https://github.com/facebook/watchman/issues/963
+  pour_bottle? only_if: :default_prefix
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -26,7 +29,7 @@ class Watchman < Formula
   depends_on "libevent"
   depends_on "openssl@1.1"
   depends_on "pcre"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
 
   on_linux do
     depends_on "gcc"
@@ -53,6 +56,7 @@ class Watchman < Formula
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DBUILD_SHARED_LIBS=ON",
+                    "-DENABLE_EDEN_SUPPORT=OFF",
                     "-DWATCHMAN_VERSION_OVERRIDE=#{version}",
                     "-DWATCHMAN_BUILDINFO_OVERRIDE=#{tap.user}",
                     "-DWATCHMAN_STATE_DIR=#{var}/run/watchman",

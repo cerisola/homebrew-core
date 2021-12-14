@@ -1,8 +1,8 @@
 class Jruby < Formula
   desc "Ruby implementation in pure Java"
   homepage "https://www.jruby.org/"
-  url "https://search.maven.org/remotecontent?filepath=org/jruby/jruby-dist/9.2.19.0/jruby-dist-9.2.19.0-bin.tar.gz"
-  sha256 "1f74885a2d3fa589fcbeb292a39facf7f86be3eac1ab015e32c65d32acf3f3bf"
+  url "https://search.maven.org/remotecontent?filepath=org/jruby/jruby-dist/9.3.2.0/jruby-dist-9.3.2.0-bin.tar.gz"
+  sha256 "26699ca02beeafa8326573c1125c57a5971ba8b94d15f84e6b3baf2594244f33"
   license any_of: ["EPL-2.0", "GPL-2.0-only", "LGPL-2.1-only"]
 
   livecheck do
@@ -12,11 +12,12 @@ class Jruby < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_big_sur: "b9cbf7f60606bcd04421d60bd03365183d3ee35d9e2fbe07c51d9b12c4234a36"
-    sha256 cellar: :any,                 big_sur:       "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
-    sha256 cellar: :any,                 catalina:      "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
-    sha256 cellar: :any,                 mojave:        "ea76b9eaa16eb6a20ffc0e440125d22e9e580177e662deaab6b9e821de2394a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb01de5d760d49ad6731630940ab02f9d8cb2a4ce070de9316f7bce886197381"
+    sha256 cellar: :any,                 arm64_monterey: "227867b3ebcaaddd621c00b2455d665a81b4c48329c1ed7e1b6d03e4443c44b7"
+    sha256 cellar: :any,                 arm64_big_sur:  "ed636b1d558dfa99179e994364a7a4e857c6f76f19808ba9ac387ce9ba366a27"
+    sha256 cellar: :any,                 monterey:       "57a054fac4a8352dd894ee5606cf6d78143f0df9eaa5f7c7404dce84dc70a4a8"
+    sha256 cellar: :any,                 big_sur:        "57a054fac4a8352dd894ee5606cf6d78143f0df9eaa5f7c7404dce84dc70a4a8"
+    sha256 cellar: :any,                 catalina:       "57a054fac4a8352dd894ee5606cf6d78143f0df9eaa5f7c7404dce84dc70a4a8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "df795ec4b9c97332d783538b8e4e729cabb8460a3c04f82f494ab42694319229"
   end
 
   depends_on "openjdk"
@@ -27,7 +28,7 @@ class Jruby < Formula
 
     cd "bin" do
       # Prefix a 'j' on some commands to avoid clashing with other rubies
-      %w[ast rake rdoc ri testrb racc].each { |f| mv f, "j#{f}" }
+      %w[ast bundle bundler rake rdoc ri racc].each { |f| mv f, "j#{f}" }
       # Delete some unnecessary commands
       rm "gem" # gem is a wrapper script for jgem
       rm "irb" # irb is an identical copy of jirb
@@ -38,6 +39,10 @@ class Jruby < Formula
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env
+
+    # Replace (prebuilt!) universal binaries with their native slices
+    # FIXME: Build libjffi-1.2.jnilib from source.
+    deuniversalize_machos
   end
 
   test do

@@ -1,17 +1,18 @@
 class Kubeaudit < Formula
   desc "Helps audit your Kubernetes clusters against common security controls"
   homepage "https://github.com/Shopify/kubeaudit"
-  url "https://github.com/Shopify/kubeaudit/archive/v0.14.2.tar.gz"
-  sha256 "b3ab3339f67bdb2c8fa310428feae9a203ea1c8458337474c4c452a0037bc44b"
+  url "https://github.com/Shopify/kubeaudit/archive/refs/tags/0.16.0.tar.gz"
+  sha256 "1f1c21352a5788586e5903dee499668d45318fb388b0cc3860b1a0d09bb489fc"
   license "MIT"
   head "https://github.com/Shopify/kubeaudit.git"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "fddbcbf7cd3c84264ff76ffc533fbdc4cda773c58152b697ad578286712a3d62"
-    sha256 cellar: :any_skip_relocation, big_sur:       "f33fcdeb51a461850918e8bed31c8ef2647b26e4cd851a1729996d751434f9b4"
-    sha256 cellar: :any_skip_relocation, catalina:      "ed46f15a76ecb0c6496818d7e5bfbfa82408c7451a67180ec554b2044dc25dd5"
-    sha256 cellar: :any_skip_relocation, mojave:        "e8aebb94a49195697799379ae7b8b75b26f7be08ce297764551e4e2921edfbb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "073b5c7e6f66dff1e30ed0a0599e65d06cc030b5a7dca72ab349865f2a9dc8f1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "172262ee505a8213747a2e387dae92df3a6d22a56820902cc1bb655a7628e127"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f37e49c9157af8581e360a814027671056e821e6c7ffa95d568401df5c21c4f0"
+    sha256 cellar: :any_skip_relocation, monterey:       "8aa86beb7f6b294170adf80bfe3994ec2b53897e2aadf6221cc0ee8ce07d0a70"
+    sha256 cellar: :any_skip_relocation, big_sur:        "76c174f29a633a4cdbac9e754d4e93646d352eafa45ee2cd98ceae02c4e7f6cf"
+    sha256 cellar: :any_skip_relocation, catalina:       "a91b4cbc14435a900fe0775db6a6ae348df31775cc4dbd5ad2bc53ed126d30f8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "50dba55e6d91567c8676599ecff11392e246520d021353cd2330f7920ea18fa7"
   end
 
   depends_on "go" => :build
@@ -23,7 +24,7 @@ class Kubeaudit < Formula
       -X github.com/Shopify/kubeaudit/cmd.BuildDate=#{time.strftime("%F")}
     ]
 
-    system "go", "build", "-ldflags", ldflags.join(" "), *std_go_args, "./cmd"
+    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd"
   end
 
   test do

@@ -2,7 +2,7 @@ class RustcCompletion < Formula
   desc "Bash completion for rustc"
   homepage "https://github.com/roshan/rust-bash-completion"
   license "MIT"
-  head "https://github.com/roshan/rust-bash-completion.git"
+  head "https://github.com/roshan/rust-bash-completion.git", branch: "master"
 
   stable do
     url "https://github.com/roshan/rust-bash-completion/archive/0.12.1.tar.gz"
@@ -25,6 +25,6 @@ class RustcCompletion < Formula
 
   test do
     assert_match "-F _rustc",
-      shell_output("source #{bash_completion}/rustc && complete -p rustc")
+      shell_output("bash -c 'source #{bash_completion}/rustc && complete -p rustc'")
   end
 end

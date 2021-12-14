@@ -1,11 +1,11 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-3.4.7.tar.xz"
-  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-3.4.7.tar.xz"
-  sha256 "6c4cee51ef997cb9d9aaee84113525a5629157d3c743d7c4e320000de804a09d"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-3.6.0.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-3.6.0.tar.xz"
+  sha256 "9cc8f7fc5bb1d66fbdfdf95cde6e1c98633c303f9af9b33ae9f1fcf022fedf06"
   license "GPL-2.0-or-later"
-  head "https://gitlab.com/wireshark/wireshark.git"
+  head "https://gitlab.com/wireshark/wireshark.git", branch: "master"
 
   livecheck do
     url "https://www.wireshark.org/download.html"
@@ -13,11 +13,10 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "730eaa644bf24aabe272a4f9c583d2a84d21f3128b5697e3e8a29230dc0ae8d3"
-    sha256 big_sur:       "6f4e65abf38e75fabf26c88c20925298787e9003de581b28bad735d0a3951046"
-    sha256 catalina:      "9ec039fbeb3c36fd39b42b8500428a6baa2231bce431923ed5c2868561117cd4"
-    sha256 mojave:        "5e3c1d969c26f6960178b4267163a854368ded9b0ddd456bee7d784508ebebfe"
-    sha256 x86_64_linux:  "5cdfcc92582382ae713df27515d22a09d61ab4eb17ca2b19d64399f9cf191ab5"
+    sha256 arm64_big_sur: "a8ee91edd0d8156acd5cd122178896764ebbfb542fbbb93d567db4e696707f2a"
+    sha256 big_sur:       "36a0d0bd585b7735864e29843b194e97bb5efbede5040234399e677b7eabab30"
+    sha256 catalina:      "05d7df5204e95d3e677282542807420b469b6fae285fe1beaf17814854782c04"
+    sha256 x86_64_linux:  "ad61fa693279ac5b1fc255442406007ab725b4c8c8256de35bbb6a03844511b9"
   end
 
   depends_on "cmake" => :build
@@ -26,10 +25,10 @@ class Wireshark < Formula
   depends_on "gnutls"
   depends_on "libgcrypt"
   depends_on "libmaxminddb"
+  depends_on "libnghttp2"
   depends_on "libsmi"
   depends_on "libssh"
   depends_on "lua"
-  depends_on "nghttp2"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build

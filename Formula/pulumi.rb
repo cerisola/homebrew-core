@@ -2,27 +2,21 @@ class Pulumi < Formula
   desc "Cloud native development platform"
   homepage "https://pulumi.io/"
   url "https://github.com/pulumi/pulumi.git",
-      tag:      "v3.10.3",
-      revision: "d8ebde1590088a21216329b429a83f7b39b512ef"
+      tag:      "v3.19.0",
+      revision: "8ea38f633d472788fea20899fbbb183ff1284561"
   license "Apache-2.0"
   head "https://github.com/pulumi/pulumi.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "081da8123a70f15fbb47853e1aa05016e9e244a7c4dcd6c90ad6b711af6eef25"
-    sha256 cellar: :any_skip_relocation, big_sur:       "097ec56afc602c2534e4434b7e5ed4a783977a3d0b046049783daba3759e6abd"
-    sha256 cellar: :any_skip_relocation, catalina:      "c43e44317532fac910af046726f0762265c8f69c3335da821d1efa5093634e21"
-    sha256 cellar: :any_skip_relocation, mojave:        "7f945464c38caae88f0176cb29098572d1f17eb72c2e09e866fddb2ab7a10dc5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "792ecb85eaea940f6a540062c94775366ebe3c4f77df4d6d33fe3bbd8cb11975"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8156517e0bde1eb5242901a3ecab9ed2516197963fe9332d2bbf0ca17ce90685"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "160b3fd635d41fee85ddc6fee5da3cbca7460da7370884df7d4e19c46ad657ce"
+    sha256 cellar: :any_skip_relocation, monterey:       "5cbf3fa3d84b021370845367ff0eab0d4af06e1a764f0b122a6de7060a5fd55b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "60ffa49c99d268b88b86e9dc74249e03aa944f48d005231106225a39c7c2c72d"
+    sha256 cellar: :any_skip_relocation, catalina:       "5af27869b7cdce40abda6be547828596cf74ec228b907e7b680509fb5d1b3cfa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ce287ba7f2c9b19ece1d8c823ad58196a936373462d9bfeb4552cf1f39e5ab0"
   end
 
   depends_on "go" => :build
-
-  # Support go 1.17, remove after next release
-  patch do
-    url "https://github.com/pulumi/pulumi/commit/da2bd2ab043f2588b3a136846da1b97505326f25.patch?full_index=1"
-    sha256 "b0db2dab2996615cef4ca338232a4acca02f4ca4d8fd8322b6da51be697a9ef5"
-  end
 
   def install
     cd "./sdk" do
