@@ -17,7 +17,7 @@ class Libavif < Formula
   depends_on "cmake" => :build
   depends_on "nasm" => :build
   depends_on "aom"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   uses_from_macos "zlib"

@@ -15,7 +15,7 @@ class Libmng < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "76a41e2666007dabb0bce0da17d0a55ca7694168e74f31ec6136cb9632642eea"
   end
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "little-cms2"
 
   uses_from_macos "zlib"

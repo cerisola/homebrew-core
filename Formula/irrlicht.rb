@@ -24,7 +24,7 @@ class Irrlicht < Formula
 
   depends_on xcode: :build
 
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libpng"
 
   uses_from_macos "bzip2"
@@ -52,7 +52,7 @@ class Irrlicht < Formula
     if OS.mac?
       inreplace "source/Irrlicht/MacOSX/MacOSX.xcodeproj/project.pbxproj" do |s|
         s.gsub! "@LIBPNG_PREFIX@", Formula["libpng"].opt_prefix
-        s.gsub! "@JPEG_PREFIX@", Formula["jpeg"].opt_prefix
+        s.gsub! "@JPEG_PREFIX@", Formula["jpeg-turbo"].opt_prefix
       end
 
       extra_args = []

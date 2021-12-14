@@ -130,7 +130,7 @@ class Libsvg < Formula
     system ENV.cc, "test.c", "-o", "test",
                    "-I#{include}", "-L#{lib}", "-lsvg",
                    "-L#{Formula["libpng"].opt_lib}", "-lpng",
-                   "-L#{Formula["jpeg"].opt_lib}", "-ljpeg"
+                   "-L#{Formula["jpeg-turbo"].opt_lib}", "-ljpeg"
     assert_equal "1\n2\n3\n4\n5\n6\nSUCCESS\n", shell_output("./test")
   end
 end
