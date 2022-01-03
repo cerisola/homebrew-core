@@ -1,8 +1,8 @@
 class Abyss < Formula
   desc "Genome sequence assembler for short reads"
   homepage "https://www.bcgsc.ca/resources/software/abyss"
-  url "https://github.com/bcgsc/abyss/releases/download/2.3.3/abyss-2.3.3.tar.gz"
-  sha256 "4b14642989e84f331d8d1a854cca67bdede95e90bd6813836c173a951d71405c"
+  url "https://github.com/bcgsc/abyss/releases/download/2.3.4/abyss-2.3.4.tar.gz"
+  sha256 "7bbe479d2574a4d0241a5f564852d637690ded165c160862977e90597c614fed"
   license all_of: ["GPL-3.0-only", "LGPL-2.1-or-later", "MIT", "BSD-3-Clause"]
 
   livecheck do
@@ -11,12 +11,12 @@ class Abyss < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ecb144d0ac3aa901b601a7feaceca7ca3dd15f109b509680234f77a1d6d733ce"
-    sha256 cellar: :any,                 arm64_big_sur:  "c616dc93d3c6e3815cc3552780c90a5c151e10492388ceb132b29c005954ad28"
-    sha256 cellar: :any,                 monterey:       "483ae98a1d98b13273e05cb41e8bed12c7a79578065390750aac0c4c89d85be7"
-    sha256 cellar: :any,                 big_sur:        "5f6eb38e8fb09b0fd44b5a009da45c614ebce39d067ed61d0de319e816f02654"
-    sha256 cellar: :any,                 catalina:       "4c1c980211e1e2f6a214746ea2c1386afb47d10dbb0ab00ea478784668815e52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c145191f987d15368189ea9b83b2bd2bf03f63d5494dafbbe32fa5880f57f30c"
+    sha256 cellar: :any,                 arm64_monterey: "ddaf94b4cc55d9eeba4af66371607f9b52d88f63199be9d8dca4b35a1e174409"
+    sha256 cellar: :any,                 arm64_big_sur:  "778a4b29c03b0e5a1157690e78a53ac4ed82dc881f59a42f416772be9194967e"
+    sha256 cellar: :any,                 monterey:       "c2e61ff154139048e0ffdd23dc2389344646a81ffbf7a211ec665d39cdb607f8"
+    sha256 cellar: :any,                 big_sur:        "ed5226b1b597566cbf966d7bf4cfc560027a5279ef444c1de2abad38ffaea5c6"
+    sha256 cellar: :any,                 catalina:       "d50e051d08efd49321441dbcccd8973505d9f5e75a5b5a126946ca41e5f2a673"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90f95159abd04629455507380bb7fd86ece2e658b1009b3c4dbd48fe0f934f2a"
   end
 
   head do
@@ -29,12 +29,10 @@ class Abyss < Formula
 
   depends_on "boost" => :build
   depends_on "google-sparsehash" => :build
+  depends_on "gcc"
   depends_on "open-mpi"
 
-  on_macos do
-    depends_on "gcc"
-  end
-
+  fails_with gcc: "5"
   fails_with :clang # no OpenMP support
 
   resource("testdata") do

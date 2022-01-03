@@ -1,18 +1,18 @@
 class GitDelta < Formula
   desc "Syntax-highlighting pager for git and diff output"
   homepage "https://github.com/dandavison/delta"
-  url "https://github.com/dandavison/delta/archive/0.11.2.tar.gz"
-  sha256 "7dff2a7cc69277b757c08c7398931cb13372458891f1dd992beb2dae8ee42411"
+  url "https://github.com/dandavison/delta/archive/0.11.3.tar.gz"
+  sha256 "cf68f43d4d26c10551c0137a7e718719958e52267d83f29a8f7794af12095b9e"
   license "MIT"
-  head "https://github.com/dandavison/delta.git"
+  head "https://github.com/dandavison/delta.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3ff4746c857dcca439f95969a1635497ee0fc94d0aa4b8752c732270824b7296"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f1afc760c011b51015b9ff4e1462a65e9175691d52620811f5d391d030918552"
-    sha256 cellar: :any_skip_relocation, monterey:       "76b91c07b5cba89e37a6be69157627a7b884efbf37688c949bffdaaf48227ae8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7567832d48263d7e8ba6bf13739c8718b496484ea207443ac0fa53bfdd0cd1e9"
-    sha256 cellar: :any_skip_relocation, catalina:       "f16debd0836eb842214751176f4659090a6fc645f82db2732c299e8b16945f60"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee876759a709ff17116a611795af0791d0e2cba2e052356fa75262fb38ae9cd3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "38f445182717dc92fb654871935d936ee932baaa49617a3a217325a4a5a8d033"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "98e71c99827e083aea7fde4edcfbe11bc9ab5b1bff8731f8726cc9ad70378c40"
+    sha256 cellar: :any_skip_relocation, monterey:       "4bd9f1eb9ddca369f2b1792c7a74ef8086fad5758d28c9fa035e7f0fdbd1c414"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2c046081a409513ccf0d871b6ca6f26be882d95b691f735da74502fa2ff6ee21"
+    sha256 cellar: :any_skip_relocation, catalina:       "0878dc6e9edfdad87d5caa270869da90766cca1ce91a4c0abbf3f12c53c24c26"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e9ffeba04833087f884c88ca779f909cb42ad2b0741d504d0adff3f022db13a"
   end
 
   depends_on "rust" => :build

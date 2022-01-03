@@ -4,6 +4,7 @@ class NodeAT16 < Formula
   url "https://nodejs.org/dist/v16.13.1/node-v16.13.1.tar.xz"
   sha256 "4c23004fd75eaf799ad8e76fe34f53e0327f433d4acbfc883396f72e96cc63ad"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -11,12 +12,12 @@ class NodeAT16 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "62a661315fd8bc15fca85e9ffdf93024654105f0008addb211d68fd3e870588b"
-    sha256 cellar: :any,                 arm64_big_sur:  "7ae530cfd3a4cd81be03b8e4578d468d472a70a22817ff38b442c87abf0e1b10"
-    sha256 cellar: :any,                 monterey:       "4465b9b8ed6129176069413cdacbbc6fe46846385ec3c1ebd3e996e6a6e0510e"
-    sha256 cellar: :any,                 big_sur:        "06d9dbc8ffe74d5c2578d1f5d20fc284c4a35216b934137f746dd6cb300a94f8"
-    sha256 cellar: :any,                 catalina:       "3949d2fdea27661aab1cf3d51214969199f73686a2f98605c6c521dcf9c28e2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8f539a1ba5aa93cb4c0084041fd166c3e8275f73434051b03c4a79fb7376bcd"
+    sha256 cellar: :any,                 arm64_monterey: "da48132151b72bbc9d2b1ee1bb953b888a2d195ec23b90de0b75f9c5744c7e4b"
+    sha256 cellar: :any,                 arm64_big_sur:  "b391314a1995dd9e3dc49ab7f46edbb8a697caa334c27e39a9931c1c2923f8fb"
+    sha256 cellar: :any,                 monterey:       "2db7c0ef8af5546b8888126bd77d0b76f143ca7a98e35ad9598cd90b79a5c31e"
+    sha256 cellar: :any,                 big_sur:        "212e8db648357a0ca7d45510fd0fa373b2c61e4bcff7eca51ea3694fe4929162"
+    sha256 cellar: :any,                 catalina:       "5b4139d5d52525d1fee27fcb2c7d1f997c5de2746ef1219c46c3cb9790e529a5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "076cbfd7a9a35f262e60c4a88a464ea020ecee4b0590bd1654d2475e0a75caf8"
   end
 
   keg_only :versioned_formula
@@ -78,11 +79,6 @@ class NodeAT16 < Formula
     ]
     system "python3", "configure.py", *args
     system "make", "install"
-
-    # Make sure that:
-    # - `node` can find our keg-only `python3`
-    # - npm and npx use our keg-only `node`
-    bin.env_script_all_files libexec, PATH: "#{which("python3").dirname}:#{bin}:${PATH}"
   end
 
   def post_install

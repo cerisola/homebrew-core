@@ -4,7 +4,7 @@ class PerconaServer < Formula
   url "https://www.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.25-15/source/tarball/percona-server-8.0.25-15.tar.gz"
   sha256 "447168d0cda3a0ef82ae0d20aa5af2fccfe5697c0f298262f1e8e315ac5c2dec"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://www.percona.com/downloads/Percona-Server-LATEST/"
@@ -12,15 +12,11 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "e1056ae13a6ead2b01731fffd0bd8cdb4a0e2b0ddca16748b81e5670b242b2f2"
-    sha256 big_sur:       "a5b4062a285c2c28c17022ed5c6237b4fe09a0f5e76b66aff67f51087c42c4bd"
-    sha256 catalina:      "35b00843d2323c04c1eb6fb1683675f0d669b4e02e3bf89a187a45fc8ef66dba"
-    sha256 x86_64_linux:  "d567bc1e5753b819d88081fceb3f2d5bf64ddadf34fa5230d861a111f1fd0b10"
-  end
-
-  pour_bottle? do
-    reason "The bottle needs a var/mysql datadir (yours is var/percona)."
-    satisfy { datadir == var/"mysql" }
+    rebuild 1
+    sha256 arm64_big_sur: "8901fe53207419d45a41741cbe5409b567b20364555a8cbf15414c7888832134"
+    sha256 big_sur:       "8f96dcfb077909e8296a52d5515932f0ff443247d3f9d1775133faeed1dac992"
+    sha256 catalina:      "3b81df8d00df849a2fdb93e74714b6fb269629a4bad48f5d0fa04fa949d84bc3"
+    sha256 x86_64_linux:  "9be2d41b8dae532002c477f8ad7f69c0ab24169c40e98089d1c69466bb4d5885"
   end
 
   depends_on "cmake" => :build
@@ -68,13 +64,6 @@ class PerconaServer < Formula
     sha256 "6709edb2393000bd89acf2d86ad0876bde3b84f46884d3cba7463cd346234f6f"
   end
 
-  # Where the database files should be located. Existing installs have them
-  # under var/percona, but going forward they will be under var/mysql to be
-  # shared with the mysql and mariadb formulae.
-  def datadir
-    @datadir ||= (var/"percona").directory? ? var/"percona" : var/"mysql"
-  end
-
   def install
     # -DINSTALL_* are relative to `CMAKE_INSTALL_PREFIX` (`prefix`)
     args = %W[
@@ -88,7 +77,7 @@ class PerconaServer < Formula
       -DINSTALL_MANDIR=share/man
       -DINSTALL_MYSQLSHAREDIR=share/mysql
       -DINSTALL_PLUGINDIR=lib/percona-server/plugin
-      -DMYSQL_DATADIR=#{datadir}
+      -DMYSQL_DATADIR=#{var}/mysql
       -DSYSCONFDIR=#{etc}
       -DENABLED_LOCAL_INFILE=1
       -DWITH_EMBEDDED_SERVER=ON
@@ -168,10 +157,10 @@ class PerconaServer < Formula
     # Don't initialize database, it clashes when testing other MySQL-like implementations.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    unless (datadir/"mysql/user.frm").exist?
+    unless (var/"mysql/mysql/user.frm").exist?
       ENV["TMPDIR"] = nil
       system bin/"mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",
-        "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
+        "--basedir=#{prefix}", "--datadir=#{var}/mysql", "--tmpdir=/tmp"
     end
   end
 
@@ -192,30 +181,10 @@ class PerconaServer < Formula
     s
   end
 
-  plist_options manual: "mysql.server start"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>KeepAlive</key>
-        <true/>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/mysqld_safe</string>
-          <string>--datadir=#{datadir}</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>WorkingDirectory</key>
-        <string>#{datadir}</string>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"mysqld_safe", "--datadir", var/"mysql"]
+    keep_alive true
+    working_dir var/"mysql"
   end
 
   test do

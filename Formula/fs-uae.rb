@@ -1,8 +1,8 @@
 class FsUae < Formula
   desc "Amiga emulator"
   homepage "https://fs-uae.net/"
-  url "https://fs-uae.net/files/FS-UAE/Stable/3.1.62/fs-uae-3.1.62.tar.xz"
-  sha256 "57581355fe5cb9a01c2cd2289c1dce50e42694d7105454fd9d75206fdf91c467"
+  url "https://fs-uae.net/files/FS-UAE/Stable/3.1.66/fs-uae-3.1.66.tar.xz"
+  sha256 "606e1868b500413d69bd33bb469f8fd08d6c08988801f17b7dd022f3fbe23832"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,11 +11,11 @@ class FsUae < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "b972b6b29818a4b75882f429e98f8a9027712d7eb63fb63e9b4212dc050522c2"
-    sha256 cellar: :any, arm64_big_sur:  "83168a16d8944aff930466fdf313c142a2b7952b842115b07a2b263c9a4491c3"
-    sha256 cellar: :any, monterey:       "011dd714921118eb78308fbac4a231c895b7242ed50873e09d842463d3ea0202"
-    sha256 cellar: :any, big_sur:        "3dedcfc5325c16c4c1070baf2eed8fd5ad8763ec47d921e376ecd54b746452e1"
-    sha256 cellar: :any, catalina:       "b0c73c09f5f798a6cfc1f34eb8c84c76e1c4da4a69cfc49d0f7afcd6e511c44d"
+    sha256 cellar: :any, arm64_monterey: "b9f361e0cc2b048aedb761409cd9a79c34c98ebaa22a35c426b4a42e93884933"
+    sha256 cellar: :any, arm64_big_sur:  "0caec2b541d80f8645decd87cabdb34e327844afaf5c06b526572eb52d3526ec"
+    sha256 cellar: :any, monterey:       "e73f955c331c42ddcbada8c15dcaaba7aa3c4c1f2471b6303ca920d90977b6c8"
+    sha256 cellar: :any, big_sur:        "7d0fa0057f0d4e76d802554b9a29666b556f0bae8520430e73244abfbfcbbd72"
+    sha256 cellar: :any, catalina:       "7a373d3e50a22619466b27bfad1576df98e2bae34433f5bf2d8ae370e2858e87"
   end
 
   head do

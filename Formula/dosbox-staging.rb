@@ -1,18 +1,17 @@
 class DosboxStaging < Formula
   desc "Modernized DOSBox soft-fork"
   homepage "https://dosbox-staging.github.io/"
-  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.77.1.tar.gz"
-  sha256 "85359efb7cd5c5c0336d88bdf023b7b462a8233490e00274fef0b85cca2f5f3c"
+  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.78.1.tar.gz"
+  sha256 "9ae322edce853459fff47037fa4f7e3f138325699bf3c33d5335c069282133db"
   license "GPL-2.0-or-later"
-  revision 1
-  head "https://github.com/dosbox-staging/dosbox-staging.git"
+  head "https://github.com/dosbox-staging/dosbox-staging.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "88b43a601ab9da67fc95ad8f6300ed97bb1712c88c59823ad958846b48d6c6c8"
-    sha256 cellar: :any, arm64_big_sur:  "1e3a2ef4d27acdb78a630db92d2c0442ce1d31ab680d09af3c83e262821ba661"
-    sha256 cellar: :any, monterey:       "540c94977bfa670042463b1b56ca86949231f87ba86058a5aaca909db8cdfe7a"
-    sha256 cellar: :any, big_sur:        "8631465cffcb93e671bc1aae412f7e4444be46108cb78615fa5e6b21f3fb6aa5"
-    sha256 cellar: :any, catalina:       "48cd7e24deaab11eff764602bd0c1060e500c3f9cb0bb7f67a3b547ff13065f4"
+    sha256 cellar: :any, arm64_monterey: "f634764b7cefa11e450bcfe29dcecbb82d8125cc2cec86d22a10128a1ff74b19"
+    sha256 cellar: :any, arm64_big_sur:  "6f4dc4d1961d8b03023989407c0f6e87a78e61717bc02dabeb5f5cc3c7c094a0"
+    sha256 cellar: :any, monterey:       "ef7a5a75fe9a3832876bfba92fb436bfc901955e569e1b6834fb220579c6f361"
+    sha256 cellar: :any, big_sur:        "d7f4608edc91ddc0e74dbff45251f6b8e8539fd4994dfa1326f2880c22b4f620"
+    sha256 cellar: :any, catalina:       "8c21190904606a6cc0c6cf0e937cc3ef748298bb4982eb096443d3d1a928ab06"
   end
 
   depends_on "meson" => :build
@@ -20,6 +19,7 @@ class DosboxStaging < Formula
   depends_on "pkg-config" => :build
   depends_on "fluid-synth"
   depends_on "libpng"
+  depends_on "libslirp"
   depends_on "mt32emu"
   depends_on "opusfile"
   depends_on "sdl2"

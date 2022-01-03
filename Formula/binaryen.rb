@@ -1,19 +1,18 @@
 class Binaryen < Formula
   desc "Compiler infrastructure and toolchain library for WebAssembly"
   homepage "https://webassembly.org/"
-  url "https://github.com/WebAssembly/binaryen/archive/version_103.tar.gz"
-  sha256 "568fb4a09a9ce4a21f62ac8596f393c2e89f39b96457d5e7c1f67db0fe74a88d"
+  url "https://github.com/WebAssembly/binaryen/archive/version_104.tar.gz"
+  sha256 "a6acabb159fcc5b1d8c9506f5036dcd1e4446952b572903b256af955e959780d"
   license "Apache-2.0"
   head "https://github.com/WebAssembly/binaryen.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "d95f63433c51b451734614567d3d1c6ab17855a6aa1dc003004fa8bfb8cdf983"
-    sha256 cellar: :any,                 arm64_big_sur:  "124ba8c446249721a2ea62dfa6ea325f058b9c4550333f6f2edc4ba8aa1be569"
-    sha256 cellar: :any,                 monterey:       "2e55a4f849802ed9476a42590d3ba216b86a2648bb18f618a118dc13abe66853"
-    sha256 cellar: :any,                 big_sur:        "00563db446a76fcf45b6c80aa1e06b111398446608ad7d908a963bd7d1564ee8"
-    sha256 cellar: :any,                 catalina:       "f78575ded7f2a516700aae31a15ceaa131155cc67464ce50cfcb803c3f8241d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40347a762a1d1262c5d3bbe8dcf73002c41ca12140ca06a6ba6461ec43c4baf3"
+    sha256 cellar: :any,                 arm64_monterey: "941ecdab783c2d8bc556645bfe8bc9636cbfb77ffb5cd045c782baa994c8db00"
+    sha256 cellar: :any,                 arm64_big_sur:  "f7529c0daad5e67382365fc6579d0d9e97f387872e01c7efafc72d0407777b73"
+    sha256 cellar: :any,                 monterey:       "dce5b4236e826b3366ad4e7f7e3b247e308e4d2d8e30f9af76f2694be8f5bff8"
+    sha256 cellar: :any,                 big_sur:        "52540c517e787ff0a373e08757bf3355bcc8505cac93eb8a0d332bc08115505f"
+    sha256 cellar: :any,                 catalina:       "cb97d57708f7419dc1fd08d744e4de12e9a0ab1203b15ad1f8bc0b8c81aae91d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46084a7ef5a36aa3322a5ac724092fd864fa4695a55e82d254304702e48a5de0"
   end
 
   depends_on "cmake" => :build
@@ -26,8 +25,6 @@ class Binaryen < Formula
   fails_with gcc: "5"
 
   def install
-    ENV.cxx11
-
     system "cmake", ".", *std_cmake_args
     system "make", "install"
 

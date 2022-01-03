@@ -1,17 +1,16 @@
 class Julia < Formula
   desc "Fast, Dynamic Programming Language"
   homepage "https://julialang.org/"
-  url "https://github.com/JuliaLang/julia/releases/download/v1.7.0/julia-1.7.0.tar.gz"
-  sha256 "8e870dbef71bc72469933317a1a18214fd1b4b12f1080784af7b2c56177efcb4"
+  url "https://github.com/JuliaLang/julia/releases/download/v1.7.1/julia-1.7.1.tar.gz"
+  sha256 "17d298e50e4e3dd897246ccebd9f40ce5b89077fa36217860efaec4576aa718e"
   license all_of: ["MIT", "BSD-3-Clause", "Apache-2.0", "BSL-1.0"]
-  revision 1
-  head "https://github.com/JuliaLang/julia.git"
+  head "https://github.com/JuliaLang/julia.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "63b4f101a3d62f67611a1a8a659ad99e3fe5a8661205e3782e44629a7be4590b"
-    sha256 cellar: :any,                 big_sur:      "acaa7396fd0225d69b5e3f9ac4d5c55c6b533df1d3acc83a1cbdd7f1ab6d0db9"
-    sha256 cellar: :any,                 catalina:     "4591e7f2de89f6020a489fef1aac9b5e64da5085a0e9208cebde3d5a2d7f1fc5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "88dd58acd4270c56f1c92efe59e30725d7b92ee622470a0865438708ea5faaa2"
+    sha256 cellar: :any,                 monterey:     "c10c5ad7548bdfc146610c48f4afd8ac3b30041dbe68165623a341ed7aa873bb"
+    sha256 cellar: :any,                 big_sur:      "240f68a15a2d7c5c9a476436254895b3b3dc13f658e74fa72554e8b9f50edc06"
+    sha256 cellar: :any,                 catalina:     "e0e53d668c7679b8eb839460a2b6a83ba634a10a9bb55bf6b61b98ab6d39752b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f3fe17ea3b6dae8d5e2099955106a656028a8265e6028c4a5ca33be71142371f"
   end
 
   # Requires the M1 fork of GCC to build

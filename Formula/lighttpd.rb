@@ -4,6 +4,7 @@ class Lighttpd < Formula
   url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.63.tar.xz"
   sha256 "2aef7f0102ebf54a1241a1c3ea8976892f8684bfb21697c9fffb8de0e2d6eab9"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url "https://download.lighttpd.net/lighttpd/releases-1.4.x/"
@@ -11,12 +12,12 @@ class Lighttpd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ac2231f844afae0a9f19eec7fe218cc2464ad872d52ba26cfcd11335501ce0a7"
-    sha256 arm64_big_sur:  "8c428e23989126dcaf38dc6cc1ffe10c9a6099cce0ca93d011de61d43ed04928"
-    sha256 monterey:       "80ba67158d72a6517df08a4a8c9f88108e05d014fffe2acc3524a02b405fb3b0"
-    sha256 big_sur:        "1deefed2b413575a107a8aa28597221197945a2707d0fa00d243c7b8cfb23e31"
-    sha256 catalina:       "ad0bd2601b5fe42ef3cca5af694c03fc4df9f2fea76b54dbaf72f64254ba9062"
-    sha256 x86_64_linux:   "3909172c937696725005c3d8ce36df9c7715c4f925564a137d57a33b0b9b5ab5"
+    sha256 arm64_monterey: "febd63ab82f4b96ee6b1b6b7e4e658202aa1f87af58b8a2f635d27da50c82137"
+    sha256 arm64_big_sur:  "1f2b0fa8fc1fa2e6bf4717da8a2b770ceaf3e028f60a54d4556991ef4170e887"
+    sha256 monterey:       "6f2557e86538603fc34fefc4e33e35abd50962bc021e548877dad2877413fcbc"
+    sha256 big_sur:        "67edde9ec018c162d4188619e4840a6fdbea2f5418bb8c1d30d48a1438fba1b1"
+    sha256 catalina:       "30b655e43f0f325eab7157986e7832e85c37bc22686b259d6626a103af608794"
+    sha256 x86_64_linux:   "62a9f6a041bc72126cddf1fad869b4c33470ce9f4f1852b7c351f73163728610"
   end
 
   depends_on "autoconf" => :build
@@ -25,26 +26,10 @@ class Lighttpd < Formula
   depends_on "pkg-config" => :build
   depends_on "openldap"
   depends_on "openssl@1.1"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   # default max. file descriptors; this option will be ignored if the server is not started as root
   MAX_FDS = 512
-
-  def config_path
-    etc/"lighttpd"
-  end
-
-  def log_path
-    var/"log/lighttpd"
-  end
-
-  def www_path
-    var/"www"
-  end
-
-  def run_path
-    var/"lighttpd"
-  end
 
   def install
     args = %W[
@@ -52,10 +37,12 @@ class Lighttpd < Formula
       --disable-silent-rules
       --prefix=#{prefix}
       --sbindir=#{bin}
-      --with-openssl
-      --with-ldap
-      --with-zlib
       --with-bzip2
+      --with-ldap
+      --with-openssl
+      --without-pcre
+      --with-pcre2
+      --with-zlib
     ]
 
     # autogen must be run, otherwise prebuilt configure may complain
@@ -64,15 +51,15 @@ class Lighttpd < Formula
     system "./configure", *args
     system "make", "install"
 
-    unless File.exist? config_path
-      config_path.install "doc/config/lighttpd.conf", "doc/config/modules.conf"
-      (config_path/"conf.d/").install Dir["doc/config/conf.d/*.conf"]
-      inreplace config_path+"lighttpd.conf" do |s|
-        s.sub!(/^var\.log_root\s*=\s*".+"$/, "var.log_root    = \"#{log_path}\"")
-        s.sub!(/^var\.server_root\s*=\s*".+"$/, "var.server_root = \"#{www_path}\"")
-        s.sub!(/^var\.state_dir\s*=\s*".+"$/, "var.state_dir   = \"#{run_path}\"")
-        s.sub!(/^var\.home_dir\s*=\s*".+"$/, "var.home_dir    = \"#{run_path}\"")
-        s.sub!(/^var\.conf_dir\s*=\s*".+"$/, "var.conf_dir    = \"#{config_path}\"")
+    unless File.exist? etc/"lighttpd"
+      (etc/"lighttpd").install "doc/config/lighttpd.conf", "doc/config/modules.conf"
+      (etc/"lighttpd/conf.d/").install Dir["doc/config/conf.d/*.conf"]
+      inreplace etc + "lighttpd/lighttpd.conf" do |s|
+        s.sub!(/^var\.log_root\s*=\s*".+"$/, "var.log_root    = \"#{var}/log/lighttpd\"")
+        s.sub!(/^var\.server_root\s*=\s*".+"$/, "var.server_root = \"#{var}/www\"")
+        s.sub!(/^var\.state_dir\s*=\s*".+"$/, "var.state_dir   = \"#{var}/lighttpd\"")
+        s.sub!(/^var\.home_dir\s*=\s*".+"$/, "var.home_dir    = \"#{var}/lighttpd\"")
+        s.sub!(/^var\.conf_dir\s*=\s*".+"$/, "var.conf_dir    = \"#{etc}/lighttpd\"")
         s.sub!(/^server\.port\s*=\s*80$/, "server.port = 8080")
         s.sub!(%r{^server\.document-root\s*=\s*server_root \+ "/htdocs"$}, "server.document-root = server_root")
 
@@ -91,63 +78,29 @@ class Lighttpd < Formula
       end
     end
 
-    log_path.mkpath
-    (www_path/"htdocs").mkpath
-    run_path.mkpath
+    (var/"log/lighttpd").mkpath
+    (var/"www/htdocs").mkpath
+    (var/"lighttpd").mkpath
   end
 
   def caveats
     <<~EOS
-      Docroot is: #{www_path}
+      Docroot is: #{var}/www
 
-      The default port has been set in #{config_path}/lighttpd.conf to 8080 so that
+      The default port has been set in #{etc}/lighttpd/lighttpd.conf to 8080 so that
       lighttpd can run without sudo.
     EOS
   end
 
-  plist_options manual: "lighttpd -f #{HOMEBREW_PREFIX}/etc/lighttpd/lighttpd.conf"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_bin}/lighttpd</string>
-          <string>-D</string>
-          <string>-f</string>
-          <string>#{config_path}/lighttpd.conf</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <false/>
-        <key>WorkingDirectory</key>
-        <string>#{HOMEBREW_PREFIX}</string>
-        <key>StandardErrorPath</key>
-        <string>#{log_path}/output.log</string>
-        <key>StandardOutPath</key>
-        <string>#{log_path}/output.log</string>
-        <key>HardResourceLimits</key>
-        <dict>
-          <key>NumberOfFiles</key>
-          <integer>#{MAX_FDS}</integer>
-        </dict>
-        <key>SoftResourceLimits</key>
-        <dict>
-          <key>NumberOfFiles</key>
-          <integer>#{MAX_FDS}</integer>
-        </dict>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_bin/"lighttpd", "-D", "-f", etc/"lighttpd/lighttpd.conf"]
+    keep_alive false
+    error_log_path var/"log/lighttpd/output.log"
+    log_path var/"log/lighttpd/output.log"
+    working_dir HOMEBREW_PREFIX
   end
 
   test do
-    system "#{bin}/lighttpd", "-t", "-f", config_path/"lighttpd.conf"
+    system "#{bin}/lighttpd", "-t", "-f", etc/"lighttpd/lighttpd.conf"
   end
 end

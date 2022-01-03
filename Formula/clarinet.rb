@@ -3,8 +3,8 @@ class Clarinet < Formula
   homepage "https://github.com/hirosystems/clarinet"
   # pull from git tag to get submodules
   url "https://github.com/hirosystems/clarinet.git",
-      tag:      "v0.20.0",
-      revision: "6ff00f8df2d49122c95c2ba0d93a303a663b59c1"
+      tag:      "v0.21.2",
+      revision: "e5605ee2b76161ddd99a0113f3865d523acb8bde"
   license "GPL-3.0-only"
   head "https://github.com/hirosystems/clarinet.git", branch: "main"
 
@@ -14,12 +14,12 @@ class Clarinet < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5fd2278765d0a5304c406a915205f72dcc196655ba17d8759139f9a26bd7c6bb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "915e65364c68d2f47d0d3b40aa29ea6a064a28861c94a16bd252bc71975cf69f"
-    sha256 cellar: :any_skip_relocation, monterey:       "495b8213885e263e2e46660a1d9448a310f48a0fa9ba139bb2a0fc528a6825ea"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f8d8bbc4023304fc2e8e82944e588e958099ff6cf03e49f26edc7b3cf92ce061"
-    sha256 cellar: :any_skip_relocation, catalina:       "99931dc45748adc0c29ca30a183cd877e5fa49ed1074146999bc525721ba87b1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45d16c5ce4f74e7a58ca06d424d0d2e887ea4470685b94cf6180352fa34eba95"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "921482ebe720415852fc1dfb78e125f01bf7382a50a33ba47e96d75cd11c67ac"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3fd48897493511367b544494159f8b77dc76cf5375e054acd8246e43f891a877"
+    sha256 cellar: :any_skip_relocation, monterey:       "03c52d328cf8569f79f1e7570525efa8ade092de4839255fbca7bacf9183a106"
+    sha256 cellar: :any_skip_relocation, big_sur:        "41013a90f7e3906a418f83b555972483dedd9c3354117a06404d6ea5087b8411"
+    sha256 cellar: :any_skip_relocation, catalina:       "8754ca69e10adc73bee986a2e907c9690881c44c98c70d86a44485978a6d3ef3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "927da21edda357ecb9137f96aedab0f85defc92c610cb189904cfc09b112e33d"
   end
 
   depends_on "rust" => :build
@@ -34,7 +34,7 @@ class Clarinet < Formula
   end
 
   test do
-    system bin/"clarinet", "new", "test-project"
+    pipe_output("#{bin}/clarinet new test-project", "n\n")
     assert_match "name = \"test-project\"", (testpath/"test-project/Clarinet.toml").read
     system bin/"clarinet", "check", "--manifest-path", "test-project/Clarinet.toml"
   end

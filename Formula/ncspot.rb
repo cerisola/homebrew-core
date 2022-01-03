@@ -1,20 +1,20 @@
 class Ncspot < Formula
   desc "Cross-platform ncurses Spotify client written in Rust"
   homepage "https://github.com/hrkfdn/ncspot"
-  url "https://github.com/hrkfdn/ncspot/archive/v0.9.3.tar.gz"
-  sha256 "ed873d007ce356e8c6eed56226533b686682a98d2a37487668416539d4e10e78"
+  url "https://github.com/hrkfdn/ncspot/archive/v0.9.4.tar.gz"
+  sha256 "17c300194de48bba1aa75801ede1d9a3a6e3be473145d8663e3f4360b41361e3"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "21c71396136e8daa1bba4f6ea34f74c4af4721a9a3a9bbea5ff39808e09a4bd4"
-    sha256 cellar: :any,                 arm64_big_sur:  "69d970aea42cb583929d9b891d55be7eb27572f69aa01c467ecd200699cdf680"
-    sha256 cellar: :any,                 monterey:       "7f98ab62645cd1c4599b23ffc01776a15786de7679b2df30ad9ebf81e5b27a94"
-    sha256 cellar: :any,                 big_sur:        "6ff7355cb3faae6bfbc4ff3d84dd94b731744466e6247eabae085ae47f75e89f"
-    sha256 cellar: :any,                 catalina:       "d7ff985b4307dcd9904633767a94f80f9bf938ec98bf1624131bc5c1e306ba38"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "157333dc3c09586047231c0fa7443401d3e179d3225cb7c0871a2493e7515bed"
+    sha256 cellar: :any,                 arm64_monterey: "5e6213f97472cbf062c98ca1f535f528f527898dc8870348008825fa098f881e"
+    sha256 cellar: :any,                 arm64_big_sur:  "2160ef39c07723230e7d72d2dabc9ff4666a3b1d096faf25b4dadc00daeb94fa"
+    sha256 cellar: :any,                 monterey:       "0ea6723aab94789babcc5e30f170c5da238d2d1bd3601e316d7cd3cb2be3aef2"
+    sha256 cellar: :any,                 big_sur:        "0b7c0c1fbec3e6ab875a8cc6c1c20f4857a3f7c0af3a6f5c4b7950d2b0b2c0ab"
+    sha256 cellar: :any,                 catalina:       "7303d46c050eb9667de8b6fa83956d59eeeeb73ba12598bf3e6f64604b0a4a66"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de1e5d55da0e57d5ff7fee6a7e783d51b381869ca7d71d815519e90bea72f123"
   end
 
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "rust" => :build
   depends_on "portaudio"
 

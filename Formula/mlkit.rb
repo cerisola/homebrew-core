@@ -1,10 +1,10 @@
 class Mlkit < Formula
   desc "Compiler for the Standard ML programming language"
   homepage "https://melsman.github.io/mlkit"
-  url "https://github.com/melsman/mlkit/archive/v4.5.12.tar.gz"
-  sha256 "fbd9d51098152b334498e91ad2ab400a4e0ab21af3518cb63616804f664db247"
-  license "GPL-2.0"
-  head "https://github.com/melsman/mlkit.git"
+  url "https://github.com/melsman/mlkit/archive/v4.6.0.tar.gz"
+  sha256 "361756998e7828bbea12cdde150f3c484a7a41d14502788d199f7bb97d3bca51"
+  license "GPL-2.0-or-later"
+  head "https://github.com/melsman/mlkit.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,9 +12,9 @@ class Mlkit < Formula
   end
 
   bottle do
-    sha256 monterey: "06c931bad6ac7be3533baea8281f7610e0a87221758d0c990469e277767b4c91"
-    sha256 big_sur:  "4ededa4388753fad3d0183d6936a1a2f1b3ca8caa46696f77056259fc9ef3ade"
-    sha256 catalina: "7ad7b65140a10958506da78595b9c9e686f8feae2c31b1f048d0b8b4af8b76bc"
+    sha256 monterey: "26f58c1e892efb5d6964e5291e042e3f294978870b23bf27cf9ffc7d03ab75cc"
+    sha256 big_sur:  "6548ea915051d1aa5cb35f7020f52bd5b366bcca4bde016083a5884c77dd43df"
+    sha256 catalina: "d5c2bc82d056987193d3ae367f2af290b409385cee0e4e2de7929dcb3d97f55f"
   end
 
   depends_on "autoconf" => :build

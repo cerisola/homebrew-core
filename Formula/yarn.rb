@@ -4,14 +4,14 @@ class Yarn < Formula
   url "https://yarnpkg.com/downloads/1.22.17/yarn-v1.22.17.tar.gz"
   sha256 "267982c61119a055ba2b23d9cf90b02d3d16c202c03cb0c3a53b9633eae37249"
   license "BSD-2-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     skip("1.x line is frozen and features/bugfixes only happen on 2.x")
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "620296420d997ae8a3d50c4cd029c6f9188b1711ebfe41dd8614b72817232e96"
+    sha256 cellar: :any_skip_relocation, all: "28016c8b31dfd51b542168bf0c0165cc7a5e50f0b4034a6cc6628e03f2c01121"
   end
 
   depends_on "node" => :test
@@ -21,12 +21,8 @@ class Yarn < Formula
 
   def install
     libexec.install buildpath.glob("*")
-    (bin/"yarn").write_env_script libexec/"bin/yarn.js",
-                                  PREFIX:            HOMEBREW_PREFIX,
-                                  NPM_CONFIG_PYTHON: "python3"
-    (bin/"yarnpkg").write_env_script libexec/"bin/yarn.js",
-                                      PREFIX:            HOMEBREW_PREFIX,
-                                      NPM_CONFIG_PYTHON: "python3"
+    (bin/"yarn").write_env_script libexec/"bin/yarn.js", PREFIX: HOMEBREW_PREFIX
+    (bin/"yarnpkg").write_env_script libexec/"bin/yarn.js", PREFIX: HOMEBREW_PREFIX
     inreplace libexec/"lib/cli.js", "/usr/local", HOMEBREW_PREFIX
     inreplace libexec/"package.json", '"installationMethod": "tar"',
                                       "\"installationMethod\": \"#{tap.user.downcase}\""

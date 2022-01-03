@@ -4,24 +4,24 @@ class Rust < Formula
   license any_of: ["Apache-2.0", "MIT"]
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.56.1-src.tar.gz"
-    sha256 "c3898dfaadaa193dc88ddbc5345946a163211b58621df1cfff70186b4fc79511"
+    url "https://static.rust-lang.org/dist/rustc-1.57.0-src.tar.gz"
+    sha256 "3546f9c3b91b1f8b8efd26c94d6b50312c08210397b4072ed2748e2bd4445c1a"
 
     # From https://github.com/rust-lang/rust/tree/#{version}/src/tools
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git",
-          tag:      "0.57.0",
-          revision: "4ed5d137baff5eccf1bae5a7b2ae4b57efad4a7d"
+          tag:      "0.58",
+          revision: "b2e52d7cab0a286ee9fcc0c17510b1e72fcb53eb"
     end
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "58189da7cb381f3ca4600ac6ce22280faa913befe1c4772b2cb546310b8cf6ee"
-    sha256 cellar: :any,                 arm64_big_sur:  "4ef461b5e0ce1ef9f83308fca7a5da406bdeccee7c8fa19fb9277ebcd75efafb"
-    sha256 cellar: :any,                 monterey:       "18fbf3c9385b2f36384fa14643c723f73fbfa49aeac5fc2cc420dd7ccb712561"
-    sha256 cellar: :any,                 big_sur:        "20624f172ed0275e7360facdd5fe0267317d4edfa0fc099264673648ab5cdee6"
-    sha256 cellar: :any,                 catalina:       "7eb748e8f01e64656b23083f20a2887a344a200d28e1cbec6d95407b321f160f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cba480896934378891fdb66d4749470b515c99d773b816be690e7b46d8f3d6bb"
+    sha256 cellar: :any,                 arm64_monterey: "31914279cd3785ff8f6e820d0c61cf62efb5e3d1c2459c57f88d96fcad76802a"
+    sha256 cellar: :any,                 arm64_big_sur:  "e4328e159cb38fba57e3bc5f2374f56f97270329f8ea946a6e72aa9cd6db1ebf"
+    sha256 cellar: :any,                 monterey:       "417e15fa20e3fc9e42e9e04f467616bdb382dc3186485b5f7d37499f1164b30c"
+    sha256 cellar: :any,                 big_sur:        "360448c98d086edf6075148f2799247f4ec1538371d5c34024f30179d8631d56"
+    sha256 cellar: :any,                 catalina:       "34a4c9bd98f13d2a24ea62202de36d5ed84c081d9c09aca33fff370b031f2318"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fd40a1aebf48b13384c997f42a92be48f145e8e1253b91b17d83c834145274b"
   end
 
   head do
@@ -44,21 +44,29 @@ class Rust < Formula
 
   resource "cargobootstrap" do
     on_macos do
-      # From https://github.com/rust-lang/rust/blob/#{version}/src/stage0.txt
+      # From https://github.com/rust-lang/rust/blob/#{version}/src/stage0.json
       if Hardware::CPU.arm?
-        url "https://static.rust-lang.org/dist/2021-09-09/cargo-1.55.0-aarch64-apple-darwin.tar.gz"
-        sha256 "9e49c057f8020fa4f67e6530aa2929c175e5417d19fc9f3a14c9ffb168c2932d"
+        url "https://static.rust-lang.org/dist/2021-11-01/cargo-1.56.1-aarch64-apple-darwin.tar.gz"
+        sha256 "6ed30275214e956ee10b03db87b0b4297948fd102d39896cece01669555047ef"
       else
-        url "https://static.rust-lang.org/dist/2021-09-09/cargo-1.55.0-x86_64-apple-darwin.tar.gz"
-        sha256 "4e004cb231c8efbd4241b012c6abeefc7d61e2b4357cfe69feb0d4a448d30f05"
+        url "https://static.rust-lang.org/dist/2021-11-01/cargo-1.56.1-x86_64-apple-darwin.tar.gz"
+        sha256 "cd60c32d0bb0ed59508df96bebb83cf6f85accb9908fb5d63ca95c983a190cf3"
       end
     end
 
     on_linux do
-      # From: https://github.com/rust-lang/rust/blob/#{version}/src/stage0.txt
-      url "https://static.rust-lang.org/dist/2021-09-09/cargo-1.55.0-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "bb18c74aea07fa29c7169ce78756dfd08c07da08c584874e09fa6929c8267ec1"
+      # From: https://github.com/rust-lang/rust/blob/#{version}/src/stage0.json
+      url "https://static.rust-lang.org/dist/2021-11-01/cargo-1.56.1-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "c896c033bb1f430c4e200ae8af0f74d792e4909a458086b9597f076e1dcc2ab2"
     end
+  end
+
+  # Make sure object files in static archives have distinct names.
+  # https://github.com/rust-lang/compiler-builtins/issues/443
+  patch do
+    url "https://github.com/rust-lang/compiler-builtins/commit/eaab9d29ecbf538369d7f26953425eb78dae8229.patch?full_index=1"
+    sha256 "2eaafddf3dad416431b42f3a5e222a2d4261ab026a165c7f23d6ec378a0ccff5"
+    directory "vendor/compiler_builtins"
   end
 
   def install

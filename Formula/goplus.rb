@@ -1,27 +1,25 @@
 class Goplus < Formula
   desc "Programming language for engineering, STEM education, and data science"
   homepage "https://goplus.org"
-  url "https://github.com/goplus/gop/archive/v1.0.36.tar.gz"
-  sha256 "d42a9bb5ca1eac3afcee149f585d2ef7737e595619e5b76f2cca79f5b9c8019f"
+  url "https://github.com/goplus/gop/archive/v1.0.38.tar.gz"
+  sha256 "32f364e648f1f1509f04e37925cc98b373a58775d751bdcb9ded7cfd3d57478a"
   license "Apache-2.0"
   head "https://github.com/goplus/gop.git", branch: "main"
 
   bottle do
-    sha256 arm64_monterey: "182857f41722e0223f0758e141d833c7a4834caf5f219ed9c0ab7805b9b1f94a"
-    sha256 arm64_big_sur:  "da84a32df9bb0cc93a92f4bb51f0c62f9a1cbd5924ca2d52064f5952763bcb7b"
-    sha256 monterey:       "b8ca30a9f894b819e0fe1ca3d1e47735b060a5998de720531d2dd09cb1260f7d"
-    sha256 big_sur:        "46d2e38a02ad048973c079bfd558496b90c421c95e2b6eb1ca7c5ebd04c8a47b"
-    sha256 catalina:       "c4bb661a6e32d70532ef679a041d38a02e8e9459c7d99c925b99d46e6b553576"
-    sha256 x86_64_linux:   "85a68dcb21af69102ea244409e328fec517b7638f74f1241c1132d3bb3460b81"
+    sha256 arm64_monterey: "364bc9cf7f85ec369779d6538cb90ba6c9775861833558ff71a13955b3efa898"
+    sha256 arm64_big_sur:  "c32b2c24352f2b8da22c89e307a147c4ee7e3bc4c584814e7de727e388c6edef"
+    sha256 monterey:       "89660707153e9b21e0f6c32eb5baa38a72d73eb2b72c280e7ce4d62cfb0d196f"
+    sha256 big_sur:        "952bbd492a21f5e9a52982de28f143d6ee2994cd6df6362d303a98731aa2efa5"
+    sha256 catalina:       "ed6b409487a216ea24e792bd29159c3e82e518fa1730b67c352cb3af27bb2bb8"
+    sha256 x86_64_linux:   "6a9f23c71bc0197d91ddb81ae4c003bb88445b8289c95952ff181a5b9fc0f778"
   end
 
   depends_on "go"
 
   def install
-    # Patch version to match the version of gop, currently it get version from git tag
-    inreplace "env/version.go", /^\tbuildVersion string$/, "\tbuildVersion string = \"v#{version}\"" unless build.head?
-
     ENV["GOPROOT_FINAL"] = libexec
+    (buildpath/"VERSION").write "v#{version}"
     system "go", "run", "cmd/make.go", "--install"
 
     libexec.install Dir["*"] - Dir[".*"]

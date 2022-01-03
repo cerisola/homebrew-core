@@ -1,15 +1,15 @@
 class JavaServiceWrapper < Formula
   desc "Simplify the deployment, launch and monitoring of Java applications"
   homepage "https://wrapper.tanukisoftware.com/"
-  url "https://downloads.sourceforge.net/project/wrapper/wrapper_src/Wrapper_3.5.47_20211207/wrapper_3.5.47_src.tar.gz"
-  sha256 "1a171c7d81bcaf8ef1954c284668e51f5123d60559f381f19469163aa37e1651"
+  url "https://downloads.sourceforge.net/project/wrapper/wrapper_src/Wrapper_3.5.48_20211222/wrapper_3.5.48_src.tar.gz"
+  sha256 "c2800d8702ce86f4e7abe06773ccc220364424ebf7b3035f788ff79d0ed8d523"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "cdf2be94e019f0659f1152c5fa7f35ae8657ef756aee41b93c610482c9b88c4a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "98fbc9f69c89b1af66b28040fa864d71798511ae1759db6b51c7cf4f622d2aec"
-    sha256 cellar: :any_skip_relocation, catalina:      "10547b35780adf985da0545d6772ca2bb9307f9041e50e4a243f9a57bdb14a50"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2e3db383ddac93ad1d3e4d6fd9c76a8f9fe027a280d3c1314fd605208c267ef5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "cf865b681713fc4139699491e6ec9e6c40987d95bb3a0ac2bb8c1a13ad578ba8"
+    sha256 cellar: :any_skip_relocation, big_sur:       "5e657672962ca9f5ec05befd497e747063b1ebe12dd536321ab212eeed844994"
+    sha256 cellar: :any_skip_relocation, catalina:      "4a63f33390a0c0f0c33ce9360e01a96c4b168e5a30acf4e9b73685d8db517ff9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1cc431c3920fabaa7707f2c5c3a9f442b4aed0d8fcabc67f337e1b4b815b5f6d"
   end
 
   depends_on "ant" => :build

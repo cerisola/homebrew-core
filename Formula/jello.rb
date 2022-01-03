@@ -3,17 +3,17 @@ class Jello < Formula
 
   desc "Filter JSON and JSON Lines data with Python syntax"
   homepage "https://github.com/kellyjonbrazil/jello"
-  url "https://files.pythonhosted.org/packages/fe/98/558adcfc12ae91fbfdb20f88547877dd02d485a378c15602822d52263fcf/jello-1.5.1.tar.gz"
-  sha256 "2d5cd7655bcb887b31afe5da4e7d13ffa4565da9ca0c36d90f7c2c0eacf060a0"
+  url "https://files.pythonhosted.org/packages/2c/b5/1d5293540c7506296b3777656a24272d192db69e9cce5a9b155df1c74574/jello-1.5.2.tar.gz"
+  sha256 "9f52b526febf4ce6f74d6df44517d1bca7df57a1d76c81f21c7f7c9354f61643"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cc7577329e126498a9a2acad850c6f0645b883d4e7aeb20257629f5e5574a408"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cc7577329e126498a9a2acad850c6f0645b883d4e7aeb20257629f5e5574a408"
-    sha256 cellar: :any_skip_relocation, monterey:       "6430ab8e4a441716261b3594867efd77d767640564ec77eb5e5ff07486b95f08"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6430ab8e4a441716261b3594867efd77d767640564ec77eb5e5ff07486b95f08"
-    sha256 cellar: :any_skip_relocation, catalina:       "6430ab8e4a441716261b3594867efd77d767640564ec77eb5e5ff07486b95f08"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "74aa44e77eed05e2edce3a3026dfcf7cfc421f4c939560d98d61d6cd63144b97"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "369fefd4c22c9c012f99788336e08cd270ef1c104b3bf3f9ac606f00bc48b7e8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "369fefd4c22c9c012f99788336e08cd270ef1c104b3bf3f9ac606f00bc48b7e8"
+    sha256 cellar: :any_skip_relocation, monterey:       "08fe6d928c021346c8995b0a2694e18f32ddb1f4304b4e7ee2bcb4c3e95ab3e8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "08fe6d928c021346c8995b0a2694e18f32ddb1f4304b4e7ee2bcb4c3e95ab3e8"
+    sha256 cellar: :any_skip_relocation, catalina:       "08fe6d928c021346c8995b0a2694e18f32ddb1f4304b4e7ee2bcb4c3e95ab3e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "05c07473b75ec6fb1592da8c3752d16315a8257702cf596ba061571c9b28e56a"
   end
 
   depends_on "python@3.10"

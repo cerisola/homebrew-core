@@ -1,18 +1,19 @@
 class Libpulsar < Formula
   desc "Apache Pulsar C++ library"
   homepage "https://pulsar.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=pulsar/pulsar-2.9.0/apache-pulsar-2.9.0-src.tar.gz"
-  mirror "https://archive.apache.org/dist/pulsar/pulsar-2.9.0/apache-pulsar-2.9.0-src.tar.gz"
-  sha256 "f667d3d9e9f7a57a3912d14cd778f20e07a27f9320646bbcb705d8b8c94b18f7"
+  url "https://www.apache.org/dyn/closer.lua?path=pulsar/pulsar-2.9.1/apache-pulsar-2.9.1-src.tar.gz"
+  mirror "https://archive.apache.org/dist/pulsar/pulsar-2.9.1/apache-pulsar-2.9.1-src.tar.gz"
+  sha256 "e219a0b38645c64888ec031516afab0ca3248c194aaaf7bdc1d08aff4537e1f9"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e295fc24519a70da5840225d1c180cd66b95f31afc276cf6c6dee35a6eb3b470"
-    sha256 cellar: :any,                 arm64_big_sur:  "a2f24969d81ac812665dc753de8c6d260ee1f5c2af9d9071e598a2f7236b49a0"
-    sha256 cellar: :any,                 monterey:       "b0932dccc80943241142c38e9469aa2c80a6c270f00475f0c17443e134e08aac"
-    sha256 cellar: :any,                 big_sur:        "b3523ce63550f6ec38549ba9a05d50339144247c9d53c6c3dd48ac7a92794bc5"
-    sha256 cellar: :any,                 catalina:       "38f4cb6e64445494c8eb41f9b86b88eebb70a50df9d76efe2afe50297070d891"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "36d2b81115963ffa50d379ff5af267912910d0fdc781ab1e0b63b88ec66337eb"
+    sha256 cellar: :any,                 arm64_monterey: "908c224c0f902276b7befc8062adb7ea193b7e1396ed22ceb7f299f8f58e08fd"
+    sha256 cellar: :any,                 arm64_big_sur:  "f3997f1b6538e06e3d54de79395f30887b316058b7beab2b93bfa321e82f34cc"
+    sha256 cellar: :any,                 monterey:       "cd3940c8e1054dbf0c65f265bd017332c4b54fe71593d333cfb7ae9c2cad999f"
+    sha256 cellar: :any,                 big_sur:        "fc6e75f09854e1ecf463c1c25c1f5e164bb183cfd27c50fe8b0d5beededd091e"
+    sha256 cellar: :any,                 catalina:       "3f07b624418306fee3bc521926bcd110e6856fa73745608b4ffc87c14becbf3e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72226d10093040243b71bf8e080e7ef757aa701a4472efda5aacd8c36e19f8ef"
   end
 
   depends_on "cmake" => :build

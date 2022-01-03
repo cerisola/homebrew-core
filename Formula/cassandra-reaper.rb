@@ -1,14 +1,14 @@
 class CassandraReaper < Formula
   desc "Management interface for Cassandra"
   homepage "https://cassandra-reaper.io/"
-  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.0.0/cassandra-reaper-3.0.0-release.tar.gz"
-  sha256 "df185a83b1af26ff0c16105aad3d6a38916234ec375284c1f2103445020ac6c9"
+  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.1.0/cassandra-reaper-3.1.0-release.tar.gz"
+  sha256 "2e0d816a3b3659411be169a245b5e0a1e64c50c1aecaa3b1d33537be4649f297"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, big_sur:      "3a959022475e86bf2ab4f93d88c7161e94c3901d066a8792799fbca0e4473f37"
-    sha256 cellar: :any_skip_relocation, catalina:     "3a959022475e86bf2ab4f93d88c7161e94c3901d066a8792799fbca0e4473f37"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "fa8b2da0dd6ba8d5bbbddfd0ea2ff2ce93c9ff116a45173b17386d1a0e968da9"
+    sha256 cellar: :any_skip_relocation, big_sur:      "033a478cada5d4122b9d901933c04dff244766217b4011c54e903e698c8f30ed"
+    sha256 cellar: :any_skip_relocation, catalina:     "033a478cada5d4122b9d901933c04dff244766217b4011c54e903e698c8f30ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1332882726428c2293357e513c45fa9be9572dfefdebccaac29323b099e6f870"
   end
 
   depends_on "openjdk@8"

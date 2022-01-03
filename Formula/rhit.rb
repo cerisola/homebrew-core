@@ -1,18 +1,18 @@
 class Rhit < Formula
   desc "Nginx log explorer"
   homepage "https://dystroy.org/rhit/"
-  url "https://github.com/Canop/rhit/archive/refs/tags/v1.5.4.tar.gz"
-  sha256 "93ec6b5415c8d58d288858ad3e07df0561af0f76a0f46909ff1e335e51ad176e"
+  url "https://github.com/Canop/rhit/archive/refs/tags/v1.6.0.tar.gz"
+  sha256 "76236126f3918e606e3fa333f06e7316ab85d5783a29c59ea893e58ec1bfa96a"
   license "MIT"
   head "https://github.com/Canop/rhit.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "735a23d4671181aeab53080568eef2eb66a7ca286e6187b9c416b11a59fc89ab"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "315cc35a42cde2f5c39746ede6e17a07950157b10ec14a35f4191deca1a05c72"
-    sha256 cellar: :any_skip_relocation, monterey:       "abc1bc29ec9650efbb8e69cf818446be6723e964897a5c1a83ccfe1f201b9c0e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "69e7ef10c203f0f4eeb265cb3aff5657b11da914d43aa1cc72d38d2179b9a954"
-    sha256 cellar: :any_skip_relocation, catalina:       "48c2bbfea0a9c8aa5eb6a59553013991e713ede0b3679cdd3c0cadeb32e5d536"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d47715af90a50e5cc5afccc267759e46c37835a47066a90cdcaa145afb127f02"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca928f1de76eca9dfbbc2b297195bf95c6f9f9530a4dad0d38fcfe6d9d46df4f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d8fd5177ee51f2f348891965310c58b4cc69678234d16f3201967c6128f61fd"
+    sha256 cellar: :any_skip_relocation, monterey:       "d1b297050dfe4bc7f2406cd6f37f4dedd0cf69f42cfb23908e830d6587b6e2bb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "806016fab2b54ce08a0d05f17de716a1966b2b8b0d316ab56d94b6f206fa784a"
+    sha256 cellar: :any_skip_relocation, catalina:       "6c159eabd1477ea08066b8e5418328b31595cba353b410fa7f8428b594b6d882"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3ab570c7ca365e624cb37e91f00102e05cc266e69552c0573c847fd413dc7a9e"
   end
 
   depends_on "rust" => :build

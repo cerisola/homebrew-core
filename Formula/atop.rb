@@ -1,13 +1,13 @@
 class Atop < Formula
   desc "Advanced system and process monitor for Linux using process events"
   homepage "https://www.atoptool.nl"
-  url "https://github.com/Atoptool/atop/archive/refs/tags/v2.6.0.tar.gz"
-  sha256 "134de16cd58fb651d952e8ac401b20fe7f724afc0b152f06486e5c6f7be9c31a"
+  url "https://github.com/Atoptool/atop/archive/refs/tags/v2.7.0.tar.gz"
+  sha256 "0a1d66d79db9abbeb08d1b8128d755cbcc9ebb10eb96ef11cfa7e8b2e68b5d2d"
   license "GPL-2.0-or-later"
   head "https://github.com/Atoptool/atop.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "78ae84b523a0da7ea437ddec04e00a85a26dc41f9421b1c942e3fccd33f98bea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "62fa9d62a0840815759dcaa74e438253fef1ed484546509442a97e67527fd59f"
   end
 
   depends_on :linux
@@ -30,7 +30,6 @@ class Atop < Formula
     ENV["DEFPATH"] = "prev"
     ENV["LOGPATH"] = "prev"
     # It would try to install some files suid, which is not good for users:
-    inreplace "Makefile", "chown root", "true"
     inreplace "Makefile", "chmod", "true"
     # RPM and Debian packages do not use the Makefile for users, but it ensures we forget nothing:
     system "make", "-e", "genericinstall"

@@ -1,8 +1,8 @@
 class Libphonenumber < Formula
   desc "C++ Phone Number library by Google"
   homepage "https://github.com/google/libphonenumber"
-  url "https://github.com/google/libphonenumber/archive/v8.12.39.tar.gz"
-  sha256 "ff16330f130917e42bc0b1a7efe5e4fba46633bfa62e35268acec855e17e385c"
+  url "https://github.com/google/libphonenumber/archive/v8.12.40.tar.gz"
+  sha256 "2ab57fa740484e1a2354402b29d633869c7b883b8edc8cf9bf093ed984861e1b"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Libphonenumber < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a88efcd9e2e3fc7b88c2d547b338b489a9464c34dcb5379b373f6cff8f1fbd46"
-    sha256 cellar: :any,                 arm64_big_sur:  "be6a424ea281261dbc87472a396213788af847741280e0047c14827deb10a6ad"
-    sha256 cellar: :any,                 monterey:       "cefe5040591ac37cc1ed084b679f09a82e0bf8dba8a42895bc2afe9b0ef23aeb"
-    sha256 cellar: :any,                 big_sur:        "1cb623f85f7cdd6614515499049f1d0a7c70ffffbd8f9c11e1003f21e39e2b08"
-    sha256 cellar: :any,                 catalina:       "27ab0236ba00f6f8bb9f1a069f5e61424d3aeefad3e3be1fe219109272de9c98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f933801a07767652de4c30f5f7678e44db8e2317ac37226120b30d82cd97ef5"
+    sha256 cellar: :any,                 arm64_monterey: "0156e3c0377566bf8ba4b9faf0765e1f26d703bf6ec3cdedbc54cd2366edf7eb"
+    sha256 cellar: :any,                 arm64_big_sur:  "88ccadf83370dbd83bfe19e164ecd1c724cc78e45f3b48b0425aa0b80df25f69"
+    sha256 cellar: :any,                 monterey:       "cff413c0eacb0b5ec2e85b88da8100de889ad0e27effd787a1fcfc697991b3d8"
+    sha256 cellar: :any,                 big_sur:        "c8610093094b35e936782fe6754684dd3d77c39930c05d6bcafa90424a80c6ad"
+    sha256 cellar: :any,                 catalina:       "2bab5129d8081bf9ecd74a4137d689f229d33a40515df31b5d244a7454383fed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5af80ea009a3fd44fbfef7a6423011bed8c729987166ae022a8f6f3db04643e5"
   end
 
   depends_on "cmake" => :build

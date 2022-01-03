@@ -4,10 +4,9 @@ class Semgrep < Formula
   desc "Easily detect and prevent bugs and anti-patterns in your codebase"
   homepage "https://semgrep.dev"
   url "https://github.com/returntocorp/semgrep.git",
-      tag:      "v0.76.2",
-      revision: "bddf674c52fbc294b11f298704b975dba98f8aa7"
+      tag:      "v0.77.0",
+      revision: "936669b410744f706a216d80a697113f6685bf49"
   license "LGPL-2.1-only"
-  revision 1
   head "https://github.com/returntocorp/semgrep.git", branch: "develop"
 
   livecheck do
@@ -16,12 +15,12 @@ class Semgrep < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "d35d232fa9998e6644990a46a5d4e019213bd4a716746eacb7326e7eb0cf9697"
-    sha256 cellar: :any, arm64_big_sur:  "b5a2e084a896ae2d75a3d2d6538d7613c26096b3e76a4bc9fbd710d1cf1ae25f"
-    sha256 cellar: :any, monterey:       "739d22dbc111304e8b20b53a8500b62cc849217531835d239b4696e4ded26676"
-    sha256 cellar: :any, big_sur:        "6f0473408cfeefc70d02edd40d044853c116f9d619c2ef8a997eeae3737361b5"
-    sha256 cellar: :any, catalina:       "693690a2e0b500d0e20ee7f4ec96b1e0e9fe3ca53d3a42bbc33ab2317747c8d4"
-    sha256               x86_64_linux:   "bc3c4ad9e5e721fd687c3a64cc00d799ec161e26d949d19a3d81a46d1bbc6975"
+    sha256 cellar: :any, arm64_monterey: "418421dc623ead3e775ac040f9da41f462b7e612350c707f538e9745e5e2f719"
+    sha256 cellar: :any, arm64_big_sur:  "2ba40d0244b507734703ee1c955be95c15ebc925173f0afc278c71fee4be534d"
+    sha256 cellar: :any, monterey:       "550dbecc2cb157ae028bd425c1fa9bb53f203b167872626f3e128a9636a15a2a"
+    sha256 cellar: :any, big_sur:        "8ade93669b62b26044a18f1c09c0613cf350b97ea0562dd28aea6f49ac4d224e"
+    sha256 cellar: :any, catalina:       "e6a99954e22fbde97ce34bd2b5391750e791df7e0ca2621d6158fbaae9c227e6"
+    sha256               x86_64_linux:   "402bf2b6e6c4beb496da671c932c994683dd6e2a5705230d30d5489e508ba7ab"
   end
 
   depends_on "cmake" => :build
@@ -139,8 +138,8 @@ class Semgrep < Formula
   end
 
   resource "wcmatch" do
-    url "https://files.pythonhosted.org/packages/47/63/88168196fdcd77e012944bb83ab589a9d53336b8094703a64567f0bf218c/wcmatch-8.2.tar.gz"
-    sha256 "4d54ddb506c90b5a5bba3a96a1cfb0bb07127909e19046a71d689ddfb18c3617"
+    url "https://files.pythonhosted.org/packages/a7/73/7c739ae235b7e3ee36f2c0084a595b89c62aefeafa52df8d54d26846b32b/wcmatch-8.3.tar.gz"
+    sha256 "371072912398af61d1e4e78609e18801c6faecd3cb36c54c82556a60abc965db"
   end
 
   def install
