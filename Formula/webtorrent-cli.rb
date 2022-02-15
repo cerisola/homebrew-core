@@ -3,16 +3,17 @@ require "language/node"
 class WebtorrentCli < Formula
   desc "Command-line streaming torrent client"
   homepage "https://webtorrent.io/"
-  url "https://registry.npmjs.org/webtorrent-cli/-/webtorrent-cli-4.0.0.tgz"
-  sha256 "d45e495d0318a9d483f6ef57f020bff52740396939c6ef25954fad4a10f91045"
+  url "https://registry.npmjs.org/webtorrent-cli/-/webtorrent-cli-4.0.3.tgz"
+  sha256 "c21f3a20a0615b1e6c44d7598a7428c0ab2dcbd6fe44821446a3fce75f4198ab"
   license "MIT"
 
   bottle do
-    sha256                               arm64_big_sur: "e1b22e1d943e803b3d1734ac720aaca1f40ded5b97fbdcf25fb5a8c7b86c5c95"
-    sha256                               big_sur:       "04d0d4a06c629085f960572037c04c92aef907220027f15788b20cb69edf6ab4"
-    sha256                               catalina:      "a3b4e49ed8535a869e42a7e228c5617b7b2a62a24d3d76cdf9f7b6039df9a266"
-    sha256                               mojave:        "cafaf0592ce6c23f452c63c94e615bb3c5db68977cf9ded91f4e4be79508c5b4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0d945a5b25dfff5c28d3d6459698a051c4ea1bdaf8ba0b5b934f1bfc808b082a"
+    sha256                               arm64_monterey: "527a416531ee2a2b2c5df2a15d2983df7546059c73de4142bdc00744d3fe6b82"
+    sha256                               arm64_big_sur:  "798c810d0489bd8d6664ec648c97d07407c5647bc1cbf7bd36de2804bf4b1154"
+    sha256                               monterey:       "84bf71b3a59f9073f40ba6b4cd8d172d5039303922f8d9ee0d25241f4121c90a"
+    sha256                               big_sur:        "3b266de81074ecaed9edda04a70a02731e3b8db3428a5b8de5f6e58fcd6f757a"
+    sha256                               catalina:       "79a0dba49fdc352a4aca1641dc658140ca2eab2ae7fe41df7f10ecc25b4a3d5d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5735224576fb1a2f80b3c37d92795f52faa75e19a1f31bc380fa06e63ac7012"
   end
 
   depends_on "node"
@@ -22,17 +23,13 @@ class WebtorrentCli < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
 
     # Remove incompatible pre-built binaries
-    modules_dir = libexec/"lib/node_modules"/name/"node_modules"
-    modules_dir.glob("*/prebuilds/{win32-,linux-arm}*").map(&:rmtree)
+    os = OS.kernel_name.downcase
+    arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
+    libexec.glob("lib/node_modules/webtorrent-cli/node_modules/{bufferutil,utp-native,utf-8-validate}/prebuilds/*")
+           .each { |dir| dir.rmtree if dir.basename.to_s != "#{os}-#{arch}" }
 
-    arch_to_remove = if OS.linux?
-      "*"
-    elsif Hardware::CPU.intel?
-      "arm64"
-    else
-      "x64"
-    end
-    modules_dir.glob("*/prebuilds/darwin-#{arch_to_remove}").map(&:rmtree)
+    # Replace universal binaries with their native slices
+    deuniversalize_machos
   end
 
   test do

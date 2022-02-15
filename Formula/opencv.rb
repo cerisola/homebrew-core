@@ -4,7 +4,7 @@ class Opencv < Formula
   url "https://github.com/opencv/opencv/archive/4.5.4.tar.gz"
   sha256 "c20bb83dd790fc69df9f105477e24267706715a9d3c705ca1e7f613c7b3bad3d"
   license "Apache-2.0"
-  revision 2
+  revision 4
 
   livecheck do
     url :stable
@@ -12,18 +12,18 @@ class Opencv < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "04b79e1e08b0ee00a01fcd71adea34af9a9e7d7c97aeff5a7c8450a75e43de6b"
-    sha256 arm64_big_sur:  "61fa2aed041fb451c47b57a412385689b625551f6df2a75ca240fadc920ac65e"
-    sha256 big_sur:        "f5e25d935286f3abdcdea1b6403630014c6a03c5869c588734b55c813fcc1be1"
-    sha256 catalina:       "32d0564214e91ed203d0f9788cbbf66f001e11dd2eb60f5c1a1a9cedecd4c95b"
-    sha256 x86_64_linux:   "562ebecc68e240c22cc53e08bd2402df101498aa42abd101d87a258b41cf09d6"
+    sha256                               arm64_monterey: "0b8eed8bfbdb17ff2fa0d527f9d9eb84d1d6a25a5ad582ac373cab73cc6fb473"
+    sha256                               arm64_big_sur:  "6edac2cec751a071096bf5f7453882cf3dd0f717b59f0a0617ba96ba111c18a5"
+    sha256                               big_sur:        "2c42270eb3f5b20b40975120645b58e667992892278557609d5fa0e6ce930c97"
+    sha256                               catalina:       "b1e0918e3bb9c7f001f8389f1674d225b6268ce7bb28b624a6176cd06bbd6375"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2368bc3aa345fc6366fe39b4e67b9018b485a2547dc07669190f7a834c22f27e"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "ceres-solver"
   depends_on "eigen"
-  depends_on "ffmpeg"
+  depends_on "ffmpeg@4"
   depends_on "glog"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
@@ -39,6 +39,8 @@ class Opencv < Formula
   depends_on "webp"
 
   uses_from_macos "zlib"
+
+  fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "contrib" do
     url "https://github.com/opencv/opencv_contrib/archive/4.5.4.tar.gz"

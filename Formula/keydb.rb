@@ -1,18 +1,17 @@
 class Keydb < Formula
   desc "Multithreaded fork of Redis"
   homepage "https://keydb.dev"
-  url "https://github.com/JohnSully/KeyDB/archive/v6.2.0.tar.gz"
-  sha256 "61a2996c8d56e564930119b115674032d8a1de2b50d67a9c555be6e7975ed567"
+  url "https://github.com/EQ-Alpha/KeyDB/archive/v6.2.2.tar.gz"
+  sha256 "e65eea13500c30c65f705121b67cffeb3551a1c7cc7d07b60fe6191acd4dec58"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2f7e445ed9f9f4707e12e2dfebfbb339abc24e3abe2380101f960ac730f5a7e9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6dfcf7a5b5ff5541ef7ddefe4f5571cd9e0e52a6662a001d21b718bee6f4d48d"
-    sha256 cellar: :any_skip_relocation, monterey:       "edfdfc387c388f01925310c85d71aff3cb912e793943ca3b2bb650f1d844e63f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6a23ffe855a1778880d8dda557da1b993899a83472cfeae29822504812ded307"
-    sha256 cellar: :any_skip_relocation, catalina:       "f14d248e73516c85b53a72285301dac6a43d78fa39606787a127d7e21bda8a0f"
-    sha256 cellar: :any_skip_relocation, mojave:         "22932ae18bbe44f1f580f292ef9aceb379c0774573e6df30be20655a35161392"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6572526b3ffbd3161f8d93c32e1283ae9199286046a25d5b6b03b30074abe906"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b6d9c8d5d77a71cade23c85b2258f3b0fb74e2bfd3c58ea9fd5aadfbb0ea1778"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8ae26fdb9109fc9960a31aa4ac9e290846ad22bd24f27abbe89777b2f3f915a6"
+    sha256 cellar: :any_skip_relocation, monterey:       "040fe3beb451c44631ee4e6b016c3db0e28a3aafffb88813392ef32eb139aac7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "348803202838f745a4bb966eca19a7610f2530e72b4b61a2457d082b810c5aa6"
+    sha256 cellar: :any_skip_relocation, catalina:       "355c9f6fd3854b0a45413af336a8c81f91207b1405643b8aa3f0db1f9888291c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "535b7f2c5d08ca981e8a20fdf264c0fa47c9a1410c1811b36d62dac43e29d852"
   end
 
   uses_from_macos "curl"

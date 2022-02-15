@@ -2,8 +2,8 @@ class Clusterctl < Formula
   desc "Home for the Cluster Management API work, a subproject of sig-cluster-lifecycle"
   homepage "https://cluster-api.sigs.k8s.io"
   url "https://github.com/kubernetes-sigs/cluster-api.git",
-      tag:      "v1.0.2",
-      revision: "89db44e9a462028267ed49295359fe9db2a6a10a"
+      tag:      "v1.1.1",
+      revision: "810c2a67e71ed3344a29ae79862407d6b0631a79"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/cluster-api.git", branch: "master"
 
@@ -19,12 +19,12 @@ class Clusterctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "96c367c28466aa43f1a577125746ca4deda9255424450169d5ce8fb2bf127b21"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a7e38de66ef3dd64901b3f6ddbd6b4c6765d0c6449e7da43d3101cad9cd0e69"
-    sha256 cellar: :any_skip_relocation, monterey:       "c160d942e3fb67a072070274fa84aecaef27f35a1bcaf11ce8a2d48779ddfdb5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d3d8e364efb5a6b159b21cd985584071d9d306e288cc006625c5d2db18879b35"
-    sha256 cellar: :any_skip_relocation, catalina:       "d3414a8a100bdfdcaf60e3680cd18af16266dcc4702aabefba41ad9d0a55e07a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3dca2997eae33562d0f94141942c50a37c0d30bba7a8121e711ec0cb6ecfea9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cbde8f47aa95534c08dbd09b07712773a45e76bc648bb6b820dcc6974253badf"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f9966382a03c55c887b7502404a933cf5efb48c6224d271af9ee2d2756f3a6ba"
+    sha256 cellar: :any_skip_relocation, monterey:       "92de55a7d462350a03fec60a2717f50f7d9f18efab12596a37ff06915c3a38a2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "432b81e21150af13dae71cc6b04ee931709c3432e6932b1ebb66920fb30d7a6f"
+    sha256 cellar: :any_skip_relocation, catalina:       "485883ec369fcd49a210055f8dc33ea4e7d386957cc8ec5ee15d38573e23b200"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc4e59cd8938bfb48e6291fdeb25c12d58a2165f82bf6b6b6aee60c0de8f464f"
   end
 
   depends_on "go" => :build

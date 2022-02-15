@@ -1,8 +1,8 @@
 class Lxc < Formula
   desc "CLI client for interacting with LXD"
   homepage "https://linuxcontainers.org"
-  url "https://linuxcontainers.org/downloads/lxd/lxd-4.21.tar.gz"
-  sha256 "7a6745b50a5914d6f7812ee1def103373b38ea4759593302a0eded2787a652ac"
+  url "https://linuxcontainers.org/downloads/lxd/lxd-4.23.tar.gz"
+  sha256 "6cfcc7f4c462ae09776ffc24918211844bebcafcbfe4cd98f4b2cfa83e082fc5"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Lxc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "623d8a0313916bb2c65d9cf19ae8dc84f7e0c275c17fbddb5a7d59a458fe88ec"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "584ecaa377f8a94f5a349901ca9202866c8fd9dc224af1e37eac040501336da4"
-    sha256 cellar: :any_skip_relocation, monterey:       "dd045c9cccbeede2fb2567c6b92c6ad226c29e25f4d53d1afa538a07ac2a241b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5aede4fbe90c7eaab0eb5301c1846ab35b170892594db3f43bef246c6220c015"
-    sha256 cellar: :any_skip_relocation, catalina:       "e837d6b9412ea1431cbf107ad8c04416d53640968da5bbd42609ed1a665b48e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "82ac35fa6e9bf9dcd9d92160a986f45f80f4db2352a8cf70cf8d7d76ca594ac7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4e618c398667bc24ab1ca30b66c54352c497a376d66d3ce7149372bc2f0d9c69"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "00a3e3f5f3a8d63f344cefb59e8899f8b470d695792b5a2e62bac93727c688b4"
+    sha256 cellar: :any_skip_relocation, monterey:       "180ea43b3bb7419f296b736a9b89dbfef2795fb92439ec9f0915c607673585e1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d30aa92c6dd523da6a59fb42a63ae3c1c6788a5b54b8b60614cf858d2f7f5ec1"
+    sha256 cellar: :any_skip_relocation, catalina:       "4e9d25e0bee30fbf4fc629ba2fb1fc9fb9d951e2b429fb41e4493ca1e100e596"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ecb1bb35dcd51bd211e36043b8b3ea965ac91e490737b812d91532e8e618229"
   end
 
   depends_on "go" => :build

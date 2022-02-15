@@ -1,8 +1,8 @@
 class Rdkit < Formula
   desc "Open-source chemoinformatics library"
   homepage "https://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/Release_2021_09_3.tar.gz"
-  sha256 "3d9d47e9ea3f7563ca83bf24fc6d3419c3892ea77d831e1cf68d81f602ad1afc"
+  url "https://github.com/rdkit/rdkit/archive/Release_2021_09_4.tar.gz"
+  sha256 "ce192e85bbdc1dcf24d327197229099c8625ee20ef022fcbd980791fdbfc7203"
   license "BSD-3-Clause"
   head "https://github.com/rdkit/rdkit.git", branch: "master"
 
@@ -15,12 +15,12 @@ class Rdkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7b0f16353ac9d13b8d4844b3384baabede7db340661671ac2767918ac88f047b"
-    sha256 cellar: :any,                 arm64_big_sur:  "5e5e9c310a2e6256afd3be51bde73d5ada47aa842481d1ff79a745e21a8b6189"
-    sha256 cellar: :any,                 monterey:       "b023e1b6c62628d5b7c23a6d550de6ae2a01c837d1d5cd2fa53771e185eb5e90"
-    sha256 cellar: :any,                 big_sur:        "1e51cb4bf7700e66825524f5c4418176ac1eea404c16b5e32c95fc5949e344a4"
-    sha256 cellar: :any,                 catalina:       "97db69d9cdedf2646a92a0a00b28b12442893eb3e4346fe9e68e3fcf0929fb2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "86ed6137f5afdff12a4a8caa30e056b309a1896684f22f34aa348cafdf0419ce"
+    sha256 cellar: :any,                 arm64_monterey: "0643b5ec5228088d9fac1c202f15a188c4fa9f1ac6c197750c732f4c6ae37571"
+    sha256 cellar: :any,                 arm64_big_sur:  "8b6dcff4614ab1f8e5edf9e6c28c242897af3a33688dd2e4dff7b03ddfd0a1e1"
+    sha256 cellar: :any,                 monterey:       "fdc9dd876718d5009e9ea4aa62d90ca22d6ade4bd631d37b06a1b60a2c005cb7"
+    sha256 cellar: :any,                 big_sur:        "6a8cd3a35d9b1e9e5f20a41a6eccf5977defdc2759b9d7a2355ef8c52c756357"
+    sha256 cellar: :any,                 catalina:       "8b38b42a626ea841f29ddd1b52cc7c9ec134e8af0230e1b73ce30cd9f43c9e15"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9011c3ccbc72c16cf39f0dd0e2569a3ef01d2d9a36e56b5d246003e0eeddca63"
   end
 
   depends_on "cmake" => :build
@@ -33,6 +33,12 @@ class Rdkit < Formula
   depends_on "postgresql"
   depends_on "py3cairo"
   depends_on "python@3.9"
+
+  # Fix for Comic Neue md5 checksum change, remove with next release
+  patch do
+    url "https://github.com/rdkit/rdkit/commit/d05501c5db6f30b72b5d751e7100be165549ebdc.patch?full_index=true"
+    sha256 "06eb6f9f8479c9cc227948654c42e71892c4ae19878291cf3e108feb7a8edc7d"
+  end
 
   def install
     ENV.cxx11

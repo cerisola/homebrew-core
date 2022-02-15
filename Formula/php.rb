@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.1.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.1.tar.xz"
-  sha256 "33c09d76d0a8bbb5dd930d9dd32e6bfd44e9efcf867563759eb5492c3aff8856"
+  url "https://www.php.net/distributions/php-8.1.2.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.1.2.tar.xz"
+  sha256 "6b448242fd360c1a9f265b7263abf3da25d28f2b2b0f5465533b69be51a391dd"
   license "PHP-3.01"
 
   livecheck do
@@ -13,12 +13,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "4e187ed119523a7c03ae1838237a3d71cf850935f2fb110d87f0e6252a02713a"
-    sha256 arm64_big_sur:  "6d5e7a5bac0b3fedb346045bb9a77b722b235a9dff32b96e1f0cdd3f15fbd0ec"
-    sha256 monterey:       "6e3013d73691397ad57bb89480991f5b6e7952d05ba418678270765ac531c783"
-    sha256 big_sur:        "9f02e1b5d7acb3a0f50f2277c0033a4d9db994810baca3f1280dd3f06744845e"
-    sha256 catalina:       "8caf3a68e629645f97a125a26e5c87dc5dc5a77d8c75edba36b8ef5c39a802ca"
-    sha256 x86_64_linux:   "cd4e7a18bde904f6b911bc4211e78a3385b035d6add6d6775b10a329e120f256"
+    sha256 arm64_monterey: "cc6056554b8edb7a5baaa315c9c2abf7db3ff9df9abc997eac7e292a410148d6"
+    sha256 arm64_big_sur:  "d6be3ff7f320e5273090829df91aee26998074dbfdd37d1d34dbe723cf1f76e7"
+    sha256 monterey:       "08fc122518eca5e578ff4cd791c2ced0e4a10f707ec48f1938791473e38fceb5"
+    sha256 big_sur:        "ca3e258757be7cae957b84fcc031c5c6d50cd7c639387581a88ae415193b9abf"
+    sha256 catalina:       "8df83124f1338295d1b202b11e59094455088544967075332e52f7e24a1f85a3"
+    sha256 x86_64_linux:   "9554b23b28075f932d7f6fff779579f3a255d6f71c28ec785a9c0d8a6709a7e3"
   end
 
   head do
@@ -206,18 +206,23 @@ class Php < Formula
     extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
-    inreplace "php.ini-development", %r{; ?extension_dir = "\./"},
-      "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
+    %w[development production].each do |mode|
+      inreplace "php.ini-#{mode}", %r{; ?extension_dir = "\./"},
+        "extension_dir = \"#{HOMEBREW_PREFIX}/lib/php/pecl/#{orig_ext_dir}\""
+    end
 
     # Use OpenSSL cert bundle
     openssl = Formula["openssl@1.1"]
-    inreplace "php.ini-development", /; ?openssl\.cafile=/,
-      "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
-    inreplace "php.ini-development", /; ?openssl\.capath=/,
-      "openssl.capath = \"#{openssl.pkgetc}/certs\""
+    %w[development production].each do |mode|
+      inreplace "php.ini-#{mode}", /; ?openssl\.cafile=/,
+        "openssl.cafile = \"#{openssl.pkgetc}/cert.pem\""
+      inreplace "php.ini-#{mode}", /; ?openssl\.capath=/,
+        "openssl.capath = \"#{openssl.pkgetc}/certs\""
+    end
 
     config_files = {
       "php.ini-development"   => "php.ini",
+      "php.ini-production"    => "php.ini-production",
       "sapi/fpm/php-fpm.conf" => "php-fpm.conf",
       "sapi/fpm/www.conf"     => "php-fpm.d/www.conf",
     }

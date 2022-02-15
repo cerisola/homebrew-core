@@ -1,8 +1,8 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/protocolbuffers/protobuf/"
-  url "https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protobuf-all-3.19.1.tar.gz"
-  sha256 "80631d5a18d51daa3a1336e340001ad4937e926762f21144c62d26fe2a8d71fe"
+  url "https://github.com/protocolbuffers/protobuf/releases/download/v3.19.4/protobuf-all-3.19.4.tar.gz"
+  sha256 "ba0650be1b169d24908eeddbe6107f011d8df0da5b1a5a4449a913b10e578faf"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,12 +11,12 @@ class Protobuf < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2c79308d7f48bec84d982266e15856b16f4341bf09e6fec0389267c298926fc6"
-    sha256 cellar: :any,                 arm64_big_sur:  "0abdd64a2df3c15c6987ca7f4d43cb461ed792fe03654660571258d344f6112e"
-    sha256 cellar: :any,                 monterey:       "0308e29bece56bf668d3f55a7a954f15a4661850cb42bac49b1253f5ae1d38fc"
-    sha256 cellar: :any,                 big_sur:        "b6bb6b08578552a249e1ae467d0d0f41cb9bd2672ff2a987ea58412cfd118752"
-    sha256 cellar: :any,                 catalina:       "20c06f641f8f65f1b05922d3e073f6f2e9415016b4193c42e6b2274c6add9714"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c885d9f84a3077b1828ce9e1bbbfe5e51ad1a81ea07dfec82a1a9b83b72db7b"
+    sha256 cellar: :any,                 arm64_monterey: "a467da7231471d7913ed291e83852e1ca950db86d142b2a67e0839743dc132b7"
+    sha256 cellar: :any,                 arm64_big_sur:  "188863a706dd31a59ce0f4bdcf7d77d46e681ed8e72a8ab9ba28e771b52b58fd"
+    sha256 cellar: :any,                 monterey:       "ca9840b58a314543c0f45490e6a543eb330eb772f0db385ef005d82b6b169047"
+    sha256 cellar: :any,                 big_sur:        "a6e39ca1c9418561aa2e576a62c86fe11674b81c922a8f610c75aa9211646863"
+    sha256 cellar: :any,                 catalina:       "5cc145bfca99db8fbe89d8b24394297bde7075aaa3d564cd24478c5762563ef6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c3e53cb5448c38183693262da84e5e100a11c3d08de6b5088ed2d1a7f00e106"
   end
 
   head do

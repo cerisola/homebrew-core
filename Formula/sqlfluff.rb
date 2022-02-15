@@ -3,17 +3,17 @@ class Sqlfluff < Formula
 
   desc "SQL linter and auto-formatter for Humans"
   homepage "https://docs.sqlfluff.com/"
-  url "https://files.pythonhosted.org/packages/56/92/aa8c47aaff4d3d51e8ec70b0ca12f74b2a4be27b1f8d4cd88893bc2504a2/sqlfluff-0.9.0.tar.gz"
-  sha256 "aa1fda929572098393270fa9451a61f46ea57eb8b741f292b93611ac16fc9042"
+  url "https://files.pythonhosted.org/packages/56/ec/c2dab62cd9518be12fdcd6ecf848f27d60322d98c66c13c4b402acc3aa63/sqlfluff-0.10.0.tar.gz"
+  sha256 "01867a9b8b9f5e88546e5ad178b3e72d6d9a4275c687943f99d75a1f266c2c72"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "974cfce96729e7f5c77e7a9d653e3a335ded03b9556ea2f6704ce1a95e06b078"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "019a5868f33864ec655c6afe227dc849ce4ede23db2fbfa8b239bda216ee2a61"
-    sha256 cellar: :any_skip_relocation, monterey:       "3d1c143232f9ee807306c4d83a42db367ef4ba4fb45c236c2204b470e5227e54"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0efbdcce09a59871c2c3ca2df69f91d13056e6880e1ad827bfb58501c4393607"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e0421798c1f15fd9f77692590c0f2babc02f478f79d61c85cca05764b2d8e12"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "27012cbf40cdb0d9fb89ef0fe00aa3b7e1773c2d84e1470478a636d6b2661876"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c959a8d9addb0e62f169e6398a6e252d02025a0aba8b7a701f51e3e2175e2bee"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e024ae3430c91109527824cd34399da9111fcd2cbc0548bac431c54cd9db2884"
+    sha256 cellar: :any_skip_relocation, monterey:       "e05583a7a5734e0749e8bb2e5c229e3d37ea007b1f07e980d0cba6910b191ff4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8bc62cd5525dbe83b81aa4fbb50a050f600b43e26952203fb0e766d8557f178a"
+    sha256 cellar: :any_skip_relocation, catalina:       "7a1a00ced8d5b811466058a52a1f7092d8d767f3c674406c57404e1854361223"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fb5e8ec92463c8ee73de196671969d30998e8e06757763c81458571c0d6907d2"
   end
 
   depends_on "python@3.10"
@@ -24,13 +24,8 @@ class Sqlfluff < Formula
   end
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/ed/d6/3ebca4ca65157c12bd08a63e20ac0bdc21ac7f3694040711f9fd073c0ffb/attrs-21.2.0.tar.gz"
-    sha256 "ef6aaac3ca6cd92904cdd0d83f629a15f18053ec84e6432106f7a4d04ae4f5fb"
-  end
-
-  resource "cached-property" do
-    url "https://files.pythonhosted.org/packages/61/2c/d21c1c23c2895c091fa7a91a54b6872098fea913526932d21902088a7c41/cached-property-1.5.2.tar.gz"
-    sha256 "9fa5755838eecbb2d234c3aa390bd80fbd3ac6b6869109bfc1b499f7bd89a130"
+    url "https://files.pythonhosted.org/packages/d7/77/ebb15fc26d0f815839ecd897b919ed6d85c050feeb83e100e020df9153d2/attrs-21.4.0.tar.gz"
+    sha256 "626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"
   end
 
   resource "chardet" do
@@ -68,11 +63,6 @@ class Sqlfluff < Formula
     sha256 "594c67807fb16238b30c44bdf74f36c02cdf22d1c8cda91ef8a0ed8dabf5620a"
   end
 
-  resource "oyaml" do
-    url "https://files.pythonhosted.org/packages/00/71/c721b9a524f6fe6f73469c90ec44784f0b2b1b23c438da7cc7daac1ede76/oyaml-1.0.tar.gz"
-    sha256 "ed8fc096811f4763e1907dce29c35895d6d5936c4d0400fe843a91133d4744ed"
-  end
-
   resource "packaging" do
     url "https://files.pythonhosted.org/packages/df/9e/d1a7217f69310c1db8fdf8ab396229f55a699ce34a203691794c5d1cad0c/packaging-21.3.tar.gz"
     sha256 "dd47c42927d89ab911e606518907cc2d3a1f38bbd026385970643f9c5b8ecfeb"
@@ -94,18 +84,18 @@ class Sqlfluff < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/b7/b3/5cba26637fe43500d4568d0ee7b7362de1fb29c0e158d50b4b69e9a40422/Pygments-2.10.0.tar.gz"
-    sha256 "f398865f7eb6874156579fdf36bc840a03cab64d1cde9e93d68f46a425ec52c6"
+    url "https://files.pythonhosted.org/packages/94/9c/cb656d06950268155f46d4f6ce25d7ffc51a0da47eadf1b164bbf23b718b/Pygments-2.11.2.tar.gz"
+    sha256 "4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/ab/61/1a1613e3dcca483a7aa9d446cb4614e6425eb853b90db131c305bd9674cb/pyparsing-3.0.6.tar.gz"
-    sha256 "d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"
+    url "https://files.pythonhosted.org/packages/d6/60/9bed18f43275b34198eb9720d4c1238c68b3755620d20df0afd89424d32b/pyparsing-3.0.7.tar.gz"
+    sha256 "18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"
   end
 
   resource "pytest" do
-    url "https://files.pythonhosted.org/packages/4b/24/7d1f2d2537de114bdf1e6875115113ca80091520948d370c964b88070af2/pytest-6.2.5.tar.gz"
-    sha256 "131b36680866a76e6781d13f101efb86cf674ebb9762eb70d3082b6f29889e89"
+    url "https://files.pythonhosted.org/packages/68/89/31bf5c9b68f4a99e9c0bfd16131e9756f02b861466d96fae45a168751801/pytest-7.0.0.tar.gz"
+    sha256 "dad48ffda394e5ad9aa3b7d7ddf339ed502e5e365b1350e0af65f4a602344b11"
   end
 
   resource "PyYAML" do
@@ -114,8 +104,8 @@ class Sqlfluff < Formula
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/97/cd/93ad08b2f97ec95da0bd860380ce0ac7481eaccc760356ee11eda369c048/regex-2021.11.10.tar.gz"
-    sha256 "f341ee2df0999bfdf7a95e448075effe0db212a59387de1a70690e4acb03d4c6"
+    url "https://files.pythonhosted.org/packages/4c/75/b5b60055897d78882da8bc4c94609067cf531a42726df2e44ce69e8ec7a9/regex-2022.1.18.tar.gz"
+    sha256 "97f32dc03a8054a4c4a5ab5d761ed4861e828b2c200febd4e46857069a483916"
   end
 
   resource "tblib" do
@@ -126,6 +116,11 @@ class Sqlfluff < Formula
   resource "toml" do
     url "https://files.pythonhosted.org/packages/be/ba/1f744cdc819428fc6b5084ec34d9b30660f6f9daaf70eead706e3203ec3c/toml-0.10.2.tar.gz"
     sha256 "b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+  end
+
+  resource "tomli" do
+    url "https://files.pythonhosted.org/packages/c0/3f/d7af728f075fb08564c5949a9c95e44352e23dee646869fa104a3b2060a3/tomli-2.0.1.tar.gz"
+    sha256 "de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
   end
 
   resource "tqdm" do

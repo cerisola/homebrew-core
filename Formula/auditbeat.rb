@@ -2,18 +2,18 @@ class Auditbeat < Formula
   desc "Lightweight Shipper for Audit Data"
   homepage "https://www.elastic.co/products/beats/auditbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.16.2",
-      revision: "3c518f4d17a15dc85bdd68a5a03d5af51d9edd8e"
+      tag:      "v8.0.0",
+      revision: "2ab3a7334016f570e0bfc7e9a577a35a22e02df5"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2534f50ea1bc538cb79f00b42925f5ed2c1cb1c21b5411e27faefc8f6745c581"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7a51879b5396bf5125c7016f36b75a06b068decc0015a07503701f280a05daec"
-    sha256 cellar: :any_skip_relocation, monterey:       "fad710f0e4fccbf6ba6b13ef9ef0c1a74dacba418b353f8f2e2ac8b4884615aa"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2288b22cf083452ae9af295a42b426eab7f0f37b6153b7eae851c4fda0f7e8d0"
-    sha256 cellar: :any_skip_relocation, catalina:       "ebac2a274b86d8fa967faf520be8de727df24107972a936c863c29bf1ce58eca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee726ed853d7b9ab262830a5d1054761e0f879eaffe9cf2ab65a552628488adc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "23d0e93cfd2858fcf1ead2665e70442f3cbdbdf3ca4305ab542699b94279896c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7439dd323da8d5bf1c15287d6ccdc0154a39f09150668f7b3b722769e9dca4e9"
+    sha256 cellar: :any_skip_relocation, monterey:       "c3c84c0adcbc100c22012e76ec28cee8ea8604aa329aab099dd4148bc98ca81b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "25205460fa0a128c9b753367cdf726c5d9ead9a74bfbbf285c9555aaadecf305"
+    sha256 cellar: :any_skip_relocation, catalina:       "dfd55e5e35f16dde39d6978cc6560272df3e9ae93aa3aa99696b171591cb4a17"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a53edf4f977361fb895994680ef644710b8c70895746aa2b59a22ec60eb32a01"
   end
 
   depends_on "go" => :build
@@ -76,10 +76,12 @@ class Auditbeat < Formula
     end
     sleep 5
     touch testpath/"files/touch"
+
     sleep 30
-    s = File.readlines(testpath/"auditbeat/auditbeat").last(1)[0]
-    assert_match(/"action":\["(initial_scan|created)"\]/, s)
-    realdirpath = File.realdirpath(testpath)
-    assert_match "\"path\":\"#{realdirpath}/files/touch\"", s
+
+    assert_predicate testpath/"data/beat.db", :exist?
+
+    output = JSON.parse((testpath/"data/meta.json").read)
+    assert_includes output, "first_start"
   end
 end

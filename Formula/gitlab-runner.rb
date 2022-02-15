@@ -2,8 +2,8 @@ class GitlabRunner < Formula
   desc "Official GitLab CI runner"
   homepage "https://gitlab.com/gitlab-org/gitlab-runner"
   url "https://gitlab.com/gitlab-org/gitlab-runner.git",
-      tag:      "v14.5.0",
-      revision: "f0a95a76c6db80232ae46716938e1b3c27950b3b"
+      tag:      "v14.7.0",
+      revision: "98daeee0966d3e43b93eb548df6c1454fbd39709"
   license "MIT"
   head "https://gitlab.com/gitlab-org/gitlab-runner.git", branch: "main"
 
@@ -13,12 +13,12 @@ class GitlabRunner < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "de1fee47a8aa164ba1df51314e958c499915696d3189c040906a68f6cf8e4818"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f0be358ab45d037978a6fe37123c32384a58233df796b787a2ebe4f07ef6eace"
-    sha256 cellar: :any_skip_relocation, monterey:       "e06941db0f74abed1028cdcf074fca27b7100c6f8b97f211f05cdbb33b0dfd8d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8f437dc2d44bfcea7d5196b1c28cf9a835ec73c166a8e596cb46517e8afd359c"
-    sha256 cellar: :any_skip_relocation, catalina:       "83b5dbb802de2bd62e89ab4b920e66783534534c60fd4a4bb094961a8c7787c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b99220dcb2591ecc4a3fd769d9de84363438691260f06c3e4c2c6c40b296989"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6105f6eba593ea0cd7226bd7cc1a314db3354b93f21c3f4a0583d4ce962ddda0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ebba1ab08a748ad83a99b77322d86d6d4164400d3d8991a37b570afbe11112fa"
+    sha256 cellar: :any_skip_relocation, monterey:       "aed754e255e21e56bc4c83a2dc56ff66ad472881a7325948c74911a7d75238e0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "77c0581327b05a41d1ed9d65d9804d6d7d731915b12b917f18b91bb9fbd025e8"
+    sha256 cellar: :any_skip_relocation, catalina:       "98824a56d5b1a0017d53cc8e78039dfd5bcf62954ce0d661ae9cd6c42ee05bdd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "523f495be3c260ec4b02a284be168210a4ef8a85fc73c69d047cf49849640cfa"
   end
 
   depends_on "go" => :build

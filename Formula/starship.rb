@@ -1,18 +1,18 @@
 class Starship < Formula
   desc "Cross-shell prompt for astronauts"
   homepage "https://starship.rs"
-  url "https://github.com/starship/starship/archive/v1.1.1.tar.gz"
-  sha256 "5c3ada4b888068ba41052eb66ddc44c87c9a7428bebcc8a5cb7246db0ed780bb"
+  url "https://github.com/starship/starship/archive/v1.3.0.tar.gz"
+  sha256 "3f29cb6e5cb7c673cbc1f8e91ceb4a0d1317d235b147db15e461ffec22be13a5"
   license "ISC"
   head "https://github.com/starship/starship.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "902bcac86e8fd52688e4357f106cc615cb5dbe2128d280e5162f999950191991"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3276f4838f206e648ab54f3de79d53c8ac43ac0b78e3c8f71cb9dd818c5cd8a3"
-    sha256 cellar: :any_skip_relocation, monterey:       "1f46babd20f46071b4922ab42398892da75d7c8effc2a10982cd986bb388967d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "08407c5327e05ba055a8850a2e4fd0305aa5ceca38ccf18365081f9a3f90db7f"
-    sha256 cellar: :any_skip_relocation, catalina:       "8cd2106df217857b8c84f5c985aceb1ec8a38452b7508fb4c8755fef8139f209"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4106eb634f80c93db71c23e292293034f996ecc24d99735ddec9a7450c0cc73f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8e7d52e926fdce2359549cd18a4b73958f7af6519192872884647da73a9206a3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f1faf77205e00e029a79f0f4b91fd9ec20692e6369115f45612d1cb55eff1528"
+    sha256 cellar: :any_skip_relocation, monterey:       "e963afddc1937606c618baef8cdfa87c805202f838ee7c5580e80a69305e3836"
+    sha256 cellar: :any_skip_relocation, big_sur:        "63f081b4ec673db4525a80b8ce483abf5882aaa271b92952ee6a4b6ee23cf9be"
+    sha256 cellar: :any_skip_relocation, catalina:       "fe5841b1f33e298a03ebfd99e3ee021ddfa1bd66d6bf0ec2278c6992784ac8c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "001bddfeab4415c1c36b81926d983c38581d855e3bccd8a9bce0707101bdf6e2"
   end
 
   depends_on "rust" => :build
@@ -26,7 +26,7 @@ class Starship < Formula
   end
 
   def install
-    system "cargo", "install", "--features", "notify-rust", *std_cargo_args
+    system "cargo", "install", *std_cargo_args
 
     bash_output = Utils.safe_popen_read("#{bin}/starship", "completions", "bash")
     (bash_completion/"starship").write bash_output

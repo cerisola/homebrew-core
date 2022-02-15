@@ -1,8 +1,8 @@
 class Tfsec < Formula
   desc "Static analysis security scanner for your terraform code"
   homepage "https://tfsec.dev/"
-  url "https://github.com/aquasecurity/tfsec/archive/v0.63.1.tar.gz"
-  sha256 "11f4d680b9163e23ce021cd15d2016a220e97401c68a3216820ee101d68aae44"
+  url "https://github.com/aquasecurity/tfsec/archive/v1.1.5.tar.gz"
+  sha256 "b7870594c6730039a28475ae630e6cff4acd70f2be9357e0b6da9284b2a03a14"
   license "MIT"
   head "https://github.com/aquasecurity/tfsec.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Tfsec < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bdb0c38a1cef49bab45d3d81a02c19d3e83a45af442c7331ed7cab51af8c9db2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2d5339ab2ebccad77868d5ca50cbba552d1bb650122fc03eb63bc31686cd2386"
-    sha256 cellar: :any_skip_relocation, monterey:       "47c7b7d473d3178d6eb79e0175133c0482fd2833e91b3d36a0f99e80d06e2fb3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e1204beff79c4ab03a92f884d02ff298e9f4185ca5a74ad80360e99e67a0d70d"
-    sha256 cellar: :any_skip_relocation, catalina:       "be5372794e97f81cd7671a8abc0be0c3ec56f96f815a9a60355ebd9ef85fcbfa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "97ff579eba959d53d52ce4c6dd39cef1897b9139cb212dcd520fda2247544e38"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "299ea640914e9f34b3074435b25abc2ea8cf856cdd968666798f1f9252f20c76"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2988ab5541f3a101d9460eb486279bc57965ea0b785a1d4a166b597d10d8d448"
+    sha256 cellar: :any_skip_relocation, monterey:       "2a7ef06bfa5f6697fe1e96274e5f385ebdd6af9fc42c8c82f488e8e152ff9e23"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cdaf808dfc8757ff25ca931868baa3a8d77f994803652fb282d4df0c376a0f87"
+    sha256 cellar: :any_skip_relocation, catalina:       "4039a39d12825187b9237ed11c13fff3da5cf998791aa98e573c4fb4c4e6fbc5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9eefb91df323c15c401e56266c844f245a265d214baf275edfdfdd7e337a5ea"
   end
 
   depends_on "go" => :build
@@ -45,6 +45,6 @@ class Tfsec < Formula
     good_output = shell_output("#{bin}/tfsec #{testpath}/good")
     assert_match "No problems detected!", good_output
     bad_output = shell_output("#{bin}/tfsec #{testpath}/bad 2>&1", 1)
-    assert_match "1 potential problems detected.", bad_output
+    assert_match "1 potential problem(s) detected.", bad_output
   end
 end

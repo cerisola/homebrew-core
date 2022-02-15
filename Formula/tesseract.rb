@@ -1,8 +1,8 @@
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
-  url "https://github.com/tesseract-ocr/tesseract/archive/5.0.0.tar.gz"
-  sha256 "72467b7876dc0c39ef7fbcb0f793f73aee1c78d9fabab3ab19cbac1eb42e9fed"
+  url "https://github.com/tesseract-ocr/tesseract/archive/5.0.1.tar.gz"
+  sha256 "b5b0e561650ed67feb1e9de38d4746121d302ae4c876c95b99b8b6f9f89d5c58"
   license "Apache-2.0"
   head "https://github.com/tesseract-ocr/tesseract.git", branch: "main"
 
@@ -12,21 +12,20 @@ class Tesseract < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a6cbf63612e7d9a3e14049882522c5ea6ab047ce7116f78254270442261adf94"
-    sha256 cellar: :any,                 arm64_big_sur:  "12cf5d2ad47530f7e20b85719806226aac64cc05b7665744713001d37cac813c"
-    sha256 cellar: :any,                 monterey:       "27f0d633838eddae7b28ae2109b3e2b17e07fc40f4869468856b501156ad458d"
-    sha256 cellar: :any,                 big_sur:        "757d1ceea78db01e36f309503930441f204de63cba4cbe21d946e852d15a8974"
-    sha256 cellar: :any,                 catalina:       "470d6e5bd4d01c9e808d68cf803ec54afa06a45b9b685c4a924d69a03e9e8380"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c25803920afff896aaf973451db39e68651e422f6f683ffacb13cce14f8e9424"
+    sha256 cellar: :any,                 arm64_monterey: "8f4ad2b8fe6f083eccbb782c6be2cd554893f872b08375eb4eede8757b06b614"
+    sha256 cellar: :any,                 arm64_big_sur:  "be55b6ba351573c84c2e58452fe59a35e24d6a6c5bca7ff30a1e1f3e5d0322c1"
+    sha256 cellar: :any,                 monterey:       "457870267d040396ccc855e9c74fc4f59620d91edc98daf1f5ffba7d8bfb9d67"
+    sha256 cellar: :any,                 big_sur:        "401f3acf9ef492bee47cc0d3ba640845372e264f5f6d9e901fe986d846fd5e89"
+    sha256 cellar: :any,                 catalina:       "b681741918afbb2a13a3ad37e2f6e20fe81bd196ba0a9f281d9cb49793d65081"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f3da532d7591ff535c7b54a9005df5a5bbde94df324a9283187a581a426af1df"
   end
 
   depends_on "autoconf" => :build
-  depends_on "autoconf-archive" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "leptonica"
-  depends_on "libtiff"
+  depends_on "libarchive"
 
   on_linux do
     depends_on "gcc"

@@ -1,17 +1,17 @@
 class Libxc < Formula
   desc "Library of exchange and correlation functionals for codes"
   homepage "https://tddft.org/programs/libxc/"
-  url "https://gitlab.com/libxc/libxc/-/archive/5.1.7/libxc-5.1.7.tar.bz2"
-  sha256 "a1f8ffa50a6b06f20a1dd49bc54445799193f4e7d297052caad39cff47cea8b4"
+  url "https://gitlab.com/libxc/libxc/-/archive/5.2.2/libxc-5.2.2.tar.bz2"
+  sha256 "484115929674d7b85d9361f4f8a821e3d1c6024e31b8fa41df916c09799891a9"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d02b7d6fc60d2c4c3c5a7e4a3793ca9e25f215e0c5b1c2b31901bf8e45e6337e"
-    sha256 cellar: :any,                 arm64_big_sur:  "27be1a841edbc6147a1ce89eee4564da177e7337b09d7861c8a99badb7341b35"
-    sha256 cellar: :any,                 monterey:       "2382891c001007f27add5773c6753478fe69e30ec479470f62fe8a5a9478a466"
-    sha256 cellar: :any,                 big_sur:        "e17c6a274cda913afcc1e549c9a2d9c7c864cb1f4f6b44766023a52ca68f5b52"
-    sha256 cellar: :any,                 catalina:       "ace72161096c3243b983c3d8b3d564c6f8149616fd6dbc49da8c65e3f02a0395"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dee43e7f27ab0b94475bf1b7e1e4c1245c61b2e6e1e4f8d3d15386c3c0f1dc01"
+    sha256 cellar: :any,                 arm64_monterey: "e5023e89f8acff465eba113360911e6b666c4487f9547271da78be13ccfb9c9d"
+    sha256 cellar: :any,                 arm64_big_sur:  "4e064d20223090cc16b6a9056bca6cbd98683408c42987b7a0050016bac46b41"
+    sha256 cellar: :any,                 monterey:       "1751dc87e5235aa9854442dea65fb1355f2f847157fdae990e315fb96b3d34b0"
+    sha256 cellar: :any,                 big_sur:        "4fb029189385ada09e3c4a167257bb1e39ff02fc3fa00c4d0e03c6b45dd5cafd"
+    sha256 cellar: :any,                 catalina:       "091fc935e2496b8132bfefc25372b496af7a1c9a93952ff6ff36dbc130445808"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "41cf6427cdce0071ce177114d46b588fd24a75512b005b2da0b14d2c1cc1c503"
   end
 
   depends_on "autoconf" => :build

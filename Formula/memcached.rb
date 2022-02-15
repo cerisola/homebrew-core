@@ -1,8 +1,8 @@
 class Memcached < Formula
   desc "High performance, distributed memory object caching system"
   homepage "https://memcached.org/"
-  url "https://www.memcached.org/files/memcached-1.6.12.tar.gz"
-  sha256 "f291a35f82ef9756ed1d952879ef5f4be870f932bdfcb2ab61356609abf82346"
+  url "https://www.memcached.org/files/memcached-1.6.14.tar.gz"
+  sha256 "54d63742c6886dcdc4e0c87f4439a2930a876cd9f2bfa01d699b0c6bad1707b3"
   license "BSD-3-Clause"
   head "https://github.com/memcached/memcached.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Memcached < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e7d312dfe8bfee71f97e69feb74825da9856e7f66686a3761bbc1501aea7157c"
-    sha256 cellar: :any,                 arm64_big_sur:  "6c68b634eb2af452b4561f3cd8eeb5c6b33d9932780a3fced9548517844302ec"
-    sha256 cellar: :any,                 monterey:       "246d9fdbe573d1932223fc4169b233a0e671c2a173c17bc663321efd3ef3a426"
-    sha256 cellar: :any,                 big_sur:        "3ca31f8a0a9ce8f39bff0cc151e7bf4170e2c70fe56ddcdc85a08f7c3e95ffb7"
-    sha256 cellar: :any,                 catalina:       "640996f262c2c0c8e74185ce5608147599f46c29e1cdbfe4fd9e19344422cf5c"
-    sha256 cellar: :any,                 mojave:         "67df39d8154409bc39114ff961183b6f4a35bcebe29d4985c317d2ee6990e8dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c068ec1555a37461db9d902c640121eebc7361405719e5dca9daa69248ff90b5"
+    sha256 cellar: :any,                 arm64_monterey: "a6a8fd0dfe19188ea6e42fc750c8ed3a09ba34b3bfa80694fe6c1a398e051763"
+    sha256 cellar: :any,                 arm64_big_sur:  "01603a7f7791ced3c8271e0e036d19dbea9afeb39e75d6b057af4c058521da31"
+    sha256 cellar: :any,                 monterey:       "0757348fb5c89a131dbe3a9b8dee3b76a2341bf6a264d5796d480969a20e8ddb"
+    sha256 cellar: :any,                 big_sur:        "632a9163d97df61899d84e10e7dfceb788fbe5da01a2147a445b07288b7800b9"
+    sha256 cellar: :any,                 catalina:       "d09725fb66e581866a8e7a996500323d6781b1390fd4921b876c546a9e28e390"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "27cf32dbaa1858fd5d595dff3c706c448cdfb6406b42b11dd136ac8c0245ae37"
   end
 
   depends_on "libevent"

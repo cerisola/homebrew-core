@@ -1,8 +1,8 @@
 class Cbc < Formula
   desc "Mixed integer linear programming solver"
   homepage "https://github.com/coin-or/Cbc"
-  url "https://github.com/coin-or/Cbc/archive/releases/2.10.5.tar.gz"
-  sha256 "cc44c1950ff4615e7791d7e03ea34318ca001d3cac6dc3f7f5ee392459ce6719"
+  url "https://github.com/coin-or/Cbc/archive/releases/2.10.7.tar.gz"
+  sha256 "5aa5490e2bc39c3c03f3636c9bca459cb3f8f365e0280fd0c4759ce3119e5b19"
   # update to EPL-2.0 on next release
   license "EPL-1.0"
 
@@ -12,14 +12,12 @@ class Cbc < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "04fa1d4959088c8e4af812ca4ccca7053f824bdfc9829ecb9fbb62c1e0eb77b6"
-    sha256 cellar: :any,                 arm64_big_sur:  "447d1c2350025c4a124bbcd4158f6caae27cd8371cc51e349b9b4ab0660539f9"
-    sha256 cellar: :any,                 monterey:       "6887340f5a6c8c2244bb572a765ed694b35f56f3b28f77672e466150895a0fb7"
-    sha256 cellar: :any,                 big_sur:        "d3953110eb8c6662186ed8ca4068bf5497fa042d5237aee931a0f42501979c7f"
-    sha256 cellar: :any,                 catalina:       "56fee588e216483d5b63e6e6f61dc824325da64f61fcaa7af3c3f6692c0a004d"
-    sha256 cellar: :any,                 mojave:         "d415cd6ac5c7afdda6e54d74e1acf76282ad81170333690bcd2ae3c08babdff5"
-    sha256 cellar: :any,                 high_sierra:    "e1c7da5d2d650279cbc41a2dd6fe36d39f6298de743b59a27fbde6645f8f748b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e53459f6a7ba1830099bee6f01f5fafe488164ff6454edbf0eff70f4c68613d1"
+    sha256 cellar: :any,                 arm64_monterey: "ba53ab073c9dfe54e7e350153cd6362cd9bdb4b859e64e16a34d4f3000d0b676"
+    sha256 cellar: :any,                 arm64_big_sur:  "cb9cda04a4b2ede7adf9e75bf7c96ed85d1dfadd67c7a80cefd27b443c05b26a"
+    sha256 cellar: :any,                 monterey:       "2989abdac90634bd356939a82acb2b8efe0411b67f5b6c84bba1abe0de576359"
+    sha256 cellar: :any,                 big_sur:        "6aa7f580766fddec320fbdb3f573aef2a4f9e2ab3e218392b389f7ac5beaab10"
+    sha256 cellar: :any,                 catalina:       "b6c6354b27a584a4fdb61e13ae3406a9b80478d023be1f5084a4b9da13d69b61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f37aae46e6800124424873c8cbcaf9dde7fbdbe606fa7261f26de04139b4771"
   end
 
   depends_on "pkg-config" => :build

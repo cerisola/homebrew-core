@@ -2,20 +2,20 @@ class Filebeat < Formula
   desc "File harvester to ship log files to Elasticsearch or Logstash"
   homepage "https://www.elastic.co/products/beats/filebeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v7.16.2",
-      revision: "3c518f4d17a15dc85bdd68a5a03d5af51d9edd8e"
+      tag:      "v8.0.0",
+      revision: "2ab3a7334016f570e0bfc7e9a577a35a22e02df5"
   # Outside of the "x-pack" folder, source code in a given file is licensed
   # under the Apache License Version 2.0
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c9ecfbb9c7837cc1ce5f65b8adb41031fb90891f5be7eedcf802f4a189ab86de"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0a0df9c5275eb5683fe33dbabf2161b91c416910e56de6a889813150ea1930c6"
-    sha256 cellar: :any_skip_relocation, monterey:       "e498103bba38650fbe8fb0ff8d9f22ba18445a5548734c92c023fe9ecd362318"
-    sha256 cellar: :any_skip_relocation, big_sur:        "10187ae885ffcaa080740873686d8c9eac01cc2d44ead0da0b43194d006d0dff"
-    sha256 cellar: :any_skip_relocation, catalina:       "460859fd866a199593d680daf874223d4666d998967035eec8eeddd5b82e8479"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "09a3a48d7fe41353d2db46c8829d338d25150f41d4f5013b680a79038d5970b8"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d85e4554aa4e54435e04119d58c659d10b0f7f5f9842bfacf44d3840ed03c2a0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "78d3e3d7715ddfbf819933d7010d42039c1dd8d095cdecfe66f74bce7e2ff5ae"
+    sha256 cellar: :any_skip_relocation, monterey:       "2e3afa981e7c8a4314324996cd9af4a93338cae94b5a323d4b43d53fa804ea98"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8bd24f5ef6f144a0ab5a45056b734d2aa6303a70cb59385f713efe5e1af3c4f4"
+    sha256 cellar: :any_skip_relocation, catalina:       "55f6646564abffd81060e9400dec86ec37f5925273629dbabb51ea120122454d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "14f78714969bb0936c6090987bb750735308e737fd294157a9e2f60f71ad0adb"
   end
 
   depends_on "go" => :build
@@ -91,6 +91,7 @@ class Filebeat < Formula
     log_file.append_lines "foo bar baz"
     sleep 5
 
-    assert_predicate testpath/"filebeat", :exist?
+    assert_predicate testpath/"meta.json", :exist?
+    assert_predicate testpath/"registry/filebeat", :exist?
   end
 end

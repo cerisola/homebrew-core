@@ -1,8 +1,8 @@
 class Threadweaver < Formula
   desc "Helper for multithreaded programming"
   homepage "https://api.kde.org/frameworks/threadweaver/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.89/threadweaver-5.89.0.tar.xz"
-  sha256 "dd809354b728415b26adf05a4ea6755a0aff7d86aebfeab2e663b91ed3a5d90f"
+  url "https://download.kde.org/stable/frameworks/5.91/threadweaver-5.91.0.tar.xz"
+  sha256 "22485000cf28d4b28a46e7856532339df5e3e49180ee4a0493f3f3491f9e00a4"
   license "LGPL-2.0-or-later"
   head "https://invent.kde.org/frameworks/threadweaver.git", branch: "master"
 
@@ -14,9 +14,10 @@ class Threadweaver < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "84a31124bc34a45aebfe85db607aa2f4f196fa85a7e36e277126f1920ca408e4"
-    sha256 cellar: :any, big_sur:       "ac1d2505b4e17678622fcd1bdb431c840f86293be78a136fe7d10755c7fcb16f"
-    sha256 cellar: :any, catalina:      "404d7194a271ddbff78bd1ea06ce57fa6b2b392882aedded9a009c8634331703"
+    sha256 cellar: :any, arm64_monterey: "a5158cf0b870ba951db1f3f2b50f35d41d925173f1d41b7c1dd073de39e3adc4"
+    sha256 cellar: :any, arm64_big_sur:  "700982fb92f7a0c85ab1048a79250b0e4ddf395a83c685e6c1867d7bbab7c5c0"
+    sha256 cellar: :any, big_sur:        "b31e8ec013eba219feb3dcc559f0436473192af61650988720e61d02e113b7dc"
+    sha256 cellar: :any, catalina:       "778808ce5c3ad1f3c8c834e37c4bd0d562b404bb37bcec3e736a8107add3701d"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -26,11 +27,13 @@ class Threadweaver < Formula
   depends_on "qt@5"
 
   def install
-    args = std_cmake_args
-    args << "-DBUILD_TESTING=OFF"
-    args << "-DBUILD_QCH=ON"
+    args = std_cmake_args + %w[
+      -S .
+      -B build
+      -DBUILD_QCH=ON
+    ]
 
-    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", *args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
@@ -39,7 +42,7 @@ class Threadweaver < Formula
 
   test do
     ENV.delete "CPATH"
-    qt5_arg = "-DQt5Core_DIR=#{Formula["qt@5"].opt_prefix/"lib/cmake/Qt5Core"}"
+    qt5_arg = "-DQt5Core_DIR=#{Formula["qt@5"].opt_lib}/cmake/Qt5Core"
     system "cmake", (pkgshare/"examples/HelloWorld"), *std_cmake_args, qt5_arg
     system "make"
 

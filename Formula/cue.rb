@@ -1,19 +1,18 @@
 class Cue < Formula
   desc "Validate and define text-based and dynamic configuration"
   homepage "https://cuelang.org/"
-  url "https://github.com/cue-lang/cue/archive/v0.4.0.tar.gz"
-  sha256 "6989ada258115c24da78091e3692b94c54e33129f02e87ca4071240314cefebc"
+  url "https://github.com/cue-lang/cue/archive/v0.4.2.tar.gz"
+  sha256 "a45e45552b9b3e104fb65ec85891550d8675656be6dece3837334720be5d8150"
   license "Apache-2.0"
   head "https://github.com/cue-lang/cue.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c3467bcd7b9bb8d45b579b7a805ebd95c434671e52e69693ec7ffadae39e0362"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b70f60ad4a8d7fcf3d58f5008a0d15534cb51100640cbc41617c4c185ff167a3"
-    sha256 cellar: :any_skip_relocation, monterey:       "914ced45658ed04822d2a25aa1b5f0bb9491f57c4e2ef28d03374ef7769b11cd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a3845893ea23997712d12d7b5b4d2f3dcefbf0ced2aa94ccc35d251e4ee2b3e4"
-    sha256 cellar: :any_skip_relocation, catalina:       "c78ec07346c1e5a82d548bbcf86caf660c111884077bf8a556c9637227920440"
-    sha256 cellar: :any_skip_relocation, mojave:         "4d07f627d60bc08ea6866b5533ca1652fb70d994b630c9793d572c49edecfeed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b487c474bcc5a3e2edfb1cbff973239e9915a49f045d2f34106b12c8155ad769"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "33a0b540d4c796b36ac6994150bcaca1fba48a690b811c24fb6c433b6980cffc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "79c147059e95126101b04d7479136fb90c139f424648710f343a777a70e5c323"
+    sha256 cellar: :any_skip_relocation, monterey:       "dac2dffe02c3a2270008f7b3a4e226cdae07121771fcdd17928d4b8c0f27fab1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7c5ae3f086df1f2d5089b83b9b171f5ce811b1e3a4926ee9633bb03cf24a520f"
+    sha256 cellar: :any_skip_relocation, catalina:       "c65b682ecb73dabe2f78389387b07dff6a52cfae923dadd1dae029dcd941ce9b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3df3d4d368ee5bacf24ef60cb103e46b30cd191fc4bbc24fc3f30626f0e3e5d7"
   end
 
   depends_on "go" => :build

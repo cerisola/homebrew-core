@@ -11,7 +11,6 @@ env:
   HOMEBREW_GITHUB_ACTIONS: 1
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_CHANGE_ARCH_TO_ARM: 1
-  HOMEBREW_RELOCATE_RPATHS: 1
 
 concurrency:
   group: "tests-${{ github.ref }}"
@@ -29,7 +28,6 @@ jobs:
       testing_formulae: ${{ steps.formulae-detect.outputs.testing_formulae }}
       added_formulae: ${{ steps.formulae-detect.outputs.added_formulae }}
       deleted_formulae: ${{ steps.formulae-detect.outputs.deleted_formulae }}
-      long_pr_count: ${{ steps.count_long_timeout_prs.outputs.count }}
     steps:
       - name: Set up Homebrew
         id: set-up-homebrew
@@ -98,6 +96,7 @@ jobs:
               core.setOutput('test-dependents', 'true')
             }
 
+            const maximum_long_pr_count = 2
             if (label_names.includes('CI-long-timeout')) {
               const labelCountQuery = `query($owner:String!, $name:String!, $label:String!) {
                 repository(owner:$owner, name:$name) {
@@ -115,12 +114,12 @@ jobs:
                     label: 'CI-long-timeout'
                   }
                 )
-                long_pr_count = response.data.repository.pullRequests.totalCount
+                long_pr_count = response.repository.pullRequests.totalCount
               } catch (error) {
                 // The GitHub API query errored, so fail open and assume 0 long PRs.
                 long_pr_count = 0
+                core.warning('CI-long-timeout label count query failed. Assuming no long PRs.')
               }
-              const maximum_long_pr_count = 2
               if (long_pr_count > maximum_long_pr_count) {
                 core.setFailed(`Too many pull requests (${long_pr_count}) with the long-timeout label!`)
                 core.error(`Only ${maximum_long_pr_count} pull requests at a time can use this label.`)
@@ -131,6 +130,13 @@ jobs:
             } else {
               console.log('No CI-long-timeout label found. Setting short GitHub Actions timeout.')
               core.setOutput('timeout-minutes', '60')
+
+              if (label_names.includes('long build')) {
+                core.setFailed('PR requires the CI-long-timeout label but it is not set!')
+                core.error('If the longer timeout is not required, remove the "long build" label.')
+                core.error('Otherwise, add the "CI-long-timeout" label.')
+                core.error(`No more than ${maximum_long_pr_count} PRs at a time may use "CI-long-timeout".`)
+              }
             }
 
             const container = {}
@@ -191,10 +197,11 @@ jobs:
           - runner: ${{needs.setup_tests.outputs.linux-runner}}
             container: ${{fromJson(needs.setup_tests.outputs.container)}}
             workdir: /github/home
+            timeout: 4320
       fail-fast: ${{fromJson(needs.setup_tests.outputs.fail-fast)}}
     runs-on: ${{matrix.runner}}
     container: ${{matrix.container}}
-    timeout-minutes: ${{ (matrix.runner == 'ubuntu-latest' && 360) || fromJson(needs.setup_tests.outputs.timeout-minutes) }}
+    timeout-minutes: ${{ matrix.timeout || fromJson(needs.setup_tests.outputs.timeout-minutes) }}
     defaults:
       run:
         shell: /bin/bash -e {0}
@@ -232,6 +239,18 @@ jobs:
           cat bottles/steps_output.txt
           rm bottles/steps_output.txt
 
+      - name: Output brew linkage result
+        if: always()
+        run: |
+          cat bottles/linkage_output.txt
+          rm bottles/linkage_output.txt
+
+      - name: Output brew bottle result
+        if: always()
+        run: |
+          cat bottles/bottle_output.txt
+          rm bottles/bottle_output.txt
+
       - name: Run brew test-bot ${{ needs.setup_tests.outputs.test-bot-dependents-args }} --skipped-or-failed-formulae=${{ steps.brew-test-bot-formulae.outputs.skipped_or_failed_formulae }}
         if: ${{fromJson(needs.setup_tests.outputs.test-dependents)}}
         run: |
@@ -245,14 +264,8 @@ jobs:
           cat bottles/steps_output.txt
           rm bottles/steps_output.txt
 
-      - name: Output brew bottle result
-        if: always()
-        run: |
-          cat bottles/bottle_output.txt
-          rm bottles/bottle_output.txt
-
       - name: Upload logs
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@main
         with:
           name: logs-${{ matrix.runner }}

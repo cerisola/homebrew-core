@@ -3,17 +3,17 @@ class Sail < Formula
 
   desc "CLI toolkit to provision and deploy WordPress applications to DigitalOcean"
   homepage "https://sailed.io"
-  url "https://files.pythonhosted.org/packages/af/cb/2208b1d34b328227117417141ca46edf6fb4e1ad3a2554704f2351fffc37/sailed.io-0.10.3.tar.gz"
-  sha256 "cd132d12d9f7088809427451e2c79e67563d1e582cbafa9a6194b4c06d186d52"
+  url "https://files.pythonhosted.org/packages/60/4a/7d5a2481c233136d2234fed05569ed20ed97446e889f3996ee53e0132619/sailed.io-0.10.5.tar.gz"
+  sha256 "8dd2b00760389226470da22437daccfa2bc0f87134381d3742cc041ea2b39516"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "708c722380578ae5d37a4e1577e5bfc4d90af019c400359439c45b380395ce0b"
-    sha256 cellar: :any,                 arm64_big_sur:  "0b9d6b42a5b22da74f26b40765b8c793c633b1575aee2cf11e3791fee0e73c2d"
-    sha256 cellar: :any,                 monterey:       "1ac3f39814d0db7adb279446e2827ec271eda888d19274ea3ef051b40b1a972c"
-    sha256 cellar: :any,                 big_sur:        "e20a3a7e90d9afbc267cc4f8a7992c644c5b54f266b1dc169b3831165e040e43"
-    sha256 cellar: :any,                 catalina:       "a7a9bbd770e7ca9264495f7335e1ad628554d320c3a2ae63ed237479a4372d01"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c955dc68003d18cc2d3890e13b9953d82fd60f4d34563771d997ac70a206ede"
+    sha256 cellar: :any,                 arm64_monterey: "a8891026dafd90664ffb34a58c7ce494542ee858a9b5bae6a072171a9ece4be9"
+    sha256 cellar: :any,                 arm64_big_sur:  "274c11dc64ee33e772ef4d13d1b14a3e3dacdd474dcf6f8f894c6e16cd123ee5"
+    sha256 cellar: :any,                 monterey:       "746c07480ec3aa08b708db9660c02816c44e4c3f6295302298af503d833aca85"
+    sha256 cellar: :any,                 big_sur:        "f14749c148bcb509003e7c6c0ead0dd366a6443c6cf22669e31eac4547fc14f5"
+    sha256 cellar: :any,                 catalina:       "c965df013f4020791df9966ad95f44656689d6c038bc4252e6035dd93399368d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "221114d51ef977d475d47b7501b985fa1a1bb8944ef668e96f0c7b8ebe4ffe57"
   end
 
   depends_on "rust" => :build
@@ -36,8 +36,8 @@ class Sail < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/68/e4/e014e7360fc6d1ccc507fe0b563b4646d00e0d4f9beec4975026dd15850b/charset-normalizer-2.0.9.tar.gz"
-    sha256 "b0b883e8e874edfdece9c28f314e3dd5badf067342e42fb162203335ae61aa2c"
+    url "https://files.pythonhosted.org/packages/e8/e8/b6cfd28fb430b2ec9923ad0147025bf8bbdf304b1eb3039b69f1ce44ed6e/charset-normalizer-2.0.11.tar.gz"
+    sha256 "98398a9d69ee80548c762ba991a4728bfc3836768ed226b3945908d1a688371c"
   end
 
   resource "click" do
@@ -76,8 +76,8 @@ class Sail < Formula
   end
 
   resource "jsonpickle" do
-    url "https://files.pythonhosted.org/packages/62/8a/84864798c5ef120e3a5b5cf08d8c231fa4499b53d465488563c4cb901f2f/jsonpickle-2.0.0.tar.gz"
-    sha256 "0be49cba80ea6f87a168aa8168d717d00c6ca07ba83df3cec32d3b30bfe6fb9a"
+    url "https://files.pythonhosted.org/packages/35/0e/fe3ce0869add0213a1b45eef746cafb79ca45255a60ec918630c159e3490/jsonpickle-2.1.0.tar.gz"
+    sha256 "84684cfc5338a534173c8dd69809e40f2865d0be1f8a2b7af8465e5b968dcfa9"
   end
 
   resource "MarkupSafe" do
@@ -91,8 +91,8 @@ class Sail < Formula
   end
 
   resource "paramiko" do
-    url "https://files.pythonhosted.org/packages/01/78/bc696bac815e17af33b804f1d30525b7954bcfdec4bb9df8ef9bc77c52c4/paramiko-2.9.1.tar.gz"
-    sha256 "a1fdded3b55f61d23389e4fe52d9ae428960ac958d2edf50373faa5d8926edd0"
+    url "https://files.pythonhosted.org/packages/ea/01/f4c41238b4e4cae41502598c79a62785bdfe9fb5bb54728775805bd0b5d8/paramiko-2.9.2.tar.gz"
+    sha256 "944a9e5dbdd413ab6c7951ea46b0ab40713235a9c4c5ca81cfe45c6f14fa677b"
   end
 
   resource "pathlib2" do
@@ -101,8 +101,8 @@ class Sail < Formula
   end
 
   resource "prettytable" do
-    url "https://files.pythonhosted.org/packages/e4/35/21bf22e21b29102bbe81730caf498dfb3e1eed2642ac71f323472ead673a/prettytable-2.5.0.tar.gz"
-    sha256 "f7da57ba63d55116d65e5acb147bfdfa60dceccabf0d607d6817ee2888a05f2c"
+    url "https://files.pythonhosted.org/packages/71/19/d65d4c39aa12a5630a8aa02ead8324cfaae3217146b19dd25d88d763bbdf/prettytable-3.0.0.tar.gz"
+    sha256 "69fe75d78ac8651e16dd61265b9e19626df5d630ae294fc31687aa6037b97a58"
   end
 
   resource "pycparser" do
@@ -111,13 +111,13 @@ class Sail < Formula
   end
 
   resource "PyNaCl" do
-    url "https://files.pythonhosted.org/packages/cf/5a/25aeb636baeceab15c8e57e66b8aa930c011ec1c035f284170cacb05025e/PyNaCl-1.4.0.tar.gz"
-    sha256 "54e9a2c849c742006516ad56a88f5c74bf2ce92c9f67435187c3c5953b346505"
+    url "https://files.pythonhosted.org/packages/a7/22/27582568be639dfe22ddb3902225f91f2f17ceff88ce80e4db396c8986da/PyNaCl-1.5.0.tar.gz"
+    sha256 "8ac7448f09ab85811607bdd21ec2464495ac8b7c66d146bf545b0f08fb9220ba"
   end
 
   resource "pyparsing" do
-    url "https://files.pythonhosted.org/packages/ab/61/1a1613e3dcca483a7aa9d446cb4614e6425eb853b90db131c305bd9674cb/pyparsing-3.0.6.tar.gz"
-    sha256 "d9bdec0013ef1eb5a84ab39a3b3868911598afa494f5faa038647101504e2b81"
+    url "https://files.pythonhosted.org/packages/d6/60/9bed18f43275b34198eb9720d4c1238c68b3755620d20df0afd89424d32b/pyparsing-3.0.7.tar.gz"
+    sha256 "18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"
   end
 
   resource "python-digitalocean" do
@@ -131,8 +131,8 @@ class Sail < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/e7/01/3569e0b535fb2e4a6c384bdbed00c55b9d78b5084e0fb7f4d0bf523d7670/requests-2.26.0.tar.gz"
-    sha256 "b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"
+    url "https://files.pythonhosted.org/packages/60/f3/26ff3767f099b73e0efa138a9998da67890793bfa475d8278f84a30fec77/requests-2.27.1.tar.gz"
+    sha256 "68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"
   end
 
   resource "requests-file" do
@@ -146,8 +146,8 @@ class Sail < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/80/be/3ee43b6c5757cabea19e75b8f46eaf05a2f5144107d7db48c7cf3a864f73/urllib3-1.26.7.tar.gz"
-    sha256 "4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"
+    url "https://files.pythonhosted.org/packages/b0/b1/7bbf5181f8e3258efae31702f5eab87d8a74a72a0aa78bc8c08c1466e243/urllib3-1.26.8.tar.gz"
+    sha256 "0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
   end
 
   resource "wcwidth" do

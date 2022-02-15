@@ -2,18 +2,18 @@ class RustAnalyzer < Formula
   desc "Experimental Rust compiler front-end for IDEs"
   homepage "https://rust-analyzer.github.io/"
   url "https://github.com/rust-analyzer/rust-analyzer.git",
-       tag:      "2021-12-27",
-       revision: "68319187d63707fa36d7c215ed0e444e87d9652a"
-  version "2021-12-27"
-  license "Apache-2.0"
+       tag:      "2022-02-14",
+       revision: "02904e99acc3daf39b56ed18aa07e62aeb9492c5"
+  version "2022-02-14"
+  license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1b1f015fee445097c3fcbe8eee389b67b40c7a9ead6edcfcd8c871971b19e5b0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0b5864a051e467d02265027337778e1464ea5cc92b858ee79d4ef2a4bf136403"
-    sha256 cellar: :any_skip_relocation, monterey:       "dbc67100a93d0b4d84789576e03856960d86e90a1d5ef7662a12cf41886f3a05"
-    sha256 cellar: :any_skip_relocation, big_sur:        "494716f1bd5ed687286b2248deab0d5d1fbd06ae85c9af8725545c778503c60b"
-    sha256 cellar: :any_skip_relocation, catalina:       "b586efb17098eed6f03910002456260c0d9456cd2dc011abf20c942c267d055b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17711be00263c8177bcc0ce1e104515068c3cb65ced3803d6f558999ca93f13c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dc9906029e3ddb0ff7e4e7fb311309ab9a3f2283697926950b13a9a8a232fda2"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d1d7b87fcf2859fa6f8faa7110bd5ff5fbfb56e2f602680d6c9569a571f3412d"
+    sha256 cellar: :any_skip_relocation, monterey:       "d90922551e911671c4111ddbe19b568481cefe154fc44276d79707a0dcc17e47"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b42e8491eb7b683fcdc02af939a1508a02a491ffa937939aeedf389f9f1385b3"
+    sha256 cellar: :any_skip_relocation, catalina:       "75ce599da6f62ac8e4961d20fa7457ceb44628b6dd347be6814f9062b83a724c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fa796056e3d23d7078d601b9023984e13fec1ef35b1862b13f7b25f0e728a98"
   end
 
   depends_on "rust" => :build

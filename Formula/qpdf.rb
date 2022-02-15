@@ -1,17 +1,17 @@
 class Qpdf < Formula
   desc "Tools for and transforming and inspecting PDF files"
   homepage "https://github.com/qpdf/qpdf"
-  url "https://github.com/qpdf/qpdf/releases/download/release-qpdf-10.5.0/qpdf-10.5.0.tar.gz"
-  sha256 "88257d36a44fd5c50b2879488324dd9cafc11686ae49d8c4922a4872203ce006"
+  url "https://github.com/qpdf/qpdf/releases/download/release-qpdf-10.6.1/qpdf-10.6.1.tar.gz"
+  sha256 "4c56328e1eeedea3d87eb79e1fe09374a923fe28756f7a56bcff58523617f05f"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "dda3030998f65cf20552bdb3b9eef7f7c68b35979d8f6b36c3c3b98d9b5a07e5"
-    sha256 cellar: :any,                 arm64_big_sur:  "92df84a90a4b8b5450aef8de1d61f53786cfb7ea6a3d33f8c73234921324720a"
-    sha256 cellar: :any,                 monterey:       "fa34dc0ec4a59333dd1af3f1dd95e3d3244e09861682d5a2156708fe03fa4ef7"
-    sha256 cellar: :any,                 big_sur:        "5eadc04ed3c8a58d418f02ce08a19f39e13f6e1a5609832b25352cac01a7f703"
-    sha256 cellar: :any,                 catalina:       "f3a013040c97867ca4a6687670a01947a6f5df2c22159a34aeddc68d4cb61f22"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57f5aa27bffc33492b40b47fb7b3feb558775a8a82635d4405148b0952f5755b"
+    sha256 cellar: :any,                 arm64_monterey: "365dc91f990f83a7a63116ebf3d58766555752d546632e8ad65a1380f7509c11"
+    sha256 cellar: :any,                 arm64_big_sur:  "a2cab776d352e83a86ed526a0051d6e16e3fd83a42f41010b0fa9b27e74e9fe2"
+    sha256 cellar: :any,                 monterey:       "adb76f57bcacbd8b7322f0f0e79c6cb8922a17f51ada9bfb7d35672600e239b0"
+    sha256 cellar: :any,                 big_sur:        "b96113b17f4689a64be5b5a0ca84e18d661d45fe37bcba77c5154a6886f41b0b"
+    sha256 cellar: :any,                 catalina:       "386fc704b7021d7a0ae74d0cd4dcefc33f95eac036db9eaba696516a6dd5646f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b283b7eb55707a42ad6e290f6be454d489d4f11ac01996773e7d961c355ad2e"
   end
 
   depends_on "jpeg-turbo"

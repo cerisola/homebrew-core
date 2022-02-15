@@ -2,8 +2,8 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://coreos.com/operators/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      tag:      "v1.15.0",
-      revision: "f6326e832a8a5e5453d0ad25e86714a0de2c0fc8"
+      tag:      "v1.17.0",
+      revision: "704b02a9ba86e85f43edb1b20457859e9eedc6e6"
   license "Apache-2.0"
   head "https://github.com/operator-framework/operator-sdk.git", branch: "master"
 
@@ -13,12 +13,12 @@ class OperatorSdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a27af0f2e0780e990ee493539195f0b2be040f83affcc33ca8cb1d1d9324c6d8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "89876ea6a75442222385f2d93209de1400cf241644a0d82e628c370d9512f4c7"
-    sha256 cellar: :any_skip_relocation, monterey:       "e286b168d056d07fe5bccca5c42ce48fb0330cd36135105d1f479578cfc708be"
-    sha256 cellar: :any_skip_relocation, big_sur:        "420bca1b9c9aed17d73166693cb9d44693cda7946f6234050b962b6c75c2add1"
-    sha256 cellar: :any_skip_relocation, catalina:       "ee3f12cbf59eaeb43b149b9ce4b4314be293474e72aba50c6711eabd54a4e6ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "208e907d28832615d2c7f63e59e65e96fb7ea0cf9fecbbdb91a665207ee7bb02"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb905bb19cb31a78b969d7d05dcd1bc8e8123f496c81318ad7ab50fce71d9d4b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0ba510e0e019b30bc15c2e9ee9d9e75210497c5ff6a96772d0783e4f73ac65c0"
+    sha256 cellar: :any_skip_relocation, monterey:       "1abe5db599b295dc2e97e8a61406885d0ca95b3a7340d75197795142149ee794"
+    sha256 cellar: :any_skip_relocation, big_sur:        "daa252ea2d46e0882a53c34a915987fa0c35074b95e7b42e73b1cbe10496f6f6"
+    sha256 cellar: :any_skip_relocation, catalina:       "ccaf29456a18c8192dcdbc1ddbabb1e9f1f2312d45d3281f6c9eca89efae300a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55f2b34baeab84ff0a852e8127a85cbc239e58b3250e5559520563f1ecd43a85"
   end
 
   depends_on "go"
@@ -28,12 +28,16 @@ class OperatorSdk < Formula
     system "make", "install"
 
     # Install bash completion
-    output = Utils.safe_popen_read("#{bin}/operator-sdk", "completion", "bash")
+    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "bash")
     (bash_completion/"operator-sdk").write output
 
     # Install zsh completion
-    output = Utils.safe_popen_read("#{bin}/operator-sdk", "completion", "zsh")
+    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "zsh")
     (zsh_completion/"_operator-sdk").write output
+
+    # Install fish completion
+    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "fish")
+    (fish_completion/"operator-sdk.fish").write output
   end
 
   test do

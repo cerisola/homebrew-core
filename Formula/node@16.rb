@@ -1,10 +1,9 @@
 class NodeAT16 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v16.13.1/node-v16.13.1.tar.xz"
-  sha256 "4c23004fd75eaf799ad8e76fe34f53e0327f433d4acbfc883396f72e96cc63ad"
+  url "https://nodejs.org/dist/v16.14.0/node-v16.14.0.tar.xz"
+  sha256 "05eb64193e391fa8a2c159c0f60c171824715165f80c67fcab9dbc944e30c623"
   license "MIT"
-  revision 1
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -12,12 +11,12 @@ class NodeAT16 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "da48132151b72bbc9d2b1ee1bb953b888a2d195ec23b90de0b75f9c5744c7e4b"
-    sha256 cellar: :any,                 arm64_big_sur:  "b391314a1995dd9e3dc49ab7f46edbb8a697caa334c27e39a9931c1c2923f8fb"
-    sha256 cellar: :any,                 monterey:       "2db7c0ef8af5546b8888126bd77d0b76f143ca7a98e35ad9598cd90b79a5c31e"
-    sha256 cellar: :any,                 big_sur:        "212e8db648357a0ca7d45510fd0fa373b2c61e4bcff7eca51ea3694fe4929162"
-    sha256 cellar: :any,                 catalina:       "5b4139d5d52525d1fee27fcb2c7d1f997c5de2746ef1219c46c3cb9790e529a5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "076cbfd7a9a35f262e60c4a88a464ea020ecee4b0590bd1654d2475e0a75caf8"
+    sha256 cellar: :any,                 arm64_monterey: "2470b3d871b3ca681a4195f5d79fcd3bae5eaa8ae7efc3af9a720b6556c831b2"
+    sha256 cellar: :any,                 arm64_big_sur:  "d1271c7e59e549c89a6a478ca7641f00e9a6b4b7f138b84a835f4750a7d81aaa"
+    sha256 cellar: :any,                 monterey:       "2c0efed99db8f4ad6b4f10560c96456c2dad4e12f9ffedea17e5bbffb1e713fc"
+    sha256 cellar: :any,                 big_sur:        "daed58898f4e3fe4ead41e80db017a1c572d925338636ee6e51b6009a6e28d7f"
+    sha256 cellar: :any,                 catalina:       "3c27a46fb9ac20287fdb005e0d700ec6514c0e61fde47da99b4a4119d03d4c10"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3955930c060036cb054f48651e657897cfa953ff1ba0b50265691b9ba8047e8a"
   end
 
   keg_only :versioned_formula
@@ -108,6 +107,6 @@ class NodeAT16 < Formula
     system "#{bin}/npm", *npm_args, "install", "ref-napi"
     assert_predicate bin/"npx", :exist?, "npx must exist"
     assert_predicate bin/"npx", :executable?, "npx must be executable"
-    assert_match "< hello >", shell_output("#{bin}/npx cowsay hello")
+    assert_match "< hello >", shell_output("#{bin}/npx --yes cowsay hello")
   end
 end

@@ -2,8 +2,8 @@ class Kamel < Formula
   desc "Apache Camel K CLI"
   homepage "https://camel.apache.org/"
   url "https://github.com/apache/camel-k.git",
-      tag:      "v1.6.1",
-      revision: "7f1a34f473275b3c40eb0e1c369901c030a71c93"
+      tag:      "v1.8.0",
+      revision: "eb893c22ad451a45525f487af671d7d945ed722c"
   license "Apache-2.0"
   head "https://github.com/apache/camel-k.git", branch: "main"
 
@@ -13,14 +13,15 @@ class Kamel < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "c5d4f1ab9b49df2038e7b194c025209c73ebec4b19593ab3dc669914ab2fdb3a"
-    sha256 cellar: :any_skip_relocation, big_sur:       "e053362633c04b93786d30df6d191aa740e1461acbbc180e84c49e39fecdcedd"
-    sha256 cellar: :any_skip_relocation, catalina:      "0ec32a5a191e484fbc33cb33beba54c81cf919188528cdc21de42cd1e749fae5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "70e07d9beecff17e3943e7f2ee70a7f7e496cf07d011ce1863556a2741946aa4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur: "81af020bb729671c37fbdb3c80a83f8a0ed566d867cbd589c8258877a2103a51"
+    sha256 cellar: :any_skip_relocation, big_sur:       "6bb0296ca01de2472629f21b1a7ce23ea659b23bf0a6cfa6bb290ba007cef964"
+    sha256 cellar: :any_skip_relocation, catalina:      "dde46e992610679b2e3f58cd83a6fd9afb5ee97cd95b0fcaa63e3a6d8194bcbe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4070e26e7d3cd55d7c42ac8379dc49cef852804be1e3d32e6cffede8a8f3f213"
   end
 
   depends_on "go" => :build
   depends_on "openjdk@11" => :build
+  depends_on "kubernetes-cli"
 
   def install
     ENV["JAVA_HOME"] = Language::Java.java_home("11")
@@ -51,7 +52,7 @@ class Kamel < Formula
     assert_match "Error: run expects at least 1 argument, received 0", run_output
 
     run_none_output = shell_output("echo $(#{bin}/kamel run None.java 2>&1)")
-    assert_match "cannot read sources: Missing file or unsupported scheme in None.java", run_none_output
+    assert_match "cannot read sources: missing file or unsupported scheme in None.java", run_none_output
 
     reset_output = shell_output("echo $(#{bin}/kamel reset 2>&1)")
     assert_match "Error: cannot get command client: invalid configuration", reset_output

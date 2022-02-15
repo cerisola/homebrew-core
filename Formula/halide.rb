@@ -1,8 +1,8 @@
 class Halide < Formula
   desc "Language for fast, portable data-parallel computation"
   homepage "https://halide-lang.org"
-  url "https://github.com/halide/Halide/archive/v13.0.2.tar.gz"
-  sha256 "eee68f88cce153cde6aa1d73c844677681dfc6c57ae7f4cb6a0354da0f3b3b80"
+  url "https://github.com/halide/Halide/archive/v13.0.4.tar.gz"
+  sha256 "4cab247cc1406a66a35ebea8f957995b484e2029e27d390b51fa40744cf350f5"
   license "MIT"
 
   livecheck do
@@ -11,11 +11,12 @@ class Halide < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "ea3a63da5483882027b23374cf1baa7e052491b12a9cabeef8032b0f54060349"
-    sha256 cellar: :any, arm64_big_sur:  "b05a77c5550d6d7aad127cf1ba8d5d2d3e7cea7f3eedade51928fa5ecc140b51"
-    sha256 cellar: :any, monterey:       "dd301f63d9055dbd9f66b145de35de4c1f748452e7f619db5752b9a9a44c338c"
-    sha256 cellar: :any, big_sur:        "63f98a4ff2d1ed7c857c035471e8a81dac356b6276c158e3618b68e30b16b1c6"
-    sha256 cellar: :any, catalina:       "774a638ce8052a05907926a176992435d44eb0eaf251893b3bd2ee049a230a0a"
+    sha256 cellar: :any,                 arm64_monterey: "7f338eeb5f667a39bf8c7b9e31975ead7efd0b93a521376f9a8b8ea01f15a2e8"
+    sha256 cellar: :any,                 arm64_big_sur:  "50d8081722a01e2e3a1d060b0ef154c910bd40909231af5af55cef38a5a4a07d"
+    sha256 cellar: :any,                 monterey:       "7b73ae689dd71d54f37bfa24d1eba92870895d5331536cc1824e94a9b18daf0e"
+    sha256 cellar: :any,                 big_sur:        "ecafe1ae5a96849e3f62a7085b1a99a6dd1ed5a5ee33413a543373ff9004741f"
+    sha256 cellar: :any,                 catalina:       "0f5058e9839b7ea04e2db363763ec40f77f4e16629571655f1e2d57e07594ba8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f0c94a36951baaddbc68ef4bfd15d363ce335009e61b960932b545491d7e8336"
   end
 
   depends_on "cmake" => :build
@@ -23,6 +24,8 @@ class Halide < Formula
   depends_on "libpng"
   depends_on "llvm"
   depends_on "python@3.10"
+
+  fails_with gcc: "5" # LLVM is built with Homebrew GCC
 
   def install
     mkdir "build" do

@@ -1,18 +1,17 @@
 class GnuGetopt < Formula
   desc "Command-line option parsing utility"
   homepage "https://github.com/karelzak/util-linux"
-  url "https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.2.tar.xz"
-  sha256 "6a0764c1aae7fb607ef8a6dd2c0f6c47d5e5fd27aa08820abaad9ec14e28e9d9"
+  url "https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.4.tar.xz"
+  sha256 "634e6916ad913366c3536b6468e7844769549b99a7b2bf80314de78ab5655b83"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5fe2a8f7dd7c5b369f4e8ffce9bbc4d3f3d1a83bdf7ecf592757e101b34c4023"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0accef38c1961b29622380bc5d3dc0a58b22158b510f6f39b72485da5cdfa7ae"
-    sha256 cellar: :any_skip_relocation, monterey:       "8bfeedd0ff8fc2452342ff24841690eb5a733790cc86420eeea682760d69b2ee"
-    sha256 cellar: :any_skip_relocation, big_sur:        "71316eadcf6481acbbe020d23d51fbd0b004ed51b680c97b82a08fc11668d3d9"
-    sha256 cellar: :any_skip_relocation, catalina:       "f6fa9b03686181c83f17936c1e9c5d5fa396ea8ca0b80ff82b1eb9ff64e224e2"
-    sha256 cellar: :any_skip_relocation, mojave:         "75a567d2d0b9d1e4e8c7a385eb2205073918ef1b68fdea848e406be04c732580"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fcc3de837a5b93ff5c8ba2c5af599df827f2e00a0eab532c256f5fd346ed3b7a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "921d27f26477fdaab5bb26e05c18e6632d6f70148fd3146b369e809315f47ee7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ab03d3ec493c05c601a045e75b2630063ce6a9c0fc4d0ef08b03740461e603d3"
+    sha256 cellar: :any_skip_relocation, monterey:       "7fa16133ac2bf8620f45b731e245309d797291ba006f0c8b27b49c1057c3c59a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a9b13a5cf0ca461780e2f5a7866b00abea8884e663404489c870570451b5b248"
+    sha256 cellar: :any_skip_relocation, catalina:       "91a066c638475bde088d05d5d9d47021f8700671bc4672430dbcbffb2e508400"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae03962a4d30074e89c5b44aa4b60a44974cfb70f76e37e9677ae159931ca397"
   end
 
   keg_only :provided_by_macos

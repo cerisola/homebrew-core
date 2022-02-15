@@ -3,18 +3,18 @@ require "language/node"
 class Serverless < Formula
   desc "Build applications with serverless architectures"
   homepage "https://www.serverless.com/"
-  url "https://github.com/serverless/serverless/archive/v2.70.0.tar.gz"
-  sha256 "ee056b667500f7b0e23e665bb7bff75e69204168db34c36a177d54d149922f4c"
+  url "https://github.com/serverless/serverless/archive/v3.2.1.tar.gz"
+  sha256 "cc52ca47f8b6b836991e7c44efe6c3cabaf6acd0e7ddece57cbb0109367fbe36"
   license "MIT"
   head "https://github.com/serverless/serverless.git", branch: "master"
 
   bottle do
-    sha256                               arm64_monterey: "82e597f4183bc04a1bd58b91699128cdd1c69228348aa984c66062d3c4c8abb3"
-    sha256                               arm64_big_sur:  "a50b0d096b137b7685bedb6fa3f149a22f444cd5d9f544de3a0ec1495b60720b"
-    sha256                               monterey:       "62f64a16f605cd21aeddb8df01572bfe1618c8bcacc329386166aae71a489d85"
-    sha256                               big_sur:        "de1130e5a1af42dd9055da57e49b5fadb5d2ea9d42540c105ded4d6faebae0cb"
-    sha256                               catalina:       "e865f783670f05430ff346d99de926676a63e70a951c69c3b20671062d6dbdf7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e3a1e9d43d34bd5455b0c9b415964875995dfa31419ca01e263f377e9c3cb27"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "113ae020c78eca158334cdbbf9a1503a4038df58335dd3c84ce521e2296db0e8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "113ae020c78eca158334cdbbf9a1503a4038df58335dd3c84ce521e2296db0e8"
+    sha256 cellar: :any_skip_relocation, monterey:       "e2a34f020a33c387c63d8bbc125ce1d7e2cbf5b21f2ba324121baa286708df89"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e2a34f020a33c387c63d8bbc125ce1d7e2cbf5b21f2ba324121baa286708df89"
+    sha256 cellar: :any_skip_relocation, catalina:       "e2a34f020a33c387c63d8bbc125ce1d7e2cbf5b21f2ba324121baa286708df89"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8445c1e762df8665d97e9e5920d7b7ee3620166429b4462bbd6f663c33ef3fc2"
   end
 
   depends_on "node"
@@ -42,7 +42,7 @@ class Serverless < Formula
     EOS
 
     system("#{bin}/serverless", "config", "credentials", "--provider", "aws", "--key", "aa", "--secret", "xx")
-    output = shell_output("#{bin}/serverless package")
-    assert_match "Serverless: Packaging service...", output
+    output = shell_output("#{bin}/serverless package 2>&1")
+    assert_match "Packaging homebrew-test for stage dev", output
   end
 end

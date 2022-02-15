@@ -1,8 +1,8 @@
 class NodeAT12 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v12.22.8/node-v12.22.8.tar.xz"
-  sha256 "2785cb1da108130083224b60e4b94009a153b26ef34bb22afc5180b6be84113c"
+  url "https://nodejs.org/dist/v12.22.10/node-v12.22.10.tar.xz"
+  sha256 "ad4c8891d54a2c9bb6af436956deead5986b9698b06e6c6d616de429cfb5393a"
   license "MIT"
 
   livecheck do
@@ -11,12 +11,12 @@ class NodeAT12 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "39ab19699aafebc60229e310a46b979eb40c63df94e1a978b30bda682f802510"
-    sha256 cellar: :any,                 arm64_big_sur:  "b6d12edd3853be869d6a975f2a12eb75a0289aa75746401cc3e7618c4dc06756"
-    sha256 cellar: :any,                 monterey:       "150be5dc505aef08ec54c82c5e205de01660f2275e322f2f1eea4e0cff0efea8"
-    sha256 cellar: :any,                 big_sur:        "e7fa1cf7b59670755f4480cbc84acb7f224311194384393a950a08f7204b912b"
-    sha256 cellar: :any,                 catalina:       "c23721c81e9da4ffad78f7c49e5ec19488bd930de5c7ebb78e9ea9a94da83b8d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9fff99aa2fc36e2f9d9030735148f8e7894706f3413147118a26b3e61679262"
+    sha256 cellar: :any,                 arm64_monterey: "d855774f6d428e2e6d258eaf88fa60a941b6d2c9ecca3596d4156f35e7896dbe"
+    sha256 cellar: :any,                 arm64_big_sur:  "676b39ab4e74c531287956cc4e5478c7c4a22581584edb88d76b7623ab70f811"
+    sha256 cellar: :any,                 monterey:       "888cba85ca478f974dd0d8f6abd2de3e93f009fc40cb01584a609d0c4ea7b998"
+    sha256 cellar: :any,                 big_sur:        "d6470997250871edc042834db307e7c302ebad0b1b9bbca771ecd5ec0e188314"
+    sha256 cellar: :any,                 catalina:       "dd9dae6bc8610ea18d8533c627dc335bb372688b04404d7a7316ecc9ce9037aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4aafe9d8d830131e245b11fd5d969e9e4e17f37b57389ffa35599e9e8c00178c"
   end
 
   keg_only :versioned_formula

@@ -1,8 +1,8 @@
 class Htpdate < Formula
   desc "Synchronize time with remote web servers"
   homepage "https://www.vervest.org/htp/"
-  url "https://www.vervest.org/htp/archive/c/htpdate-1.3.1.tar.gz"
-  sha256 "f6fb63b18a0d836fda721ae5655ae0b87055db1b582e98c4700f64e1ba5e2d5a"
+  url "https://www.vervest.org/htp/archive/c/htpdate-1.3.3.tar.gz"
+  sha256 "74f34b013eba6f99369819fa4b3d48e9ab5e531ad04f6af59cc04e8777c76ed7"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,17 +11,13 @@ class Htpdate < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "45d8bc7374389aa47b3ea1701140d35ab81f11ab2e201d971adb507ae2f8917d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d7c5edcab87e1ce9625721bde594472a80b9ae429230c58283a7b991a6cdbe4a"
-    sha256 cellar: :any_skip_relocation, monterey:       "d716c2ac79707e5c8d2eb28fe2577bcc5ab3cea659e7b03c3e5dd7ea1b66da3a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "01c2efc36b590efbf5aed5287ddd6fa11980ce6e83a97191d99bfabe929719b6"
-    sha256 cellar: :any_skip_relocation, catalina:       "0d6595cfdb3bc6aa274510f03247d99aa1509a7230d8ae3200c140b3f2eb8453"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4eef93b8260bd3f09ab23db16a00e60dcc68a3bf08c2b9ffb1688f47a278a7f2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8fbd7789126d96fef41cd7d9fc2c74a1bf9feb5c64e92ae2892980429f2a149d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "99a88da3d42b316fec3edd327a2adc2e8f96b7f7d6f37a97d9dab08205f41c42"
+    sha256 cellar: :any_skip_relocation, monterey:       "6d352630028cc7e4dd5fb4f084f4e715d0df7387fa3273b409b6068487232044"
+    sha256 cellar: :any_skip_relocation, big_sur:        "87386fb83d33eb8784a9e950884d74473b49d87c7b4d258acd3a24bd648979bc"
+    sha256 cellar: :any_skip_relocation, catalina:       "689c87e94f22843715a22764bed4ca130ba37c51ccdbfbb107f4892c1345208b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "600585ac1f7d5c3be35ddf23d7b0389bbeb9ba6bdabb675069a1b225ff4ff65f"
   end
-
-  # https://github.com/twekkel/htpdate/pull/9
-  # remove in next release
-  patch :DATA
 
   def install
     system "make", "prefix=#{prefix}",
@@ -35,17 +31,3 @@ class Htpdate < Formula
     system "#{sbin}/htpdate", "-q", "-d", "-u", ENV["USER"], "example.org"
   end
 end
-
-__END__
-diff --git a/htpdate.c b/htpdate.c
-index e25bb3c..fbed343 100644
---- a/htpdate.c
-+++ b/htpdate.c
-@@ -52,7 +52,7 @@
- #include <pwd.h>
- #include <grp.h>
-
--#if defined __NetBSD__ || defined __FreeBSD__
-+#if defined __NetBSD__ || defined __FreeBSD__ || defined __APPLE__
- #define adjtimex ntp_adjtime
- #endif

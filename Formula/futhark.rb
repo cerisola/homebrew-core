@@ -1,18 +1,18 @@
 class Futhark < Formula
   desc "Data-parallel functional programming language"
   homepage "https://futhark-lang.org/"
-  url "https://github.com/diku-dk/futhark/archive/v0.21.2.tar.gz"
-  sha256 "347de4067bc715f9aadb47d30e70b04e462233ec26209c917b007440837cc9ba"
+  url "https://github.com/diku-dk/futhark/archive/v0.21.6.tar.gz"
+  sha256 "57f732c0f524e144cc169fe45c0d8695c109c9098acd09c11c8e4e36b851e338"
   license "ISC"
   head "https://github.com/diku-dk/futhark.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3c86320052a5a170691511bc75c7fcdfc4dcd9559718dc9756029f53065461ed"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1e99fbd100523536e1bf8e663787e0db7ec6c9a134f9526e2ec9b2a3b67a8d93"
-    sha256 cellar: :any_skip_relocation, monterey:       "2a1851d82ca5a8259d397261a34b67404025fa71221271aed2e5ce82f0a8f46a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "17fa62c99680f2b43f93e0690c5a115486cd882b3955f5539d759d65da70497a"
-    sha256 cellar: :any_skip_relocation, catalina:       "2992f1dd48fc3039d6886541262aa62dcfb0d46340b1e8f5600cee1146dc51b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c54c65338438d6dbfb5d7dd5a8a40c94a0dfae9932153e6c91bf7e778fbbe09"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9137827d9800c15ca9e8d7bd9c64304638c37669c7d82efde22bfa8577f4ece3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cba28ba99806d66104f32f8528654f8f5faa10c1d4e8ba355a7b5cd1127ee6dc"
+    sha256 cellar: :any_skip_relocation, monterey:       "db2c05564030938dc7a11446072a5a1976c15db0ca675cf54523f463d8425e75"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6525a17af9caf7e5830c9c9d8c5ce7d2be49ba024c2ce9b06a7d3d92a5e2fe86"
+    sha256 cellar: :any_skip_relocation, catalina:       "26476973c20b97d13a89de274c3f2d161ad015984b8ef5fbf69f880bae2c642f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "35d3c9220c9d215e44ab108ec449be12b7cd0230c3631a573640e589dd5fb5ea"
   end
 
   depends_on "cabal-install" => :build
@@ -32,7 +32,7 @@ class Futhark < Formula
 
   test do
     (testpath/"test.fut").write <<~EOS
-      let main (n: i32) = reduce (*) 1 (1...n)
+      def main (n: i32) = reduce (*) 1 (1...n)
     EOS
     system "#{bin}/futhark", "c", "test.fut"
     assert_equal "3628800i32", pipe_output("./test", "10", 0).chomp

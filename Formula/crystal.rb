@@ -4,8 +4,8 @@ class Crystal < Formula
   license "Apache-2.0"
 
   stable do
-    url "https://github.com/crystal-lang/crystal/archive/1.2.2.tar.gz"
-    sha256 "6d963a71ef5f6c73faa272a0f81b50e9ddbf814b1ec07e557ce5c95f84d6077e"
+    url "https://github.com/crystal-lang/crystal/archive/1.3.2.tar.gz"
+    sha256 "0dceb2fde610c479466ebe1ce03745c51ba9def9f0da3aff1601532693741e0a"
 
     resource "shards" do
       url "https://github.com/crystal-lang/shards/archive/v0.16.0.tar.gz"
@@ -19,12 +19,12 @@ class Crystal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "7a7f9dd94a238cf2cf3ef52d4f599657e68fa20db67bd924928f8b9f639a1950"
-    sha256 arm64_big_sur:  "a9a3c2d74078ecf21714efc1c21a6c5fb6316f81dca3a7701e5ab8a243d23d0c"
-    sha256 monterey:       "09afea2b21777b0c89a6c7e24a2a83bbd568bcbfd58d627f4dbc3e4b45f878e0"
-    sha256 big_sur:        "db50f8a2b4279ba7de96ea9dcbef0aaab679103416c5048b7666a22e9eafc2d3"
-    sha256 catalina:       "91ba5feee45f416d7d3cb071522b89955c859118320abb83111ab1f234f098cd"
-    sha256 x86_64_linux:   "3d93258d3fead4f8be2b5a6244f6be342fe05ad85db0fd1eb77f87c8c6ed72df"
+    sha256 arm64_monterey: "bb8fa3d6661b12e3c186b51efa8bd0e98a9eec6d468e18bd98a3d1f6d36ed5ac"
+    sha256 arm64_big_sur:  "7e887e1efc3b48650801a90e38da652f27b6482f80ff91b411594eedbedfe64f"
+    sha256 monterey:       "bfde2b99b037c8749a9a88e70a5cdf5aa68002863164b7507fd4fecdc3681d56"
+    sha256 big_sur:        "c3f4173fb9fb81b529506d8078866740bb83f4bc1b9784ef2f7d19212fb87d8b"
+    sha256 catalina:       "c7f9765798c1bf561d6a74b5a3b16635fc7cbe6769d690c0db65667add97bf24"
+    sha256 x86_64_linux:   "6ed1b7a0292675183c1f49aac61d8c93156b77dca2802b4425468522e3c0ae18"
   end
 
   head do
@@ -39,10 +39,16 @@ class Crystal < Formula
   depends_on "gmp" # std uses it but it's not linked
   depends_on "libevent"
   depends_on "libyaml"
-  depends_on "llvm@11"
+  depends_on "llvm"
   depends_on "openssl@1.1" # std uses it but it's not linked
   depends_on "pcre"
   depends_on "pkg-config" # @[Link] will use pkg-config if available
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   # Every new crystal release is built from the previous one. The exceptions are
   # when crystal make a minor release (only bug fixes). Resason is because those
@@ -56,19 +62,22 @@ class Crystal < Formula
       sha256 "ce9e671abec489a95df39e347d109e6a99b7388dffe1942b726cb62e2f433ac3"
     end
     on_linux do
-      url "https://github.com/crystal-lang/crystal/releases/download/1.1.1/crystal-1.1.1-1-linux-x86_64.tar.gz"
-      version "1.1.1-1"
-      sha256 "e78873f8185b45f8c6e480a6d2a6a4f3a8b4ee7ca2594e8170dd123a41566704"
+      url "https://github.com/crystal-lang/crystal/releases/download/1.2.2/crystal-1.2.2-1-linux-x86_64.tar.gz"
+      version "1.2.2-1"
+      sha256 "b16e67862856ffa0e4abde62def24d5acd83d42b5086e8e1c556e040201ab3a1"
     end
   end
 
   def install
+    llvm = deps.find { |dep| dep.name.match?(/^llvm(@\d+)?$/) }
+               .to_formula
+
     (buildpath/"boot").install resource("boot")
     ENV.append_path "PATH", "boot/bin"
     ENV.append_path "CRYSTAL_LIBRARY_PATH", Formula["bdw-gc"].opt_lib
     ENV.append_path "CRYSTAL_LIBRARY_PATH", ENV["HOMEBREW_LIBRARY_PATHS"]
     ENV.append_path "CRYSTAL_LIBRARY_PATH", Formula["libevent"].opt_lib
-    ENV.append_path "LLVM_CONFIG", Formula["llvm@11"].opt_bin/"llvm-config"
+    ENV.append_path "LLVM_CONFIG", llvm.opt_bin/"llvm-config"
 
     # Build crystal
     crystal_build_opts = []

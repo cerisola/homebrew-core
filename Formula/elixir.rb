@@ -1,18 +1,18 @@
 class Elixir < Formula
   desc "Functional metaprogramming aware language built on Erlang VM"
   homepage "https://elixir-lang.org/"
-  url "https://github.com/elixir-lang/elixir/archive/v1.13.1.tar.gz"
-  sha256 "deaba8156b11777adfa28e54e76ddf49ab1a0132cca54c41d9d7648e800edcc8"
+  url "https://github.com/elixir-lang/elixir/archive/v1.13.3.tar.gz"
+  sha256 "652779f7199f5524e2df1747de0e373d8b9f1d1206df25b2e551cd0ad33f8440"
   license "Apache-2.0"
   head "https://github.com/elixir-lang/elixir.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "924e318c70b4fbb380a5dc40fa73a764c331dc0983721a57899c58e3674d9ac6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "89bdf2bcc22784386070d7727bd2bde067ce55ab220da29282fc65d4645b9afb"
-    sha256 cellar: :any_skip_relocation, monterey:       "bd8a66ffacbfdada872cccbe9c6f72af4e5c2fcab7735a6513be66bf98644915"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b04829c5bd65aaf7c4526f5dd1949c720bc6a5a78475972e775c9a714644613c"
-    sha256 cellar: :any_skip_relocation, catalina:       "280ae55c671eafa4c96b81ef04c54404644db6dc94adb84c0006d2cc00ffcf9f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "142a5d6a3feb81a66222fb6cad375ffcf50eeff4bce610bc996400b961c25f46"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "94f5e714323c310678e2f339b24675f7c03a8f7e96d3179dcab121adc9d6ad74"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b5abfdcbcfe2fcd98f1416548c69b2255ea1264f6236d2d9176382be42b4216e"
+    sha256 cellar: :any_skip_relocation, monterey:       "d9daad4c54da1a2902eb19cc58096e4e8c06a98a52bbeb2faf1571af56cd0bb9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b2104d3eab80d8bd12f0c0defeebd7592d1ccfb5d8040e2a517662dff2a5b03e"
+    sha256 cellar: :any_skip_relocation, catalina:       "88fd292078fad4415ea77ab095f69fc31a23ec61b44ffa0d0ceaac159a08d4db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "62f490795c478eba8f485de1f56ae378b2988b329897af911206d1589190d369"
   end
 
   depends_on "erlang"

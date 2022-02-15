@@ -1,17 +1,18 @@
 class Mdcat < Formula
   desc "Show markdown documents on text terminals"
-  homepage "https://github.com/lunaryorn/mdcat"
-  url "https://github.com/lunaryorn/mdcat/archive/mdcat-0.25.0.tar.gz"
-  sha256 "92fddabab24f2e7d673b06c1f31a7746abbb547c5581faaed17a8e3e1e5b17a5"
+  homepage "https://codeberg.org/flausch/mdcat"
+  url "https://codeberg.org/flausch/mdcat/archive/mdcat-0.26.1.tar.gz"
+  sha256 "1120c4f3b5b517075b6347dbfe76a2211a91837b4d0242c0b72cdbc19e6886dd"
   license "MPL-2.0"
+  head "https://codeberg.org/flausch/mdcat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "135a0c42c2f1811d5b8adb6569eb5d172caf72dfbfe3a81573ce7c0d43004836"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "79b83d8508ce17521c309247ede14e54e71baa7ba4e200e4ea79b8ead2a68749"
-    sha256 cellar: :any_skip_relocation, monterey:       "ee3a03cb6a985ffb31a6df40e4363a8a2612393729ab385c5c11af471b7028f2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ef678c474b88f0bb4d480bbcd40502f7141003924e2f03218af0f4efbb287708"
-    sha256 cellar: :any_skip_relocation, catalina:       "4cffac4f2f24130c060ae2e7c826cbadadebab39e74aff347b7fe0bf6474d926"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cb93a0d311bc60f3000822ace92bba233e0641c06ecce203d7ba7ee215c199c4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "12f57010161981a444c3026977e1eebeda9f3719e85d8036eb3c01426055fe6e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "10f6d24300205f1d513976d8abe7a7dfe1efd045383956fca7c19272ca9896b2"
+    sha256 cellar: :any_skip_relocation, monterey:       "b2dfb2acadf101ca418cc96a2f3de30ac03fab1b7d7977f47e13e880cdb5cc9f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2dacdc8793ee6cedc0fa76db28153fb57c27ba42260714d3fcbec84fdad800d3"
+    sha256 cellar: :any_skip_relocation, catalina:       "9ab6093b76b7903b60780ad348a4780087ca5cdc19052e851a198e8920f413da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9fdbe394e6c5ba0e940d52ed35aeea543ba679b20bb577a75f825d549280890"
   end
 
   depends_on "cmake" => :build

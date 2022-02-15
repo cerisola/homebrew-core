@@ -1,9 +1,10 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.4.0/gdal-3.4.0.tar.xz"
-  sha256 "ac7bd2bb9436f3fc38bc7309704672980f82d64b4d57627d27849259b8f71d5c"
+  url "https://download.osgeo.org/gdal/3.4.1/gdal-3.4.1.tar.xz"
+  sha256 "332f053516ca45101ef0f7fa96309b64242688a8024780a5d93be0230e42173d"
   license "MIT"
+  revision 1
 
   livecheck do
     url "https://download.osgeo.org/gdal/CURRENT/"
@@ -11,10 +12,11 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "1dc682eb44f8c5026c88cca4ce08e8ad368b21b904831dc0a3fa8d933c6dc2dd"
-    sha256 big_sur:       "9d9f64a5f7cb90b329cb5c3e6daf471a37fe2e101aa565815b576de8c040a96d"
-    sha256 catalina:      "6a80ed1a61c256b878e713598849f4ae53ee0b5ef73b5f20c1eb03d9d7d6d699"
-    sha256 x86_64_linux:  "76d4bf70767ef017dbb76a2f79efd77873bef22bffc61f0fba34dc439a227424"
+    sha256 arm64_monterey: "3e0605bfd13304fca41e3d2218abe035985194f1a7700ed6e9e3230b5dee1f30"
+    sha256 arm64_big_sur:  "e699a2d2099e03d7607032282c95c7dc356741ca0314a56be6d5a354fa86af49"
+    sha256 big_sur:        "5e7de5faae3dec4aa610bcbb299499c2f64aa226b6471a2e5c55f753bc3b2bac"
+    sha256 catalina:       "bd2f49ebad61505017daa2c0cbd88f88af7da58cf323787222fadb509f68d42b"
+    sha256 x86_64_linux:   "97f3fad9261e5fda2bb44b28c68026c08040ebc277179382e95ad52ed7125ac3"
   end
 
   head do
@@ -43,7 +45,7 @@ class Gdal < Formula
   depends_on "netcdf"
   depends_on "numpy"
   depends_on "openjpeg"
-  depends_on "pcre"
+  depends_on "pcre2"
   depends_on "poppler-qt5"
   depends_on "proj@7"
   depends_on "python@3.9"
@@ -93,6 +95,7 @@ class Gdal < Formula
       "--with-pg=yes",
       "--with-png=#{Formula["libpng"].opt_prefix}",
       "--with-spatialite=#{Formula["libspatialite"].opt_prefix}",
+      "--with-pcre2=yes",
       "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
       "--with-proj=#{Formula["proj@7"].opt_prefix}",
       "--with-zstd=#{Formula["zstd"].opt_prefix}",

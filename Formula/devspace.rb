@@ -2,8 +2,8 @@ class Devspace < Formula
   desc "CLI helps develop/deploy/debug apps with Docker and k8s"
   homepage "https://devspace.sh/"
   url "https://github.com/loft-sh/devspace.git",
-      tag:      "v5.18.1",
-      revision: "2f47f02edcabbb94dd571f561db438fbdc932a86"
+      tag:      "v5.18.3",
+      revision: "471bf5c24ab79ef7057a34dc5d6dd5d801356a6d"
   license "Apache-2.0"
   head "https://github.com/loft-sh/devspace.git", branch: "master"
 
@@ -13,12 +13,12 @@ class Devspace < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f919eb044db50626bbe0de47eee854e4daab42016b99b082cac7dbd37530a42"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "586203a9eee67d1ccb7fb4c66da062a5e6e18176da8525575c010aecb03314f3"
-    sha256 cellar: :any_skip_relocation, monterey:       "0262e57b28b4b6a44c57fe6a3685fa4fae14e6d1160d5a22166be2c456ffe1e3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "370e6f3dee62d12be84a44cfb9efb81b39bae9c56d7106bfdde15cc0c2387876"
-    sha256 cellar: :any_skip_relocation, catalina:       "0db47bd864fff3ac88882beb6934dabbb607c4626881a582674f9cc49d3d38c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34caa42a62e6cd52ad7f9ddbd813d166dbb5b1d84e3ad84e239d0eb1e4f6fba0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8ed18d0622bc205b8e5230508f8acf2d832780ec4b5ecce98a47cd88e914c1cc"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aa42d52afa1ccea220284a8a03dab89e882a768cc42f03131a64093fd4b1711d"
+    sha256 cellar: :any_skip_relocation, monterey:       "c9cb3ef5d9de08bb8e8ee3abba4b7194165fdf92823a15b56b8a7f52565bbf46"
+    sha256 cellar: :any_skip_relocation, big_sur:        "518db0b70bb48208f4adabb7a662c011f0c18be2e85c8e7f91dbff32014c8202"
+    sha256 cellar: :any_skip_relocation, catalina:       "a89ef7705a23c4cd39b1d8dd6bb17f41f4e9582e811767c0e1fc485d60c1b678"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51e96f38e8ca0f868e98b74c8b23e9d268662c1a7ff9276cb4fdceecc6e053bb"
   end
 
   depends_on "go" => :build
@@ -35,7 +35,7 @@ class Devspace < Formula
 
   test do
     help_output = "DevSpace accelerates developing, deploying and debugging applications with Docker and Kubernetes."
-    assert_match help_output, shell_output("#{bin}/devspace help")
+    assert_match help_output, shell_output("#{bin}/devspace --help")
 
     init_help_output = "Initializes a new devspace project"
     assert_match init_help_output, shell_output("#{bin}/devspace init --help")

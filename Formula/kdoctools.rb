@@ -1,8 +1,8 @@
 class Kdoctools < Formula
   desc "Create documentation from DocBook"
   homepage "https://api.kde.org/frameworks/kdoctools/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.89/kdoctools-5.89.0.tar.xz"
-  sha256 "e1319af7ee5d108c651e3acb70ab28328d24be009de174646a233e2d7c2118f5"
+  url "https://download.kde.org/stable/frameworks/5.91/kdoctools-5.91.0.tar.xz"
+  sha256 "7620010ddfaec988715be343af4e35f8bac75b5e14d1fa9d3bdbbe620925990a"
   license all_of: [
     "BSD-3-Clause",
     "GPL-2.0-or-later",
@@ -19,11 +19,10 @@ class Kdoctools < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "f03b4805a558725723787c83dc3c7792a09bc8d17151df46108ad063d91455b4"
-    sha256 cellar: :any, arm64_big_sur:  "c17f99e1138e0d3b160033a6a192ea21d81d2a447943078655c3e5299def5786"
-    sha256 cellar: :any, monterey:       "3f6c605b7c06e3cd00219223b69fd4efc71d52f84417aba2de53f31b4495de2d"
-    sha256 cellar: :any, big_sur:        "381abee82d6de9da15f9594f127625cd50db7e074dec10b91e762ebb9136a1c5"
-    sha256 cellar: :any, catalina:       "378c73f3d38425efb566e76364e5f40d39bb27a9a0d6656efb016e37c78134ac"
+    sha256 cellar: :any, arm64_monterey: "e18d8677e0c3ffd6d61dabb96f32f6358cc35174ac3cdb36074820b511ecc2a1"
+    sha256 cellar: :any, arm64_big_sur:  "becce4bb11ef82cfcec0848bd1c79e796e64837eae449b492f53ed0c30c073b9"
+    sha256 cellar: :any, big_sur:        "f7493484fd34be0179ebbdde6f8b97048158890e8386dc9f1acd5b9b61a829dd"
+    sha256 cellar: :any, catalina:       "941c6841ceff5e6eb896ee747a04ec791ec54299d1621cd8f3a3aa286e81b26d"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -53,11 +52,13 @@ class Kdoctools < Formula
       system "make", "install"
     end
 
-    args = std_cmake_args
-    args << "-DBUILD_TESTING=OFF"
-    args << "-DBUILD_QCH=ON"
+    args = std_cmake_args + %w[
+      -S .
+      -B build
+      -DBUILD_QCH=ON
+    ]
 
-    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", *args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
@@ -68,10 +69,10 @@ class Kdoctools < Formula
     (testpath/"CMakeLists.txt").write <<~EOS
       cmake_minimum_required(VERSION 3.5)
       include(FeatureSummary)
-      find_package(ECM 5.71.0 NO_MODULE)
+      find_package(ECM #{version} NO_MODULE)
       set_package_properties(ECM PROPERTIES TYPE REQUIRED)
       set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} "#{pkgshare}/cmake")
-      find_package(Qt5 5.12.0 REQUIRED Core)
+      find_package(Qt5 #{Formula["qt@5"].version} REQUIRED Core)
       find_package(KF5DocTools REQUIRED)
 
       find_package(LibXslt)
@@ -101,10 +102,13 @@ class Kdoctools < Formula
     cp_r (pkgshare/"autotests"), testpath
     cp_r (pkgshare/"tests"), testpath
 
-    args = std_cmake_args
-    args << "-DQt5_DIR=#{Formula["qt@5"].opt_prefix/"lib/cmake/Qt5"}"
+    args = std_cmake_args + %W[
+      -S .
+      -B build
+      -DQt5_DIR=#{Formula["qt@5"].opt_lib}/cmake/Qt5
+    ]
 
-    system "cmake", testpath.to_s, *args
-    system "make"
+    system "cmake", *args
+    system "cmake", "--build", "build"
   end
 end

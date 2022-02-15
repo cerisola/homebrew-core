@@ -4,25 +4,25 @@ require "json"
 class Webpack < Formula
   desc "Bundler for JavaScript and friends"
   homepage "https://webpack.js.org/"
-  url "https://registry.npmjs.org/webpack/-/webpack-5.65.0.tgz"
-  sha256 "da4f0f7172391d5ab522cc06e7c82ad825e967e11b6020e72f510563319eff31"
+  url "https://registry.npmjs.org/webpack/-/webpack-5.68.0.tgz"
+  sha256 "a9ea29dd6e667ec56cae2893c160c8759a0e5f21f8e247bfd61ffd260569532c"
   license "MIT"
   head "https://github.com/webpack/webpack.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "124e411b0433d1019207ac3155abb98b2b23c3fd15574924b20f4227807ff328"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "124e411b0433d1019207ac3155abb98b2b23c3fd15574924b20f4227807ff328"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4f8e5e5c71de23a393a04a8ec13784c707aeba1d71bbc4fe231db7f11d35871"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c1df19cb2ff602d7cc94125901a915b4f0b5b5fcb9c709921a7d07f57fa22d2b"
-    sha256 cellar: :any_skip_relocation, catalina:       "c1df19cb2ff602d7cc94125901a915b4f0b5b5fcb9c709921a7d07f57fa22d2b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5d84f611525dfb039752f42666c2d3f9ca1a4e424de77874be9184c5bddf2d31"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "fc4c2acb16b038a676c0533919d6a120dd7ee9c8a76e2530a501cbc5c2af3157"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fc4c2acb16b038a676c0533919d6a120dd7ee9c8a76e2530a501cbc5c2af3157"
+    sha256 cellar: :any_skip_relocation, monterey:       "efb0915510fe61725af4a1729f753edc07d961f8f1624c7b4f43e568a87b027d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5ae7f22cca4c4fb87af5ec665488c0f8746246906fc2414b6129cc285b8db44d"
+    sha256 cellar: :any_skip_relocation, catalina:       "5ae7f22cca4c4fb87af5ec665488c0f8746246906fc2414b6129cc285b8db44d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a4919616b94ff3ad28be49280dd4b196beadeee13a9b4638a6e66f6b1d96714"
   end
 
   depends_on "node"
 
   resource "webpack-cli" do
-    url "https://registry.npmjs.org/webpack-cli/-/webpack-cli-4.9.1.tgz"
-    sha256 "0e80f38d28019f7c30f7237ca0b7a250dfe0b561d07d8248b162dde663cd54ff"
+    url "https://registry.npmjs.org/webpack-cli/-/webpack-cli-4.9.2.tgz"
+    sha256 "cec2b7fb5b49724b7642edf21ff7645ce5591cc65a24ba37b8fbe12086773189"
   end
 
   def install

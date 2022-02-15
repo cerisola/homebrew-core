@@ -1,34 +1,39 @@
 class Velero < Formula
   desc "Disaster recovery for Kubernetes resources and persistent volumes"
   homepage "https://github.com/vmware-tanzu/velero"
-  url "https://github.com/vmware-tanzu/velero/archive/v1.7.1.tar.gz"
-  sha256 "f008ea2ed6b5f03419399289768db907ec993f4c6ef6947689737d67d4a895b8"
+  url "https://github.com/vmware-tanzu/velero/archive/v1.8.0.tar.gz"
+  sha256 "43930fc5dfb9915b5c7e3f3376d7eaca354e7e827bf63e975ab3720df38830a5"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e4aeef8b082ff57608666b2e81a606997699d6b9617c59af08f649678a67d99f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a269259419a540292e7f63f90c52af53a289ba928af445427f6dc528d850e4df"
-    sha256 cellar: :any_skip_relocation, monterey:       "44492998753e5ad53f300a575747d8fba3012d70715acfd045f5d9e43d3caef0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cb66509c1c8d0f0de93b3ecf683e95843e8c50d1855cdc3de05add3851986dc5"
-    sha256 cellar: :any_skip_relocation, catalina:       "eecacf4e67cceff0d1b087c37614bc5513f3532ded33d77ec50fa974a2999860"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "34c17c8ba1cebd7e21225bcffc5e4f7ae6962e34d013a71491dbc1ad97175f36"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "42b19180fd9b86734fd6d7c39fa95e4a4636dc42c9ef5742178102b3f0098789"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e6b17b32930d1811fb56e6ae859a2681f825d6df9a922649873398a8422e598d"
+    sha256 cellar: :any_skip_relocation, monterey:       "2630b1f359fb7c87c63b473a13c7627ca0b6f98be5872f121f6ee713c0ab2105"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4a32b4e95b9ccc0907617b43042adab16f0e5ee70f104adefdeed89bbb6e575e"
+    sha256 cellar: :any_skip_relocation, catalina:       "2f4c9fe8487bb5d41ad490a874a2fbb079f36af40d903e9f4227602b130280db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "400c333480ab725a42acd9fa3c3061fd9c1c69a36f5762360b6bb406a9cceec8"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-installsuffix", "static",
-                  "-ldflags",
-                  "-s -w -X github.com/vmware-tanzu/velero/pkg/buildinfo.Version=v#{version}",
-                  "./cmd/velero"
+    ldflags = %W[
+      -s -w
+      -X github.com/vmware-tanzu/velero/pkg/buildinfo.Version=v#{version}
+    ]
+    system "go", "build", *std_go_args(ldflags: ldflags), "-installsuffix", "static", "./cmd/velero"
 
     # Install bash completion
-    output = Utils.safe_popen_read("#{bin}/velero", "completion", "bash")
+    output = Utils.safe_popen_read(bin/"velero", "completion", "bash")
     (bash_completion/"velero").write output
 
     # Install zsh completion
-    output = Utils.safe_popen_read("#{bin}/velero", "completion", "zsh")
+    output = Utils.safe_popen_read(bin/"velero", "completion", "zsh")
     (zsh_completion/"_velero").write output
+
+    # Install fish completion
+    output = Utils.safe_popen_read(bin/"velero", "completion", "fish")
+    (fish_completion/"velero.fish").write output
   end
 
   test do

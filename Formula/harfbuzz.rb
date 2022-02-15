@@ -1,18 +1,18 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://github.com/harfbuzz/harfbuzz"
-  url "https://github.com/harfbuzz/harfbuzz/archive/3.2.0.tar.gz"
-  sha256 "41b38daa13ebdba39fae3b5fb2abbf5f9ccd9121bfa7f47b18d51aa733f80aad"
+  url "https://github.com/harfbuzz/harfbuzz/archive/3.4.0.tar.gz"
+  sha256 "810bcd3d22fae3c2c18c3688455abc1cd0d7fb2fae25404890b0d77e6443bd0a"
   license "MIT"
   head "https://github.com/harfbuzz/harfbuzz.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "f85847aa398b826ceadaec1745e256eb0e7d8df8dd162dd0812879ccb76f5635"
-    sha256 cellar: :any, arm64_big_sur:  "42958059b98d0199db63b0f7d61674cbec689826f636cdafd944406a55046526"
-    sha256 cellar: :any, monterey:       "d83be22448c146f8dee5b6dfa911ba0097da22235217791d4cbac7381416ce92"
-    sha256 cellar: :any, big_sur:        "a7b38465eb9da30e14c80664dba0d1a3bbb971b5e3086e6c4694f0c5da8dd718"
-    sha256 cellar: :any, catalina:       "a1271e791db27529ee0cc2f378ea37f9161dd280bf34aff78c35da1f98ceefc6"
-    sha256               x86_64_linux:   "1f15fee5fe30ebc86f4b66d3713dd318ac212542b21c7e4eb0daec2b58ac7e41"
+    sha256 cellar: :any, arm64_monterey: "15cdfcae02c662d496ec44853c903bee6e88e3ae6c5824551728d1777b7f3202"
+    sha256 cellar: :any, arm64_big_sur:  "4a62926c8c00f94f894330aee3089ee76eace29cee52933b3118ec07c7975b54"
+    sha256 cellar: :any, monterey:       "a1dc8c1d20dede22660ff6b7d9a8414da5b83d2a40a3ca4d4e5870c2d1ba3355"
+    sha256 cellar: :any, big_sur:        "2f601d4fad7b0c7055b42db634a3b456c8010514cf66047067df64e12fc4b431"
+    sha256 cellar: :any, catalina:       "bdac7835aed7dda53981f913588c440b26014ec8d89f76e4f0bfca2541c5db0a"
+    sha256               x86_64_linux:   "5de8141091a2738bafaa6c193f123090e0a27ba167eefc960ac526c63daad982"
   end
 
   depends_on "meson" => :build

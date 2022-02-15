@@ -2,16 +2,24 @@ class DosboxStaging < Formula
   desc "Modernized DOSBox soft-fork"
   homepage "https://dosbox-staging.github.io/"
   url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.78.1.tar.gz"
-  sha256 "9ae322edce853459fff47037fa4f7e3f138325699bf3c33d5335c069282133db"
+  sha256 "dcd93ce27f5f3f31e7022288f7cbbc1f1f6eb7cc7150c2c085eeff8ba76c3690"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/dosbox-staging/dosbox-staging.git", branch: "main"
 
+  # New releases of dosbox-staging are indicated by a GitHub release (and
+  # an announcement on the homepage), not just a new version tag.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any, arm64_monterey: "f634764b7cefa11e450bcfe29dcecbb82d8125cc2cec86d22a10128a1ff74b19"
-    sha256 cellar: :any, arm64_big_sur:  "6f4dc4d1961d8b03023989407c0f6e87a78e61717bc02dabeb5f5cc3c7c094a0"
-    sha256 cellar: :any, monterey:       "ef7a5a75fe9a3832876bfba92fb436bfc901955e569e1b6834fb220579c6f361"
-    sha256 cellar: :any, big_sur:        "d7f4608edc91ddc0e74dbff45251f6b8e8539fd4994dfa1326f2880c22b4f620"
-    sha256 cellar: :any, catalina:       "8c21190904606a6cc0c6cf0e937cc3ef748298bb4982eb096443d3d1a928ab06"
+    sha256 cellar: :any, arm64_monterey: "1d186ea2c0a3ca07ffa8c1ddd02d34832d7c50d4c718dd50c7aa5469489e4901"
+    sha256 cellar: :any, arm64_big_sur:  "92315173b7a51d4af3db388cb65420026d7864aa27f5ef89a03942bf42afcf79"
+    sha256 cellar: :any, monterey:       "7ca82e1f018eebd2650823754122b999dba06cd3c923edb7fec0cf07d356e54e"
+    sha256 cellar: :any, big_sur:        "48c5d2212056baf6bf7cf5ac1db657148322f8e90a70fd065f11df3dc0262e98"
+    sha256 cellar: :any, catalina:       "12ee01a5d78a0d1b24c51deccc311b2ab8bddec499265c088d5174a16a49837f"
   end
 
   depends_on "meson" => :build

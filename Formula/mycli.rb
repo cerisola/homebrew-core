@@ -3,18 +3,17 @@ class Mycli < Formula
 
   desc "CLI for MySQL with auto-completion and syntax highlighting"
   homepage "https://www.mycli.net/"
-  url "https://files.pythonhosted.org/packages/24/94/b171e47b39420ebdf8d5f6dd13063785cd86e3d8b29b493fe1ebfcf7af4f/mycli-1.24.1.tar.gz"
-  sha256 "748d98be3da5948f5394c15bb37e628d8785b86aa84e8bd9c9187e20b84d3266"
+  url "https://files.pythonhosted.org/packages/37/79/9c3f258388e204c6b552b7c82cc4849133bebfbe24a8288b0472ea7103d0/mycli-1.24.3.tar.gz"
+  sha256 "424daa3977c033bc49bf57c3b7f9a76f635915fe52fc4c689d0b4b1389b6d9ae"
   license "BSD-3-Clause"
-  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "cf3665cd1d8751d998060140e307dca6260466667d8d1e17ce87375bbed38932"
-    sha256 cellar: :any,                 arm64_big_sur:  "6ffb1fc8760d82464ae6de7079972e94b5e3fa00e2daf4aeccb9e31f97c90a3a"
-    sha256 cellar: :any,                 monterey:       "5ebbe9c1b355d894adbcc162609a9c9db8047c30039fbe547df7b45b09a6efca"
-    sha256 cellar: :any,                 big_sur:        "cc7949fae98130ceb2493332f8d15a12c858f2fda97e5159b0195dfde74bf7a0"
-    sha256 cellar: :any,                 catalina:       "e8e933336ab7f85fcc4365fb87f774fc27e69b0801160370bf0687e02088f744"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1f646ef9dd68dd13ed0464a81b613f8a3a3b113e78fab9b7b9bc3d98b46b9365"
+    sha256 cellar: :any,                 arm64_monterey: "d851821ec956a230cdee2cce59b9b6488af1c84c66a4478720e5a4e69bf3d3a8"
+    sha256 cellar: :any,                 arm64_big_sur:  "b8f8d50e32f55029f72b9d95329d75218f0a458e278126fd0c49ba550ed8d621"
+    sha256 cellar: :any,                 monterey:       "a019f990c05651a36a0251e9f8e5f9e4cbd5b69c29a4a37dde8ce8bab7c47179"
+    sha256 cellar: :any,                 big_sur:        "69af7077d2b1f00135c36a0a6a2679ec1aed2dc5d67647654e9f9863c78c6ea6"
+    sha256 cellar: :any,                 catalina:       "9ca8d9c6896f92a92635f951c91c2a714bda359a2580fa72a3a7833204af1ff2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4458692e48a84ba01a5d5e537ccbfc4a33e2a6deb52ae0197c07beaf16893e6f"
   end
 
   depends_on "rust" => :build
@@ -33,8 +32,8 @@ class Mycli < Formula
   end
 
   resource "cli-helpers" do
-    url "https://files.pythonhosted.org/packages/86/ed/eb0468849a425a9ef0d15f789e2272bb5fc4081926f0261542927599177b/cli_helpers-2.2.0.tar.gz"
-    sha256 "733f65d8c921e0cffa8f7ae4c8735bd7ecdffec383c5246f647ddd0fddb33448"
+    url "https://files.pythonhosted.org/packages/d9/5d/bd0b08f7f8f9d02f44055cf4b41aafa658c1b0731237f303b9fdb49fc8d7/cli_helpers-2.2.1.tar.gz"
+    sha256 "0ccc1cfcda1ac64dc7ed83d7013055cf19e5979d29e56c21f3b692de01555aae"
   end
 
   resource "click" do
@@ -50,11 +49,6 @@ class Mycli < Formula
   resource "cryptography" do
     url "https://files.pythonhosted.org/packages/f9/4b/1cf8e281f7ae4046a59e5e39dd7471d46db9f61bb564fddbff9084c4334f/cryptography-36.0.1.tar.gz"
     sha256 "53e5c1dc3d7a953de055d77bef2ff607ceef7a2aac0353b5d630ab67f7423638"
-  end
-
-  resource "importlib-resources" do
-    url "https://files.pythonhosted.org/packages/b5/d8/51ace1c1ea6609c01c7f46ca2978e11821aa0efaaa7516002ef6df000731/importlib_resources-5.4.0.tar.gz"
-    sha256 "d756e2f85dd4de2ba89be0b21dba2a3bbec2e871a42a3a16719258a11f87506b"
   end
 
   resource "prompt-toolkit" do
@@ -73,8 +67,8 @@ class Mycli < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/b7/b3/5cba26637fe43500d4568d0ee7b7362de1fb29c0e158d50b4b69e9a40422/Pygments-2.10.0.tar.gz"
-    sha256 "f398865f7eb6874156579fdf36bc840a03cab64d1cde9e93d68f46a425ec52c6"
+    url "https://files.pythonhosted.org/packages/94/9c/cb656d06950268155f46d4f6ce25d7ffc51a0da47eadf1b164bbf23b718b/Pygments-2.11.2.tar.gz"
+    sha256 "4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"
   end
 
   resource "PyMySQL" do
@@ -93,8 +87,8 @@ class Mycli < Formula
   end
 
   resource "sqlparse" do
-    url "https://files.pythonhosted.org/packages/67/4b/253b6902c1526885af6d361ca8c6b1400292e649f0e9c95ee0d2e8ec8681/sqlparse-0.3.1.tar.gz"
-    sha256 "e162203737712307dfe78860cc56c8da8a852ab2ee33750e33aeadf38d12c548"
+    url "https://files.pythonhosted.org/packages/32/fe/8a8575debfd924c8160295686a7ea661107fc34d831429cce212b6442edb/sqlparse-0.4.2.tar.gz"
+    sha256 "0c00730c74263a94e5a9919ade150dfc3b19c574389985446148402998287dae"
   end
 
   resource "wcwidth" do

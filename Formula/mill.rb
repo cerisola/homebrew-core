@@ -1,8 +1,8 @@
 class Mill < Formula
   desc "Scala build tool"
   homepage "https://com-lihaoyi.github.io/mill/mill/Intro_to_Mill.html"
-  url "https://github.com/com-lihaoyi/mill/releases/download/0.9.11/0.9.11-assembly"
-  sha256 "a98c02b7bfbffc62472720eb67cadc18228bb2129e6c80c1402ca7eab2ce8494"
+  url "https://github.com/com-lihaoyi/mill/releases/download/0.10.0/0.10.0-assembly"
+  sha256 "f680b314962a639f9ace30679bf5ee26c46a8c63d949cea7ff5e7046c40f95a9"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Mill < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "130ec0b9c0ad60211519aa49ff765056ae22608eed97888a5e4af76394a27cd9"
+    sha256 cellar: :any_skip_relocation, all: "415af577788763a41ccb3dfc1b5887010336beb33782c85847c10311cca18fff"
   end
 
   depends_on "openjdk"

@@ -1,18 +1,18 @@
 class Bat < Formula
   desc "Clone of cat(1) with syntax highlighting and Git integration"
   homepage "https://github.com/sharkdp/bat"
-  url "https://github.com/sharkdp/bat/archive/v0.18.3.tar.gz"
-  sha256 "dff7fa5222f40c7b3c783d3ceb0c3ffb35662f1198b00d785f80f3f1523399dd"
-  license "Apache-2.0"
+  url "https://github.com/sharkdp/bat/archive/v0.19.0.tar.gz"
+  sha256 "6a920cad1e7ae069eb9393f5b6883e0a7f2c957186b1075976331daaa5e0468a"
+  license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "514d6f72487bb11a7f067e5e7e15a5a7d4ff4986ea384b5629769339724e8acb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6edd4db8dc910dde6552aadd68af8933d1cd4b8268a0fcdef5795294de59ca50"
-    sha256 cellar: :any_skip_relocation, monterey:       "c13493630b846641034369d326747ffc6beb6819feba745cf717267f2fc9ba22"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1a075678316a795840e43db540d7465d106860c1db0153d2cabac285dca83fbb"
-    sha256 cellar: :any_skip_relocation, catalina:       "0a8ce5ab853f1408966e23718b408e655b70b2d5d6c3b2ebdb0159eee389f6ef"
-    sha256 cellar: :any_skip_relocation, mojave:         "c564416a4de6fd26eaf03029a1afd47edce0e49919d0fd2821cf3d870ee5f91f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9d4d8521a1287dc2fb2408d590e6f113b62d5cb430add6ecb3531b856625ffa"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f7a442b570f36e440439949f7daecd98e2dd5b31efe729f541e8da48ca9ec0ec"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "add86eb8edf0b45685eac681556c3661e5b77d1871ad48e6ee01377702927f43"
+    sha256 cellar: :any_skip_relocation, monterey:       "8da409d52a66eac1b58ed880136231eb7bfc51ea539a7fa07b7b111838876a25"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c7e91069fc195b658d2ac89d219af3b6ed0bdd740b70f335d2851620cc874042"
+    sha256 cellar: :any_skip_relocation, catalina:       "00f4fc7d8443630cdbd4fcd4d4fb89264a5176354331b8b10cf631db63cd1cb8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8db3c6972d8c52701bf8cc0fabf418735da83ce6caef3737f1714f0d68fd7fd1"
   end
 
   depends_on "rust" => :build
@@ -25,6 +25,7 @@ class Bat < Formula
 
     assets_dir = Dir["target/release/build/bat-*/out/assets"].first
     man1.install "#{assets_dir}/manual/bat.1"
+    bash_completion.install "#{assets_dir}/completions/bat.bash" => "bat"
     fish_completion.install "#{assets_dir}/completions/bat.fish"
     zsh_completion.install "#{assets_dir}/completions/bat.zsh" => "_bat"
   end

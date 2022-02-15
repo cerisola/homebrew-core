@@ -3,18 +3,18 @@ require "language/node"
 class GitlabCiLocal < Formula
   desc "Run gitlab pipelines locally as shell executor or docker executor"
   homepage "https://github.com/firecow/gitlab-ci-local"
-  url "https://registry.npmjs.org/gitlab-ci-local/-/gitlab-ci-local-4.28.0.tgz"
-  sha256 "edc28c090af3a3342b767e22e65930fd48b4df2d91e6041fb755631dfcfc3a11"
+  url "https://registry.npmjs.org/gitlab-ci-local/-/gitlab-ci-local-4.28.2.tgz"
+  sha256 "c416d15ad86da61c49f0ef3d33c475d0ad02f24db7a1371704eba2127c9c9ab9"
   license "MIT"
   head "https://github.com/firecow/gitlab-ci-local.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b82df4194cc0ba8ad1fb8f6ef05b4114ece58546d339806d8452351469223140"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b82df4194cc0ba8ad1fb8f6ef05b4114ece58546d339806d8452351469223140"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4f6a8218fb70613fc7fc1aa37d4d0eb11392a056c8097035b37420c8592321e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d4f6a8218fb70613fc7fc1aa37d4d0eb11392a056c8097035b37420c8592321e"
-    sha256 cellar: :any_skip_relocation, catalina:       "d4f6a8218fb70613fc7fc1aa37d4d0eb11392a056c8097035b37420c8592321e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b82df4194cc0ba8ad1fb8f6ef05b4114ece58546d339806d8452351469223140"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a8c71429bc8f7db9a1d9794d64189d7c612eff196ba017a53823eb3beffd9607"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a8c71429bc8f7db9a1d9794d64189d7c612eff196ba017a53823eb3beffd9607"
+    sha256 cellar: :any_skip_relocation, monterey:       "7972aca63dc2bad87962f4a970b80daafe7571972feed4e18c634b83fa947f6a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7972aca63dc2bad87962f4a970b80daafe7571972feed4e18c634b83fa947f6a"
+    sha256 cellar: :any_skip_relocation, catalina:       "7972aca63dc2bad87962f4a970b80daafe7571972feed4e18c634b83fa947f6a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8c71429bc8f7db9a1d9794d64189d7c612eff196ba017a53823eb3beffd9607"
   end
 
   depends_on "node"

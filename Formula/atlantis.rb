@@ -1,18 +1,18 @@
 class Atlantis < Formula
   desc "Terraform Pull Request Automation tool"
   homepage "https://www.runatlantis.io/"
-  url "https://github.com/runatlantis/atlantis/archive/v0.18.0.tar.gz"
-  sha256 "5403c6518e4c2c9d871bc44979a21d5e8308c48bfd83ea9ff873dc773e87401d"
+  url "https://github.com/runatlantis/atlantis/archive/v0.18.2.tar.gz"
+  sha256 "72733047a46b937aaecb8d3b8848a2f5fcd40dfb25a613ade989a7a2f313519e"
   license "Apache-2.0"
   head "https://github.com/runatlantis/atlantis.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "78f0937e5e295cb793d8337a21c8894cfcdcb151d2debdf735a05aa6aca36c41"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dc7a110eafbb0ed7b6fb9a8010f4374e16c12bc746d607f2a1851a2d732e9409"
-    sha256 cellar: :any_skip_relocation, monterey:       "2fb3fe66ea17f288c5132eba5fa5666e4cf58e3b837507bc2425108edde8ab41"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2c9fb3855af2de4b159d6af284073f16eb075da23cc32472109599bff5ce3eef"
-    sha256 cellar: :any_skip_relocation, catalina:       "ece13eb7aeec5e28fa8f9c5d345f5977491a0a86bf786c60fb3b294008216366"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "33f4e78c2657a8041cf538a52e0cf3d111959f1b1121fa3988c1052d9a518619"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "eae50154d522413f1c51dbaec0e4ceda2da337c0550319bd1622d8ddc65b5d98"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "215a944ca6521de133cdca8f12a00118b3e4783d860b872ea6bae7b5f210e19d"
+    sha256 cellar: :any_skip_relocation, monterey:       "2f57963566bbe004982bb308177eb8764bd2946f4ea07e5e0c7c6d922012b1d1"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7026e7efba485c9a34712822ac285d5d6c60f97439d3c22fbcc789e7505f03dc"
+    sha256 cellar: :any_skip_relocation, catalina:       "258b521bc9b263d62056065dd8744e34325f17ac2f264a6e31cf2990bba8b31d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d03b4a344e8aa6ec8161220cd0f6adfee0a0299efb316aef7b298663393e1f3d"
   end
 
   depends_on "go" => :build

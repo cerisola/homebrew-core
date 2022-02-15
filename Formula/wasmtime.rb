@@ -2,9 +2,9 @@ class Wasmtime < Formula
   desc "Standalone JIT-style runtime for WebAssembly, using Cranelift"
   homepage "https://wasmtime.dev/"
   url "https://github.com/bytecodealliance/wasmtime.git",
-      tag:      "v0.32.0",
-      revision: "c1c4c59670f45a35ac73910662ab26201e9b6b07"
-  license "Apache-2.0"
+      tag:      "v0.34.0",
+      revision: "39b88e4e9e8115e4a9da2c1e3423459edf0a648e"
+  license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/bytecodealliance/wasmtime.git", branch: "main"
 
   livecheck do
@@ -13,12 +13,12 @@ class Wasmtime < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0c08d3333ebc8d27c058193bbd937694ff5fabb6a017ba0d0780990e2eebf02c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "040dda41b2aa678df21b484b4ca2e882bdb32eeb8fe9e03186a91201ef5e4366"
-    sha256 cellar: :any_skip_relocation, monterey:       "24bac715becdeb90b74a1ed8e41ce2e2623f94a23f930a49c8a041f6aae6f90b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e2855bd8049b3cfa92c2819a3cea1c453c98b85a58458d4f47915f4663a85c02"
-    sha256 cellar: :any_skip_relocation, catalina:       "e6c8bf2888525a4310574c8fc64a30a14b1fa587a746d355ad3f7420c871c093"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c71343097532d26920958486f085cf264749e049149296f5e83a06f99a6447f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7cd332068f1e32e92edcbdc5468d4081656e839be1c132ff029c9bdc1029362e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d65fd688253ed611c2940ce0f853b02dc9e5a7fe7c5dca0b9dd530e923ee5013"
+    sha256 cellar: :any_skip_relocation, monterey:       "cdc94eff30d625a7f7d92d45a35fb1e8ba743ddc2d688c4ba1c584b66ac80bbb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e6eec6a20f4ce99e21232dbf051ed94cd57a55e84dba24a059252faa636440a1"
+    sha256 cellar: :any_skip_relocation, catalina:       "f36d52af1655ee10941b9d1ef07303ce7f1b782c85ff59271e6ec0825c0d4bc2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f163750e7c40e9395bef76b623131958f972fed86c28277cc1ad8bb84f3a5199"
   end
 
   depends_on "rust" => :build

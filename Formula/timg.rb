@@ -1,23 +1,23 @@
 class Timg < Formula
   desc "Terminal image and video viewer"
   homepage "https://timg.sh/"
-  url "https://github.com/hzeller/timg/archive/refs/tags/v1.4.2.tar.gz"
-  sha256 "7607efaffbed0b65b3c824956de421b155a4f14243e7a752b19454f88bf9d563"
+  url "https://github.com/hzeller/timg/archive/refs/tags/v1.4.3.tar.gz"
+  sha256 "46eac8d5434b281afa6d64ced5f46c732c1c4d0699e16a22175b7df179221e2c"
   license "GPL-2.0-only"
   revision 1
   head "https://github.com/hzeller/timg.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "28d0c27b753c1a104b5120352c7939565a547919388ff2b0fa03a563efeb149f"
-    sha256 cellar: :any,                 arm64_big_sur:  "f3eb242ecbe5c59c5f3b29b5045f7666139327995dbcf6d24deec8d62b0092b3"
-    sha256 cellar: :any,                 monterey:       "a648d114be31886b6450ea88a1440d2c99dd856938421c345bd042183c5e3d9e"
-    sha256 cellar: :any,                 big_sur:        "e8c461f3728f413833bbb2d7fb6e1f25d1de01fccd1518df9ab0f310d3c3f155"
-    sha256 cellar: :any,                 catalina:       "6bcff3160692be766cb27955e90adca0daded1f7af9ab6768f45dab3ddb76c94"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a083f6de16d632bd1a43351036f4da8dfdb74b742a3af4ecdc0e58351df2812"
+    sha256 cellar: :any,                 arm64_monterey: "e685438745bb8198fb2610d9189f306eee50241f1628c0c6ac0e800b8b50406c"
+    sha256 cellar: :any,                 arm64_big_sur:  "d1b7b34627f93a5608e38c945d8f72b2092f64be3dddd7f8aa75dc3f04e6df97"
+    sha256 cellar: :any,                 monterey:       "9378c737939d88b259e7fc5b6c8801b411a7bbefac8f0c638143abf68336b407"
+    sha256 cellar: :any,                 big_sur:        "4f9c7787c6b758dacfed884bce82593f778b4aaf6410bb1ed651ea4aa3d5c22c"
+    sha256 cellar: :any,                 catalina:       "2d72266c3af4065421f762f83e5a103d71a1c48615c1a3b4d47714f67a6fcbe1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0470577731546e4afb8259b4d44b6411cfb660ea213c805f601a92deaee40e52"
   end
 
   depends_on "cmake" => :build
-  depends_on "ffmpeg"
+  depends_on "ffmpeg@4"
   depends_on "graphicsmagick"
   depends_on "jpeg-turbo"
   depends_on "libexif"

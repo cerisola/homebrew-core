@@ -1,29 +1,23 @@
 class Travis < Formula
   desc "Command-line client for Travis CI"
   homepage "https://github.com/travis-ci/travis.rb/"
-  url "https://github.com/travis-ci/travis.rb/archive/v1.10.0.tar.gz"
-  sha256 "b63991faebbd5da0e92bf1547775b69a0dbed01dd57e8b469d23a2a7bd79da43"
+  url "https://github.com/travis-ci/travis.rb/archive/v1.11.0.tar.gz"
+  sha256 "76cb0821aeb60e3e302932365dd437a393674de80e02972873bf3e511af564ca"
   license "MIT"
-  revision 3
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e568ccee54871068ca97e2715e9b15a920d83250c5668c03ed67c0ea5d633224"
-    sha256 cellar: :any,                 arm64_big_sur:  "59b6dd40d8c0ecf2de6ddab1e51368395983e9dda5e2c9631e61d1017621f9f1"
-    sha256 cellar: :any,                 monterey:       "0946624c137c7525299a3b6242211a9eabb11b22b3d3772054ee207a17f7b480"
-    sha256 cellar: :any,                 big_sur:        "bac02798e1f466f44fa0d87bf267a42cf1c27b1a629dcff9ba08ac1403509e9b"
-    sha256 cellar: :any,                 catalina:       "2ea207de733fba0ab4768160765257c95e0ae609f8e0a22e082087707b69ba1a"
-    sha256 cellar: :any,                 mojave:         "b4f6b027ae0f34335b7096212ffd4189bf6baf3e9c6d6f00ef2dd0252cc913a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03e524347d11fc6f54a250ec835355a579002b7d7e984c4133a0b6ddef259069"
+    sha256 cellar: :any,                 arm64_monterey: "668e747cf04776b79f25d587e0927e0c3a64d37e09db4e84db6ecded29d5a672"
+    sha256 cellar: :any,                 arm64_big_sur:  "bf2c4092341390a13aafcf999b963402a3a40543913123e5064972a3448d8980"
+    sha256 cellar: :any,                 monterey:       "53b7abaa30cc82ad4aebba780820f275eab14fe967c2d1b5f2297013dfdb36a1"
+    sha256 cellar: :any,                 big_sur:        "fd1df0523c4c5ff90c18749eea5414c422a1256f31086207401b079c4dd922d4"
+    sha256 cellar: :any,                 catalina:       "96ee2f88a4b5c58aeb3a8518190e798ba4c33d4080bcd758789328b4c3c10bc1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aff57e5c66026ee18ba8e67894148caa8443cbf52f2712ee0773583fd497e79b"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "ruby"
-
-  if MacOS.version < :catalina
-    depends_on "libffi"
-  else
-    uses_from_macos "libffi"
-  end
+  depends_on "ruby@3.0"
+  uses_from_macos "libffi", since: :catalina
 
   resource "activesupport" do
     url "https://rubygems.org/gems/activesupport-5.2.4.4.gem"

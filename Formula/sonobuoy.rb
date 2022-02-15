@@ -1,17 +1,17 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/vmware-tanzu/sonobuoy"
-  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.55.1.tar.gz"
-  sha256 "a8e90bed7498a676d9a9d528529f303d58fd76bbedc5c32ef40722c50b0f3f17"
+  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.1.tar.gz"
+  sha256 "4aaa1cfa87ef589c8aedd1c43c78acd4a8a590e2b499627252d0347cc8c22602"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a5813fc36342657a3e1a6cde18ac3a4ac6cef21e9ba368013845d0cee6afece1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fb5367fc618d5f15fad4036e4ceb4dde589cb9755bf48171d2f42e293006403d"
-    sha256 cellar: :any_skip_relocation, monterey:       "1d52dd1f692fa5ffc648f9eef2e6fe8ef69ff6aeddfacc55cb7ecff61889fd1b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3d52adb0c4f553165c2afd06e7aea346b8da4640d95fe16d16cbaeeb8c3f9a9b"
-    sha256 cellar: :any_skip_relocation, catalina:       "38d4b0d1ca2db9358fa783aeebdbbc3956817f7503a79ce558c2a91cd16602a5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9a87246f89d1f74dd9e54c81b2e441f76d0ec937b3094818d5e8d1e8feaf2b78"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c6e7f4eaf07691b70b73093e578a76715118e808b158325f6cd6353d8de24db8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0a3a45feb3237190c37c612859418b83347039a1104677406a6302dad361d76e"
+    sha256 cellar: :any_skip_relocation, monterey:       "a2b4bbbaa9b29610bc4ba2af6460d12380385269e5ac3ea705133f477d7cf8fb"
+    sha256 cellar: :any_skip_relocation, big_sur:        "510f3e21d5b942f86972312fc4a3eb35847cd3de46b2912a4a78e7f91ed4b478"
+    sha256 cellar: :any_skip_relocation, catalina:       "9b3642428c30dfcb2d0149d6e131aa820a576eb8725faac7889d1df724df1317"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a67cc85abfac96616b5749ea89e88b46c9fe5981e85dd9adbba5996fb87bc3a"
   end
 
   depends_on "go" => :build

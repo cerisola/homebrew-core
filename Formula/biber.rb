@@ -1,17 +1,18 @@
 class Biber < Formula
   desc "Backend processor for BibLaTeX"
   homepage "https://sourceforge.net/projects/biblatex-biber/"
-  url "https://github.com/plk/biber/archive/refs/tags/v2.16.tar.gz"
-  sha256 "57111ebc6d0d1933e55d3fe1a92f8ef57c602388ae83598a8073c8a77fd811e2"
+  url "https://github.com/plk/biber/archive/refs/tags/v2.17.tar.gz"
+  sha256 "1ee7efdd8343e982046f2301c1b0dcf09e1f9a997ac86ed1018dcb41d04c9e88"
   license "Artistic-2.0"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a5a161e318753ebf4b21ecd228d82338e2fd6a21609da501be32c6dad6cf09e6"
-    sha256 cellar: :any,                 arm64_big_sur:  "7ed7fc1262568e0fd3184610538d8b8fa5670e779f9fe195b7e03274a047ab63"
-    sha256 cellar: :any,                 monterey:       "f1b4fc11d16d5045fbe2f35d7542d221a9e4116003ce02b526be8beae0a038f3"
-    sha256 cellar: :any,                 big_sur:        "3a33c580866d69c6650f76717818948cb4def0df4a6ab6e594b2dd49573ca93e"
-    sha256 cellar: :any,                 catalina:       "2e9fc7a7946103c51e151590d5350710e90f9fd88773a51c0c85bfdac9c15120"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d3952c6340ea72115a694eb5677a749fbf24c41cb9ff43fcfcae96234b927075"
+    sha256 cellar: :any,                 arm64_monterey: "f35f6be9f3e6ad82ace58f3cdd49717f6fad197f2ca783fd7367ccc47e4fd74e"
+    sha256 cellar: :any,                 arm64_big_sur:  "2f7c036d7cbd21b0f12874032d3417953fd91bbff4f59315ad8cebb3175f36ed"
+    sha256 cellar: :any,                 monterey:       "66d7d16f6adab843313f54ebde6cc18e2d97c9bc9d9a1730acfc09402dab0d5b"
+    sha256 cellar: :any,                 big_sur:        "770c78fba24df599a30105c093ec796519b2eb0acaae190eec22ed29298c0782"
+    sha256 cellar: :any,                 catalina:       "5676d01ffbc46b053f04bf74889852c16031954d75ed7da6183112a5166f18bc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "283427c168ec790e3cb2bfecbcb2b1859fdd32ef0bec611d3ef3e955bfd58f0b"
   end
 
   depends_on "pkg-config" => :build
@@ -330,12 +331,8 @@ class Biber < Formula
     sha256 "122c8900000a9d388aa8e44f911cab6c118fe8497417917a84a8ec183971b449"
   end
   resource "Net::SSLeay" do
-    url "https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-1.90.tar.gz"
-    sha256 "f8696cfaca98234679efeedc288a9398fcf77176f1f515dbc589ada7c650dc93"
-    # workaround for `dyld` behaviour change (https://openradar.appspot.com/FB9725981)
-    # adapted from https://github.com/macports/macports-ports/commit/08e3e0bd0f0383263a88331336bcab244a902a31
-    # upstream issue link: https://github.com/radiator-software/p5-net-ssleay/issues/329
-    patch :p0, :DATA if MacOS.version == :monterey
+    url "https://cpan.metacpan.org/authors/id/C/CH/CHRISN/Net-SSLeay-1.92.tar.gz"
+    sha256 "47c2f2b300f2e7162d71d699f633dd6a35b0625a00cbda8c50ac01144a9396a9"
   end
   resource "URI" do
     url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.09.tar.gz"
@@ -509,9 +506,9 @@ class Biber < Formula
     url "https://cpan.metacpan.org/authors/id/V/VP/VPIT/autovivification-0.18.tar.gz"
     sha256 "2d99975685242980d0a9904f639144c059d6ece15899efde4acb742d3253f105"
   end
-  resource "test.bcf" do
-    url "https://downloads.sourceforge.net/project/biblatex-biber/biblatex-biber/testfiles/test.bcf"
-    sha256 "245abe25c586d2ad87782bc113fdf16510e42199bb21f2b143eb64cbe3e54093"
+  resource "test-dev.bcf" do
+    url "https://downloads.sourceforge.net/project/biblatex-biber/biblatex-biber/testfiles/test-dev.bcf"
+    sha256 "7239ac502a8fc6d90fcaf9e9630d939a21e28456312ee7e041f6627ebb8fed24"
   end
   resource "test.bib" do
     url "https://downloads.sourceforge.net/project/biblatex-biber/biblatex-biber/testfiles/test.bib"
@@ -524,7 +521,7 @@ class Biber < Formula
     ENV["PERL_MM_USE_DEFAULT"] = "1"
     ENV["OPENSSL_PREFIX"] = Formula["openssl@1.1"].opt_prefix
 
-    testresources = %w[test.bcf test.bib]
+    testresources = %w[test-dev.bcf test.bib]
 
     resources.each do |r|
       next if testresources.include?(r.name)
@@ -561,7 +558,7 @@ class Biber < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/biber --version")
 
-    resource("test.bcf").stage testpath
+    resource("test-dev.bcf").stage { testpath.install Dir["*.bcf"].first => "test.bcf" }
     resource("test.bib").stage testpath
     assert_match "Output to test.bbl", shell_output("#{bin}/biber --validate-control --convert-control test")
     assert_predicate testpath/"test.bcf.html", :exist?
@@ -569,15 +566,3 @@ class Biber < Formula
     assert_predicate testpath/"test.bbl", :exist?
   end
 end
-
-__END__
---- Makefile.PL
-+++ Makefile.PL
-@@ -157,7 +157,7 @@
-     for ("$prefix/include", "$prefix/inc32", '/usr/kerberos/include') {
-       push @{$opts->{inc_paths}}, $_ if -f "$_/openssl/ssl.h";
-     }
--    for ($prefix, "$prefix/lib64", "$prefix/lib", "$prefix/out32dll") {
-+    for ("$prefix/lib64", "$prefix/lib", "$prefix/out32dll") {
-       push @{$opts->{lib_paths}}, $_ if -d $_;
-     }

@@ -1,19 +1,18 @@
 class Pillow < Formula
   desc "Friendly PIL fork (Python Imaging Library)"
   homepage "https://python-pillow.org"
-  url "https://files.pythonhosted.org/packages/7d/2a/2fc11b54e2742db06297f7fa7f420a0e3069fdcf0e4b57dfec33f0b08622/Pillow-8.4.0.tar.gz"
-  sha256 "b8e2f83c56e141920c39464b852de3719dfbfb6e3c99a2d8da0edf4fb33176ed"
+  url "https://files.pythonhosted.org/packages/03/a3/f61a9a7ff7969cdef2a6e0383a346eb327495d20d25a2de5a088dbb543a6/Pillow-9.0.1.tar.gz"
+  sha256 "6c8bc8238a7dfdaf7a75f5ec5a663f4173f8c367e5a39f87e720495e1eed75fa"
   license "HPND"
   head "https://github.com/python-pillow/Pillow.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "5b957e5afdd859268f4451665d142f7b8a1ed9186f6b36f22fe901891affa2dd"
-    sha256 cellar: :any, arm64_big_sur:  "b3ef0a8ef99c29d197ff4735a75d5dfcd7dba93d85f6957367da187b65fb5a3d"
-    sha256 cellar: :any, monterey:       "b5ca0c6fb4391f2d9e5e9f5d6984b034b0ccf0051225524ccf029c0ad5cd44e2"
-    sha256 cellar: :any, big_sur:        "59e29e62a00a1a7c743af405f5ca86919d4a72c266f03498a035e025a6a9e70c"
-    sha256 cellar: :any, catalina:       "7d202a4c71e5c3ecd5508e34a89082496441dcf4cbabd47174edaf1c6fb06dd8"
-    sha256 cellar: :any, mojave:         "7d9654f09ff31d8caf4363b25a11da203cd3c2725014fdbb8df6e1a7a9a91399"
-    sha256               x86_64_linux:   "af8b0493c459338a4cc5f7ac4a8bc6a88cee2640577e142557524e039accaa2e"
+    sha256 cellar: :any, arm64_monterey: "3258034d4ca51ba3539193eac70f6792d37b40769d8a16410dfc6c435fb8f9f5"
+    sha256 cellar: :any, arm64_big_sur:  "dce572358d1aa2baeaaa2c8e3cefd59a6c624b7bb1957180ee0f5036a8779897"
+    sha256 cellar: :any, monterey:       "bd08af4f2377fad8558a30d02c9a4d7ad4e203f83bdd7c8a6790e73cda9b8d0c"
+    sha256 cellar: :any, big_sur:        "85b2e6d513941be9e0fc11d60e35e328cfca9b3623e94ef94cca1707f111504b"
+    sha256 cellar: :any, catalina:       "17d9d1a02e75d7e46493a4c44f18ca05a837a441d20d2429927bcc4b3dc4e073"
+    sha256               x86_64_linux:   "fa5171991e534c0bed021c737f83bccce015e1e2aea29069ff9924aa99323a77"
   end
 
   depends_on "pkg-config" => :build
@@ -24,6 +23,7 @@ class Pillow < Formula
   depends_on "libimagequant"
   depends_on "libraqm"
   depends_on "libtiff"
+  depends_on "libxcb"
   depends_on "little-cms2"
   depends_on "openjpeg"
   depends_on "tcl-tk"
@@ -59,8 +59,15 @@ class Pillow < Formula
     ]
 
     ENV["MAX_CONCURRENCY"] = ENV.make_jobs.to_s
-    ENV.prepend "CPPFLAGS", "-I#{Formula["tcl-tk"].opt_include}"
-    ENV.prepend "LDFLAGS", "-L#{Formula["tcl-tk"].opt_lib}"
+    deps.each do |dep|
+      next if dep.build? || dep.test?
+
+      ENV.prepend "CPPFLAGS", "-I#{dep.to_formula.opt_include}"
+      ENV.prepend "LDFLAGS", "-L#{dep.to_formula.opt_lib}"
+    end
+
+    # Useful in case of build failures.
+    inreplace "setup.py", "DEBUG = False", "DEBUG = True"
 
     pythons.each do |python|
       system python, "setup.py", "build_ext", *pre_args, "install", *post_args

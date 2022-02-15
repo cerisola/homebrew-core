@@ -4,6 +4,7 @@ class Root < Formula
   url "https://root.cern.ch/download/root_v6.24.06.source.tar.gz"
   sha256 "907f69f4baca1e4f30eeb4979598ca7599b6aa803ca046e80e25b6bbaa0ef522"
   license "LGPL-2.1-or-later"
+  revision 2
   head "https://github.com/root-project/root.git", branch: "master"
 
   livecheck do
@@ -12,11 +13,12 @@ class Root < Formula
   end
 
   bottle do
-    sha256 arm64_big_sur: "3422ef3c0940bbc0c4d0fd117410592d78fa7901398b8bc15a1acd705888bd6d"
-    sha256 monterey:      "610a18739dc98dd6fbec130cd84fd84f9c70e2742467264286e7eca51fcd51ee"
-    sha256 big_sur:       "a8650bed59d9f3ee1a39e488dc4e59c454803a0a4001cb007160b6079680d3e5"
-    sha256 catalina:      "f9444e3459eb93fdbe984efb9b74ad3955688be1177c518b3311f5d9a1f76dc2"
-    sha256 x86_64_linux:  "9f92ea828e81a1749c4da6b574d88601f37ed844478286419055d2a8d453ef24"
+    sha256 arm64_monterey: "4486615e37da793dea1ff7fa73416988dd11d6597aed6f14eeeb8fe18d6cf88a"
+    sha256 arm64_big_sur:  "486e5d4cc0857645d1a4198e7e3e06e4a78acc71d11b7c2c7877e4315c14298f"
+    sha256 monterey:       "24199045f6de3ce88197a82a02e02428a624305f9c44fdc5786d579ebe94dd3e"
+    sha256 big_sur:        "761ba42f4e215b1908b9d9fa7d0a6409001d8464d93fe4abdae943591c9b53c1"
+    sha256 catalina:       "3da0ffd885eaabc9e22459917e62e755eb2d907f3f76f530bba214b00016085a"
+    sha256 x86_64_linux:   "5a2ea4436a286f7e869c072a0cb570d399de2b254050187fb8c1a0a3ee9d7c3f"
   end
 
   depends_on "cmake" => :build
@@ -37,7 +39,7 @@ class Root < Formula
   depends_on "python@3.9"
   depends_on "sqlite"
   depends_on "tbb"
-  depends_on :xcode if MacOS.version <= :catalina
+  depends_on :xcode
   depends_on "xrootd"
   depends_on "xz" # for LZMA
   depends_on "zstd"

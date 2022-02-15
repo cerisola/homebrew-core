@@ -1,8 +1,8 @@
 class Ngt < Formula
   desc "Neighborhood graph and tree for indexing high-dimensional data"
   homepage "https://github.com/yahoojapan/NGT"
-  url "https://github.com/yahoojapan/NGT/archive/v1.13.7.tar.gz"
-  sha256 "d5fb51849eead3d4d442b1b6d352e2114bcc1bddea5b4578a06a19285fc5f224"
+  url "https://github.com/yahoojapan/NGT/archive/v1.14.1.tar.gz"
+  sha256 "4fa3c84156e7227b2732af5d67816675721a3fdac33d3d3bceab00f00e96c672"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Ngt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3232006df4ad89baea6bc0bb38dee7aa56429205c2456d0632a616200234562e"
-    sha256 cellar: :any,                 arm64_big_sur:  "d8abcaf46fe96f3e244ed2d07815ca354581c31f5266381d514473b696c543f1"
-    sha256 cellar: :any,                 monterey:       "99123b5eb3fd2176a7f88f18e15e637fd8f59a67053159bcc7f78a591683866e"
-    sha256 cellar: :any,                 big_sur:        "98a991a6f62abaefbb3d9f7e1558ae73cc90eccc774ea26aebadfa38868d4dd6"
-    sha256 cellar: :any,                 catalina:       "53bc81164848633944d7bfae6499187fe6bc138c841212ba99230413e1b4449f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2710494a91d33770331c4940f18d3905ae23691037c8a2ee405114d80c4a7c3d"
+    sha256 cellar: :any,                 arm64_monterey: "3ff1994baec3cdbd93629c55fdb845d81183aaef04f4f6907279e971f92a0216"
+    sha256 cellar: :any,                 arm64_big_sur:  "17935d6f93036acc9c2075e5e8ca648519610e2c5ffd67fc1b9a2fcadaa36a21"
+    sha256 cellar: :any,                 monterey:       "8dd1daa419c8e77966807ffda9fd4de781dba35ea1aad1566d0b83f0d8145628"
+    sha256 cellar: :any,                 big_sur:        "507100b0f640aeff2016fc2f2dd0472d72583e6bc29c88f5beb986c21604cfea"
+    sha256 cellar: :any,                 catalina:       "89c5bab2de745a7b2b448cdee35b7d095eaa48d2409cfa75cef32b75b7aee800"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b28c3b33efca116dfff5997aee40ee84185f2f985bc63f76537c69a831376bfb"
   end
 
   depends_on "cmake" => :build

@@ -4,7 +4,9 @@
   "bind",
   "blast",
   "coq",
+  "gnuradio",
   "hdf5-mpi",
+  "lablgtk",
   "libvirt",
   "mpich",
   "omniorb",
@@ -13,6 +15,8 @@
   "pypy3",
   "scalapack",
   "soapysdr",
+  "soci",
   "tcl-tk",
+  "xmlrpc-c",
   "xvid"
 ]

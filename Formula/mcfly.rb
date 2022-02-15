@@ -1,18 +1,18 @@
 class Mcfly < Formula
   desc "Fly through your shell history"
   homepage "https://github.com/cantino/mcfly"
-  url "https://github.com/cantino/mcfly/archive/v0.5.11.tar.gz"
-  sha256 "ca22a600b5b1c0ca1acff6fd1ce05680a581795567f759ff99a917401bfd835e"
+  url "https://github.com/cantino/mcfly/archive/v0.5.13.tar.gz"
+  sha256 "b4dc5fab1ef1fe05fc34b620f1dea6617b48d6d0e3aadcf29a4c9e4cb0894983"
   license "MIT"
   head "https://github.com/cantino/mcfly.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b75a6c4b6186088ec112ea402745b5b3f98c0403db119b3bdb3a44f86efe205a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a9109df57981d90223868a1c3339d2202c312f463dc100a4d8732621a21dfa84"
-    sha256 cellar: :any_skip_relocation, monterey:       "d166de1dde689c2df29035667e101f0139eb23a59dce69a0ceca02fb8fee06a9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4f2a08a6e2bdb25ff33cc29eaaa46218bab4604d4e0b1ed89576f864010946a1"
-    sha256 cellar: :any_skip_relocation, catalina:       "7fb0ba37f9ea3264afa5d288880b803185683fefe58d6f0eecccf9261024bede"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a39f923facb47f83f2045532e0555fc554bd9f21f1bd1b2c5bf4407fdc89b67"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3bbce1c09b6e732a58c625b1ce5bf115efd3eb34c3ea631db9b31f6043c99b38"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b37e1f6920c9c591d7a339855f86e7a19a5f549f23ec88907e0811e084332717"
+    sha256 cellar: :any_skip_relocation, monterey:       "c5afdcc6c7606d5acadac9a85c6eaabe8f73086fc5031e630209f2eeaa983ef0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7cfcc9eceec4c4449f63d22636823234a0f940d0e54e166797d8a8199d8daece"
+    sha256 cellar: :any_skip_relocation, catalina:       "07facab360d6bca0b0bc8144012ca0d27f2240bb05d63e385cab393057cb73fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "603831898a3aa6049a38d3d35afb3bd4be08470bdb7b66eebdd2926e275a8602"
   end
 
   depends_on "rust" => :build

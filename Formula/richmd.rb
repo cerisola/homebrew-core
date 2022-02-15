@@ -3,17 +3,17 @@ class Richmd < Formula
 
   desc "Format Markdown in the terminal with Rich"
   homepage "https://github.com/willmcgugan/rich"
-  url "https://files.pythonhosted.org/packages/74/c3/e55ebdd66540503cee29cd3bb18a90bcfd5587a0cf3680173c368be56093/rich-10.16.2.tar.gz"
-  sha256 "720974689960e06c2efdb54327f8bf0cdbdf4eae4ad73b6c94213cad405c371b"
+  url "https://files.pythonhosted.org/packages/72/de/b3a53cf1dfdbdc124e8110a60d6c6da8e39d4610c82491fc862383960552/rich-11.2.0.tar.gz"
+  sha256 "1a6266a5738115017bb64a66c59c717e7aa047b3ae49a011ede4abdeffc6536e"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6975bdae226d8b96e5275cdd90ba45f730a0cfc539d106ccde9134f83388b7f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d4bfdfaf3926ba529958bfb93f1885b4200253b58b85ab11493b97bf8496a811"
-    sha256 cellar: :any_skip_relocation, monterey:       "8bd1b7528d34bf68884fd327415fc96088247642984ccdba45b2276dfe6e651a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6995017d3d5ddd963bb9374ebed03c7c470f1c9e43cd7703e2bb8c336f6c0492"
-    sha256 cellar: :any_skip_relocation, catalina:       "d07d6e8d4792c9a6bb4c071270067478d8a42413b4b07d6dba55c411e70eff76"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec29286568d78062d4e97feb057074492fbc8f3f20fdc4ab8f966c0bce9502eb"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b01e8692cee9acd403a954070a23cd56e094ed82142773b86f719f4923cc35e3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "05ac5bbe0c55a43b754ee980875c621f5397c1cfd4305ca627b0be7b37361ae8"
+    sha256 cellar: :any_skip_relocation, monterey:       "89ed3838ecbeebe65ca4a08a0f3daabf48408d302ba019250d9196e4b8ffd114"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c733a7d0f8b287b1aadf217e0b29777197a03221a5244bc724bcde3d3a8eb912"
+    sha256 cellar: :any_skip_relocation, catalina:       "dc9ebfb2cea5d5e59644899cdc15d9618c70974ec39e46f87736a4c0213a79f2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3e810c3eaf3430768e27e76c492df20bfbb78d2a924428e5598ffbd1bd0e20e2"
   end
 
   depends_on "python@3.10"
@@ -29,8 +29,8 @@ class Richmd < Formula
   end
 
   resource "Pygments" do
-    url "https://files.pythonhosted.org/packages/15/53/5345177cafa79a49e02c27102019a01ef1682ab170d2138deca47a4c8924/Pygments-2.11.1.tar.gz"
-    sha256 "59b895e326f0fb0d733fd28c6839bd18ad0687ba20efc26d4277fd1d30b971f4"
+    url "https://files.pythonhosted.org/packages/94/9c/cb656d06950268155f46d4f6ce25d7ffc51a0da47eadf1b164bbf23b718b/Pygments-2.11.2.tar.gz"
+    sha256 "4e426f72023d88d03b2fa258de560726ce890ff3b630f88c21cbb8b2503b8c6a"
   end
 
   def install
