@@ -22,7 +22,7 @@ class Librasterlite2 < Formula
   depends_on "freexl"
   depends_on "geos"
   depends_on "giflib"
-  depends_on "jpeg"
+  depends_on "jpeg-turbo"
   depends_on "libgeotiff"
   depends_on "libpng"
   depends_on "librttopo"
