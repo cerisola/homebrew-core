@@ -1,19 +1,18 @@
 class Quill < Formula
   desc "C++14 Asynchronous Low Latency Logging Library"
   homepage "https://github.com/odygrd/quill"
-  url "https://github.com/odygrd/quill/archive/v1.6.3.tar.gz"
-  sha256 "886120b084db952aafe651c64f459e69fec481b4e189c14daa8c4108afebcba3"
+  url "https://github.com/odygrd/quill/archive/v1.7.2.tar.gz"
+  sha256 "e2153c6e25f3a6cee47c2a9edbabdace418f6d64f62cd701dfdae38d5892bb1b"
   license "MIT"
   head "https://github.com/odygrd/quill.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d43aba895c3307a5965b4cdb34124967af8f748c5da80d7d9b0842c88d979eed"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "20314cbc7129a86e7431687ba26d26ba0add0e115e80536b02dfcf5398217097"
-    sha256 cellar: :any_skip_relocation, monterey:       "94577e70e360724ae8e3fa750d6f210e4b14ebcf5eb946caf051dafda0276cb5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "22f64135866f9600feb5495d4a8b58b29ef1f7c02de8edafe50960b2595910aa"
-    sha256 cellar: :any_skip_relocation, catalina:       "2112f5965f599db294f9e2c2cfb86acf39b8482120c181cf841ee2a569e7c30e"
-    sha256 cellar: :any_skip_relocation, mojave:         "d8a4190b8461b8860363d96a0623e4ad75a1da416a21bcc48a00340f50ce41ea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3daaf537147bfa374930cb088a271cb735d42a12f208727680e578eef62a0f38"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e4d1156c5e15f71b4431e3bfce7813de6ecac7f65fe564ff444a8f34fff89192"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cd3a53ddde24590eb81882f8f297e74fd8555de87f08d6a9c7e2ace4df41739f"
+    sha256 cellar: :any_skip_relocation, monterey:       "0545c76cfaf31b9183fbe1a307a022bba058be60fd719af2e302be5d412875e9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f3a50bf8db2b560acd26ab61519ab0fd9664520cc4f88955ebe72f3e4b215f35"
+    sha256 cellar: :any_skip_relocation, catalina:       "2526b1dd073fbc7c872787128585765bdc61c420e687ae675aec2cdfd6f989a1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "014d8a5d06e471b29604c26c0b167d7328f5cd95fbb6cdc77d9c172f1a16c6da"
   end
 
   depends_on "cmake" => :build

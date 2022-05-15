@@ -7,20 +7,13 @@ class Gcc < Formula
     # backported with his help to gcc-11 branch. Too big for a patch.
     url "https://github.com/fxcoudert/gcc/archive/refs/tags/gcc-11.2.0-arm-20211124.tar.gz"
     sha256 "d7f8af7a0d9159db2ee3c59ffb335025a3d42547784bee321d58f2b4712ca5fd"
-    version "11.2.0"
+    version "11.3.0"
   else
-    url "https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz"
-    sha256 "d08edc536b54c372a1010ff6619dd274c0f1603aa49212ba20f7aa2cda36fa8b"
-
-    # Darwin 21 (Monterey) support
-    patch do
-      url "https://github.com/iains/gcc-darwin-arm64/commit/20f61faaed3b335d792e38892d826054d2ac9f15.patch?full_index=1"
-      sha256 "c0605179a856ca046d093c13cea4d2e024809ec2ad4bf3708543fc3d2e60504b"
-    end
+    url "https://ftp.gnu.org/gnu/gcc/gcc-11.3.0/gcc-11.3.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-11.3.0/gcc-11.3.0.tar.xz"
+    sha256 "b47cf2818691f5b1e21df2bb38c795fac2cfbd640ede2d0a5e1c89e338a3ac39"
   end
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
-  revision 3
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
 
   # We can't use `url :stable` here due to the ARM-specific branch above.
@@ -30,13 +23,12 @@ class Gcc < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "2d179246426328ee69b94a25b8bd4c25caeff0699b5ecb4b3d258fe4efd3673e"
-    sha256 arm64_big_sur:  "9dbb002aa1aab75071fe1a5432fd3ee61378d711aebe0d35d0ca7226a4225451"
-    sha256 monterey:       "198f5312ecfe6fc6437b55e2fb3bb380e8c597ae6fa255f8f7d0be90306e7601"
-    sha256 big_sur:        "d2d4543675948c7adf3f1d4934dc651b864f66d5dad6fb3c8bdcfc6f5eef42e6"
-    sha256 catalina:       "e721b6a3195d2a1e73e4c12d34d0138bc5ebe6a37fb1a8d63ad733316e944c59"
-    sha256 x86_64_linux:   "3717134ab0f56e7eeb167c4f4a993c81329d6c1248dae5ee6e39f59cfdfa0eee"
+    sha256 arm64_monterey: "25fdeb23fc65a7386be6b550c71caf0ac49eb385424e0f1f7048e55fd5f0a897"
+    sha256 arm64_big_sur:  "5bad8a6999544b51e60e74a093410dde8b54cb14cf3d9e9cd2e804016de8f561"
+    sha256 monterey:       "f6c3877abd04bb3c2bfb66181ef770f28e6c13d034e3676594faba7cbce18e3f"
+    sha256 big_sur:        "fcbb2d595a2b3a74b6c2877979242f77d87c21f4fbc52916fa7d7fbf531ae661"
+    sha256 catalina:       "8a9bfb79c700a2cc5ea673c336fe0023aaa8205c4e896bfb2e5abdb015f49ae6"
+    sha256 x86_64_linux:   "7c25fa92c656dd2b6bd5d7dedc2e09474b64aa287563fec708f6df8bc4154a09"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -60,7 +52,7 @@ class Gcc < Formula
 
   # Fix for https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102992
   # Working around a macOS Monterey bug
-  if MacOS.version == :monterey
+  if MacOS.version >= :monterey && Hardware::CPU.arm?
     patch do
       url "https://gcc.gnu.org/git/?p=gcc.git;a=patch;h=fabe8cc41e9b01913e2016861237d1d99d7567bf"
       sha256 "9d3c2c91917cdc37d11385bdeba005cd7fa89efdbdf7ca38f7de3f6fa8a8e51b"
@@ -114,10 +106,6 @@ class Gcc < Formula
 
       # Xcode 10 dropped 32-bit Intel support
       args << "--disable-multilib" if Hardware::CPU.intel? && DevelopmentTools.clang_build_version >= 1000
-
-      # Workaround for Xcode 12.5 bug on Intel, remove in next version
-      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=100340
-      args << "--without-build-config" if Hardware::CPU.intel? && DevelopmentTools.clang_build_version == 1205
 
       # System headers may not be in /usr/include
       sdk = MacOS.sdk_path_if_needed

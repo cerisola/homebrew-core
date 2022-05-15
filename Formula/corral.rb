@@ -1,18 +1,18 @@
 class Corral < Formula
   desc "Dependency manager for the Pony language"
   homepage "https://github.com/ponylang/corral"
-  url "https://github.com/ponylang/corral/archive/0.5.5.tar.gz"
-  sha256 "e124b6a217d159e7c2f09cde3e3d104c099163c54fe25ac1c546b059f575526b"
+  url "https://github.com/ponylang/corral/archive/0.5.7.tar.gz"
+  sha256 "5b7cffc54abe5b2292a2fb2c67603a52c0c02d38ab8bbd2af2af0b80ca62e414"
   license "BSD-2-Clause"
   head "https://github.com/ponylang/corral.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f6066dc08270e5fd5e8473ab9ee1ca9e9ecb3d3b42367303a18fb2acb3ea0d07"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "464d84862fa6acc8d0e0e64b303009085d89e0d2843ab93277cd677c33ec7961"
-    sha256 cellar: :any_skip_relocation, monterey:       "b31f9be8bbe5f82dd0aaf71181b53a20d7937170136b7c8f5164f68f679ff3f2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d19c2f5d569d9edfa877ba11d432d52c3f266bf17c9fbd08ffb423529fa3733e"
-    sha256 cellar: :any_skip_relocation, catalina:       "0d697a6432496d52ae12c4eac0b49d29be6e2491b56befa0845e78cbe26759b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f39fe4c4506de1f12ee78ac5e7ebc7f877d3c761c2d563e3b53a4f0ebcf6d8ef"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0686d038672fa53840d27dfd661a7c013a93eb97ce76128e4a72321392dc14fe"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "30aa4c949fd82b68a86be425b9960e0f34d7d9ed88c893be90ef44062c6482a1"
+    sha256 cellar: :any_skip_relocation, monterey:       "386d7d7ba90d915aac87e2d5d9b7b591beb29303f484fca68c9c583981cbbaf2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a8d1119dce9ebcd488c79b9771a7c83858e88733ba70619aa2762fae96b226c9"
+    sha256 cellar: :any_skip_relocation, catalina:       "f75e543d17a1855c87df8a71343c9353aa4acb1e4c9d765134d3b256eca4a286"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59dfb4a4c76b0feec7726eb395eb312b308737702ac4b071d33704ffa0eff2f8"
   end
 
   depends_on "ponyc"

@@ -4,8 +4,8 @@ class AwscliAT1 < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
   # awscli should only be updated every 10 releases on multiples of 10
-  url "https://files.pythonhosted.org/packages/6a/d4/6921837b93a514e471c645a52fec9fe8960700bdb71ea987d81a7bb201e3/awscli-1.22.50.tar.gz"
-  sha256 "9242401e539d62d9828e3168aebfd526bd64b2ad181fae007f7d8af26415b485"
+  url "https://files.pythonhosted.org/packages/06/98/03c15230f97ac096c872d9596c37630a2cfa66e608bc45316d75f7b796cc/awscli-1.23.0.tar.gz"
+  sha256 "bfd3d7e46a870231aec6dd8d0f2cb0ffbc63d80e5ed7e8a1a247264230867a30"
   license "Apache-2.0"
 
   livecheck do
@@ -14,12 +14,12 @@ class AwscliAT1 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6c23310b50d9a26bb1c865de3f031519cba6a80d57c1a9668a9afc56a2fa03dc"
-    sha256 cellar: :any,                 arm64_big_sur:  "c7b36197dcc0c21bddc76c9951919bcecfcd35f22c8d2218f614ba019fbca913"
-    sha256 cellar: :any,                 monterey:       "39120c737d254a6f87a77b47fe80fae0aa914b29b7338415dc978077b01c72bd"
-    sha256 cellar: :any,                 big_sur:        "e4a62d06ccf6139b826b05802f0a4bb80e7eeb6aea53018a770e3b411c05618e"
-    sha256 cellar: :any,                 catalina:       "dcff864d7704b46d1534804fd7874591d259f08ea9e161008c97fc9add854e9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a02355518a790c475a96ef1e30bc0d547d68cb48107a423e88e9be16cd8d571b"
+    sha256 cellar: :any,                 arm64_monterey: "13af186b6424d28702d733b177fe8077ca7d67b3c2ad7ab32ae32ec6af1223c7"
+    sha256 cellar: :any,                 arm64_big_sur:  "9dff54f07bd02cd5808b74d2f02ee1bb004894d63f611264d36cd2b9fdeb54f6"
+    sha256 cellar: :any,                 monterey:       "e56e651eec85085b40d172a36335470b94da080b32c04412e9eb7538b033de00"
+    sha256 cellar: :any,                 big_sur:        "4560d4030c685ff9b08a2d237ae8a44f18a347a3ebd3415a02a7c7b0cadfbbf2"
+    sha256 cellar: :any,                 catalina:       "5ce39e703f93f372cf11e41e7380808481354d961f7b1585fc82ee2735c41d76"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "78e2ec322012dfb44724d7e4caee883d6ce6796d1fe0bb84df73a2ce6bf703ac"
   end
 
   keg_only :versioned_formula
@@ -32,13 +32,13 @@ class AwscliAT1 < Formula
   uses_from_macos "groff"
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/39/50/eca036b0c44e6826a49e743095e009d533f3fb81bdbf871eb5f5766fe56c/botocore-1.23.50.tar.gz"
-    sha256 "109d9a200f70268d5429423fd8052f6fed5e041853d6621081692ea5ad7f70c7"
+    url "https://files.pythonhosted.org/packages/08/e7/85d2eff1b0221c4c874e771f8294c6389a2e8ce82e9785c84dd094bb274e/botocore-1.25.0.tar.gz"
+    sha256 "646f0631c4ee46928be2dbb4b44e10f5f184e70ed6efddb24bc7328d81d7a175"
   end
 
   resource "colorama" do
-    url "https://files.pythonhosted.org/packages/82/75/f2a4c0c94c85e2693c229142eb448840fba0f9230111faa889d1f541d12d/colorama-0.4.3.tar.gz"
-    sha256 "e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"
+    url "https://files.pythonhosted.org/packages/1f/bb/5d3246097ab77fa083a61bd8d3d527b7ae063c7d8e8671b1cf8c4ec10cbe/colorama-0.4.4.tar.gz"
+    sha256 "5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"
   end
 
   resource "docutils" do
@@ -47,8 +47,8 @@ class AwscliAT1 < Formula
   end
 
   resource "jmespath" do
-    url "https://files.pythonhosted.org/packages/3c/56/3f325b1eef9791759784aa5046a8f6a1aff8f7c898a2e34506771d3b99d8/jmespath-0.10.0.tar.gz"
-    sha256 "b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9"
+    url "https://files.pythonhosted.org/packages/06/7e/44686b986ef9ca6069db224651baaa8300b93af2a085a5b135997bf659b3/jmespath-1.0.0.tar.gz"
+    sha256 "a490e280edd1f57d6de88636992d05b71e97d69a26a19f058ecf7d304474bf5e"
   end
 
   resource "pyasn1" do
@@ -72,13 +72,13 @@ class AwscliAT1 < Formula
   end
 
   resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/66/e2/cc19f36aade1ef40cba69555fcf713d942ec9e31ecff2415948bd885911d/s3transfer-0.5.1.tar.gz"
-    sha256 "69d264d3e760e569b78aaa0f22c97e955891cd22e32b10c51f784eeda4d9d10a"
+    url "https://files.pythonhosted.org/packages/7e/19/f82e4af435a19b28bdbfba63f338ea20a264f4df4beaf8f2ab9bfa34072b/s3transfer-0.5.2.tar.gz"
+    sha256 "95c58c194ce657a5f4fb0b9e60a84968c808888aed628cd98ab8771fe1db98ed"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/b0/b1/7bbf5181f8e3258efae31702f5eab87d8a74a72a0aa78bc8c08c1466e243/urllib3-1.26.8.tar.gz"
-    sha256 "0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
+    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
+    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
   end
 
   def install

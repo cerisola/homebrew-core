@@ -1,9 +1,10 @@
 class Arangodb < Formula
   desc "Multi-Model NoSQL Database"
   homepage "https://www.arangodb.com/"
-  url "https://download.arangodb.com/Source/ArangoDB-3.9.0.tar.bz2"
-  sha256 "a6fb06bdfcaa8884d8a060e4aa1164d94db12bf2df332a2e44b2de2283204bca"
+  url "https://download.arangodb.com/Source/ArangoDB-3.9.1.tar.bz2"
+  sha256 "afc5dfbe9fb80d2154707520b4c44ad2f5ba22c1f5877228cc0d03d352856721"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/arangodb/arangodb.git", branch: "devel"
 
   livecheck do
@@ -12,16 +13,16 @@ class Arangodb < Formula
   end
 
   bottle do
-    sha256 monterey:     "3e642fea46662626f97b4d4f40dc1bc0b7e3684f5904659f20340a32ea21e510"
-    sha256 big_sur:      "5e18ae6110ed7cd419acba77be9e722c21bb70a4cfc3dc1a5d1052e5debe7615"
-    sha256 catalina:     "e2eb992537c33e30ca4294b03060f11e86dafb70563e0cc2aa9ab761e389e180"
-    sha256 x86_64_linux: "02c8b6c395f786324e6f262382eb1d95d52a161af93ede1a79f62ac27eb77714"
+    sha256 monterey:     "6b7d80d0d952e3f39e18cfb91e3c76881f89dab5d7a8e141de4c4b6c9c9e5b3b"
+    sha256 big_sur:      "c6d5be3d12057a9e7ee2999f6b1fc20f419d30b8f3fb126ceac80a27e7eb1934"
+    sha256 catalina:     "081eb0952791da03bbdad0990b596b25a4888a25ab717c585549343e366c7d05"
+    sha256 x86_64_linux: "2efb2e317b088344bdc880dc5a34035cd986008e663f4c98a1a55e0f017b5015"
   end
 
   depends_on "ccache" => :build
   depends_on "cmake" => :build
-  depends_on "go@1.16" => :build
-  depends_on "python@3.9" => :build
+  depends_on "go@1.17" => :build
+  depends_on "python@3.10" => :build
   depends_on macos: :mojave
   depends_on "openssl@1.1"
 
@@ -36,8 +37,8 @@ class Arangodb < Formula
   # with a unified CLI
   resource "starter" do
     url "https://github.com/arangodb-helper/arangodb.git",
-        tag:      "0.15.3",
-        revision: "814f8be9e5cc613a63ac1dc161b879ccb7ec23e0"
+        tag:      "0.15.4",
+        revision: "ed743d2293efd763309f3ba0a1ba6fb68ac4a41a"
   end
 
   def install
@@ -54,29 +55,26 @@ class Arangodb < Formula
       system "go", "build", *std_go_args(ldflags: ldflags), "github.com/arangodb-helper/arangodb"
     end
 
-    mkdir "build" do
-      openssl = Formula["openssl@1.1"]
-      args = std_cmake_args + %W[
-        -DHOMEBREW=ON
-        -DCMAKE_BUILD_TYPE=RelWithDebInfo
-        -DUSE_MAINTAINER_MODE=Off
-        -DUSE_JEMALLOC=Off
-        -DCMAKE_SKIP_RPATH=On
-        -DOPENSSL_USE_STATIC_LIBS=On
-        -DCMAKE_LIBRARY_PATH=#{openssl.opt_lib}
-        -DOPENSSL_ROOT_DIR=#{openssl.opt_lib}
-        -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
-        -DTARGET_ARCHITECTURE=nehalem
-        -DUSE_CATCH_TESTS=Off
-        -DUSE_GOOGLE_TESTS=Off
-        -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
-      ]
+    openssl = Formula["openssl@1.1"]
+    args = std_cmake_args + %W[
+      -DHOMEBREW=ON
+      -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      -DUSE_MAINTAINER_MODE=Off
+      -DUSE_JEMALLOC=Off
+      -DCMAKE_LIBRARY_PATH=#{openssl.opt_lib}
+      -DOPENSSL_ROOT_DIR=#{openssl.opt_lib}
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
+      -DUSE_CATCH_TESTS=Off
+      -DUSE_GOOGLE_TESTS=Off
+      -DCMAKE_INSTALL_LOCALSTATEDIR=#{var}
+    ]
+    args << "-DTARGET_ARCHITECTURE=nehalem" if build.bottle? && Hardware::CPU.intel?
 
-      ENV["V8_CXXFLAGS"] = "-O3 -g -fno-delete-null-pointer-checks" if ENV.compiler == "gcc-6"
+    ENV["V8_CXXFLAGS"] = "-O3 -g -fno-delete-null-pointer-checks" if ENV.compiler == "gcc-6"
 
-      system "cmake", "..", *args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def post_install

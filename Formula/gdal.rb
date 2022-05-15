@@ -1,8 +1,8 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.4.1/gdal-3.4.1.tar.xz"
-  sha256 "332f053516ca45101ef0f7fa96309b64242688a8024780a5d93be0230e42173d"
+  url "https://download.osgeo.org/gdal/3.4.3/gdal-3.4.3.tar.xz"
+  sha256 "02a27b35899e1c4c3bcb6007da900128ddd7e8ab7cd6ccfecf338a301eadad5a"
   license "MIT"
   revision 1
 
@@ -12,15 +12,16 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "3e0605bfd13304fca41e3d2218abe035985194f1a7700ed6e9e3230b5dee1f30"
-    sha256 arm64_big_sur:  "e699a2d2099e03d7607032282c95c7dc356741ca0314a56be6d5a354fa86af49"
-    sha256 big_sur:        "5e7de5faae3dec4aa610bcbb299499c2f64aa226b6471a2e5c55f753bc3b2bac"
-    sha256 catalina:       "bd2f49ebad61505017daa2c0cbd88f88af7da58cf323787222fadb509f68d42b"
-    sha256 x86_64_linux:   "97f3fad9261e5fda2bb44b28c68026c08040ebc277179382e95ad52ed7125ac3"
+    sha256 arm64_monterey: "78aec6224fd17b55b733c900c9c188c5ec66fb55c801528af80565f6e26dca72"
+    sha256 arm64_big_sur:  "16e08308265036cab56d1616cf9e927bc2fa8b67be7697ca69894bae98cce762"
+    sha256 monterey:       "f3109664e495afedc8463a20efc5517c321d2da599ff21e9c75f69854dc19cd4"
+    sha256 big_sur:        "80043980b1a1d64b4e341dc7685dd2d2f31a0d628b018209b1d863aadda3dad1"
+    sha256 catalina:       "31683c809d2aff41cba686b93c4f71390dda75c4a30c40533f29b3a00fa885f4"
+    sha256 x86_64_linux:   "c6b4edb2b444fad196debf16417346e7022306cbdccd1ff66081e785ae8cc5d3"
   end
 
   head do
-    url "https://github.com/OSGeo/gdal.git"
+    url "https://github.com/OSGeo/gdal.git", branch: "master"
     depends_on "doxygen" => :build
   end
 
@@ -47,13 +48,13 @@ class Gdal < Formula
   depends_on "openjpeg"
   depends_on "pcre2"
   depends_on "poppler-qt5"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "python@3.9"
-  depends_on "sqlite" # To ensure compatibility with SpatiaLite
-  depends_on "unixodbc" # macOS version is not complete enough
+  depends_on "sqlite"
+  depends_on "unixodbc"
   depends_on "webp"
   depends_on "xerces-c"
-  depends_on "xz" # get liblzma compression algorithm library from XZutils
+  depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "curl"
@@ -97,7 +98,7 @@ class Gdal < Formula
       "--with-spatialite=#{Formula["libspatialite"].opt_prefix}",
       "--with-pcre2=yes",
       "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
-      "--with-proj=#{Formula["proj@7"].opt_prefix}",
+      "--with-proj=#{Formula["proj"].opt_prefix}",
       "--with-zstd=#{Formula["zstd"].opt_prefix}",
       "--with-liblzma=yes",
       "--with-cfitsio=#{Formula["cfitsio"].opt_prefix}",
@@ -158,6 +159,7 @@ class Gdal < Formula
       ENV.append "CFLAGS", "-I#{buildpath}/gnm"
     end
 
+    ENV.append "CXXFLAGS", "-std=c++17" # poppler-qt5 uses std::optional
     system "./configure", *args
     system "make"
     system "make", "install"

@@ -3,21 +3,22 @@ class Circleci < Formula
   homepage "https://circleci.com/docs/2.0/local-cli/"
   # Updates should be pushed no more frequently than once per week.
   url "https://github.com/CircleCI-Public/circleci-cli.git",
-      tag:      "v0.1.16737",
-      revision: "226bb7f294447be64e86e49d3a62c55a2b407c75"
+      tag:      "v0.1.17554",
+      revision: "2b4b29543b9a07cf2feeec4c32dca1e4760ede8e"
   license "MIT"
   head "https://github.com/CircleCI-Public/circleci-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e78741e61042c89c51e6c0cf6cbe2e7ea550c328903e963e7650f0bd5e3acdc4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a76e6f721930851504b5cd4f184fe67a278d93919f83996783fff14a5ed4180d"
-    sha256 cellar: :any_skip_relocation, monterey:       "1da36033760dbf5ce28642d69f8d6ba1b761ad8455e5ba5fad04bc58872f356e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ce3a5fcabc7d961f61dc6094c3a3ebaabd950afa3ff0cb4ecd7193746f92823f"
-    sha256 cellar: :any_skip_relocation, catalina:       "e61e64d688f67f1c4fcf593d245f0af264b9397d1a1447d7d79f1f203b5b517a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fa3d7e748d860652455fede6eb971265f7bd10e506154d469e534d34ece641cd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0487f94d6b6431b2ed76bdf922671d6638511f4fac5bfd223a77efafc1c79c85"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "90ba50c6086c8801002bfe6557e292cb262d6c83c4ceed14c96e6420170bd704"
+    sha256 cellar: :any_skip_relocation, monterey:       "b2c7ac67c6f9ccd755ca9321b3f3c2f718fb628319cbda1225e112b43e6aa87f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "57f5c9ae958f9af677a8beb5d334a539ed81c2089b7bf524702a8d324b429445"
+    sha256 cellar: :any_skip_relocation, catalina:       "4b1f33838372650f8f76dcefe7eaa9b1b821cca2e30b28f3b64a96864dd7fa92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee60746d7ca17a80ed9d4d0860ba32476f27128f4840a99447a0e7c805ea7ad2"
   end
 
-  depends_on "go" => :build
+  # Bump to 1.18 when the x/sys dependency is updated upstream.
+  depends_on "go@1.17" => :build
   depends_on "packr" => :build
 
   def install

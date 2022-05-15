@@ -1,8 +1,8 @@
 class UsbIds < Formula
   desc "Repository of vendor, device, subsystem and device class IDs used in USB devices"
   homepage "http://www.linux-usb.org/usb-ids.html"
-  url "https://deb.debian.org/debian/pool/main/u/usb.ids/usb.ids_2021.12.24.orig.tar.xz"
-  sha256 "b8194cbc22b14afeee91e98247cf30d92f1c35be7adf97ecbfc303628942ebbc"
+  url "https://deb.debian.org/debian/pool/main/u/usb.ids/usb.ids_2022.04.02.orig.tar.xz"
+  sha256 "a70c18962428102021351835ad4fa78ca7efa9978078b9388e3ca3a5ec92144e"
   license any_of: ["GPL-2.0-or-later", "BSD-3-Clause"]
 
   livecheck do
@@ -11,7 +11,7 @@ class UsbIds < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "88fd45ceac301642df3a526cd4aff9ec64741bc361ccda8f0a1b9ef89df71b6e"
+    sha256 cellar: :any_skip_relocation, all: "007269867e6138d2be9eba454bceaaf30181ff5b6e7ec95657877ca35661e127"
   end
 
   def install

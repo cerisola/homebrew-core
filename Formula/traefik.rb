@@ -1,22 +1,29 @@
 class Traefik < Formula
   desc "Modern reverse proxy"
   homepage "https://traefik.io/"
-  url "https://github.com/traefik/traefik/releases/download/v2.6.1/traefik-v2.6.1.src.tar.gz"
-  sha256 "06c24b339c8896cd8c2a88f85b1d6851ee2fcf9186169a7ff9df0ec87a0ed35e"
+  url "https://github.com/traefik/traefik/releases/download/v2.6.6/traefik-v2.6.6.src.tar.gz"
+  sha256 "3ebb59c8286fa1138c2615de404fcc232316409da8a2046e2f7894c3c000766f"
   license "MIT"
   head "https://github.com/traefik/traefik.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "470f2e3cd8a59a2293a73c3aa61d2ec0bac5ade053abf9b3966d75090cb2f07e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "871ffc99145c7610f754f696a85dbd256e69fbf388d211357fe394bbddfd242d"
-    sha256 cellar: :any_skip_relocation, monterey:       "41ba137ccea207ff7787772e64b0b79c5bcdc05f7591764f71b96c7b4eac568f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c5c9ca94aabc889d34ecd8851297c6edf03c822e4091224f01a9d62636e724ac"
-    sha256 cellar: :any_skip_relocation, catalina:       "19f1e5494136416b9a17df8024a55038cbc461997912d5fb4725bb28b5842cf6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1fb9e178336fa70d2b2d28b3a5e71a8157b7682faaedd979b88f1a97848a9876"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d70f93ae91535e01551267b2fce9c54f3f47dbd5a79f6911fb84b837a9630b2a"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "39be2af0f89acbdc30de3b6be374b87b5e50c76735ef6db75ce3b91e2bfe18d4"
+    sha256 cellar: :any_skip_relocation, monterey:       "cac706f204900a74d6656121dcf1971fe82f4e323e9d6995301fa50ebacec143"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e603595bfd6d615017102be892a1766ed3ee5ea6e49dc972b07735cc4a01e923"
+    sha256 cellar: :any_skip_relocation, catalina:       "31aa1ccd9527888486fe56964e457798eb8732580ce1b5a1d017e29826c39699"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "32bf3d7c658dfde6df4221c6d5d2b0680afff8350b6fbd29a536f3fd6689a988"
   end
 
   depends_on "go" => :build
   depends_on "go-bindata" => :build
+
+  # Fix build with Go 1.18.
+  # Remove with v2.7.
+  patch do
+    url "https://github.com/traefik/traefik/commit/9297055ad8f651c751473b5fd4103eb224a8337e.patch?full_index=1"
+    sha256 "b633710c7bde8737fbe0170066a765ee749f014d38afd06ef40085773e152fd0"
+  end
 
   def install
     ldflags = %W[

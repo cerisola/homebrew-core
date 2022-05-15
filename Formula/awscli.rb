@@ -3,34 +3,34 @@ class Awscli < Formula
 
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://github.com/aws/aws-cli/archive/2.4.18.tar.gz"
-  sha256 "417bea4e48f17daf9888c92b9d392dd0f3e2b8e3c3dff2239b695cab32595d96"
+  url "https://github.com/aws/aws-cli/archive/2.7.0.tar.gz"
+  sha256 "fe100e38aff6e15cf0461d5c7ed9364b2930f3fb97e3ab3ba5a51132821d8ee7"
   license "Apache-2.0"
   head "https://github.com/aws/aws-cli.git", branch: "v2"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4c6deefc6e1b700f44f0d10a30fbf4fee6d1286e62e9017f5e70720ad9beaaa2"
-    sha256 cellar: :any,                 arm64_big_sur:  "e6b5d19392100965ead9d4d7e4cf6036ae5921f9ac05245080a3a1e441d9d3f9"
-    sha256 cellar: :any,                 monterey:       "d4c27ba15f0578a8971ee79e27778c4a9d4790d886689fc7b9d866f0b0d46767"
-    sha256 cellar: :any,                 big_sur:        "042fd0be4fe7ac026aba12482db3845a370ea0160b918ca5a5f46e4d1fcad780"
-    sha256 cellar: :any,                 catalina:       "0eba5d6afef3f9041d7c287b787fbe4327ba212966310bdcfdee134a885c61f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59a26b6fbfc557869e4589763053ea0c15fe374d794039ebb64c74d6911da08e"
+    sha256 cellar: :any,                 arm64_monterey: "cff3343c0359caf5fb5bb4877029612ade7fcc74fe9898820ebdd5499e3bfbaf"
+    sha256 cellar: :any,                 arm64_big_sur:  "507dc7b4a05e948e09f235ea4675eb14efbeab1a1bcb628cbb4a67f99bb6dda1"
+    sha256 cellar: :any,                 monterey:       "5a59d5a883f85ebb980bdcba191dbce152d8ecc66ae4ab213a62bd8cc11ca74a"
+    sha256 cellar: :any,                 big_sur:        "feb17a00fe93c305409772fe914147e334fffde5797ef34152eb4bc6cd3c16c2"
+    sha256 cellar: :any,                 catalina:       "8e6ae09161671d47ea7e421d9cdebd4800eb26d3f8129fe8b7bfa5421c52c455"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "215f4a90117335405d0f461d29659c235cd6577baf3fee29fe49bc233bc7a150"
   end
 
   depends_on "cmake" => :build
+  depends_on "rust" => :build # for cryptography
   depends_on "python@3.9"
   depends_on "six"
 
   uses_from_macos "groff"
 
   # Python resources should be updated based on setup.cfg. One possible way is:
-  # 1. Download source tarball
-  # 2. At top of source directory, run `pipgrip . --sort`
-  # 3. Ignore `six`. Update all other PyPI packages
+  # 1. Run `pipgrip 'awscli @ #{url}' --sort`
+  # 2. Ignore `six`. Update all other PyPI packages
 
   resource "awscrt" do
-    url "https://files.pythonhosted.org/packages/e3/62/aaf36ad07eb01e36d6a0b5bfe2782ab1b2577e59421b351063e5b2c0a77f/awscrt-0.12.4.tar.gz"
-    sha256 "6ad69336bc5277f501bd7e33f82e11db2665370c7d279496ee39fe2f369baeb2"
+    url "https://files.pythonhosted.org/packages/56/3f/4ab8b2d37abc367983a4cbd0d4fc00053af0b725698d8e936672b9cdf881/awscrt-0.13.5.tar.gz"
+    sha256 "7543658cc2ac6e5e9e072844622bd681125ccd3070dcdd51565f2bddef3df268"
   end
 
   resource "cffi" do
@@ -44,8 +44,8 @@ class Awscli < Formula
   end
 
   resource "cryptography" do
-    url "https://files.pythonhosted.org/packages/d4/85/38715448253404186029c575d559879912eb8a1c5d16ad9f25d35f7c4f4c/cryptography-3.3.2.tar.gz"
-    sha256 "5a60d3780149e13b7a6ff7ad6526b38846354d11a15e21068e57073e29e19bed"
+    url "https://files.pythonhosted.org/packages/10/a7/51953e73828deef2b58ba1604de9167843ee9cd4185d8aaffcb45dd1932d/cryptography-36.0.2.tar.gz"
+    sha256 "70f8f4f7bb2ac9f340655cbac89d68c527af5bb4387522a8413e841e3e6628c9"
   end
 
   resource "distro" do
@@ -64,8 +64,8 @@ class Awscli < Formula
   end
 
   resource "prompt-toolkit" do
-    url "https://files.pythonhosted.org/packages/0c/37/7ad3bf3c6dbe96facf9927ddf066fdafa0f86766237cff32c3c7355d3b7c/prompt_toolkit-2.0.10.tar.gz"
-    sha256 "f15af68f66e664eaa559d4ac8a928111eebd5feda0c11738b5998045224829db"
+    url "https://files.pythonhosted.org/packages/37/34/c34c376882305c5051ed7f086daf07e68563d284015839bfb74d6e61d402/prompt_toolkit-3.0.28.tar.gz"
+    sha256 "9f1cd16b1e86c2968f2519d7fb31dd9d669916f515612c269d14e9ed52b51650"
   end
 
   resource "pycparser" do
@@ -84,8 +84,8 @@ class Awscli < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/b0/b1/7bbf5181f8e3258efae31702f5eab87d8a74a72a0aa78bc8c08c1466e243/urllib3-1.26.8.tar.gz"
-    sha256 "0e7c33d9a63e7ddfcb86780aac87befc2fbddf46c58dbb487e0855f7ceec283c"
+    url "https://files.pythonhosted.org/packages/1b/a5/4eab74853625505725cefdf168f48661b2cd04e7843ab836f3f63abf81da/urllib3-1.26.9.tar.gz"
+    sha256 "aabaf16477806a5e1dd19aa41f8c2b7950dd3c746362d7e3223dbe6de6ac448e"
   end
 
   resource "wcwidth" do

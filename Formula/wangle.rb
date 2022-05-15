@@ -1,18 +1,19 @@
 class Wangle < Formula
   desc "Modular, composable client/server abstractions framework"
   homepage "https://github.com/facebook/wangle"
-  url "https://github.com/facebook/wangle/releases/download/v2022.02.14.00/wangle-v2022.02.14.00.tar.gz"
-  sha256 "edf14f80c859c0e598c842667773ee589249f7082d8a7265ab08ba91970a1f15"
+  url "https://github.com/facebook/wangle/releases/download/v2022.03.21.00/wangle-v2022.03.21.00.tar.gz"
+  sha256 "3557884c78cd5b4ebf4ee48c89e056b30453f5e9a1f24e89e170b31e94fcdf90"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/facebook/wangle.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "49c7a4ea1d4294a9a6454f042694a3d450467dd847cc8ee9f5d6f280df555cad"
-    sha256 cellar: :any,                 arm64_big_sur:  "4f69994ea6419f8e198dace2509ed2e6455c5cbf4633b083d946fbe78f212753"
-    sha256 cellar: :any,                 monterey:       "3b207f80eda943e2eeafd0f66939cddb9ada5ac528c2866eabc01019af0651dd"
-    sha256 cellar: :any,                 big_sur:        "41c40adfd881a4c7cf65c9fdbb815d65603277347406ed1c3f9ac0939c7805ec"
-    sha256 cellar: :any,                 catalina:       "8e8518669f99b74535042c87fcaeeaab843f0f58f0a1f55fb711873e30dea96f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9dcab97233fec494133b67299718d79642af5f7154a83205bb00ca342d8afdc4"
+    sha256 cellar: :any,                 arm64_monterey: "82160bc453eca667ff9b64bdedfac68892d3ba0bd966ff6f24fcd56d87b396ed"
+    sha256 cellar: :any,                 arm64_big_sur:  "d8d403947f01e2f28b86a35719ad19a984f6602c5c44fccb9099b7a36d1c45cb"
+    sha256 cellar: :any,                 monterey:       "1019240a9cd189ab45f4ca5e1de3a6569fa0f298e0a4ea92a25d85ca50cf69b0"
+    sha256 cellar: :any,                 big_sur:        "122420ef08a0c6a41448033fef240b3f46f00764a8ac0fff473df2ac0b046fbb"
+    sha256 cellar: :any,                 catalina:       "213cf5f4aa1ad3b34f74001c7a3cbad4c6b5a04ed57258a37562ca814b461afc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a1d77898a430a7df48ae7c8e93e47f5fbfeef95c26c8d727d64451de1919ed0"
   end
 
   depends_on "cmake" => :build
@@ -68,7 +69,7 @@ class Wangle < Formula
       -lfizz
       -lwangle
     ]
-    on_linux do
+    if OS.linux?
       cxx_flags << "-L#{Formula["boost"].opt_lib}"
       cxx_flags << "-lboost_context-mt"
       cxx_flags << "-ldl"

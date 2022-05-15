@@ -1,17 +1,17 @@
 class Atmos < Formula
   desc "Universal Tool for DevOps and Cloud Automation"
   homepage "https://github.com/cloudposse/atmos"
-  url "https://github.com/cloudposse/atmos/archive/v1.3.27.tar.gz"
-  sha256 "3dc354ca4fc5a25eae2f2738b55edff55e0f7b16286759f0aa1e63d3e48b3c41"
+  url "https://github.com/cloudposse/atmos/archive/v1.4.14.tar.gz"
+  sha256 "46e54b23ed5cc8a604538a88914a821b3aff5a3e7660b5fe58200cc35c2d9ce6"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e776651d0720925f04de6961fb4e701b19745d7e5d5db5d130ad9eeebf81bdc7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "70575f9082ceb1380e4e58fa851b2d185e27a3f3792cfb3cc2bcda1d673e7532"
-    sha256 cellar: :any_skip_relocation, monterey:       "55c7198586ccd9032d8286c4967c69a2c1b1de55415aac9072b8fd8c01a3d8f3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c578226c006656c458546cf4317c4a6521eddf73b4e8a805aec778911e7dcca6"
-    sha256 cellar: :any_skip_relocation, catalina:       "d4961b4afd3d09c3f862b51347068a71426e4611fa5d7fad6a9fa6d102d298d7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "73f484b46b99b5ca3d696a518ecdb3db91b7f8f23a41077d529147d861f3e44d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "21a93b90f52a001bbec9b2c02f345d20cdfb084a5dc4efaef366655d4fdde826"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "84b4ec42bd1292fb8dc116a9038c8759127196f9354d22658fe2049d95a21450"
+    sha256 cellar: :any_skip_relocation, monterey:       "e2d7aa5e627760c180a7cd02062eb8991119f7336644326af1ba1786873b9c64"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6a4b5b86de6f093c3df08dcd69cd4f0b815607190c20dcb250f1539380a79e7f"
+    sha256 cellar: :any_skip_relocation, catalina:       "73ff4718428bc68c5886d21a8d40fe1505aba1e7caa2275e9fc0a995da1da1a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f99c90b51f22039d29d80391736b85629de04649d7b2279975de6e99bebcf920"
   end
 
   depends_on "go" => :build
@@ -70,6 +70,7 @@ class Atmos < Formula
         tenant: tenant1
         region: us-east-2
         environment: ue2
+        stage: dev
 
       components:
         terraform:

@@ -1,8 +1,8 @@
 class FfmpegAT28 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.8.18.tar.xz"
-  sha256 "96ef935af1d0adfd9e1a6823b55307dd0cc671192138660b6d5bde8cd6c1cd4c"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.19.tar.xz"
+  sha256 "6cedc0c20e3abb3176ac833c7774371dc9ed80a0ff566d46693dd7440e3070f0"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
@@ -13,11 +13,12 @@ class FfmpegAT28 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "c9062aaa537c8d0dea31ecf713f3d193a1c716207ad93b680d7cf690f0e3fa65"
-    sha256 arm64_big_sur:  "46dcab918292c83b05fe0a66b5093494a91cb4de3862137d5584941692f68557"
-    sha256 monterey:       "84fbb1fe0f5c5aa78cd61fbaa46cf4e3dc6ecf12c2d5abbf5531a288838c57cb"
-    sha256 big_sur:        "bab81dd752fec0d0945c4683863d6fb89176e8d8213e227f67414d43a9305b94"
-    sha256 catalina:       "edea22eff2016286a9da86bbc0e7ec16508d57744fe023bf3621e97827745956"
+    sha256 arm64_monterey: "65bec82261d5421432c8ffb05b2e713deec6df17caa7120f556d278858683a0c"
+    sha256 arm64_big_sur:  "7220c95033f94c9371b2c81f85cc38d1e9912410656b6ebcb3720db56466cdbb"
+    sha256 monterey:       "b7d6d86175d76a83e7f9f40c5ec5e34920b013a7dde172110f3d7e99c4970c26"
+    sha256 big_sur:        "ae84581309ad6d07d954478f535124673754b4ce09bcb936f992a113d23f0d76"
+    sha256 catalina:       "fc9c6bda822b30630b878dd0027e9d9701e5990fc0714300e15e9832c5af371d"
+    sha256 x86_64_linux:   "61eee811848a988b5159bb92f4ad57177f772c6c319a8a541d8b3a79123ed5cd"
   end
 
   keg_only :versioned_formula
@@ -76,11 +77,12 @@ class FfmpegAT28 < Formula
       --enable-libopencore-amrwb
       --enable-librtmp
       --enable-libspeex
-      --enable-opencl
       --disable-indev=jack
       --disable-libxcb
       --disable-xlib
     ]
+
+    args << "--enable-opencl" if OS.mac?
 
     # A bug in a dispatch header on 10.10, included via CoreFoundation,
     # prevents GCC from building VDA support. GCC has no problems on

@@ -3,8 +3,8 @@ class Pnpm < Formula
 
   desc "📦🚀 Fast, disk space efficient package manager"
   homepage "https://pnpm.io/"
-  url "https://registry.npmjs.org/pnpm/-/pnpm-6.31.0.tgz"
-  sha256 "8572a190629ca810bcd80aa8c401e1c67d39db6e8d08e6b1b092ab5f45a023e4"
+  url "https://registry.npmjs.org/pnpm/-/pnpm-7.1.0.tgz"
+  sha256 "209fb67e60529f0be28c6dd6a82049531dfcc7c3bfec32912562fe019410fd87"
   license "MIT"
 
   livecheck do
@@ -13,12 +13,12 @@ class Pnpm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6d57efe102e48acc2e331ef40ccde87b16b2561181199d91cf03963f75d0d21"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d6d57efe102e48acc2e331ef40ccde87b16b2561181199d91cf03963f75d0d21"
-    sha256 cellar: :any_skip_relocation, monterey:       "12420d1cb801b0eaf17add4096196f9f3db86c425597f9f13e3c391a7328ded5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b6f6dbc38d2aca2c9fdf64e15aef12906d43a8614358635eba0f1bf30242654d"
-    sha256 cellar: :any_skip_relocation, catalina:       "b6f6dbc38d2aca2c9fdf64e15aef12906d43a8614358635eba0f1bf30242654d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6d57efe102e48acc2e331ef40ccde87b16b2561181199d91cf03963f75d0d21"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce278c7223b8c62eb4707abe0064132f62972ff3df87cc091cb98b55b6fdf016"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ce278c7223b8c62eb4707abe0064132f62972ff3df87cc091cb98b55b6fdf016"
+    sha256 cellar: :any_skip_relocation, monterey:       "154b36a51c68d779e5245fe29e366adca888edf9f069b5866a5fca2cc87ffaaa"
+    sha256 cellar: :any_skip_relocation, big_sur:        "85a2f179265e03ce6acb509aa89709110c972dd6613d557f7c9e4162e4077230"
+    sha256 cellar: :any_skip_relocation, catalina:       "85a2f179265e03ce6acb509aa89709110c972dd6613d557f7c9e4162e4077230"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ce278c7223b8c62eb4707abe0064132f62972ff3df87cc091cb98b55b6fdf016"
   end
 
   depends_on "node"
@@ -31,7 +31,7 @@ class Pnpm < Formula
   end
 
   test do
-    system "#{bin}/pnpm", "init", "-y"
+    system "#{bin}/pnpm", "init"
     assert_predicate testpath/"package.json", :exist?, "package.json must exist"
   end
 end

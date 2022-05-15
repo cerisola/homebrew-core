@@ -1,18 +1,19 @@
 class Kubevela < Formula
   desc "Application Platform based on Kubernetes and Open Application Model"
   homepage "https://kubevela.io"
-  url "https://github.com/oam-dev/kubevela.git",
-      tag:      "v1.2.3",
-      revision: "fbef61d07663c878ffabe5ac78c2423a8543628e"
+  url "https://github.com/kubevela/kubevela.git",
+      tag:      "v1.3.3",
+      revision: "45e1de19dc736b10b3eb2d908d809210f470b24f"
   license "Apache-2.0"
+  head "https://github.com/kubevela/kubevela.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0d42ff114a567b90e58c507673105b43f1431f3a2775ce6b07d9ad8f5bf7ae9a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0d42ff114a567b90e58c507673105b43f1431f3a2775ce6b07d9ad8f5bf7ae9a"
-    sha256 cellar: :any_skip_relocation, monterey:       "522466d3b025dba7e1f5c3e71c27d261b17b53fa724f28afc04c5bc9f7f64976"
-    sha256 cellar: :any_skip_relocation, big_sur:        "522466d3b025dba7e1f5c3e71c27d261b17b53fa724f28afc04c5bc9f7f64976"
-    sha256 cellar: :any_skip_relocation, catalina:       "522466d3b025dba7e1f5c3e71c27d261b17b53fa724f28afc04c5bc9f7f64976"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b05d4af1351976a2aa3b7cffee9fdcc066230e776f8cbe768059675d242b061f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cad332ae13671750a609b10b5c4b0cad36f6e715019023ebcad010123f721789"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cad332ae13671750a609b10b5c4b0cad36f6e715019023ebcad010123f721789"
+    sha256 cellar: :any_skip_relocation, monterey:       "bbcca5ed1c5aeaec3453b9dd39ef8cf95467b3db64671bdb58062d4489869fd8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "bbcca5ed1c5aeaec3453b9dd39ef8cf95467b3db64671bdb58062d4489869fd8"
+    sha256 cellar: :any_skip_relocation, catalina:       "bbcca5ed1c5aeaec3453b9dd39ef8cf95467b3db64671bdb58062d4489869fd8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0d4ec51b1bb48ce2d247ec1ad81d4f9e6cb9aa564d672d47d59e58a3da125ff"
   end
 
   depends_on "go" => :build
@@ -21,8 +22,8 @@ class Kubevela < Formula
     ENV["CGO_ENABLED"] = "0"
     ldflags = %W[
       -s -w
-      -X github.com/oam-dev/kubevela/version.VelaVersion=#{version}
-      -X github.com/oam-dev/kubevela/version.GitRevision=#{Utils.git_head}
+      -X github.com/kubevela/kubevela/version.VelaVersion=#{version}
+      -X github.com/kubevela/kubevela/version.GitRevision=#{Utils.git_head}
     ]
 
     system "go", "build", *std_go_args(output: bin/"vela", ldflags: ldflags), "./references/cmd/cli"
@@ -31,7 +32,7 @@ class Kubevela < Formula
   test do
     # Should error out as vela up need kubeconfig
     status_output = shell_output("#{bin}/vela up 2>&1", 1)
-    assert_match "Error: invalid configuration: no configuration", status_output
+    assert_match "error: no configuration has been provided", status_output
 
     (testpath/"kube-config").write <<~EOS
       apiVersion: v1

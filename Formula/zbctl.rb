@@ -1,19 +1,19 @@
 class Zbctl < Formula
   desc "Zeebe CLI client"
   homepage "https://docs.camunda.io/docs/apis-clients/cli-client/index/"
-  url "https://github.com/camunda-cloud/zeebe.git",
-      tag:      "1.3.4",
-      revision: "eaebfb524a6ce9bd21670d17fd38d6ee7f1cc49e"
+  url "https://github.com/camunda/zeebe.git",
+      tag:      "8.0.2",
+      revision: "1050d923bd8e891c630458f4f8e47338d8c239bd"
   license "Apache-2.0"
-  head "https://github.com/camunda-cloud/zeebe.git", branch: "develop"
+  head "https://github.com/camunda/zeebe.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3739bfa2931d53f991f9abc52d0b3c12ca4c459e17c634df19d692df780a0d51"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3739bfa2931d53f991f9abc52d0b3c12ca4c459e17c634df19d692df780a0d51"
-    sha256 cellar: :any_skip_relocation, monterey:       "a289534edef4e2da948bee894f9cb18efb682607da3ea7a1e3449d46944fab0e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a289534edef4e2da948bee894f9cb18efb682607da3ea7a1e3449d46944fab0e"
-    sha256 cellar: :any_skip_relocation, catalina:       "a289534edef4e2da948bee894f9cb18efb682607da3ea7a1e3449d46944fab0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6ff83198abf8a64855801d9c1f8e3e861e0347e74e9023252a1cf1af4975c71"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9a15342dac131f203c492762097002206caa2f6bdb8ca80b2f277c4221a65648"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9a15342dac131f203c492762097002206caa2f6bdb8ca80b2f277c4221a65648"
+    sha256 cellar: :any_skip_relocation, monterey:       "90c95487cae2a5722151573a288d90ab2657c7282f70bef2c86db0e5a0f7dcbe"
+    sha256 cellar: :any_skip_relocation, big_sur:        "90c95487cae2a5722151573a288d90ab2657c7282f70bef2c86db0e5a0f7dcbe"
+    sha256 cellar: :any_skip_relocation, catalina:       "90c95487cae2a5722151573a288d90ab2657c7282f70bef2c86db0e5a0f7dcbe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ec785c4664eb7cfefa488c40bc42fea53d5bce70baf909c7a483e8849b77e40"
   end
 
   depends_on "go" => :build
@@ -21,7 +21,7 @@ class Zbctl < Formula
   def install
     commit = Utils.git_short_head
     chdir "clients/go/cmd/zbctl" do
-      project = "github.com/camunda-cloud/zeebe/clients/go/cmd/zbctl/internal/commands"
+      project = "github.com/camunda/zeebe/clients/go/v8/cmd/zbctl/internal/commands"
       ldflags = %W[
         -w
         -X #{project}.Version=#{version}

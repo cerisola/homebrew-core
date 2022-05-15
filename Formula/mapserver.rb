@@ -4,7 +4,7 @@ class Mapserver < Formula
   url "https://download.osgeo.org/mapserver/mapserver-7.6.4.tar.gz"
   sha256 "b46c884bc42bd49873806a05325872e4418fc34e97824d4e13d398e86ea474ac"
   license "MIT"
-  revision 1
+  revision 4
 
   livecheck do
     url "https://mapserver.org/download.html"
@@ -12,17 +12,17 @@ class Mapserver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7e62c905331c71a62ec7cfa886e86aa49f59313a4347ada4b4fd8f99f07129f3"
-    sha256 cellar: :any,                 arm64_big_sur:  "6fe918f74417fe3d6290472c20d6d3fea2d15fd22ecb881db07bb65b6e362f28"
-    sha256 cellar: :any,                 monterey:       "957dc74d6938859b25e88d557db1431b8da4fe1a3aa9bb53295d2226aac3aeb0"
-    sha256 cellar: :any,                 big_sur:        "f6ebf38e5f1741223655e4eb57e50d79d779f28ed6c87aed5d9f707eb3e7348a"
-    sha256 cellar: :any,                 catalina:       "b2c70beabc7fffe4b00cfdb7ede9ca389494117cbf4f6af85035f450dae3b47c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac9a93450d6f376354f9c5770b8469f5db94612bc666a9edaca1e793a4c14fdd"
+    sha256 cellar: :any,                 arm64_monterey: "eb063e619b10833ecf47eb794e3f2d9e96f9105f9030270d79f03e7bfb302aff"
+    sha256 cellar: :any,                 arm64_big_sur:  "4ff7d584fc0c64391f45e8a264e01fb77c742ca77b737c4af8f7a673eaf37d06"
+    sha256 cellar: :any,                 monterey:       "c254261912cb57007202ad57480c44212ae8839583be745cda024b2966b644ce"
+    sha256 cellar: :any,                 big_sur:        "ed04e8fe8f1da5d91258b8449b60e95f7be592b6d817ad662cb01b629daa5e88"
+    sha256 cellar: :any,                 catalina:       "017de885523933e74cffc69391374be105af07e64099681aaef4ea4986922008"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7aa822d4049082c9aecb7100b75d985b62929e0e5a7d4ded45460ca3612dd8c3"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "swig@3" => :build
+  depends_on "swig" => :build
   depends_on "cairo"
   depends_on "fcgi"
   depends_on "freetype"
@@ -32,7 +32,7 @@ class Mapserver < Formula
   depends_on "giflib"
   depends_on "libpng"
   depends_on "postgresql"
-  depends_on "proj@7"
+  depends_on "proj"
   depends_on "protobuf-c"
   depends_on "python@3.9"
 

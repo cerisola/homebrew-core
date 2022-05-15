@@ -4,21 +4,24 @@ class Cassandra < Formula
 
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=cassandra/4.0.2/apache-cassandra-4.0.2-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/4.0.2/apache-cassandra-4.0.2-bin.tar.gz"
-  sha256 "a1bab3d819ee56a4835b8fb3b04613a8464630abdb6347475d43095a20a5beb5"
+  url "https://www.apache.org/dyn/closer.lua?path=cassandra/4.0.3/apache-cassandra-4.0.3-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/4.0.3/apache-cassandra-4.0.3-bin.tar.gz"
+  sha256 "33623300bef39c75c73c3b51ad45b453e40e27a0816af3a1466537aa79e5f50d"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_big_sur: "18a80fa38ccad4ed1780b4ea91205e00993e4ea7d6e4337b30c987044e6bdaec"
-    sha256 cellar: :any_skip_relocation, big_sur:       "6d21e646f30fae63e62cb7bd06b6d0b0f2f447e2a3cb035ca0954326cc3b75cc"
-    sha256 cellar: :any_skip_relocation, catalina:      "6189bc5e09313681a6c7150375385212fbe03c56c1faaf5a8779125bf45438fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3633518092d5c0c43c176ee7a61470637308cae5f5163f5904be9ae28f043d9d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c1256c83e013b66dbe982e81d9ff8e06fa95a2520272bfa52d4e10a2c7a428d0"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aebc02c7ede741acac3cc057c88e607e995287de6402248d9be6cb9fc6f1ca2b"
+    sha256 cellar: :any_skip_relocation, monterey:       "70b355659ef990348582dec2b621b3bda5ec7ea9d35e2a51fca2fa9544f5d874"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3485e796ab2b0340e0437a674a77a32d0281952ce82b3169398bf09c118a169e"
+    sha256 cellar: :any_skip_relocation, catalina:       "e210fd11ea15a7a807f8e4cb721aabb34444c58f9313dbd4531a7eea9e94edab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "65cf02dc13bc99b1563d7c9276616c4933b23d6a46e0908b51febc1611c34f2d"
   end
 
-  depends_on "cython" => :build
+  depends_on "libcython" => :build
   depends_on "openjdk@11"
-  depends_on "python@3.9"
+  depends_on "python@3.10"
   depends_on "six"
 
   resource "thrift" do

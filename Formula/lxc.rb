@@ -1,8 +1,8 @@
 class Lxc < Formula
   desc "CLI client for interacting with LXD"
   homepage "https://linuxcontainers.org"
-  url "https://linuxcontainers.org/downloads/lxd/lxd-4.23.tar.gz"
-  sha256 "6cfcc7f4c462ae09776ffc24918211844bebcafcbfe4cd98f4b2cfa83e082fc5"
+  url "https://linuxcontainers.org/downloads/lxd/lxd-5.1.tar.gz"
+  sha256 "319f4e93506e2144edaa280b0185fb37c4374cf7d7468a5e5c8c1b678189250a"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Lxc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4e618c398667bc24ab1ca30b66c54352c497a376d66d3ce7149372bc2f0d9c69"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "00a3e3f5f3a8d63f344cefb59e8899f8b470d695792b5a2e62bac93727c688b4"
-    sha256 cellar: :any_skip_relocation, monterey:       "180ea43b3bb7419f296b736a9b89dbfef2795fb92439ec9f0915c607673585e1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d30aa92c6dd523da6a59fb42a63ae3c1c6788a5b54b8b60614cf858d2f7f5ec1"
-    sha256 cellar: :any_skip_relocation, catalina:       "4e9d25e0bee30fbf4fc629ba2fb1fc9fb9d951e2b429fb41e4493ca1e100e596"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ecb1bb35dcd51bd211e36043b8b3ea965ac91e490737b812d91532e8e618229"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a1e096611b0313ec3ffb0f203a83ac2faa137f09f9d2b7dc7b155db8da3996e5"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5fe742240d9d0c2bdf6fe33b8d307e1a3e1a883e9db547b6e908ad0fe4d17049"
+    sha256 cellar: :any_skip_relocation, monterey:       "4e1979ca712621d996d0fdb099ec5d3dd7b39c35065101776cd525958e7115e4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "74db1f4f046552a6f6c150a537ce76a83d50c196fac64efa5d79ee6b54b8a776"
+    sha256 cellar: :any_skip_relocation, catalina:       "77913704357c971487d4172fa7903b834dc5c54c18cc01428099958beda5e192"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7b0c3f953361db784a9cfb3b15c70460078f2871579b82497292bcc9408f5432"
   end
 
   depends_on "go" => :build

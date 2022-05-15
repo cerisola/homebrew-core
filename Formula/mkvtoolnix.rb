@@ -1,11 +1,10 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://mkvtoolnix.download/"
-  url "https://mkvtoolnix.download/sources/mkvtoolnix-65.0.0.tar.xz"
-  mirror "https://fossies.org/linux/misc/mkvtoolnix-65.0.0.tar.xz"
-  sha256 "0dddc9cc1bae26ceaac3a184482c50e6bb8add2d62e06ef08b55f9f0108bb92e"
+  url "https://mkvtoolnix.download/sources/mkvtoolnix-67.0.0.tar.xz"
+  mirror "https://fossies.org/linux/misc/mkvtoolnix-67.0.0.tar.xz"
+  sha256 "db68be91ee8a0b688d924cc00d3bac9349306d54c29ce44a555728c1abb7d3ec"
   license "GPL-2.0-or-later"
-  revision 1
 
   livecheck do
     url "https://mkvtoolnix.download/sources/"
@@ -13,12 +12,12 @@ class Mkvtoolnix < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "f04937c8612752449bbdec4f41eafac01dc8346aa1942f0bf131780693456961"
-    sha256 cellar: :any, arm64_big_sur:  "f79a78f57842a866e6a8fd9200905ed5cd8822198680e9e446d95add1a0f6883"
-    sha256 cellar: :any, monterey:       "dc8b3af50ae769fd1cff138c016215c099678f8b28ccc0de5c4f66915329d8b9"
-    sha256 cellar: :any, big_sur:        "1aa6d6fe7d35f8a1b4dbe6c1d3313ab2013719332eca8e7a2c3e012914738f9c"
-    sha256 cellar: :any, catalina:       "36ee4b81254407045f6fbba70292275e4501981315382b31b9c68a157d6d1d5a"
-    sha256               x86_64_linux:   "3b22f46e2c820da1b379127b2b5a1299dd03d76ae137a3b353bfe212cf8ac1d8"
+    sha256 cellar: :any, arm64_monterey: "fbc6c2583e7d61381d324d89675a6319f44b9066e31f2421f08634eaa61edd86"
+    sha256 cellar: :any, arm64_big_sur:  "c6d49253e3d5ae41c912c9610f33494c7e32816ac921af577aa6d501b9290710"
+    sha256 cellar: :any, monterey:       "9b4182a605831a003b58639dde017434653c028ebba6480f2b4b6fe6c6051a8b"
+    sha256 cellar: :any, big_sur:        "dac3145023f72e54227899235618805a146f4e9ce3894d973be8972b6f210c0f"
+    sha256 cellar: :any, catalina:       "80bc2c0ea2ce1707c21c5e7f7d12f3a0c14e4d910743fff2cdfecd394421224c"
+    sha256               x86_64_linux:   "145b25b736b02658e18a41ebb0415e786a8237ce156d0d084271717d5326d1b4"
   end
 
   head do

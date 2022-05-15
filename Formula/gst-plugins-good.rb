@@ -1,8 +1,8 @@
 class GstPluginsGood < Formula
   desc "GStreamer plugins (well-supported, under the LGPL)"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.18.5.tar.xz"
-  sha256 "3aaeeea7765fbf8801acce4a503a9b05f73f04e8a35352e9d00232cfd555796b"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.20.1.tar.xz"
+  sha256 "3c66876f821d507bcdbebffb08b4f31a322727d6753f65a0f02c905ecb7084aa"
   license "LGPL-2.0-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-good.git", branch: "master"
 
@@ -12,12 +12,12 @@ class GstPluginsGood < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b9a4c700974a3dc9fa4e537594fabd6c9295420bf2bde8749084c397bcce51b0"
-    sha256 arm64_big_sur:  "23c5545d7dbb05726bef1fc711bffe95c5a337eacb6053dc141fa08523faed53"
-    sha256 monterey:       "28e2bd546fecb0a2e90f632e71d55c67108c88d3324f1db67a99002ea593f6a0"
-    sha256 big_sur:        "34ac73b746d4fc3c962e253fe71ec3a35a3dbed2f20342bd22955aa492a53562"
-    sha256 catalina:       "72ba1c6c4e161443ef3b7913fe5ad6f733d818aef27de007645eb2b6195864df"
-    sha256 x86_64_linux:   "def92a5fff0a77ba3c384bc78cec86756342005a27242fb07e689f6b92440602"
+    sha256 arm64_monterey: "ccfd7c8421f6cbafa42f8fce97f2deec94689d66715bd51a7ecf06e72ad1e2b9"
+    sha256 arm64_big_sur:  "274e98ed15c58d81cd205f012af1e36b4b575249fe6165176edd2559b0aa0cbf"
+    sha256 monterey:       "90a7647330792cf0cfadfdffa2e12721177ace0458938b474bc7a2f1bc9c39e6"
+    sha256 big_sur:        "1e1c4a365547f757761aadcbf3e98bcfaaf6a9f6929b43dc8f1ba2d7ef6c74e5"
+    sha256 catalina:       "e339f633fc7f18ebaaaf8244daafd9d3ff4679137d2ebff1be8223da3438a949"
+    sha256 x86_64_linux:   "a3c23ad39170d01c6beff7f0aa029c586f95b84f08af60a151cc7e1933368401"
   end
 
   depends_on "meson" => :build
@@ -32,7 +32,7 @@ class GstPluginsGood < Formula
   depends_on "lame"
   depends_on "libpng"
   depends_on "libshout"
-  depends_on "libsoup@2"
+  depends_on "libsoup"
   depends_on "libvpx"
   depends_on "orc"
   depends_on "speex"

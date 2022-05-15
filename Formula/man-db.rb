@@ -1,9 +1,9 @@
 class ManDb < Formula
   desc "Unix documentation system"
   homepage "https://www.nongnu.org/man-db/"
-  url "https://download.savannah.gnu.org/releases/man-db/man-db-2.10.1.tar.xz"
-  mirror "https://download-mirror.savannah.gnu.org/releases/man-db/man-db-2.10.1.tar.xz"
-  sha256 "2ffd8f2e80122fe72e60c740c851e6a3e15c9a7921185eb4752c1c672824bed6"
+  url "https://download.savannah.gnu.org/releases/man-db/man-db-2.10.2.tar.xz"
+  mirror "https://download-mirror.savannah.gnu.org/releases/man-db/man-db-2.10.2.tar.xz"
+  sha256 "ee97954d492a13731903c9d0727b9b01e5089edbd695f0cdb58d405a5af5514d"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -12,12 +12,12 @@ class ManDb < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "fd876c39ea112c06c4f4d642530156d37dd2d631825bb1a658f043b1ef18c246"
-    sha256 arm64_big_sur:  "aa63cd096bf541fbe8392bed8963a69de75376f9e77203ade0e242a162131866"
-    sha256 monterey:       "cd1e73aca256a8ee637f76307e41d0e96c5b96df0a919af29e3a425bace347a5"
-    sha256 big_sur:        "b907d3e2e2ce2367e62cf73c3a9aaaea5082c5f9bf6489f2e0ec9305ddcfcc95"
-    sha256 catalina:       "c390e6f4182d8624926ba2624ec0caf62c21d1d5f901d0769ca1f8f87dba2757"
-    sha256 x86_64_linux:   "147ba9c6070382aa4fce370e63ea03f8c49d66362f818c14d09bd7fb9e15b4a3"
+    sha256 arm64_monterey: "a981901cd2341fa8b062d30ad8ce33e93d8d244307b61bb8dbbe795e8381fa7d"
+    sha256 arm64_big_sur:  "9b8c9d4933d144a1efed248b7a26790225d900c533cf5f87ba2662ac2867a015"
+    sha256 monterey:       "05e657d34074c4076ca2f07d401a331d9c5349052b46cbd78de41ad24b20755b"
+    sha256 big_sur:        "068eb7bbbad5a8e6eac3cd5d1a95f3d1975dea8fed52f7a347b486b3a0cb879d"
+    sha256 catalina:       "07b99f008c2c747276e1d995086a95c44a1a8458160afcd70ac8eba9320fd0a0"
+    sha256 x86_64_linux:   "88ddaf0f8afe906218f0888aa5209c2e8fc07d734518854bc8aea2b82a00886c"
   end
 
   depends_on "pkg-config" => :build
@@ -86,11 +86,10 @@ class ManDb < Formula
   test do
     ENV["PAGER"] = "cat"
     output = shell_output("#{bin}/gman true")
-    on_macos do
+    if OS.mac?
       assert_match "BSD General Commands Manual", output
       assert_match "The true utility always returns with exit code zero", output
-    end
-    on_linux do
+    else
       assert_match "true - do nothing, successfully", output
       assert_match "GNU coreutils online help: <http://www.gnu.org/software/coreutils/", output
     end

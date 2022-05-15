@@ -1,21 +1,22 @@
 class Glslviewer < Formula
   desc "Live-coding console tool that renders GLSL Shaders"
   homepage "http://patriciogonzalezvivo.com/2015/glslViewer/"
-  url "https://github.com/patriciogonzalezvivo/glslViewer/archive/1.7.0.tar.gz"
-  sha256 "4a03e989dc81587061714ccc130268cc06ddaff256ea24b7492ca28dc855e8d6"
+  url "https://github.com/patriciogonzalezvivo/glslViewer.git",
+      tag:      "2.0.5",
+      revision: "788bb17bfa10759dd88def6979f1d16b31591ff6"
   license "BSD-3-Clause"
-  revision 2
   head "https://github.com/patriciogonzalezvivo/glslViewer.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "507cecd87cad646318c0edadb20089cb9a90e84093c8beb4e592b46ab03911a7"
-    sha256 cellar: :any,                 arm64_big_sur:  "c67d574a03f04ae0d671122c3c85d3b9f32a9362afae58de40393e2dea9c63f9"
-    sha256 cellar: :any,                 monterey:       "f9156ade0f34dc58861e9df43378a31b2aecbb39acf698a5a977c7c9afd0ec03"
-    sha256 cellar: :any,                 big_sur:        "61d12134b9b897b8f785e49e384afd8c09061d15639083a9371b98b2b24bb9ee"
-    sha256 cellar: :any,                 catalina:       "5618f975dfe446b23493d1aa3f7c87288c01c48c978b759f355255aacb388406"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a67a20f3f87feb3758105f7e8a4a2cc272124300642096ed513436ecb07661a5"
+    sha256 cellar: :any,                 arm64_monterey: "f1f56f94f020e9cbd7687a4050b593c994f88c7171cf9b8844269f274a63b154"
+    sha256 cellar: :any,                 arm64_big_sur:  "1cd53a4a542feeb3339d14b6864385431dafde36b4c0c40168932fe1b6ccaddd"
+    sha256 cellar: :any,                 monterey:       "60e3894913d8fe9ca335bdce56bcf3500c50980524751dbe091c48a7208cc7c9"
+    sha256 cellar: :any,                 big_sur:        "83847db14457a67a4018444b572da153f64faee492cad55bf25fcdd2b7258c30"
+    sha256 cellar: :any,                 catalina:       "4193fa09eca8907ea14c05d04a843396c0610cd85af7f483f21242884cc5c6d0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9871545c27387e50f6f0ca0a36791b1e8c27e47857ad7c1bf457547c15a2b2c"
   end
 
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "ffmpeg@4"
   depends_on "glfw"
@@ -26,19 +27,18 @@ class Glslviewer < Formula
 
   fails_with gcc: "5" # rubberband is built with GCC
 
-  # From miniaudio commit in https://github.com/patriciogonzalezvivo/glslViewer/tree/#{version}/include
-  resource "miniaudio" do
-    url "https://raw.githubusercontent.com/mackron/miniaudio/199d6a7875b4288af6a7b615367c8fdc2019b03c/miniaudio.h"
-    sha256 "ee0aa8668db130ed92956ba678793f53b0bbf744e3f8584d994f3f2a87054790"
-  end
-
   def install
-    (buildpath/"include/miniaudio").install resource("miniaudio")
-    system "make"
-    bin.install "glslViewer"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    pkgshare.install "examples"
   end
 
   test do
-    system "#{bin}/glslViewer", "--help"
+    cp_r "#{pkgshare}/examples/2D/01_buffers/.", testpath
+    pid = fork { exec "#{bin}/glslViewer", "00_ripples.frag", "-l" }
+  ensure
+    Process.kill("HUP", pid)
   end
 end

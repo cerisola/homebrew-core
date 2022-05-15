@@ -1,20 +1,20 @@
 class ApacheArrow < Formula
   desc "Columnar in-memory analytics layer designed to accelerate big data"
   homepage "https://arrow.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-7.0.0/apache-arrow-7.0.0.tar.gz"
-  mirror "https://archive.apache.org/dist/arrow/arrow-7.0.0/apache-arrow-7.0.0.tar.gz"
-  sha256 "e8f49b149a15ecef4e40fcfab1b87c113c6b1ee186005c169e5cdf95d31a99de"
+  url "https://www.apache.org/dyn/closer.lua?path=arrow/arrow-8.0.0/apache-arrow-8.0.0.tar.gz"
+  mirror "https://archive.apache.org/dist/arrow/arrow-8.0.0/apache-arrow-8.0.0.tar.gz"
+  sha256 "ad9a05705117c989c116bae9ac70492fe015050e1b80fb0e38fde4b5d863aaa3"
   license "Apache-2.0"
   revision 1
   head "https://github.com/apache/arrow.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ba1490c4a660fc6ff334d70a1b0207a4b032c8e9536000b824b7353da9e0a36d"
-    sha256 cellar: :any,                 arm64_big_sur:  "7c98dab853fe7ede5fe5087697b9231e1091c8fe0cc648f551c377fdfbfc5548"
-    sha256 cellar: :any,                 monterey:       "e257bbca8a539ff1a4bc00fafa0227596492b2628d02bb5ffd4a0f7547a8493e"
-    sha256 cellar: :any,                 big_sur:        "03ed274142b7958352cfe63a92259de5a9d84da150e75771ec73219043dcb8be"
-    sha256 cellar: :any,                 catalina:       "59287cf462b9fd0267696b57c20f4659ec5170d654ff92278a56a52a6911aa45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f1ce769eb52390cd9a0cd63d05d92c7e58bda5c87356a7b0e7370f3e0d1c9421"
+    sha256 cellar: :any,                 arm64_monterey: "3319b8ee2eb5046def32b4e52896b1f876495d9d7bda6f2fd06b7101893b4a97"
+    sha256 cellar: :any,                 arm64_big_sur:  "ff7d1efad9d635fc2b58e8b00da49f8f151117be023b3e3f700d8e072bb0e786"
+    sha256 cellar: :any,                 monterey:       "68d8d93c2d8c5b268217fe5987a91dc7877a64c529654bcabf5889b1b9bfe0e3"
+    sha256 cellar: :any,                 big_sur:        "0efbc480db467c0491e63b1d1ef80af7362f0203153846c3edadb8557ebdd138"
+    sha256 cellar: :any,                 catalina:       "d96cb2577f76adc8685297f06136d94ee6759491a0517208f66b37a74bc9f052"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9dd3aa5bdc76774d783d11f5126c3595fa52d1d9b0e4e47aab1e283180f06048"
   end
 
   depends_on "boost" => :build
@@ -54,6 +54,7 @@ class ApacheArrow < Formula
     ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
     args = %W[
       -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=TRUE
+      -DCMAKE_INSTALL_RPATH=#{rpath}
       -DARROW_FLIGHT=ON
       -DARROW_GANDIVA=ON
       -DARROW_JEMALLOC=ON

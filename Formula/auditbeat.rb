@@ -2,18 +2,18 @@ class Auditbeat < Formula
   desc "Lightweight Shipper for Audit Data"
   homepage "https://www.elastic.co/products/beats/auditbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.0.0",
-      revision: "2ab3a7334016f570e0bfc7e9a577a35a22e02df5"
+      tag:      "v8.2.0",
+      revision: "045da3a1bb89944373c33332c18ca99ef6192df2"
   license "Apache-2.0"
-  head "https://github.com/elastic/beats.git", branch: "master"
+  head "https://github.com/elastic/beats.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "23d0e93cfd2858fcf1ead2665e70442f3cbdbdf3ca4305ab542699b94279896c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7439dd323da8d5bf1c15287d6ccdc0154a39f09150668f7b3b722769e9dca4e9"
-    sha256 cellar: :any_skip_relocation, monterey:       "c3c84c0adcbc100c22012e76ec28cee8ea8604aa329aab099dd4148bc98ca81b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "25205460fa0a128c9b753367cdf726c5d9ead9a74bfbbf285c9555aaadecf305"
-    sha256 cellar: :any_skip_relocation, catalina:       "dfd55e5e35f16dde39d6978cc6560272df3e9ae93aa3aa99696b171591cb4a17"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a53edf4f977361fb895994680ef644710b8c70895746aa2b59a22ec60eb32a01"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5f79c832deae3a1f1c68af06e6137812c93343d38a52ae550112ac08d9d9ebc8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9c401c19be8a413e603756705f6b629c7e2e8c717b2757e204eb4f73bbecefba"
+    sha256 cellar: :any_skip_relocation, monterey:       "920e3faee00b163987a0deffa891e2aea0dc9ee5edfc7f820ab1c1172036dc24"
+    sha256 cellar: :any_skip_relocation, big_sur:        "50ddf2fdddfb1b0c3b74bef62223aa8233b0003e7e08a2e14adce3ca47cdcf56"
+    sha256 cellar: :any_skip_relocation, catalina:       "503d2d31089c18a357f385fea29d110bc062c5c10c35764a6d16e68b026fb85b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4fce9064030da961139e9262bcb409f1b0c65daf2e5f299e7bed927d0ac52636"
   end
 
   depends_on "go" => :build

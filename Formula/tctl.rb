@@ -1,25 +1,25 @@
 class Tctl < Formula
   desc "Temporal CLI (tctl)"
   homepage "https://temporal.io/"
-  url "https://github.com/temporalio/temporal/archive/v1.15.0.tar.gz"
-  sha256 "fc3a9c6df04a9396a65f984def2f87f24c646f1c8cbc42cc0a122bda53df3977"
+  url "https://github.com/temporalio/tctl/archive/v1.16.1.tar.gz"
+  sha256 "ba5bccd462e974689a9601716dc9168d6e5ce9b6109d85278684975d7fe7e5ec"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e91fbb05a18e4ec35120498aea6f3f7442a48f1d9ec8ddc3eb26fa3c6abc019a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c09808196cabf352fa818111f9ebec91c1c25451c28b533f7daf3334381f7bd2"
-    sha256 cellar: :any_skip_relocation, monterey:       "f62f91ffdb6b0333a470f090325dc2a21ba53d14ce80cefeaca11ad8dfff1180"
-    sha256 cellar: :any_skip_relocation, big_sur:        "810f69b51147e00d2c389946e44fbc89ec0dde02e81bb12139e025d14f6ec189"
-    sha256 cellar: :any_skip_relocation, catalina:       "2a7036c5a883f3dd2d60771b48c833f6a162abc3b3cf0c6aebbc38c6133bd274"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2beba0b987dbff7332737c4651cc58db28029c0b669be9a7795b6244e0e1177"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "470cb1dfb2cb2530fc3c966d95ff6ff4bf939a2994659c439f1ee998e640de50"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ecb47cc696305a9b63b73cddd67343e9ad81a8f4d471f48d417a3202365b555d"
+    sha256 cellar: :any_skip_relocation, monterey:       "f5254f93d38b1c8416ab402da1349059075f86c7d16e56c63d9fc6436643e88f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "62136434bd416c2edc46d891fb48ac3bf0a60fe57f5a357b23bcff90f4c0a6b2"
+    sha256 cellar: :any_skip_relocation, catalina:       "9f891235816c98e033c44d9836fddcb5dc226df716db3615f03262a523aaa5b7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b98127102b4d6cca64f9a827f41abc18d6be87e3c14e2a62804201162b3dcfe2"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/tools/cli/main.go"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/tctl/main.go"
     system "go", "build", *std_go_args(ldflags: "-s -w"), "-o", bin/"tctl-authorization-plugin",
-      "./cmd/tools/cli/plugins/authorization/main.go"
+      "./cmd/plugins/tctl-authorization-plugin/main.go"
   end
 
   test do

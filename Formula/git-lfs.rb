@@ -1,17 +1,17 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
   homepage "https://github.com/git-lfs/git-lfs"
-  url "https://github.com/git-lfs/git-lfs/releases/download/v3.1.1/git-lfs-v3.1.1.tar.gz"
-  sha256 "668147fabf314d32b86ff1fe921155cd899621b24eed212bf4a3a80e440eb8db"
+  url "https://github.com/git-lfs/git-lfs/releases/download/v3.1.4/git-lfs-v3.1.4.tar.gz"
+  sha256 "d7bfeb6f4c219c44773da4f93da28eb1e2e654efa4cd23294d9039247d8cde64"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "003941719623f2b66e8304a33c822f5f641ef7d60ae0a0e73908a0fe94cd4033"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c446f108807f122d8fc2bda50db508b0d6cd30fbac838907c1e93a1841e64911"
-    sha256 cellar: :any_skip_relocation, monterey:       "cf18fec26566a927a07e6296c5ba017c45ba06c1ccd42c8a3f3081335040ddd4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c8badc22ff338d2b9586044ee0758981fca60b960da1c511ea3e0fc9f79a3856"
-    sha256 cellar: :any_skip_relocation, catalina:       "c1685e20dda8b14c40037e57642591fef5ce2b450c2e4d7cc44509b5d134bb13"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "91ec5f2f61ef6a819347d93c46048987d5bb285d040352bff475fb698e6876af"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7f7742c44c6c29b1f991d0e7d5235c4e3923d485ab5aff0b1e35838eb4d48c42"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "846be683762d3261e4a923d2af7e4c0e674575e1ef6273daee45bd6d53053aec"
+    sha256 cellar: :any_skip_relocation, monterey:       "76c39efa2728041e71808e09a9ea19a73a9b605b0e06a5c421038c1cdc9464a4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8f9e7d1b3ffc4419fe6310e54ee46a317cbb04938cfb4e8c3f4d692d1c704403"
+    sha256 cellar: :any_skip_relocation, catalina:       "df33578be645c8c64ac6ea806a0b2220559a7169b896708708eb26df339a4601"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56f2f3065b36a170b567797a8eff3485938e4c45cfb8d367aac9c39a899a41ad"
   end
 
   depends_on "go" => :build

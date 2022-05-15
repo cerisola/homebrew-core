@@ -3,17 +3,17 @@ require "language/node"
 class MarpCli < Formula
   desc "Easily convert Marp Markdown files into static HTML/CSS, PDF, PPT and images"
   homepage "https://github.com/marp-team/marp-cli"
-  url "https://registry.npmjs.org/@marp-team/marp-cli/-/marp-cli-1.6.0.tgz"
-  sha256 "c9e4300a18d1f5107ee10bbd3888116f53c8aee0a0df5f48964f963064101beb"
+  url "https://registry.npmjs.org/@marp-team/marp-cli/-/marp-cli-1.7.2.tgz"
+  sha256 "e67b4ae390c38a5c1dcdcdd4d0b7db62c975a9db7ab3ec9871e549231a32d928"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "caf0cb6216de716ba431bd21a8fe7d9f53ced6d4281315bde190a7899f915aa0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "caf0cb6216de716ba431bd21a8fe7d9f53ced6d4281315bde190a7899f915aa0"
-    sha256 cellar: :any_skip_relocation, monterey:       "a1191ac7f91ae38bd75b1ab67ccc39f9cd3e30d13483a037e6570032e9cee6f8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a1191ac7f91ae38bd75b1ab67ccc39f9cd3e30d13483a037e6570032e9cee6f8"
-    sha256 cellar: :any_skip_relocation, catalina:       "a1191ac7f91ae38bd75b1ab67ccc39f9cd3e30d13483a037e6570032e9cee6f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f994907764a54c5ab10580a8cfe42ef344ce73dd74bb0e1732c33cd5500c442"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9891f6bdccd810f899b2acf46e9ea145a70ab15e629842c6a4713134f56789e7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9891f6bdccd810f899b2acf46e9ea145a70ab15e629842c6a4713134f56789e7"
+    sha256 cellar: :any_skip_relocation, monterey:       "30504eb972765913d2e2ca08b4e35980ca3a9fb373cb6c0fca5a875d08299cc4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "30504eb972765913d2e2ca08b4e35980ca3a9fb373cb6c0fca5a875d08299cc4"
+    sha256 cellar: :any_skip_relocation, catalina:       "30504eb972765913d2e2ca08b4e35980ca3a9fb373cb6c0fca5a875d08299cc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "775b30d9938fdf229312de757eb67f6041846db54b2069726bba130c7be7a2f3"
   end
 
   depends_on "node"

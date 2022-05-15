@@ -2,9 +2,10 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://coreos.com/operators/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      tag:      "v1.17.0",
-      revision: "704b02a9ba86e85f43edb1b20457859e9eedc6e6"
+      tag:      "v1.20.0",
+      revision: "deb3531ae20a5805b7ee30b71f13792b80bd49b1"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/operator-framework/operator-sdk.git", branch: "master"
 
   livecheck do
@@ -13,31 +14,36 @@ class OperatorSdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb905bb19cb31a78b969d7d05dcd1bc8e8123f496c81318ad7ab50fce71d9d4b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0ba510e0e019b30bc15c2e9ee9d9e75210497c5ff6a96772d0783e4f73ac65c0"
-    sha256 cellar: :any_skip_relocation, monterey:       "1abe5db599b295dc2e97e8a61406885d0ca95b3a7340d75197795142149ee794"
-    sha256 cellar: :any_skip_relocation, big_sur:        "daa252ea2d46e0882a53c34a915987fa0c35074b95e7b42e73b1cbe10496f6f6"
-    sha256 cellar: :any_skip_relocation, catalina:       "ccaf29456a18c8192dcdbc1ddbabb1e9f1f2312d45d3281f6c9eca89efae300a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55f2b34baeab84ff0a852e8127a85cbc239e58b3250e5559520563f1ecd43a85"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e7fc83b305d8fd672b1a68ed04d83afb2509393e07a105ba1922d11ee491986"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "239b1ada548023fa19a593d3f15267f7e370f5e2d30cb2c4be1045aa7b21a2aa"
+    sha256 cellar: :any_skip_relocation, monterey:       "8fd164db5f3d9e183527aa2082d096c60b1f097a05e965d8daa308842f12dab5"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c50a93409f48b97037f376aa565a58f3e0cd282b5d1cd730ffdbf3bb58f6fb3e"
+    sha256 cellar: :any_skip_relocation, catalina:       "17820af2c0902e9b7bede2a5747a553838160a2cbe603686aaa667b798345faf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0e9798f46d1f7f58da65b99dfbb3a242c2e1c8720c4979ea249c1818b1a02ee"
   end
 
-  depends_on "go"
+  # Resolves upstream issue: https://github.com/operator-framework/operator-sdk/issues/5689
+  # Should be updated to "go" when the following upstream issue is resolved: https://github.com/operator-framework/operator-sdk/issues/5740
+  depends_on "go@1.17"
 
   def install
-    ENV["GOBIN"] = bin
+    ENV["GOBIN"] = libexec/"bin"
     system "make", "install"
 
     # Install bash completion
-    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "bash")
+    output = Utils.safe_popen_read(libexec/"bin/operator-sdk", "completion", "bash")
     (bash_completion/"operator-sdk").write output
 
     # Install zsh completion
-    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "zsh")
+    output = Utils.safe_popen_read(libexec/"bin/operator-sdk", "completion", "zsh")
     (zsh_completion/"_operator-sdk").write output
 
     # Install fish completion
-    output = Utils.safe_popen_read(bin/"operator-sdk", "completion", "fish")
+    output = Utils.safe_popen_read(libexec/"bin/operator-sdk", "completion", "fish")
     (fish_completion/"operator-sdk.fish").write output
+
+    output = libexec/"bin/operator-sdk"
+    (bin/"operator-sdk").write_env_script(output, PATH: "$PATH:#{Formula["go@1.17"].opt_bin}")
   end
 
   test do
@@ -48,7 +54,12 @@ class OperatorSdk < Formula
       assert_match commit_regex, version_output
     end
 
-    output = shell_output("#{bin}/operator-sdk init --domain=example.com --license apache2 --owner BrewTest 2>&1", 1)
-    assert_match "failed to initialize project", output
+    mkdir "test" do
+      output = shell_output("#{bin}/operator-sdk init --domain=example.com --repo=github.com/example/memcached")
+      assert_match "$ operator-sdk create api", output
+
+      output = shell_output("#{bin}/operator-sdk create api --group c --version v1 --kind M --resource --controller")
+      assert_match "$ make manifests", output
+    end
   end
 end

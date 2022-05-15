@@ -1,8 +1,8 @@
 class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
-  url "https://github.com/hashicorp/consul/archive/refs/tags/v1.11.3.tar.gz"
-  sha256 "1bbb45b6b81c23a0d9b02be2eb8a1f22c67837a72ba64d8ac9ca3d849fb82de2"
+  url "https://github.com/hashicorp/consul/archive/refs/tags/v1.12.0.tar.gz"
+  sha256 "87b3fe01d0a772dc1cbab31cf38ab05d651d93cd1632aa289faf06988a65d617"
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Consul < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "34ff3c2fc57467077eab10722250f8847fa463be3b4cfa1b595288da9bd8b13d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "10f4b39d7748055e47da96ef0e846c6811d1833b3a3ea1741fd162a94b44e853"
-    sha256 cellar: :any_skip_relocation, monterey:       "ddddba19df710e13b76362d98dfae9966accf9e9c1ef8ffe16437f3609899cf9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1ec6ffea670d0fa9bf1f1acbba1c55b438f2b7407094ac8a9c5f124620c6a01b"
-    sha256 cellar: :any_skip_relocation, catalina:       "3039a78440681c555b84c44c11ff5797796963482766121a0a3c782be0a54a2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7cbcd958079d386c7deb795c0783f57bb932ea8cf962326dda4f3519c446518"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f39a4ad0e91a3f9936651d54415fcb39f54b6fe3b825cd3c8d4daf72a1b0b3d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "64172c355e3947d79b8f8b5cd7a93aed1574cc00242f5c219564f83cc31ccd14"
+    sha256 cellar: :any_skip_relocation, monterey:       "135139df9816d07acb4fa7a9b2faeb9cec6f13d5e33c0ff64f5484dbbed2e527"
+    sha256 cellar: :any_skip_relocation, big_sur:        "d97cf4bfb3499bc6cb26e0c07129f08442645f6cca9441b12e9bd4949b116b05"
+    sha256 cellar: :any_skip_relocation, catalina:       "a86e7f955578d5e9115cca11e0e4d335bf50b9a9abd7dc10318d1e7176a6ff9e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f5ad52671b971b12fab8acdfbda4eabc960d894217cf011b200f911d6cf92439"
   end
 
   depends_on "go" => :build

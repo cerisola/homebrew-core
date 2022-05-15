@@ -1,8 +1,8 @@
 class Kdoctools < Formula
   desc "Create documentation from DocBook"
   homepage "https://api.kde.org/frameworks/kdoctools/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.91/kdoctools-5.91.0.tar.xz"
-  sha256 "7620010ddfaec988715be343af4e35f8bac75b5e14d1fa9d3bdbbe620925990a"
+  url "https://download.kde.org/stable/frameworks/5.93/kdoctools-5.93.0.tar.xz"
+  sha256 "25e83ff151c53667b94e25a5c41993796164683a43913820a5651f3610b65d5c"
   license all_of: [
     "BSD-3-Clause",
     "GPL-2.0-or-later",
@@ -19,10 +19,12 @@ class Kdoctools < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "e18d8677e0c3ffd6d61dabb96f32f6358cc35174ac3cdb36074820b511ecc2a1"
-    sha256 cellar: :any, arm64_big_sur:  "becce4bb11ef82cfcec0848bd1c79e796e64837eae449b492f53ed0c30c073b9"
-    sha256 cellar: :any, big_sur:        "f7493484fd34be0179ebbdde6f8b97048158890e8386dc9f1acd5b9b61a829dd"
-    sha256 cellar: :any, catalina:       "941c6841ceff5e6eb896ee747a04ec791ec54299d1621cd8f3a3aa286e81b26d"
+    sha256 cellar: :any,                 arm64_monterey: "40464918fa7ba0e4360fafc9277a1b491bf182e988f2b58146dbd77acdc81cd3"
+    sha256 cellar: :any,                 arm64_big_sur:  "0b4b36729782625015a78720f9a47be27222ca60139bbcc5e2431f6fa47f6cb4"
+    sha256 cellar: :any,                 monterey:       "92cb1b8caef89fa8f85711e7d18bdef1ffee82cff2c959e088737f86fc44c516"
+    sha256 cellar: :any,                 big_sur:        "1474492a0b7b35abbf8bda083384f45b4e28f035086e2c72dcafb9b464af1d43"
+    sha256 cellar: :any,                 catalina:       "2a51b98cf4f186bcd6edee78ef5cf9b86adb4c33bae132bc1dd8ddbbca871dea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c45f7e5a48415c3fb788eca4b81d1858c3d1fc418d96d2478c54f8a5c060ea05"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -37,6 +39,12 @@ class Kdoctools < Formula
   uses_from_macos "libxml2"
   uses_from_macos "libxslt"
   uses_from_macos "perl"
+
+  on_linux do
+    depends_on "gcc"
+  end
+
+  fails_with gcc: "5"
 
   resource "URI::Escape" do
     url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.09.tar.gz"

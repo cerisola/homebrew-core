@@ -2,18 +2,18 @@ class Seaweedfs < Formula
   desc "Fast distributed storage system"
   homepage "https://github.com/chrislusf/seaweedfs"
   url "https://github.com/chrislusf/seaweedfs.git",
-      tag:      "2.89",
-      revision: "ff666104c45acb38f3e9deb60702885fe3491fe3"
+      tag:      "3.02",
+      revision: "a4ca3ed1f0c2bcde1d36bb48f81dedc3e1924679"
   license "Apache-2.0"
   head "https://github.com/chrislusf/seaweedfs.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bfb33822d76ea0cfe60c5e010de0804d4d9093c9d8e2afdd0092390cf5f981b7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "745b84a8c96ef45e5c058bac3be35b2dbb0287004064ae1d7353830dbc9766ba"
-    sha256 cellar: :any_skip_relocation, monterey:       "11cdf8664626dddc4c1389dd3fd9f63a7f9415b8491e408936a4d895e86a1ee9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a5e77db4a17abcb7e9b61e3406cd6476c805874d140ade89c25befc7e737bbda"
-    sha256 cellar: :any_skip_relocation, catalina:       "1591614e42d5ea10bd3eda69ff9c91e7da06d50cb248e88dc7ff68b0963f51fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e87c126065646fff87aa5bb3295a29f3ab72df75d0c252c7596eeaba12faf3f1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "dfbc529db1a87327284fa0376d1b1579447ec8e79aa5d5ef2e7fffb3bd98b7be"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "70d427f9154c4db776e5909e42e8e95838e7f1d41a2ae1bd5f7ee6de0c26d72a"
+    sha256 cellar: :any_skip_relocation, monterey:       "e33ab21e2c2013582fced7e34428d37c579afe3ebae2c2f5fafe4261226ee457"
+    sha256 cellar: :any_skip_relocation, big_sur:        "833414e95f676b8343fbcec802656a311e03cff587ecf17fd3d29bd66f0a0f64"
+    sha256 cellar: :any_skip_relocation, catalina:       "0aae83f4a5ceb57e8399138f4e1dbff764a574e3f7b4b4ea4cfc1cda24508c13"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1cb23db6fd9fef4b626b72fdf6367a30959944c182e8e403753d2d3abad7896"
   end
 
   depends_on "go" => :build
@@ -34,7 +34,7 @@ class Seaweedfs < Formula
     volume_grpc_port = free_port
 
     fork do
-      exec bin/"weed", "server", "-dir=#{testpath}",
+      exec bin/"weed", "server", "-dir=#{testpath}", "-ip.bind=0.0.0.0",
            "-master.port=#{master_port}", "-volume.port=#{volume_port}",
            "-master.port.grpc=#{master_grpc_port}", "-volume.port.grpc=#{volume_grpc_port}"
     end

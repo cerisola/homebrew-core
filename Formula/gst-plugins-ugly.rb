@@ -1,8 +1,8 @@
 class GstPluginsUgly < Formula
   desc "Library for constructing graphs of media-handling components"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.18.5.tar.xz"
-  sha256 "df32803e98f8a9979373fa2ca7e05e62f977b1097576d3a80619d9f5c69f66d9"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.20.1.tar.xz"
+  sha256 "42035145e29983308d2828207bb4ef933ed0407bb587fb3a569738c6a57fdb19"
   license "LGPL-2.0-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-plugins-ugly.git", branch: "master"
 
@@ -12,12 +12,12 @@ class GstPluginsUgly < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "17d964846b2e566aef42536dfd1656e142b932d3f012ea35a12fc21caaf706eb"
-    sha256 arm64_big_sur:  "1eb49d0508fea6b8b6cfc79320851f4218c58c965caa84fb3acb772d599dbb5e"
-    sha256 monterey:       "a0a8716e0f2852b9801e491ce9358368aca40db23930d2469449af54ab25214e"
-    sha256 big_sur:        "4d4929eddbc0d179821e23b1d464ba6b5e9016f8bfdc46d508fea492aa2d17c1"
-    sha256 catalina:       "61c6247e61ea354c16b781fee374c907012f2ad11640ee4de99cbb15f5fb6c9f"
-    sha256 x86_64_linux:   "dc83215500215a27139c960d14f91428aff6dd1f58fb687e770ad48372f8209b"
+    sha256 arm64_monterey: "c10bb4e208b4b0a365b11f5a1db6caa3f81d84bb7068d5d0531ba0c6ac84ab9f"
+    sha256 arm64_big_sur:  "7850cc79f7a37e90ce45be14440a52129522846b84f78e073e3a7d3b8ed39fe9"
+    sha256 monterey:       "2bfa4940846d3ab0ca62e185c168c20795e6b35dd073af27ba2a738771f4a84e"
+    sha256 big_sur:        "90c4a81f113917509a2a321c593836f907dfc5972972f3a82db8e0d04f379c6a"
+    sha256 catalina:       "60a3f0a3264e8f1cc42660cb3fe5eb32f03dda311065ea3008f9b15b95ab3905"
+    sha256 x86_64_linux:   "ec842b0e266d5c0ab23b5c6a6bba9ede158295f341f5944b0814f3e58149b950"
   end
 
   depends_on "meson" => :build
@@ -27,7 +27,6 @@ class GstPluginsUgly < Formula
   depends_on "gettext"
   depends_on "gst-plugins-base"
   depends_on "jpeg-turbo"
-  depends_on "libmms"
   depends_on "libshout"
   depends_on "libvorbis"
   depends_on "pango"
@@ -35,7 +34,9 @@ class GstPluginsUgly < Formula
   depends_on "x264"
 
   def install
+    # Plugins with GPL-licensed dependencies: x264
     args = std_meson_args + %w[
+      -Dgpl=enabled
       -Damrnb=disabled
       -Damrwbdec=disabled
     ]

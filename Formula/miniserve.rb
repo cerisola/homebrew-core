@@ -1,17 +1,17 @@
 class Miniserve < Formula
   desc "High performance static file server"
   homepage "https://github.com/svenstaro/miniserve"
-  url "https://github.com/svenstaro/miniserve/archive/v0.19.0.tar.gz"
-  sha256 "79905c0da5f87578e166c6cbd6bc5b8a1b49a7f97baaae9d55d215fb0eca3145"
+  url "https://github.com/svenstaro/miniserve/archive/v0.19.4.tar.gz"
+  sha256 "d85a0e65f74a819709bfba8ab564d60162dba65430233e5582d00a6f81ff820d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fb9d122441f59862104654fddb5ceb9cf6343b7cdd9f8b18b9e8bb45e0c645c3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bc8c739fa7aaa3b09a4a2c32eee8ceb62b42ae5aadfeb5ead8093f4abf70c561"
-    sha256 cellar: :any_skip_relocation, monterey:       "c1721f66e0f570b025733cb620f5166d606a3d3fd2435cea5937fb3ac3dd011b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "53f50b77ad0f44c753d16ef9772674f650bd9bf4c1b12f902be3dde040279993"
-    sha256 cellar: :any_skip_relocation, catalina:       "0dad23a22e6cab335d6dc0b30f3db4d0a3ab24ca3d6689af19db76692d8fde62"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "28ada3ec29eecccb4d5b5d83ff63ffd2c46d00112a6efc64ae32dea80dd6cd68"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c17eee465fdd554981aee2eeb7629b7a8dad355a64b138e7e120cb95e6b77da4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ff78a7a1649cf9b48d0258e9c3f7310572522dbd4887fc0278ce23263458a1f6"
+    sha256 cellar: :any_skip_relocation, monterey:       "1d06d354efbb2725dd18ac6b5cacce87fb099a3fd76de829e0a2f54cea9f7ff7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fd459d7e494e21fe1051ddbd9e954b33b9d04b98374cb6aa1259dc644b80a4c7"
+    sha256 cellar: :any_skip_relocation, catalina:       "f55d2522a9265ac5dab04a71ea084cd379a96dd5eb9d8a5207da5b5504be3602"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db9de641cdad7c1fc2d75fa7ee53d8a1b6e2c4417020c136eae2a4594e4f67da"
   end
 
   depends_on "rust" => :build

@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v17.5.0/node-v17.5.0.tar.xz"
-  sha256 "9b24e6830576c57ee36ba48333def8be575232987b4da939568b7b89f773cdc3"
+  url "https://nodejs.org/dist/v18.0.0/node-v18.0.0.tar.xz"
+  sha256 "344d0e6540b524c69a979ff5c3e78cda7254fd72c03699926beb0b8558b8ce75"
   license "MIT"
   head "https://github.com/nodejs/node.git", branch: "master"
 
@@ -12,16 +12,16 @@ class Node < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a5d10ff8903676a3cf156a42314ec20c786cc18a9dff89c42f0b7d639451d5e0"
-    sha256 cellar: :any,                 arm64_big_sur:  "5ef04164ea5cb7e5a37119413c4950b4052c077cb01e5f80f0f13a0dfb3995fb"
-    sha256 cellar: :any,                 monterey:       "378c69d9cb2c683eaaebe700ac622a5a8c6913b799fbadd3e0997a839b6a125d"
-    sha256 cellar: :any,                 big_sur:        "47cf05de7bb1ad28a9be17ab35165381202b4b3a5ad476b6adf3b3bfdf5961ef"
-    sha256 cellar: :any,                 catalina:       "e7835d304de7ecdade6a87bf9102062860b2d52b6c491f8770591b4ae250cdda"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf2c23575a73ab4f879583bc38ba820c5b94376052c8d88a900daeb77563e7e3"
+    sha256 cellar: :any,                 arm64_monterey: "c712a5bbc21c5d22250079e77a1cde2eb57a6d67967b3562eb9eda4c5f0cf239"
+    sha256 cellar: :any,                 arm64_big_sur:  "091d088c725eac508edcd842e5b01ce559d09468470c7fda27935862d872e61d"
+    sha256 cellar: :any,                 monterey:       "087f60d39f316c8762569df84c600b77ac9374c181f9763c5e8262a7e23f6191"
+    sha256 cellar: :any,                 big_sur:        "4200d108254940459db827ef55c71480d105fa7b34cc23e88045d34ad76c5755"
+    sha256 cellar: :any,                 catalina:       "094c89eae014a4b4e98db477488bfd37a83f03bca6f707fab35b3db555292e71"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1885b4c2a37cf2a49afcae53a800c3503fd83727227e23fbb53bba1161624053"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.10" => :build
   depends_on "brotli"
   depends_on "c-ares"
   depends_on "icu4c"
@@ -52,15 +52,8 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-8.4.1.tgz"
-    sha256 "e008d48f53009f644321c342cd2598d6fd1157424a55a9663f722c0ef0686498"
-  end
-
-  # Fixes node incorrectly building vendored OpenSSL when we want system OpenSSL.
-  # https://github.com/nodejs/node/pull/40965
-  patch do
-    url "https://github.com/nodejs/node/commit/65119a89586b94b0dd46b45f6d315c9d9f4c9261.patch?full_index=1"
-    sha256 "7d05debcfaf7bcbce75e28e3e5b2a329fe9bbb80f25b7b721e1b23f20db4dc40"
+    url "https://registry.npmjs.org/npm/-/npm-8.6.0.tgz"
+    sha256 "d1cc0bc97f58f65b4acd8d7bcae71a26bc2849982f1b6a7ede63efbb07f9cd58"
   end
 
   def install
@@ -68,7 +61,7 @@ class Node < Formula
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
+    ENV["PYTHON"] = which("python3")
 
     # Never install the bundled "npm", always prefer our
     # installation from tarball for better packaging control.
@@ -175,8 +168,8 @@ class Node < Formula
     assert_predicate HOMEBREW_PREFIX/"bin/npm", :exist?, "npm must exist"
     assert_predicate HOMEBREW_PREFIX/"bin/npm", :executable?, "npm must be executable"
     npm_args = ["-ddd", "--cache=#{HOMEBREW_CACHE}/npm_cache", "--build-from-source"]
-    system "#{HOMEBREW_PREFIX}/bin/npm", *npm_args, "install", "npm@latest"
-    system "#{HOMEBREW_PREFIX}/bin/npm", *npm_args, "install", "ref-napi" unless head?
+    system HOMEBREW_PREFIX/"bin/npm", *npm_args, "install", "npm@latest"
+    system HOMEBREW_PREFIX/"bin/npm", *npm_args, "install", "ref-napi" unless head?
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :exist?, "npx must exist"
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :executable?, "npx must be executable"
     assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx --yes cowsay hello")

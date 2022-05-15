@@ -1,20 +1,24 @@
 class Jless < Formula
   desc "Command-line pager for JSON data"
-  homepage "https://pauljuliusmartinez.github.io/"
-  url "https://github.com/PaulJuliusMartinez/jless/archive/refs/tags/v0.7.1.tar.gz"
-  sha256 "8b36d117ac0ef52fa0261e06b88b5ae77c2ff4beeb54f2c906a57f066dc46179"
+  homepage "https://jless.io/"
+  url "https://github.com/PaulJuliusMartinez/jless/archive/refs/tags/v0.8.0.tar.gz"
+  sha256 "3f1168c9b2432f7f4fa9dd3c31b55e371ef9d6f822dc98a8cdce5318a112bf2d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "57c907a913f3ff76f5d512c2e9ae8a2fe04274145d1229b4061d47f42e705c58"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1d98ace9bbd3e9e9f6bed4cf88f14d64da1be7e2519228526cfc3f76a0016cc4"
-    sha256 cellar: :any_skip_relocation, monterey:       "a54c215233d330c415682c03859e8565fcc7be354091f02d56bc24971745d62a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2c8a0fb4b7d42da4feab7a818a687cc5dc03d7892d8db7f80a91187780551f46"
-    sha256 cellar: :any_skip_relocation, catalina:       "fab76051b8085b8b705f480fd9fa88225a2b11559b53f40222fa119e272dffb3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "760ddb38ad6a95b70aae4e0a77c3a6dc1f593f45977a98b58a7a8eff8146cf17"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8c4cb7a1e0c7679b0938b0ba541f0999edaa38f5ea7ae184f0f742b4308e1523"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9e6fec31ab0e4bd02adc3ecad370d078ef5eb29346e38d1513133cb895614f38"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b1d51fbd3bbf48c03b3c745b51b76efcfbb5a6c499f0a781199e85ef665d5bf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c4de98153100df7d2c71843ce981919d322a56521eaf4a67927a7338ee2c650e"
+    sha256 cellar: :any_skip_relocation, catalina:       "caa1ee82da08f712bc9aec31add0b4842cef0027f2fd1ad976c22063e439eddd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "28573ca787ec25727eb3b1b9ad08f6b90d66c899a4c28eee1ec86c0331b6ade5"
   end
 
   depends_on "rust" => :build
+
+  on_linux do
+    depends_on "libxcb"
+  end
 
   def install
     system "cargo", "install", *std_cargo_args

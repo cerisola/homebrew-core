@@ -1,8 +1,8 @@
 class Gstreamer < Formula
   desc "Development framework for multimedia applications"
   homepage "https://gstreamer.freedesktop.org/"
-  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.18.5.tar.xz"
-  sha256 "55862232a63459bbf56abebde3085ca9aec211b478e891dacea4d6df8cafe80a"
+  url "https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.20.1.tar.xz"
+  sha256 "de094a404a3ad8f4977829ea87edf695a4da0b5c8f613ebe54ab414bac89f031"
   license "LGPL-2.0-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gstreamer.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Gstreamer < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "17eaa301f59d1fe050947a33170c19a740249d30071df7cfea328c07f73ef21d"
-    sha256 arm64_big_sur:  "8a5e1cea56b64080ed4849d694c5c93d6e4379c06d371006e844bdfa78c1bdf7"
-    sha256 monterey:       "623bec9c478267a5964e1bb0e6e9fa18212a3bdc8ad70978509059e6a501b2e1"
-    sha256 big_sur:        "572b2ffe10da57213e900b3b23d12e2ba5be8f912e327ba46cbc7b40dcff9b02"
-    sha256 catalina:       "33c77ef7ddd3b4d5daf1e5851efc0a293e4284726a35e732938c49f9bcbdfbf3"
-    sha256 x86_64_linux:   "5bcd1f49326cd27c245157336af71b43da146e3824a6845cb10fdfe65098ee33"
+    sha256 arm64_monterey: "dd425d8ae882c6d2119e51ebc6ef10742472fa7b6e3e250e728ae893f555ae38"
+    sha256 arm64_big_sur:  "1715bbe4b0b2c4880a8e557eb8670a9f82203b7acbe84dcf1e2e9362000bb28b"
+    sha256 monterey:       "899a70db3e2c7192a5908a8b7ab1de0d22d4973ab35951901a867d89be4f0e11"
+    sha256 big_sur:        "36d32c9bc0c06b18b5e393594c3e017ef8a92bfe7373bfc8eb344be3364f7cd2"
+    sha256 catalina:       "52b662142cc56997c1a809ddc5aaeb39fec140b0cbe3cd36fa22faeca86fad67"
+    sha256 x86_64_linux:   "1b564a43905edbe270da0ea2b0c9ed565a144b5d78e7e6b6221a7e287a4ca5c1"
   end
 
   depends_on "bison" => :build
@@ -51,6 +51,8 @@ class Gstreamer < Formula
       system "ninja", "-v"
       system "ninja", "install", "-v"
     end
+
+    bin.env_script_all_files libexec/"bin", GST_PLUGIN_SYSTEM_PATH: HOMEBREW_PREFIX/"lib/gstreamer-1.0"
   end
 
   def caveats

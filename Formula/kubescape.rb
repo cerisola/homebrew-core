@@ -1,18 +1,18 @@
 class Kubescape < Formula
   desc "Kubernetes testing according to Hardening Guidance by NSA and CISA"
   homepage "https://github.com/armosec/kubescape"
-  url "https://github.com/armosec/kubescape/archive/v2.0.147.tar.gz"
-  sha256 "d886e868cacc0554f7e80ce3885487756450d3f1d4079cd0377bda709772a3c4"
+  url "https://github.com/armosec/kubescape/archive/v2.0.153.tar.gz"
+  sha256 "2dd96ca4d78789c75491fb4babcbd2848bf134ad22426eeb84f305316b28ce84"
   license "Apache-2.0"
   head "https://github.com/armosec/kubescape.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e7d071817a14562732e372ff4a02f33d6d175aac8e391f9999b8426b3a45a1e2"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "34a6d8703fff7208d4a25c5f4419da9730bf5c84f2fcefd2744ce382795678a8"
-    sha256 cellar: :any_skip_relocation, monterey:       "92cc4db407f884eec73eb4458112ea058bb7850274640387ebd92f2689140c7c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "61916e1e73b10bcb30f1306b18ae1ce4b7a29d899f3fcc6affa8e7edebed77b8"
-    sha256 cellar: :any_skip_relocation, catalina:       "38160b961e111c3c9172868ec52d6a538ec2977e22d65561198e655f928de218"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fac9da36ab2a334f5c854f2fc7bd2f846a01d7d1179ca35b52b4557b8e83e8bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f50fd1d8c2c065c3e4ba02a5091fe72a90e0ba324f4633dfb531855491fac86f"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e3cb7c4c1036960771aaf5484293ed78f9a5afcfa5da241fe3f816eb40f0798"
+    sha256 cellar: :any_skip_relocation, monterey:       "3ec26d55f5a99a018c8f906929598a0a369396e1bdae054e5a8884395c9381a7"
+    sha256 cellar: :any_skip_relocation, big_sur:        "33b9d0253f9021e6d6ee254046c0e83bd32bb42e876f97f9070924f6265cfa58"
+    sha256 cellar: :any_skip_relocation, catalina:       "beb549c3d7653c05fdccdd4f72b7ea56284ceb64fae6bfb450a59ec30e97bff9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c9e22108ce425cdca3cc21fd01cec3754c5e578e629c12d349a8b70df51d9d4"
   end
 
   depends_on "go" => :build
@@ -20,8 +20,9 @@ class Kubescape < Formula
   def install
     ldflags = %W[
       -s -w
-      -X github.com/armosec/kubescape/cautils.BuildNumber=#{version}
+      -X github.com/armosec/kubescape/v2/core/cautils.BuildNumber=v#{version}
     ]
+
     system "go", "build", *std_go_args(ldflags: ldflags)
 
     output = Utils.safe_popen_read(bin/"kubescape", "completion", "bash")

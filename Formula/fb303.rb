@@ -1,18 +1,19 @@
 class Fb303 < Formula
   desc "Thrift functions for querying information from a service"
   homepage "https://github.com/facebook/fb303"
-  url "https://github.com/facebook/fb303/archive/v2022.02.14.00.tar.gz"
-  sha256 "2f517506dc6cdf17bdbe4a2251be6c47eee77887650d83970741f2beee35743e"
+  url "https://github.com/facebook/fb303/archive/v2022.03.21.00.tar.gz"
+  sha256 "23435e0af42bcfe4e244492b627e8cb30cf2d1e9dd8a7f891b947430b50ccd60"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/facebook/fb303.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c981cd86def0f0ada315d6ea8721870ffb065ae4d67c13269c09b19e55e8708a"
-    sha256 cellar: :any,                 arm64_big_sur:  "84333295d301f125c62420fb63fbff807838b4d39ea3932fcfb6814e9be42a9a"
-    sha256 cellar: :any,                 monterey:       "a486bce583dd2e9bc9c60a88c4d8a7aaea981d784943b127d7adf13f4b8270ff"
-    sha256 cellar: :any,                 big_sur:        "ca2344f8ff9a647da30795323db1f5edff0a63de267f1d7de4c45efece866a3b"
-    sha256 cellar: :any,                 catalina:       "9b6d179a753263d6af668c936b907c7e2b47f1e2aa8019da4bb4d17c4e404a58"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a1e6062de3d16996f9d5da46e2ae10c26730b2029657d8b2d18431a9afb3e034"
+    sha256 cellar: :any,                 arm64_monterey: "62bc3052575c69b2638b5175892f8fcad4ef06281e4d8b90c2c9105670f92c6c"
+    sha256 cellar: :any,                 arm64_big_sur:  "d9233f52ef98ed38b38bec978d5b99bfde04e08aca731ca53f3e251f5b89eb1b"
+    sha256 cellar: :any,                 monterey:       "ba1e7523166b6669c74ad66c99ef3146680e8b27b3e5111994c5d962b50467d1"
+    sha256 cellar: :any,                 big_sur:        "72600b5192d830a0c2d62ec009f1f9b42117e4076b1eb893a65beb9a5008f92f"
+    sha256 cellar: :any,                 catalina:       "bce9822b5c35d50788c03cea7f12d730f9933b12cfb3484e63879db85a2c0b45"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "88883cc9064cfffb2c259d2841c2ad3b948a2d71439bb467e9e5b45bfcb399b2"
   end
 
   depends_on "cmake" => :build
@@ -35,6 +36,7 @@ class Fb303 < Formula
     system "cmake", "-S", ".", "-B", "build",
                     "-DPYTHON_EXTENSIONS=OFF",
                     "-DBUILD_SHARED_LIBS=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

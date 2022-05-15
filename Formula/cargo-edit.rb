@@ -1,19 +1,17 @@
 class CargoEdit < Formula
   desc "Utility for managing cargo dependencies from the command-line"
   homepage "https://killercup.github.io/cargo-edit/"
-  url "https://github.com/killercup/cargo-edit/archive/v0.8.0.tar.gz"
-  sha256 "4a08e914c17204cb3ab303b62362ca30d44cf457b3b1d7bde117b8ab4cb2fa64"
+  url "https://github.com/killercup/cargo-edit/archive/v0.9.0.tar.gz"
+  sha256 "96c231b30339b1a05444c8faa036be84ecbb7f8eaead95c77de9a05f0c190b64"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "89c3c054b982aaa72718173a5a21c91987d1aa09adc7415b20e56b3dd19caed9"
-    sha256 cellar: :any,                 arm64_big_sur:  "07774b6873981705e9d7272aa4503ee9adaa23f412c9618339601b511fc1b035"
-    sha256 cellar: :any,                 monterey:       "6643b77a7f85e9e72e9a75f96b269e509889666d0dd0ca25cfd9ada4c09ad1fd"
-    sha256 cellar: :any,                 big_sur:        "229d3a9bcb2d7a4c8969234b65ffdad50d768de2cef507e8323be69433f708fd"
-    sha256 cellar: :any,                 catalina:       "8bc8ad260d65f9c236b20d162cf1ff041eb68d6c809a242a1fcc5d87d75bc749"
-    sha256 cellar: :any,                 mojave:         "b73bdaca55892f47f5dba3ac1107c7dfc8ab64404be70aad843aa9b818756068"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e589bf236d88350989b71f09b6ae0b2d8144de55109bceb1af0fd872bf93b6fc"
+    sha256 cellar: :any,                 arm64_monterey: "978433d5da1a412e5b3a4467497e38cd97b0ec1e822473fccdec8bd60fe38db5"
+    sha256 cellar: :any,                 arm64_big_sur:  "2f821457849d5095029c72578adbfb0d970cc930987c0a22a00c9a6a6d4892d1"
+    sha256 cellar: :any,                 monterey:       "b40eefdfa805e3f81d9c880628ef77033507c238f638c864187d8ac99483ba3e"
+    sha256 cellar: :any,                 big_sur:        "0d61c724c6a67d418f7b8897e8128a9456dcda7b8f12e74c2070743b9f02cd3a"
+    sha256 cellar: :any,                 catalina:       "f655140e4972f6989d33d3b57dc8cf3173b1d56a90ef3a34b433a5e4b183fd99"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "780b1c90357c97511c16fbb5811650f5475e3a363a8c31db5a86601a3c92672f"
   end
 
   depends_on "libgit2"
