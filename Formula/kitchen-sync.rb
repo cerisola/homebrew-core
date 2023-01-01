@@ -1,8 +1,8 @@
 class KitchenSync < Formula
   desc "Fast efficiently sync database without dumping & reloading"
   homepage "https://github.com/willbryant/kitchen_sync"
-  url "https://github.com/willbryant/kitchen_sync/archive/v2.14.tar.gz"
-  sha256 "bcdcb1ea70ed29b6a298782513edd29b5f804b19c6a4c26defdaeaabc249165a"
+  url "https://github.com/willbryant/kitchen_sync/archive/v2.15.tar.gz"
+  sha256 "bceaa85b6eba6df636461ee90aee64493a9a504673860b1efbebae790b6a5bcf"
   license "MIT"
   head "https://github.com/willbryant/kitchen_sync.git", branch: "master"
 
@@ -12,21 +12,18 @@ class KitchenSync < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "b090e8487ec4755755e726638f6d23e1146c63bab3abdca1abfd9eb5729a9c9b"
-    sha256 cellar: :any,                 arm64_big_sur:  "b66ded8959d88193f30ed3bd7cb3dfbf81316f6cbef82e77fda85e227772cb40"
-    sha256 cellar: :any,                 monterey:       "5106166e0e08e91b0703c38bce5e864cefd09ce016f91e989a895daa22c4796d"
-    sha256 cellar: :any,                 big_sur:        "d02d2abaf4098fb1fa07bcf8a28193ebb762409a010d20be595706205d69a886"
-    sha256 cellar: :any,                 catalina:       "d452e4f3e29836a4919108df9209af24a58562c77dadc46e47900fd63c78e840"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a073dc3cf0f4db1a641de2931020ef4f27a4db5416e907ed53233ddd937a5f37"
+    sha256 cellar: :any,                 arm64_ventura:  "72270a99acb57c8f5f63fc2dd0de4ffdcd5750b155d1ab2e5a751bfdec65039a"
+    sha256 cellar: :any,                 arm64_monterey: "00c5f90a86f576cce38ed4decae7ffefaaef76584cc6be0e1cbc4843c74f3b83"
+    sha256 cellar: :any,                 arm64_big_sur:  "829c9e1cb5247833dfc517e1fbf13edff93220767089fee9472f1393167a76da"
+    sha256 cellar: :any,                 ventura:        "c211e4ce78880536b1d2e80fed160cdb12fcf191d150b96e4ac8795a6457f421"
+    sha256 cellar: :any,                 monterey:       "443a9801c2a9f68c98a3290ad020737f8c1f4a75e933d68dbe9c060de3efef53"
+    sha256 cellar: :any,                 big_sur:        "8351752c6f632f829f454299d2710d736aa231689451dd7e63c7572a9c33dfc8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dab9b6d113c8c392d14069c0fa3c3a215404fe0a87e44853c15b018792003088"
   end
 
   depends_on "cmake" => :build
   depends_on "libpq"
   depends_on "mysql-client"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

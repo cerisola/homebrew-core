@@ -3,58 +3,60 @@ class Wxpython < Formula
 
   desc "Python bindings for wxWidgets"
   homepage "https://www.wxpython.org/"
-  url "https://files.pythonhosted.org/packages/b0/4d/80d65c37ee60a479d338d27a2895fb15bbba27a3e6bb5b6d72bb28246e99/wxPython-4.1.1.tar.gz"
-  sha256 "00e5e3180ac7f2852f342ad341d57c44e7e4326de0b550b9a5c4a8361b6c3528"
+  url "https://files.pythonhosted.org/packages/d9/33/b616c7ed4742be6e0d111ca375b41379607dc7cc7ac7ff6aead7a5a0bf53/wxPython-4.2.0.tar.gz"
+  sha256 "663cebc4509d7e5d113518865fe274f77f95434c5d57bc386ed58d65ceed86c7"
   license "LGPL-2.0-or-later" => { with: "WxWindows-exception-3.1" }
-  revision 2
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "2b7a373364e93be90a1ef2304a2abe3507f7cbc632dd3a0a141eba7b82788675"
-    sha256 cellar: :any, arm64_big_sur:  "d8fb50086a3047b2ff39d2747903ae591a87947f0dd84174e3da2ae1eb0f0171"
-    sha256 cellar: :any, monterey:       "4b352f54a4570b5fb89a29566ba638889b18be31794243285f84aceb14b7ecbb"
-    sha256 cellar: :any, big_sur:        "40e9e6c3cfe094b254d55e69e89ed38e8b48437efb49a641dc17ac2bbddf0df9"
-    sha256 cellar: :any, catalina:       "67183e7560f2add598527db7eb0d30d4f4fe6e82b07db59bedd1cadeaedd1693"
-    sha256 cellar: :any, mojave:         "8e06cb7727b4dd39b3ebd93f6691aa8147a1ee0fef47cdbfbece77d203f411f4"
+    rebuild 1
+    sha256 cellar: :any, arm64_ventura:  "9cf04be9fe96667a6243e0b6e0b9c34f1f15e86f83e817bd7d3d7dbec997e9b5"
+    sha256 cellar: :any, arm64_monterey: "1999911bf51dd73f60c0adc99a3278fa573152a1535de68ef9553cc478ee5a66"
+    sha256 cellar: :any, arm64_big_sur:  "fc912d301dc9e189cb9415d0401213e23ce43752dbe1eef499a02cd4154e3334"
+    sha256 cellar: :any, ventura:        "4f8b6ad5e9a3645c207d07b2c8b67fba06cc830932a8503c9cfefc76120ddd28"
+    sha256 cellar: :any, monterey:       "2fa4ada01a2f338678543fbac2f1acd148b257aa84a9735914f27d9a8a4fea7b"
+    sha256 cellar: :any, big_sur:        "981eb95dcd1bc38c7f2a1999858c729b9ceef686f3e066c234bb11312640b115"
+    sha256               x86_64_linux:   "5e3bfb9bd3e427fbd65d5b0e565aa7ee6f31c2eab1e3447a0c4b813b664a3d7a"
   end
 
-  depends_on "freetype"
-  depends_on "jpeg-turbo"
-  depends_on "libpng"
-  depends_on "libtiff"
+  depends_on "doxygen" => :build
+  depends_on "sip" => :build
   depends_on "numpy"
   depends_on "pillow"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "six"
-  depends_on "tcl-tk"
-
-  uses_from_macos "zlib"
+  depends_on "wxwidgets"
 
   on_linux do
     depends_on "pkg-config" => :build
     depends_on "gtk+3"
   end
 
+  # Fix build scripts depending on attrdict3 even though only used on Windows.
+  # Remove once upstream PR is merged and in release.
+  # PR ref: https://github.com/wxWidgets/Phoenix/pull/2224
+  patch do
+    url "https://github.com/wxWidgets/Phoenix/commit/2e9169effa9abf14f34f8436a791b8829eea7774.patch?full_index=1"
+    sha256 "932b3decf8fe5bd982c857796f0b9d936c6a080616733b98ffbd2d3229692e20"
+  end
+
   def install
-    # Fix build of included wxwidgets:
-    # https://github.com/wxWidgets/Phoenix/issues/1247
-    # https://github.com/Homebrew/homebrew-core/pull/58988
-    inreplace "buildtools/build_wxwidgets.py" do |s|
-      s.gsub! "#wxpy_configure_opts.append(\"--enable-monolithic\")",
-              "wxpy_configure_opts.append(\"--disable-precomp-headers\")"
-    end
-
-    inreplace "wscript", "MACOSX_DEPLOYMENT_TARGET = \"10.6\"",
-                         "MACOSX_DEPLOYMENT_TARGET = \"#{MacOS.version}\""
-
-    if OS.mac?
-      sdk = MacOS.sdk_path_if_needed
-      ENV.append_to_cflags "-I#{sdk}/usr/include" if sdk
-    end
-    system "python3", *Language::Python.setup_install_args(prefix)
+    ENV["DOXYGEN"] = Formula["doxygen"].opt_bin/"doxygen"
+    python = "python3.11"
+    system python, "-u", "build.py", "dox", "touch", "etg", "sip", "build_py",
+                   "--release",
+                   "--use_syswx",
+                   "--prefix=#{prefix}",
+                   "--jobs=#{ENV.make_jobs}",
+                   "--verbose",
+                   "--nodoc"
+    system python, *Language::Python.setup_install_args(prefix, python),
+                   "--skip-build",
+                   "--install-platlib=#{prefix/Language::Python.site_packages(python)}"
   end
 
   test do
-    output = shell_output("#{Formula["python@3.9"].opt_bin}/python3 -c 'import wx ; print(wx.__version__)'")
+    python = Formula["python@3.11"].opt_bin/"python3.11"
+    output = shell_output("#{python} -c 'import wx ; print(wx.__version__)'")
     assert_match version.to_s, output
   end
 end

@@ -1,18 +1,19 @@
 class Lsyncd < Formula
   desc "Synchronize local directories with remote targets"
   homepage "https://github.com/lsyncd/lsyncd"
-  url "https://github.com/lsyncd/lsyncd/archive/release-2.2.4.tar.gz"
-  sha256 "3f51c6456604b5acce191c3539e7693a63bd395045dfd5ba35fa4222ca76ed79"
+  url "https://github.com/lsyncd/lsyncd/archive/release-2.3.1.tar.gz"
+  sha256 "fc19a77b2258dc6dbb16a74f023de7cd62451c26984cedbec63e20ff22bcbdd8"
   license "GPL-2.0-or-later"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "cbda318c2cf13e893bcc621563af095d2436040b3dbbeaf6b2ca47d4e80c336a"
-    sha256 cellar: :any,                 arm64_big_sur:  "4e4414dab4d0e2ff7e7482554e6435121434009fd0d66796f7401fe76a90c7bc"
-    sha256 cellar: :any,                 monterey:       "2bf0b3eb23b5b88d0efdfab4dea33ae92063748f0135fabf4fa8c7531b8a9861"
-    sha256 cellar: :any,                 big_sur:        "7e7495710b3dc7d92ed0d794b030c8545d043fa64d9f5abd82e56fd1b102248d"
-    sha256 cellar: :any,                 catalina:       "f93035a8b1d52b3fbfca4aee82cefcf07ff90e2d9a7d2bff70c145fb1c031c61"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9491c6fd122ef3ad43ac82553bba87b4e4a5c863b2166069ceaafef7ca4d624"
+    sha256 cellar: :any,                 arm64_ventura:  "eaf1cd2a7576eed88ab68e26b93b234132a1cf9e6ddf63f0883fa0b859fb798f"
+    sha256 cellar: :any,                 arm64_monterey: "e4ed253d0a0792a3c2e22f82a40c1627a8fcb6c15ed62f62cca24b1b965fdc81"
+    sha256 cellar: :any,                 arm64_big_sur:  "e818e3e8cafb4f9d8cf82f6ec29b8d247b2e17276f92f9e8bef9364f740fca85"
+    sha256 cellar: :any,                 ventura:        "36f5613aab337d30135d232e5abf5bc5baa63470537cbaa7917fd202fdf45b3e"
+    sha256 cellar: :any,                 monterey:       "453140f96382bf6eb4b4ecc9df475ef25ea690f27a870f0b457619d0fc15a69c"
+    sha256 cellar: :any,                 big_sur:        "c221932f57a2ddbda8c4722cbd4c547244fd4492a1eb46959aea03244897566f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de8ec6eb7f7122c422cb82bf5c1f1051ce23bde9dc48bb2327da7dca1573f757"
   end
 
   depends_on "cmake" => :build
@@ -21,12 +22,6 @@ class Lsyncd < Formula
   on_macos do
     # From https://opensource.apple.com/releases/
     xnu_headers = {
-      "10.10"   => ["xnu-2782.1.97.tar.gz",       "612a0eb12d2b2fad3b2df33224abd1c65b89f1c95cd1cea6853694840d48d322"],
-      "10.10.1" => ["xnu-2782.1.97.tar.gz",       "612a0eb12d2b2fad3b2df33224abd1c65b89f1c95cd1cea6853694840d48d322"],
-      "10.10.2" => ["xnu-2782.10.72.tar.gz",      "2fc7d3a1bc03c3ce2f2c845d652338b02cf088fe7815926d5e0c1a57b0c2e5c9"],
-      "10.10.3" => ["xnu-2782.20.48.tar.gz",      "8b502e0c6bcec462e9b7a6d51323ee71215b6efc423e50303c8238218fc6ccc0"],
-      "10.10.4" => ["xnu-2782.30.5.tar.gz",       "66d57f67d2b0118c4e6d69a1fed2911f959c7834a1bae0d89dce23f6f732b110"],
-      "10.10.5" => ["xnu-2782.40.9.tar.gz",       "059ac030b49e27447a207693665d017ad389a077f6465520a68381472e050b48"],
       "10.11"   => ["xnu-3247.1.106.tar.gz",      "09543a29dc06ef9a97176a6e2dbdad868bc0113d3b57f2b28b5d08af897c577d"],
       "10.11.1" => ["xnu-3247.10.11.tar.gz",      "76f215372d0b4fb8397599c5b7a5a97c777aca553a4aea5f0f9f6cbcb50147f1"],
       "10.11.2" => ["xnu-3248.20.55.tar.gz",      "cdeb243540d5d13c9bee6234d43cd6eafced16e4cdc458fb0bf98921e5dd54a9"],
@@ -74,12 +69,16 @@ class Lsyncd < Formula
       "12.1"    => ["xnu-8019.61.5.tar.gz",       "1e035fcf9a2b86dfadcccbbaf963f98b878772ae29c5058f1dc0e5852f70650e"],
       "12.2"    => ["xnu-8019.80.24.tar.gz",      "2fbfe90ec8c93d93f0dd69f09610011d26a722f98266202de6a7c2af764712b4"],
       "12.3"    => ["xnu-8020.101.4.tar.gz",      "df715e7b2bd5db0ba212b5b0613fbbc85c3cbc4e61f6ee355a8b6cf9a87d3374"],
+      "12.4"    => ["xnu-8020.121.3.tar.gz",      "8c765111cf971749a30f7426759d0a93cf3fac7c03a31055920f292335279125"],
+      "12.5"    => ["xnu-8020.140.41.tar.gz",     "b11e05d6529806aa6ec046ae462d997dfb36a26df6c0eb0452d7a67cc08ad9e7"],
+      "13.0"    => ["xnu-8792.41.9.tar.gz",       "ccd87512d2c525e081983fece12cf5f911465d4371449661dbcdff764238286f"],
+      "13.1"    => ["xnu-8792.61.2.tar.gz",       "61c5758d4423ede45e3cbe70b4316d982af59dc91fc482cd9afc145b2ad2226a"],
     }
 
-    macos_version = if MacOS.version >= :big_sur
-      MacOS.full_version.major_minor # Ignore bugfix/security updates
-    else
-      MacOS.full_version
+    macos_version = MacOS.full_version.major_minor # Ignore bugfix/security updates
+
+    on_catalina :or_older do
+      macos_version = MacOS.full_version
     end
     tarball, checksum = if xnu_headers.key? macos_version
       xnu_headers.fetch(macos_version)

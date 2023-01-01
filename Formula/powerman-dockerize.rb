@@ -1,31 +1,25 @@
 class PowermanDockerize < Formula
   desc "Utility to simplify running applications in docker containers"
   homepage "https://github.com/powerman/dockerize"
-  url "https://github.com/powerman/dockerize/archive/refs/tags/v0.16.0.tar.gz"
-  sha256 "b6507b24714dee193bd04be18fe8658531d2b0c0b9f6f060ac6bb387c736009f"
+  url "https://github.com/powerman/dockerize/archive/refs/tags/v0.17.0.tar.gz"
+  sha256 "2b218fa1272efa78455f16f6e9b686090fe68263a1ee471f677fd3e0e5c77bce"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b965893a233913bcc6dc0de32a96175be11ece33bb6db69a948be96626fa1f85"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5833b5267052b02eea8deb8ae57358388a498bbc691470915feabddd66e73287"
-    sha256 cellar: :any_skip_relocation, monterey:       "c67519547af3bca7f8b638306924679b87757e367fd45200309e1f6062cb34ab"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1097c8f356642794fb9c0c97882bc85d87b25fca3df3be61eb90a45231b788f8"
-    sha256 cellar: :any_skip_relocation, catalina:       "357204a92e944afa92adbf31b721b6ca29c149cb53afec160d320d8ecb2d0a08"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b905cbbef080a1823a8c8da7a3369832640b7def780d581e48c2c5ead5d53e7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f7391856b61235d519dd963de1752e280a1929efd6a85fdcae3fdb38f01d23d2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f7e0c6feca7d2a16c7d92e19dc0b98565ab13c250a28ba29e4509831d9b43377"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e80606a13537c77163eea188e6731775b8ed4920ea6a47febe2778feab494a59"
+    sha256 cellar: :any_skip_relocation, ventura:        "c8ac791e7753afab462d8e34a95329c1e9d6ac059d90d1823bc4e15f910efaee"
+    sha256 cellar: :any_skip_relocation, monterey:       "aa828ed546efe1a420c0ddec3f2c61f7bb87d99a486b40bf0ecc810cfac626d9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "0016fbbf9de7259deec1d18512b428a77e5673c8db758fcb0242fd0050dd3f04"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "302336f1c52d60c91bbf3b7a9cba145e4f20f6826c91d6f4e668a8abf42c9114"
   end
 
   depends_on "go" => :build
   conflicts_with "dockerize", because: "powerman-dockerize and dockerize install conflicting executables"
 
   def install
-    ENV["GOPATH"] = buildpath
-    ENV["GO111MODULE"] = "auto"
-    (buildpath/"src/github.com/powerman/dockerize").install buildpath.children
-    ENV.append_path "PATH", buildpath/"bin"
-
-    cd "src/github.com/powerman/dockerize" do
-      system "go", "build", *std_go_args(output: bin/"dockerize", ldflags: "-s -w -X main.ver=#{version}")
-    end
+    system "go", "build", *std_go_args(output: bin/"dockerize", ldflags: "-s -w -X main.ver=#{version}")
   end
 
   test do

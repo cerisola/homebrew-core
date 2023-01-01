@@ -1,16 +1,16 @@
 class Cryfs < Formula
+  include Language::Python::Virtualenv
+
   desc "Encrypts your files so you can safely store them in Dropbox, iCloud, etc."
   homepage "https://www.cryfs.org"
-  url "https://github.com/cryfs/cryfs/releases/download/0.10.2/cryfs-0.10.2.tar.xz"
-  sha256 "5531351b67ea23f849b71a1bc44474015c5718d1acce039cf101d321b27f03d5"
+  url "https://github.com/cryfs/cryfs/releases/download/0.11.3/cryfs-0.11.3.tar.gz"
+  sha256 "cffef7669b8cbec3e7420088faac492390b9e1f3d3d0dc2a245b87f8df05f190"
   license "LGPL-3.0"
+  revision 1
 
   bottle do
     rebuild 1
-    sha256 cellar: :any, catalina:    "3a5986dc3775877188cbf4442bd72c6f20ffe1d384fefebac8041c0d8f9ff09b"
-    sha256 cellar: :any, mojave:      "cc94e5ba2d13205b0199e59779cecd7dd094965ee22c4ebf92d53ecaa65f8be7"
-    sha256 cellar: :any, high_sierra: "daa6d8961ef98fc509e806614c4daf6f589ee7d76bbb483066962b6bd700a2fe"
-    sha256 cellar: :any, sierra:      "252aa90f3281ccff1b9d0c6292856df1a08be17ada7aacd320f05d2d2508565f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "0922c592c2f886c38c5d5e6590d2f6d89d8d4089565559c05e2effc987c88eab"
   end
 
   head do
@@ -18,48 +18,42 @@ class Cryfs < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "boost"
-  depends_on "libomp"
+  depends_on "curl"
+  depends_on "libfuse@2"
+  depends_on :linux # on macOS, requires closed-source macFUSE
   depends_on "openssl@1.1"
+  depends_on "python@3.11"
+  depends_on "range-v3"
+  depends_on "spdlog"
 
-  on_macos do
-    disable! date: "2021-04-08", because: "requires closed-source macFUSE"
-  end
+  fails_with gcc: "5"
 
-  on_linux do
-    depends_on "libfuse"
+  resource "versioneer" do
+    url "https://files.pythonhosted.org/packages/15/86/bed1c929495d8ca30512c8fcc6e9c2555ecffcdd32f0c04f11e492eba9e0/versioneer-0.28.tar.gz"
+    sha256 "7175ca8e7bb4dd0e3c9779dd2745e5b4a6036304af3f5e50bd896f10196586d6"
   end
 
   def install
+    python = "python3.11"
+    venv_root = buildpath/"venv"
+
+    venv = virtualenv_create(venv_root, python)
+    venv.pip_install resource("versioneer")
+
+    ENV.prepend_path "PYTHONPATH", venv_root/Language::Python.site_packages(python)
+    ENV.prepend_path "PATH", venv_root/"bin"
+
     configure_args = [
       "-DBUILD_TESTING=off",
     ]
 
-    if build.head?
-      libomp = Formula["libomp"]
-      configure_args.concat(
-        [
-          "-DOpenMP_CXX_FLAGS='-Xpreprocessor -fopenmp -I#{libomp.include}'",
-          "-DOpenMP_CXX_LIB_NAMES=omp",
-          "-DOpenMP_omp_LIBRARY=#{libomp.lib}/libomp.dylib",
-        ],
-      )
-    end
-
-    system "cmake", ".", *configure_args, *std_cmake_args
-    system "make", "install"
-  end
-
-  def caveats
-    on_macos do
-      <<~EOS
-        The reasons for disabling this formula can be found here:
-          https://github.com/Homebrew/homebrew-core/pull/64491
-
-        An external tap may provide a replacement formula. See:
-          https://docs.brew.sh/Interesting-Taps-and-Forks
-      EOS
-    end
+    system "cmake", "-B", "build", "-S", ".", *configure_args, *std_cmake_args,
+                    "-DCRYFS_UPDATE_CHECKS=OFF",
+                    "-DDEPENDENCY_CONFIG=cmake-utils/DependenciesFromLocalSystem.cmake"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -75,6 +69,7 @@ class Cryfs < Formula
     # the cryfs bottle was compiled with and the crypto++ library installed by homebrew to.
     mkdir "basedir"
     mkdir "mountdir"
-    assert_match "Operation not permitted", pipe_output("#{bin}/cryfs -f basedir mountdir 2>&1", "password")
+    expected_output = "fuse: device not found, try 'modprobe fuse' first"
+    assert_match expected_output, pipe_output("#{bin}/cryfs -f basedir mountdir 2>&1", "password")
   end
 end

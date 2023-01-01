@@ -1,14 +1,9 @@
 class Shakespeare < Formula
   desc "Write programs in Shakespearean English"
-  homepage "https://shakespearelang.sourceforge.io/"
-  url "https://shakespearelang.sourceforge.io/download/spl-1.2.1.tar.gz"
+  homepage "https://web.archive.org/web/20211106102807/https://sourceforge.net/projects/shakespearelang/"
+  url "https://www.mirrorservice.org/sites/distfiles.macports.org/shakespeare/spl-1.2.1.tar.gz"
   sha256 "1206ef0a2c853b8b40ca0c682bc9d9e0a157cc91a7bf4e28f19ccd003674b7d3"
   license "GPL-2.0-or-later"
-
-  livecheck do
-    url :homepage
-    regex(/href=.*?spl[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
 
   bottle do
     rebuild 1
@@ -21,7 +16,6 @@ class Shakespeare < Formula
     sha256 cellar: :any,                 high_sierra:    "7320be8a139934d9a80543a8017de6500f02971374a36038592ad122d76f85cf"
     sha256 cellar: :any,                 sierra:         "6a8e746959adcbd5629bd6ec74fcc3854fa7355d098c14a640a6df23358ce335"
     sha256 cellar: :any,                 el_capitan:     "86547f1b0967f8399f00b7120a251a126e66dfe9c52a4fb9b3d17331e2381895"
-    sha256 cellar: :any,                 yosemite:       "1e35a35e7ca7eef401a76360320389fe23e2cea6db8bf9f2d266732c742ad8d5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c707f7d358ecf5a97415d8be7fd4d2d46bb04e7e3ce5926a6ad659dc28d7102"
   end
 

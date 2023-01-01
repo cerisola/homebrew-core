@@ -16,7 +16,7 @@ class RedisAT32 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2020-04-30", because: :versioned_formula
+  disable! date: "2022-07-31", because: :versioned_formula
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
@@ -27,7 +27,7 @@ class RedisAT32 < Formula
     inreplace "redis.conf" do |s|
       s.gsub! "/var/run/redis.pid", var/"run/redis.pid"
       s.gsub! "dir ./", "dir #{var}/db/redis/"
-      s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
+      s.gsub! "# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
     etc.install "redis.conf"

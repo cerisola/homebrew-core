@@ -1,10 +1,9 @@
 class Kore < Formula
   desc "Web application framework for writing web APIs in C"
   homepage "https://kore.io/"
-  url "https://kore.io/releases/kore-4.2.2.tar.gz"
-  sha256 "77c12d80bb76fe774b16996e6bac6d4ad950070d0816c3409dc0397dfc62725f"
+  url "https://kore.io/releases/kore-4.2.3.tar.gz"
+  sha256 "f9a9727af97441ae87ff9250e374b9fe3a32a3348b25cb50bd2b7de5ec7f5d82"
   license "ISC"
-  revision 1
   head "https://github.com/jorisvink/kore.git", branch: "master"
 
   livecheck do
@@ -13,12 +12,14 @@ class Kore < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "651dadcfc4d6ef192a3c6834d817fb184c369c0558113283a18a0cd45d6cd90a"
-    sha256 arm64_big_sur:  "843bee8be9b432353e81f244ce58a85cc190c7c28559a0f7ba61fa34ef7dd5cb"
-    sha256 monterey:       "e27813f97e1239b6d07e9c936acb3dd72b6e37499d427cd61b31e956ec7c59b0"
-    sha256 big_sur:        "b6b3ab72bc73bb9aed91e64f4118f80feb73f1f9416f66ca5817f533f29772f5"
-    sha256 catalina:       "b4b39605d30bd4b7b5159ab40b2ee49d6043ba63822de4fb16c66fbfddabb26e"
-    sha256 x86_64_linux:   "e94b9fd5e6039cffbac0e88cb1fdd46a00d22cfade31ac6d30a2b270ea438d67"
+    sha256 arm64_ventura:  "cbfccd4baa858b4b8319dc8dc8c24c72cf840c5ad0103d5d22b5d5fc206a34aa"
+    sha256 arm64_monterey: "f9f45763516449a9075be07735bf72855164b51ab549dbc07de6215bb163069a"
+    sha256 arm64_big_sur:  "75177641b3a63332f5931f39ac61001f8e45aa8751cf3c37032889a9ef49ad3f"
+    sha256 ventura:        "980d2d6c841e6e3ff768255422687a603c983d32f66a4c92b90e8a0d8976f94d"
+    sha256 monterey:       "8ba71c5137d2f2170c901a55ee0e5854b997163f715c43d46c4b823b111005f3"
+    sha256 big_sur:        "d270269663c58354047235b84a11360eb676e48e2bd1029077f58ef32d24b802"
+    sha256 catalina:       "c09baa37e79632bad83a33cae733a06f22e5caa461c20c85749a345436e0ec2b"
+    sha256 x86_64_linux:   "ef4df9e7c709ac5d717deb8b8f7b093c8936884e28039bd25ad494f56a5b1027"
   end
 
   depends_on "pkg-config" => :build
@@ -28,6 +29,10 @@ class Kore < Formula
   def install
     ENV.deparallelize { system "make", "PREFIX=#{prefix}", "TASKS=1" }
     system "make", "install", "PREFIX=#{prefix}"
+
+    # Remove openssl cellar references, which breaks kore on openssl updates
+    openssl = Formula["openssl@1.1"]
+    inreplace [pkgshare/"features", pkgshare/"linker"], openssl.prefix.realpath, openssl.opt_prefix if OS.mac?
   end
 
   test do

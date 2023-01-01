@@ -2,17 +2,18 @@ class CartridgeCli < Formula
   desc "Tarantool Cartridge command-line utility"
   homepage "https://tarantool.org/"
   url "https://github.com/tarantool/cartridge-cli.git",
-      tag:      "2.12.0",
-      revision: "b4ed1a2a2ddf05bd6b6dd059fb68f3c1e4ff9366"
+      tag:      "2.12.4",
+      revision: "cbf864a31cb58c2343c2af5d534ec0ee002b1bd9"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "97a5095dbf74396e4339f08b8834e08206e14b4f53e800bcf141f67ab7bae070"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d11608d43883c32ac2f82445ae404fb4e470a12d21252f9e455e61d6d0494d43"
-    sha256 cellar: :any_skip_relocation, monterey:       "ae0d202ae2e87ff301d40837a011c434a288845946ac4c501f386dc84d192fbd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "75404c41ea00d59d5b34e940bd66d9bc5001a681ef1f0f5d4cbc6f7303166812"
-    sha256 cellar: :any_skip_relocation, catalina:       "fc8a1f7bf9d7d2d4a6240890dbe005ddce1c9a82a8de96de712e30de902f51b8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed9fb0337aaa5754fb1048f87158f45b4579532fda57c3a9379f349cc79f2444"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef70017fe9e3a084f3c5f2af4b3b6eb102002dc93bffa45e3bae2da01c901a8f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1017a1c92fbacbf876cdf465cdf0aa5bda7b4b79131a941b03b3a5d033b9aebb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e55f08dcc9d6a98fd3f7f2b08ee600d445a183b1e834ff3b7628b77a9fbf3f5e"
+    sha256 cellar: :any_skip_relocation, ventura:        "17c1d0e920e5aa412914b0c13939443353cb72fc4ca75fc077fae159330dcdb0"
+    sha256 cellar: :any_skip_relocation, monterey:       "171e9d150fc555b1d66c6076e003777b017db0126022dd51c20aabb9dba94146"
+    sha256 cellar: :any_skip_relocation, big_sur:        "407a96da1aacadc05a4b0b859c19b38a3f92cb735d2d73d75fa05a05bcf22e1c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4eb9a10454cd357d55e15ff914cf29ad82e14c5a6e0d4decf8d4a5a614c69785"
   end
 
   depends_on "go" => :build

@@ -1,9 +1,9 @@
 class LinkGrammar < Formula
   desc "Carnegie Mellon University's link grammar parser"
   homepage "https://www.abisource.com/projects/link-grammar/"
-  url "https://www.abisource.com/downloads/link-grammar/5.10.4/link-grammar-5.10.4.tar.gz"
-  sha256 "3dde2d12cadeeda193944a1eade484962b021975e1c206434ccb785046487f81"
-  license "LGPL-2.1"
+  url "https://www.abisource.com/downloads/link-grammar/5.12.0/link-grammar-5.12.0.tar.gz"
+  sha256 "3f113daca2bd3ec8c20c7f86d5ef7e56cf8f80135f903bb7569924d6d0720383"
+  license "LGPL-2.1-or-later"
   head "https://github.com/opencog/link-grammar.git", branch: "master"
 
   livecheck do
@@ -12,12 +12,14 @@ class LinkGrammar < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e70f07afcfb4943edcf572d99870e4b26378414e77837a80d9f5ad689232eec3"
-    sha256 arm64_big_sur:  "367c2d72c5265279d9717928d1a11329880bbd96113d55d80926513333025db6"
-    sha256 monterey:       "7c6ec2df0f6be9eb39741a3211b4926cb0822311504473c205038a229fe6574a"
-    sha256 big_sur:        "67437691cb922c6bde9dfd38ff08645989abaa502898da9a7590ea2ec85d5a1d"
-    sha256 catalina:       "ce09e594aebb4eccd60662f82bc40102ac7b30f600d3549a96d0f1fa38e2ec20"
-    sha256 x86_64_linux:   "93a2bc42281c3a63e747f16e2685c3309be127eec556916e07ad488cb1205313"
+    rebuild 1
+    sha256 arm64_ventura:  "2c31cb487824194c544a214126322ed94a57a72a69ef38cc0559eeb1ad6d0812"
+    sha256 arm64_monterey: "92804926f22e3c18ea5c91a350733119c8289d0dfd93d8d765b31adb7f2ac609"
+    sha256 arm64_big_sur:  "2ef75de9f6d569875a2915b80886489f394eeb07e314446cf259b93f4ae75b44"
+    sha256 ventura:        "02d685eefef2ab0d1abbfa39d3d056396935a4b8aceb5b65d947c1f612425dcd"
+    sha256 monterey:       "9e222666ce37a53fdd9a48518dde6bade154756745eacee0a75262bdf7a3f049"
+    sha256 big_sur:        "6292300861193d494192f6d091b99b672ee64da5e055dc68bb1fe2ca686ecb75"
+    sha256 x86_64_linux:   "fa817e709e27ce5ea0cc86104b7daa072e72694b9c79510f56373b9636c2a134"
   end
 
   depends_on "ant" => :build
@@ -26,10 +28,18 @@ class LinkGrammar < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
 
   uses_from_macos "flex" => :build
+  uses_from_macos "libedit"
   uses_from_macos "sqlite"
+
+  # Fix for fatal error: 'threads.h' file not found
+  # remove in next release
+  patch do
+    url "https://github.com/opencog/link-grammar/commit/725de848e4ac832ba7cd876e01f3d6a67d6e578b.patch?full_index=1"
+    sha256 "e167c0c5a2713b539099ea1839c31801709e3fd5c9368eae9aa3f480fa5f1f13"
+  end
 
   def install
     ENV["PYTHON_LIBS"] = "-undefined dynamic_lookup"
@@ -40,7 +50,7 @@ class LinkGrammar < Formula
 
     # Work around error due to install using detected path inside Python formula.
     # install: .../site-packages/linkgrammar.pth: Operation not permitted
-    site_packages = prefix/Language::Python.site_packages("python3")
+    site_packages = prefix/Language::Python.site_packages("python3.11")
     system "make", "install", "pythondir=#{site_packages}",
                               "pyexecdir=#{site_packages}"
   end

@@ -1,27 +1,32 @@
 class RpkiClient < Formula
   desc "OpenBSD portable rpki-client"
   homepage "https://www.rpki-client.org/index.html"
-  url "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-7.8.tar.gz"
-  sha256 "7a87a6fe7b1bd36a1ce277cf50e125ece7b2ed0236e252a66e2b34ca8f88b7f5"
+  url "https://ftp.openbsd.org/pub/OpenBSD/rpki-client/rpki-client-8.0.tar.gz"
+  sha256 "5b710ccee2e7e949587e54daf823811671174a50c671746e5a276afaa0ce55be"
   license "ISC"
+  revision 2
 
   bottle do
-    sha256 arm64_monterey: "a163c6fb57235560fc3e117b0a0ae65cfb5a88f0a4c919243f7b7367b36bc5d7"
-    sha256 arm64_big_sur:  "f541f00593f51cb535132b0cfaf429a0cd86955d508d71ce5dd61391947e61eb"
-    sha256 monterey:       "c96bbcfa6a3b610548bef1691e55a7f5d1d9015e071cadb079f0728ac9ff24eb"
-    sha256 big_sur:        "d09526b985cd5eb82d5fd28f2b45cae6b3e586e691f712760ad228377ccb9a46"
-    sha256 catalina:       "e68a160486ad4a292ed1087722c9612b785f3a307213851814f06abe571cb348"
+    sha256 arm64_ventura:  "5174f0f8ad8c4f703aabd4a95431bef8e793b98819ae62dc375efc1143de76be"
+    sha256 arm64_monterey: "0f0e12dcc765439340d005b89713afc888c3c43a08c39008679380e41566cdaf"
+    sha256 arm64_big_sur:  "8897f02df93019175167ec36b8384bc457ac91e6ec31db468599dbcb2d082133"
+    sha256 ventura:        "35d437fe4c0bf152e8406d6b02b484c373f1a0463a72c921feb74e25df208a42"
+    sha256 monterey:       "deb08c58cd55a113823c2abcd099a4c54e1977d2ab3b5a3fd29622e8bc46ca86"
+    sha256 big_sur:        "3553bd4f41316c7eb13a8653b7ec141cd94cc06f0703f07c2fca1f5e74d60373"
+    sha256 x86_64_linux:   "17ca03fab715c3001ada7fe58a41bd737718959b76b7f0ff1cc525c566b2cf74"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libressl"
-  depends_on :macos
+  depends_on "libretls"
+  depends_on "openssl@3"
+  depends_on "rsync"
+
+  uses_from_macos "expat"
 
   def install
     system "./configure", *std_configure_args,
-                          "--disable-dependency-tracking",
+                          "--with-rsync=#{Formula["rsync"].opt_bin}/rsync",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}"
     system "make", "install"
@@ -34,6 +39,7 @@ class RpkiClient < Formula
   end
 
   test do
-    assert_match "parse file ta/", shell_output("#{sbin}/rpki-client -n -d . -R . 2>&1").lines.last
+    assert_match "VRP Entries: 0 (0 unique)", shell_output("#{sbin}/rpki-client -n -d . -R . 2>&1")
+    assert_match "rpki-client-portable #{version}", shell_output("#{sbin}/rpki-client -V 2>&1")
   end
 end

@@ -1,31 +1,28 @@
 class Mlpack < Formula
   desc "Scalable C++ machine learning library"
   homepage "https://www.mlpack.org"
-  url "https://mlpack.org/files/mlpack-3.4.2.tar.gz"
-  sha256 "9e5c4af5c276c86a0dcc553289f6fe7b1b340d61c1e59844b53da0debedbb171"
+  url "https://mlpack.org/files/mlpack-4.0.1.tar.gz"
+  sha256 "4c746936ed9da9f16744240ed7b9f2815d3abb90c904071a1d1a628a9bbfb3a5"
   license all_of: ["BSD-3-Clause", "MPL-2.0", "BSL-1.0", "MIT"]
-  revision 5
+  head "https://github.com/mlpack/mlpack.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7f5ea76e533cf82a23314eaa3b795bd3ccf1f35dcbc61b873507e7eb0fce153f"
-    sha256 cellar: :any,                 arm64_big_sur:  "60e0c2e971f6fbb94c8384a07dba0fb418ae8a1683ebe79701ae6cf68b155037"
-    sha256 cellar: :any,                 monterey:       "98a0a185ce11203c15307d18249b01ddf6a2ace4dadf0972de44e416d70ce655"
-    sha256 cellar: :any,                 big_sur:        "3b31fed267940257aab567c907c4635b6aab1ca7f8ef5e52e1d3c16ff1b30dc2"
-    sha256 cellar: :any,                 catalina:       "c3c45aaa730efdaf777cce8bdc4f12831e488383c4e8ad174f53810c3075a9f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "76ec703752026e506bbe5f7759ad53242c7c7c758962009a86cc5e0d3a87afe9"
-  end
-
-  head do
-    url "https://github.com/mlpack/mlpack.git", branch: "master"
-
-    depends_on "cereal"
+    sha256 cellar: :any,                 arm64_ventura:  "995a00364fb60be3312aef995709240af153cc59b0845a0dffc74d0650f5e563"
+    sha256 cellar: :any,                 arm64_monterey: "30cf5ba4558baea34744e128d77bea54a1b4e0c53d7761fb6b83de578b6b1d2f"
+    sha256 cellar: :any,                 arm64_big_sur:  "774d1218866a46e46cf7c57cf5587745ed692c207b854d22b69f833bed78a79d"
+    sha256 cellar: :any,                 ventura:        "e6fc92e0b0741393ed7a3f7cf3fd9f18ee6e9e2871165a8695367786c4cfb97a"
+    sha256 cellar: :any,                 monterey:       "6c7fcb29876984333188a9d59842d512bd324def5fabf694570510583b174e6a"
+    sha256 cellar: :any,                 big_sur:        "79e6ad32387cc7633da760c8d91649f217dea20c0d92ceae8a5f48073b89dabf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e1898583f4112fd9ad3dc106d970526acfbd20d2f5770ce055fb52f59e37b643"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "pkg-config" => :build
+
   depends_on "armadillo"
   depends_on "boost"
+  depends_on "cereal"
   depends_on "ensmallen"
   depends_on "graphviz"
 
@@ -47,11 +44,11 @@ class Mlpack < Formula
         (include/"stb").install "#{r.name}.h"
       end
     end
-    cmake_args = std_cmake_args + %W[
+
+    args = %W[
       -DDEBUG=OFF
       -DPROFILE=OFF
       -DBUILD_TESTS=OFF
-      -DDISABLE_DOWNLOADS=ON
       -DUSE_OPENMP=OFF
       -DARMADILLO_INCLUDE_DIR=#{Formula["armadillo"].opt_include}
       -DENSMALLEN_INCLUDE_DIR=#{Formula["ensmallen"].opt_include}
@@ -59,10 +56,11 @@ class Mlpack < Formula
       -DSTB_IMAGE_INCLUDE_DIR=#{include/"stb"}
       -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
-    mkdir "build" do
-      system "cmake", "..", *cmake_args
-      system "make", "install"
-    end
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
     doc.install Dir["doc/*"]
     (pkgshare/"tests").install "src/mlpack/tests/data" # Includes test data.
   end
@@ -85,8 +83,8 @@ class Mlpack < Formula
         Log::Warn << "A false alarm!" << std::endl;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
-                    "-larmadillo", "-L#{lib}", "-lmlpack", "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++14", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
+                    "-larmadillo", "-L#{lib}", "-o", "test"
     system "./test", "--verbose"
   end
 end

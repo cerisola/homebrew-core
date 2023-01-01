@@ -1,19 +1,18 @@
 class Libfontenc < Formula
   desc "X.Org: Font encoding library"
   homepage "https://www.x.org/"
-  url "https://www.x.org/archive/individual/lib/libfontenc-1.1.4.tar.bz2"
-  sha256 "2cfcce810ddd48f2e5dc658d28c1808e86dcf303eaff16728b9aa3dbc0092079"
+  url "https://xorg.freedesktop.org/archive/individual/lib/libfontenc-1.1.7.tar.xz"
+  sha256 "c0d36991faee06551ddbaf5d99266e97becdc05edfae87a833c3ff7bf73cfec2"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0766cf1f27cf6ffee0b3a7bf580d3c914941b2ac129952587cd063c7ce7b9edd"
-    sha256 cellar: :any,                 arm64_big_sur:  "113e1edd38c2ae3c0ca865e3ac90a7bb81e232855513fa598d08514fffde02cb"
-    sha256 cellar: :any,                 monterey:       "0959c0e48e9a973363d3e1e71f781633991faaa96f5a08d80277f45beaeb1a48"
-    sha256 cellar: :any,                 big_sur:        "05f64e556ed6c0576407b084aba036ff0fed95f831778ad8b6363b4fe6f0836e"
-    sha256 cellar: :any,                 catalina:       "b57f18c5d875f7ceded9115cd1971be92a3c3887c7c606ff5028ea1ddb160b1c"
-    sha256 cellar: :any,                 mojave:         "e79ca92c5f40a57da0b5745df2eb64fe532e90bbf292e4d97a4703d5b0e15791"
-    sha256 cellar: :any,                 high_sierra:    "83bf803c71ed38edf5204ee3bdd89f6569c4c04a41c64003f20ab67b7021f2f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "47c5dabba4eda42bc8fe444660ef37074137c94fe265243628edd344dc353e4a"
+    sha256 cellar: :any,                 arm64_ventura:  "89c55c64b24c173e1b1077204a81c7c6f7fd63f9639a832fe579b003d8724189"
+    sha256 cellar: :any,                 arm64_monterey: "bde5e3dd6ad10d8e6230ea00c6c485c6d17ade06658497fd3991b843392c355a"
+    sha256 cellar: :any,                 arm64_big_sur:  "64a31afac76ef33361e82421097bd29442c15d00ce4059022c55c175bba54851"
+    sha256 cellar: :any,                 ventura:        "85c21c23c0538c7fed8d9591b6fc4e6d7b33c90060f634c71f36706faeb6d9aa"
+    sha256 cellar: :any,                 monterey:       "cfcc68d02847b7bc5e589e879e80b0f75d35902eed69d589fb1f1f845788726a"
+    sha256 cellar: :any,                 big_sur:        "5cb685676aa5eecac810649fdac4ef1e2d9a775498590e834d3c7797cc3df377"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b62cbc3809dd3f189c3f55b42d3b044a2786b6a8f03ba5b3f3e766997b1b739e"
   end
 
   depends_on "font-util" => :build

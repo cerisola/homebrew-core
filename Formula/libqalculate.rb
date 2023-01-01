@@ -1,17 +1,18 @@
 class Libqalculate < Formula
   desc "Library for Qalculate! program"
   homepage "https://qalculate.github.io/"
-  url "https://github.com/Qalculate/libqalculate/releases/download/v4.1.1/libqalculate-4.1.1.tar.gz"
-  sha256 "b5611a91293be40fbe8723a81937e25ffb54e6ad6e60f282d044ed92f2d97002"
+  url "https://github.com/Qalculate/libqalculate/releases/download/v4.5.0/libqalculate-4.5.0.tar.gz"
+  sha256 "b5d64ac3c524630a066855a403b284a14c78c77c6601bc67caf25d2e04d9d79f"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "51223e387b3e266d4e3164e7ce0f70a491795bcb3d23a01282ece8c852a58a7c"
-    sha256 arm64_big_sur:  "719bb2e428ef547f4ed259dd72ed7cbac7ab1adee98cbb4bd280205ad9a520d7"
-    sha256 monterey:       "b69ad7f0bb0c7b2bc0549cf4b178f5aed2515509de6147785acaa1e4a3706aff"
-    sha256 big_sur:        "eac439b4d69a0fdf15a32db34a9b4dbb96a8e0475fa27df826a3891972c31b1e"
-    sha256 catalina:       "1eca3c358a46786d35dfbf6dbfff9428eaed71ea9798f119f9087dc6d5f6659a"
-    sha256 x86_64_linux:   "ad0603e0e68e6a2f1451cd36c454fdabd1acda18c315247f4988d56de709d87f"
+    sha256                               arm64_ventura:  "cb7a837a283de4769d94cdf8c9dbe592f8059f68da5f48cbd6726ecbd7fa0d59"
+    sha256                               arm64_monterey: "3cd90e7dd56937d1fc28d28a1dfa9db39e519c8a2469082bdb2274b550553ca2"
+    sha256                               arm64_big_sur:  "191ecf7a3ed976e35e8c0149d40bb8e574ca2735ef0b7737eac02f8dff40f6e0"
+    sha256                               ventura:        "be99a4ab1e212eea0997ef811b122925ca246c0c2dc21147cf56f51858d9c107"
+    sha256                               monterey:       "59f967835b437760ef3b95797e1946a78ce1f8c2f14085aeeeb9303199cc3170"
+    sha256                               big_sur:        "6fe63706c356ab04b9f05b67f0e6d678c5ca581a2485dd21faf28ce5f228dd2f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a4940f9912d56dd2f8af9d425beae3e77e1126d45167a39e19d0dbbce42ebee2"
   end
 
   depends_on "intltool" => :build

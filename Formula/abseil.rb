@@ -1,25 +1,24 @@
 class Abseil < Formula
   desc "C++ Common Libraries"
   homepage "https://abseil.io"
-  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20211102.0.tar.gz"
-  sha256 "dcf71b9cba8dc0ca9940c4b316a0c796be8fab42b070bb6b7cab62b48f0e66c4"
+  url "https://github.com/abseil/abseil-cpp/archive/refs/tags/20220623.1.tar.gz"
+  sha256 "91ac87d30cc6d79f9ab974c51874a704de9c2647c40f6932597329a282217ba8"
   license "Apache-2.0"
   head "https://github.com/abseil/abseil-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "0c19e80720547d2ef348842242568e27bbc662f4be6b4dc4b40a7477645b9dbf"
-    sha256 cellar: :any,                 arm64_big_sur:  "23ad9b293aad20112786ec85f80a54781edb42081277e18bbda61752965b1301"
-    sha256 cellar: :any,                 monterey:       "a890728e03ba9359d371d55430ca1b86e4b7c28420179b6d05ae4fed2134b966"
-    sha256 cellar: :any,                 big_sur:        "c707d13cb25a75e52333bcbd57e17f522e09e5f073302ce904d61ec026ccd708"
-    sha256 cellar: :any,                 catalina:       "9a2c8277e6d4b348914220580486bf707b2e09d70f6457a60496cc4254426875"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "513087011325dd2d8a006ba7d12c07e6077dc9048fed2d5e36d20c0905681c81"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "da860134f8c93154324c1eb7ceac85224c8701e2a1758988ac9077778bebaa34"
+    sha256 cellar: :any,                 arm64_monterey: "a684dd51320207ef4cd8134ab8e7e033fba14a7dc1d9f1c8cb1c4b770dc715ff"
+    sha256 cellar: :any,                 arm64_big_sur:  "d31162eae71f007c10329296c0a646d6223d0f73e52d5fd8e2fc8333091ba377"
+    sha256 cellar: :any,                 ventura:        "6733be2ec57587f9051b357999faa62a96c55fd4df75b6349a119a6e76bfc884"
+    sha256 cellar: :any,                 monterey:       "41a3b0ca19070a90158beb85965e5485f116ad0e47b6c16ba9197c4324e5eab2"
+    sha256 cellar: :any,                 big_sur:        "80a398e384146b1860a79d0ff6c0666de74aca714fef357b0cadf525bae2a289"
+    sha256 cellar: :any,                 catalina:       "731fbe6746ab703ce4f6d17862de7ddb216b308d9d3948112c87ac0bfeb66d64"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f35a7844efa0e3862361a1bbff49e4f65a1d5eb7bc1d77c82a526419eadc6d2d"
   end
 
   depends_on "cmake" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5" # C++17
 

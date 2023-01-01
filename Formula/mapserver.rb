@@ -1,10 +1,10 @@
 class Mapserver < Formula
   desc "Publish spatial data and interactive mapping apps to the web"
   homepage "https://mapserver.org/"
-  url "https://download.osgeo.org/mapserver/mapserver-7.6.4.tar.gz"
-  sha256 "b46c884bc42bd49873806a05325872e4418fc34e97824d4e13d398e86ea474ac"
+  url "https://download.osgeo.org/mapserver/mapserver-8.0.0.tar.gz"
+  sha256 "bb7ee625eb6fdce9bd9851f83664442845d70d041e449449e88ac855e97d773c"
   license "MIT"
-  revision 4
+  revision 3
 
   livecheck do
     url "https://mapserver.org/download.html"
@@ -12,12 +12,13 @@ class Mapserver < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "eb063e619b10833ecf47eb794e3f2d9e96f9105f9030270d79f03e7bfb302aff"
-    sha256 cellar: :any,                 arm64_big_sur:  "4ff7d584fc0c64391f45e8a264e01fb77c742ca77b737c4af8f7a673eaf37d06"
-    sha256 cellar: :any,                 monterey:       "c254261912cb57007202ad57480c44212ae8839583be745cda024b2966b644ce"
-    sha256 cellar: :any,                 big_sur:        "ed04e8fe8f1da5d91258b8449b60e95f7be592b6d817ad662cb01b629daa5e88"
-    sha256 cellar: :any,                 catalina:       "017de885523933e74cffc69391374be105af07e64099681aaef4ea4986922008"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7aa822d4049082c9aecb7100b75d985b62929e0e5a7d4ded45460ca3612dd8c3"
+    sha256 cellar: :any,                 arm64_ventura:  "09ef1a8000520cb6d9fe4153649f759e7abbbbeebe6bcdaea2c8cdf66a5265be"
+    sha256 cellar: :any,                 arm64_monterey: "3ecfd102747839ec0be5f6bebc545defdd279dc2f6ed4f8fead0191da147e0c1"
+    sha256 cellar: :any,                 arm64_big_sur:  "9b37c06c6d83486abc1234936f676d79b655c3aea1eab8e07955210b2e561a5c"
+    sha256 cellar: :any,                 ventura:        "ccc0b5eafd4c3895c106897cfceb889a4cc404d5663148711aa32448a4a469a7"
+    sha256 cellar: :any,                 monterey:       "95ddfb7dd186cc3c6fa829c4de61ba0cf27a8d49d603679452d8306235dc8706"
+    sha256 cellar: :any,                 big_sur:        "827fbddb31b89b3213c69a594f63582a9831e630eed65454cd533edd1bc4ddc8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4a3c8156667e08667d5ed71956265d7ba8ce6b6b80208c3260fd9918aa0e9618"
   end
 
   depends_on "cmake" => :build
@@ -31,58 +32,51 @@ class Mapserver < Formula
   depends_on "geos"
   depends_on "giflib"
   depends_on "libpng"
-  depends_on "postgresql"
+  depends_on "libpq"
   depends_on "proj"
   depends_on "protobuf-c"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   uses_from_macos "curl"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
+  def python3
+    "python3.11"
+  end
+
   def install
-    ENV.cxx11
-
-    args = %W[
-      -DWITH_CLIENT_WFS=ON
-      -DWITH_CLIENT_WMS=ON
-      -DWITH_CURL=ON
-      -DWITH_FCGI=ON
-      -DWITH_FRIBIDI=OFF
-      -DWITH_GDAL=ON
-      -DWITH_GEOS=ON
-      -DWITH_HARFBUZZ=OFF
-      -DWITH_KML=ON
-      -DWITH_OGR=ON
-      -DWITH_POSTGIS=ON
-      -DWITH_PYTHON=ON
-      -DWITH_SOS=ON
-      -DWITH_WFS=ON
-      -DPYTHON_EXECUTABLE=#{Formula["python@3.9"].opt_bin/"python3"}
-      -DPHP_EXTENSION_DIR=#{lib}/php/extensions
-      -DCMAKE_INSTALL_RPATH=#{rpath}
-    ]
-
     # Install within our sandbox
-    inreplace "mapscript/python/CMakeLists.txt" do |s|
-      s.gsub! "${PYTHON_LIBRARIES}", "-Wl,-undefined,dynamic_lookup"
-    end
+    inreplace "mapscript/python/CMakeLists.txt", "${Python_LIBRARIES}", "-Wl,-undefined,dynamic_lookup" if OS.mac?
 
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DWITH_CLIENT_WFS=ON",
+                    "-DWITH_CLIENT_WMS=ON",
+                    "-DWITH_CURL=ON",
+                    "-DWITH_FCGI=ON",
+                    "-DWITH_FRIBIDI=OFF",
+                    "-DWITH_GDAL=ON",
+                    "-DWITH_GEOS=ON",
+                    "-DWITH_HARFBUZZ=OFF",
+                    "-DWITH_KML=ON",
+                    "-DWITH_OGR=ON",
+                    "-DWITH_POSTGIS=ON",
+                    "-DWITH_PYTHON=ON",
+                    "-DWITH_SOS=ON",
+                    "-DWITH_WFS=ON",
+                    "-DPYTHON_EXECUTABLE=#{which(python3)}",
+                    "-DPHP_EXTENSION_DIR=#{lib}/php/extensions"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
     cd "build/mapscript/python" do
-      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
+      system python3, *Language::Python.setup_install_args(prefix, python3)
     end
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/mapserv -v")
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import mapscript"
+    system python3, "-c", "import mapscript"
   end
 end

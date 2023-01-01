@@ -1,11 +1,10 @@
 class Proftpd < Formula
   desc "Highly configurable GPL-licensed FTP server software"
   homepage "http://www.proftpd.org/"
-  url "https://github.com/proftpd/proftpd/archive/v1.3.7d.tar.gz"
-  mirror "https://fossies.org/linux/misc/proftpd-1.3.7d.tar.gz"
-  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.7d.tar.gz"
-  version "1.3.7d"
-  sha256 "b231536e2978116801d06278e805b18e5240568d2bc921693ac7147652e267e4"
+  url "https://github.com/proftpd/proftpd/archive/refs/tags/v1.3.8.tar.gz"
+  mirror "https://fossies.org/linux/misc/proftpd-1.3.8.tar.gz"
+  mirror "https://ftp.osuosl.org/pub/blfs/conglomeration/proftpd/proftpd-1.3.8.tar.gz"
+  sha256 "f7139e7377a2cb059b8b9b14d76a6df5f440e3181cb15ae890d43bbcae574748"
   license "GPL-2.0-or-later"
 
   # Proftpd uses an incrementing letter after the numeric version for
@@ -18,13 +17,16 @@ class Proftpd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "8d97c057ebfbd1ab98b71246881ba2d1222bd1bc84af7eb81ce2bb02e36cf4c5"
-    sha256 arm64_big_sur:  "5f881c036c3fc61f8a61e9e8a0b681a9484cda34d6346e8c612ebbd30b687e95"
-    sha256 monterey:       "4e204f7b1696bc8271e570bb44bce932cc24a7b09a3ba527bad687222afb8aa0"
-    sha256 big_sur:        "2ae3fa57bcdebd8472888b2f49179ec1c43e5ca516021eb3b715e3c2ea75c06b"
-    sha256 catalina:       "95239aa03a189cff108522fee0ef1c281547aa662d3f69af74d1dd7416012284"
-    sha256 x86_64_linux:   "b4c6e6de0169554fad7d91e497a3c6f4764ad01ebaa31c7ce2771edf0205db2b"
+    sha256 arm64_ventura:  "33f8063b1091a4ed78261a858a6469addd60fce2fae3bf662d800b695d214bed"
+    sha256 arm64_monterey: "daad1aaa7a68c37157ffe1413b7b42a6ccb84861dc364e7ed6f18fb5c42e61c0"
+    sha256 arm64_big_sur:  "5bda56800a66fa203e0e4ee496bce2495e86791900c59e34af486a5c0799b6e5"
+    sha256 ventura:        "7ae1010fc5a818f9d34f3af95d17d1b199a74ff54ea18a05fdfd852b049032e6"
+    sha256 monterey:       "9059bb7d481426b7c40c42203301ddb8db983ef87a6b81c7bd559cbe4d740471"
+    sha256 big_sur:        "a5295fda88d783978f9c9eb8b8af88c5ccf606a8e32dbe520fa574fdf2966b78"
+    sha256 x86_64_linux:   "f550c15a70adfbcee4149723ccb3ed8d8eb5ceaf78d788ca361116e61e7cfa6a"
   end
+
+  uses_from_macos "libxcrypt"
 
   def install
     # fixes unknown group 'nogroup'
@@ -32,11 +34,13 @@ class Proftpd < Formula
     inreplace "sample-configurations/basic.conf", "nogroup", "nobody"
 
     system "./configure", "--prefix=#{prefix}",
+                          "--sbindir=#{sbin}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}"
     ENV.deparallelize
     install_user = ENV["USER"]
-    install_group = `groups`.split[0]
+    install_group = Utils.safe_popen_read("groups").split.first
+    system "make", "all"
     system "make", "INSTALL_USER=#{install_user}", "INSTALL_GROUP=#{install_group}", "install"
   end
 
@@ -49,6 +53,6 @@ class Proftpd < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{opt_sbin}/proftpd -v")
+    assert_match "ProFTPD Version #{version}", shell_output("#{opt_sbin}/proftpd -v")
   end
 end

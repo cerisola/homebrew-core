@@ -1,17 +1,18 @@
 class Vale < Formula
   desc "Syntax-aware linter for prose"
   homepage "https://docs.errata.ai/"
-  url "https://github.com/errata-ai/vale/archive/v2.17.0.tar.gz"
-  sha256 "cea5c46aa6671f078d3a701df3f9ad9f6bf1fc618415bae101c7518be8e252b0"
+  url "https://github.com/errata-ai/vale/archive/v2.21.3.tar.gz"
+  sha256 "09a64bff873134d794888615af3131a441d6b3763bdcb76d45162587386026df"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "18225d61fca76e290acf5a0d6207bfadd71cc8274ec623ba553fb2c264d8386c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2878e761f26a434e707bf793987aa25c7f07432ef989f7a06b2130b1843b6c8"
-    sha256 cellar: :any_skip_relocation, monterey:       "393114a918a0b9bba878f0144bcac7fca2c622806fc4d7c3960cb5135956a569"
-    sha256 cellar: :any_skip_relocation, big_sur:        "372960ff42659784a86e55ff3486484151c201e3ece4008459918f26799ac1a0"
-    sha256 cellar: :any_skip_relocation, catalina:       "2782c200a5e51d7a02424e59540b9cd15db812b377ac97c7a6ef41f21022f24e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3b18ad169ff4d65c1ce7345acd696d8f3deffa0fdf378aa72f7624957a0cc57d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c4f7eddb865e8647e9802c4af3477d115d53fc332bb13844138c71758b199351"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "428b5f125ca1c2968ff317c7d2af86dee7c26b5e8d22604148d09932e9f4cded"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3a3ab6390d6a2eeb7249a338f6138934563254e81f73abda11937b34f3254d32"
+    sha256 cellar: :any_skip_relocation, ventura:        "f6a908333cad800846c322b9b74335effe1424c4b6a94d44533be11ba367aeef"
+    sha256 cellar: :any_skip_relocation, monterey:       "d85bdf59c44f6804718952683bdb3d7011879c5d215e76b41c536d2da91cb2bc"
+    sha256 cellar: :any_skip_relocation, big_sur:        "8bbf319ea8e6546650ab006595c5ef864d8bdab1ba1a435d6e593ea566ece81a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4de684a2919b07345bb809167c08a7a491494a9060edf050e9ececd8aba16c08"
   end
 
   depends_on "go" => :build

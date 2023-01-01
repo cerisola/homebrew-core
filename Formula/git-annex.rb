@@ -1,30 +1,63 @@
 class GitAnnex < Formula
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-10.20220504/git-annex-10.20220504.tar.gz"
-  sha256 "c38963526ec9c588715873cd791b6137251c434b44c63c990f91d377162af782"
+  url "https://hackage.haskell.org/package/git-annex-10.20221212/git-annex-10.20221212.tar.gz"
+  sha256 "ef67b4b93728d86050d6e6ec862e950cd6f9db488aea9c840092f024b8a0d629"
   license all_of: ["AGPL-3.0-or-later", "BSD-2-Clause", "BSD-3-Clause",
                    "GPL-2.0-only", "GPL-3.0-or-later", "MIT"]
   head "git://git-annex.branchable.com/", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 monterey:     "bc2ea15602339b3c362cc1860547cb9693c3912aa858bd5b3ae7f81a2540b0b1"
-    sha256 cellar: :any,                 big_sur:      "430fd1a4ac89d7864823a736b76def063996716e99ff1abe9d0c832d7b54fc89"
-    sha256 cellar: :any,                 catalina:     "c18e462c9db90adae711c21afbe3fea933b2b863cbef57b52a45ca3664a9619b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "a16bfa4af4dfe7e6e01d8bb93c57d75d33a8d6bfc152ea7c65763479367227b0"
+    sha256 cellar: :any,                 arm64_ventura:  "22e2b7373e0f2cbc30abb14939951e4a562dad481421bf09a5c753d9e9a4c732"
+    sha256 cellar: :any,                 arm64_monterey: "8a04339f00b7c6be5b0a1f62eb19afdebd9be1d8182f47785fa475e40751051d"
+    sha256 cellar: :any,                 arm64_big_sur:  "2058fae6769234a04dc8634309e539b9dd9869083ec16c0c04a304aaffb5b91d"
+    sha256 cellar: :any,                 ventura:        "6bd394548ba9249602227840f21a79dacc9c0190bcdc97ccff7c53e5c341c2d6"
+    sha256 cellar: :any,                 monterey:       "406f2168b4e3095577d68dac2507a788a2185860ea765fccc9768b41d018a533"
+    sha256 cellar: :any,                 big_sur:        "4f8531331f25157784fc59a509d4eb032446a025744875bd37747d91e7856986"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d9e8e09a86df6b8082236a94399f8c88b1c037f13ea4c99606cc8c870afb9aff"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc" => :build
   depends_on "pkg-config" => :build
-  depends_on "gsasl"
   depends_on "libmagic"
-  depends_on "quvi"
+
+  on_arm do
+    # An llc process leak in GHC 8.10 causes build to fail on ARM CI.
+    # Since some `git-annex` Haskell dependencies don't cleanly build
+    # with GHC 9.2+, we add workarounds to successfully build.
+    #
+    # Ref: https://github.com/Homebrew/homebrew-core/pull/99021
+    # TODO: Try to switch to `ghc` when feed has a release that allows base>=4.17
+    depends_on "ghc@9.2" => :build
+
+    resource "bloomfilter" do
+      url "https://hackage.haskell.org/package/bloomfilter-2.0.1.0/bloomfilter-2.0.1.0.tar.gz"
+      sha256 "6c5e0d357d5d39efe97ae2776e8fb533fa50c1c05397c7b85020b0f098ad790f"
+
+      # Fix build with GHC 9.2
+      # PR ref: https://github.com/bos/bloomfilter/pull/20
+      patch do
+        url "https://github.com/bos/bloomfilter/commit/fb79b39c44404fd791a3bed973e9d844fb084f1e.patch?full_index=1"
+        sha256 "c91c45fbdeb92f9dcb9b55412d14603b4e480139f6638e8b6ed651acd92409f3"
+      end
+    end
+  end
+  on_intel do
+    depends_on "ghc@8.10" => :build
+  end
 
   def install
+    # Add workarounds to build with GHC 9.2
+    if Hardware::CPU.arm?
+      (buildpath/"homebrew/bloomfilter").install resource("bloomfilter")
+      (buildpath/"cabal.project.local").write <<~EOS
+        packages: ./*.cabal
+                  homebrew/bloomfilter/
+      EOS
+    end
+
     system "cabal", "v2-update"
-    system "cabal", "v2-install", *std_cabal_v2_args,
-                    "--flags=+S3"
+    system "cabal", "v2-install", *std_cabal_v2_args, "--flags=+S3"
     bin.install_symlink "git-annex" => "git-annex-shell"
   end
 

@@ -2,22 +2,26 @@ class Micropython < Formula
   desc "Python implementation for microcontrollers and constrained systems"
   homepage "https://www.micropython.org/"
   url "https://github.com/micropython/micropython.git",
-      tag:      "v1.18",
-      revision: "da4b38e7562dfa451917f9d7f344a7f26de8c7bd"
+      tag:      "v1.19.1",
+      revision: "9b486340da22931cde82872f79e1c34db959548b"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e1b6410da16a3cf7ce27b90ecf0fc3c9fc4fdd0d2db6c96de2f3b192502f62f0"
-    sha256 cellar: :any,                 arm64_big_sur:  "e35e1113d9a508c3f5d3b6d17dc94c3d3c35f8fd263890cf70b1ca6b1ed330a9"
-    sha256 cellar: :any,                 monterey:       "4d304b8993aa666d8019578da160df127c35369a38152fc691e447182a68231a"
-    sha256 cellar: :any,                 big_sur:        "248748849f31c85197df675a1c94ca76acaae87c268732f7ee3450857b63ef1f"
-    sha256 cellar: :any,                 catalina:       "64c4f4ed7fccf9ed5f640b6d4c7207a242accb7d982689e1bd3325927587109c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5842f54c8aed4df79ada0ed45df223887aa666e20ff93264fe054d531276c207"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "23308959f468434e1173094c6e6ef2fa036dade24e45937bf3ee93097157e4c4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "986b86c0c414f814e56e3333a80c711b7b905c90f65fd4d01ef97e289385be31"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a7c9ddec80bb88b068fb1e175f4e73b2607b97a2ef136eb63b0ab291ef0d2327"
+    sha256 cellar: :any_skip_relocation, ventura:        "5ca98ed4bc48fcfd5b3d74bf3e84f4d11660912be33746a2961b3b20b3180588"
+    sha256 cellar: :any_skip_relocation, monterey:       "37d6eaf666ea01b0d01d2ae98315aab88211f4c615007dce3e9a2e9fb5abbd4a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "27cd7239415ae56c5e95e3309574a526644dbe4ba9dd4788f8c7423f51c663ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4f978c41832dbfdd9e81ab168e49c9ca7cd1d25b1939c7c20862856048b45ff"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "libffi" # Requires libffi v3 closure API; macOS version is too old
-  depends_on "python@3.10" # Requires python3 executable
+  depends_on "python@3.11" # Requires python3 executable
+
+  uses_from_macos "libffi", since: :catalina # Requires libffi v3 closure API
 
   def install
     # Build mpy-cross before building the rest of micropython. Build process expects executable at

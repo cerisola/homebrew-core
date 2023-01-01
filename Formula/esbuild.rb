@@ -3,17 +3,18 @@ require "language/node"
 class Esbuild < Formula
   desc "Extremely fast JavaScript bundler and minifier"
   homepage "https://esbuild.github.io/"
-  url "https://registry.npmjs.org/esbuild/-/esbuild-0.14.39.tgz"
-  sha256 "eee7a37917828d8cd6225414cc29b73fe6c2b0deaa1ed24b36a5bf51fd82b9ff"
+  url "https://registry.npmjs.org/esbuild/-/esbuild-0.16.12.tgz"
+  sha256 "d475d26fae510eb9aa0eae171bc55cc745f11632db8c2a7ac696501ec3f5f24c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "97a5dfd003d3113040877523977b7112a3edf93b19e46d4631e074a2598a9447"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "97a5dfd003d3113040877523977b7112a3edf93b19e46d4631e074a2598a9447"
-    sha256 cellar: :any_skip_relocation, monterey:       "395cc12922abd08270196e50b868c8f8ca029dea88ba738de16376a8df907a06"
-    sha256 cellar: :any_skip_relocation, big_sur:        "395cc12922abd08270196e50b868c8f8ca029dea88ba738de16376a8df907a06"
-    sha256 cellar: :any_skip_relocation, catalina:       "395cc12922abd08270196e50b868c8f8ca029dea88ba738de16376a8df907a06"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57da66b504681991f8613f7d8f52bfbff611baca2c241075f689b31481227c7b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f14e6b2f0c5d87a66aa4d7cb36e41959b026405504889c59aac4fd8a994e4f5c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f14e6b2f0c5d87a66aa4d7cb36e41959b026405504889c59aac4fd8a994e4f5c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f14e6b2f0c5d87a66aa4d7cb36e41959b026405504889c59aac4fd8a994e4f5c"
+    sha256 cellar: :any_skip_relocation, ventura:        "5329cd176dd3116f65f64a65d8ef7963d906df5db7ed46464b5ad1821dae2739"
+    sha256 cellar: :any_skip_relocation, monterey:       "5329cd176dd3116f65f64a65d8ef7963d906df5db7ed46464b5ad1821dae2739"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5329cd176dd3116f65f64a65d8ef7963d906df5db7ed46464b5ad1821dae2739"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4f604cd95cfa49b2d28e1364882df7ed7bd46361f9f530e7bc91f675f273bdf"
   end
 
   depends_on "node"

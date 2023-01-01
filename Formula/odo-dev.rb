@@ -2,18 +2,19 @@ class OdoDev < Formula
   desc "Developer-focused CLI for Kubernetes and OpenShift"
   homepage "https://odo.dev"
   url "https://github.com/redhat-developer/odo.git",
-      tag:      "v2.5.1",
-      revision: "ae0c553090e7644c3eda585639151419a8c3fb6b"
+      tag:      "v3.4.0",
+      revision: "b8662ef743e66b410b8ee01db686636dd0f99e7d"
   license "Apache-2.0"
   head "https://github.com/redhat-developer/odo.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ccd1659bef55782660366226e5c3b98d59e979c9a33e77c609ba25bb059f19b3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "07a113911a23917f2d797bf76fcae16fd8f7596fc2f897aa2314e8c8ec6b96e9"
-    sha256 cellar: :any_skip_relocation, monterey:       "d9e50dfaaae7aba3c10637c1a49867848409bdd83a78458a7a15933c4c0801ff"
-    sha256 cellar: :any_skip_relocation, big_sur:        "915e4475508f99bd976092ccb9982b89877d0ae87b8f9f761a650ad28acb2939"
-    sha256 cellar: :any_skip_relocation, catalina:       "7ba020986b1be4cd3b4d919320bfabea50ee575869be6f43860c7851f0078fa4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fd3d5e5ffb98d731541c5da735965a4b0c65918e2999e8c62b77c0135e491d09"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0f25dbff0fdb72021b3be177f537d78dabbacf5ceff47ce1948c5b819a342662"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "63a392a11d195c26694a87b890b13e7b65a37ad5f4d0de3cc5d34fb52bb9bddb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "32f133d239bf5ff8a9f75d503fe1e87f538ce0ef43f7f261c421c77be3f30bfe"
+    sha256 cellar: :any_skip_relocation, ventura:        "ccaaa6cd6fcbb74b99228553d3c061b043f8f07b2948ebc43ba7bbdb17520790"
+    sha256 cellar: :any_skip_relocation, monterey:       "e7752db58c05e66e324526b14fb3dd2be0133a4f9393f32395016ce14657f55a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "deefedaf77e77cfb7d625c7c43a93014287d9d3f3fa83713bf39e761f159c547"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38232e334b0ebbdd651924027b4ff6e7878ec248ae86a968327763b3264c2c02"
   end
 
   depends_on "go" => :build
@@ -28,17 +29,18 @@ class OdoDev < Formula
     # try set preference
     ENV["GLOBALODOCONFIG"] = "#{testpath}/preference.yaml"
     system bin/"odo", "preference", "set", "ConsentTelemetry", "false"
+    system bin/"odo", "preference", "add", "registry", "StagingRegistry", "https://registry.stage.devfile.io"
     assert_predicate testpath/"preference.yaml", :exist?
 
     # test version
     version_output = shell_output("#{bin}/odo version --client 2>&1").strip
     assert_match(/odo v#{version} \([a-f0-9]{9}\)/, version_output)
 
-    # try to creation new component
-    system bin/"odo", "create", "nodejs"
+    # try to create a new component
+    system bin/"odo", "init", "--devfile", "nodejs", "--name", "test", "--devfile-registry", "StagingRegistry"
     assert_predicate testpath/"devfile.yaml", :exist?
 
-    push_output = shell_output("#{bin}/odo push 2>&1", 1).strip
-    assert_match("invalid configuration", push_output)
+    dev_output = shell_output("#{bin}/odo dev 2>&1", 1).strip
+    assert_match "no connection to cluster defined", dev_output
   end
 end

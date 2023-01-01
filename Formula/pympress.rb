@@ -6,15 +6,18 @@ class Pympress < Formula
   url "https://files.pythonhosted.org/packages/f6/a0/93d92200dd3febe3c83fbf491a353aed2bb8199cfc22f3b684ea77cdbecf/pympress-1.7.2.tar.gz"
   sha256 "2c5533ac61ebf23994aa821c2a8902d203435665b51146658fd788f860f272f2"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/Cimbali/pympress.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ab969d6e68b811d59fec774c4d1286354f622da7f28b79a44be8a52197799f4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f2e83c0c8f7e2d0bdf92e96c165ab861862dc389568744f7b5d4ca4bff8d56dd"
-    sha256 cellar: :any_skip_relocation, monterey:       "d9851f0c99410614009969db4f3eec9be23807dc278d6559cbf9750db4fb0018"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c1c5bfa7090a6c1b7203597f0e744604f2f9c99c24ce34454a2898e26d08c3be"
-    sha256 cellar: :any_skip_relocation, catalina:       "92dd534f96c7bad50daed8d695ee22af97a7033c65799e45da2ce3e8a5e819be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "090e9d8438bbb18499bd50d6cb872f172a38da49239a8cb810b2d6c07c895732"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "32aa8239aa89a47af3fcc7144f8a6e9c5c2bb8e3a6b59a33708a253c9ef9d98e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "cf41626acb9a3d0a00e8582de2232a3ce1be4de8e4677b661b88a5e53ac46be6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6a9e2826ff9bd757ed3bf3904689dab13746d405717731652698a5ee8360cd08"
+    sha256 cellar: :any_skip_relocation, ventura:        "65e9fdfa2883fc42d7ee18a375eae49afc054030b81b6b16a46e66fc40aaf67c"
+    sha256 cellar: :any_skip_relocation, monterey:       "43eb945098ddf83c730e1008363cd4261a2ab4693a424c3af0a0bd2c3ad53243"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7bff0ca7febe83bdd4b61b274b8f77867835d758010c081b4664fb41a6731dbb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db78264033f402c9b0553461e06d2fe7cb0a10c0d3fbbafd20705e5b420a14cc"
   end
 
   depends_on "gobject-introspection"
@@ -27,7 +30,7 @@ class Pympress < Formula
   depends_on "libyaml"
   depends_on "poppler"
   depends_on "pygobject3"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   resource "watchdog" do
     url "https://files.pythonhosted.org/packages/b3/d2/a04951838e0b0cea20aff5214109144e6869101818e7f90bf3b68ea2facf/watchdog-2.1.7.tar.gz"

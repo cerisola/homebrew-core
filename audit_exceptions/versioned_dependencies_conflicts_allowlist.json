@@ -1,15 +1,11 @@
 [
-  "arxiv_latex_cleaner",
-  "coin3d",
-  "emscripten",
-  "freedink",
+  "couchdb-lucene",
   "hive",
   "libgaiagraphics",
   "librasterlite",
-  "mpv",
   "predictionio",
-  "pyside",
-  "pyside@2",
   "sqoop",
-  "watchman"
+  "swtpm",
+  "synergy-core",
+  "tomcat-native"
 ]

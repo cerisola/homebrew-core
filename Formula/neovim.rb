@@ -1,10 +1,35 @@
 class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
-  url "https://github.com/neovim/neovim/archive/v0.7.0.tar.gz"
-  sha256 "792a9c55d5d5f4a5148d475847267df309d65fb20f05523f21c1319ea8a6c7df"
   license "Apache-2.0"
   head "https://github.com/neovim/neovim.git", branch: "master"
+
+  stable do
+    url "https://github.com/neovim/neovim/archive/v0.8.2.tar.gz"
+    sha256 "c516c8db73e1b12917a6b2e991b344d0914c057cef8266bce61a2100a28ffcc9"
+
+    # TODO: Consider shipping these as separate formulae instead. See discussion at
+    #       https://github.com/orgs/Homebrew/discussions/3611
+    resource "tree-sitter-c" do
+      url "https://github.com/tree-sitter/tree-sitter-c/archive/v0.20.2.tar.gz"
+      sha256 "af66fde03feb0df4faf03750102a0d265b007e5d957057b6b293c13116a70af2"
+    end
+
+    resource "tree-sitter-lua" do
+      url "https://github.com/MunifTanjim/tree-sitter-lua/archive/v0.0.13.tar.gz"
+      sha256 "564594fe0ffd2f2fb3578a15019b723e1bc94ac82cb6a0103a6b3b9ddcc6f315"
+    end
+
+    resource "tree-sitter-vim" do
+      url "https://github.com/vigoux/tree-sitter-viml/archive/v0.2.0.tar.gz"
+      sha256 "608dcc31a7948cb66ae7f45494620e2e9face1af75598205541f80d782ec4501"
+    end
+
+    resource "tree-sitter-help" do
+      url "https://github.com/neovim/tree-sitter-vimdoc/archive/ce20f13c3f12506185754888feaae3f2ad54c287.tar.gz"
+      sha256 "2b8b166438cce66064aab56a744430b1f44871f43e47f70b51246d14bb826609"
+    end
+  end
 
   livecheck do
     url :stable
@@ -12,41 +37,32 @@ class Neovim < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "21da7566b9dc34a1a99a82e7a36e446b9dc17dad9bdf107d5fc46aeaea83879b"
-    sha256 arm64_big_sur:  "81bddcbf646911e46bcf4853ec29c2eae48776a72c29e2b0f4d1ff36959be025"
-    sha256 monterey:       "451c1643c6a01779c6443794c12ed41bc5629ab35059bea98ad54ea2459b4d48"
-    sha256 big_sur:        "d234249fbe80c3a75cb563ff88d841cb9c1df9bbcc99b0a2e0981eb5acf26eca"
-    sha256 catalina:       "137e5229d2322ad0f0662915db67cbb21e0581e3767b4648f6c7cbde51f8b54f"
-    sha256 x86_64_linux:   "0676404738239fdb2d03a2af7c5c381240ad7beaa7b42038d8e2b11519357163"
+    sha256 arm64_ventura:  "7d1387fcb0f9e784f8d273b87f44d205efe5f0273e67b0506a8ee1efc1958b23"
+    sha256 arm64_monterey: "3d86e36596393a64b61c1c902335ded745329311b0cb12b93e8b8f4bd6436206"
+    sha256 arm64_big_sur:  "6c004bcd8d706d9f114d00baa3ee3e4aa4725034b2a221562f1d05e6bd60152d"
+    sha256 ventura:        "90e2da0781ff98b89bf9507bc8d91abde3dbd05f86ddda65899649ee82f3d1e5"
+    sha256 monterey:       "59984d0881f110ebdd13d224d12b6ac176efd2f31aaf51586b6b7b0a23368512"
+    sha256 big_sur:        "81a99fcafd4f682e291508473fafd6ed51d0ee221aa7388c25eb18b4af784ea2"
+    sha256 x86_64_linux:   "c1c01eb5805eb2abf790ad9d747ac8fa8edaaa5ce5592c30abecfa74d34d069c"
   end
 
   depends_on "cmake" => :build
-  # Libtool is needed to build `libvterm`.
-  # Remove this dependency when we use the formula.
-  depends_on "libtool" => :build
   depends_on "luarocks" => :build
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "libtermkey"
   depends_on "libuv"
-  depends_on "luajit-openresty"
+  depends_on "libvterm"
+  depends_on "luajit"
   depends_on "luv"
   depends_on "msgpack"
   depends_on "tree-sitter"
   depends_on "unibilium"
 
-  uses_from_macos "gperf" => :build
   uses_from_macos "unzip" => :build
 
   on_linux do
     depends_on "libnsl"
-  end
-
-  # TODO: Use `libvterm` formula when the following is resolved:
-  # https://github.com/neovim/neovim/pull/16219
-  resource "libvterm" do
-    url "https://www.leonerd.org.uk/code/libvterm/libvterm-0.1.4.tar.gz"
-    sha256 "bc70349e95559c667672fc8c55b9527d9db9ada0fb80a3beda533418d782d3dd"
   end
 
   # Keep resources updated according to:
@@ -73,7 +89,7 @@ class Neovim < Formula
     # Don't clobber the default search path
     ENV.append "LUA_PATH", ";", ";"
     ENV.append "LUA_CPATH", ";", ";"
-    lua_path = "--lua-dir=#{Formula["luajit-openresty"].opt_prefix}"
+    lua_path = "--lua-dir=#{Formula["luajit"].opt_prefix}"
 
     cd "deps-build/build/src" do
       %w[
@@ -90,22 +106,46 @@ class Neovim < Formula
         end
       end
 
-      # Build libvterm. Remove when we use the formula.
-      cd "libvterm" do
-        system "make", "install", "PREFIX=#{buildpath}/deps-build", "LDFLAGS=-static #{ENV.ldflags}"
-        ENV.prepend_path "PKG_CONFIG_PATH", buildpath/"deps-build/lib/pkgconfig"
+      if build.stable?
+        Dir["tree-sitter-*"].each do |ts_dir|
+          cd ts_dir do
+            cp buildpath/"cmake.deps/cmake/TreesitterParserCMakeLists.txt", "CMakeLists.txt"
+
+            parser_name = ts_dir[/^tree-sitter-(\w+)$/, 1]
+            system "cmake", "-S", ".", "-B", "build", "-DPARSERLANG=#{parser_name}", *std_cmake_args
+            system "cmake", "--build", "build"
+
+            (lib/"nvim/parser").install "build/#{parser_name}.so"
+          end
+        end
+      end
+    end
+
+    # Point system locations inside `HOMEBREW_PREFIX`.
+    inreplace "src/nvim/os/stdpaths.c" do |s|
+      s.gsub! "/etc/xdg/", "#{etc}/xdg/:\\0"
+
+      unless HOMEBREW_PREFIX.to_s == HOMEBREW_DEFAULT_PREFIX
+        s.gsub! "/usr/local/share/:/usr/share/", "#{HOMEBREW_PREFIX}/share/:\\0"
       end
     end
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DLIBLUV_LIBRARY=#{Formula["luv"].opt_lib/shared_library("libluv")}",
+                    "-DLIBUV_LIBRARY=#{Formula["libuv"].opt_lib/shared_library("libuv")}",
                     *std_cmake_args
-
-    # Patch out references to Homebrew shims
-    inreplace "build/config/auto/versiondef.h", Superenv.shims_path/ENV.cc, ENV.cc
 
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+  end
+
+  def caveats
+    return if latest_head_version.blank?
+
+    <<~EOS
+      HEAD installs of Neovim do not include any tree-sitter parsers.
+      You can use the `nvim-treesitter` plugin to install them.
+    EOS
   end
 
   test do

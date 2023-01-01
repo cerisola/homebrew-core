@@ -16,7 +16,7 @@ class GmtAT5 < Formula
 
   keg_only :versioned_formula
 
-  deprecate! date: "2021-05-22", because: :unmaintained
+  disable! date: "2022-07-31", because: :unmaintained
 
   depends_on "cmake" => :build
   depends_on "fftw"
@@ -53,7 +53,7 @@ class GmtAT5 < Formula
     (buildpath/"gshhg").install resource("gshhg")
     (buildpath/"dcw").install resource("dcw")
 
-    args = std_cmake_args.concat %W[
+    args = std_cmake_args + %W[
       -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DGMT_DOCDIR=#{share}/doc/gmt
       -DGMT_MANDIR=#{man}

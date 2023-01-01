@@ -3,10 +3,9 @@ class Nginx < Formula
   homepage "https://nginx.org/"
   # Use "mainline" releases only (odd minor version number), not "stable"
   # See https://www.nginx.com/blog/nginx-1-12-1-13-released/ for why
-  url "https://nginx.org/download/nginx-1.21.6.tar.gz"
-  sha256 "66dc7081488811e9f925719e34d1b4504c2801c81dee2920e5452a86b11405ae"
+  url "https://nginx.org/download/nginx-1.23.3.tar.gz"
+  sha256 "75cb5787dbb9fae18b14810f91cc4343f64ce4c24e27302136fb52498042ba54"
   license "BSD-2-Clause"
-  revision 1
   head "https://hg.nginx.org/nginx/", using: :hg
 
   livecheck do
@@ -15,18 +14,20 @@ class Nginx < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "737ab2f1858bc8f3378f19da55e98d79f4014452e7ac37ab713b13c828ec95cc"
-    sha256 arm64_big_sur:  "3134aaef6f9b646784cc5dc5528958f57accff411e38feb137f2374e8d624ba9"
-    sha256 monterey:       "dba847687a67f4a25202f00c27821d2d39f0eddeb28fa8d3d1126e574706b042"
-    sha256 big_sur:        "4b6822266d64a0aa1baea76f01ead5ec163a90311747fa624cf9f234a7ee41b6"
-    sha256 catalina:       "e3f1eec4488b61a4c6bb56f338b30fbd1472a409db8a3bada92933fb92dc4b95"
-    sha256 x86_64_linux:   "1d64f3a67ccf10bb8e4529c148cc3244d7e2c8864126f3700fe57e775d7d6fd7"
+    sha256 arm64_ventura:  "fd95ddcaeabfc3a38523a72000f4738730d3163e565a9693ba40422f5a929149"
+    sha256 arm64_monterey: "1a5ca9ef1443da42401e35d41ac58d81a874f94449c76aa69fd3ec2d0e775bcc"
+    sha256 arm64_big_sur:  "d508ffc8165c81413d84046a47bfd95a8ec40d5709a423429c33a9f81b538380"
+    sha256 ventura:        "8de46606c7c3a4fda4d93f723af91831793028c23fe2d9e24e2a06bb8fdea61d"
+    sha256 monterey:       "2abd6923892bea21c46f5b70d18051a25560af9196a9b0963faac05f5dff17c9"
+    sha256 big_sur:        "540376a9e7c7dbef24a9f66025cf2030b143eabef0bed82fb15595aa410620d2"
+    sha256 x86_64_linux:   "e0528d587c273db0546ecc75552deca4436ca4ad2774f210a7089fb3942056ea"
   end
 
   depends_on "openssl@1.1"
   depends_on "pcre2"
 
   uses_from_macos "xz" => :build
+  uses_from_macos "libxcrypt"
 
   def install
     # keep clean copy of source for compiling dynamic modules e.g. passenger

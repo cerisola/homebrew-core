@@ -1,17 +1,18 @@
 class Xkbcomp < Formula
   desc "XKB keyboard description compiler"
   homepage "https://www.x.org"
-  url "https://www.x.org/releases/individual/app/xkbcomp-1.4.5.tar.bz2"
-  sha256 "6851086c4244b6fd0cc562880d8ff193fb2bbf1e141c73632e10731b31d4b05e"
+  url "https://www.x.org/releases/individual/app/xkbcomp-1.4.6.tar.xz"
+  sha256 "fa50d611ef41e034487af7bd8d8c718df53dd18002f591cca16b0384afc58e98"
   license all_of: ["HPND", "MIT-open-group"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "da94cb771debb09217e45550470e2299982cd7a01ecb648d3ea0ddd940c80f04"
-    sha256 cellar: :any,                 arm64_big_sur:  "c2007073201bb91ad1fa13fb49aef7ef2a89c2eec3d5812f98414eeb7c2198b7"
-    sha256 cellar: :any,                 monterey:       "2c78f64a5b041ae4c98d993a9640802b55c4424292c5fe22effc5df6a7668b80"
-    sha256 cellar: :any,                 big_sur:        "0890c9c6ba0c4eaedb5d5d241a751af3f40d45a4f8fa5c3487c2674fb0db02b8"
-    sha256 cellar: :any,                 catalina:       "9836909cc79f81d13fbe2f4a361f07d9013f16ab6ddcab8ebced35ebdf158790"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "503bab67d583ae0ad8ae02b5e1bced7c6db9804ff57aad88eca351e83ec230e3"
+    sha256 cellar: :any,                 arm64_ventura:  "f8b766cdedfc9f611c2ca97b916f6e5d6880cfff6b6a990839c33cad8cb26ba9"
+    sha256 cellar: :any,                 arm64_monterey: "89dc191e89a7775a9517539ec3e3b7aa309e084976d80ace8525b049b63ee9e5"
+    sha256 cellar: :any,                 arm64_big_sur:  "bff3f733c2eaba11bb0f8f0ffbbd5767785beb4d6b0c852ce5c3ab37b8d6f515"
+    sha256 cellar: :any,                 ventura:        "6ca5ba3842a7f37e3b86a2cd1646b422c2c3b4f85e08500f16ee9304819d2c88"
+    sha256 cellar: :any,                 monterey:       "21d1c0ce944cc6d65f7c497e79499b07c5a27d9fafcb301f2150fa7be32dc223"
+    sha256 cellar: :any,                 big_sur:        "01c848065f03e59bc681d657f6e0aff3d5b0d6218498a69054b4b55aa391db37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad4064d27f8fee9aded27cef9436e3bd6497f8976f44a689c3838e31459f91cc"
   end
 
   depends_on "pkg-config" => :build
@@ -20,9 +21,11 @@ class Xkbcomp < Formula
   depends_on "libxkbfile"
 
   def install
-    system "./configure", *std_configure_args
+    system "./configure", *std_configure_args, "--with-xkb-config-root=#{HOMEBREW_PREFIX}/share/X11/xkb"
     system "make"
     system "make", "install"
+    # avoid cellar in bindir
+    inreplace lib/"pkgconfig/xkbcomp.pc", prefix, opt_prefix
   end
 
   test do

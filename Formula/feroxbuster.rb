@@ -1,17 +1,18 @@
 class Feroxbuster < Formula
   desc "Fast, simple, recursive content discovery tool written in Rust"
   homepage "https://epi052.github.io/feroxbuster"
-  url "https://github.com/epi052/feroxbuster/archive/refs/tags/2.7.1.tar.gz"
-  sha256 "4fc37897d98bb09bfe738067eb5889adff20e0caef70e4487d20f41ec920381b"
+  url "https://github.com/epi052/feroxbuster/archive/refs/tags/v2.7.3.tar.gz"
+  sha256 "b7fe8e2d1b1e7ea3a118c6be4421eaef05209ebae0fa018e8ad606dce84c56ac"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f167fc2b4d9ae529107451fce0a51d489b71fcf756da7f1bcdbc874f21ddb9e5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "545e710239f2893ba4e7727077967b0ec7059f375798c0bb3453afe125440f75"
-    sha256 cellar: :any_skip_relocation, monterey:       "b39ac240e877471e009a2709e453e3cb8fe00110744dd37dc8fc588027f2f3f2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "37ef97dd22f19f0221337642f7a486ff8fcc9227cfcfcc80b25f5b27b0154024"
-    sha256 cellar: :any_skip_relocation, catalina:       "0ff6c797667e4b8d508cacf47efefa8073ece36b113200ace735c5f8fb3d53d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0bfce064409d4aa3a43d343daa120bf06bd4ac53ffe894e8118bcf6a3e51d632"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab9abae35a450b728e8c16039fc97f768684cce6bc65dc1c0155f2b20722f851"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a0a0849c3b196f44e8e2241b63adb72125acebaa70d5ff8d5ad463e3c3bb658e"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "617974f072d85d78744fea29739f5b3cd655195dfd4c52332608cca1a65100a4"
+    sha256 cellar: :any_skip_relocation, ventura:        "348d2dcf82aa0ee60f290ae83d9a873ed351686a98c651fe6d0ef68b72aa881e"
+    sha256 cellar: :any_skip_relocation, monterey:       "d0ec01c0e8f3b49726829fdb1e1e06ce337614d8fc3e92d024cb35d2fc7ee672"
+    sha256 cellar: :any_skip_relocation, big_sur:        "9b533d83c4bc0f6cbac44805895a737c2d078c379eeb48b97169181f3b249c17"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a9a3e4b6c486073cb9a55e8ee27b6a077f865a542f92002f6afe7d0f804f2e3"
   end
 
   depends_on "rust" => :build

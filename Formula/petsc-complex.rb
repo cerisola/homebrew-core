@@ -1,8 +1,8 @@
 class PetscComplex < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (complex)"
-  homepage "https://www.mcs.anl.gov/petsc/"
-  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.17.0.tar.gz"
-  sha256 "96d5aca684e1ce1425891a620d278773c25611cb144165a93b17531238eaaf8a"
+  homepage "https://petsc.org/"
+  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.18.3.tar.gz"
+  sha256 "8aaa005479c8ec2eed2b9cbb067cfc1ac0900b0de2176439f0d4f21e09c2020b"
   license "BSD-2-Clause"
 
   livecheck do
@@ -10,12 +10,13 @@ class PetscComplex < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "66f2d3c4fcb4b0c288a9e1a0a4994617e6a860e7e9d839b594c9354d776f0686"
-    sha256 arm64_big_sur:  "68232f6457bad61079e3e39660d904a1985c2f594397a2157074e202f47cb236"
-    sha256 monterey:       "a4f4e29bb5cfed249eafb734178723b46bdb844badb46a4e46745c6a33b3ace6"
-    sha256 big_sur:        "3726de3542182e8aade2497a67194afcc605a19d945ada3aaf37cce08b18a9ea"
-    sha256 catalina:       "6d60454d85def8764899a23d0a30399afce5c650d2bc082c0b5c8aabd2f74f39"
-    sha256 x86_64_linux:   "c7ac9e6f30556c348d67cebda53a69e3365eab9d457e7379484c6de8e55cc96c"
+    sha256 arm64_ventura:  "2db2a37b26f7e832db5d80965d5b70c899158713b1fab24f6f912e466beff1f7"
+    sha256 arm64_monterey: "8106afe6ae2e3ddeaac79b3a8044ed6298a23f296cb4b718a0c9ec0291c1b435"
+    sha256 arm64_big_sur:  "7a4b1916c770a4c99b2262dae11a73b88d3b4a2dfdb8e24685d0c93caa2f7f75"
+    sha256 ventura:        "a353aef5130c373bd0a2e69c2f95a20aa4bd4833acfb187a9840e44cc28feb85"
+    sha256 monterey:       "17bf05d172bb4869d57cb80dcaf55c6497b9e90a3d4e83d656dc61ed4d66e27f"
+    sha256 big_sur:        "4e0bac323b4147ef5b0c6243eda52909ef4654bfb562469eda2d0cfa00c75ccc"
+    sha256 x86_64_linux:   "d766bc143720f43437cd99a32be8e1434769851a6d59bc209761688f22e63194"
   end
 
   depends_on "hdf5"
@@ -24,9 +25,11 @@ class PetscComplex < Formula
   depends_on "netcdf"
   depends_on "open-mpi"
   depends_on "openblas"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "scalapack"
   depends_on "suite-sparse"
+
+  uses_from_macos "python" => :build
 
   conflicts_with "petsc", because: "petsc must be installed with either real or complex support, not both"
 

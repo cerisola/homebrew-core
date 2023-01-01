@@ -1,8 +1,8 @@
 class PythonTkAT310 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.10.4/Python-3.10.4.tgz"
-  sha256 "f3bcc65b1d5f1dc78675c746c98fcee823c038168fc629c5935b044d0911ad28"
+  url "https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz"
+  sha256 "4ccd7e46c8898f4c7862910a1703aa0e63525913a519abb2f55e26220a914d88"
   license "Python-2.0"
 
   livecheck do
@@ -10,18 +10,23 @@ class PythonTkAT310 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "7740ddbd35352e3f2336103b502a7f4e81f2974291504076a4515893435ccfb2"
-    sha256 cellar: :any, arm64_big_sur:  "4b6e6da3a3c725bde9be6a4d4a0922acda7bf1fbeb997a053cc91b768aae871d"
-    sha256 cellar: :any, monterey:       "6a937be1fd531589ef7f9b4d971cb91ee7549d99f7f1aaf97f0fc3c0911f1c5d"
-    sha256 cellar: :any, big_sur:        "c08f7d32f905c34c37f94bba1b64071f373fde8a81866c890d1ed48e6f25531e"
-    sha256 cellar: :any, catalina:       "4fb512fc0154201d044baf8cf1c929bef99c11b7f4f3b4d81de7903aadfaf110"
-    sha256               x86_64_linux:   "c256a3e8e2bd186387dca4763c6f7d7373052a63217ef2d01a63614847084b0a"
+    sha256 cellar: :any, arm64_ventura:  "daea00f0d9b71d4bbb907a6c4dac1dac9db202742e8ae3ed410a317e813b5b5e"
+    sha256 cellar: :any, arm64_monterey: "1d19d48d0d73b857f08f05be298a947a38f58ea0238d34350d9051497586a0ec"
+    sha256 cellar: :any, arm64_big_sur:  "8a217c67508f3ac5a3ef09697730730a61b81b27c9d46ec4004e53ca58be6e74"
+    sha256 cellar: :any, ventura:        "298225670b560465a5f90d605559f47ae14635c6e5a8524c73ac364db514fa95"
+    sha256 cellar: :any, monterey:       "65ca4f1766f5318a78ba9d3509bd9a04027b53d1e8c54a6ef603476cccc1cb3a"
+    sha256 cellar: :any, big_sur:        "5077e2c4e630e10ba2fd9a9e7867ebf3923f7cde29693ba1b854cc654d604992"
+    sha256               x86_64_linux:   "27ba1fb44bb618d124bd4526073b5d4e9e8271829c02c6551883b8cff7629fb9"
   end
 
   keg_only :versioned_formula
 
   depends_on "python@3.10"
   depends_on "tcl-tk"
+
+  def python3
+    "python3.10"
+  end
 
   def install
     cd "Modules" do
@@ -41,17 +46,17 @@ class PythonTkAT310 < Formula
               ]
         )
       EOS
-      system Formula["python@3.10"].bin/"python3", *Language::Python.setup_install_args(libexec),
-                                                  "--install-lib=#{libexec}"
+      system python3, *Language::Python.setup_install_args(libexec, python3),
+                      "--install-lib=#{libexec}"
       rm_r Dir[libexec/"*.egg-info"]
     end
   end
 
   test do
-    system Formula["python@3.10"].bin/"python3", "-c", "import tkinter"
+    system python3, "-c", "import tkinter"
 
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    system Formula["python@3.10"].bin/"python3", "-c", "import tkinter; root = tkinter.Tk()"
+    system python3, "-c", "import tkinter; root = tkinter.Tk()"
   end
 end

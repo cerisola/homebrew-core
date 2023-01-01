@@ -1,27 +1,24 @@
 class I2pd < Formula
   desc "Full-featured C++ implementation of I2P client"
   homepage "https://i2pd.website/"
-  url "https://github.com/PurpleI2P/i2pd/archive/2.41.0.tar.gz"
-  sha256 "7b333cd26670903ef0672cf87aa9f895814ce2bbef2e587e69d66ad9427664e6"
+  url "https://github.com/PurpleI2P/i2pd/archive/2.44.0.tar.gz"
+  sha256 "b653c845ac7a16fefab2ace78e3ae496c12b05304bb66e41e776071635d4e070"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "ecafe792b40cef127a5f34d06b6d4a2d887bbb52468d546cbba494abdb1d3ba9"
-    sha256 cellar: :any, arm64_big_sur:  "e9e10b7b38236e95ee3bc7893bfdf086802c4e2733698e7e767c7514b8beccf2"
-    sha256 cellar: :any, monterey:       "0b9b3ff3efc51f4c88d4b5f565da3778e906d2b948987740b8b1040afbb32867"
-    sha256 cellar: :any, big_sur:        "7396ef0b74e60a44dfbdc46e55c566392c06e5f15116f5ccaa116f504f9252bd"
-    sha256 cellar: :any, catalina:       "f6947aca1840031c034cd43fa36b57e6eaece869ae74054e5fb1c04c6e14eaee"
+    sha256 cellar: :any,                 arm64_ventura:  "428523046ee5eb138bf0d745c7adc20604a2b8348dfd37952226c09ef717db6c"
+    sha256 cellar: :any,                 arm64_monterey: "e2a7c0001e541b027b7b969c417aa07fe66b979cd42f4f91ff94d545d92ed608"
+    sha256 cellar: :any,                 arm64_big_sur:  "fd309abd53ba63105aa276b5b5d27d561095057d9c71da25ae8fb2b1e0464933"
+    sha256 cellar: :any,                 ventura:        "5b203af6f4a7a871b49b2da92261e179f557efdefa9190889c7b64dd0de6f816"
+    sha256 cellar: :any,                 monterey:       "7da92d874561d362b3fd66a2fd413a3464c86137fe94b1cd599925b752835617"
+    sha256 cellar: :any,                 big_sur:        "55b2608f0ab14401ea035344687c757c346714a5aee34d54909c9c0d7e0910c4"
+    sha256 cellar: :any,                 catalina:       "11a7435ef5962ba2fc2f8836faa5494fa9a80780e279df004d7045a77ad96bfe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe5ef7064d6ba3018e64288510c5d5fd59bafd79af8ef817d51177528f767286"
   end
 
   depends_on "boost"
   depends_on "miniupnpc"
-  depends_on "openssl@1.1"
-
-  # apply commit 5c15a12116c1e4447b94fd0f36caecfd2e5a40de to fix mutex lock on stop
-  patch do
-    url "https://github.com/PurpleI2P/i2pd/commit/5c15a12116c1e4447b94fd0f36caecfd2e5a40de.patch?full_index=1"
-    sha256 "bc3b1234966bd7d7dd13dcc71fd72f8db316b865aa7fb4e7bffa4fdd2efa4eb9"
-  end
+  depends_on "openssl@3"
 
   def install
     args = %W[
@@ -29,8 +26,9 @@ class I2pd < Formula
       HOMEBREW=1
       USE_UPNP=yes
       PREFIX=#{prefix}
+      BREWROOT=#{HOMEBREW_PREFIX}
+      SSLROOT=#{Formula["openssl@3"].opt_prefix}
     ]
-
     args << "USE_AESNI=no" if Hardware::CPU.arm?
 
     system "make", "install", *args

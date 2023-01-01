@@ -1,21 +1,25 @@
 class Mlt < Formula
   desc "Author, manage, and run multitrack audio/video compositions"
   homepage "https://www.mltframework.org/"
-  url "https://github.com/mltframework/mlt/releases/download/v7.6.0/mlt-7.6.0.tar.gz"
-  sha256 "49f3c7902432a5a873ebce8406d901ac73623ff3dba7265b6e8b55cfe8220201"
+  url "https://github.com/mltframework/mlt/releases/download/v7.12.0/mlt-7.12.0.tar.gz"
+  sha256 "48b385e83cbd5bf68bfc88631273868fbee36a41b3b7e2acd97f12b095b0083c"
   license "LGPL-2.1-only"
+  revision 1
   head "https://github.com/mltframework/mlt.git", branch: "master"
 
   bottle do
-    sha256 arm64_big_sur: "75ebe6e53d6d94f41b774d6657a6b9e634af506a3f81222e90bf586f3d89cabf"
-    sha256 big_sur:       "cdf94bf5644bad214e7002f8c58bee10076ae981b5128a8e99802a4350ee3756"
-    sha256 catalina:      "9846d56f31fa1b65f4343c3ad607e19ee77e399cc018b32b337ec8167ea39f04"
-    sha256 x86_64_linux:  "82a103b511b1b1b1a43f2d2d9d0df154a30d79ec60bc2317553d9bcc7999dd8a"
+    sha256 arm64_ventura:  "2c4651f63550c5c19bfac52e73a2e1d7a19856cfe1fd3da9ca030175d08f9d87"
+    sha256 arm64_monterey: "1de7a585b4b194ae22c0e9cfe63138c7ea259004c5fd614db4d43827329e75f9"
+    sha256 arm64_big_sur:  "c199677b5ff1ce8d2bddb419d2e737cf73a5c5ab8acfe6ceb338a2f6482a8c37"
+    sha256 ventura:        "2fbcb49848d82667ce73e3c1eb682d4479f8ed1d0f1b45108d5bc0c197e9d8d1"
+    sha256 monterey:       "3bbb6451dd55a7f13d51a2b3cdcb202676f67c93f12c717c0b64de0b0d26e12a"
+    sha256 big_sur:        "0d28fd842a31c83afbc4c2b146f1f3e29b708f0b5a4bc405b6d021cc951bd309"
+    sha256 x86_64_linux:   "c35b40e1e63c5c1c5a88fe9db561e5693509cabc36b1629f55ed9c80f2403b88"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "ffmpeg@4"
+  depends_on "ffmpeg"
   depends_on "fftw"
   depends_on "frei0r"
   depends_on "gdk-pixbuf"
@@ -29,33 +33,26 @@ class Mlt < Formula
   depends_on "sdl2"
   depends_on "sox"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
   def install
-    rpaths = [rpath]
-    rpaths << "@loader_path/../../lib" if OS.mac?
+    rpaths = [rpath, rpath(source: lib/"mlt")]
 
-    args = std_cmake_args + %W[
-      -DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}
-      -DGPL=ON
-      -DGPL3=ON
-      -DMOD_OPENCV=ON
-      -DMOD_JACKRACK=OFF
-      -DMOD_SDL1=OFF
-      -DRELOCATABLE=OFF
-    ]
-
-    system "cmake", "-S", ".", "-B", "build", *args
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}",
+                    "-DGPL=ON",
+                    "-DGPL3=ON",
+                    "-DMOD_OPENCV=ON",
+                    "-DMOD_JACKRACK=OFF",
+                    "-DMOD_SDL1=OFF",
+                    "-DRELOCATABLE=OFF",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
     # Workaround as current `mlt` doesn't provide an unversioned mlt++.pc file.
     # Remove if mlt readds or all dependents (e.g. `synfig`) support versioned .pc
-    (lib/"pkgconfig").install_symlink "mlt++-7.pc" => "mlt++.pc"
+    (lib/"pkgconfig").install_symlink "mlt++-#{version.major}.pc" => "mlt++.pc"
   end
 
   test do

@@ -1,17 +1,18 @@
 class Geographiclib < Formula
   desc "C++ geography library"
   homepage "https://geographiclib.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/geographiclib/distrib-C++/GeographicLib-2.0.tar.gz"
-  sha256 "906b862aa9e988534fd5b8d9f3bae07437e0079a4236e19942ab61fe8c83960b"
+  url "https://downloads.sourceforge.net/project/geographiclib/distrib-C++/GeographicLib-2.1.2.tar.gz"
+  sha256 "b062b472dae3d371b3005f4ea2fc59af687b8ea76eb23df732ec11c500fba959"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "3fc3f421dddd658cc96b68c967532c25d055b9a859bda415c701955f72d12542"
-    sha256 cellar: :any,                 arm64_big_sur:  "e132e08e23c5085c1e19f93031b0cc026865e4982f7f7ddcbf0e119294424c4a"
-    sha256 cellar: :any,                 monterey:       "098f8b7de3b85fb22e4d2f576765c6a697d4f7521fb2c3ee08f4ef6c6611fff9"
-    sha256 cellar: :any,                 big_sur:        "0557d7dc687a21e488ab5d9312006ab575bc6fe889f4d73a2d7e5fdecb637060"
-    sha256 cellar: :any,                 catalina:       "34d13afd308b36029e264f082a65b88cf4deb16ba34b1060f9ed12bc7d3395b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c16104286c395af78eb7ec2c9be9050676bc753815d0b6b83d144a559257920"
+    sha256 cellar: :any,                 arm64_ventura:  "10cf6efab39f38c196766b1834ae4f38fa0e5a95cebe8d55c8948619e39635cb"
+    sha256 cellar: :any,                 arm64_monterey: "94aae0bc5e90445619ce8ffcab8ad5b748bc0e0c538cd4fe44bc75268a82634c"
+    sha256 cellar: :any,                 arm64_big_sur:  "255f1273022558178fa4e4649177f921f974ec983f5db0ec66de737e032816d8"
+    sha256 cellar: :any,                 ventura:        "54bf6556433f9c426925eb5ef6876d1c6c3aec35cc1cb8269685c43a9a6c9ed5"
+    sha256 cellar: :any,                 monterey:       "348294792079ec9c5909bd933b4dfd3879fa26ec2addf6b38ee5a0c529e4541f"
+    sha256 cellar: :any,                 big_sur:        "19a15f2d0739d121c7e5afa3fd58782b4dc505439a58bc6e579fe03ed6f5db13"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5e5be7b2ec72c6b062a24a4ef412898223c9e44ee3d21ef5daa3a7060cb7833e"
   end
 
   depends_on "cmake" => :build

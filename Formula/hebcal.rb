@@ -1,27 +1,25 @@
 class Hebcal < Formula
   desc "Perpetual Jewish calendar for the command-line"
   homepage "https://github.com/hebcal/hebcal"
-  url "https://github.com/hebcal/hebcal/archive/v4.28.tar.gz"
-  sha256 "31b1fb0f8b692d985e4d2efaaed8de37132d102b03786a08626ddb03a126c0ff"
+  url "https://github.com/hebcal/hebcal/archive/v5.7.0.tar.gz"
+  sha256 "88a1f2492b4be94f2ad32d42441e996938f3c637c5e6e7e13120b01d8fa09db2"
   license "GPL-2.0-or-later"
+  head "https://github.com/hebcal/hebcal.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "291f7605c1f11823fd9a4317c8350707ece09c87167d71dd53f7ba8935d6f012"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bed65edd0b44f94de7f7fe0299c3b70cbc22acfbfda09a9752b730c58e73677e"
-    sha256 cellar: :any_skip_relocation, monterey:       "445ea0c4745faf3278d15bc414c9f2ebca52e0a85ac1a77240dc756f867d4ba1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0d7e6b52475fe53384847f0edf270a7387a77fe7a08eb9a39508c79c265e2198"
-    sha256 cellar: :any_skip_relocation, catalina:       "2e33a09ab00828ad4cb786d5a9767541b130f002e78ac54915b0b89b6db652f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d99da6b0c7fba792b35f88065e824d163c197fd4369bb1b2e1825ddac464468d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0f1a2ae8cde8b4b4b88a135cb1e48e4134b66c6a8b2120ca44091d948a2cc0c6"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0f1a2ae8cde8b4b4b88a135cb1e48e4134b66c6a8b2120ca44091d948a2cc0c6"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0f1a2ae8cde8b4b4b88a135cb1e48e4134b66c6a8b2120ca44091d948a2cc0c6"
+    sha256 cellar: :any_skip_relocation, ventura:        "bd9bbdbf589ddc86d9754f94262cc7c1b815abefe7431894bb0caa83be072ba2"
+    sha256 cellar: :any_skip_relocation, monterey:       "bd9bbdbf589ddc86d9754f94262cc7c1b815abefe7431894bb0caa83be072ba2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "bd9bbdbf589ddc86d9754f94262cc7c1b815abefe7431894bb0caa83be072ba2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "905898e646904d4dd7065316c23cb6e65715280c0c8c81703db6b9e871eb292c"
   end
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  uses_from_macos "gperf" => :build
+  depends_on "go" => :build
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--prefix=#{prefix}", "ACLOCAL=aclocal", "AUTOMAKE=automake"
-    system "make", "install"
+    system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   test do

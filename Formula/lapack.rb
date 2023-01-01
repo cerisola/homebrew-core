@@ -1,18 +1,19 @@
 class Lapack < Formula
   desc "Linear Algebra PACKage"
   homepage "https://www.netlib.org/lapack/"
-  url "https://github.com/Reference-LAPACK/lapack/archive/v3.10.1.tar.gz"
-  sha256 "cd005cd021f144d7d5f7f33c943942db9f03a28d110d6a3b80d718a295f7f714"
+  url "https://github.com/Reference-LAPACK/lapack/archive/v3.11.tar.gz"
+  sha256 "5a5b3bac27709d8c66286b7a0d1d7bf2d7170ec189a1a756fdf812c97aa7fd10"
   license "BSD-3-Clause"
   head "https://github.com/Reference-LAPACK/lapack.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2ac159c2ea5c7e054bdae3840a705547a0ea237aa2c76bc9f94a12e0ebabb976"
-    sha256 cellar: :any,                 arm64_big_sur:  "fcba5f25c5029a0420e2e1c0f8add039ebf3459f654a0e5589daa2fa7d8450ba"
-    sha256 cellar: :any,                 monterey:       "d075eb80d251d68555565163751f5d316750ad6934f680e694b928484ddbfc46"
-    sha256 cellar: :any,                 big_sur:        "7113a5d7faf1138adfc5a7335d0ed8fa32c693fd5ce98c2475997370b65757d9"
-    sha256 cellar: :any,                 catalina:       "6c16828729218498d4d547e3c7123b11770e15bf8c2bff1eefc7ffef5895ec29"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee6d1e0c63ebe081342634dbc7d540ef6ddc3b2f2713680f564eae357750458c"
+    sha256 cellar: :any,                 arm64_ventura:  "f70b3ce19cf4a9fb328f71caba7b40bacbddda80e9ad196401bcb3e0cd9e4ad7"
+    sha256 cellar: :any,                 arm64_monterey: "c9e7171ba3cc0159086737a3905e7403c81bcd3ad6cc506e955e00ac730eb302"
+    sha256 cellar: :any,                 arm64_big_sur:  "c814d96489b94449715fdab61925f859092e7d4103ec35d42bf46652628e9a52"
+    sha256 cellar: :any,                 ventura:        "7f59f3c3bb3d76b6f44d28bfb0abc7c13970c473b5f53f810acd58060c6a71df"
+    sha256 cellar: :any,                 monterey:       "f0ac2a70102bc54a9f617678161653d7d261966b6a9ec68d22a805f0d3f66658"
+    sha256 cellar: :any,                 big_sur:        "a98f6ed1c5cba50e0887b9599da3c881e83198965afd471f9532effd0dc9491a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39ebab237ba84c5ba207b2d31e84e75e901bffb769e8ee7680060e9ba36c2ed0"
   end
 
   keg_only :shadowed_by_macos, "macOS provides LAPACK in Accelerate.framework"

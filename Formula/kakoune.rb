@@ -1,8 +1,8 @@
 class Kakoune < Formula
   desc "Selection-based modal text editor"
   homepage "https://github.com/mawww/kakoune"
-  url "https://github.com/mawww/kakoune/releases/download/v2021.11.08/kakoune-2021.11.08.tar.bz2"
-  sha256 "aa30889d9da11331a243a8f40fe4f6a8619321b19217debac8f565e06eddb5f4"
+  url "https://github.com/mawww/kakoune/releases/download/v2022.10.31/kakoune-2022.10.31.tar.bz2"
+  sha256 "fb317b62c9048ddc7567fe83dfc409c252ef85778b24bd2863be2762d4e4e58b"
   license "Unlicense"
   head "https://github.com/mawww/kakoune.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Kakoune < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "04ba0d6fed5371d8f5012cb0731be90a011cf05dabcffaa51b467117dcf62275"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "edc941221942a73d79767e254798319842b1849988706e0c41deaaa65c0f3407"
-    sha256 cellar: :any_skip_relocation, monterey:       "6361db56b495a4be2855981c95bcfa0ed81ec0e63aace99b6fa06e9340d4ca28"
-    sha256 cellar: :any_skip_relocation, big_sur:        "95949d504b4b3d6c87bd4e3cf0e391b3a346ee0166187cf8b43945dd3e6cb826"
-    sha256 cellar: :any_skip_relocation, catalina:       "0bf1d69af4e88dd3e7c441c77bbc9ea5f211205883f9a02914b4590035f616e2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2fa06946316f28a0375d5d883b45c899775f9aacff98e13bc8bca7d4721d336e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6433e00227d299986ab1bbff1c41c9bcf8ddbaee825085ff3ab62cde72e377c7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f31a1765a53309f42bdef042c82b8510aacdeed47e4b5563457c6a2e91fad7b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ca17ff96ac28cdf3aa24317f6ddce22859c82087bff76d06a1f911948fca3c0"
+    sha256 cellar: :any_skip_relocation, ventura:        "ea0a3df04f0d8ad2ba262d0208ba8910e5cd728bd13044c39387601f0f401d04"
+    sha256 cellar: :any_skip_relocation, monterey:       "bee2f0c9c8d1f57f366d4d3452f9bf0d73e30509a651258d877311dd2733f4fd"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4d49c03712e4b2e60d2ef91e14afa838552b4877e5a42121d6147443c307380b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "606496e883548440a2813b00e3639212da5d3aa11a52d4fd9ae180d373197fc5"
   end
 
   depends_on macos: :high_sierra # needs C++17
@@ -27,9 +28,8 @@ class Kakoune < Formula
 
   on_linux do
     depends_on "binutils" => :build
-    depends_on "linux-headers@4.4" => :build
+    depends_on "linux-headers@5.15" => :build
     depends_on "pkg-config" => :build
-    depends_on "gcc"
   end
 
   fails_with gcc: "5"

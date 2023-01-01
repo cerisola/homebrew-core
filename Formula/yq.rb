@@ -1,8 +1,8 @@
 class Yq < Formula
-  desc "Process YAML documents from the CLI"
+  desc "Process YAML, JSON, XML, CSV and properties documents from the CLI"
   homepage "https://github.com/mikefarah/yq"
-  url "https://github.com/mikefarah/yq/archive/v4.25.1.tar.gz"
-  sha256 "2f0736f0650bef121e31332e1f52c67e9bd975ca651e1507a2e5e3744c10e766"
+  url "https://github.com/mikefarah/yq/archive/v4.30.6.tar.gz"
+  sha256 "320d0ce36d1dbe703b4cbdb28e9a927c1e87b157e8c05aeb078d6c9c1b0138ea"
   license "MIT"
   head "https://github.com/mikefarah/yq.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Yq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3e6eeb5167f52d0071740428d7ca68709467bda65f71d1702ee5fd66cefccab4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "03b33b507f688c42e644467004a5a1cda6ea432f303e5b5ce3e08c80796dda02"
-    sha256 cellar: :any_skip_relocation, monterey:       "7bef84e81b9e6758d559be55977313a514f1280ab9e72234c5ff30a5d1c71bf3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "11fc1c620c919696ffa19b8a63c1760c92e4dbebbfa0bf39465f7a6c61ed5a31"
-    sha256 cellar: :any_skip_relocation, catalina:       "ce5231cc3fd538eb959675e29e65af6571fb97c481f2695c6c76f7bdf8db789d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "849fce23e6abf66516e2c9247f03519e865ce2519514d1b23718bc5611a1ce36"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "32badcf78b54509e134e11d6b52447d53df92af0db95c95877baa27d5d15b34c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8a7e7f0c6e49168618aeb575a8b0160cbdc28096172b8b90b7f94a3d27569ed9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d190c3437e018a19e35ab7a588f08679b7cd691870a69a7adf7d0c97858ce6f3"
+    sha256 cellar: :any_skip_relocation, ventura:        "7da43854e6335cf7eca390647646d3f4561f759733046f504ceaf85a91c86451"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b5e98258fb5938d56049651f82f4b18cf85efc8a28d17b8523855d6421ee7a8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c158d629f0e09daa9f14d441a7388f78dbb819a9b21aff2839879fdf66abc66a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f85fdc6c29538a9261fa550da38349df58445def1eb677ff7356ba4888a13bc0"
   end
 
   depends_on "go" => :build
@@ -29,9 +30,7 @@ class Yq < Formula
     system "go", "build", *std_go_args(ldflags: "-s -w")
 
     # Install shell completions
-    (bash_completion/"yq").write Utils.safe_popen_read(bin/"yq", "shell-completion", "bash")
-    (zsh_completion/"_yq").write Utils.safe_popen_read(bin/"yq", "shell-completion", "zsh")
-    (fish_completion/"yq.fish").write Utils.safe_popen_read(bin/"yq", "shell-completion", "fish")
+    generate_completions_from_executable(bin/"yq", "shell-completion")
 
     # Install man pages
     system "./scripts/generate-man-page-md.sh"

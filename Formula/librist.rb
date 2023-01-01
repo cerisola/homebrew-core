@@ -4,6 +4,7 @@ class Librist < Formula
   url "https://code.videolan.org/rist/librist/-/archive/v0.2.7/librist-v0.2.7.tar.gz"
   sha256 "7e2507fdef7b57c87b461d0f2515771b70699a02c8675b51785a73400b3c53a1"
   license "BSD-2-Clause"
+  revision 2
   head "https://code.videolan.org/rist/librist.git", branch: "master"
 
   livecheck do
@@ -12,12 +13,13 @@ class Librist < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "401d0c3cde4ce87ba50676c7235ff523540906436a16fb8194d7cf52a942e2d6"
-    sha256 cellar: :any,                 arm64_big_sur:  "9d822e2949f0db5e4127008c166026bfb2be021219dec45bcb0f48ef3c1724ad"
-    sha256 cellar: :any,                 monterey:       "459881be00dd1e4ab5f0c26fe876d9436fff26331aee9b6cd9c3a9f461ec41f3"
-    sha256 cellar: :any,                 big_sur:        "611f5337f0af96982bfa6248d812854019397f23aeff9989332d13b1f7548883"
-    sha256 cellar: :any,                 catalina:       "3dfe38c829c8b88b5af0d1180e644afa7ae1c560b0a3d3eedec86eafa793221b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "489462998d673e7f21a2d3b3195435d4d72b23c0badd33df21f46e5a8eb3de07"
+    sha256 cellar: :any,                 arm64_ventura:  "5520123f90ac2fb54c6d913c49a81be30b1b4693c07d44b8f31054ef68fd00bf"
+    sha256 cellar: :any,                 arm64_monterey: "53839933b9d639a09762a2139d14958aab9892893945d9acf982875c9f50ed5f"
+    sha256 cellar: :any,                 arm64_big_sur:  "ff84b656ee0935b3138bfb6e824540b61f90f4e84be50c93270a84b1817a9628"
+    sha256 cellar: :any,                 ventura:        "3b12971a7e142caab9b768f70eb9acd3146c93398e59b95ca63da04f31140951"
+    sha256 cellar: :any,                 monterey:       "fb0dda69a580be48d9e5dc6fc303f7458e7da71789ae702ae0dc3e57b9d442aa"
+    sha256 cellar: :any,                 big_sur:        "fbfce89fa2745424375d0de29daac696add8cd2bd9adafcd49b81c9fdc4b520b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "163f8e9b98598500d3d4e70c6e2214413be075004ec4386d6311bc17b89479ec"
   end
 
   depends_on "meson" => :build
@@ -28,8 +30,10 @@ class Librist < Formula
 
   def install
     ENV.append "LDFLAGS", "-Wl,-rpath,#{rpath}"
-    system "meson", *std_meson_args, "build", ".", "--default-library", "both"
-    system "ninja", "install", "-C", "build"
+
+    system "meson", "setup", "--default-library", "both", "-Dfallback_builtin=false", *std_meson_args, "build", "."
+    system "meson", "compile", "-C", "build"
+    system "meson", "install", "-C", "build"
   end
 
   test do

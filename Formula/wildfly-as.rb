@@ -1,8 +1,8 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://www.wildfly.org/"
-  url "https://github.com/wildfly/wildfly/releases/download/26.1.0.Final/wildfly-26.1.0.Final.tar.gz"
-  sha256 "c8a478e7a57daeb767d88cd63de2b26e9e22562bed77a09a74b39c489ec5d7e3"
+  url "https://github.com/wildfly/wildfly/releases/download/27.0.1.Final/wildfly-27.0.1.Final.tar.gz"
+  sha256 "c72892c996b05bfa78c6c632f1a5d4680523d3efb4c0321fa8485f052e15fba9"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,11 +11,12 @@ class WildflyAs < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "cc8afc9ef12f1a5bf970cd0583837cb8341ee6b6b55d21a722aaa04ffc0fe468"
-    sha256 cellar: :any, arm64_big_sur:  "cc8afc9ef12f1a5bf970cd0583837cb8341ee6b6b55d21a722aaa04ffc0fe468"
-    sha256 cellar: :any, monterey:       "f142066b0b17ba8f6244bd7dccb3d68cd542c30a3c43e0803304452591fefcae"
-    sha256 cellar: :any, big_sur:        "f142066b0b17ba8f6244bd7dccb3d68cd542c30a3c43e0803304452591fefcae"
-    sha256 cellar: :any, catalina:       "f142066b0b17ba8f6244bd7dccb3d68cd542c30a3c43e0803304452591fefcae"
+    sha256 cellar: :any, arm64_ventura:  "bacff9366a013036e47f094f94efd8c6993ba5548855bf136f97d0aa16bf2164"
+    sha256 cellar: :any, arm64_monterey: "bacff9366a013036e47f094f94efd8c6993ba5548855bf136f97d0aa16bf2164"
+    sha256 cellar: :any, arm64_big_sur:  "bacff9366a013036e47f094f94efd8c6993ba5548855bf136f97d0aa16bf2164"
+    sha256 cellar: :any, ventura:        "33c281724887da7773db8819c3aecaa09c58084863cb07ccc3c29ed0a14d5548"
+    sha256 cellar: :any, monterey:       "33c281724887da7773db8819c3aecaa09c58084863cb07ccc3c29ed0a14d5548"
+    sha256 cellar: :any, big_sur:        "33c281724887da7773db8819c3aecaa09c58084863cb07ccc3c29ed0a14d5548"
   end
 
   # Installs a pre-built `libartemis-native-64.so` file with linkage to libaio.so.1
@@ -52,38 +53,10 @@ class WildflyAs < Formula
     EOS
   end
 
-  plist_options manual: "#{HOMEBREW_PREFIX}/opt/wildfly-as/libexec/bin/standalone.sh --server-config=standalone.xml"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>KeepAlive</key>
-        <dict>
-          <key>SuccessfulExit</key>
-          <false/>
-          <key>Crashed</key>
-          <true/>
-        </dict>
-        <key>ProgramArguments</key>
-        <array>
-          <string>#{opt_libexec}/bin/standalone.sh</string>
-          <string>--server-config=standalone.xml</string>
-        </array>
-        <key>EnvironmentVariables</key>
-        <dict>
-          <key>JBOSS_HOME</key>
-          <string>#{opt_libexec}</string>
-          <key>WILDFLY_HOME</key>
-          <string>#{opt_libexec}</string>
-        </dict>
-      </dict>
-      </plist>
-    EOS
+  service do
+    run [opt_libexec/"bin/standalone.sh", "--server-config=standalone.xml"]
+    environment_variables JBOSS_HOME: opt_libexec, WILDFLY_HOME: opt_libexec
+    keep_alive successful_exit: false, crashed: true
   end
 
   test do

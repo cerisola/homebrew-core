@@ -1,10 +1,9 @@
 class DosboxStaging < Formula
   desc "Modernized DOSBox soft-fork"
   homepage "https://dosbox-staging.github.io/"
-  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.78.1.tar.gz"
-  sha256 "dcd93ce27f5f3f31e7022288f7cbbc1f1f6eb7cc7150c2c085eeff8ba76c3690"
+  url "https://github.com/dosbox-staging/dosbox-staging/archive/v0.80.0.tar.gz"
+  sha256 "d4f6a4517402fba9bf81596a591e119062d26c7411c791eb0157cc6c89dfacdf"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/dosbox-staging/dosbox-staging.git", branch: "main"
 
   # New releases of dosbox-staging are indicated by a GitHub release (and
@@ -15,27 +14,32 @@ class DosboxStaging < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "1d186ea2c0a3ca07ffa8c1ddd02d34832d7c50d4c718dd50c7aa5469489e4901"
-    sha256 cellar: :any, arm64_big_sur:  "92315173b7a51d4af3db388cb65420026d7864aa27f5ef89a03942bf42afcf79"
-    sha256 cellar: :any, monterey:       "7ca82e1f018eebd2650823754122b999dba06cd3c923edb7fec0cf07d356e54e"
-    sha256 cellar: :any, big_sur:        "48c5d2212056baf6bf7cf5ac1db657148322f8e90a70fd065f11df3dc0262e98"
-    sha256 cellar: :any, catalina:       "12ee01a5d78a0d1b24c51deccc311b2ab8bddec499265c088d5174a16a49837f"
-    sha256               x86_64_linux:   "357fb2f803a354e6662bc8bb5468bd8b02d66190f0b29c7270bd9dd1e08799bd"
+    sha256 arm64_ventura:  "b00a29063432c1b0faf3b69b29c26f6e8b546f97ac369f84020f504faa8780cd"
+    sha256 arm64_monterey: "9651be9246f2adf83439b29be9bde3db1e5bed02e866daccdf75cbfc2e2cf0a2"
+    sha256 arm64_big_sur:  "3c2ee227b902fde137ec5cbd38bfb8c7c15863198816b9d385d3101c260050bf"
+    sha256 ventura:        "bb3d548fdf47d47db8e1087fb75a9535370c6eaeadbd1798ecd0c0180a97a102"
+    sha256 monterey:       "e8f79b90a0df3ccc62b52cfad2704ac06db9834ff4732bc44dd4b7a500c79b19"
+    sha256 big_sur:        "1804f6088cb72c504d1abf62c842dfa3692a77e720689316a3ce552f0e6d37f4"
+    sha256 x86_64_linux:   "70bfcc3f4a894c587f24dad63bc75fd8ac972f66709cfa2e900e3811188fc07e"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on "fluid-synth"
+  depends_on "glib"
+  depends_on "iir1"
   depends_on "libpng"
   depends_on "libslirp"
   depends_on "mt32emu"
   depends_on "opusfile"
   depends_on "sdl2"
+  depends_on "sdl2_image"
   depends_on "sdl2_net"
+  depends_on "speexdsp"
+  uses_from_macos "zlib"
 
   on_linux do
-    depends_on "gcc"
     depends_on "mesa"
     depends_on "mesa-glu"
   end
@@ -43,11 +47,14 @@ class DosboxStaging < Formula
   fails_with gcc: "5"
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Db_lto=true", ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    (buildpath/"subprojects").rmtree # Ensure we don't use vendored dependencies
+    system_libs = %w[fluidsynth glib iir mt32emu opusfile png sdl2 sdl2_net slirp speexdsp zlib]
+    args = %W[-Ddefault_library=shared -Db_lto=true -Dtracy=false -Dsystem_libraries=#{system_libs.join(",")}]
+
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
+
     mv bin/"dosbox", bin/"dosbox-staging"
     mv man1/"dosbox.1", man1/"dosbox-staging.1"
   end

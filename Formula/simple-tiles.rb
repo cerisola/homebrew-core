@@ -4,20 +4,21 @@ class SimpleTiles < Formula
   url "https://github.com/propublica/simple-tiles/archive/v0.6.1.tar.gz"
   sha256 "2391b2f727855de28adfea9fc95d8c7cbaca63c5b86c7286990d8cbbcd640d6f"
   license "MIT"
-  revision 14
+  revision 17
   head "https://github.com/propublica/simple-tiles.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e79b9c7a38d6a472dc4260835e7bf47c439ba6785839354d8171f7fa9a6fa494"
-    sha256 cellar: :any,                 arm64_big_sur:  "b015d743907549f5f3278b4e1dea46d948dbf29e872af562bc40d0a2f3c57e8e"
-    sha256 cellar: :any,                 monterey:       "2ee07009e5479600459f4eba993de5a1d708b79236f4e1ce4ca861c20e7d14f1"
-    sha256 cellar: :any,                 big_sur:        "6ff45cd23c8c4b6aac0216c27d2888e07bf8fb302b161c5d84f12d8e2f0b3ee0"
-    sha256 cellar: :any,                 catalina:       "66607ac5a7cf294a2caf13e099eca527f7b97d4fc94b1bdd09d8c8a607ae58e6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fac8b578be9d4220ff8048f3b9f926c39ba5fdfe57cc3f1307d2d13e09e4aebb"
+    sha256 cellar: :any,                 arm64_ventura:  "91c2527500613ce739bf70d93ab8cb2473e843ac44eb38cb89e48b735577923f"
+    sha256 cellar: :any,                 arm64_monterey: "91c1f4b7b7e0f186c981539ece21d10279e3d1228134ed80df33186e55ed820d"
+    sha256 cellar: :any,                 arm64_big_sur:  "7cb19716ecc2babf25aea141f389b7f7761c81f99132fc6936727a779a35de4d"
+    sha256 cellar: :any,                 ventura:        "9ff8e18e0130a53d4b3b53f6b15b5fd15cac1ae6adb2d403b7e6665f0617cc3f"
+    sha256 cellar: :any,                 monterey:       "590dd2df54fd4f83c5efc83152e79485344c04cbb000a0bc2efc0cdc29034236"
+    sha256 cellar: :any,                 big_sur:        "26e389105db7f26e74a394892d23e017dfd6db0e50231a1db251936020d2ea95"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85f1ada4cb8e81a98e2bd582bcdc0962d992d83e91ff901b72fb488b30f44d4d"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
   depends_on "cairo"
   depends_on "gdal"
   depends_on "pango"
@@ -34,7 +35,7 @@ class SimpleTiles < Formula
   end
 
   def install
-    ENV.prepend_path "PATH", Formula["python@3.10"].libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.11"].libexec/"bin"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

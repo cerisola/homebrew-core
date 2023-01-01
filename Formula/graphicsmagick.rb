@@ -1,8 +1,8 @@
 class Graphicsmagick < Formula
   desc "Image processing tools collection"
   homepage "http://www.graphicsmagick.org/"
-  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.38/GraphicsMagick-1.3.38.tar.xz"
-  sha256 "d60cd9db59351d2b9cb19beb443170acaa28f073d13d258f67b3627635e32675"
+  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.39/GraphicsMagick-1.3.39.tar.xz"
+  sha256 "e30b1ca58e873d0a1ee208384724424db2d3c33a54034e261d14e8fbb8f8d04f"
   license "MIT"
   head "http://hg.code.sf.net/p/graphicsmagick/code", using: :hg
 
@@ -11,18 +11,20 @@ class Graphicsmagick < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "60a324b98f4e6a8015f0b304df612b70fb64b5f51ad2d43bfcddfb951257125d"
-    sha256 arm64_big_sur:  "17e64fd18bd459648e31e463e6765fc8a39496324c2df9b977ce7b6d27ba77b6"
-    sha256 monterey:       "4aabbd3fa3fb9a3dbdf111d2d06cc1b78bf8fdfb8f1ea9f440aeabd6f40e9627"
-    sha256 big_sur:        "357ff0c2523d8015ec3000ad3aeca4b474c5816cd055ed3ee2435200ba580deb"
-    sha256 catalina:       "a7138441a365f8cb115b325d30f462e5ee1e5c9ec4454240cadf6cc7172be8d7"
-    sha256 x86_64_linux:   "77642a448d7ce30d4324b45eb0ec62e710e2b9c6c813ad240d2a05a756360d81"
+    sha256 arm64_ventura:  "35cf8786213d513dd4f992fbe0dd92a9242cfc5722132cb96a53efe5ef1f332e"
+    sha256 arm64_monterey: "8e279fb2e6269dffdc6268c304632ac4ad84718c01751299759b6ebd849cec22"
+    sha256 arm64_big_sur:  "109fecb48596bf2b02571761aa66e69b9b80d8515a0460a0e0fd8b3c53ad4480"
+    sha256 ventura:        "77dea8c6cef1e529da7d181feb49ee9f1d9f5c3094a14453277ee3b932473839"
+    sha256 monterey:       "350a28fcfd5dd7bce571e8922ce38af74dc0fbb92897f6b81762d378806d9b19"
+    sha256 big_sur:        "034a0dc30d4e8107b183c2438e8911f6d8ecaffc96f7ff8598e5660fcf89ae8b"
+    sha256 x86_64_linux:   "03b091052b63deae7e63fb4924579e050063cbc03a3ac989fd3b9d69d251a5a2"
   end
 
   depends_on "pkg-config" => :build
   depends_on "freetype"
   depends_on "jasper"
   depends_on "jpeg-turbo"
+  depends_on "jpeg-xl"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "libtool"
@@ -49,6 +51,7 @@ class Graphicsmagick < Formula
       --without-gslib
       --with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts
       --without-wmf
+      --with-jxl
     ]
 
     # versioned stuff in main tree is pointless for us

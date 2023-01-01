@@ -1,17 +1,19 @@
 class Libfido2 < Formula
   desc "Provides library functionality for FIDO U2F & FIDO 2.0, including USB"
   homepage "https://developers.yubico.com/libfido2/"
-  url "https://github.com/Yubico/libfido2/archive/1.11.0.tar.gz"
-  sha256 "0830c5853e3b44099a97166e0cec54a65b54b7faaac07071872f77b8e4d7b302"
+  url "https://github.com/Yubico/libfido2/archive/1.12.0.tar.gz"
+  sha256 "813d6d25116143d16d2e96791718a74825da16b774a8d093d96f06ae1730d9c5"
   license "BSD-2-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7efcbcc6ba548f2410d5fdf45788782de457a0dc6093220eacf89480fcd496db"
-    sha256 cellar: :any,                 arm64_big_sur:  "6b3b260583c40834aec71d64de1a679e27ea3e7da1788a8d913bca38b7985f10"
-    sha256 cellar: :any,                 monterey:       "aeb657a45d240d679bebf88fd5d8fe9253464fe7aa986a34e6531c1c531baf25"
-    sha256 cellar: :any,                 big_sur:        "e4ffb026a067f1d1fb49eb0033bfac05f29a4a390790fd1b29aee00363ed62d2"
-    sha256 cellar: :any,                 catalina:       "1029bd3cccdda9ba93a80ed44151ebb9153a6f79ece7110b2c4d1e014830b98f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dd9ba79bc1fb55d32160414994b907ff66bcf7a4bbb11ac30518d763a912fa12"
+    sha256 cellar: :any,                 arm64_ventura:  "ca05400dc7dd0481f41f2553fdf4f61a7a6e83b93d24cf75da9f466ab55b1ccc"
+    sha256 cellar: :any,                 arm64_monterey: "fc615aa6445386028c82143d7ca76da7e0d4ed4864362cad44c02400a6a8d6d7"
+    sha256 cellar: :any,                 arm64_big_sur:  "51bb36596d2a20c4fcbeb987215caa601e642ea75969890c12ecc295c549a715"
+    sha256 cellar: :any,                 ventura:        "6dc984c005f51e980e86adce21c21d204691d3ebed85882070e2ce4334ab618d"
+    sha256 cellar: :any,                 monterey:       "9ee46084c9843396ee98d7ebf66e19a7e90e0f85ef7aed5e6dfe52c7ff0c126d"
+    sha256 cellar: :any,                 big_sur:        "ea43b9c95bfc1f2452bf1d6e7de8efdb1861f2be94c385e5c0265070d6cdc22e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cb31ba31a74cf54897d36af23acfce66e450df700a6a0eaa357f041f03704b16"
   end
 
   depends_on "cmake" => :build

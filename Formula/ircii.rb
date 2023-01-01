@@ -18,17 +18,20 @@ class Ircii < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "a1419d881b643569302b00c917754568e78896cf3c96b377dd42610ef29d3932"
-    sha256 arm64_big_sur:  "59c85726eb16390bbeac0309702bf21e76116b552fac81ce36d2d4aa20866318"
-    sha256 monterey:       "11957edbab37bf2b64e1ed4b92d0539f7d4e71ecd9f511901c5c34786b5d5932"
-    sha256 big_sur:        "e7eae3e18034f4b13f64f83d538dae8b421245f03b3bd5c0c080a1a77db5414e"
-    sha256 catalina:       "dc265a9d5875eff670c60a9e81bc0185ee74eee142ad09b8f0bc6c20ea663507"
-    sha256 mojave:         "758aa15d57d51e9f2c97115e837cd10c9879bfeb46c84823380291a76573f669"
-    sha256 x86_64_linux:   "db2f3932ad47a98b6ba726189bba789c25404517581994c6ff99183907b2c05f"
+    rebuild 2
+    sha256 arm64_ventura:  "dc7d4b485e4f00ec1fb9750f38110b452bcc9ee777aebc51521bb32b031d3690"
+    sha256 arm64_monterey: "e1a64a64f9aab81c8fce589945912aa0c459daff48e65f455a181d0391539b23"
+    sha256 arm64_big_sur:  "9daf37b4ec3ed1b47c8ce24d9acffb0a0781f648f97220c09c6100310819344b"
+    sha256 ventura:        "17de357ffa8090c0928c6af8e0a1ade72b43c187552bbc3acb82cf98ebf5d65e"
+    sha256 monterey:       "bb15fc3ed62c9a10c8555a53cf3ea89d9025a8ed13ba972f9fd78ce7449998cc"
+    sha256 big_sur:        "4d2671014e366e382805580bba8c328f20b52a5838701f08619f030f43f58ae1"
+    sha256 catalina:       "b621da055243edbf54884b186c1250ef4ab80655e7647aa837d07e523e8e5c1a"
+    sha256 x86_64_linux:   "2c88482345ab4bb6ec095d529259fe14768c6cc7b7918883bf94a3e07b62d700"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "openssl@3"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
 
   def install

@@ -1,14 +1,16 @@
 class Pacparser < Formula
   desc "Library to parse proxy auto-config (PAC) files"
-  homepage "https://github.com/pacparser/pacparser"
-  url "https://github.com/pacparser/pacparser/archive/v1.4.0.tar.gz"
+  homepage "https://github.com/manugarg/pacparser"
+  url "https://github.com/manugarg/pacparser/archive/v1.4.0.tar.gz"
   sha256 "d62d30aa6e2b4ccdf6773fc30a8b90d1d64eb6ad8edcbf56d2b803e913dcddbb"
   license "LGPL-3.0-or-later"
-  head "https://github.com/pacparser/pacparser.git", branch: "master"
+  head "https://github.com/manugarg/pacparser.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_ventura:  "faec5e06c1812b2e60f8398beae9703ba9f11124f4d8eee804e95b7784c28b75"
     sha256 cellar: :any,                 arm64_monterey: "c9a4d912f32c3d95b1d3e9908c1bf173b5454ab2fe97b72d542e7e9d3323acaa"
     sha256 cellar: :any,                 arm64_big_sur:  "87c7b416faa3933313915c97df4908636f6fb90d076906aedb9ab0f6349b0184"
+    sha256 cellar: :any,                 ventura:        "4de93574aec60553337d57731d2f38356f4a9fe633f627763d9bd4f8d26ea199"
     sha256 cellar: :any,                 monterey:       "66567eed659b8c575fd086749fb206f091b4dac80c18aace817402f53363ce5d"
     sha256 cellar: :any,                 big_sur:        "ec53ab3e50bc58c1fb3226e83ea9dea4ccf12294674588a2ac05177699816b49"
     sha256 cellar: :any,                 catalina:       "99ad319b5cefd28b2d33f4645fa0f2f408a99b5905901eb61a052d38fa29df1a"
@@ -17,7 +19,7 @@ class Pacparser < Formula
 
   def install
     # Disable parallel build due to upstream concurrency issue.
-    # https://github.com/pacparser/pacparser/issues/27
+    # https://github.com/manugarg/pacparser/issues/27
     ENV.deparallelize
     ENV["VERSION"] = version
     Dir.chdir "src"

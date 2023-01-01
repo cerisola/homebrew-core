@@ -4,7 +4,7 @@ class Redex < Formula
   desc "Bytecode optimizer for Android apps"
   homepage "https://fbredex.com"
   license "MIT"
-  revision 8
+  revision 10
   head "https://github.com/facebook/redex.git", branch: "master"
 
   stable do
@@ -17,6 +17,20 @@ class Redex < Formula
       sha256 "dccc41146688448ea2d99dd04d4d41fdaf7e174ae1888d3abb10eb2dfa6ed1da"
     end
 
+    # Apply upstream fixes for GCC 11
+    patch do
+      url "https://github.com/facebook/redex/commit/70a82b873da269e7dd46611c73cfcdf7f84efa1a.patch?full_index=1"
+      sha256 "44ce35ca93922f59fb4d0fd1885d24cce8a08d73b509e1fd2675557948464f1d"
+    end
+    patch do
+      url "https://github.com/facebook/redex/commit/e81dda3f26144a9c94816c12237698ef2addf864.patch?full_index=1"
+      sha256 "523ad3d7841a6716ac973b467be3ea8b6b7e332089f23e4788e1f679fd6f53f5"
+    end
+    patch do
+      url "https://github.com/facebook/redex/commit/253b77159d6783786c8814168d1ff2b783d3a531.patch?full_index=1"
+      sha256 "ed69a6230506704ca4cc7a52418b3af70a6182bd96abdb5874fab02f6b1a7c99"
+    end
+
     # Fix compilation on High Sierra
     # Fix boost issue (https://github.com/facebook/redex/pull/564)
     # Remove for next release
@@ -24,12 +38,14 @@ class Redex < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a163d4757ff1c42ac50de19779a2b5d50c17ef4be5bc0be4c0fad6daaa267af9"
-    sha256 cellar: :any,                 arm64_big_sur:  "ae66fa7a064e03be1b6547e0f922ecb192674697df74472c24f981f551c022cb"
-    sha256 cellar: :any,                 monterey:       "b7cdcc65eb07f62e1483cf9ed47d2002d8bc315207f4071388444ec511dd0938"
-    sha256 cellar: :any,                 big_sur:        "00629b3e7e7018c6695fe2d6a8db1c26d543662a3c30db8de461c98525076542"
-    sha256 cellar: :any,                 catalina:       "9d1e529b8d4645e7d0daeedb4b16d84e9f22e14c52b91c87430e53d863688329"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f1fb9e4c3b69e8f063212416c6f6b99c6b9a877bd4d8837296fbdeaf5ff0942"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "05defc692e9f0a297028f0011834ddc367c52a9a59afbb856afe5d20f159e0e2"
+    sha256 cellar: :any,                 arm64_monterey: "403ca8c3253bead9cb794b1c7cbb6f908a628022123845f3f91788bfe6a07469"
+    sha256 cellar: :any,                 arm64_big_sur:  "2cb89fe6cf375d7f4839bf7d20cf8ed5a7db8a22c1613031aa0bb5bb773c6480"
+    sha256 cellar: :any,                 ventura:        "3b79dc7ab652af051045e9ae175b60126203afbb4523c688f8f18f31a6db8424"
+    sha256 cellar: :any,                 monterey:       "379a82d9fad4828ad89de7091ef59a86b7429ec2957871b88a63c7fa8d0f595d"
+    sha256 cellar: :any,                 big_sur:        "14c977013fe159f2c1fa7d89fffde5421a7bca579fa43ae38d33cc0fb5fe1b20"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f2f078398aa2f2c4cb1dcbea9f1936e66178ea7259084be3946bb134055b988"
   end
 
   depends_on "autoconf" => :build
@@ -38,7 +54,7 @@ class Redex < Formula
   depends_on "libtool" => :build
   depends_on "boost"
   depends_on "jsoncpp"
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
   resource "test_apk" do
     url "https://raw.githubusercontent.com/facebook/redex/fa32d542d4074dbd485584413d69ea0c9c3cbc98/test/instr/redex-test.apk"

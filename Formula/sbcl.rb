@@ -1,23 +1,27 @@
 class Sbcl < Formula
   desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.2.4/sbcl-2.2.4-source.tar.bz2"
-  sha256 "fcdd251cbc65f7f808ed0ad77246848d1be166aa69a17f7499600184b7a57202"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/2.3.0/sbcl-2.3.0-source.tar.bz2"
+  sha256 "bf743949712ae02cb7493f3b8b57ce241948bf61131e36860ddb334da1439c97"
   license all_of: [:public_domain, "MIT", "Xerox", "BSD-3-Clause"]
   head "https://git.code.sf.net/p/sbcl/sbcl.git", branch: "master"
 
+  livecheck do
+    url "https://sourceforge.net/projects/sbcl/rss?path=/sbcl"
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c6d8c6243cd6fd92cf9fd681a3784d876c1be1a86083dc542dd9abc01f8e49ed"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c4af4f35fafa713bb0cec53e4139667556586f65e444e5c06644a44683c36b76"
-    sha256 cellar: :any_skip_relocation, monterey:       "69ce647fd052ffa06a88b075a2f6d89aca716a7e41c40592fd1e2f3dae50bccf"
-    sha256 cellar: :any_skip_relocation, big_sur:        "80752428b30f1f51088d771a9e3ea473f027bf268f2087a279c30be1d5ae0c10"
-    sha256 cellar: :any_skip_relocation, catalina:       "91db4a34003a7c7d4a9730f96eb93ab8ef61dd29feedd2c0ac75494ca2f2689f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c294f8ccd79f9a5e55f3d284250238ee2e50b27c4958691283e0b0671f0cd95c"
+    sha256 cellar: :any,                 arm64_ventura:  "442e21988adcf330c50b299d4ef40e6f1a442bb0c97615f650fb5d51d253ea7c"
+    sha256 cellar: :any,                 arm64_monterey: "552a7ef288159477c30f239c044dbc9b5f16325087d084bbebb933242e796a57"
+    sha256 cellar: :any,                 arm64_big_sur:  "32753f1e3f83045e61f64f69390f82b0cf056188acbbcd76ed6704943a5be0f8"
+    sha256 cellar: :any,                 ventura:        "394fd112c230f95357c3c9d0c6a9ce396a5190e907206e412dc48c11fe1dd798"
+    sha256 cellar: :any,                 monterey:       "cf0c69f58bf8fa8ce6810b4e072c5856cd9c075793e7af1c423e47c2351dd02a"
+    sha256 cellar: :any,                 big_sur:        "dfd4623f95cec67e5dba17e6f275598cc8460745ce81507794e2a53a8cd66cc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7097f44ab2fedba8fadfc7cbac6e2bfc8f2ae5f19e59d106ba226e54feb389f4"
   end
 
   depends_on "ecl" => :build
-
-  uses_from_macos "zlib"
+  depends_on "zstd"
 
   def install
     # Remove non-ASCII values from environment as they cause build failures

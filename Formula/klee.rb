@@ -1,24 +1,47 @@
 class Klee < Formula
+  include Language::Python::Shebang
+
   desc "Symbolic Execution Engine"
   homepage "https://klee.github.io/"
-  url "https://github.com/klee/klee/archive/v2.2.tar.gz"
-  sha256 "1ff2e37ed3128e005b89920fad7bcf98c7792a11a589dd443186658f5eb91362"
   license "NCSA"
   revision 3
   head "https://github.com/klee/klee.git", branch: "master"
 
+  stable do
+    url "https://github.com/klee/klee/archive/v2.3.tar.gz"
+    sha256 "6155fcaa4e86e7af8a73e8e4b63102abaea3a62d17e4021beeec47b0a3a6eff9"
+
+    # Fix ARM build.
+    # https://github.com/klee/klee/pull/1530
+    patch do
+      url "https://github.com/klee/klee/commit/885997a9841ab666ccf1f1b573b980aa8c84a339.patch?full_index=1"
+      sha256 "6b070c676e002d455d7a4064c937b9b7c46eb576862cc85aba29dc7e6eecee91"
+    end
+
+    # Fix build with z3.
+    patch do
+      url "https://github.com/klee/klee/commit/39f8069db879e1f859c60c821092452748b4ba37.patch?full_index=1"
+      sha256 "f03ddac150c320af8cefae33c958870cc649f1908e54c3309f1ae4791c4e84e1"
+    end
+  end
+
   bottle do
-    sha256 big_sur:      "3534cffd757f8fa4c3be4f05c7534dbe705e54657512bb4a1b9d8b13cbe6b337"
-    sha256 catalina:     "508ab6444c02c26e061edf84519c18d888c4d9c1098c89215b5b788224838d37"
-    sha256 mojave:       "b29dd739b4644aafc918f40a1c5abce7c00657c09a8959401c9ac8c77397a560"
-    sha256 x86_64_linux: "687e221b5f04745e4f60aad142974d38d06b4c48e717c35edc14b5b2de7be832"
+    rebuild 1
+    sha256 arm64_ventura:  "0df70b3118b8400b43919f4f4164c4a824ab2808da1ee6a0229e203fc806237a"
+    sha256 arm64_monterey: "ff1484744cf2988dea68d5734f4b536a249b9dd50ecc9c8307b60096bf1a71d3"
+    sha256 arm64_big_sur:  "78a354ad5ce3ec8f36dbde3e5b7501f2166022aa9654666642260b82fe76635d"
+    sha256 ventura:        "675892a857e76870d320330ec3ba8e45cb69d3b99e6340c4f120c8c577c67068"
+    sha256 monterey:       "a875e602ad0b447ea83637ebac55103b2007b3867aa29a8fb121f1da7acd4b25"
+    sha256 big_sur:        "1f6d0a80dfc2e05ff91e971bc16b0dfc64d882deaa1ef06424353c88c7379cec"
+    sha256 x86_64_linux:   "16dd24f442b147420c04369891125483148147115899ae160f276a12d5645ff2"
   end
 
   depends_on "cmake" => :build
   depends_on "gperftools"
-  depends_on "llvm@12"
+  # LLVM 14 support in progress at https://github.com/klee/klee/pull/1477
+  depends_on "llvm@13"
   depends_on "python-tabulate"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "sqlite"
   depends_on "stp"
   depends_on "wllvm"
@@ -26,38 +49,12 @@ class Klee < Formula
 
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
   # klee needs a version of libc++ compiled with wllvm
   resource "libcxx" do
-    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.1/llvm-project-12.0.1.src.tar.xz"
-    sha256 "129cb25cd13677aad951ce5c2deb0fe4afc1e9d98950f53b51bdcfb5a73afa0e"
-  end
-
-  # Patches for LLVM 12 Support
-  # https://github.com/klee/klee/pull/1389
-  patch do
-    url "https://github.com/klee/klee/commit/8ac323db7d367799fba9435b64fe715c603e60ba.patch?full_index=1"
-    sha256 "e8c325ebe471b4f36eabd9d041f3ad9461061cc261c898e078d4dd211a1f3632"
-  end
-
-  patch do
-    url "https://github.com/klee/klee/commit/96aa751760b4efc3424a82b573057008bc639c3b.patch?full_index=1"
-    sha256 "1cbc17d413992f211f077687c4187f70b82d7129594fb178c7694fe1d897dac1"
-  end
-
-  patch do
-    url "https://github.com/klee/klee/commit/3d7c05a7e86a72a4fc8df115591bd1e7a50f9d84.patch?full_index=1"
-    sha256 "6eb99a36c25eaf311bcf666d4b893f9e9bdfd06b72cca63d570b6f3e8a8013bc"
-  end
-
-  patch do
-    url "https://github.com/klee/klee/commit/8775b9cf6c716f51fe90d668e734a1288c8b5404.patch?full_index=1"
-    sha256 "baefa3e332b2fb699d5329ba2e7c0d87485654dd7ae0a49e6da3a71102ef4ca0"
+    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-13.0.1/llvm-project-13.0.1.src.tar.xz"
+    sha256 "326335a830f2e32d06d0a36393b5455d17dc73e0bd1211065227ee014f92cbf8"
   end
 
   def llvm
@@ -72,10 +69,9 @@ class Klee < Formula
     cd libcxx_src_dir do
       # Use build configuration at
       # https://github.com/klee/klee/blob/v#{version}/scripts/build/p-libcxx.inc
-      libcxx_args = std_cmake_args.reject { |s| s["CMAKE_INSTALL_PREFIX"] } + %W[
+      libcxx_args = std_cmake_args(install_prefix: libcxx_install_dir) + %w[
         -DCMAKE_C_COMPILER=wllvm
         -DCMAKE_CXX_COMPILER=wllvm++
-        -DCMAKE_INSTALL_PREFIX=#{libcxx_install_dir}
         -DLLVM_ENABLE_PROJECTS=libcxx;libcxxabi
         -DLLVM_ENABLE_THREADS:BOOL=OFF
         -DLLVM_ENABLE_EH:BOOL=OFF
@@ -85,10 +81,13 @@ class Klee < Formula
         -DLIBCXXABI_ENABLE_THREADS:BOOL=OFF
       ]
 
-      if OS.mac?
-        libcxx_args << "-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY:BOOL=OFF"
+      libcxx_args += if OS.mac?
+        %W[
+          -DCMAKE_INSTALL_RPATH=#{rpath}
+          -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY:BOOL=OFF
+        ]
       else
-        libcxx_args += %w[
+        %w[
           -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY:BOOL=ON
           -DCMAKE_CXX_FLAGS=-I/usr/include/x86_64-linux-gnu
         ]
@@ -103,7 +102,7 @@ class Klee < Formula
           system "make", "cxx"
           system "make", "-C", "projects", "install"
 
-          Dir[libcxx_install_dir/"lib/#{shared_library("*")}", libcxx_install_dir/"lib/*.a"].each do |sl|
+          Dir[libcxx_install_dir/"lib"/shared_library("*"), libcxx_install_dir/"lib/*.a"].each do |sl|
             next if File.symlink? sl
 
             system "extract-bc", sl
@@ -145,6 +144,8 @@ class Klee < Formula
       system "make"
       system "make", "install"
     end
+
+    rewrite_shebang detected_python_shebang, *bin.children
   end
 
   # Test adapted from
@@ -178,6 +179,7 @@ class Klee < Formula
     expected_output = <<~EOS
       KLEE: done: total instructions = 33
       KLEE: done: completed paths = 3
+      KLEE: done: partially completed paths = 0
       KLEE: done: generated tests = 3
     EOS
     output = pipe_output("#{bin}/klee get_sign.bc 2>&1")

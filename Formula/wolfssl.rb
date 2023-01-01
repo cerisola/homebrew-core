@@ -2,8 +2,8 @@ class Wolfssl < Formula
   desc "Embedded SSL Library written in C"
   homepage "https://www.wolfssl.com"
   url "https://github.com/wolfSSL/wolfssl.git",
-      tag:      "v5.3.0-stable",
-      revision: "e722c15be860794179082a05d09e6a90dc77ccf0"
+      tag:      "v5.5.4-stable",
+      revision: "4fbd4fd36a21efd9d1a7e17aba390e91c78693b1"
   license "GPL-2.0-or-later"
   head "https://github.com/wolfSSL/wolfssl.git", branch: "master"
 
@@ -14,12 +14,13 @@ class Wolfssl < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "64c559df0293512a64b70db145245beae76cf6c3de5669670c639149d123361d"
-    sha256 cellar: :any,                 arm64_big_sur:  "d5130d61bcd95632eb1c30490c1d4f12637b94d77df3fc84185aa5ed6421191f"
-    sha256 cellar: :any,                 monterey:       "c6b263997ef7ddcce8e9572899c5da67cf5182192bd098dbbee09f2c7883f98d"
-    sha256 cellar: :any,                 big_sur:        "c81a8b0e81c3e110363656c0be38a1a0bafa0eb7f5da8e0405132ce4ceff12c2"
-    sha256 cellar: :any,                 catalina:       "c56496769a4d3520bc8dc9c2f6afb6ed1a81ac35fba444509156a846579e880a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "546eee011b5efcb7a972f7ac7650dbdb09b9dd04ffa130e059e4128729d8d528"
+    sha256 cellar: :any,                 arm64_ventura:  "e2ccddad1acdf1105dbaed9cd32db6e90bcc3bf9ac70463d9e4968e422e2124e"
+    sha256 cellar: :any,                 arm64_monterey: "1f760132a18a485463249b956aead7dff81350f3a7862f32237b601f04c24a75"
+    sha256 cellar: :any,                 arm64_big_sur:  "756febdd139b6defbf5f13e7f65d7cdd11282ec2e18a0023a1e352abf34d6835"
+    sha256 cellar: :any,                 ventura:        "5b6e253e9f599fdf504ee1c1872241761fd67128ee90e773949f91cf225a9633"
+    sha256 cellar: :any,                 monterey:       "3ffebf52d9dc71d3df3c5615c450b15c9c920f45d131b027842144925167b9a7"
+    sha256 cellar: :any,                 big_sur:        "3fba6d0dd014e84e8938735c2d231db1b1735a7c9d1285ba9afa293b22c2e338"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0bd1c01cc9e3679f54ba73ecf96f08b165f0bf338edd4cd82a15ecc2f2948946"
   end
 
   depends_on "autoconf" => :build
@@ -67,6 +68,7 @@ class Wolfssl < Formula
       --enable-opensslextra
       --enable-poly1305
       --enable-psk
+      --enable-quic
       --enable-rabbit
       --enable-ripemd
       --enable-savesession

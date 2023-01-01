@@ -2,18 +2,19 @@ class ConsulTemplate < Formula
   desc "Generic template rendering and notifications with Consul"
   homepage "https://github.com/hashicorp/consul-template"
   url "https://github.com/hashicorp/consul-template.git",
-      tag:      "v0.29.0",
-      revision: "34ada7ac2a590a2cd39882ec10dde38d744afd72"
+      tag:      "v0.29.6",
+      revision: "e4f5d58363bbb1237a15574c73418fa6291ee5d3"
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul-template.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e752401b98adb034e14425fce7ff3306682b2e68a7279c8cb402f5e2a2c36606"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9bdfd03ace532166bfc04c34fd089983f73f4ef009ad8a8b5860f169a012eeb2"
-    sha256 cellar: :any_skip_relocation, monterey:       "9757f195051d2537237cc1d76401416ce5e6a41a3b3f9b717a072358d075a3e5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "88a96a541571092d687948adb75b868f170023ad2a185d5ee9c6a6c352340398"
-    sha256 cellar: :any_skip_relocation, catalina:       "3ce15138a3a5783f9e26b177882a500db26563db8c2d518b32c77c085bf49588"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ffb3f6d8ee479e5257d5c32ec7941d57d7e3feb9cb40eb8b375f75b8924dd2a4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab1021ff0ff7a0f460673ac355aadcdf89f83f48b50686bf0539d260d7b582df"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "376ad53fdd892f3445ac2124a610cefc6048af53aedf2acf6a8a25da17c8f560"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a81bca194a39fecb92bd52ea3be79b90dbc1a4832aff1dfd3befa006754dbea6"
+    sha256 cellar: :any_skip_relocation, ventura:        "b9e924a89bba372009f8a1a0d77132f32a62264dade7f0a42be838768413015d"
+    sha256 cellar: :any_skip_relocation, monterey:       "71cf75326324cb38db55914c75eb93feb584809691a48f0af8ce8fcbb025b18f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2cce18d688306e9806184051021264e13d770976485fecf66654be806a72ddce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c0d5c7f1dbabc9eec36e260cb404b72c7436ee938ad91636998cbfa001abdf97"
   end
 
   depends_on "go" => :build

@@ -1,18 +1,19 @@
 class KymaCli < Formula
   desc "Kyma command-line interface"
   homepage "https://kyma-project.io"
-  url "https://github.com/kyma-project/cli/archive/2.2.0.tar.gz"
-  sha256 "1c9eac608a1637732c3fae3492b8b4ec00a2a3d7c35a5572c80a9bd9ac8e09be"
+  url "https://github.com/kyma-project/cli/archive/2.9.3.tar.gz"
+  sha256 "f7bd2dfa2943343447422b30afc4ea051f897fee29de33b7e227d675117bcf5e"
   license "Apache-2.0"
   head "https://github.com/kyma-project/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "50682bf020bde3b347078e9ac86e011fd08daf9c3a82c26823dd668d7564c06c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7254d847e1eb52fb820b75293b1ca0709a5b613184e0445c0937ad6f8916ecc3"
-    sha256 cellar: :any_skip_relocation, monterey:       "8de23a0097e841b1e5e53f8f5c61b75ed20f367cbfec7770202a6603db53d856"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0bc0a38417c2b8ce1c9fe8b265a813653ff3cd1a89ef3ffc8a7c99ee9986ab6e"
-    sha256 cellar: :any_skip_relocation, catalina:       "88937710e86db07534a1efb265b4c956ef0c3f62081138c0e15a89322e42c230"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a90a10c9cd505c2aa427ef40d99d1f0f6f07c2ab4af796e4a86778b29f571e5a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a58b2a238e7aa45453ad8c604f3fc6ba470fdfb495b709eff9f0af7f4a2dd3c9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b7b6a609e646fab2cafe09fb86bb128871a8f3b9704878f03319d1ea9317bbe"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8d368eea85e69d380343f49ccdd03cc9779d63e4bf7cd7920d6d1b7a8bdb4656"
+    sha256 cellar: :any_skip_relocation, ventura:        "2e122edcab190dcdbe4e7f4b2651ba9f8791aa1ecde281878778e173c610ecc8"
+    sha256 cellar: :any_skip_relocation, monterey:       "0632590673c6886584a226a109ca8043c73458c2985dc360ee6d751eaff3e82f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "4035bb699809f1550a98a222c022a84fc6be2847cb9f551d28035a57bd5bd62c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aec541877e39bfe41312fa1f2ca5952e4efc7fc87a6857e58f013c3e3aaaccfd"
   end
 
   depends_on "go" => :build
@@ -24,6 +25,8 @@ class KymaCli < Formula
     ]
 
     system "go", "build", *std_go_args(output: bin/"kyma", ldflags: ldflags), "./cmd"
+
+    generate_completions_from_executable(bin/"kyma", "completion", base_name: "kyma")
   end
 
   test do

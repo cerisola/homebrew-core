@@ -1,8 +1,8 @@
 class Cherrytree < Formula
   desc "Hierarchical note taking application featuring rich text and syntax highlighting"
   homepage "https://www.giuspen.com/cherrytree/"
-  url "https://www.giuspen.com/software/cherrytree_0.99.47.tar.xz"
-  sha256 "1b551ee00f788d21ebda3123495a88da293467b8a53bb78fb4fae957c452d024"
+  url "https://www.giuspen.com/software/cherrytree_0.99.53.tar.xz"
+  sha256 "317fbac7627b6556c7113433b360376d332bd10b6529b43734a8640cef5de24e"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,31 +11,31 @@ class Cherrytree < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "719a2a9e6f7f2e5cf2d8551ebc950852d5285e112eb51c149b8b6d1ba695b938"
-    sha256 arm64_big_sur:  "7c6575fd74aad453d3a59d274cc05bce335209bc9cfc52896417af3d0ebd4b98"
-    sha256 monterey:       "0658c77389e7ceff243b5aed1bf706ddd6efcfc21096c325d4ca80c35b71a4d0"
-    sha256 big_sur:        "bf1bc700fb367ec574eab60d404f8bd67a095322f876a3fb6b29874f864c6a50"
-    sha256 catalina:       "3f005d7b897aa4f528ea4767f4733db8a24f199cfa0bf81d7d3d8f5e3c596578"
-    sha256 x86_64_linux:   "d0e44b554461cc96f1d948a8421dd926673504ee1481f20e662017289b74ddc4"
+    rebuild 1
+    sha256 arm64_ventura:  "567b6a5c4c81c525dc80413b5ab0ce4a75cc52ad9cb80b806b7e1d4a715ec4aa"
+    sha256 arm64_monterey: "8e1373575b73474c7db65732d7f7a96f9f2dba7f9f3d80d5dddf5a13c1bd71dc"
+    sha256 arm64_big_sur:  "06e8e2039e1621b823b02f479feb8ee6e2931ac5ae57f69401784d95ceebb68d"
+    sha256 ventura:        "aaf06de4dc0fb3ee8d9aff19a11ea449e5a800db3d5326c7df864a6c562a3e18"
+    sha256 monterey:       "164fd8ad27d9b13c4ec1084558737ff42214b90ab6a51a83a270ac4a1d06949c"
+    sha256 big_sur:        "eab7785650044af46d6238dcc640b8d0d8b0068a5fdfbef31836ec6624a430b8"
+    sha256 x86_64_linux:   "40421450994bb4b381de26e51828cb19426fdea0e459f7d75c3160dc1f6d9f81"
   end
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
   depends_on "adwaita-icon-theme"
   depends_on "fmt"
   depends_on "gspell"
   depends_on "gtksourceviewmm3"
   depends_on "libxml++"
   depends_on "spdlog"
+  depends_on "sqlite" # try to change to uses_from_macos after python is not a dependency
   depends_on "uchardet"
+  depends_on "vte3"
 
   uses_from_macos "curl"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5" # Needs std::optional
 

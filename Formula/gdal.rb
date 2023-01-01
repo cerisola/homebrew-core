@@ -1,10 +1,9 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://www.gdal.org/"
-  url "https://download.osgeo.org/gdal/3.4.3/gdal-3.4.3.tar.xz"
-  sha256 "02a27b35899e1c4c3bcb6007da900128ddd7e8ab7cd6ccfecf338a301eadad5a"
+  url "http://download.osgeo.org/gdal/3.6.1/gdal-3.6.1.tar.xz"
+  sha256 "68f1c03547ff7152289789db7f67ee634167c9b7bfec4872b88406b236f9c230"
   license "MIT"
-  revision 1
 
   livecheck do
     url "https://download.osgeo.org/gdal/CURRENT/"
@@ -12,12 +11,13 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "78aec6224fd17b55b733c900c9c188c5ec66fb55c801528af80565f6e26dca72"
-    sha256 arm64_big_sur:  "16e08308265036cab56d1616cf9e927bc2fa8b67be7697ca69894bae98cce762"
-    sha256 monterey:       "f3109664e495afedc8463a20efc5517c321d2da599ff21e9c75f69854dc19cd4"
-    sha256 big_sur:        "80043980b1a1d64b4e341dc7685dd2d2f31a0d628b018209b1d863aadda3dad1"
-    sha256 catalina:       "31683c809d2aff41cba686b93c4f71390dda75c4a30c40533f29b3a00fa885f4"
-    sha256 x86_64_linux:   "c6b4edb2b444fad196debf16417346e7022306cbdccd1ff66081e785ae8cc5d3"
+    sha256 arm64_ventura:  "0d8d8a1456c387895b74de0b09b62f8bdaa582a764154d94feefd88dcd8cdce3"
+    sha256 arm64_monterey: "4fe3a40599cbfb49e4b711520dc14247726887afcecb79e403e3a74d27ae1d44"
+    sha256 arm64_big_sur:  "ab34db9823d44c712eb01994d36b25cf5fcb4f2b4cf479ae84d731f56adabc3c"
+    sha256 ventura:        "ed6a428b3a1a93dce566a20f9c622922be4a59cc5dcdddb85290cfc4e43b1e07"
+    sha256 monterey:       "586d2ad1eea2a61b5c18accb43fa9d8c647ce4db8ca423c7b369bafedc4f688a"
+    sha256 big_sur:        "35b2ab24a3780e42ab926493eb45d896de0d8952f4a2c80d348e806488c8f94f"
+    sha256 x86_64_linux:   "bdbd5a7c4f5edcede0bb0b0eaf3c408b74eed215cdab367652b67815d5f68c3f"
   end
 
   head do
@@ -25,7 +25,9 @@ class Gdal < Formula
     depends_on "doxygen" => :build
   end
 
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "apache-arrow"
   depends_on "cfitsio"
   depends_on "epsilon"
   depends_on "expat"
@@ -33,11 +35,12 @@ class Gdal < Formula
   depends_on "geos"
   depends_on "giflib"
   depends_on "hdf5"
-  depends_on "jasper"
   depends_on "jpeg-turbo"
+  depends_on "jpeg-xl"
   depends_on "json-c"
   depends_on "libdap"
   depends_on "libgeotiff"
+  depends_on "libheif"
   depends_on "libpng"
   depends_on "libpq"
   depends_on "libspatialite"
@@ -45,11 +48,12 @@ class Gdal < Formula
   depends_on "libxml2"
   depends_on "netcdf"
   depends_on "numpy"
+  depends_on "openexr"
   depends_on "openjpeg"
   depends_on "pcre2"
-  depends_on "poppler-qt5"
+  depends_on "poppler"
   depends_on "proj"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "sqlite"
   depends_on "unixodbc"
   depends_on "webp"
@@ -61,7 +65,6 @@ class Gdal < Formula
 
   on_linux do
     depends_on "util-linux"
-    depends_on "gcc"
   end
 
   conflicts_with "avce00", because: "both install a cpl_conv.h header"
@@ -69,119 +72,32 @@ class Gdal < Formula
 
   fails_with gcc: "5"
 
+  def python3
+    "python3.11"
+  end
+
   def install
-    args = [
-      # Base configuration
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--disable-debug",
-      "--with-libtool",
-      "--with-local=#{prefix}",
-      "--with-threads",
+    # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
+    # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.
+    inreplace "swig/python/CMakeLists.txt",
+              /(set\(INSTALL_ARGS "--single-version-externally-managed --record=record.txt")\)/,
+              "\\1 --install-lib=#{prefix/Language::Python.site_packages(python3)})"
 
-      # GDAL native backends
-      "--with-pam",
-      "--with-pcidsk=internal",
-      "--with-pcraster=internal",
-
-      # Homebrew backends
-      "--with-expat=#{Formula["expat"].prefix}",
-      "--with-freexl=#{Formula["freexl"].opt_prefix}",
-      "--with-geos=#{Formula["geos"].opt_prefix}/bin/geos-config",
-      "--with-geotiff=#{Formula["libgeotiff"].opt_prefix}",
-      "--with-gif=#{Formula["giflib"].opt_prefix}",
-      "--with-jpeg=#{Formula["jpeg-turbo"].opt_prefix}",
-      "--with-libjson-c=#{Formula["json-c"].opt_prefix}",
-      "--with-libtiff=#{Formula["libtiff"].opt_prefix}",
-      "--with-pg=yes",
-      "--with-png=#{Formula["libpng"].opt_prefix}",
-      "--with-spatialite=#{Formula["libspatialite"].opt_prefix}",
-      "--with-pcre2=yes",
-      "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
-      "--with-proj=#{Formula["proj"].opt_prefix}",
-      "--with-zstd=#{Formula["zstd"].opt_prefix}",
-      "--with-liblzma=yes",
-      "--with-cfitsio=#{Formula["cfitsio"].opt_prefix}",
-      "--with-hdf5=#{Formula["hdf5"].opt_prefix}",
-      "--with-netcdf=#{Formula["netcdf"].opt_prefix}",
-      "--with-openjpeg",
-      "--with-xerces=#{Formula["xerces-c"].opt_prefix}",
-      "--with-odbc=#{Formula["unixodbc"].opt_prefix}",
-      "--with-dods-root=#{Formula["libdap"].opt_prefix}",
-      "--with-epsilon=#{Formula["epsilon"].opt_prefix}",
-      "--with-webp=#{Formula["webp"].opt_prefix}",
-      "--with-poppler=#{Formula["poppler"].opt_prefix}",
-
-      # Explicitly disable some features
-      "--with-armadillo=no",
-      "--with-qhull=no",
-      "--without-exr",
-      "--without-grass",
-      "--without-jasper",
-      "--without-jpeg12",
-      "--without-libgrass",
-      "--without-mysql",
-      "--without-perl",
-      "--without-python",
-
-      # Unsupported backends are either proprietary or have no compatible version
-      # in Homebrew. Podofo is disabled because Poppler provides the same
-      # functionality and then some.
-      "--without-ecw",
-      "--without-fgdb",
-      "--without-fme",
-      "--without-gta",
-      "--without-hdf4",
-      "--without-idb",
-      "--without-ingres",
-      "--without-jp2mrsid",
-      "--without-kakadu",
-      "--without-mrsid",
-      "--without-mrsid_lidar",
-      "--without-msg",
-      "--without-oci",
-      "--without-ogdi",
-      "--without-podofo",
-      "--without-rasdaman",
-      "--without-sde",
-      "--without-sosi",
-    ]
-
-    if OS.mac?
-      args << "--with-curl=/usr/bin/curl-config"
-      args << "--with-opencl"
-    else
-      args << "--with-curl=#{Formula["curl"].opt_bin}/curl-config"
-
-      # The python build needs libgdal.so, which is located in .libs
-      ENV.append "LDFLAGS", "-L#{buildpath}/.libs"
-      # The python build needs gnm headers, which are located in the gnm folder
-      ENV.append "CFLAGS", "-I#{buildpath}/gnm"
-    end
-
-    ENV.append "CXXFLAGS", "-std=c++17" # poppler-qt5 uses std::optional
-    system "./configure", *args
-    system "make"
-    system "make", "install"
-
-    # Build Python bindings
-    cd "swig/python" do
-      system Formula["python@3.9"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
-    end
-    bin.install Dir["swig/python/scripts/*.py"]
-
-    system "make", "man" if build.head?
-    # Force man installation dir: https://trac.osgeo.org/gdal/ticket/5092
-    system "make", "install-man", "INST_MAN=#{man}"
-    # Clean up any stray doxygen files
-    Dir.glob("#{bin}/*.dox") { |p| rm p }
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DBUILD_PYTHON_BINDINGS=ON",
+                    "-DPython_EXECUTABLE=#{which(python3)}",
+                    "-DENABLE_PAM=ON",
+                    "-DCMAKE_INSTALL_RPATH=#{lib}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
     # basic tests to see if third-party dylibs are loading OK
-    system "#{bin}/gdalinfo", "--formats"
-    system "#{bin}/ogrinfo", "--formats"
+    system bin/"gdalinfo", "--formats"
+    system bin/"ogrinfo", "--formats"
     # Changed Python package name from "gdal" to "osgeo.gdal" in 3.2.0.
-    system Formula["python@3.9"].opt_bin/"python3", "-c", "import osgeo.gdal"
+    system python3, "-c", "import osgeo.gdal"
   end
 end

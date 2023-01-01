@@ -11,6 +11,7 @@ class Lensfun < Formula
     "CC-BY-3.0",
     :public_domain,
   ]
+  revision 1
   version_scheme 1
   head "https://github.com/lensfun/lensfun.git", branch: "master"
 
@@ -20,12 +21,14 @@ class Lensfun < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "b7c1472fdec4cfa0c78c7be1d84cf62f1c1b5b9f243ea19d47a7d65d591029ee"
-    sha256 arm64_big_sur:  "b4f90befa38fc5f0a2d7b981c63712cd53b98704f989f7d373ac072e38effab5"
-    sha256 monterey:       "5dca57fa7d6429e104ab925f41e16f08d66adf767def8c523034c797721b50ce"
-    sha256 big_sur:        "2c8cf34ada4b76d9d5a48cd05f0fb81dbdfc161fc0613dde4f393171021d3a22"
-    sha256 catalina:       "f4e3e086ea86dc1475152084544beddfb8f6f2ec53b43c96b1be58b4cfdd65e0"
-    sha256 x86_64_linux:   "58a7d7e275aa8eea9088f385d3801c4b0264fed650831f619823cd80d3b78173"
+    rebuild 2
+    sha256 arm64_ventura:  "1e47a3ce9b679747161cbf607127367249001b2162145787fd1f501dc4f0c477"
+    sha256 arm64_monterey: "5cd6ce6eec9f17b7bd176e3980b0047b9c497a4899d0e1a449185a2f026391ee"
+    sha256 arm64_big_sur:  "dbb34f96dc6fca84aed8450d617729cc6194e34069947c1e4c43adc27156c02d"
+    sha256 ventura:        "cdb64408d7544e20f2ac9cd204d7c3e18740589e25a763aadcb1e51db476642d"
+    sha256 monterey:       "f0194e2764c774b9a86e3016e41922a8c5a03e9c1513035b01dcc6019d99c1ce"
+    sha256 big_sur:        "b28108432c9ce8dc6f0947513082830fdb9673257701576892b544c46054c78d"
+    sha256 x86_64_linux:   "36cd0c58b8026f0712a6bbc25bfb287033912d80ba42fcfaca700f80282c9a04"
   end
 
   depends_on "cmake" => :build
@@ -33,13 +36,20 @@ class Lensfun < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "libpng"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   def install
     # setuptools>=60 prefers its own bundled distutils, which breaks the installation
     ENV["SETUPTOOLS_USE_DISTUTILS"] = "stdlib"
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+
+    # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
+    # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.
+    site_packages = prefix/Language::Python.site_packages("python3.11")
+    inreplace "apps/CMakeLists.txt", "${SETUP_PY} install ", "\\0 --install-lib=#{site_packages} "
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     rewrite_shebang detected_python_shebang,
       bin/"lensfun-add-adapter", bin/"lensfun-convert-lcp", bin/"lensfun-update-data"

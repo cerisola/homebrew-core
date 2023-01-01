@@ -1,20 +1,17 @@
 class Stubby < Formula
   desc "DNS privacy enabled stub resolver service based on getdns"
   homepage "https://dnsprivacy.org/wiki/display/DP/DNS+Privacy+Daemon+-+Stubby"
-  url "https://github.com/getdnsapi/stubby/archive/v0.4.0.tar.gz"
-  sha256 "8e6a4ba76f04b23612d58813c4998141b0cc6194432d87f8653f3ba5cf64152a"
+  url "https://github.com/getdnsapi/stubby/archive/v0.4.3.tar.gz"
+  sha256 "99291ab4f09bce3743000ed3ecbf58961648a35ca955889f1c41d36810cc4463"
   license "BSD-3-Clause"
   head "https://github.com/getdnsapi/stubby.git", branch: "develop"
 
   bottle do
-    rebuild 1
-    sha256 arm64_monterey: "98de227b643cc50357f442dda39ba673c9bdba8f6b5977c6ee0f519ce0560036"
-    sha256 arm64_big_sur:  "aacda92701ecc4c275bfe6eb5ede29a6f07f6d0d85701f293146880437f448f8"
-    sha256 monterey:       "e3f52352894e8ed61a7166b2e3fd6fbf184264326f07615f32b450df8f162a94"
-    sha256 big_sur:        "435174729967fbf5bb4dc87a8e2ef440f6cec7e56c46a5373dfe6f5a6a6ec96c"
-    sha256 catalina:       "df3b7e64116093724ab01d7a6f3abee725e9ffebfd030a1255d9f6c8467101f2"
-    sha256 mojave:         "21530780a842976f9dbd45777c85900b841e15a063ab522d5c8d30f4bba74eec"
-    sha256 x86_64_linux:   "9e714d6c7b77449a65f7185ea9a86489a8b9019950ec11160987d5e9fa848b7a"
+    sha256 arm64_monterey: "9505f36ee4654adb527badc196224a2ea8969b0ed984b6e06732ef5c25571dce"
+    sha256 arm64_big_sur:  "b2492e874a5dc3c235cde5dff8eb7c6e10dfb3eb52bcb12d86cc36fc8865ce92"
+    sha256 monterey:       "bd4eadc1f1ffd5675c17c038ffc02202cfc024e3cb1da5ae27b67bb98479b5ea"
+    sha256 big_sur:        "47c88d9d9bfac6b2cff05fad0f9a94883e4dfe7f7eacfad5c32ed6a425038478"
+    sha256 x86_64_linux:   "7dd5aef38ee748eb4ea4fd8b29cda8f67becb8a2679932f0126b5a443709e23d"
   end
 
   depends_on "cmake" => :build
@@ -50,12 +47,12 @@ class Stubby < Formula
         - 127.0.0.1@5553
       idle_timeout: 0
       upstream_recursive_servers:
-        - address_data: 145.100.185.15
-        - address_data: 145.100.185.16
-        - address_data: 185.49.141.37
+        - address_data: 8.8.8.8
+        - address_data: 8.8.4.4
+        - address_data: 1.1.1.1
     EOS
     output = shell_output("#{bin}/stubby -i -C stubby_test.yml")
-    assert_match "bindata for 145.100.185.15", output
+    assert_match "bindata for 8.8.8.8", output
 
     fork do
       exec "#{bin}/stubby", "-C", testpath/"stubby_test.yml"

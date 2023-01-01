@@ -9,8 +9,10 @@ class Gdm < Formula
   head "https://github.com/sparrc/gdm.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d8c01e7222d46005257a757c00fb6dbf6e476be44502d4cee0d7afc2b759b801"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "45fa20615c4ff168b2753f538d396a9a92cc851ead7eab94c2a21faac5bee814"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "684b0b0f11a168b38500f0e9c4e8419bf39979501014f5e4a5177be2ac5352f1"
+    sha256 cellar: :any_skip_relocation, ventura:        "9ccfb93348ed299dfa37bb416202514672c7933189d438593b57a629169d2f88"
     sha256 cellar: :any_skip_relocation, monterey:       "4ee869fe61efff2e95c1979ee051a5209d2fae0ca4b74585b678c9fdcce5f9d8"
     sha256 cellar: :any_skip_relocation, big_sur:        "fc0e6626aec33649015a5808dd6c2b2d5b73051ff71231c6b482bba9e599efc1"
     sha256 cellar: :any_skip_relocation, catalina:       "a9801987792b8b32d8e1a30d668e43a36c798f2901149dbd49f4f8f0f79b45b7"
@@ -18,7 +20,6 @@ class Gdm < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "f9d1d9d11a51359be57311d0e896dc797637905d0b8e68340a3e5d6ad2dc962d"
     sha256 cellar: :any_skip_relocation, sierra:         "1271ce8ff02868997451491819027d10c362a9d6b72d10c9cbdafeb80ebbe747"
     sha256 cellar: :any_skip_relocation, el_capitan:     "b3f081076a078f90f6a534ff30ff268c89baec38bd02ff11c9e02804755c8c33"
-    sha256 cellar: :any_skip_relocation, yosemite:       "03f2d8cbcee0c4e41a00ec222f56b7d3204290b075afafe28afe6ced3458ebd8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0f0a95d921a3fe45e5f7eb32d5132f56d429475118c43e46de3e767edb9eeb0"
   end
 

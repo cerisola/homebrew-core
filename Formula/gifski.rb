@@ -1,18 +1,18 @@
 class Gifski < Formula
   desc "Highest-quality GIF encoder based on pngquant"
   homepage "https://gif.ski/"
-  url "https://github.com/ImageOptim/gifski/archive/1.6.4.tar.gz"
-  sha256 "1bcc1bdbfdb206f44de75662ee5a8a8c61d336c04cb62457e02c9fa8456f3928"
+  url "https://github.com/ImageOptim/gifski/archive/1.8.1.tar.gz"
+  sha256 "9c06e0124a5bde4d70fe44cc8be52ffc9b9099548fc34cac1db43c4a6ff8783c"
   license "AGPL-3.0-only"
-  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "59840cc6d34510cbde228cedbae08d270effbd2c427748cb98b0685154effb55"
-    sha256 cellar: :any,                 arm64_big_sur:  "06a4710d0902483c75377e7fffadb47cf28577ad32c2c6ac6cbb398ae07fc972"
-    sha256 cellar: :any,                 monterey:       "6995c7396bf11196d20f76b55d50aa1680942de8f05ac20da05fad1aa4f933d2"
-    sha256 cellar: :any,                 big_sur:        "4060dcb4e64572d843ebdb8c6cdeeef011fb7e586844c61fb11b0ca70bd02239"
-    sha256 cellar: :any,                 catalina:       "e3e324b67bee1677e69d327669082a7a2bb4593e5a3aa6f3d76fc6a1d41f1f36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ad6ec536a7c531cc186390da8b099148d0fc01119f25408c72fa245e31821daf"
+    sha256 cellar: :any,                 arm64_ventura:  "1d277ecc5ad79024e421ff18f6de3e82eabc55cba98fab834fbb113743ec3041"
+    sha256 cellar: :any,                 arm64_monterey: "d105edaac1b6a070d46647aafead9278af768d58a3fc00e6b4af413c80543ed4"
+    sha256 cellar: :any,                 arm64_big_sur:  "3c9c8962ac980fe76ff2ea3d64f0a394104bb8ce17f77f67855492211591b82f"
+    sha256 cellar: :any,                 ventura:        "13ec00435a9e2b8167f839a5a224e3f08ef24cb9cfe1bf77599424b09155fc34"
+    sha256 cellar: :any,                 monterey:       "c4d4a85939bded629264ab405188f1e1f0650d36793db8e093a4c455d8aca60f"
+    sha256 cellar: :any,                 big_sur:        "30d39f04a94e0df00ed1784a01309d42517ba8b2326fefbc4b53743df9d2ee54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2bf2c8116a1a9bc5f370affd0edabfbe1e688f5e876100274a042bfb3c7b32e2"
   end
 
   depends_on "pkg-config" => :build
@@ -20,10 +20,6 @@ class Gifski < Formula
   depends_on "ffmpeg@4"
 
   uses_from_macos "llvm" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5" # rubberband is built with GCC
 

@@ -1,15 +1,17 @@
 class MagicEnum < Formula
   desc "Static reflection for enums (to string, from string, iteration) for modern C++"
   homepage "https://github.com/Neargye/magic_enum"
-  url "https://github.com/Neargye/magic_enum/archive/v0.7.3.tar.gz"
-  sha256 "b8d0cd848546fee136dc1fa4bb021a1e4dc8fe98e44d8c119faa3ef387636bf7"
+  url "https://github.com/Neargye/magic_enum/archive/v0.8.2.tar.gz"
+  sha256 "62bd7034bbbfc3d7806001767d5775ab42f3ff33bb38366e1ceb21102f0dff9a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "1f8a29b1340f383c2f4c8fc9d5e81b0415a35ee62fe95bfa103a50e95b987e04"
+    sha256 cellar: :any_skip_relocation, all: "db14fda773775cba338ac65b391fc7af1afb1c3771aefdc471f6f201f708bd2c"
   end
 
   depends_on "cmake" => :build
+
+  fails_with gcc: "5" # C++17
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -33,7 +35,7 @@ class MagicEnum < Formula
       }
     EOS
 
-    system ENV.cxx, "test.cpp", "-I#{include}", "-Wall", "-Wextra", "-pedantic-errors", "-Werror", "-std=c++17"
-    system "./a.out"
+    system ENV.cxx, "test.cpp", "-I#{include}", "-std=c++17", "-o", "test"
+    assert_equal "RED\n", shell_output(testpath/"test")
   end
 end

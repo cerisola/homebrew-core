@@ -4,8 +4,8 @@ class Dpkg < Formula
   # Please use a mirror as the primary URL as the
   # dpkg site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.21.7.tar.xz"
-  sha256 "bd9b66bd92ff9b851ce1d79eed4bf710427d8d39a33c91f1b5da8e3dde524c39"
+  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.21.13.tar.xz"
+  sha256 "04bf5e1884612553c7ff2d81dd290ec7be3526594a02262227ae162640f7e5d8"
   license "GPL-2.0-only"
 
   livecheck do
@@ -14,12 +14,13 @@ class Dpkg < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ded515fda266f0ee78af239b4fe56c182e66141ea8f185e83bfebd0e65c25f3c"
-    sha256 arm64_big_sur:  "4366afbb1f85a770cc529c3124b8de51942a15ddcae63c0f65bd361b4423064c"
-    sha256 monterey:       "289d12ebf11daeae009c73e15e8693a840cafc6801ea2efc825fea04f43d6391"
-    sha256 big_sur:        "c2d993ec38fbd0cb1a312f34aab0405b1753586e099dc6ccb2f08264c023c33a"
-    sha256 catalina:       "e2182078eee9356c3bd286a5fd0d0397c0742be207bf282cd0244c5623646b92"
-    sha256 x86_64_linux:   "f51ae91d39c260bf61153f8d313e19b44fee1ae7a85f0b93564ce8305cd8ae44"
+    sha256 arm64_ventura:  "f13b7eb91eab6ad56f6049af4bc49ac058b1a986b4193e74fcbed7f0f7d38b31"
+    sha256 arm64_monterey: "9d4ca6aa8a6db66df5d8147c4e61359ae0da69feda7a7c72377aa2cc5389ac3a"
+    sha256 arm64_big_sur:  "d6b47025b0ea4f29d82625435d21ddfdfaa5804736e6c3b22a53914d77adb5ff"
+    sha256 ventura:        "d2a3c5900d4272f4bc50288d3d4e8db35792ac5c5d365d80de773c89b80f82cc"
+    sha256 monterey:       "4cf9dd1df3caa45d64f848b269bedcf1474cc0d3949323122cb1fb0b8ac1627b"
+    sha256 big_sur:        "e45f5cf9152830b87489b135bc381b44c24905b5527015d318529a442674fc12"
+    sha256 x86_64_linux:   "7dc532ee2c01eb60ae65ce81478903edd0c47d0e7952ea7cb1e182e901fc5e3f"
   end
 
   depends_on "pkg-config" => :build
@@ -27,6 +28,7 @@ class Dpkg < Formula
   depends_on "gettext"
   depends_on "gnu-tar"
   depends_on "gpatch"
+  depends_on "libmd" # for md5.h
   depends_on "perl"
   depends_on "xz" # For LZMA
 

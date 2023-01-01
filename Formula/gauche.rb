@@ -1,38 +1,47 @@
 class Gauche < Formula
   desc "R7RS Scheme implementation, developed to be a handy script interpreter"
   homepage "https://practical-scheme.net/gauche/"
-  url "https://github.com/shirok/Gauche/releases/download/release0_9_11_p1/Gauche-0.9.11-p1.tgz"
-  sha256 "9069c347e12e7fd14072680100e63dedec92de8fd7f48a200224b4d478733795"
+  url "https://github.com/shirok/Gauche/releases/download/release0_9_12/Gauche-0.9.12.tgz"
+  sha256 "b4ae64921b07a96661695ebd5aac0dec813d1a68e546a61609113d7843f5b617"
   license "BSD-3-Clause"
+  revision 2
 
   livecheck do
     url :stable
-    strategy :github_latest
-    regex(/href=.*?Gauche[._-]v?(\d+(?:\.\d+)+(?:[._-]p\d+)?)\.t/i)
+    regex(%r{href=["']?[^"' >]*?/tag/\D*?(\d+(?:[._]\d+)+(?:[._-]?p\d+)?)["' >]}i)
+    strategy :github_latest do |page, regex|
+      page.scan(regex).map { |match| match[0].tr("_", ".") }
+    end
   end
 
   bottle do
-    sha256 arm64_monterey: "4bdf5a2a9587084ab420015aa4587ec327ee3f05506a884d742ef71cf10ea7dd"
-    sha256 arm64_big_sur:  "dbeda7059ccccad0efd5d615ba0f36fe0b5160d180d131149970428ae409672b"
-    sha256 monterey:       "a0b4f07a8397f91ef11b66d215e5c18eca3b7b0da67b47117a20a7730cd5df5d"
-    sha256 big_sur:        "2a21e02ce609480efec6abc2e9f03e9bd4cf1f353c132783101ead0a5ce219d8"
-    sha256 catalina:       "7f9f718aac4ec5c52ef60b3338c43204fa3ab019446f834867a5d528611b4583"
-    sha256 x86_64_linux:   "31295606e5b3844e9c3c3d999853236eef698250a415f3209083421a0dc36964"
+    sha256 arm64_ventura:  "fd3ec657cad0360add0a8f9f73ff6c661d7d15ab3d15f40050be07784f5c0c2a"
+    sha256 arm64_monterey: "aa40d93b12a3b3e14c4dd5d2eacc37453eb2eb31d717cf9ee594b7e073a445c3"
+    sha256 arm64_big_sur:  "7ddcc857a6b27da9c161eaa0c21a98af4548e2a524225780a3e47ddb337c2d0d"
+    sha256 ventura:        "2ef7ca32002f86bfaa76bb1ef462f241c01644f794ae0c3b894fbc497224df0e"
+    sha256 monterey:       "7dd595ed94224a5ccbada1a2553e7948c20bbd25e2b73e289f9caf714b4a5dd5"
+    sha256 big_sur:        "194be9d2e2c78b03e18514600f5d59d704d0f2ed24b990ff9d4f78d06fc282f3"
+    sha256 x86_64_linux:   "62d348c1ec07253313eceeb34f48c35c30120b0a8416f5bf39e7ed44a51372ae"
   end
 
+  depends_on "ca-certificates"
   depends_on "mbedtls"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
 
   def install
-    system "./configure", *std_configure_args,
-                          "--enable-multibyte=utf-8"
+    system "./configure",
+           *std_configure_args,
+           "--enable-multibyte=utf-8",
+           "--with-ca-bundle=#{HOMEBREW_PREFIX}/share/ca-certificates/cacert.pem"
     system "make"
     system "make", "install"
   end
 
   test do
     output = shell_output("#{bin}/gosh -V")
-    assert_match "Gauche scheme shell, version #{version}", output
+    assert_match "(version \"#{version}\")", output
+    assert_match "(gauche.net.tls mbedtls)", output
   end
 end

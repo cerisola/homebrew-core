@@ -1,9 +1,9 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
   homepage "https://www.zabbix.com/"
-  url "https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.4.tar.gz"
-  sha256 "5743b6cc2e29d9bd242aa88b2835f3ded0be177509000d84db74e1159c5afa75"
-  license "GPL-2.0-or-later"
+  url "https://cdn.zabbix.com/zabbix/sources/stable/6.2/zabbix-6.2.6.tar.gz"
+  sha256 "ae40c8cd4b24159466a7483e65f85836a8c963a0bc394a3dd890142aaf30ac17"
+  license "GPL-2.0-or-later" => { with: "openvpn-openssl-exception" }
   head "https://github.com/zabbix/zabbix.git", branch: "master"
 
   livecheck do
@@ -12,15 +12,17 @@ class Zabbix < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d9e57fac7e26b546f7475bf52dc7384744fe12d5483c576038240c5f06d376e4"
-    sha256 arm64_big_sur:  "fd9d418501cef8fda973942ea792e7475aaceb3f9aa564a9f643537938dd96aa"
-    sha256 monterey:       "95e8b14c4fea6f8da5fb57df457d7a1dd6b0e0d63b95a568e19684ac96bb50cf"
-    sha256 big_sur:        "ae88bb4ff58258fc050647c1655a6d577dabfa265101e0ffae5f7856b5fe65e0"
-    sha256 catalina:       "35ea17458ffe3f993e488902029092a67b32f7a9e70759151ed4d44d00a1c8d4"
-    sha256 x86_64_linux:   "dc5f1232cf3403a78ee6ad3995d17ced5d17f65749d28fcf72aa10578843a7b8"
+    sha256 arm64_ventura:  "bbfd7dd36775f0db83c2019555e373808fd46337ef1230d9ed8b63708f95b9d7"
+    sha256 arm64_monterey: "9a3a919725a5a1404b54e77a46eda545dbc3118832f7eb6a864900d3ab0b7911"
+    sha256 arm64_big_sur:  "0922e0110812b49d4cf153d33f9f616e28d5a3e4ea80537e4f0d9b72a6722fde"
+    sha256 ventura:        "fe8d39f3ebf3ad3a5a7f0b0ad7a1afd8fdebb93518b3acff3865349028d66031"
+    sha256 monterey:       "fbe767594a19e13e098be2c789d34558b66e006ff1d937fac21f1898e7032a6a"
+    sha256 big_sur:        "bed92c66991ce6fff8c9ea7e8d8f3067930430fffadefd517f50e325fa042a0b"
+    sha256 x86_64_linux:   "b600259cfb22f02b7b843692bd480219c8b43c0d1eee900d4c73859c6c752cec"
   end
 
-  depends_on "openssl@1.1"
+  depends_on "pkg-config" => :build
+  depends_on "openssl@3"
   depends_on "pcre2"
 
   def install
@@ -30,7 +32,7 @@ class Zabbix < Formula
       --sysconfdir=#{etc}/zabbix
       --enable-agent
       --with-libpcre2
-      --with-openssl=#{Formula["openssl@1.1"].opt_prefix}
+      --with-openssl=#{Formula["openssl@3"].opt_prefix}
     ]
 
     if OS.mac?

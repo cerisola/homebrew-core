@@ -1,18 +1,19 @@
 class Libmodbus < Formula
   desc "Portable modbus library"
   homepage "https://libmodbus.org/"
-  url "https://github.com/stephane/libmodbus/archive/v3.1.7.tar.gz"
-  sha256 "af8ade1eec30fe3dc6ddf8f711b37f9a931532287f39a40f54e6f475402df389"
+  url "https://github.com/stephane/libmodbus/archive/v3.1.10.tar.gz"
+  sha256 "e93503749cd89fda4c8cf1ee6371a3a9cc1f0a921c165afbbc4fd96d4813fa1a"
   license "LGPL-2.1-or-later"
   head "https://github.com/stephane/libmodbus.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "fc2d5dcb26e376825f443f62e519611a4b41ccdffc41f2548845299de8d48874"
-    sha256 cellar: :any,                 arm64_big_sur:  "e244f011a09c4544dfcff26ca37a5b1ac14437f265dbba0ffaf3a5828a3f247c"
-    sha256 cellar: :any,                 monterey:       "21609d282cb0f2820eca845eacd27646c6094d4f31befb422c2bb9cc127cf414"
-    sha256 cellar: :any,                 big_sur:        "d5997eb25c8f5c97149ed2c1b1955186f89683e58662d9f0298546666bb5bb2b"
-    sha256 cellar: :any,                 catalina:       "a721d3fe6901bbe5905610361c34c08a2b429e4fa99deb7c4db36553781d5092"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57a694edda6a85dc6f7c8619074690825aab88a631016f270486d4e2c350994f"
+    sha256 cellar: :any,                 arm64_ventura:  "585781b5c3f26d145faf3b0c06e58bd9789ace242f6631689edfc4dee3ab5b1f"
+    sha256 cellar: :any,                 arm64_monterey: "782038c57d82103f1c245d8d76f9acec4fd25b9bbb38c90fc8558c63ff00ddb5"
+    sha256 cellar: :any,                 arm64_big_sur:  "870b055e0964bde546ca96ac9a381f6d47de22e1bda504e9332800eefa2478bf"
+    sha256 cellar: :any,                 ventura:        "20eb8bf548c71959c9269981ec3d95b30871cca5074b32d60780356ee2930bb2"
+    sha256 cellar: :any,                 monterey:       "aaf518a16cbfdcc17b4355d4edb497607363b3b8f78d57e5b1c7d5af67588532"
+    sha256 cellar: :any,                 big_sur:        "25ad3c494672c5006f15cb27bd69cedb91d5a14ada0f52a4e8c622dbdec76d6c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b04b946ea68e47136a06d01734d22e1a6c6eb9ed21514394f28f9b30364e1f54"
   end
 
   depends_on "autoconf" => :build

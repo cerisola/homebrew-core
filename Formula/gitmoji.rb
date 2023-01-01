@@ -3,17 +3,18 @@ require "language/node"
 class Gitmoji < Formula
   desc "Interactive command-line tool for using emoji in commit messages"
   homepage "https://gitmoji.dev"
-  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-5.0.0.tgz"
-  sha256 "53359e86afaea0519f8956db1e121b8cee1a3fa2d83bd3b9239a67b478a01fb2"
+  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-7.0.3.tgz"
+  sha256 "54650443bd261942b8382659760baadfe8abc66a845e90a858fe3f32d8d01a3c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "385246ee625614e22f59422efd70a2e1af31d84ca41556c8be39dc21dcd06a2f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "385246ee625614e22f59422efd70a2e1af31d84ca41556c8be39dc21dcd06a2f"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4445a3365a84dd6f4b8da87d19b5fc6adec4311100896bfb9f67002da21b586"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d4445a3365a84dd6f4b8da87d19b5fc6adec4311100896bfb9f67002da21b586"
-    sha256 cellar: :any_skip_relocation, catalina:       "d4445a3365a84dd6f4b8da87d19b5fc6adec4311100896bfb9f67002da21b586"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "385246ee625614e22f59422efd70a2e1af31d84ca41556c8be39dc21dcd06a2f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ab510c8e163ceda1c873eb359967a5a695697de8f98278a16820ab5abf34d692"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ab510c8e163ceda1c873eb359967a5a695697de8f98278a16820ab5abf34d692"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ab510c8e163ceda1c873eb359967a5a695697de8f98278a16820ab5abf34d692"
+    sha256 cellar: :any_skip_relocation, ventura:        "399e51b3ebdd757ededd5240e25c5977f21990efb87cf446d889ae5d60fb00b8"
+    sha256 cellar: :any_skip_relocation, monterey:       "399e51b3ebdd757ededd5240e25c5977f21990efb87cf446d889ae5d60fb00b8"
+    sha256 cellar: :any_skip_relocation, big_sur:        "399e51b3ebdd757ededd5240e25c5977f21990efb87cf446d889ae5d60fb00b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ab510c8e163ceda1c873eb359967a5a695697de8f98278a16820ab5abf34d692"
   end
 
   depends_on "node"

@@ -1,35 +1,32 @@
 class Enzyme < Formula
   desc "High-performance automatic differentiation of LLVM"
   homepage "https://enzyme.mit.edu"
-  url "https://github.com/EnzymeAD/Enzyme/archive/v0.0.31.tar.gz", using: :homebrew_curl
-  sha256 "d8c0fd05c1c83c38d01b82b760e6b44c09cdcfb26feabc7893ec825aab40d9f3"
+  url "https://github.com/EnzymeAD/Enzyme/archive/v0.0.46.tar.gz", using: :homebrew_curl
+  sha256 "fa0e3905ad8f4fa719fabbdb3f535704467dd79aad2f0fd59a97669d4af492bd"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/EnzymeAD/Enzyme.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "04e47cfda3485c4df271162b649275f58c7ed781823fb917f3dbd60214124000"
-    sha256 cellar: :any,                 arm64_big_sur:  "9d6d5f0d76f69362ba9500fae44594de4d4e759aeb1b51aab7e2384ec169b331"
-    sha256 cellar: :any,                 monterey:       "12d753a32f9489c475838570d0460f2e844da14290198f9cd88c283680acb41d"
-    sha256 cellar: :any,                 big_sur:        "2307c4c8134a5a0ff874fae794239809857ac0e4c3a2356a8957bec7a6fef64c"
-    sha256 cellar: :any,                 catalina:       "fdf1711a192400521cd69bb5ef1b449bbab529f5d30f1f053bcc1ba7328df687"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "57695c072bc9b6049d6a7bb251173c190ddc1f76152f6ffc13cfc431f3e9ce5c"
+    sha256 cellar: :any,                 arm64_ventura:  "4bfa187d92c382a199419db1d9a6519193a907e8a00508799c0583b0f8a5bf66"
+    sha256 cellar: :any,                 arm64_monterey: "f520c7036a43368f13e39071295bb3ef732a68d091aa3d3e8128c0bf8f7c8437"
+    sha256 cellar: :any,                 arm64_big_sur:  "4bbd219e827237b10d029532f47e427bee404f43908b2c8c68733e2dd3bc1fad"
+    sha256 cellar: :any,                 ventura:        "02d9c76a64934b83b6148b982c36fa83464ded6031dd58edc4b99abd4d6b3554"
+    sha256 cellar: :any,                 monterey:       "059680324c83a32cb0d275d68192b169eb36770918aeb2ebde204e8d79b7ba4b"
+    sha256 cellar: :any,                 big_sur:        "bcba0a1c57b73c9603c262db4643a064c508e82ce0d2d03ddf0d0937a1bc4cd2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b7bd7333bc508ea6d127c11a1c171e4e4c5bb98cbb0c2baed8b47aabaa79af4"
   end
 
   depends_on "cmake" => :build
   depends_on "llvm"
 
-  on_linux do
-    depends_on "gcc" => :build
-  end
-
   fails_with gcc: "5"
 
   def llvm
-    deps.map(&:to_formula).find { |f| f.name.match? "^llvm" }
+    deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }
   end
 
   def install
-    system "cmake", "-S", "enzyme", "-B", "build", *std_cmake_args, "-DLLVM_DIR=#{llvm.opt_lib}/cmake/llvm"
+    system "cmake", "-S", "enzyme", "-B", "build", "-DLLVM_DIR=#{llvm.opt_lib}/cmake/llvm", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -53,8 +50,12 @@ class Enzyme < Formula
     opt = llvm.opt_bin/"opt"
     ENV["CC"] = llvm.opt_bin/"clang"
 
-    system ENV.cc, testpath/"test.c", "-S", "-emit-llvm", "-o", "input.ll", "-O2",
-                   "-fno-vectorize", "-fno-slp-vectorize", "-fno-unroll-loops"
+    # `-Xclang -no-opaque-pointers` is a transitional flag for LLVM 15, and will
+    # likely be need to removed in LLVM 16. See:
+    # https://llvm.org/docs/OpaquePointers.html#version-support
+    system ENV.cc, "-v", testpath/"test.c", "-S", "-emit-llvm", "-o", "input.ll", "-O2",
+                   "-fno-vectorize", "-fno-slp-vectorize", "-fno-unroll-loops",
+                   "-Xclang", "-no-opaque-pointers"
     system opt, "input.ll", "--enable-new-pm=0",
                 "-load=#{opt_lib/shared_library("LLVMEnzyme-#{llvm.version.major}")}",
                 "--enzyme-attributor=0", "-enzyme", "-o", "output.ll", "-S"

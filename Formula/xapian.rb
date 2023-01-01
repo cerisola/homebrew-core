@@ -1,8 +1,8 @@
 class Xapian < Formula
   desc "C++ search engine library"
   homepage "https://xapian.org/"
-  url "https://oligarchy.co.uk/xapian/1.4.19/xapian-core-1.4.19.tar.xz"
-  sha256 "1fca48fca6cc3526cc4ba93dd194fe9c1326857b78edcfb37e68d086d714a9c3"
+  url "https://oligarchy.co.uk/xapian/1.4.21/xapian-core-1.4.21.tar.xz"
+  sha256 "80f86034d2fb55900795481dfae681bfaa10efbe818abad3622cdc0c55e06f88"
   license "GPL-2.0-or-later"
   version_scheme 1
 
@@ -12,15 +12,17 @@ class Xapian < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9315c3b45b4196bffdb67cd0d175338632a8732e1b54504beedd12b9502234e4"
-    sha256 cellar: :any,                 arm64_big_sur:  "a90af30e8e274cb3d2959dbf1634af032df88dea7d179c3e912e961edf92ae4e"
-    sha256 cellar: :any,                 monterey:       "15cef8314c190eed223235ee443985c6f130bd99e2a4f5ca111fbae8e3e17013"
-    sha256 cellar: :any,                 big_sur:        "594406eadbc569a372949a376a49b4bf5956506c86ba81ad696f7ba94a798ead"
-    sha256 cellar: :any,                 catalina:       "bc5c3ce60eb9299c92a4f003cd362e5f8af2d2ac4815ada5cf63a2153fe02ad3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bfbb14f36f134d1fcbd4c3a7e7a3a90ea97eac7063e388668e673fba6afa0efc"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "94282bf584c6f10784f1331f5c0f45a6e5fab4966e62cdb3046f6cb00f1ad305"
+    sha256 cellar: :any,                 arm64_monterey: "19ccb741b677fedbc18aab3eba8e3448f93e24e4495453091f5b4911ddb0ad28"
+    sha256 cellar: :any,                 arm64_big_sur:  "c6eaa3e9ca0c4433a9a68a001d43359a769fe332b20428842682bbf349a9d63c"
+    sha256 cellar: :any,                 ventura:        "69a1f2026b87b096a202506f2e249392affdfcdc3bc7f5dade8e813b1b4d8d7e"
+    sha256 cellar: :any,                 monterey:       "e3935fe73611fb3db2fa98dcb151e6129950bb9dda20d2b8fcf351abdec6f560"
+    sha256 cellar: :any,                 big_sur:        "8d97587e1fc548777532581c1d6409e39512309dfda50eb764c154bfdefd765a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c13c59d710c79b257cff9ca1bb60fa9c9345cceddb6b7706932e6dd2d85ba62b"
   end
 
-  depends_on "python@3.10" => [:build, :test]
+  depends_on "python@3.11" => [:build, :test]
   depends_on "sphinx-doc" => :build
 
   uses_from_macos "zlib"
@@ -32,8 +34,8 @@ class Xapian < Formula
   skip_clean :la
 
   resource "bindings" do
-    url "https://oligarchy.co.uk/xapian/1.4.19/xapian-bindings-1.4.19.tar.xz"
-    sha256 "91c385a48951aa7cdf665effd25533f7477fc22781ca712e50b5496459a2883d"
+    url "https://oligarchy.co.uk/xapian/1.4.20/xapian-bindings-1.4.20.tar.xz"
+    sha256 "786cc28d05660b227954413af0e2f66e4ead2a06d3df6dabaea484454b601ef5"
   end
 
   # Fix -flat_namespace being used on Big Sur and later.
@@ -42,33 +44,31 @@ class Xapian < Formula
     sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
   end
 
+  def python3
+    "python3.11"
+  end
+
   def install
-    python = Formula["python@3.10"].opt_bin/"python3"
-    ENV["PYTHON"] = python
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    ENV["PYTHON"] = which(python3)
+    system "./configure", *std_configure_args, "--disable-silent-rules"
     system "make", "install"
 
     resource("bindings").stage do
       ENV["XAPIAN_CONFIG"] = bin/"xapian-config"
 
-      xy = Language::Python.major_minor_version python
-      ENV.prepend_create_path "PYTHON3_LIB", lib/"python#{xy}/site-packages"
+      site_packages = Language::Python.site_packages(python3)
+      ENV.prepend_create_path "PYTHON3_LIB", prefix/site_packages
 
-      ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"lib/python#{xy}/site-packages"
-      ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"vendor/lib/python#{xy}/site-packages"
+      ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/site_packages
+      ENV.append_path "PYTHONPATH", Formula["sphinx-doc"].opt_libexec/"vendor"/site_packages
 
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}",
-                            "--with-python3"
-
+      system "./configure", *std_configure_args, "--disable-silent-rules", "--with-python3"
       system "make", "install"
     end
   end
 
   test do
     system bin/"xapian-config", "--libs"
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import xapian"
+    system python3, "-c", "import xapian"
   end
 end

@@ -1,43 +1,68 @@
 class Citus < Formula
   desc "PostgreSQL-based distributed RDBMS"
   homepage "https://www.citusdata.com"
-  url "https://github.com/citusdata/citus/archive/v10.2.5.tar.gz"
-  sha256 "748beaf219163468f0b92bf5315798457f9859a6cd9069a7fd03208d8d231176"
+  url "https://github.com/citusdata/citus/archive/v11.1.5.tar.gz"
+  sha256 "ed5ef250c61d183d6aebbac388e4797c105c88e707411b9ba1ff86f198401387"
   license "AGPL-3.0-only"
-  head "https://github.com/citusdata/citus.git", branch: "master"
+  head "https://github.com/citusdata/citus.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "5c1284be900f79340a7deb11cab8ec6ae499ae4d5fb3a353c38af68294f605ee"
-    sha256 cellar: :any,                 arm64_big_sur:  "8d8da700da3660cd9bc01aa509a25c7500e571d6353f0b718504d0307462692b"
-    sha256 cellar: :any,                 monterey:       "aed158c5fc1a817655cf33f8fdf52a4b35735ad81740fd40100e93247c3acad4"
-    sha256 cellar: :any,                 big_sur:        "c081472f3ea377cba1898543bbc45f9fbc750c8a53dd538645b16ccda66ba555"
-    sha256 cellar: :any,                 catalina:       "8d206df19b0d0c30e866571deb14ad101f170e8e5cd6574de218a41a266e7b36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed813a71d6e8c6e3c78627707f6bfbf1dd135959f1518748318b956666f62400"
+    sha256 cellar: :any,                 arm64_ventura:  "aad932922c42a1356a40ba887dc6fdc804ad801a0fd7e2f956b409cd2b1de551"
+    sha256 cellar: :any,                 arm64_monterey: "f183d84f3ca0b7b96773897f0633aa8c2a72090d32adea92d20e18cb7d512068"
+    sha256 cellar: :any,                 arm64_big_sur:  "e59c1255841a7300cd3f33fcc1cce83988d4b40cc9154523f2097ce460c48094"
+    sha256 cellar: :any,                 ventura:        "d8a225ffda9c90550a501d763e8524f39cda09453f9fe5350cf0f601246ff0ce"
+    sha256 cellar: :any,                 monterey:       "f212362a0d98e6d84da3702c07564e78afbf48663be5fd2a2fd4198f50a53870"
+    sha256 cellar: :any,                 big_sur:        "8466904ebb00b8c56e33cabf18b33da92ee8b35d8590b09eea3e7e26aa0cec03"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f45f4ceb90f182bf69da5b2a7a9f5530d87f37e7d36c69a9a7577b9150f654b3"
   end
 
   depends_on "lz4"
-  depends_on "postgresql"
+  depends_on "postgresql@14"
   depends_on "readline"
   depends_on "zstd"
 
   uses_from_macos "curl"
 
+  def postgresql
+    Formula["postgresql@14"]
+  end
+
   def install
-    ENV["PG_CONFIG"] = Formula["postgresql"].opt_bin/"pg_config"
+    ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
 
     system "./configure"
-
     # workaround for https://github.com/Homebrew/legacy-homebrew/issues/49948
-    system "make", "libpq=-L#{Formula["postgresql"].opt_lib} -lpq"
+    system "make", "libpq=-L#{postgresql.opt_lib} -lpq"
 
     # Use stage directory to prevent installing to pg_config-defined dirs,
     # which would not be within this package's Cellar.
     mkdir "stage"
     system "make", "install", "DESTDIR=#{buildpath}/stage"
 
-    path = File.join("stage", HOMEBREW_PREFIX)
-    lib.install (buildpath/path/"lib").children
-    include.install (buildpath/path/"include").children
-    (share/"postgresql/extension").install (buildpath/path/"share/postgresql/extension").children
+    stage_path = File.join("stage", HOMEBREW_PREFIX)
+    lib.install (buildpath/stage_path/"lib").children
+    include.install (buildpath/stage_path/"include").children
+    share.install (buildpath/stage_path/"share").children
+
+    bin.install (buildpath/File.join("stage", postgresql.bin.realpath)).children
+  end
+
+  test do
+    pg_ctl = postgresql.opt_bin/"pg_ctl"
+    psql = postgresql.opt_bin/"psql"
+    port = free_port
+
+    system pg_ctl, "initdb", "-D", testpath/"test"
+    (testpath/"test/postgresql.conf").write <<~EOS, mode: "a+"
+
+      shared_preload_libraries = 'citus'
+      port = #{port}
+    EOS
+    system pg_ctl, "start", "-D", testpath/"test", "-l", testpath/"log"
+    begin
+      system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"citus\";", "postgres"
+    ensure
+      system pg_ctl, "stop", "-D", testpath/"test"
+    end
   end
 end

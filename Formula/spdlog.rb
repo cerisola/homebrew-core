@@ -1,23 +1,27 @@
 class Spdlog < Formula
   desc "Super fast C++ logging library"
   homepage "https://github.com/gabime/spdlog"
-  url "https://github.com/gabime/spdlog/archive/v1.9.2.tar.gz"
-  sha256 "6fff9215f5cb81760be4cc16d033526d1080427d236e86d70bb02994f85e3d38"
+  url "https://github.com/gabime/spdlog/archive/v1.11.0.tar.gz"
+  sha256 "ca5cae8d6cac15dae0ec63b21d6ad3530070650f68076f3a4a862ca293a858bb"
   license "MIT"
   head "https://github.com/gabime/spdlog.git", branch: "v1.x"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "1567906c33dc6a1fddaa1fdc430a4183fa7c7caf8cb61259561fbe42db2e149c"
-    sha256 cellar: :any,                 arm64_big_sur:  "932380f1fdb3b4e841ea4c7e8bb2cccfeaf04916bc18b8af7c4791052e093733"
-    sha256 cellar: :any,                 monterey:       "93bf8e394c6b17a6ac8e00bbb03fbe5d88b7066e4794c5f34f5394a393a9e531"
-    sha256 cellar: :any,                 big_sur:        "7ef50412af9432c0ba4b686ca1d61e17dec36183fd898cf695c8eeac3157dd81"
-    sha256 cellar: :any,                 catalina:       "111819301639a2b294d1e26cac9ca73a452407bdc7591aa1638ad3a03d4aed96"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72c006ff7371b4b04bcb08fbbbe1efc72c9f693422d4b6e22ebc7aecb6bc9fb7"
+    sha256 cellar: :any,                 arm64_ventura:  "99f6597478677431b87f16344e2797a5bd544ea47c7ca69cef6ddac79953550f"
+    sha256 cellar: :any,                 arm64_monterey: "63af198f33b09b066fff8439967858c2d2598d7a7af55c90bb44479439de8e4d"
+    sha256 cellar: :any,                 arm64_big_sur:  "849241d6a48c7c57f519011e816e0c910b9183dcedcb5b8a8d00aa17e12e32d6"
+    sha256 cellar: :any,                 ventura:        "bda7921ac0e39a711900fc289205dee7a55596811e365f186cd1fa2c2ee30967"
+    sha256 cellar: :any,                 monterey:       "fddfdf57dbd012a95cd5c7d23a130f68066a1f41419f6af42221d983b60c413f"
+    sha256 cellar: :any,                 big_sur:        "638f2bde2ad93fadb73c367d0508643773c04f76514b139aa87b07d47ad53222"
+    sha256 cellar: :any,                 catalina:       "6c3c582b7873203303b2295678256e560b58be94f02e6654c9289801b25bd7d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90bdf0ffb1445c3feb3e7541fa6d87bda07353cd938571d96c68aba274862a80"
   end
 
   depends_on "cmake" => :build
   depends_on "fmt"
+
+  # error: specialization of 'template<class T, ...> struct fmt::v8::formatter' in different namespace
+  fails_with gcc: "5"
 
   def install
     ENV.cxx11

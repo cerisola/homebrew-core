@@ -3,9 +3,10 @@ class Uhd < Formula
   homepage "https://files.ettus.com/manual/"
   # The build system uses git to recover version information
   url "https://github.com/EttusResearch/uhd.git",
-      tag:      "v4.2.0.0",
-      revision: "46a70d853267c40205a8cfea472056bd1aa7c04e"
+      tag:      "v4.3.0.0",
+      revision: "1f8fd3457dee48dc472446113a6998c2529adf59"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later", "MIT", "BSD-3-Clause", "Apache-2.0"]
+  revision 1
   head "https://github.com/EttusResearch/uhd.git", branch: "master"
 
   livecheck do
@@ -14,12 +15,14 @@ class Uhd < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "1a10f56135f1aa9cad9cd8deb3d739dd71a7ec6104e2ed3c484fa604a7b51758"
-    sha256 arm64_big_sur:  "a77fbf7cfcb51c33a7a3fffbeac1511633e1d8df42a71255aec055afefe874bb"
-    sha256 monterey:       "1e006c2ede0dbbd0652e385981c7ffdf7fc3bab2a9f76113c33af46fc7f97c8f"
-    sha256 big_sur:        "e28eb54ea3d5254ebb6559e1a0f354c9413def8eed2f0431797b0a9adf21ed05"
-    sha256 catalina:       "8491bbbb396b96574c78d6412d429c98be07ffc68920cd1353558bb82280dcf3"
-    sha256 x86_64_linux:   "48454addb60b428ee63e144a8de36cb6ec44902a47fe4372b82017058740e50e"
+    rebuild 1
+    sha256                               arm64_ventura:  "203ee442bdb64672f84d66c020a56648e739bf8be379dad9ecac74d67a88e10f"
+    sha256                               arm64_monterey: "48ad94802d28473e1e710f1e7dd91b9450cfa2f465e700301626c39a6f5c86a6"
+    sha256                               arm64_big_sur:  "b6e76b040b2d1c8274cfaecc16e960057db3c81b4a727291ae4f960b31cee88a"
+    sha256                               ventura:        "27fe77514a43d35631aa4b84a34a8026a0421843110445c8c2f0add5237484db"
+    sha256                               monterey:       "7a38f27db9c707100eb16b992211ad2debbdbe41f0510c916f9102df7c44feb6"
+    sha256                               big_sur:        "dd000e257205cf86cbf42d51109809a06c74489496acc3f741372fd4ea674a4d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d216f9ed2caddcc9ca207d395885ee4271106698d62139115b894ebf330827d"
   end
 
   depends_on "cmake" => :build
@@ -27,17 +30,13 @@ class Uhd < Formula
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "libusb"
-  depends_on "python@3.9"
-
-  on_linux do
-    depends_on "gcc"
-  end
+  depends_on "python@3.11"
 
   fails_with gcc: "5"
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/50/ec/1d687348f0954bda388bfd1330c158ba8d7dea4044fc160e74e080babdb9/Mako-1.2.0.tar.gz"
-    sha256 "9a7c7e922b87db3686210cf49d5d767033a41d4010b284e747682c92bddd8b39"
+    url "https://files.pythonhosted.org/packages/6d/f2/8ad2ec3d531c97c4071572a4104e00095300e278a7449511bee197ca22c9/Mako-1.2.2.tar.gz"
+    sha256 "3724869b363ba630a272a5f89f68c070352137b8fd1757650017b7e06fda163f"
   end
 
   resource "MarkupSafe" do
@@ -46,21 +45,18 @@ class Uhd < Formula
   end
 
   def install
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
+    python = "python3.11"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor"/Language::Python.site_packages(python)
 
     resources.each do |r|
       r.stage do
-        system Formula["python@3.9"].opt_bin/"python3",
-              *Language::Python.setup_install_args(libexec/"vendor")
+        system python, *Language::Python.setup_install_args(libexec/"vendor", python)
       end
     end
 
-    mkdir "host/build" do
-      system "cmake", "..", *std_cmake_args, "-DENABLE_TESTS=OFF"
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", "host", "-B", "host/build", "-DENABLE_TESTS=OFF", *std_cmake_args
+    system "cmake", "--build", "host/build"
+    system "cmake", "--install", "host/build"
   end
 
   test do

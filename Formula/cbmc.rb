@@ -2,17 +2,18 @@ class Cbmc < Formula
   desc "C Bounded Model Checker"
   homepage "https://www.cprover.org/cbmc/"
   url "https://github.com/diffblue/cbmc.git",
-      tag:      "cbmc-5.57.0",
-      revision: "58d64d853a236a3f9eca46c1b60ed0cf9324fbfd"
+      tag:      "cbmc-5.73.0",
+      revision: "3d8c1f891e09a969071dc87d01991b95a9b4a037"
   license "BSD-4-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d39e22937031c1c1fd8ba2e1b7a70c4d48372dfa89091f726b3a032ed5e34eab"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8a49be8fcf10dfb90eb2a68cf0bd033849671f4857141cb5a86860210ec9be78"
-    sha256 cellar: :any_skip_relocation, monterey:       "ac0b7a7b3d91eb0bd346a62d0979b5262bdff28e4a5d0228eabc9716eaaa2b03"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e39a8acc28fea60c577b9b23f564f72008cd35434c2900aca2a58272310cd38e"
-    sha256 cellar: :any_skip_relocation, catalina:       "cba643fed513f5f12437c71ba0f2a610e59156394c6f77b60fe08575140bcaa1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d6d13925563fcec5269f86b47b6eca969fc4ba95ce6b98e95fac55d81cd15f94"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c6dda63babc638d57f42c918b651bed3f0b93cbe10d524c020237475d074ad2b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4f4c8bf06c348d68da7a29135ea4380a68382e2d4ae82302cfd68c0b00249409"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8042887378b0855e1452daef423542f58aff6dd4ca271c5a876818c1a791e1a6"
+    sha256 cellar: :any_skip_relocation, ventura:        "2e0951f135758b3a7fdbf303df4e43d3509c3aa3838971d134ab79fa625fb911"
+    sha256 cellar: :any_skip_relocation, monterey:       "f9020e3f5a2578accf4edc04ef64b906ab06997b9d6ba8669c8127319879aede"
+    sha256 cellar: :any_skip_relocation, big_sur:        "aa4d150adedd5f7dc8ce77a47d56343b6d818604b25ae0bf5f1d75dd62d5cfee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "90e961c36641de597b8ee5cdadb4db60c88d61980ee45e6ed43fc65b72efd264"
   end
 
   depends_on "cmake" => :build
@@ -21,10 +22,6 @@ class Cbmc < Formula
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

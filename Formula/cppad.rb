@@ -1,9 +1,8 @@
 class Cppad < Formula
   desc "Differentiation of C++ Algorithms"
   homepage "https://www.coin-or.org/CppAD"
-  # Stable versions have numbers of the form 201x0000.y
-  url "https://github.com/coin-or/CppAD/archive/20220000.2.tar.gz"
-  sha256 "a363996d6a36c08b37048d3c439119d1cd715ce7caf124ac6f0c2e94240985bd"
+  url "https://github.com/coin-or/CppAD/archive/20220000.5.tar.gz"
+  sha256 "9fb4562f6169855eadcd86ac4671593d1c0edf97bb6ce7cbb28e19af2bfc165e"
   license "EPL-2.0"
   version_scheme 1
   head "https://github.com/coin-or/CppAD.git", branch: "master"
@@ -14,12 +13,13 @@ class Cppad < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4bf638f87ef91e08200f860e3dd6073e16f653de91637b50b2eab717cf6c0180"
-    sha256 cellar: :any,                 arm64_big_sur:  "e8ab2a0462ba2f7a0ce0801e81c65e0cb86ccd73bc39bdc67401edd4784162ec"
-    sha256 cellar: :any,                 monterey:       "fa31d5517dbbaeaf87d0db041ab6bb91a0f9c2ffda42091a02aad9083b29ef49"
-    sha256 cellar: :any,                 big_sur:        "79db2a1511c61b7d0a7f000bb17088b97d633e21bf0504b8b24f4813a4fd1b1d"
-    sha256 cellar: :any,                 catalina:       "adb9ccfaa8aeceb4ff09ef0215f412e03fc404b3a1ffc499a41f0a0a8cb74c06"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "93017c4eef160255f23db2a6d7f576ba5a61e6711bc9f997be49700e4d0eb937"
+    sha256 cellar: :any,                 arm64_ventura:  "a7fe638ee5bb3ca1fa0682a67a49b48e86d4b545c084576374330ef363a51e9a"
+    sha256 cellar: :any,                 arm64_monterey: "e7ee87b8a4bb62bd2a5568649613c78ee806ca29f59f9c4c6d25fc4a52187edb"
+    sha256 cellar: :any,                 arm64_big_sur:  "55f2823d81bf76458ca222c005693e41f1364925676a1c5b4d1885f011ccbb26"
+    sha256 cellar: :any,                 ventura:        "c85065b2faf04cc829fe92f9b10a525ee10e8c76bc1f00a82abb63c2e2ece37a"
+    sha256 cellar: :any,                 monterey:       "952ef336b5a163f18be4bde28cf65a41a78e562a1cd6b4d6efaee732896a7d1f"
+    sha256 cellar: :any,                 big_sur:        "46adbf6a80b05ecba32d1f3583f54daa20cbd924bad787cad95a02906ff29f7b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5c9e9e7856559882d16098bed6c63f04bfa2d5745aa1f8a144c6c66b5858db5c"
   end
 
   depends_on "cmake" => :build

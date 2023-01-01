@@ -3,6 +3,7 @@ class Rssh < Formula
   homepage "http://www.pizzashack.org/rssh"
   url "https://downloads.sourceforge.net/project/rssh/rssh/2.3.4/rssh-2.3.4.tar.gz"
   sha256 "f30c6a760918a0ed39cf9e49a49a76cb309d7ef1c25a66e77a41e2b1d0b40cd9"
+  license "BSD-2-Clause"
 
   bottle do
     sha256 arm64_monterey: "15028af39a3549db2d28aedae2d8774c12ac44bce71139ba76269d9d7c2646f7"
@@ -14,10 +15,9 @@ class Rssh < Formula
     sha256 high_sierra:    "05dd4375824810caf77f7b40d2b1ff0a229e6743f46c755427c428d5ca31f173"
     sha256 sierra:         "aebe589ee047200b1fd0486d3a1fb08c4a601366391e80bcd1e7dcb87ca456e0"
     sha256 el_capitan:     "23891b0317ef29a36b0b8ee9f140193d17ae616983c13f2179d5b317b33e1eee"
-    sha256 yosemite:       "a63ead463b79c5375e0b919976173db13a236fcea06c4fa038a719375a550ca9"
   end
 
-  deprecate! date: "2021-01-22", because: :unmaintained
+  disable! date: "2022-10-19", because: :unmaintained
 
   # Submitted upstream:
   # https://sourceforge.net/p/rssh/mailman/message/32251335/

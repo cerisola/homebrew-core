@@ -1,19 +1,20 @@
 class Vtk < Formula
   desc "Toolkit for 3D computer graphics, image processing, and visualization"
   homepage "https://www.vtk.org/"
-  url "https://www.vtk.org/files/release/9.1/VTK-9.1.0.tar.gz"
-  sha256 "8fed42f4f8f1eb8083107b68eaa9ad71da07110161a3116ad807f43e5ca5ce96"
+  url "https://www.vtk.org/files/release/9.2/VTK-9.2.2.tar.gz"
+  sha256 "1c5b0a2be71fac96ff4831af69e350f7a0ea3168981f790c000709dcf9121075"
   license "BSD-3-Clause"
-  revision 4
-  head "https://github.com/Kitware/VTK.git", branch: "master"
+  head "https://gitlab.kitware.com/vtk/vtk.git", branch: "master"
 
   bottle do
-    sha256                               arm64_monterey: "235a62257e18547893acd654ab41187e3f8389744b8d291897661c314a35933f"
-    sha256                               arm64_big_sur:  "31e54d21af04cafe66a614ad8e76e490109e4fb49e0fdaf4a3973786b0768862"
-    sha256                               monterey:       "58ba5d2739518e799603193899e9205d10cca25e074d968c95869fb90b735af5"
-    sha256                               big_sur:        "77c0746012492581c64d845aac3557bedb8111c32353b2157fe7992ac39910ce"
-    sha256                               catalina:       "438508b242067e11fb241204b4d0fa09478654f0406344edc864197d39a71c07"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "398378770eb7afc3c2c4c9fd01ada2ce9b938e82d7b3e7c16398ab36ec3a147a"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "abb8aad044b8eea390b26cd177ca7c8b36a5caca5fc0c53d548b2139ed7c7fbb"
+    sha256 cellar: :any,                 arm64_monterey: "87f295a765e70a10f8f3a19d4fe4bcac50715480cae4b0a0bb87e4ee4f700dfe"
+    sha256 cellar: :any,                 arm64_big_sur:  "0395bb7ea37c8570388c8f3a41b77d5f00c11fe0e23257f353cc626dd87398b5"
+    sha256 cellar: :any,                 ventura:        "d8d5c75ce1b1ac5f78559ba33d776c00018d38afeec30605db8313ca5a872534"
+    sha256 cellar: :any,                 monterey:       "5e23111ea04ac0edf25ede66975b2c072a557c70cbb2cbbc410e48dcc1fb12a3"
+    sha256 cellar: :any,                 big_sur:        "2345d0eb9580b5f0b62175f911a2e9d36d5a2eae451a5cb8dbb69fc5cfdf2883"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "474f15dcdcd507d2c8056188e992cf16ac9d67c10eadd3707311de8a9919a8b2"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -33,7 +34,7 @@ class Vtk < Formula
   depends_on "netcdf"
   depends_on "pugixml"
   depends_on "pyqt@5"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "qt@5"
   depends_on "sqlite"
   depends_on "theora"
@@ -46,31 +47,30 @@ class Vtk < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "llvm" => :build if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+    on_arm do
+      if DevelopmentTools.clang_build_version == 1316
+        depends_on "llvm" => :build
+
+        # clang: error: unable to execute command: Segmentation fault: 11
+        # clang: error: clang frontend command failed due to signal (use -v to see invocation)
+        # Apple clang version 13.1.6 (clang-1316.0.21.2)
+        fails_with :clang
+      end
+    end
   end
 
   on_linux do
-    depends_on "gcc"
     depends_on "libaec"
     depends_on "mesa-glu"
   end
 
   fails_with gcc: "5"
 
-  # clang: error: unable to execute command: Segmentation fault: 11
-  # clang: error: clang frontend command failed due to signal (use -v to see invocation)
-  # Apple clang version 13.1.6 (clang-1316.0.21.2)
-  fails_with :clang if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
-
   def install
-    if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
-      ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
-      ENV.llvm_clang
-    end
+    ENV.llvm_clang if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
 
     args = %W[
       -DBUILD_SHARED_LIBS:BOOL=ON
-      -DBUILD_TESTING:BOOL=OFF
       -DCMAKE_INSTALL_NAME_DIR:STRING=#{opt_lib}
       -DCMAKE_INSTALL_RPATH:STRING=#{rpath}
       -DCMAKE_DISABLE_FIND_PACKAGE_ICU:BOOL=ON
@@ -100,7 +100,7 @@ class Vtk < Formula
       -DVTK_MODULE_USE_EXTERNAL_VTK_tiff:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_utf8:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_zlib:BOOL=ON
-      -DPython3_EXECUTABLE:FILEPATH=#{Formula["python@3.9"].opt_bin}/python3
+      -DPython3_EXECUTABLE:FILEPATH=#{which("python3.11")}
       -DVTK_GROUP_ENABLE_Qt:STRING=YES
       -DVTK_QT_VERSION:STRING=5
     ]
@@ -118,6 +118,10 @@ class Vtk < Formula
   test do
     # Force use of Apple Clang on macOS that needs LLVM to build
     ENV.clang if DevelopmentTools.clang_build_version == 1316 && Hardware::CPU.arm?
+
+    vtk_dir = lib/"cmake/vtk-#{version.major_minor}"
+    vtk_cmake_module = vtk_dir/"VTK-vtk-module-find-packages.cmake"
+    assert_match Formula["boost"].version.to_s, vtk_cmake_module.read, "VTK needs to be rebuilt against Boost!"
 
     (testpath/"CMakeLists.txt").write <<~EOS
       cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
@@ -138,9 +142,7 @@ class Vtk < Formula
       }
     EOS
 
-    vtk_dir = Dir[opt_lib/"cmake/vtk-*"].first
-    system "cmake", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON",
-      "-DVTK_DIR=#{vtk_dir}", "."
+    system "cmake", ".", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON", "-DVTK_DIR=#{vtk_dir}"
     system "make"
     system "./Distance2BetweenPoints"
 

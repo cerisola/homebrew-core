@@ -1,24 +1,24 @@
 class Odpi < Formula
   desc "Oracle Database Programming Interface for Drivers and Applications"
   homepage "https://oracle.github.io/odpi/"
-  url "https://github.com/oracle/odpi/archive/v4.3.0.tar.gz"
-  sha256 "e8be95e7061cad52caaa98a4d2a25d6bff8fa29c2fa609c3c447124d46b1712b"
+  url "https://github.com/oracle/odpi/archive/v4.6.0.tar.gz"
+  sha256 "fdb07c734c59b807787b5677ef23edd52766bd2d3cf075d285994793edeb40c5"
   license any_of: ["Apache-2.0", "UPL-1.0"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "7244b4b1b2491a0bca077aa4d2bb530df059206e56d1a5d6103983f9e88edaba"
-    sha256 cellar: :any,                 arm64_big_sur:  "8315751a4d068e761b9710daa4251edd61c01752c021fc93045f02083e5dec14"
-    sha256 cellar: :any,                 monterey:       "a6efa2963f2a11b1316f7f883cdab0ba8a99b0a1e1b5324c9c960094de152e85"
-    sha256 cellar: :any,                 big_sur:        "7dc8341678ef3c3b5e8e3ec798b50aab4fe5f9330b57931c55a25e8f6c457ca5"
-    sha256 cellar: :any,                 catalina:       "05db0489fa10e27600c35f22669e3090b3bf17ca00cd7c97966f62e1d314c7d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b415bbfb0f8b13d559f2b5f2119a96e24d58d1a35d8f2ecde4ca76169d74028"
+    sha256 cellar: :any,                 arm64_ventura:  "8dd43b72e0d1945818be0256dbc4e077fac5a8a75daaf9489fdb9f325f0e57b6"
+    sha256 cellar: :any,                 arm64_monterey: "a9cc873c661724322d03bcaea830790ca64a9ae25939989945f90b7a912ac17a"
+    sha256 cellar: :any,                 arm64_big_sur:  "f6ee3453a6b5c559702039fc82791a5401926c1d8cb0f583227ece09fb3e892f"
+    sha256 cellar: :any,                 ventura:        "15f0a1fee109531af8be769b2855dd083a7ac1603602ddabf681b24f34a14a6d"
+    sha256 cellar: :any,                 monterey:       "bf9c773514668087b579a17f821fdb57de75f150cf2bcc78e1eedf5d3c4a2634"
+    sha256 cellar: :any,                 big_sur:        "fab05b206080566c121e15dcf01c8611ea89ff15ef482d4cf7f0e177a57dcaf7"
+    sha256 cellar: :any,                 catalina:       "fd24291c44b33e9cfa376b41c14a4fd914d30c20c147a0551ddbbf79ea17fe2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f6d424058b8def1ae140613e19dca697b8211768c3d2a996b979977ef265f5e"
   end
 
   def install
     system "make"
-
-    lib.install Dir["lib/*"]
-    include.install Dir["include/*"]
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do

@@ -1,18 +1,19 @@
 class Tbox < Formula
   desc "Glib-like multi-platform C library"
   homepage "https://tboox.org/"
-  url "https://github.com/tboox/tbox/archive/v1.6.8.tar.gz"
-  sha256 "f437a31caa769a980e2e38ecc5bf37f1e572325d5d60fd242b9d6d49174b66fd"
+  url "https://github.com/tboox/tbox/archive/v1.7.2.tar.gz"
+  sha256 "ece5e93795de31454187bcc80ff135b0771b08e2049a57c0e8c2d094bbd24827"
   license "Apache-2.0"
   head "https://github.com/tboox/tbox.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7686e4aca03fead3b10e49568600935d7bca9678bb747d736640f4aa907a68cd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "af68ee72f0afb7f60bdffd342c152db700c54212500a262597625c5ac8f50a33"
-    sha256 cellar: :any_skip_relocation, monterey:       "c21d7e5f3bc3a15338a0c1d6d55d72c396e1308049fe52228ef8451853870b23"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8acbb9ad518a7c4e82de5510af88657dd0c1feab3db55e672f96d06459c1675b"
-    sha256 cellar: :any_skip_relocation, catalina:       "f1e53bfb8397d14871282edc646ef993fa0d5cfae0c1243fcac2cbbcefb61755"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec1c0828078dc222ae93501f594a07d9d10945adeac23bcbf8eb04a67f403b18"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "672d3b2ca57b0e9513f5467e1be1c8108b2256a1c9294c4d4dace9aea1c9303c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ab614ce23f86d3b2a3e40bede779007934f87ee378ab2e6a676682bddd4b487"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "639773c80eed44b1e905ad48f2d6d2f09c22f7380927ac3d11a277445f2efa9f"
+    sha256 cellar: :any_skip_relocation, ventura:        "f5d4d0ca087ed4f0b6f6f086171e9c8d6250b4c0518c281be9855dbe86a0df44"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b314b66ce86d02215eba26bdabfd9d0b5bfcc9a1cc16d2c53ea92fe35c99c2c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "7a4d9f8dc1b50151b139c3f17a857e558d43e94f35085c2d809153e4d222c266"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "784747c9d18597cc3d82ddc4b7ec3e98a4740bc529c4889375f9a3eeac6d24e0"
   end
 
   depends_on "xmake" => :build

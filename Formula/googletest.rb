@@ -1,23 +1,23 @@
 class Googletest < Formula
   desc "Google Testing and Mocking Framework"
   homepage "https://github.com/google/googletest"
-  url "https://github.com/google/googletest/archive/release-1.11.0.tar.gz"
-  sha256 "b4870bf121ff7795ba20d20bcdd8627b8e088f2d1dab299a031c1034eddc93d5"
+  url "https://github.com/google/googletest/archive/release-1.12.1.tar.gz"
+  sha256 "81964fe578e9bd7c94dfdb09c8e4d6e6759e19967e397dbea48d1c10e45d0df2"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5643998289368581eb4c81fd36e4cc3311ab92782db116d1f46c659d609523f8"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "53a1b277842358ceae62800c9af78271a0a33043eff7f007110353941ace54d6"
-    sha256 cellar: :any_skip_relocation, monterey:       "65d52d92904a3167ae1dc2a420dd56da5c81f3c4bd394f45ab4b8fd6b620a209"
-    sha256 cellar: :any_skip_relocation, big_sur:        "7ff36ee689017d9f973acbc0407eaf8135d983028e85d1e6375a6a144c829e7e"
-    sha256 cellar: :any_skip_relocation, catalina:       "38290ffd89c69da85af50bb3e1c1e670440b59a342865a64ce50b7abb1e424aa"
-    sha256 cellar: :any_skip_relocation, mojave:         "0581f86b3dd88e39339b4cf3b6b0174109491e2d4aa97cd49369381c6611cff0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "929f3a916ff562ab210129b6e45c06f10dbdecbce115f2b55e482cda29ae50bf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "136df6bbe33562625a64654a7a5e398b13a02f6bd1cf004fb1ab461848ba702b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e8d15f600c78e4189affaf098ac674308eb67c9dca60e2f64f2b8eefd4b82d05"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5e72dd7898776d58f31b6ed5b487d95a08e38b75a1bff696d5e622724633c880"
+    sha256 cellar: :any_skip_relocation, ventura:        "c14f1ee7c5507536a9753ffa47420c31e838c406e502a4fb2907b08994f7eee1"
+    sha256 cellar: :any_skip_relocation, monterey:       "59e79a6ad6278dd1a0ffba9f65067ff8e2095d4599da64c632de2f4b5f3db00e"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e35fd9bd800c8ffe070c021c374ef889ec8f26788a7b6ae70dc22b32558b0ca1"
+    sha256 cellar: :any_skip_relocation, catalina:       "786560832242b13dec1b0427c68da775b986c7ec758b487bc9159c82ddddbea6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "68187908a5ff0161c709fbaff14c665c4f176b3bfcdaf7878da8740c824aa99d"
   end
 
   depends_on "cmake" => :build
-
-  conflicts_with "nss", because: "both install `libgtest.a`"
 
   def install
     system "cmake", ".", *std_cmake_args

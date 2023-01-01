@@ -1,8 +1,8 @@
 class Datree < Formula
   desc "CLI tool to run policies against Kubernetes manifests YAML files or Helm charts"
-  homepage "https://www.datree.io/"
-  url "https://github.com/datreeio/datree/archive/1.4.13.tar.gz"
-  sha256 "4e77610e01a17352dbf065aeb493780cfcbd7d82296c2ef41eb48129567aa605"
+  homepage "https://datree.io/"
+  url "https://github.com/datreeio/datree/archive/1.8.12.tar.gz"
+  sha256 "aaf6a144f8e219766ab173f937452dd7eca6aec3b4e62096bb4f94701beec861"
   license "Apache-2.0"
   head "https://github.com/datreeio/datree.git", branch: "main"
 
@@ -12,18 +12,21 @@ class Datree < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "781d7fb1a8d55dc0b5e173aaa42378c03dfb2e65705df8541b753407b751cf0b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5f69564367371b87edc37657912c9c2f81fb9d785185a3988059ec22480e18ec"
-    sha256 cellar: :any_skip_relocation, monterey:       "35c334781f807d05072ea64b9d4d272d712b4222147585f6a939213f5ab1c961"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4ba3ab5848c36a4ff519ced84bf687a04499efbc26c19328e72203b4b4cf7ed8"
-    sha256 cellar: :any_skip_relocation, catalina:       "f9cf9a30b85d683eb4a80a28b300008c290c35e72687cacc3291ceccc11ffa87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c03b722676563951a61e30d3d8e2530c28215fc14b9459daf1983a2ce0bb670f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "57736038d7b0521d16e5beb7cfb7623b0ccaa46bcc285a61d9b2bd23062b5d72"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f2488cc350303f3e5f7a7564f53d665d3c6a6343964512129054f87c9f6c74f8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3cd334424707777449681dd3fef05cd8d4b8e0dc731a7cd79daf6b587bc05956"
+    sha256 cellar: :any_skip_relocation, ventura:        "ec072ed1c820a17499e7bea04ae4729f88d0d9cfecad04adbe2b85ebe612c703"
+    sha256 cellar: :any_skip_relocation, monterey:       "79e443265324332374329135fe1158b18f7354c1a23899dd28b8eb1116c730d2"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ac9fe894a8a91ab22cd375133fe728522ce5e49689ff4cfbae94bfc2759a8b60"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "95b00e86c83ee64372c5384ab90547089db3b748cfe392eafaabaed0e348746c"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/datreeio/datree/cmd.CliVersion=#{version}"), "-tags", "main"
+
+    generate_completions_from_executable(bin/"datree", "completion")
   end
 
   test do

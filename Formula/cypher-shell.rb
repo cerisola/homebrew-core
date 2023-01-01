@@ -1,8 +1,8 @@
 class CypherShell < Formula
   desc "Command-line shell where you can execute Cypher against Neo4j"
   homepage "https://neo4j.com"
-  url "https://dist.neo4j.org/cypher-shell/cypher-shell-4.4.6.zip"
-  sha256 "693cb6f6aaab399530910b4ac54da13f19a9b5331b49ccb1b0fd89d2349a80b7"
+  url "https://dist.neo4j.org/cypher-shell/cypher-shell-5.3.0.zip"
+  sha256 "2ab684982a94fefde0c18c71fc8376bc32a2e283795569a405aed2d307084888"
   license "GPL-3.0-only"
   version_scheme 1
 
@@ -12,17 +12,14 @@ class CypherShell < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c9b1a255b710da6909025dcd06dbbd22b3b5e1ac94c3aa1afd8ff37de80b36a8"
+    sha256 cellar: :any_skip_relocation, all: "1539eaed9a81d80efa0561b81da2221fc9c16ea24f72b9fa170d2e6d8e8437a3"
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk"
 
   def install
-    rm_f Dir["bin/*.bat"]
-
-    # Needs the jar, but cannot go in bin
-    libexec.install Dir["cypher-shell{,.jar}"]
-    (bin/"cypher-shell").write_env_script libexec/"cypher-shell", Language::Java.overridable_java_home_env("11")
+    libexec.install Dir["*"]
+    (bin/"cypher-shell").write_env_script libexec/"bin/cypher-shell", Language::Java.overridable_java_home_env
   end
 
   test do

@@ -1,8 +1,8 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.15.0.tar.gz"
-  sha256 "a480dc6c8937447b98d161fe911ffc76cfaffa2da18788781314e81339f1126f"
+  url "https://nlnetlabs.nl/downloads/unbound/unbound-1.17.0.tar.gz"
+  sha256 "dcbc95d7891d9f910c66e4edc9f1f2fde4dea2eec18e3af9f75aed44a02f1341"
   license "BSD-3-Clause"
   head "https://github.com/NLnetLabs/unbound.git", branch: "master"
 
@@ -15,12 +15,14 @@ class Unbound < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "915c6b513b276b18eb083839926aade01b36f78a8bf89039696e2ed4f31b571b"
-    sha256 arm64_big_sur:  "8602cf8aadc2e87948f14ed5f08d489b1759ac35ea832e1679df9f866d371465"
-    sha256 monterey:       "f817cb2fc47bb91d48680a309d07f75a777c566b8d52c81f22d4ed857e05856f"
-    sha256 big_sur:        "b00a31b7ef110af1c6efe3801cfe44faac0dd785298ba64c38fdbf6b4737259c"
-    sha256 catalina:       "3eb38a1d5c4da0d319dab0c20d7e3419506adf45a448ed4921147c0948fc0c58"
-    sha256 x86_64_linux:   "9f6128b97ce6f63f9197aa6010a6380afe31a8df9732e1c5d91a3036dc5c8f6d"
+    sha256 arm64_ventura:  "7f6b083215495c918232e28acc05407a7539e4aacf8243a526b06f244c4864f5"
+    sha256 arm64_monterey: "cd06e5b7f62103ad750fab0d5cfdb933c93fc1e40c7769605697b4c8777986b6"
+    sha256 arm64_big_sur:  "8dfe71d7aaf0cae625b9c6d1e781e7a83426df3aed669ddee756c49d3442197a"
+    sha256 ventura:        "c33cfc378f7f8694e3dcd406683b516edc7c882b4fcde7104c72292dfb2dcb17"
+    sha256 monterey:       "6cf8bdba19831e794bbe0e929e773bb0b7eaab510d99db125aebc473c285e0f2"
+    sha256 big_sur:        "46bd6470dd62d235900de08625ada5f03d9162a060b6e82badc96e0351843b31"
+    sha256 catalina:       "d494000cb01f1b52b69253c9ff09b4a6fe39bb607cf5e60ae3ab648f1432960d"
+    sha256 x86_64_linux:   "6359bdf39dc577245648315e93523e2edd476dc8853a580e68e7ad1c7bec5428"
   end
 
   depends_on "libevent"
@@ -59,10 +61,10 @@ class Unbound < Formula
                     "username: \"#{ENV["USER"]}\""
   end
 
-  plist_options startup: true
   service do
     run [opt_sbin/"unbound", "-d", "-c", etc/"unbound/unbound.conf"]
     keep_alive true
+    require_root true
   end
 
   test do

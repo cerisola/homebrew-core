@@ -1,18 +1,19 @@
 class Faudio < Formula
   desc "Accuracy-focused XAudio reimplementation for open platforms"
   homepage "https://fna-xna.github.io/"
-  url "https://github.com/FNA-XNA/FAudio/archive/22.05.tar.gz"
-  sha256 "d1e68f6cf4413aafc027c485796e9162ae5fb0df29bbf1cdb31ac7861b67f72a"
+  url "https://github.com/FNA-XNA/FAudio/archive/22.12.tar.gz"
+  sha256 "1c326ebc5baec1541442e5f6f45cc13bbdeecc96bd54d920897025b3aa0c7f6e"
   license "Zlib"
   head "https://github.com/FNA-XNA/FAudio.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "56d483f0b97246e8c207c4440e2bdaf5e93a6a3c51c15802d50040ce95ab11e8"
-    sha256 cellar: :any,                 arm64_big_sur:  "b04fd450e6c78234d0f492b442c70099c7d8544e7be97d9a1cd793302852f731"
-    sha256 cellar: :any,                 monterey:       "34e560a4bd19303bb55c70c81d2f6d975e40c1aa38a1dad1335b896fcc53410b"
-    sha256 cellar: :any,                 big_sur:        "0aa18a2af5818382ce6999d6eba103a3cedabdd47d475bd7b99479c51de47800"
-    sha256 cellar: :any,                 catalina:       "e651be8cfc29db33f34617a6544e6421cbd7a7bb9e64bad1f122105afbb62bd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ff972204d9070d9835ac2d1e504ad267c86212ba4583e871988889c2bcee8eb0"
+    sha256 cellar: :any,                 arm64_ventura:  "0cc16b787347d852148a4c827d80eb2acf8c6f43ff080b63d705f0782d642ff8"
+    sha256 cellar: :any,                 arm64_monterey: "4be7c775a5ca9b5c7a54951e82413ff222f69571a64ee390f585f68673ef18ae"
+    sha256 cellar: :any,                 arm64_big_sur:  "095abfcb153f4dc0167b2029fa7a071062e44c4e980e9962457dcdcb7c3af32e"
+    sha256 cellar: :any,                 ventura:        "4b27630b1b4d4ec3e90beff0909d04c8b9f5b5f854601b273e605478b63bb01e"
+    sha256 cellar: :any,                 monterey:       "f3fbbb767d9ede01bc4062844a186c8a2034b76449c5e939fb1c57b2b09b0ea0"
+    sha256 cellar: :any,                 big_sur:        "11c4c4fa43fc3d0225eb083b6d4c0d8129d9d978521c69eb4d9d5313b8dfa8ca"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e42b3afbe424082966862e24a49690a55f11d3b2fbffe6e69361dc255885847"
   end
 
   depends_on "cmake" => :build
@@ -23,12 +24,6 @@ class Faudio < Formula
       system "cmake", "..", *std_cmake_args
       system "make", "install"
     end
-  end
-
-  def caveats
-    <<~EOS
-      FAudio is built without FFmpeg support for decoding xWMA resources.
-    EOS
   end
 
   test do

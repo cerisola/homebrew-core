@@ -1,17 +1,18 @@
 class Frugal < Formula
   desc "Cross language code generator for creating scalable microservices"
   homepage "https://github.com/Workiva/frugal"
-  url "https://github.com/Workiva/frugal/archive/v3.15.1.tar.gz"
-  sha256 "ea7a16da061082d2016ec058835ec7e7e42f42cd6f3fa94fb455be8157f9ddf6"
+  url "https://github.com/Workiva/frugal/archive/v3.16.11.tar.gz"
+  sha256 "86077d60f5ea4167e4018c001144b62b20e86419daa875134986d44f473b9463"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8d64903472b3435f43014ec39be72d8cd3380a7afd9ddbdd7b9ba76627d0da0b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8d64903472b3435f43014ec39be72d8cd3380a7afd9ddbdd7b9ba76627d0da0b"
-    sha256 cellar: :any_skip_relocation, monterey:       "94a7262c0dddd27239b19e53a71fdfa67e592f526962da0822c939766be878d3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "94a7262c0dddd27239b19e53a71fdfa67e592f526962da0822c939766be878d3"
-    sha256 cellar: :any_skip_relocation, catalina:       "94a7262c0dddd27239b19e53a71fdfa67e592f526962da0822c939766be878d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e7c76119c6b06a85d1a761bf55640d5488ab293bf8c44029810ba09ff710af98"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e3885e79c756ab957bdef0d319cdcacd2aec5a1fd74758d33ee6f1a8abe875ad"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2543ee83a6af7c61d0157acda8a28d400d3468aa67102c9fabbd6fb6d64b9efd"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f8b59ffc779668572da04c208d95801423766ca7511a59523a16035b4020463a"
+    sha256 cellar: :any_skip_relocation, ventura:        "a6802dd16a95d0e7122e7958edfc09712b3c7d3b0fd55105429377d36c21daa7"
+    sha256 cellar: :any_skip_relocation, monterey:       "7f711a28cdfe62adf064f3cd71f13d5f6ff06e09832384e80d641b50b24ebe04"
+    sha256 cellar: :any_skip_relocation, big_sur:        "6a315fb8598e5ca60e46b3f98be1a40181aab4cec98674096059ea9ee8288a88"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20753a28f1c7f617750aa84a5afde94f101bc209c437b46d80b2d138cf9d284d"
   end
 
   depends_on "go" => :build

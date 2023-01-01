@@ -1,18 +1,19 @@
 class Fn < Formula
   desc "Command-line tool for the fn project"
   homepage "https://fnproject.io"
-  url "https://github.com/fnproject/cli/archive/0.6.17.tar.gz"
-  sha256 "7fbad5f089aa083aa3d2ab891cc1754457d3a0ccad2ed1e91af40f1ac5d6a110"
+  url "https://github.com/fnproject/cli/archive/0.6.23.tar.gz"
+  sha256 "1f34eb5c1c43759a4d5a4de01fe850ade410a1b4c4e7d4d51e23910e2f978854"
   license "Apache-2.0"
   head "https://github.com/fnproject/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "267799d6b927ebe87b5c4c49e44a5cf45cc5ca85c99a1671503244a17904ecb0"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ea254f393e0fd4ee703a50afd897f3c69ed01f00e5be3525d493d70d4fbd54f"
-    sha256 cellar: :any_skip_relocation, monterey:       "8f9262756f3be90ad340812de24a8a309a5e4d4bc846b5e42b00b1e2860631bb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "41a148bff4a79248318b84787e5a5271678939a3bea271fb468fe0e0f426af05"
-    sha256 cellar: :any_skip_relocation, catalina:       "fa050aaacccba7ed6aa1e15f75aadd9a3d686234cfef03569ee763f1dad667d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1c0163c108f2ca39f7b0709f4c54cd687d02d8ab9ddbfe82e8739f0e232498e2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "459e3ccc7de4bb49f8e901fcd27a14cfd41e754d6867fc694124bf1038b7d657"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c5a73a2c61a782c491c472eef535f660d7eddfef12d788d4c644ae040eb4e013"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a7e5fac2037ebf083c484554a1aca56729b9a631e5e6db8cd2e0930e1179d708"
+    sha256 cellar: :any_skip_relocation, ventura:        "abcd61b594b462e75305596a99635b21545121e1221a5c78d527d93f3f43c905"
+    sha256 cellar: :any_skip_relocation, monterey:       "81ea4ec3ababd3e8f3473ee9876d5d360835352ccf969751b5fef9afc0946b21"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ec596a172d47796de2f76d1cbf45c844e791ee468fdf198e4e83eefea35ebeb3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e38836cae152077e69d2ddd9e232ab2f3a5b9e3bd3140a4c6cc83d1f7f3c6555"
   end
 
   # Bump to 1.18 on the next release, if possible.
@@ -39,6 +40,7 @@ class Fn < Formula
         }.to_json
 
         socket = server.accept
+        socket.gets
         socket.print "HTTP/1.1 200 OK\r\n" \
                      "Content-Length: #{response.bytesize}\r\n" \
                      "Connection: close\r\n"

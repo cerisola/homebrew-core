@@ -1,18 +1,19 @@
 class Mcfly < Formula
   desc "Fly through your shell history"
   homepage "https://github.com/cantino/mcfly"
-  url "https://github.com/cantino/mcfly/archive/v0.6.0.tar.gz"
-  sha256 "dd846f7ff7109921febc8aecdfd769a1258488a0d72b4a0cfcfa3eaac118b1bc"
+  url "https://github.com/cantino/mcfly/archive/v0.7.1.tar.gz"
+  sha256 "75bb4e64bcfe339181baadb8adc1ec47001d3e0fb5d20c6e13ec3e071076d4dd"
   license "MIT"
   head "https://github.com/cantino/mcfly.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cb2929c8110a79c37f247edbac9356596696f165cc1c06362ae2c4f98165e2a7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aec445d2d3c5c65858399da7d080ccfd04c5f31833c60a13552866738efa6f99"
-    sha256 cellar: :any_skip_relocation, monterey:       "9c7b7ced7c6761d88221b58fa3d813b8f8fbb4795133e5b74cf9cb43de47de71"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4286045f573a729204902e6aa6e87a73fa26ddfe29c22d4b578a845b3a77befb"
-    sha256 cellar: :any_skip_relocation, catalina:       "a58d3b9b2b9db53fd66d7b90f452b412ae6d504cad7671aa2da8a452ad8a489e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "11ce7eb2f4d166d8a22edc9251f91bf6ee5ddd2f5ae2c4d348434fe4c98b930d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "aa820545b749cafbd43b55a352cbde01c547208cbcf54af175427891d4a6f48a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "db4d5dd16e36ce2fdcaa29cc70fb0d4eb6d9cf4dd62f11c0d48b58c5b0f9d999"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "358ad877dc790c5cbd55737e6a5aba2b51ae0a067a2be98b598e494e3c73465b"
+    sha256 cellar: :any_skip_relocation, ventura:        "f15782845fcf66c5b4f190dc0dcef7606ab32b6ea1382d61d72bd3b101e61367"
+    sha256 cellar: :any_skip_relocation, monterey:       "29275577177be5f89af9179d6fa47b1c4b9b180173080be928ac1386312f101a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "aec022619e09a10a0f1feea4ec67d163976f9f5a2e703581d1e62bec488ebef8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a84fb6f4d7479f37925849ba6811811341bbbac5ea9db601955fa661dd051f9"
   end
 
   depends_on "rust" => :build

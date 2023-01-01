@@ -2,28 +2,29 @@ class Odin < Formula
   desc "Programming language with focus on simplicity, performance and modern systems"
   homepage "https://odin-lang.org/"
   url "https://github.com/odin-lang/Odin.git",
-      tag:      "dev-2022-05",
-      revision: "df233aee942bd85a5162a36a82bf33fe74d2f2ad"
-  version "2022-05"
+      tag:      "dev-2022-12",
+      revision: "521ed286321a30e5742a432effefb2c98b9484a7"
+  version "2022-12"
   license "BSD-3-Clause"
   head "https://github.com/odin-lang/Odin.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "508b64f49f0b7f182f426e30d16abcc3dff1cdbe708780b93f7262a5f045dc4f"
-    sha256 cellar: :any,                 arm64_big_sur:  "797f9d901ac0dacf0378f945ff4cec2de0dd4b3d63af0d0ca1bacb929e314259"
-    sha256 cellar: :any,                 monterey:       "df3c2d9d81f53a6c86c9e573ff366136cb0f570f8a99064498d515d894481a6b"
-    sha256 cellar: :any,                 big_sur:        "a96a1e8760ad15d81c10c9f7d6dddaaa63db57d76d64446d577fe8491c716aff"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3430531b93bb5b6126f3477ce567cd52116f839739bcf19ce337ed1387e08fc3"
+    sha256 cellar: :any,                 arm64_ventura:  "ed3d9c4a12e75e0c363f60b6e687401c59ffcbb89f695e764b90d177597ac919"
+    sha256 cellar: :any,                 arm64_monterey: "23b484fb4aa04ce35759b0717bf89129e02ae505e480100619f092c291d3dcbe"
+    sha256 cellar: :any,                 arm64_big_sur:  "3c9de179adaca5e11e6b76cb8b3792f3659008f12199098039b1abfa8736cdfb"
+    sha256 cellar: :any,                 ventura:        "00644ac5a1894bf46e3cce794f4a31990034b58f5dccabc8eb0f6fef702938cf"
+    sha256 cellar: :any,                 monterey:       "9a961aa4b6b6197de829e7b4dc6c44f7c03aaf3e15e7a61ad65f2934511332e3"
+    sha256 cellar: :any,                 big_sur:        "660965ee16226130e7f79eced3ba41fe5701e0922831f6bbef4243f22eb68321"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8b64c113883fb0fe781bb494a37efd574e3700ec1fb202d7a3d41bbc03be12bb"
   end
 
-  depends_on "llvm"
-  # Build failure on macOS 10.15 due to `__ulock_wait2` usage.
-  # Issue ref: https://github.com/odin-lang/Odin/issues/1773
-  depends_on macos: :big_sur
+  depends_on "llvm@14"
 
   fails_with gcc: "5" # LLVM is built with GCC
 
   def install
+    llvm = deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+(\.\d+)*)?$/) }
+
     # Keep version number consistent and reproducible for tagged releases.
     # Issue ref: https://github.com/odin-lang/Odin/issues/1772
     inreplace "build_odin.sh", "dev-$(date +\"%Y-%m\")", "dev-#{version}" unless build.head?
@@ -32,7 +33,7 @@ class Odin < Formula
     libexec.install "odin", "core", "shared"
     (bin/"odin").write <<~EOS
       #!/bin/bash
-      export PATH="#{Formula["llvm"].opt_bin}:$PATH"
+      export PATH="#{llvm.opt_bin}:$PATH"
       exec -a odin "#{libexec}/odin" "$@"
     EOS
     pkgshare.install "examples"

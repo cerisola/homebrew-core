@@ -1,25 +1,38 @@
 class Nqp < Formula
-  desc "Lightweight Perl 6-like environment for virtual machines"
+  desc "Lightweight Raku-like environment for virtual machines"
   homepage "https://github.com/Raku/nqp"
-  url "https://github.com/Raku/nqp/releases/download/2022.02/nqp-2022.02.tar.gz"
-  sha256 "25d3c99745cd84f4049a9bd9cf26bb5dc817925abaafe71c9bdb68841cdb18b1"
+  url "https://github.com/Raku/nqp/releases/download/2022.12/nqp-2022.12.tar.gz"
+  sha256 "e5f7d13a0a4855be420c071cdaf004c7abd0984977863bd2828a5cf7de8459ad"
   license "Artistic-2.0"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 arm64_monterey: "2fcf5411f84049b5ed9c33ea59b0670dab4a15e7f1fa9306b495d0e75eaffd7b"
-    sha256 arm64_big_sur:  "85ca3d2703380e861c38b11cdb06491fcb9d6d6ff8f164df7bba50a57193509b"
-    sha256 monterey:       "b41ab0d9aa8af807119c68f5410e7948c3805922163439bf2f41da7217521a7c"
-    sha256 big_sur:        "bb3b483b2f847317a8eb56c841c50a3ab9d8378c037667d9937225029d5442d2"
-    sha256 catalina:       "02f937da745f1560f4f8de56ef930e17af51cf11c31f9a2a36c68c94f804c97c"
-    sha256 x86_64_linux:   "708d729ea4d0d0f85072ede576b26b70ae2575080466dfca001ba9173600e638"
+    sha256 arm64_ventura:  "59a2dbb756dbf73cb7ff0fe413f314e4f6599410b229f6fcf3a96827bf0c2cbd"
+    sha256 arm64_monterey: "0e406a5568285153e5379518373a9836d6f1c3c248e964508dc30101c9d350e6"
+    sha256 arm64_big_sur:  "b52b07e6a97e32e2039f6b1271d89fe8c9ed066706cde5fbe5e91039bc58afba"
+    sha256 ventura:        "adff5d56dd37090635005143040a4c39fddb146dc941ea169377cd07408d84fe"
+    sha256 monterey:       "e6b6e5c08798c239424aa59c8e35e22c580d357c5283d230d744c21915f08585"
+    sha256 big_sur:        "8aa626afecc645a85507d76db3f3ee640e5449f3cf8e3295cb07494008309b14"
+    sha256 x86_64_linux:   "4446b1aa209026c2368abc6e0189a33380486158953488555f6891df46e2ec24"
   end
 
   depends_on "libtommath"
+  depends_on "libuv"
   depends_on "moarvm"
+
+  uses_from_macos "perl" => :build
+  uses_from_macos "libffi"
 
   conflicts_with "rakudo-star", because: "rakudo-star currently ships with nqp included"
 
   def install
+    # Work around Homebrew's directory structure and help find moarvm libraries
+    inreplace "tools/build/gen-version.pl", "$libdir, 'MAST'", "'#{Formula["moarvm"].opt_share}/nqp/lib/MAST'"
+
     system "perl", "Configure.pl",
                    "--backends=moar",
                    "--prefix=#{prefix}",

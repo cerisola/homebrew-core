@@ -1,17 +1,18 @@
 class Imlib2 < Formula
   desc "Image loading and rendering library"
   homepage "https://sourceforge.net/projects/enlightenment/"
-  url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.9.0/imlib2-1.9.0.tar.xz"
-  sha256 "5ac9e8ca7c6700919fe72749ad7243c42de4b22823c81769a1bf8e480e14c650"
+  url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.10.0/imlib2-1.10.0.tar.gz"
+  sha256 "6e5f5cff73e5a819593d908e391082d6b531e245e3f1f2c9e09f638e5012968e"
   license "Imlib2"
 
   bottle do
-    sha256 arm64_monterey: "acaa25e7ae6473d124fe9eccd31cdf3f968b250fe6ceb90aa0bca03bb5aefde4"
-    sha256 arm64_big_sur:  "ce46c731364d432530301e1e3f8b16c5cf09d269e658ba091b107d4dd0bcbdf0"
-    sha256 monterey:       "426a3a9bbb3d2dcc1fc034528397d4d5dca5632658948afaea5f894c9d4962f8"
-    sha256 big_sur:        "1040596216b85a75b8c4d7f7e8411c324974e50eac47e0a12b5d031d6aea2497"
-    sha256 catalina:       "d130d1bac13c47e10e81bf89a57aa06b0fef78710a4a40c14bb454f5dc0a3029"
-    sha256 x86_64_linux:   "e23cfeb030588b855455841f10d6a1fcb5a33ece3d00c7d6a88f38394ac15519"
+    sha256 arm64_ventura:  "b873e44f7f8af7fd5495e77713acdc1873f187e13f5a1636c32d8a87a16cfb2e"
+    sha256 arm64_monterey: "622b01363a9a6725654a482b463d0f6ae5b2b13b643ee90e8efa4e5e4e0f41e5"
+    sha256 arm64_big_sur:  "f5ffc27c58c52ce4b49b803ba9938b3d71b17dc1aebadfb45ced220a22e20219"
+    sha256 ventura:        "3d204b875066b60575d05d2d2c0596c60acf7b49e1204bf19aa90f2ad15b6e4e"
+    sha256 monterey:       "ebee85e06daeb7052b5da9825f0a0cd7daed59ec978a88290b3829d3d99dfdf9"
+    sha256 big_sur:        "0372b4f085ac6492d55aba0f82311bcc96baa07018ba61e3b6b69f054264d4b5"
+    sha256 x86_64_linux:   "e0866bc153e38b192a6415a55bd08b8289a85b0db2476ba051e6b43d33188dfe"
   end
 
   depends_on "pkg-config" => :build
@@ -24,21 +25,8 @@ class Imlib2 < Formula
   depends_on "libxcb"
   depends_on "libxext"
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-  end
-
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --enable-amd64=no
-      --without-id3
-    ]
-
-    system "./configure", *args
+    system "./configure", *std_configure_args, "--enable-amd64=no", "--without-id3"
     system "make", "install"
   end
 

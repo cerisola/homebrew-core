@@ -4,7 +4,7 @@ class Mftrace < Formula
   url "https://lilypond.org/downloads/sources/mftrace/mftrace-1.2.20.tar.gz"
   sha256 "626b7a9945a768c086195ba392632a68d6af5ea24ef525dcd0a4a8b199ea5f6f"
   license "GPL-2.0-only"
-  revision 1
+  revision 2
 
   livecheck do
     url :homepage
@@ -12,14 +12,14 @@ class Mftrace < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9c6697dda8331a25dfebad452baa00d2b896246dd2e793be153f4d3dffcd523b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "56cae4038a59d4803c0a084c21c34da9564c2a4cb423b73608d74735edf03ace"
-    sha256 cellar: :any_skip_relocation, monterey:       "34ef20acd991102a8bfa7cc3bf5bee1fa840e32eaca4409931e4325150cf6916"
-    sha256 cellar: :any_skip_relocation, big_sur:        "09ca3daeb696824e12655d6dbd0c768a0dcc07306c35001bc7b90417fb2b38c6"
-    sha256 cellar: :any_skip_relocation, catalina:       "da5fc2002936d2260121ce8134472bce14e8bccfb406fe9e1e56591037aa9751"
-    sha256 cellar: :any_skip_relocation, mojave:         "d4b3535bdd69a89c59c4b7d7011ccb06544108c376e6313f62062c32991dece2"
-    sha256 cellar: :any_skip_relocation, high_sierra:    "e1d8b241eb03982520cf2b4b2f8794fe74afb240247e4ea7c8164b1c9a22e974"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "079f9402ed146dc21ee98a7537c0c62068ca7335c284d424a7d46cdfc69ef20c"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d4db753d66ccd96f7b4272e100d47caa5175111850cc0da364bd452260ef6e31"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b471c3ba39bb586dc5dee6d154faabe0ea06f25fca76dbe48a3f11e884e02b12"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3507622b6f0bf74932c1104a1eb7f66aaa1ab238e28102f42f93186b2ce6d7d1"
+    sha256 cellar: :any_skip_relocation, ventura:        "aaf1973d2c4c5010044951ef5c5743f85b037f654fa6a9a0861137d849fb904c"
+    sha256 cellar: :any_skip_relocation, monterey:       "a353610085452f56bb18ddb4b1c3bff457f156a300f912f9d513cfb7fc6c1838"
+    sha256 cellar: :any_skip_relocation, big_sur:        "2d1e02e4a47afe92b1862173c57b1bcf52ad3e423f59f554d93779340bd7a2a1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "599c1dba64bc6e49ce1ad3a17f3e85d67d233b8a77d399d9e5b11bdae2bcdef8"
   end
 
   head do
@@ -29,7 +29,7 @@ class Mftrace < Formula
 
   depends_on "fontforge"
   depends_on "potrace"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "t1utils"
 
   # Fixed in https://github.com/hanwen/mftrace/pull/14

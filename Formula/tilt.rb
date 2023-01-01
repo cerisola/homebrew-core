@@ -2,23 +2,30 @@ class Tilt < Formula
   desc "Define your dev environment as code. For microservice apps on Kubernetes"
   homepage "https://tilt.dev/"
   url "https://github.com/tilt-dev/tilt.git",
-    tag:      "v0.30.0",
-    revision: "e33830b0a517386437902d3aa3f7a2c72504aaf5"
+    tag:      "v0.30.13",
+    revision: "c4513e8b69a8b64970ee954235f4e3d1ddaee605"
   license "Apache-2.0"
   head "https://github.com/tilt-dev/tilt.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e42ae0ee84b82b5d1741034a10a9c0447523aa3e931903a96ae379ac3a16330a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7f5a8a56642993e55f469e9c57b8fd1f082f4abb4fd09e9cb5a330670764ea8c"
-    sha256 cellar: :any_skip_relocation, monterey:       "de91b4b87c8edb437c586a95e165a19ad2425614d3635cd60d8a106adcc36396"
-    sha256 cellar: :any_skip_relocation, big_sur:        "73e604d805950501ecd762f62260c838048efe9acd8142fdb08dc1bdb68d3abe"
-    sha256 cellar: :any_skip_relocation, catalina:       "809c4a6886f19cbd893f78d0520d0ebd119de031c0acf83eea9e1fa7a0e1ead6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "222aab47f514ce587557e2c5c16fa76bd556ec4067c8385efeb381d2146d0612"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bbbab2a54b57081649178b9068694ec0e027f96d6be19964b3964db973a3bf21"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "976c269929c14666abbd0f27b26ac28405dd32019f7e73df9d1c55c8c24af534"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1d4fcfaf4277969b6221ff3c4de3516bb33b30c0a5cda10e0cabdbd749558e81"
+    sha256 cellar: :any_skip_relocation, ventura:        "de84b1c16e264efd5ed0835fba8b87a6d81dc2d8d365d58217c7f62ddeda7de2"
+    sha256 cellar: :any_skip_relocation, monterey:       "5f12fdaccadc23355fd7e26ab398495e9951a290099c937c4fc7b36eaeaca74b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "b79b0a04589d251a3f483f672ea768aec205a9f2fc15a8a8e9bd92c138f75717"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "23e2ca84da2439859c9250ba381a5f1d5352f34a4df69db51c6a2b67d9c11927"
   end
 
   depends_on "go" => :build
+  depends_on "node@16" => :build
+  depends_on "yarn" => :build
 
   def install
+    # bundling the frontend assets first will allow them to be embedded into
+    # the final build
+    system "make", "build-js"
+
     ENV["CGO_ENABLED"] = "1"
     ldflags = %W[
       -s -w
@@ -27,17 +34,8 @@ class Tilt < Formula
       -X main.date=#{time.iso8601}
     ].join(" ")
     system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/tilt"
-    # Install bash completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "bash")
-    (bash_completion/"tilt").write output
 
-    # Install zsh completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "zsh")
-    (zsh_completion/"_tilt").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read("#{bin}/tilt", "completion", "fish")
-    (fish_completion/"tilt.fish").write output
+    generate_completions_from_executable(bin/"tilt", "completion")
   end
 
   test do

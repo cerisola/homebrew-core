@@ -7,8 +7,10 @@ class Aterm < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any, arm64_ventura:  "f3719eec4efda9ddcd6072fd1f0131e5b17e15b4fdff86a63d9278700cd797e7"
     sha256 cellar: :any, arm64_monterey: "ebda893b9758be7b869202f7c803c2c271d5d3538a321526a7f34cdc0c7397ca"
     sha256 cellar: :any, arm64_big_sur:  "7dda6c07018ede4897b320e3366ffbb09286150d1a03223fb921bc1f52185325"
+    sha256 cellar: :any, ventura:        "b1118cf418a2598eb1acc274fe792385afb84b256b024b40a4a5926ffaafd1dd"
     sha256 cellar: :any, monterey:       "42fc6a2b8e20c7085b7c1a90c672852b5cea75101ea09a49ce636c298c7473c1"
     sha256 cellar: :any, big_sur:        "61e753af9203031d48ac690e61ba826dfa86ae26b9c2a3117caa0a1994de5cbc"
     sha256 cellar: :any, catalina:       "9327ff2d137e5b01bc82a936c99bd844d29b03dc1043f9f241846564b2c78a96"
@@ -16,10 +18,9 @@ class Aterm < Formula
     sha256 cellar: :any, high_sierra:    "f56a13be464fa577fdad7fe82779f5e6bbe820995e1849b6741ca92807c10bf0"
     sha256 cellar: :any, sierra:         "dd7b81b3bd9a31746ab461b8d79e4c32838b7e86f540769e4c17825a4b89c1c2"
     sha256 cellar: :any, el_capitan:     "5140e20287eda941f8756dfdaf377663f84f6872d1ca3f6d70e04b554591d11a"
-    sha256 cellar: :any, yosemite:       "d12bebbfa2e764abb9cfac1aecd6fc04e58f83eadf0fb3db298d5be03d7f8dca"
   end
 
-  deprecate! date: "2021-11-03", because: :unmaintained
+  disable! date: "2022-12-30", because: :unmaintained
 
   def install
     system "./configure", "--disable-dependency-tracking",

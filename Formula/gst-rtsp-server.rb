@@ -1,8 +1,8 @@
 class GstRtspServer < Formula
   desc "RTSP server library based on GStreamer"
   homepage "https://gstreamer.freedesktop.org/modules/gst-rtsp-server.html"
-  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.20.1.tar.xz"
-  sha256 "4745bc528ad7de711a41d576ddce7412266e66d05c4cfcc636c9ba4da5521509"
+  url "https://gstreamer.freedesktop.org/src/gst-rtsp-server/gst-rtsp-server-1.20.5.tar.xz"
+  sha256 "ba398a7ddd559cce56ef4b91f448d174e0dccad98a493563d2d59c41a2ef39c5"
   license "LGPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class GstRtspServer < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "3f07cf8f8ccadc25f8ca08bc6ca28eb730b202213159a695f88c1a6c0e99654d"
-    sha256 cellar: :any, arm64_big_sur:  "4938cfeb25044272e87eb8ac3b11e2b930eba8f4f302bfc00e76c7d2ae0c884e"
-    sha256 cellar: :any, monterey:       "236fa79fbafc218eeec32ec97a150cd5548b349b426f79cae72f818cdfefa044"
-    sha256 cellar: :any, big_sur:        "fa02d18954bda4cad2053c3ed77c65379a3cd408a54c9927210ca4e9d189f703"
-    sha256 cellar: :any, catalina:       "f4a80fdd7e5342ad4a7b3b02c13e46b8ffb9913558ae7d258fa82f6925233da5"
-    sha256               x86_64_linux:   "52df28879b64e01d85c7fb506b2f2ffa301677608a931f95fb6f4c483c8d2d4c"
+    sha256 cellar: :any, arm64_ventura:  "692806bdb19705282ef6bf717e02b93adc94a9058304a40d0e68666270dd9e4b"
+    sha256 cellar: :any, arm64_monterey: "b650527ebf1bbb38e41097204711c0cccbe11fa31fd451a118faec2920c79879"
+    sha256 cellar: :any, arm64_big_sur:  "840b92c864f83bb0134bb60a9c7bc91b3ed0609b7cb80f57924198eade5dfe63"
+    sha256 cellar: :any, ventura:        "98b228b7d0899134764fe25bc3579b97d430deb71cbc27e39b8fc6c497961c96"
+    sha256 cellar: :any, monterey:       "8e9724b507f0db001b8c969021fe3aee82e4557c9fd5a4b81f39ff2eb97e2122"
+    sha256 cellar: :any, big_sur:        "ecc0b1ada06392646aa1ee7f5240fad8e700856786d6f6fab57c47f462c25ece"
+    sha256               x86_64_linux:   "3295fc435b4e0137381d33e67e2955866d281045906fb705d0dcc438a26ee74a"
   end
 
   depends_on "gobject-introspection" => :build

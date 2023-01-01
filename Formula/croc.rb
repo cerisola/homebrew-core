@@ -1,18 +1,19 @@
 class Croc < Formula
   desc "Securely send things from one computer to another"
   homepage "https://github.com/schollz/croc"
-  url "https://github.com/schollz/croc/archive/v9.5.5.tar.gz"
-  sha256 "221ebf034e05ef8c06b2e2290dfb83c6f8b4b3f8a9168d6d826b87ed3c62d51a"
+  url "https://github.com/schollz/croc/archive/v9.6.2.tar.gz"
+  sha256 "af1889daca1cd71445975aebb80dc416b01b1e8d63cd261a79a5dd1a3fd74b29"
   license "MIT"
   head "https://github.com/schollz/croc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2ec01223ad398c0175b91d479bbf104554cdfc2c80e47f1ffcc497f4a751fa05"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "632be9cf99502f5d75560b24bc6aa50ae2a63ffac577cb5f3bcafda9624dc440"
-    sha256 cellar: :any_skip_relocation, monterey:       "96744d61748320553e7e6568b778c06e4471bd54634c710a56ddad84ff5420dc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "81ea8fe13f1732a3ee02ccacfc370e16551a46b19b595824cd6f0a676cc33cae"
-    sha256 cellar: :any_skip_relocation, catalina:       "f9f24a512f5391c6c8a1af72645aeeb467a28b59682279517408631145274970"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a82770fc682256696a5811ba7fe5ad841370d9925133a0f5123b9e7c9de6a56e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8a5f1b669a36c073f4396c7507c8ccedad4403c5f7e6a1cf515567b2a1f1fd17"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "97651f5d4397fc76ab020cc5c79a48d263862c09662631ea1fe2328fbbc2047c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a4c7dadd90a841293ab04486e34557a63fdef24313e518b9b0c1041cb1501e54"
+    sha256 cellar: :any_skip_relocation, ventura:        "8e842c5d3a58205af9d64f2a07dff0188b4305eee913dfd8c6a0357552342fda"
+    sha256 cellar: :any_skip_relocation, monterey:       "cb98d0d1fad1f961d25bfa0e286c1b964df28853ce1b07412d9cedfa58e6d029"
+    sha256 cellar: :any_skip_relocation, big_sur:        "426651e57e628ccd9f2fed7a5e77c0caebbe37bbe4306aef311d2470f087831c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "484a6157f2a11e92e68f99bed72fc09b90946bb614b6341dd655f33ccbfcebd5"
   end
 
   depends_on "go" => :build

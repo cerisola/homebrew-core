@@ -3,17 +3,18 @@ class Solargraph < Formula
   homepage "https://solargraph.org"
   # Must be git, because solargraph.gemspec uses git ls-files
   url "https://github.com/castwide/solargraph.git",
-      tag:      "v0.44.3",
-      revision: "4ac21c95ef3ccae100f2956a20aa90fd1bedff5e"
+      tag:      "v0.48.0",
+      revision: "d498612c3335457464c20480b3b22bfb687e9a42"
   license "MIT"
 
   bottle do
-    sha256                               arm64_monterey: "fb2d64a97289ed55cbbda7e58fd2deb65681cd33401295613733e7c654456fbb"
-    sha256                               arm64_big_sur:  "72f1135e0d8ceb77e4bfe84dc61ec8e8f82bb483799a0888df19a0685384264e"
-    sha256                               monterey:       "5d041394b5e3f3d74cb10bb196007547fe300d8cecbcd404aaa02f4c3b74922e"
-    sha256                               big_sur:        "d60569c6fe265aebac155db50bed8d7afe292cc8e8d994e52fff45f8b342e58c"
-    sha256                               catalina:       "d913d62fa820d99f1f5c75e27f969479371b2cd12e5b5de52160885e317e22b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2251244ab5e365ef8c5363aecaf8b79dc0a5578bd21fa900fc7fe4f9a04cd078"
+    sha256                               arm64_ventura:  "d81291ea3c9fda5358b963e12fbc33480755605de9631fe030ebda2ffba630cd"
+    sha256                               arm64_monterey: "3ce57d41d103c0991523999d5e52f6514e00ce42881afa21770a70964afecc02"
+    sha256                               arm64_big_sur:  "89beb80b2f179869286c4ca981eaf55f72582a8289aca33c728f73357dd6d465"
+    sha256                               ventura:        "2de083ef48c67163e7c2255bdba398797ad59c2c77d0cce10210060156b4b361"
+    sha256                               monterey:       "0137d12c253ff5e44ca3591084cc4a143ce8b83ce3c9565efbfdaa6060478df9"
+    sha256                               big_sur:        "a32ae970c5c58d9f6cd603e2ae79a417fd4bd406116e125478eef77efcd8d3b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a18ed50b3d5a27dffd4c381ca00e923a029616271527e658764a93e0b207b5a7"
   end
 
   uses_from_macos "ruby", since: :catalina

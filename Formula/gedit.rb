@@ -1,25 +1,29 @@
 class Gedit < Formula
   desc "GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/42/gedit-42.0.tar.xz"
-  sha256 "a87991f42961eb4f6abcdbaabb784760c23aeaeefae6363d3e21a61e9c458437"
+  url "https://download.gnome.org/sources/gedit/43/gedit-43.2.tar.xz"
+  sha256 "f950d2d35c594bb6c8dbc9f5440cad7788ca0a8688e2b07846f83de9a4e3fc25"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_monterey: "e86676c92593d01d9b0d1c04ae138d8c9d0653f5f9e67e957328ec13bedd52cd"
-    sha256 arm64_big_sur:  "d663b941cc3dd78c2d9c48cc4cbb98e9326245bf68f10f44c36e7d36300e8f95"
-    sha256 monterey:       "ec72280a13bd5c78436afcd1c829774fd778f8956656ec3be93aa2bbc04108d7"
-    sha256 big_sur:        "5e53509d003a7597561e0457510cd8fc12aa48458c4d1ca11d60b8197c941815"
-    sha256 catalina:       "2f9741e8a1ccca51e097e52d81eed9b268a8081491739a267a89f968f11a870e"
-    sha256 x86_64_linux:   "cf0e8b86045a61b1a67af714598b9bee08573b2d78634cc9c72fb0d458945ace"
+    sha256 arm64_ventura:  "1bb028d9bbcc56cc07d279b40795eab449ab24764b18bafeb3d7c621335753cc"
+    sha256 arm64_monterey: "b4a537748c49990c517a3e4c19d044bc05c0a0ba681d933bc40e779d8c0de68b"
+    sha256 arm64_big_sur:  "97efe6c58217625bedb4b23585dee2f96da1ae71f29a387303311d692ebb6855"
+    sha256 ventura:        "6b250c2f6e133e5b5fd887668e6d8be679caa2c4bf2f6a99094f8d947a95f974"
+    sha256 monterey:       "ad78103ace562783d786121f186b4ce2826fc81141b72de4d8cd9edfdbfb72da"
+    sha256 big_sur:        "a0f91aa14cccf6cb202f137145a2e5061f19956406ba567071201b91a9ae26d5"
+    sha256 x86_64_linux:   "48f25b52bd295e577616313f9847441b212c1b3c4583274dc452d99692dc3ff7"
   end
 
+  depends_on "docbook-xsl" => :build
+  depends_on "gtk-doc" => :build
   depends_on "itstool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => [:build, :test]
   depends_on "vala" => :build
   depends_on "adwaita-icon-theme"
+  depends_on "amtk"
   depends_on "atk"
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -34,16 +38,16 @@ class Gedit < Formula
   depends_on "libsoup"
   depends_on "libxml2"
   depends_on "pango"
+  depends_on "tepl"
 
   def install
     ENV["DESTDIR"] = "/"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/gedit" if OS.linux?
 
-    mkdir "build" do
-      system "meson", *std_meson_args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   def post_install
@@ -52,6 +56,8 @@ class Gedit < Formula
   end
 
   test do
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["icu4c"].opt_lib/"pkgconfig" if OS.mac?
+
     # main executable test
     system bin/"gedit", "--version"
     # API test

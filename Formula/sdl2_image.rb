@@ -1,25 +1,27 @@
 class Sdl2Image < Formula
   desc "Library for loading images as SDL surfaces and textures"
-  homepage "https://www.libsdl.org/projects/SDL_image/"
-  url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.5.tar.gz"
-  sha256 "bdd5f6e026682f7d7e1be0b6051b209da2f402a2dd8bd1c4bd9c25ad263108d0"
+  homepage "https://github.com/libsdl-org/SDL_image"
+  url "https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.2/SDL2_image-2.6.2.tar.gz"
+  sha256 "48355fb4d8d00bac639cd1c4f4a7661c4afef2c212af60b340e06b7059814777"
   license "Zlib"
+  revision 1
 
+  # This formula uses a file from a GitHub release, so we check the latest
+  # release version instead of Git tags.
   livecheck do
-    url :homepage
-    regex(/href=.*?SDL2_image[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url :stable
+    strategy :github_latest
+    regex(%r{href=.*?/tag/release[._-]v?(\d+(?:\.\d+)+)["' >]}i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "180b64296c90fe9587a88efa1a607d939bb4dbb127f31a38193d894c5da9bfeb"
-    sha256 cellar: :any,                 arm64_big_sur:  "2a4cd10f3598553180559df330435f359703eaa02a77c12bf9667d953fa2b5a3"
-    sha256 cellar: :any,                 monterey:       "76025ad6b76597ef5f1f9bafa729ab8a88f94cab607a9114353be2eddf36bb34"
-    sha256 cellar: :any,                 big_sur:        "d106f96771895c1b6faa9864e3605d301cdbe658672900108605c521616a8bf6"
-    sha256 cellar: :any,                 catalina:       "691d5407fef2bc374ac3b7c2fafbe46a6bc0f9ed609f98812b24fec33ab9bd27"
-    sha256 cellar: :any,                 mojave:         "1b3a464579d9ef25b3bdd9276119efffd0134fda5c5dc27051a35f1b21c00cfd"
-    sha256 cellar: :any,                 high_sierra:    "55c1f996fb523c2727d2b103f0a5ecfd7a073f55ff9a7230bb609d22bbf5a576"
-    sha256 cellar: :any,                 sierra:         "e3c9cf45d97099e818c667d23af8352e6d1bba0e3b609cdddee654f2a9da80cf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "862dee72c17699cb5d0014116b98ae4de3998eead5bed93063d84b2b430147a5"
+    sha256 cellar: :any,                 arm64_ventura:  "c257462100f9bb6cded5309ae50de83b07507904866678d4ad0182f85531fb8a"
+    sha256 cellar: :any,                 arm64_monterey: "638f55e34b8179e1915bc081d7a7e3d6cc391798db8254755b2d0c77240da39a"
+    sha256 cellar: :any,                 arm64_big_sur:  "eb448629373515281204ef6ffc2b1e9cc1eed5cbb3048c8f2f3022d9f8a6f6f6"
+    sha256 cellar: :any,                 ventura:        "0686d114e5d196fa0d84daeeb33ff13081ed400ca8bc14bfe691bcc7baaf637b"
+    sha256 cellar: :any,                 monterey:       "3f60cdfb8bcdef6c2a97d3ad6980720d6520070ab2d0901a8b71fc060664ab3e"
+    sha256 cellar: :any,                 big_sur:        "816683f6ab2f30791075eba45e7022850532e945f3a18b421fb1a0a257307211"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b337286ce29401e6100bf00f0d734231a2e794d30095d81a0b03f55eda293187"
   end
 
   head do
@@ -32,6 +34,8 @@ class Sdl2Image < Formula
 
   depends_on "pkg-config" => :build
   depends_on "jpeg-turbo"
+  depends_on "jpeg-xl"
+  depends_on "libavif"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "sdl2"
@@ -42,11 +46,13 @@ class Sdl2Image < Formula
 
     system "./autogen.sh" if build.head?
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
+    system "./configure", *std_configure_args,
                           "--disable-imageio",
+                          "--disable-avif-shared",
                           "--disable-jpg-shared",
+                          "--disable-jxl-shared",
                           "--disable-png-shared",
+                          "--disable-stb-image",
                           "--disable-tif-shared",
                           "--disable-webp-shared"
     system "make", "install"
@@ -58,9 +64,10 @@ class Sdl2Image < Formula
 
       int main()
       {
-          int success = IMG_Init(0);
+          int INIT_FLAGS = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF | IMG_INIT_WEBP | IMG_INIT_JXL | IMG_INIT_AVIF;
+          int result = IMG_Init(INIT_FLAGS);
           IMG_Quit();
-          return success;
+          return result == INIT_FLAGS ? EXIT_SUCCESS : EXIT_FAILURE;
       }
     EOS
     system ENV.cc, "test.c", "-I#{Formula["sdl2"].opt_include}/SDL2", "-L#{lib}", "-lSDL2_image", "-o", "test"

@@ -2,18 +2,19 @@ class Easeprobe < Formula
   desc "Simple, standalone, and lightWeight tool that can do health/status checking"
   homepage "https://github.com/megaease/easeprobe"
   url "https://github.com/megaease/easeprobe.git",
-      tag:      "v1.4.0",
-      revision: "8d7c5f749a0fe3d6073f3f010a538bf6ea4edb48"
+      tag:      "v2.0.0",
+      revision: "9a75ba2a674941c6c8a369f503177dfb4fbee209"
   license "Apache-2.0"
   head "https://github.com/megaease/easeprobe.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "65614a9f926fb9eeb6cdc07bcd5c152cd622c53c93b78904fc486bb88d8127c6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dcb076860023b6c2088c922f42029224a08520a707174179bf56a13df0c326b8"
-    sha256 cellar: :any_skip_relocation, monterey:       "9f166bb0967b571b011c38ee69868a0db507452bf8cda1910e175a816d164fad"
-    sha256 cellar: :any_skip_relocation, big_sur:        "286cb976a3e53b39e8a80118bd14938178162d53f2e31922444b3252933fad64"
-    sha256 cellar: :any_skip_relocation, catalina:       "c0a635acd17029c4fec06987a2dbd7a197527fd6eafe5803fdd95c09c7a3242f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ae99766e9af864ac1a2886917a00c9343502afc1fa3cf87a57a8e7f87a20400"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6ddee35149153035ef898ff143c661f53f5ed6488d90dc0de6e51fc72ef639db"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c1887105ef3b5ed78fd4f5f2036a9767bab1d17a617c7271203caff127641a48"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ea35471efe485bc4d89518c3a762793f6059b3de35c637446e8b19f86808e0cd"
+    sha256 cellar: :any_skip_relocation, ventura:        "406e69803404a9cc29bfe3b01a0e143cdd3bf36e47e27d5fa5ac60faa5740e80"
+    sha256 cellar: :any_skip_relocation, monterey:       "861384bd669d6e44e91015e4a02fa752df95a9f48e80556141c3350e4b5ae57a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f1d2462d5e9fd7102c9e6cab490f2862ec524ca0372ae1478543bcd2fa9998f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "77387f14ead50fc776abedb87b3b5d236aabf25367bdd84a800397cfa0dda0b1"
   end
 
   depends_on "go" => :build
@@ -33,6 +34,10 @@ class Easeprobe < Formula
       http:
         - name: "brew.sh"
           url: "https://brew.sh"
+      notify:
+        log:
+          - name: "logfile"
+            file: #{testpath}/easeprobe.log
     EOS
 
     easeprobe_stdout = (testpath/"easeprobe.log")

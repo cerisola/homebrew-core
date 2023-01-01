@@ -1,30 +1,29 @@
 class Deployer < Formula
   desc "Deployment tool written in PHP with support for popular frameworks"
   homepage "https://deployer.org/"
-  url "https://deployer.org/releases/v6.8.0/deployer.phar"
-  sha256 "25f639561cb7ebe5c2231b05cb10a0cf62f83469faf6b9248dfa6b7f94e3bd26"
-
-  # The first-party download page now uses client-side rendering, so we have to
-  # check a JSON file used on the page that contains the version information.
-  livecheck do
-    url "https://deployer.org/manifest.json"
-    regex(%r{\\?/releases\\?/v?(\d+(?:\.\d+)+)\\?/deployer\.phar}i)
-  end
+  # Bump to php 8.2 on the next release, if possible.
+  url "https://github.com/deployphp/deployer/releases/download/v7.0.2/deployer.phar"
+  sha256 "0dd3d3a4aac4b27338359843fc9f4f974b06276c2854b41b6fd54b0786473936"
+  license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "c8f15a518a11552ea9bdf2ff350918e20b14b4e31b1fab1c2471b24c6ee743f4"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "945de0a43e6b2ba7b28bf7eaf9eaec43fe693b2563a2cbcce8d8a249c192b829"
   end
 
-  depends_on "php"
+  depends_on "php@8.1"
 
   conflicts_with "dep", because: "both install `dep` binaries"
 
   def install
     bin.install "deployer.phar" => "dep"
+    bin.env_script_all_files libexec, PATH: "#{Formula["php@8.1"].opt_bin}:$PATH"
+    chmod 0755, libexec/"dep"
   end
 
   test do
-    system "#{bin}/dep", "init", "--template=Common"
+    system "#{bin}/dep", "init", "--no-interaction"
     assert_predicate testpath/"deploy.php", :exist?
   end
 end

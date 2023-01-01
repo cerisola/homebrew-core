@@ -1,18 +1,18 @@
 class Vte3 < Formula
   desc "Terminal emulator widget used by GNOME terminal"
-  homepage "https://developer.gnome.org/vte/"
-  url "https://download.gnome.org/sources/vte/0.64/vte-0.64.2.tar.xz"
-  sha256 "2b3c820b65a667c1d8859ba20478be626d1519cc3159dac25f703330c6d07e18"
+  homepage "https://wiki.gnome.org/Apps/Terminal/VTE"
+  url "https://download.gnome.org/sources/vte/0.70/vte-0.70.2.tar.xz"
+  sha256 "4d15b4380de3f564d57eabd006389c407c705df5b0c70030fdcc24971a334d80"
   license "LGPL-2.0-or-later"
-  revision 1
 
   bottle do
-    sha256 arm64_monterey: "be757081c2174226aa18516a2eed57c1c2ab3e7d408c4ab7102a4e0f6e49b26b"
-    sha256 arm64_big_sur:  "0f8661eb1bb60e68bbdf2a1122ec0e6bcfa9cae381aa0bddc1f61a7dde99297b"
-    sha256 monterey:       "ac5105d4bc7b44d5abdd4b94f9b84329a3ba0df5cefe61c1a1b9b7dc9f2f79ce"
-    sha256 big_sur:        "6438e66d85eb28ce8c416d12d84e1b8565dcd705391e68ef9afb19d69da34f7b"
-    sha256 catalina:       "a6880f4a6a268fc1addb351181db918813af21a5327422013e07b3df068f45c6"
-    sha256 x86_64_linux:   "58eb40e41c86211778da9b44dcf9c9f40a9eb255bc56bbbc516d6d50ed0e001a"
+    sha256 arm64_ventura:  "1f5fea1bc015167bd8a858ca8a149443775698cab6510f0870b6fd2100180afb"
+    sha256 arm64_monterey: "5b78a4dcc215831402e0d47a34481336ca4de251c1bb166cfb2f2e2ce5e6ae34"
+    sha256 arm64_big_sur:  "9dbefbc4873d8e55484a41e5e8452b62a1bbb86173380a5a39b94572fc43c8ed"
+    sha256 ventura:        "e232bed5063bd7ac5d8512c5b77b98bc5cca06fb04735888b3893363131a2dcc"
+    sha256 monterey:       "db6112d7be93a4004a1258ddd4e2382e3d8f573597683cbf023b4f2935bf3d71"
+    sha256 big_sur:        "a2a738d4088f107175875d91a72652c094916a3333d37bcffc7bc689d4484fe4"
+    sha256 x86_64_linux:   "edbe9ab6b18481fba3d686de975e322939d6dca526a4ca0f5e1ca61bd346bea6"
   end
 
   depends_on "gobject-introspection" => :build
@@ -27,36 +27,50 @@ class Vte3 < Formula
   depends_on macos: :mojave
   depends_on "pcre2"
 
+  on_macos do
+    depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1200
+  end
+
   on_linux do
-    depends_on "linux-headers@4.15" => :build
-    depends_on "gcc" # for C++17
+    depends_on "linux-headers@5.15" => :build
     depends_on "systemd"
   end
 
-  fails_with gcc: "5"
+  fails_with :clang do
+    build 1200
+    cause "Requires C++20"
+  end
+
+  fails_with :gcc do
+    version "9"
+    cause "Requires C++20"
+  end
 
   # submitted upstream as https://gitlab.gnome.org/tschoonj/vte/merge_requests/1
   patch :DATA
 
   def install
-    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
+    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
-    args = std_meson_args + %w[
-      -Dgir=true
-      -Dgtk3=true
-      -Dgnutls=true
-      -Dvapi=true
-      -D_b_symbolic_functions=false
-    ]
+    # Work around for ../src/widget.cc:765:30: error: use of undeclared identifier 'W_EXITCODE'
+    # Issue ref: https://gitlab.gnome.org/GNOME/vte/-/issues/2592
+    # TODO: Remove once issue is fixed upstream.
+    ENV.append_to_cflags "-D_DARWIN_C_SOURCE" if OS.mac?
 
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", *std_meson_args, "build",
+                    "-Dgir=true",
+                    "-Dgtk3=true",
+                    "-Dgnutls=true",
+                    "-Dvapi=true",
+                    "-D_b_symbolic_functions=false"
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
+    ENV.clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
+
     (testpath/"test.c").write <<~EOS
       #include <vte/vte.h>
 

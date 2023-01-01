@@ -1,17 +1,19 @@
 class Quantlib < Formula
   desc "Library for quantitative finance"
   homepage "https://www.quantlib.org/"
-  url "https://github.com/lballabio/QuantLib/releases/download/QuantLib-v1.26/QuantLib-1.26.tar.gz"
-  sha256 "04fe6cc1a3eb7776020093f550d4da89062586cc15d73e92babdf4505e3673e9"
+  url "https://github.com/lballabio/QuantLib/releases/download/QuantLib-v1.28/QuantLib-1.28.tar.gz"
+  sha256 "32de9fba5d64c26d2a592ea14f4a895706338befed8ce72de727084a2de68cfd"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "2ddeb386e7eb27aab8f00620125603599dd3371039ad911a6e0196c1ffaba809"
-    sha256 cellar: :any,                 arm64_big_sur:  "cfce6241b00cc27687f707239e799d8d3d1cc8867cabfcd19170dea66c82020c"
-    sha256 cellar: :any,                 monterey:       "ed88f2b4b58d73bc14a509d387a9c5f78949f29dc82438a240d35b2fee800bd5"
-    sha256 cellar: :any,                 big_sur:        "abbf1c1ae1dd97370d5368bc59e18ec2ef85217c7d75a073326558111d665f29"
-    sha256 cellar: :any,                 catalina:       "a2d53f05e70f1ee733ae7d7f6617c00bd8fd032a725c8ab02dc87581864352fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a08314adef6c54e10a7fb4eee7c38f811791a055a4cf90241208a802db7fbba6"
+    sha256 cellar: :any,                 arm64_ventura:  "948ff0c14704eaa85be10d1dfe5907323156776124f53e6d95e47c0ac30b0cdc"
+    sha256 cellar: :any,                 arm64_monterey: "0d2ea8334ca9359323c17a7850fb251d95d01055c53445521d7e440dd1759019"
+    sha256 cellar: :any,                 arm64_big_sur:  "ea8db92b697759668a2c4f2dc6a835b0cd191cd48a50a7fb3fc357b93c2542c3"
+    sha256 cellar: :any,                 ventura:        "216f4ea89e57d2101dbc7d947ff69eed635d19f19a2873a6844ec944df9477a9"
+    sha256 cellar: :any,                 monterey:       "24f0e96fcd9f7bfc0da0b4f4ca4d488198f53379e07d0578426f49e61ecfbf1e"
+    sha256 cellar: :any,                 big_sur:        "bfe965bc15765e12f1a0f7213f91c5e361685832102c2757d1fd4a9761ab310a"
+    sha256 cellar: :any,                 catalina:       "489e04d6b019692996f2e947df5078a95533c8dbfa5bc350c29b8b34d4a3f8aa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5a249181d841cf65facc43ba2629d3e532fa6a77d899c4a3d91018a22bde7ce3"
   end
 
   head do

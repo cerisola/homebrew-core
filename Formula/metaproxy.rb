@@ -1,8 +1,8 @@
 class Metaproxy < Formula
   desc "Z39.50 proxy and router utilizing Yaz toolkit"
   homepage "https://www.indexdata.com/resources/software/metaproxy/"
-  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.20.0.tar.gz"
-  sha256 "2bd0cb514e6cdfe76ed17130865d066582b3fa4190aa5b0ea2b42db0cd6f9d8c"
+  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.20.1.tar.gz"
+  sha256 "6d5a86622d1aee88ac2711d7bd17ea7b29c8210ab7a851ae5d827c49a1878ce8"
   license "GPL-2.0-or-later"
 
   # The homepage doesn't link to the latest source file, so we have to check
@@ -13,19 +13,27 @@ class Metaproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_big_sur: "a443529903a38577237d577f72b441de2853ab5e4dfebc1f9402a2bc7d25413f"
-    sha256 cellar: :any, big_sur:       "88bde89594c64dbbe9a79e5c3301506611b490be7bdb0e573bdcd6e07ab75fe9"
-    sha256 cellar: :any, catalina:      "4319580fd77eef8cf4da3a1e392669151471f397e71a9f6bdc1080f65678e17f"
-    sha256 cellar: :any, mojave:        "3f853cf457181ab372cd1eccafad913223a52a328cfcde07b96390c17b8ce349"
+    sha256 cellar: :any,                 arm64_ventura:  "885f8eb27913f00873bcbfa360407457792a059d01ab5f42b962f0c2cf0057ca"
+    sha256 cellar: :any,                 arm64_monterey: "fee0dd1d5cc4be29c7edc429684e4f8ea15c2b15a53765386f323d7e4a3bf636"
+    sha256 cellar: :any,                 arm64_big_sur:  "0c9ce0b489ab4975a14e4a0de2c430c3aab5fd60e97eb1935a9c33fefe8297d8"
+    sha256 cellar: :any,                 ventura:        "c70a3907c0b92349e525a164ed5ec8be69a9fd47cdddfd813f38fd9a0916da33"
+    sha256 cellar: :any,                 monterey:       "4276c205f39bb06e6a4bde02fe7c68e2ee6e3a7f9360ee3ad4a2f716119e421a"
+    sha256 cellar: :any,                 big_sur:        "028ab6a680a6080e38d9b615a411397c0d29126dab5184b8f10e6d9b37b3e21a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f11f45172174d355ac31bd9deeba2ad02ec3b59413c18b23e3f6e93581cb79d"
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "yazpp"
 
+  fails_with gcc: "5"
+
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    # Match C++ standard in boost to avoid undefined symbols at runtime
+    # Ref: https://github.com/boostorg/regex/issues/150
+    ENV.append "CXXFLAGS", "-std=c++14"
+
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

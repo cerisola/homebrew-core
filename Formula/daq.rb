@@ -1,19 +1,20 @@
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
   homepage "https://www.snort.org/"
-  url "https://github.com/snort3/libdaq/archive/v3.0.7.tar.gz"
-  mirror "https://fossies.org/linux/misc/libdaq-3.0.7.tar.gz"
-  sha256 "e3af1ef17d764294ae428e662f7d2a6187a0085c6e0f15fc230e754a298cabe2"
+  url "https://github.com/snort3/libdaq/archive/v3.0.10.tar.gz"
+  mirror "https://fossies.org/linux/misc/libdaq-3.0.10.tar.gz"
+  sha256 "a540b8657dbacab61e23ead203564f351ee30af85f0261979f14f2b7159f701f"
   license "GPL-2.0-only"
   head "https://github.com/snort3/libdaq.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6134622f0d881a752dd52c54481f188026868d1d5df83ccb881b1ecc06226ed3"
-    sha256 cellar: :any,                 arm64_big_sur:  "13f029804a664d28ba6443ab2d2b9c6dd59ed6b870946d3ccc1734ffe022caeb"
-    sha256 cellar: :any,                 monterey:       "1203103b74dfd43731f233e70b856b33bce8f7a5df514e05a405101d8c8b8c13"
-    sha256 cellar: :any,                 big_sur:        "5b1ae8880f97bc8020d03e4057ddaeb345755414c534e0fb5a43ea99689c4eac"
-    sha256 cellar: :any,                 catalina:       "b16673133466e6fd4394a7e81a6c1effbb33ab6cef5b897ee6dfd1292c302bd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a4bcbd83b743a5f422372e213fd9c5f2289c76801cf018926ceb030761542ed2"
+    sha256 cellar: :any,                 arm64_ventura:  "f59add6ce57fcd5835995a45c15fc608ff15a8693582074b8a12660121a19e42"
+    sha256 cellar: :any,                 arm64_monterey: "b2090e6a4e6b2cd40abb688f3416ec9892b801c2e1617d24270224a0ef5efe1b"
+    sha256 cellar: :any,                 arm64_big_sur:  "c09cf711da63e9259b5c95b3317c1c5658b2b3fe8ee9e266bd171f1f396bc8ba"
+    sha256 cellar: :any,                 ventura:        "9a3b45972bd73b63a0912aea5c3ba2ccb235b75b84848726ac42c9134c3305ea"
+    sha256 cellar: :any,                 monterey:       "d98c41b03d2f5268dc1901919662d408f76bef763c0dd0e6a6c3a5156d962620"
+    sha256 cellar: :any,                 big_sur:        "e6b2d1d2409ad3e531536583ea6ebc23ba6e34e8a44996572a480f8e8c6a75b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "55b30b45474b276705ae18e775b5f34392bf6c86fdd58edf39acfcea1a6bac52"
   end
 
   depends_on "autoconf" => :build

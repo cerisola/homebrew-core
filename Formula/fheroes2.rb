@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
   desc "Free Heroes of Might and Magic II is a recreation of HoMM2 game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/0.9.15.tar.gz"
-  sha256 "5325cbb6fe96ff80a27584d9fd3ea1d572eb6e21f863fbc72d0d245752b5444e"
+  url "https://github.com/ihhub/fheroes2/archive/1.0.0.tar.gz"
+  sha256 "80468b4eaf128ac5179a3416a02e2a2ef4ab34d90876b179fccd8d505f950440"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "792bba85281821c52b5c4d6385d5aa176e8c8d504df7963ca08f7f8be88dbfb2"
-    sha256 arm64_big_sur:  "56305633a054df27bbf05427c2383562b67ac2858d457ed07eb514990d6dbfc6"
-    sha256 monterey:       "56747a817de732c3bca91295173a377f872483058d7cb8330d71c697461d2545"
-    sha256 big_sur:        "c631ca1b8c5eea6c982f816c115783c79cbc61be4da96b716beca17d6327c4c0"
-    sha256 catalina:       "db3634bfc0acac8649b691dbfa76584c8786584187815ea6e4d353f87234fb79"
-    sha256 x86_64_linux:   "9cc6bcedd1fdadc4c6ff4d5ea5b65469d23e5e6d816542a2880cc125bead427c"
+    sha256 arm64_ventura:  "c370f68227460b6038f6ce326a22f0c4dae664818145b9b565e373f611d7fb23"
+    sha256 arm64_monterey: "5fd524d749d1d9c4551b2d70a6d5abd6769ee047ea378e5c96a3255a827a9f70"
+    sha256 arm64_big_sur:  "10218362a884296c3181a3fabefe8a879e7770fc297e3c465fca430b9f0ccbda"
+    sha256 ventura:        "0bc3e6ecc76307fa5f903ffbea9b5c009805ca699a93b5b3931817551029baf7"
+    sha256 monterey:       "d93d39c5ba9b28ab470886e73df5caf5c7147399d2e8dc8fadd4a57e523abad7"
+    sha256 big_sur:        "6145db19d865c581f63869e84c508d3bb988d03868e804e2abcdf56bfdca3ac5"
+    sha256 x86_64_linux:   "905ebe3dd3eb53e04b9c4dbef976a2fbfcc084d1e206cfbeabcd2524f936b365"
   end
 
   depends_on "cmake" => :build
@@ -30,19 +31,20 @@ class Fheroes2 < Formula
 
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    bin.install "script/demo/download_demo_version.sh" => "fheroes2-install-demo"
   end
 
   test do
-    assert_match "help", shell_output("#{bin}/fheroes2 -h 2>&1")
+    io = IO.popen("#{bin}/fheroes2 2>&1")
+    io.any? do |line|
+      /fheroes2 engine, version:/.match?(line)
+    end
   end
 end

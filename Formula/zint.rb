@@ -1,8 +1,8 @@
 class Zint < Formula
   desc "Barcode encoding library supporting over 50 symbologies"
   homepage "https://www.zint.org.uk/"
-  url "https://downloads.sourceforge.net/project/zint/zint/2.10.0/zint-2.10.0-src.tar.gz"
-  sha256 "bb97e98a32e140c344e92c8da84a9df413dca16083f2fcdc29791bec77350339"
+  url "https://downloads.sourceforge.net/project/zint/zint/2.12.0/zint-2.12.0-src.tar.gz"
+  sha256 "bf0a221b798abce65f48b003c0a23fa2fb184f5d35abd0eacc67d091aa9ac4bf"
   license "GPL-3.0-or-later"
   head "https://git.code.sf.net/p/zint/code.git", branch: "master"
 
@@ -12,13 +12,13 @@ class Zint < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "77d13463b6479df20523bb8a2bd09214a1a1ad5c6186b8284c642031d4a460e3"
-    sha256 cellar: :any,                 arm64_big_sur:  "7e0a1464ff78c64c1be29694571dcfc6b5812ac7202706662a05fce7ba48717d"
-    sha256 cellar: :any,                 monterey:       "40a3961b5875fff1e51ae1dba0f2b7a65eabb914261b79a315fa747123c08b76"
-    sha256 cellar: :any,                 big_sur:        "aacdc432956a661f84eb7b1b31663b46f97087929a9d1f6aea3ae4a4441da56b"
-    sha256 cellar: :any,                 catalina:       "d23cc6ad59e245520ee185e971f9dab0f62630fc3b546d711716e32168967cca"
-    sha256 cellar: :any,                 mojave:         "9da4c9094f97924a5093044f6f3c59db2ccf2f6b0ff3d2c7bd75db1eac8b254d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64e38848f0b02b9eb42651b0693ab8bd0abe6b8bd69fefb8fa8fd555d1aaf265"
+    sha256 cellar: :any,                 arm64_ventura:  "d89c9e5f12e807affc8246832cf6fc09b9142686f1e2b98a094056c7e18393e7"
+    sha256 cellar: :any,                 arm64_monterey: "10a1e211d546ef3e6399a3bb9792463581eeb5d4173367ee10bba468d96557ef"
+    sha256 cellar: :any,                 arm64_big_sur:  "b652ea342bec05e42f8a6c57b34e0832d2b0398be2c4a516f92afb5ba9c5da84"
+    sha256 cellar: :any,                 ventura:        "6762ce448cfe022f44e0e11e508d988a135df4ab67ae07f3a02b16e104098912"
+    sha256 cellar: :any,                 monterey:       "3c55cabca38ac6e88e80d829590932059e2712c89518929da281526f10e5cb27"
+    sha256 cellar: :any,                 big_sur:        "2c3ffef826c78424b147a0cc40c62b4161b6a5470de6794caacbdb02460d3fef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ee703a2ed639d7bcc32ac6d4c46e749585fd24b51f53126db3e09fbcf23076c"
   end
 
   depends_on "cmake" => :build

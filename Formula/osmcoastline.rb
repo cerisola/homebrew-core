@@ -1,18 +1,18 @@
 class Osmcoastline < Formula
   desc "Extracts coastline data from OpenStreetMap planet file"
   homepage "https://osmcode.org/osmcoastline/"
-  url "https://github.com/osmcode/osmcoastline/archive/v2.3.1.tar.gz"
-  sha256 "ab4a94b9bc5a5ab37b14ac4e9cbdf113d5fcf2d5a040a4eed958ffbc6cc1aa63"
+  url "https://github.com/osmcode/osmcoastline/archive/v2.4.0.tar.gz"
+  sha256 "2c1a28313ed19d6e2fb1cb01cde8f4f44ece378393993b0059f447c5fce11f50"
   license "GPL-3.0-or-later"
-  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "a4a1308b8b9800389d18c4bee83847da6b96175148f3e24d4a147349216da5da"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4ea887639727da1386fe1cf96aa457b5763a0d7efdeea8f92687e737a6dccc5"
-    sha256 cellar: :any,                 monterey:       "39616d8539d2852880da3337a58608bb18d36d4146106790ec19c7a666ece4f3"
-    sha256 cellar: :any,                 big_sur:        "2ff36b87287f9d07f05f930b09311c7885bed51d9389173e72273b51f7a636d5"
-    sha256 cellar: :any,                 catalina:       "b64b4333a29538181379adcf123a948d4aa8643a14a4afbeda3475c1a95c175c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "93c920545c2abb9745b211f14188a6b75a1245780b5b75d8754b032a170accb0"
+    sha256 cellar: :any,                 arm64_ventura:  "326cfe7b3cc49dd9a9f58b6ad49854a13c83e83a26160ba3bff8786ed34794e7"
+    sha256 cellar: :any,                 arm64_monterey: "bf395e4aaa8109cb838ca97e4e7a913750435d1afbbb0c7443bb51cb640975cd"
+    sha256 cellar: :any,                 arm64_big_sur:  "6268f35bc703c7c0c48ea8e19f77a981d165f7b833bd681eec57a38dc31f1401"
+    sha256 cellar: :any,                 ventura:        "067bec8e3ec8e9c8998c572656a63e8ce21be5a9a5f17d7ec981a5c9f77b27f1"
+    sha256 cellar: :any,                 monterey:       "9361e9b0a498a79fd3053776b3e65672c105cec03210a2cd8a5a9d823a511c84"
+    sha256 cellar: :any,                 big_sur:        "e7a927f2a59c15f964f984fbf8d13a6825ee9424901e6b8763b7ff56c5c66731"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4842f2a98e88fda3c1ff47c600af886df86d2567f99a47cecd8ba68c46ce4498"
   end
 
   depends_on "cmake" => :build
@@ -24,10 +24,6 @@ class Osmcoastline < Formula
 
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

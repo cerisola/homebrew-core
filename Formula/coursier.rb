@@ -1,9 +1,9 @@
 class Coursier < Formula
   desc "Pure Scala Artifact Fetching"
   homepage "https://get-coursier.io/"
-  url "https://github.com/coursier/coursier/releases/download/v2.1.0-M5/coursier.jar"
-  version "2.1.0-M5"
-  sha256 "4e9041524151a4213e71a6d76daae41307b5aeaed643257188618f1d99e8486d"
+  url "https://github.com/coursier/coursier/releases/download/v2.1.0-M7/coursier.jar"
+  version "2.1.0-M7"
+  sha256 "37e4b11139a1c547d1a564d1d169c9caf781260bc6563599e7aaf8d9a7ad934d"
   license "Apache-2.0"
 
   livecheck do
@@ -12,7 +12,7 @@ class Coursier < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "a038325f8ddd5715b495a8af5a1880b1bec056a46f622c123516a7bd8d1da103"
+    sha256 cellar: :any_skip_relocation, all: "2aca39b62377b742222567574028ab0bab3658832bfa667bc4328b097b39bdf5"
   end
 
   depends_on "openjdk"
@@ -21,6 +21,11 @@ class Coursier < Formula
     (libexec/"bin").install "coursier.jar"
     chmod 0755, libexec/"bin/coursier.jar"
     (bin/"coursier").write_env_script libexec/"bin/coursier.jar", Language::Java.overridable_java_home_env
+
+    generate_completions_from_executable("bash", "#{bin}/coursier", "completions", "bash",
+                                         shell_parameter_format: :none, shells: [:bash])
+    generate_completions_from_executable("bash", "#{bin}/coursier", "completions", "zsh",
+                                         shell_parameter_format: :none, shells: [:zsh])
   end
 
   test do

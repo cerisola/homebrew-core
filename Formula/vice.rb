@@ -1,8 +1,8 @@
 class Vice < Formula
   desc "Versatile Commodore Emulator"
   homepage "https://sourceforge.net/projects/vice-emu/"
-  url "https://downloads.sourceforge.net/project/vice-emu/releases/vice-3.6.1.tar.gz"
-  sha256 "20df84c851aaf2f5000510927f6d31b32f269916d351465c366dc0afc9dc150c"
+  url "https://downloads.sourceforge.net/project/vice-emu/releases/vice-3.7.1.tar.gz"
+  sha256 "7e3811e6024db0698bfbc321bb324572446b8853d01b4073f09865957b0cab98"
   license "GPL-2.0-or-later"
   head "https://svn.code.sf.net/p/vice-emu/code/trunk/vice"
 
@@ -12,12 +12,13 @@ class Vice < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "33fb1aad075c3b196121b6fc2cc204e28fc926b72481858e47e104e812f3ee50"
-    sha256 arm64_big_sur:  "44378ed1786c48a0ce150e9c246829a59166ff8c2548a924f27d5ff2f4957500"
-    sha256 monterey:       "642e255aa5c7e4cb48e8773196dd94925e81d11bc5b538f02946af1c70397298"
-    sha256 big_sur:        "270cba1e6c87ed97b7cafc142f4610661610a874b2ddb7ba1b805472b004242a"
-    sha256 catalina:       "05c3fbd9b2972453bf7d2688ef666efbbd7b9bd5b4fb37b294d3b6c0e45432cb"
-    sha256 x86_64_linux:   "29768ca0c24d34dbe29995cca12aec6b2e91f9b2f44252828a62ad1b53e2fa8c"
+    sha256 arm64_ventura:  "d0bf3eb28be9043f9116bed994770b9ddbcbda019f817d9f66d35f209baba8cd"
+    sha256 arm64_monterey: "90ac62deeed56227098a874eee92465bf5af63d87da03047e0d3a05fe951d46f"
+    sha256 arm64_big_sur:  "02279db7f16355ccfedda4ec76e9286d4062507c5bfb4d66e20d7fea13b9ce03"
+    sha256 ventura:        "faa7d0090d54fc2deff55e8142b67ccf2549955884b414b9bc3d21c9eec4feb2"
+    sha256 monterey:       "83eeb86d3252e8459bb677998a2ad2c6c78eec3d0524cea06585c1ff0120bfcc"
+    sha256 big_sur:        "178230a6fa6f45cf9961387f61be1d17c4496dc45c87c578fb524ad64fc55128"
+    sha256 x86_64_linux:   "387e1bcbcd567f98141f0789672f353059b0bf4f82226ee9802a016294494721"
   end
 
   depends_on "autoconf" => :build
@@ -41,33 +42,34 @@ class Vice < Formula
   depends_on "librsvg"
   depends_on "libvorbis"
 
+  uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
 
-  def install
-    configure_flags = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
-      --disable-arch
-      --disable-pdf-docs
-      --enable-native-gtk3ui
-      --enable-midi
-      --enable-lame
-      --enable-external-ffmpeg
-      --enable-ethernet
-      --enable-cpuhistory
-      --with-flac
-      --with-vorbis
-      --with-gif
-      --with-jpeg
-      --with-png
-    ]
+  on_linux do
+    depends_on "alsa-lib"
+  end
 
+  def install
     system "./autogen.sh"
-    system "./configure", *configure_flags
+    system "./configure", *std_configure_args,
+                          "--disable-arch",
+                          "--disable-pdf-docs",
+                          "--enable-native-gtk3ui",
+                          "--enable-midi",
+                          "--enable-lame",
+                          "--enable-external-ffmpeg",
+                          "--enable-ethernet",
+                          "--enable-cpuhistory",
+                          "--with-flac",
+                          "--with-vorbis",
+                          "--with-gif",
+                          "--with-jpeg",
+                          "--with-png"
     system "make", "install"
   end
 
   test do
-    assert_match "Initializing.", shell_output("#{bin}/x64sc -console -limitcycles 1000000 -logfile -", 1)
+    output = shell_output("#{bin}/x64sc -console -limitcycles 1000000 -logfile -", 1)
+    assert_match "Initializing chip model", output
   end
 end

@@ -1,32 +1,32 @@
 class Unicorn < Formula
   desc "Lightweight multi-architecture CPU emulation framework"
   homepage "https://www.unicorn-engine.org/"
-  url "https://github.com/unicorn-engine/unicorn/archive/1.0.3.tar.gz"
-  sha256 "64fba177dec64baf3f11c046fbb70e91483e029793ec6a3e43b028ef14dc0d65"
+  url "https://github.com/unicorn-engine/unicorn/archive/2.0.1.post1.tar.gz"
+  version "2.0.1.post1"
+  sha256 "6b276c857c69ee5ec3e292c3401c8c972bae292e0e4cb306bb9e5466c0f14737"
+  license all_of: [
+    "GPL-2.0-only",
+    "GPL-2.0-or-later", # glib, qemu
+  ]
   head "https://github.com/unicorn-engine/unicorn.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 monterey:     "8a4345c49a4c8332c4a35eb97446c47aeed1a727cec98ce881ad9b8439047dc5"
-    sha256 cellar: :any,                 big_sur:      "6768c979e8d8a6e01eae16bcbcb86e5108f3aa24f60e400ffff61fe6f3282218"
-    sha256 cellar: :any,                 catalina:     "77d22ad4c7dc3901b741ea34c777d90e6cee40beac3dca3e5cfab66deadc7886"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "3559c25bdd368abb656250e8bb38441ec23bd9099cc336355acda780a5f3e8fe"
+    sha256 cellar: :any,                 arm64_ventura:  "4c9ea5656b2834aaa6a4fecd8bfc55ebc0b5fdd9f8ae360dca4ada9d25d7a484"
+    sha256 cellar: :any,                 arm64_monterey: "fc3a7ffad1c200b9dbb4eeb843d06eb9b6edf8313d42b38c9ca58f23e70810cc"
+    sha256 cellar: :any,                 arm64_big_sur:  "3ca1e960e66e83079c74b602e268db6f634cbd9c44ea52f18da8e71c29f67a43"
+    sha256 cellar: :any,                 ventura:        "475d61a10d43ec74d07defb155d2ae5c53422d2fd4f9c3dd09f7fbaef3b6b4c5"
+    sha256 cellar: :any,                 monterey:       "37bdc2d1067fe898c5455cdb0c0d2a2b94b5f8190d41352ebf661716352d5ae4"
+    sha256 cellar: :any,                 big_sur:        "cfd01c643cfc2283b4e973ba0208bbed3ee081408796c7a95059ed98f758900d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f45a8a230a4a63c46fc1d9a63e4d3a8ea33e6448051200bb202c23081efc96f2"
   end
 
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => [:build, :test]
 
   def install
-    ENV["PREFIX"] = prefix
-    ENV["UNICORN_ARCHS"] = "x86 x86_64 arm mips aarch64 m64k ppc sparc"
-    ENV["UNICORN_SHARED"] = "yes"
-    ENV["UNICORN_DEBUG"] = "no"
-    system "make"
-    system "make", "install"
-
-    cd "bindings/python" do
-      system Formula["python@3.10"].opt_bin/"python3", *Language::Python.setup_install_args(prefix)
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DUNICORN_SHARE=yes"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -76,7 +76,5 @@ class Unicorn < Formula
     system ENV.cc, "-o", testpath/"test1", testpath/"test1.c",
                    "-pthread", "-lpthread", "-lm", "-L#{lib}", "-lunicorn"
     system testpath/"test1"
-
-    system Formula["python@3.10"].opt_bin/"python3", "-c", "import unicorn; print(unicorn.__version__)"
   end
 end

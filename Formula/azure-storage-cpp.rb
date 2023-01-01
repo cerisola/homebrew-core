@@ -4,16 +4,17 @@ class AzureStorageCpp < Formula
   url "https://github.com/Azure/azure-storage-cpp/archive/v7.5.0.tar.gz"
   sha256 "446a821d115949f6511b7eb01e6a0e4f014b17bfeba0f3dc33a51750a9d5eca5"
   license "Apache-2.0"
-  revision 1
+  revision 3
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "bf2dc9dc42639f6a174ed7a18fb098aebebd65fc8042b90a512a3d3c455b3cb1"
-    sha256 cellar: :any,                 arm64_big_sur:  "44c92708a069bfbb747e7710ce65e20262dfd4bb67311b832639ba201a72ea7a"
-    sha256 cellar: :any,                 monterey:       "04721a7d666cb92d8ac4b4484be3ee76d745cd1a5bd08cdae2683e1c15704a84"
-    sha256 cellar: :any,                 big_sur:        "2c530902c523c7ccdb2d4514145c5c86191e530b0d88d1594f5f2716f6fc87c7"
-    sha256 cellar: :any,                 catalina:       "161ddefac718948838ab878191c45a1b6180f05598ae121401ca63e3da1b672c"
-    sha256 cellar: :any,                 mojave:         "4abae4ebc74f4758f5be5fbc7846467eb5bf429b596c31eec32f53026d65251e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aaf06755b0fc3414ff7abe7b9a7bbfbc61d62c86f0512fbfbe5cb4023500a7ac"
+    sha256 cellar: :any,                 arm64_ventura:  "b47dacae19d53efa3e73b64ed99ac6c44f5971ae762c5ee76daf25a49eae8619"
+    sha256 cellar: :any,                 arm64_monterey: "eceac6e6f0593179a3534c2eab359edf6649e7aa17dcebd8ae4440183e73ae5d"
+    sha256 cellar: :any,                 arm64_big_sur:  "0d9d71cc5cf69d7fcb77cfc333c7e2d6c636f5bc3699a0f58c2efd0afb22e03b"
+    sha256 cellar: :any,                 ventura:        "58e1f3f02eea58c160b77390f452689a504bc3e819c97182153297d24e5ebadc"
+    sha256 cellar: :any,                 monterey:       "6b915ca380a9aef0e0d5e517570204f9f68ec019d7085ab8d3701c420365cbc6"
+    sha256 cellar: :any,                 big_sur:        "d57014fd7bebf8938b6c9961e47454053778fd8055ef330df727d8e109d19474"
+    sha256 cellar: :any,                 catalina:       "527e53429a66ab82caaf15b83c3cbc98e6a5fccc875d9a7111eff14daaeb6ccb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "897b6fd224578e6555f902d13428e11f8a2edee4b12c6cdee6f57928cd4c2350"
   end
 
   depends_on "cmake" => :build

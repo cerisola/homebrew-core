@@ -2,36 +2,34 @@ class StellarCore < Formula
   desc "Backbone of the Stellar (XLM) network"
   homepage "https://www.stellar.org/"
   url "https://github.com/stellar/stellar-core.git",
-      tag:      "v19.0.0",
-      revision: "9d0704eb4ef3d2827ffe0501282e21818d683898"
+      tag:      "v19.6.0",
+      revision: "b3a6bc28116e80bff7889c2f3bcd7c30dd1ac4d6"
   license "Apache-2.0"
   head "https://github.com/stellar/stellar-core.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f95f40c979a78eaab3877eb6dd2104c5fd52c7c7048dc44347953b55778a879f"
-    sha256 cellar: :any,                 arm64_big_sur:  "0975e73257c78a479efd8df3867721c162ed0b6ce0105d05fb06dc589dda45b6"
-    sha256 cellar: :any,                 monterey:       "f9979120501b461420ac17411b7c55bd8a0196cc10d3756d83753d9a3162e872"
-    sha256 cellar: :any,                 big_sur:        "1319c9b0c574224b584475157c509a0c79e8d579103795056216c642ae066403"
-    sha256 cellar: :any,                 catalina:       "4dc70a214a207e61a9f00684debd1b0280d5650cc60661339c9f49ddeb49c964"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cdc4b40e2ab3bb4a88eb035dbeda2955ee0aefcda14b6831b0cced8012da58d7"
+    sha256 cellar: :any,                 arm64_ventura:  "232a88e9183d689fe28518a397000a5d7a422abbf33521a07c87f1cf0b4fec97"
+    sha256 cellar: :any,                 arm64_monterey: "db753ca7609c40481550a0c8c3aec7a17f7f2a4d1efc172322acbafc95c48635"
+    sha256 cellar: :any,                 arm64_big_sur:  "1f63554a2afeb277da1b7ae09294ab73702a0c0b234b87d64d1475f8a36e0f14"
+    sha256 cellar: :any,                 ventura:        "a36974492e7e2b8af18038b05ee0a72c354c5a95ea597a25e59d05b7a30187e3"
+    sha256 cellar: :any,                 monterey:       "e5608493a64ffe1232cdbbbc51f4889907021af5bee3be46848c0226ee8e0c25"
+    sha256 cellar: :any,                 big_sur:        "4d3e0bcb863eecf906ddf346d2b282362b653492682749eb49c4abf2992fd64b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9673057280dd7828e95ce93ed0713c3f4a0c00da52b859a5b755f9d1a4b336d"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "bison" => :build # Bison 3.0.4+
   depends_on "libtool" => :build
   depends_on "pandoc" => :build
   depends_on "pkg-config" => :build
-  depends_on "parallel" => :test
   depends_on "libpq"
   depends_on "libpqxx"
   depends_on "libsodium"
   depends_on macos: :catalina # Requires C++17 filesystem
-
-  uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
 
   on_linux do
-    depends_on "gcc"
     depends_on "libunwind"
   end
 
@@ -52,8 +50,13 @@ class StellarCore < Formula
   end
 
   test do
+    test_categories = %w[
+      accountsubentriescount
+      bucketlistconsistent
+      topology
+      upgrades
+    ]
     system "#{bin}/stellar-core", "test",
-      "'[bucket],[crypto],[herder],[upgrades],[accountsubentriescount]," \
-      "[bucketlistconsistent],[cacheisconsistent],[fs]'"
+      test_categories.map { |category| "[#{category}]" }.join(",")
   end
 end

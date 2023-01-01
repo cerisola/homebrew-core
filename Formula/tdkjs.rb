@@ -18,7 +18,7 @@ class Tdkjs < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "26a19859958a2394a25c5254472350329a618a228f5c8019f57583d9e14ddbe9"
   end
 
-  deprecate! date: "2021-03-04", because: :unmaintained
+  disable! date: "2022-07-31", because: :unmaintained
 
   depends_on "node"
 
@@ -28,7 +28,7 @@ class Tdkjs < Formula
   end
 
   test do
-    system "printf", "'''tdk.init()\ntdk.setColor(\'red\')\nfunction animate(){\ntdk.circle(0, 0, 20)\n}''' > test.js"
+    system "printf", "'''tdk.init()\ntdk.setColor('red')\nfunction animate(){\ntdk.circle(0, 0, 20)\n}''' > test.js"
     system "tdkjs", "test.js", "output.html"
   end
 end

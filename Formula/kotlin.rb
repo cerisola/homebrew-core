@@ -1,17 +1,19 @@
 class Kotlin < Formula
   desc "Statically typed programming language for the JVM"
   homepage "https://kotlinlang.org/"
-  url "https://github.com/JetBrains/kotlin/releases/download/v1.6.21/kotlin-compiler-1.6.21.zip"
-  sha256 "632166fed89f3f430482f5aa07f2e20b923b72ef688c8f5a7df3aa1502c6d8ba"
+  url "https://github.com/JetBrains/kotlin/releases/download/v1.8.0/kotlin-compiler-1.8.0.zip"
+  sha256 "0bb9419fac9832a56a3a19cad282f8f2d6f1237d2d467dc8dfe9bd4a2a43c42e"
   license "Apache-2.0"
 
+  # This repository has thousands of development tags, so the `GithubLatest`
+  # strategy is used to minimize data transfer in this extreme case.
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4c53c499a664e15a04789fcb915d1d01b7548d64427086fce3f625621977a558"
+    sha256 cellar: :any_skip_relocation, all: "3b09590444aa63fb2e429bbd8bd9ba9937cc38f21810364c546eccf29ae1c54d"
   end
 
   depends_on "openjdk"
@@ -31,7 +33,6 @@ class Kotlin < Formula
       }
     EOS
     system bin/"kotlinc", "test.kt", "-include-runtime", "-d", "test.jar"
-    system bin/"kotlinc-js", "test.kt", "-output", "test.js"
     system bin/"kotlinc-jvm", "test.kt", "-include-runtime", "-d", "test.jar"
   end
 end

@@ -1,25 +1,29 @@
 class Hexyl < Formula
   desc "Command-line hex viewer"
   homepage "https://github.com/sharkdp/hexyl"
-  url "https://github.com/sharkdp/hexyl/archive/v0.9.0.tar.gz"
-  sha256 "73f0dc1be1eaa1a34e3280bc1eeb4f86f34b024205fc7bf3c87d5a0bc4021a6a"
+  url "https://github.com/sharkdp/hexyl/archive/v0.12.0.tar.gz"
+  sha256 "bf3a3e8851e7bbcf01f75ae95c018faf3c9f1b7f363159d4a7459bbe11478144"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/sharkdp/hexyl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "94627ec8776e6140328d0270d877dcd8476da32d253c0ee77d9154f31fd72f8e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b93b1b33e9915f766a189758d96f9383a661153908ac5043e13921445639e503"
-    sha256 cellar: :any_skip_relocation, monterey:       "7b65f0724b1a58f35eb52087f532fee97bc2ad307da2662b02d0aa3ec81b5340"
-    sha256 cellar: :any_skip_relocation, big_sur:        "28782b657ead4ad2d73fb35036eae99bddb5b0c7abb949e9726159df1034bf1f"
-    sha256 cellar: :any_skip_relocation, catalina:       "e981e7f1b7c694e34184e99fa9c7b8e8196308868879c5c7925633f8b19ae122"
-    sha256 cellar: :any_skip_relocation, mojave:         "3cab619ac9a8f2de7809af2d5d84f8ae9ca556087a0cd7174fa1d8fc778256cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "42b7331d7d933632adf804f454a9d53a8d509495f7d9fb81547eeee95db1c921"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6edbbd88a4a47f038757214438c81aad75dde639d7082c5a66bb76928b2f0c43"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2bc5cffa1706a75b4d0b6c7af65c89407f875f92d8f44994c6b70b36e4bb3160"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ba4180de5a5e9e107e21f07295342d465ed7a7a4612ada48c06d4a38d447b55a"
+    sha256 cellar: :any_skip_relocation, ventura:        "2dad61e73eb77225469344d0833d797e29303ad098913df720f21137660b1457"
+    sha256 cellar: :any_skip_relocation, monterey:       "09bb90fc13b3f4cbf45bc84272aa19c2bb35d0b526bb726994edc1997575b343"
+    sha256 cellar: :any_skip_relocation, big_sur:        "fd78b492b9c38580e3fabcd3ce56ac405751b6cddbedc08a599b30a59bda4de1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4644fc35b963b754ab228dd220305ca4c509238c828956ba1ac6959a0b1c2b0a"
   end
 
+  depends_on "pandoc" => :build
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+    system "pandoc", "-s", "-f", "markdown", "-t", "man",
+                     "doc/hexyl.1.md", "-o", "hexyl.1"
+    man1.install "hexyl.1"
   end
 
   test do

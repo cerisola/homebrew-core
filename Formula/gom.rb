@@ -3,33 +3,35 @@ class Gom < Formula
   homepage "https://wiki.gnome.org/Projects/Gom"
   url "https://download.gnome.org/sources/gom/0.4/gom-0.4.tar.xz"
   sha256 "68d08006aaa3b58169ce7cf1839498f45686fba8115f09acecb89d77e1018a9d"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "3ae28996020630b4d188ef9d8750bd43b4ffdeab6dcb8f0cd1b2e38eadf945f1"
-    sha256 cellar: :any, arm64_big_sur:  "ff2ac0dfef03bd08c7f03f13595af2e1476c396163e57066726c92e06cbe4fba"
-    sha256 cellar: :any, monterey:       "8ffd8bda4854f337bea5d93b324f5116cd54172369f446c1661b48d416db8fb7"
-    sha256 cellar: :any, big_sur:        "b8c298e1d442d15dd630bfe6b1edfeb11b77326b730237ffc4c6b3c607c48192"
-    sha256 cellar: :any, catalina:       "c86f525462ffd97cb6bd469b5a26d1db56281d725916d5eb524f31a4750b1892"
-    sha256 cellar: :any, mojave:         "afda0dc772004cee3b8148719a078f6ac2871480260f310a5d06e367dcd68412"
-    sha256 cellar: :any, high_sierra:    "cccd9551ffced0a1648ff2f420eb3e5666ff102b4c81d96806cd7d25068ef7d7"
-    sha256               x86_64_linux:   "f57d27a0f540e80aa766a48cfea50ab195cc904a31f56728172102c8233c4aed"
+    rebuild 1
+    sha256 cellar: :any, arm64_ventura:  "1db9a445a9ca871063b486b13569c1d40294fbc61bce2830b92bb464454a88fd"
+    sha256 cellar: :any, arm64_monterey: "b0d9c5cdb6be395f3a219b0a507a33083af49b45d67b09f53fd2a1f1854bd974"
+    sha256 cellar: :any, arm64_big_sur:  "177ec20f055b4dd60a520964535dda64c7ee7b398b01659b61b9c23044b0ff89"
+    sha256 cellar: :any, ventura:        "9e4fbb963c63ea9ce7eb29bcc44b92c0190bd0a4acdb33dce184cf25835ad7a7"
+    sha256 cellar: :any, monterey:       "8f54d9de185474a26c57d6252ded258e5964e51e4577409ab9dffa23c11d9f44"
+    sha256 cellar: :any, big_sur:        "ecf4e4b467ea8911a19be1f22291ca193e7733490a1dcce5641becc10979a63b"
+    sha256               x86_64_linux:   "985855caecd2a4af195101d0bf98fcb14553d83fbd490d40f29112b74d4394e9"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.11" => :build
   depends_on "gdk-pixbuf"
   depends_on "gettext"
   depends_on "glib"
 
+  uses_from_macos "sqlite"
+
   def install
-    pyver = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
+    site_packages = prefix/Language::Python.site_packages("python3.11")
 
     mkdir "build" do
-      system "meson", *std_meson_args, "-Dpygobject-override-dir=#{lib}/python#{pyver}/site-packages", ".."
+      system "meson", *std_meson_args, "-Dpygobject-override-dir=#{site_packages}", ".."
       system "ninja"
       system "ninja", "install"
     end

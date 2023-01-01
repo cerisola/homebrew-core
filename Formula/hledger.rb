@@ -1,75 +1,45 @@
 class Hledger < Formula
   desc "Easy plain text accounting with command-line, terminal and web UIs"
   homepage "https://hledger.org/"
-  url "https://hackage.haskell.org/package/hledger-1.25/hledger-1.25.tar.gz"
-  sha256 "b3188c5c22bdd20b58f9a3cb90dac637441120239bb00d17cf683ef4e6aebf36"
+  url "https://github.com/simonmichael/hledger/archive/refs/tags/1.28.tar.gz"
+  sha256 "e2736f732d9f5cade993877b4524f06fbb3488142843c62653a0849180d2a34a"
   license "GPL-3.0-or-later"
+  head "https://github.com/simonmichael/hledger.git", branch: "master"
 
   # A new version is sometimes present on Hackage before it's officially
   # released on the upstream homepage, so we check the first-party download
   # page instead.
   livecheck do
     url "https://hledger.org/install.html"
-    regex(%r{href=.*?/tag/(?:hledger[._-])?v?(\d+(?:\.\d+)+)["' >]}i)
+    regex(%r{href=.*?/tag/(?:hledger[._-])?v?(\d+(?:\.\d+)+)(?:#[^"' >]+?)?["' >]}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8f41427d749dcd466909f2c2e4a662c4c89da200648dc7732b17e65b8795bb12"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "05173d9e8034d2cb83d25f125ec98933e1db8c671efb0def3f62069627c1d6fc"
-    sha256 cellar: :any_skip_relocation, monterey:       "3c8558a9d45321d46f2253ddc593b56465aeb345a1268f294d316ba55d683389"
-    sha256 cellar: :any_skip_relocation, big_sur:        "519d90342e465edb936d0a9d58c3b651af4e61b3a84b46168670c7d24caa1ca9"
-    sha256 cellar: :any_skip_relocation, catalina:       "6b0daa38719dc5e5ec287426e812e915ac5ee0f50ede5943767d701e85217b78"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae297f309959b1f40ce06a6940933f9e2cd7f3a1314b4c37bcade6e402524943"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ae3754888e79908af05f5d49ba2056f0cff2cfd2ba11d2bdffa3add0cbdaeea9"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b8cdec5b36120100254a460639eb3dcac63c54ae1b5070624b213ccbe3ab404d"
+    sha256 cellar: :any_skip_relocation, ventura:        "865c618609b3b223be175f8d3297a487fd8b616900189f52408c9e37a867a37f"
+    sha256 cellar: :any_skip_relocation, monterey:       "705fdc2a468dbbe0db8754d5eaf046c6cfe9a0ff46c9abd8b26146d52ec4fe8f"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3d842d278f4e60a5ce14f0409844cb5f892374178b2dc7a1322d860cebbada14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "960e2d8af466b27ac35cfa712bc65aee6d53791ef138838a30b20d6c19ce3982"
   end
 
-  depends_on "ghc" => :build
+  depends_on "ghc@9.2" => :build
   depends_on "haskell-stack" => :build
 
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
-  resource "hledger-lib" do
-    url "https://hackage.haskell.org/package/hledger-lib-1.25/hledger-lib-1.25.tar.gz"
-    sha256 "36c0dfe0f7647da17e74d3b52d91017aacd370198600b69e24212f3eefb46919"
-  end
-
-  resource "hledger-ui" do
-    url "https://hackage.haskell.org/package/hledger-ui-1.25/hledger-ui-1.25.tar.gz"
-    sha256 "3d0c8024d5bca858860c41b8beb827a771d924a43f139d8059496fab52a84fe9"
-  end
-
-  resource "hledger-web" do
-    url "https://hackage.haskell.org/package/hledger-web-1.25/hledger-web-1.25.tar.gz"
-    sha256 "0f390a73643de25396e5836c58786e209a025faeeb030dd5706591462117fe2d"
-  end
-
   def install
-    (buildpath/"../hledger-lib").install resource("hledger-lib")
-    (buildpath/"../hledger-ui").install resource("hledger-ui")
-    (buildpath/"../hledger-web").install resource("hledger-web")
-    cd ".." do
-      system "stack", "update"
-      (buildpath/"../stack.yaml").write <<~EOS
-        resolver: lts-17.5
-        compiler: ghc-#{Formula["ghc"].version}
-        compiler-check: newer-minor
-        packages:
-        - hledger-#{version}
-        - hledger-lib
-        - hledger-ui
-        - hledger-web
-      EOS
-      system "stack", "install", "--system-ghc", "--no-install-ghc", "--skip-ghc-check", "--local-bin-path=#{bin}"
-
-      man1.install Dir["hledger-*/*.1"]
-      man5.install Dir["hledger-lib/*.5"]
-      info.install Dir["hledger-*/*.info"]
-    end
+    system "stack", "update"
+    system "stack", "install", "--system-ghc", "--no-install-ghc", "--skip-ghc-check", "--local-bin-path=#{bin}"
+    man1.install Dir["hledger*/*.1"]
+    info.install Dir["hledger*/*.info"]
+    bash_completion.install "hledger/shell-completion/hledger-completion.bash" => "hledger"
   end
 
   test do
-    system "#{bin}/hledger", "test"
-    system "#{bin}/hledger-ui", "--version"
-    system "#{bin}/hledger-web", "--test"
+    system bin/"hledger", "test"
+    system bin/"hledger-ui", "--version"
+    system bin/"hledger-web", "--test"
   end
 end

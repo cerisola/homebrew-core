@@ -1,8 +1,8 @@
 class Gmsh < Formula
   desc "3D finite element grid generator with CAD engine"
   homepage "https://gmsh.info/"
-  url "https://gmsh.info/src/gmsh-4.10.1-source.tgz"
-  sha256 "d086d581aa27e491a35fead2b9753d4c2065e67984af12a891d8541391209bf9"
+  url "https://gmsh.info/src/gmsh-4.11.1-source.tgz"
+  sha256 "c5fe1b7cbd403888a814929f2fd0f5d69e27600222a18c786db5b76e8005b365"
   license "GPL-2.0-or-later"
   head "https://gitlab.onelab.info/gmsh/gmsh.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Gmsh < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "d6500fa8dd44864115eb53849c0281068df2fa88b0a78994a0adaebb478cf2f5"
-    sha256 cellar: :any,                 arm64_big_sur:  "f34436491b4b9ca21383b517c65b8f39e27d37a2fce3f48199db72ae4144f1b6"
-    sha256 cellar: :any,                 monterey:       "e32b777076b17f559cf7added72bbb47599c0a93d2e64d11308cc6bb3b77c689"
-    sha256 cellar: :any,                 big_sur:        "53c572c8215803c87b7318593b9bdfe6235f543ee8a0a20884a7a42e956b1fad"
-    sha256 cellar: :any,                 catalina:       "2fa85820cf20997b957f9fd52a340b7a64ac8973d21f92e35ed284d2309f4381"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc374c7e645f4cc3a069ed68d16d95b4160bf7a3fe4e807cd49077a2d2972356"
+    sha256 cellar: :any,                 arm64_ventura:  "0db350e10e50d6bcb4beb97912d2ae4cc4d27b1024167dda517ad4a1f03a58cb"
+    sha256 cellar: :any,                 arm64_monterey: "7deec3401c4687d2a8a588c825e5b5066c0a00a48b1d3cb56c7bf594000cbcc4"
+    sha256 cellar: :any,                 arm64_big_sur:  "9df46a33ad58e99a8ceb25f2e8c20791e29d1b431888e7be604efe58f02f01bd"
+    sha256 cellar: :any,                 ventura:        "0d28989659a80d5f9c5c9a45d9e7814dec198994ff0bcf8a80ca598fd69d1639"
+    sha256 cellar: :any,                 monterey:       "0ae614d82355c5835690ab5992771e563ff5f8e47406542a01168e3bd05cbb60"
+    sha256 cellar: :any,                 big_sur:        "af5fe39a97cbd841df917b30f0ad3651ee77c60e4dfa1c343a7ceaf7caaaa4ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "548b2f8fd24e3add5e3f9dbf54216451045c658e096ff31fd2244d7a106572c4"
   end
 
   depends_on "cmake" => :build
@@ -28,31 +29,25 @@ class Gmsh < Formula
   depends_on "opencascade"
 
   def install
-    args = std_cmake_args + %W[
-      -DENABLE_OS_SPECIFIC_INSTALL=0
-      -DGMSH_BIN=#{bin}
-      -DGMSH_LIB=#{lib}
-      -DGMSH_DOC=#{pkgshare}/gmsh
-      -DGMSH_MAN=#{man}
-      -DENABLE_BUILD_LIB=ON
-      -DENABLE_BUILD_SHARED=ON
-      -DENABLE_NATIVE_FILE_CHOOSER=ON
-      -DENABLE_PETSC=OFF
-      -DENABLE_SLEPC=OFF
-      -DENABLE_OCC=ON
-    ]
-
     ENV["CASROOT"] = Formula["opencascade"].opt_prefix
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
+                    "-DENABLE_OS_SPECIFIC_INSTALL=0",
+                    "-DGMSH_BIN=#{bin}",
+                    "-DGMSH_LIB=#{lib}",
+                    "-DGMSH_DOC=#{pkgshare}/gmsh",
+                    "-DGMSH_MAN=#{man}",
+                    "-DENABLE_BUILD_LIB=ON",
+                    "-DENABLE_BUILD_SHARED=ON",
+                    "-DENABLE_NATIVE_FILE_CHOOSER=ON",
+                    "-DENABLE_PETSC=OFF",
+                    "-DENABLE_SLEPC=OFF",
+                    "-DENABLE_OCC=ON"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-      # Move onelab.py into libexec instead of bin
-      mkdir_p libexec
-      mv bin/"onelab.py", libexec
-    end
+    # Move onelab.py into libexec instead of bin
+    libexec.install bin/"onelab.py"
   end
 
   test do

@@ -1,17 +1,19 @@
 class PandocPlot < Formula
   desc "Render and include figures in Pandoc documents using many plotting toolkits"
   homepage "https://github.com/LaurentRDC/pandoc-plot"
-  url "https://hackage.haskell.org/package/pandoc-plot-1.5.2/pandoc-plot-1.5.2.tar.gz"
-  sha256 "2d16d4d91d83ebb2081ec97aee3729beb7df435236f1288fc5ee96694bb3a1d0"
+  url "https://hackage.haskell.org/package/pandoc-plot-1.5.5/pandoc-plot-1.5.5.tar.gz"
+  sha256 "f09c3ab1b43c3fe4a8a2dfcfc7957dc7aaa2c507c6f2a26054954287a0369abd"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "5541f53a5a73da9df5171bdd4b58a80a1f4954a83e135944df5288a25c509ea3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d9fba4be2f673b01398c5322fa6b8ebc5ced0f61fd488dffb50d178a1fb24f19"
-    sha256 cellar: :any_skip_relocation, monterey:       "66bf1cac5699f844443aec4c2e3180adc133d4a5c55bc00f5d4a6fe768df6caa"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fc2cb317d9910c32900498ebfe347a690ae6956c3d18bdace636609bb1c27319"
-    sha256 cellar: :any_skip_relocation, catalina:       "95d7df2374a890dfe72668b5474dfc9970df141bae68e69782644406cf611d80"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e13940b38d9e0abcd1574e5d354b92454e72e42eef8be174c30af6a7182cf05"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0e9f11f10fc2c7119e4df43e681eb5ef07154f405ca5d97d39b87b88afb3dd4f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ba31f72c88a32380b31d31e0f2fc8fbffd5596c06ae02e23eff0c09ee4e08d72"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7aeae2a6127242160d8bf858b4a4356d542b7b2f5d1a56e22b5e1a32f82c2115"
+    sha256 cellar: :any_skip_relocation, ventura:        "32dc6c3fa4bdf9c92b385288163fb27fb596d3bb096759a7ee0d875af9023d12"
+    sha256 cellar: :any_skip_relocation, monterey:       "7b8d2bad7d579179cb76c1f08372fdbb941f3594a6e4f26060705ef9d5f3ed46"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f945ced817ed3eacdcada2613de7807d5eb1a6a21d19c69b41d75e5817f672aa"
+    sha256 cellar: :any_skip_relocation, catalina:       "d96f2c26d6aae4af843f9b0dbc4078f4cfff5f1582d94a6ec293fe8a5f84bac3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb21b050c3c19a77d5caf780207cf9a3123e398dcfea1a11408f9762c188adc6"
   end
 
   depends_on "cabal-install" => :build

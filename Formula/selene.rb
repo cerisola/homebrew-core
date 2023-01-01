@@ -1,22 +1,22 @@
 class Selene < Formula
   desc "Blazing-fast modern Lua linter"
   homepage "https://kampfkarren.github.io/selene"
-  url "https://github.com/Kampfkarren/selene/archive/0.17.0.tar.gz"
-  sha256 "c9dd792345c2802ed4bc41fa94a21945e5d67bd51d3c13fff61bbe2a08c0a287"
+  url "https://github.com/Kampfkarren/selene/archive/0.23.1.tar.gz"
+  sha256 "7369707cad4d3e614c4ea484490d6bdb46984c71f88174c4408e73a2f05f1377"
   license "MPL-2.0"
   head "https://github.com/Kampfkarren/selene.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "06cfedcd6c3fb683b2a1062b20355f57f3118dcea3f144c052aed1460271d8ed"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "eb089ea912aba98806bd538400d08e1283d941d019e420da41d90ba63c86096d"
-    sha256 cellar: :any_skip_relocation, monterey:       "369409ce99cdaa34f6d1c9a7c59efdbb59ba385647452fc8f3ea5c81584ebf34"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0546da89cc5c0f3dfcf78a97bd946d698024d35975b0592ca85a67cc0ed57f5f"
-    sha256 cellar: :any_skip_relocation, catalina:       "3157695295d27b94fbfe3b5a4108761094c008711bef6bc2c2f8a8159abbd207"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3d74e56c2fb217d7d843f9b2c4f296c09c29974a5fa82d52baee1736a2595e0a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5d95be9241480da5df334b2ce9696ab3ba866914a40eb4062bcce617daf766fe"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2ef5c7d128d1ea680c6655c57a4a1d207a6e46f92f0792868d04290d0325761d"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f85731dfa5fde4493c08e5bab2e9c6a834e2031ccc61426c12152cf90955a00f"
+    sha256 cellar: :any_skip_relocation, ventura:        "5a1c4e6cbb9b86202fb2a59eaf7160ece66bc92ca1d7436e15c302c88171a19f"
+    sha256 cellar: :any_skip_relocation, monterey:       "53d4461db8bf4ded8a1479f29174455a7fe410d138fa70eadcd63007402eb091"
+    sha256 cellar: :any_skip_relocation, big_sur:        "40cf3ff39e790e08c98ec4de2261bcd185c9acc69c6a7668ebd3d930f719b337"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "055239ce600acdca3518958fe9ee227fcc96c9afc2031f549b2a18608183b39c"
   end
 
   depends_on "rust" => :build
-  depends_on "openssl@1.1"
 
   on_linux do
     depends_on "pkg-config" => :build
@@ -29,6 +29,7 @@ class Selene < Formula
   end
 
   test do
+    (testpath/"selene.toml").write("std = \"lua52\"")
     (testpath/"test.lua").write("print(1 / 0)")
     assert_match "warning[divide_by_zero]", shell_output("#{bin}/selene #{testpath}/test.lua", 1)
   end

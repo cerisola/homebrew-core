@@ -3,11 +3,10 @@ class Gnuradio < Formula
 
   desc "SDK for signal processing blocks to implement software radios"
   homepage "https://gnuradio.org/"
-  url "https://github.com/gnuradio/gnuradio/archive/refs/tags/v3.9.3.0.tar.gz"
-  sha256 "4073ac72524f95fed4bda7dd553cb946f66d2e00bd07c4ae7758f1b787d507e0"
+  url "https://github.com/gnuradio/gnuradio/archive/refs/tags/v3.10.5.0.tar.gz"
+  sha256 "04aae0c45e55c8fcaf99829d92db102395c7e10a7ad9910533694806d5ae121a"
   license "GPL-3.0-or-later"
-  revision 5
-  head "https://github.com/gnuradio/gnuradio.git", branch: "master"
+  head "https://github.com/gnuradio/gnuradio.git", branch: "main"
 
   livecheck do
     url :stable
@@ -15,11 +14,14 @@ class Gnuradio < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "9e39531fad7885f811771414222caa7025d2d96095ecf42f6b8d5b37de498f1a"
-    sha256 cellar: :any, arm64_big_sur:  "6f73043d59f3d5f516da82c4f602a12a07a81329b02cf736a8456c48830c554e"
-    sha256 cellar: :any, monterey:       "c10b87bb919c0b184898fffa69a46c46035528819baaebe1a7442c2da9f65307"
-    sha256 cellar: :any, big_sur:        "7a07f316ed5c906da8cbcf5157fc9a064bca9c80f5637b0fff20ecfd0ea1bfcf"
-    sha256 cellar: :any, catalina:       "885384b1c34b0b1209c572bc7f6d936b421a3e1e6632136eaa371b49ffc1e514"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "2f540a7bc8971b8dce9d98e443503f4814084a4c7b022100ea232d8dbe90381f"
+    sha256 cellar: :any,                 arm64_monterey: "5856c310c7994184c6e6109c5e3c5b8c44bd1e89394f113b60191ba52ebedb61"
+    sha256 cellar: :any,                 arm64_big_sur:  "10d730b3cdc60105a0afa23dd8d1ea9d1e38eaac36d85844c3c34e4a3040d5bd"
+    sha256 cellar: :any,                 ventura:        "4d4c847a7110c5ef7a22d054ba7b00801615d1bb0d46d99829df4fc115672400"
+    sha256 cellar: :any,                 monterey:       "33505038905d41694fcb6de4a386729a7a11c95195bb0bfcc06b26e94455442f"
+    sha256 cellar: :any,                 big_sur:        "f27ed4aa584c18e42975eca7e51f78cb341de08d8ca6659145746fb83721ddc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d78432fe9d281aa3a84e97d254d3df9c01a50837b55cb23bfc2101f3175961c"
   end
 
   depends_on "cmake" => :build
@@ -34,19 +36,25 @@ class Gnuradio < Formula
   depends_on "gsl"
   depends_on "gtk+3"
   depends_on "jack"
+  depends_on "libyaml"
   depends_on "log4cpp"
   depends_on "numpy"
   depends_on "portaudio"
+  depends_on "pygments"
   depends_on "pygobject3"
   depends_on "pyqt@5"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
+  depends_on "pyyaml"
   depends_on "qt@5"
   depends_on "qwt-qt5"
   depends_on "six"
   depends_on "soapyrtlsdr"
+  depends_on "spdlog"
   depends_on "uhd"
   depends_on "volk"
   depends_on "zeromq"
+
+  fails_with gcc: "5"
 
   resource "Cheetah3" do
     url "https://files.pythonhosted.org/packages/ee/6f/29c6d74d8536dede06815eeaebfad53699e3f3df0fb22b7a9801a893b426/Cheetah3-3.2.6.tar.gz"
@@ -54,8 +62,8 @@ class Gnuradio < Formula
   end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/21/83/308a74ca1104fe1e3197d31693a7a2db67c2d4e668f20f43a2fca491f9f7/click-8.0.1.tar.gz"
-    sha256 "8c04c11192119b1ef78ea049e0a6f0463e4c48ef00a30160c704337586f3ad7a"
+    url "https://files.pythonhosted.org/packages/59/87/84326af34517fca8c58418d148f2403df25303e02736832403587318e9e8/click-8.1.3.tar.gz"
+    sha256 "7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"
   end
 
   resource "click-plugins" do
@@ -64,35 +72,37 @@ class Gnuradio < Formula
   end
 
   resource "Mako" do
-    url "https://files.pythonhosted.org/packages/d1/42/ff293411e980debfc647be9306d89840c8b82ea24571b014f1a35b2ad80f/Mako-1.1.5.tar.gz"
-    sha256 "169fa52af22a91900d852e937400e79f535496191c63712e3b9fda5a9bed6fc3"
+    url "https://files.pythonhosted.org/packages/05/5f/2ba6e026d33a0e6ddc1dddf9958677f76f5f80c236bd65309d280b166d3e/Mako-1.2.4.tar.gz"
+    sha256 "d60a3903dc3bb01a18ad6a89cdbe2e4eadc69c0bc8ef1e3773ba53d44c3f7a34"
   end
 
-  resource "PyYAML" do
-    url "https://files.pythonhosted.org/packages/a0/a4/d63f2d7597e1a4b55aa3b4d6c5b029991d3b824b5bd331af8d4ab1ed687d/PyYAML-5.4.1.tar.gz"
-    sha256 "607774cbba28732bfa802b54baa7484215f530991055bb562efbed5b2f20a45e"
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/6b/f7/c240d7654ddd2d2f3f328d8468d4f1f876865f6b9038b146bec0a6737c65/packaging-22.0.tar.gz"
+    sha256 "2198ec20bd4c017b8f9717e00f0c8714076fc2fd93816750ab48e2c41de2cfd3"
   end
 
-  # patch to build with qt6
-  # PR ref, https://github.com/gnuradio/gnuradio/pull/5034
-  patch do
-    url "https://github.com/gnuradio/gnuradio/commit/74bb3881c044d0fe9bb498ede8bcd17f0a27574c.patch?full_index=1"
-    sha256 "d5a76e38e9c50ce28d6efddde2ad3612f602879a7edc5161aa8fa7b93756edfd"
+  resource "markupsafe" do
+    url "https://files.pythonhosted.org/packages/1d/97/2288fe498044284f39ab8950703e88abbac2abbdf65524d576157af70556/MarkupSafe-2.1.1.tar.gz"
+    sha256 "7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"
+  end
+
+  # pygccxml only published a .whl file on PyPi
+  resource "pygccxml" do
+    url "https://github.com/CastXML/pygccxml/archive/refs/tags/v2.2.1.tar.gz"
+    sha256 "9815a12e3bf6b83b2e9d8c88335fb3fa0e2b4067d7fbaaed09c3bf26c6206cc7"
   end
 
   def install
+    python = "python3.11"
     ENV.cxx11
 
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
     venv_root = libexec/"venv"
-    xy = Language::Python.major_minor_version "python3"
-    ENV.prepend_create_path "PYTHONPATH", "#{venv_root}/lib/python#{xy}/site-packages"
-    venv = virtualenv_create(venv_root, "python3")
-
-    %w[Mako Cheetah3 PyYAML click click-plugins].each do |r|
-      venv.pip_install resource(r)
-    end
+    site_packages = Language::Python.site_packages(python)
+    ENV.prepend_create_path "PYTHONPATH", venv_root/site_packages
+    venv = virtualenv_create(venv_root, python)
+    venv.pip_install resources
 
     # Avoid references to the Homebrew shims directory
     inreplace "CMakeLists.txt" do |s|
@@ -100,36 +110,37 @@ class Gnuradio < Formula
       s.gsub! "${CMAKE_CXX_COMPILER}", ENV.cxx
     end
 
-    args = std_cmake_args + %W[
+    qwt = Formula["qwt-qt5"].opt_lib
+    qwt_lib = OS.mac? ? qwt/"qwt.framework/qwt" : qwt/"libqwt.so"
+    qwt_include = OS.mac? ? qwt/"qwt.framework/Headers" : Formula["qwt-qt5"].opt_include
+
+    args = %W[
       -DGR_PKG_CONF_DIR=#{etc}/gnuradio/conf.d
       -DGR_PREFSDIR=#{etc}/gnuradio/conf.d
+      -DGR_PYTHON_DIR=#{prefix/site_packages}
       -DENABLE_DEFAULT=OFF
       -DPYTHON_EXECUTABLE=#{venv_root}/bin/python
       -DPYTHON_VERSION_MAJOR=3
-      -DQWT_LIBRARIES=#{Formula["qwt-qt5"].lib}/qwt.framework/qwt
-      -DQWT_INCLUDE_DIRS=#{Formula["qwt-qt5"].lib}/qwt.framework/Headers
+      -DQWT_LIBRARIES=#{qwt_lib}
+      -DQWT_INCLUDE_DIRS=#{qwt_include}
       -DCMAKE_PREFIX_PATH=#{Formula["qt@5"].opt_lib}
       -DQT_BINARY_DIR=#{Formula["qt@5"].opt_bin}
       -DENABLE_TESTING=OFF
       -DENABLE_INTERNAL_VOLK=OFF
     ]
 
-    enabled = %w[GNURADIO_RUNTIME GR_ANALOG GR_AUDIO GR_BLOCKS GRC
-                 GR_CHANNELS GR_DIGITAL GR_DTV GR_FEC GR_FFT GR_FILTER
-                 GR_MODTOOL GR_NETWORK GR_QTGUI GR_SOAPY GR_TRELLIS
-                 GR_UHD GR_UTILS GR_VOCODER GR_WAVELET GR_ZEROMQ PYTHON VOLK]
-    enabled.each do |c|
+    enabled = %w[GNURADIO_RUNTIME GRC PYTHON VOLK]
+    enabled_modules = %w[GR_ANALOG GR_AUDIO GR_BLOCKS GR_BLOCKTOOL
+                         GR_CHANNELS GR_DIGITAL GR_DTV GR_FEC GR_FFT GR_FILTER
+                         GR_MODTOOL GR_NETWORK GR_QTGUI GR_SOAPY GR_TRELLIS
+                         GR_UHD GR_UTILS GR_VOCODER GR_WAVELET GR_ZEROMQ GR_PDU]
+    (enabled + enabled_modules).each do |c|
       args << "-DENABLE_#{c}=ON"
     end
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
-    end
-
-    mv Dir[lib/"python#{xy}/dist-packages/*"], lib/"python#{xy}/site-packages/"
-    rm_rf lib/"python#{xy}/dist-packages"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     # Create a directory for Homebrew to put .pth files pointing to GNU Radio
     # plugins installed by other packages. An automatically-loaded module adds
@@ -137,15 +148,14 @@ class Gnuradio < Formula
     plugin_pth_dir = etc/"gnuradio/plugins.d"
     mkdir plugin_pth_dir
 
-    site_packages = lib/"python#{xy}/site-packages"
-    venv_site_packages = venv_root/"lib/python#{xy}/site-packages"
+    venv_site_packages = venv_root/site_packages
 
     (venv_site_packages/"homebrew_gr_plugins.py").write <<~EOS
       import site
       site.addsitedir("#{plugin_pth_dir}")
     EOS
 
-    pth_contents = "#{site_packages}\nimport homebrew_gr_plugins\n"
+    pth_contents = "#{prefix/site_packages}\nimport homebrew_gr_plugins\n"
     (venv_site_packages/"homebrew-gnuradio.pth").write pth_contents
 
     # Patch the grc config to change the search directory for blocks
@@ -189,10 +199,12 @@ class Gnuradio < Formula
         top.run();
       }
     EOS
-    system ENV.cxx, "-std=c++11", "-L#{lib}", "-L#{Formula["boost"].opt_lib}",
+    system ENV.cxx, testpath/"test.c++", "-std=c++11", "-L#{lib}",
            "-lgnuradio-blocks", "-lgnuradio-runtime", "-lgnuradio-pmt",
-           "-lboost_system", "-L#{Formula["log4cpp"].opt_lib}", "-llog4cpp",
-            testpath/"test.c++", "-o", testpath/"test"
+           "-L#{Formula["boost"].opt_lib}", "-lboost_system",
+           "-L#{Formula["log4cpp"].opt_lib}", "-llog4cpp",
+           "-L#{Formula["fmt"].opt_lib}", "-lfmt",
+           "-o", testpath/"test"
     system "./test"
 
     (testpath/"test.py").write <<~EOS
@@ -219,6 +231,6 @@ class Gnuradio < Formula
 
       main()
     EOS
-    system Formula["python@3.9"].opt_bin/"python3", testpath/"test.py"
+    system Formula["python@3.11"].opt_bin/"python3.11", testpath/"test.py"
   end
 end

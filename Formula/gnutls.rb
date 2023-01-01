@@ -1,9 +1,9 @@
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
   homepage "https://gnutls.org/"
-  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.4.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.4.tar.xz"
-  sha256 "e6adbebcfbc95867de01060d93c789938cf89cc1d1f6ef9ef661890f6217451f"
+  url "https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-3.7.8.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.7/gnutls-3.7.8.tar.xz"
+  sha256 "c58ad39af0670efe6a8aee5e3a8b2331a1200418b64b7c51977fb396d4617114"
   license all_of: ["LGPL-2.1-or-later", "GPL-3.0-only"]
 
   livecheck do
@@ -12,12 +12,14 @@ class Gnutls < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "89de6f63ccc9c03cc1d4f5d10431593408de8f6733951b14bb396b2ed11ede38"
-    sha256 arm64_big_sur:  "479fb27f653caec6dee8cab71949a48c2e78b144b8ece0c480ff0126d26d171d"
-    sha256 monterey:       "1fb816706b998a0131ea2c4aed3a71143efc8101358d6c334e5dce23cd3f08a1"
-    sha256 big_sur:        "3ec77636e41fe64b2d42fbcecb8c1aa2d3fb1c1665a410151406108bd93a857f"
-    sha256 catalina:       "25c46e2fbf84940cdc5ad321b20528e8c211124fdd6d995ec691972cf238b897"
-    sha256 x86_64_linux:   "e01881a84a775b5cc5f5c76bde81f15da2dafc1f0dffe38e5fbe004ea178d446"
+    sha256 arm64_ventura:  "be387b61bde3f06d690ab88984d1d8490163f5341d9190cc7d7e40f7afac73df"
+    sha256 arm64_monterey: "2de64828679245123f641ecdc5b166b444f24586184d0d5717b4ac446406009f"
+    sha256 arm64_big_sur:  "4792aaa463b7f12a7ea0ec855f47a37970797b578083a717356a16cd4a4fdad6"
+    sha256 ventura:        "02b9851e94840641c2016e4c04150bee1b6f728163e963197f53138ef185233f"
+    sha256 monterey:       "6bd29803c8373834e2a202a1998fe8b278b65a0dcd828e9b05d76b9be1d5a623"
+    sha256 big_sur:        "838253c281b1e3b9d6381ab37ed31721c77a31efd6afcff7c778bc28ce653f9f"
+    sha256 catalina:       "90fec765342bfc3776982274521d27841557555a7b4eec3dc9740344b988366e"
+    sha256 x86_64_linux:   "c35d31c338bae2286575eee494fc6792b2a3cb7835d2ce3cc984ce9df52f66ed"
   end
 
   depends_on "pkg-config" => :build
@@ -32,10 +34,6 @@ class Gnutls < Formula
   depends_on "unbound"
 
   def install
-    # Fix compile crash on Apple Silicon.
-    # https://gitlab.com/gnutls/gnutls/-/issues/1347
-    inreplace "lib/accelerated/aarch64/Makefile.in", /^(AM_CCASFLAGS =) -Wa,-march=all$/, "\\1" if OS.mac?
-
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules

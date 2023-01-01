@@ -1,8 +1,8 @@
 class Rsyslog < Formula
   desc "Enhanced, multi-threaded syslogd"
   homepage "https://www.rsyslog.com/"
-  url "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2204.1.tar.gz"
-  sha256 "a6d731e46ad3d64f6ad4b19bbf1bf56ca4760a44a24bb96823189dc2e71f7028"
+  url "https://www.rsyslog.com/files/download/rsyslog/rsyslog-8.2212.0.tar.gz"
+  sha256 "53b59a872e3dc7384cdc149abe9744916776f7057d905f3df6722d2eb1b04f35"
   license all_of: ["Apache-2.0", "GPL-3.0-or-later", "LGPL-3.0-or-later"]
 
   livecheck do
@@ -11,15 +11,17 @@ class Rsyslog < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "5d15c96f760440aa5fe801557b5a725691baf405a8afafc2726995af214a16e8"
-    sha256 arm64_big_sur:  "ec3c3f95d2d963060f8e6ce3af78baa00daed34c3e0b6068835cd1b287651689"
-    sha256 monterey:       "51f4511a1f43d43ccd6078d45f8b5603ee38a4b3ddcc44b446b3a2e5c99d4de2"
-    sha256 big_sur:        "3d0423d8820c44a7537f7861f2491df4d32afa173e0ab463794b633ab7033121"
-    sha256 catalina:       "c975464697c4edc55f43408a3c4ab5d7a373d84516a94ecbdfbf78a7844f2177"
-    sha256 x86_64_linux:   "b1a80ac8bc85c0e25de38472907119ecb807aa4780ecb0962a13d6fc526f1828"
+    sha256 arm64_ventura:  "ea07ecd8c1ae19c9eaf4aa6de15967db259e6337a42edb618337eaa22428e659"
+    sha256 arm64_monterey: "c0093e2af230c0326c732e344456d4331675243fa4d5d1d09d25790a7a28c111"
+    sha256 arm64_big_sur:  "62a189e54933f372b8ff1b09a917a2d6318c7dee4728ac78395eeefd4d2f335b"
+    sha256 ventura:        "f5fdfa5aace6cb3b7cdfca78c9484b0136842a1dc253e15e5f976effe094216c"
+    sha256 monterey:       "73b16409f73ab1797036defbeac5e1b69cf9ab3846d87d3bf385b37528d5d573"
+    sha256 big_sur:        "ccf0a584c9a4ea5c733d2c71e34b58d1bc70de88fbc3f087c56555aec513081f"
+    sha256 x86_64_linux:   "a6563955f83d00e63a62c27490c9c4fc6102b0227d9c33d2e13763eba5ef1eb0"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "gnutls"
   depends_on "libestr"
 
   uses_from_macos "curl"
@@ -46,7 +48,8 @@ class Rsyslog < Formula
                           "--enable-usertools",
                           "--enable-diagtools",
                           "--disable-uuid",
-                          "--disable-libgcrypt"
+                          "--disable-libgcrypt",
+                          "--enable-gnutls"
     system "make"
     system "make", "install"
 
@@ -61,8 +64,6 @@ class Rsyslog < Formula
   def post_install
     mkdir_p var/"run"
   end
-
-  plist_options manual: "rsyslogd -f #{HOMEBREW_PREFIX}/etc/rsyslog.conf -i #{HOMEBREW_PREFIX}/var/run/rsyslogd.pid"
 
   service do
     run [opt_sbin/"rsyslogd", "-n", "-f", etc/"rsyslog.conf", "-i", var/"run/rsyslogd.pid"]

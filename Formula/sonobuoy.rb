@@ -1,21 +1,21 @@
 class Sonobuoy < Formula
   desc "Kubernetes component that generates reports on cluster conformance"
   homepage "https://github.com/vmware-tanzu/sonobuoy"
-  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.5.tar.gz"
-  sha256 "752e7a871f182a0ef05467e644961d74eba5110d35a7f6fd3b57445fe55e6965"
+  url "https://github.com/vmware-tanzu/sonobuoy/archive/v0.56.14.tar.gz"
+  sha256 "160591de1eb9b387504a9b3424ae5a27290b4ad25631846a76e96c83865748fc"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1f0fc8cff890d243ffe96dafb9c8350ac05a9c80c713cedd891c655702593e85"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5919e308fd5aeb067be7b2fb0a46771ed33fd56ce6db0ac700e60a1c66205e63"
-    sha256 cellar: :any_skip_relocation, monterey:       "56bcfdbb2f28bff911ffb0fb89c276f95dac03a4633b2d2772ffbbafee01ecde"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a75a0ad308962bdcaaaa2251bdd5895ee5874db108e6a0e735610f4460e298d6"
-    sha256 cellar: :any_skip_relocation, catalina:       "d5904c19f74c31c97ec52f7f6c9904c8a3494ff0d02f044ad8f9557e81e7961b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b36326db5124c524d5eb31b7587c17d94e4a854ae1868ccb3f3daa0ffebe2142"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3125438a5efa9f66ebeb9a39cc06001155c2b370858c9cb63f42111b0e055b0c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e0f186235fad405783f56b1febcedbf9eb8ff3e0b73744fd5aa84dce383537eb"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "14baeed333624bd9aea27521e98bdf9224a220c76560645c55525ea17de64cc5"
+    sha256 cellar: :any_skip_relocation, ventura:        "8fe83c3bdc7b4cfb609ef8d0d412ee9d4d231efa90a6a00c6e517fa8408c11ca"
+    sha256 cellar: :any_skip_relocation, monterey:       "bca6d675e8a393891f34b119c905f22ebe6fe8c15a54112b446ddbe7864f2c09"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3807cac8f6adcca9bbc7797fda1d95b2dd128769d52c901deaaeac8860cfd4f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51011bc0200b87df4c1a50f6f7bec7ebcd49256cdfda95e29822280e92bfd99a"
   end
 
-  # Segfaults on Go 1.18 - try test it again when updating this formula.
-  depends_on "go@1.17" => :build
+  depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X github.com/vmware-tanzu/sonobuoy/pkg/buildinfo.Version=v#{version}")

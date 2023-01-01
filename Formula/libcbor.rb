@@ -1,17 +1,18 @@
 class Libcbor < Formula
   desc "CBOR protocol implementation for C and others"
   homepage "https://github.com/PJK/libcbor"
-  url "https://github.com/PJK/libcbor/archive/v0.9.0.tar.gz"
-  sha256 "da81e4f9333e0086d4e2745183c7052f04ecc4dbcffcf910029df24f103c15d1"
+  url "https://github.com/PJK/libcbor/archive/v0.10.1.tar.gz"
+  sha256 "e8fa0a726b18861c24428561c80b3c95aca95f468df4e2f3e3ac618be12d3047"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ebb91ce404c53552b9ec1f2a4800bc2c1a9e83cd1692d8b1e1612b4734b92925"
-    sha256 cellar: :any,                 arm64_big_sur:  "53bf212a9f3fa8544360ad26e3eb574b80875ff3dac74193d9092d781b20286c"
-    sha256 cellar: :any,                 monterey:       "d07e3853a1d2d1cabe8ac3f4c005a3d90226f9f5faa8d174f61c76b121a351cc"
-    sha256 cellar: :any,                 big_sur:        "445ccae0ed1133be713e635c11e6591946e2df0345627db9214c10fdc0f9256b"
-    sha256 cellar: :any,                 catalina:       "78b58702fde7659d633f12b176e8e2c1747b39616c218160f7f10697473adff0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2f103b611cf187099332e4cfe1638e261a35bd6181d3fadbfcb9daeadff734f"
+    sha256 cellar: :any,                 arm64_ventura:  "5f28c88bc7f8d1f7151fdcfa5914e376243ec871023c55c35c93bc24132317dd"
+    sha256 cellar: :any,                 arm64_monterey: "4e24385ee758d122aa94647b657cf2ad51b0b1f1b206c5b5c28584013ed46ddb"
+    sha256 cellar: :any,                 arm64_big_sur:  "9f95e222a5ffe4ac89b36930851b6918d9b574e6d959b96c7fdeb02058aa2645"
+    sha256 cellar: :any,                 ventura:        "d47430f5ed58a42c6062217d8c83dea5af4d6d1ff8c02a0c8ea9121cf7a9b027"
+    sha256 cellar: :any,                 monterey:       "273d6d3a9fec6bfdaec5127bba7ed30804320bb17488042397a50e15e2f020e7"
+    sha256 cellar: :any,                 big_sur:        "e4fd52516f99358858359b1acb624bb7242d272eb4697f6dc597470c772ef5c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc65c81bee78c14d16e99717e8700d93373c6782fddcc13f970036d9a129eda2"
   end
 
   depends_on "cmake" => :build
@@ -30,10 +31,9 @@ class Libcbor < Formula
     #include <stdio.h>
     int main(int argc, char * argv[])
     {
-    printf("Hello from libcbor %s\\n", CBOR_VERSION);
-    printf("Custom allocation support: %s\\n", CBOR_CUSTOM_ALLOC ? "yes" : "no");
-    printf("Pretty-printer support: %s\\n", CBOR_PRETTY_PRINTER ? "yes" : "no");
-    printf("Buffer growth factor: %f\\n", (float) CBOR_BUFFER_GROWTH);
+      printf("Hello from libcbor %s\\n", CBOR_VERSION);
+      printf("Pretty-printer support: %s\\n", CBOR_PRETTY_PRINTER ? "yes" : "no");
+      printf("Buffer growth factor: %f\\n", (float) CBOR_BUFFER_GROWTH);
     }
     EOS
 

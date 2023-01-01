@@ -11,8 +11,10 @@ class Tractorgen < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a07397a99a6b5a3a89e526ab1e81c5104cd253e4cad62ef38e898cae2be99ae6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1049100b1891c7793e614bd2664b64e44ea4530d747bd045c2cff706b590d293"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cc7c0c6f2a31533393973e0931d984d1ceff57e2ee1f49c03a8633d33ecfde7b"
+    sha256 cellar: :any_skip_relocation, ventura:        "bf9cca05d072ba7f124327a71a6b0497e791a6d80d91792522d0bf580a8aafce"
     sha256 cellar: :any_skip_relocation, monterey:       "2b4816dae0957cd762efafda336d1a34c7b45feca63e366bf53c4267dbbb47c5"
     sha256 cellar: :any_skip_relocation, big_sur:        "15391ab31cdfcf2c6a844b9e39aed0fabb01e0aa3d03e7a72602f02f0f0e759c"
     sha256 cellar: :any_skip_relocation, catalina:       "b28ff1c764b92992d82e16d8ab283215101f3a3aeabcf9aa2d4a952451a779dc"
@@ -20,7 +22,6 @@ class Tractorgen < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "936883746158534e9650a0b26f18e680eed527fb56f71ad51e5ec203d8f7f451"
     sha256 cellar: :any_skip_relocation, sierra:         "646d87ca0cb1a5ec93a8aa1ddaa1f28233347ca0a1f56e49c323809ec8295432"
     sha256 cellar: :any_skip_relocation, el_capitan:     "ccac503b4577fc81e69d3e778c27c31fad9a1c5fa8627e97f293d87ab1177f8d"
-    sha256 cellar: :any_skip_relocation, yosemite:       "e50de2fd2d9015873282a62fc7a21f3ef419d527d07eeab3830ace52ec25c3c9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d67a731185350d21bdeea6e2e6a478409b430f371d21f6b595d44e7b7ebc2363"
   end
 

@@ -1,10 +1,10 @@
 class Xmrig < Formula
   desc "Monero (XMR) CPU miner"
   homepage "https://github.com/xmrig/xmrig"
-  url "https://github.com/xmrig/xmrig/archive/v6.17.0.tar.gz"
-  sha256 "748a989390202ba2d1ccbd9d9a6b8cbd6551149cbab63b347fd1ed6df0254faa"
+  url "https://github.com/xmrig/xmrig/archive/v6.18.1.tar.gz"
+  sha256 "f97fe20248e0eb452f77e9b69f2fb1510b852152b3af4f9a8b20680c854888d1"
   license "GPL-3.0-or-later"
-  head "https://github.com/xmrig/xmrig.git", branch: "master"
+  head "https://github.com/xmrig/xmrig.git", branch: "dev"
 
   livecheck do
     url :stable
@@ -12,12 +12,12 @@ class Xmrig < Formula
   end
 
   bottle do
-    sha256                               arm64_monterey: "a003d05e56ecd9168a034b4f45891ab52ab93a854e629f4433c1816f72b24317"
-    sha256                               arm64_big_sur:  "41b88534766fd352e53873c97842c459a932c123cfbddc3aabc3a62d32ebc8c9"
-    sha256                               monterey:       "1572b95a2018fe4cae59b38354f9cf3a212931a146bfb1b13b1211658d251fcc"
-    sha256                               big_sur:        "d6021e38504ee50f39369d0700d5dd30d5a2da3e265614436076af1e2c7d9212"
-    sha256                               catalina:       "48c53323accf223f7f3b756b795b07ff53d568c5f0053b6232d74251aaa612d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb324b92d3cb8c231bd6c45a62785d29d31eef7a68d0ee50fdc5367b3be7b08a"
+    sha256                               arm64_ventura:  "96ba88c286be6e5b37025365e58b1a59b20e4ec19022489123b25ad32701e2c1"
+    sha256                               arm64_monterey: "571d64dca5b8bde50a3e29316c82643bc363c6f8fd2d4a221b5c67de0c3aa097"
+    sha256                               arm64_big_sur:  "2b61ffc4d5e7f8918f7f0c5bd1821a75da07777d652e861836968378fd0bbaec"
+    sha256                               monterey:       "b32548656468b7383a18a53e002f6ec094809b476da7b3a70975aa87e00946f2"
+    sha256                               big_sur:        "3c3d52dc162f372e33690b41ebda25b0cbf533ad0b3cc0b4a1621a9022841eb5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64683cfd18f31c4998e204a59e5e1e6ef9280b706d73696494b272ac4b31acd8"
   end
 
   depends_on "cmake" => :build

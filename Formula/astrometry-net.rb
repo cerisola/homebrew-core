@@ -3,10 +3,9 @@ class AstrometryNet < Formula
 
   desc "Automatic identification of astronomical images"
   homepage "https://github.com/dstndstn/astrometry.net"
-  url "https://github.com/dstndstn/astrometry.net/releases/download/0.89/astrometry.net-0.89.tar.gz"
-  sha256 "98e955a6f747cde06904e461df8e09cd58fe14b1ecceb193e3619d0f5fc64acb"
+  url "https://github.com/dstndstn/astrometry.net/releases/download/0.93/astrometry.net-0.93.tar.gz"
+  sha256 "9a4854c87210422e113b8f6855912a38f0b187526171364ee2a889d36c674d70"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
     url :stable
@@ -14,12 +13,13 @@ class AstrometryNet < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ab82820ca73b7ff92197bfc1fcdd424951ef3e946e4bdb17e780090df2d8cd46"
-    sha256 cellar: :any,                 arm64_big_sur:  "c965cf45db269d7399ddf42dc5899df5e2fb4ef6d371260d15b7408a65604e42"
-    sha256 cellar: :any,                 monterey:       "7a0fe0133ba37138b8ac9b05a603b42598cf512f047f4914cee223a31a79bfd7"
-    sha256 cellar: :any,                 big_sur:        "8620d6be5c82ba6575b4641a6808940eca0eea0751724d3b705aaf6fd0d517be"
-    sha256 cellar: :any,                 catalina:       "a00a127f86ce596651a613480b4bb682b4704e76dbeb325b046faf50753d5505"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7c7ac288fb560fa9327ae3de30e4296e71674aa94066cdeb89666f20a70b1121"
+    sha256 cellar: :any,                 arm64_ventura:  "fcb9b79443432232792b10a4c5a47bdb50d1475fd1f1ec29f35428ae1f3ddf9b"
+    sha256 cellar: :any,                 arm64_monterey: "e100c8672e261886fa944a5e07ae664c6cc125b88abc0e408b314135cd0a0644"
+    sha256 cellar: :any,                 arm64_big_sur:  "1bc3fe27cbe434b0e36940984df1cc57ef664fc5b7a50932e974a19d18ac11be"
+    sha256 cellar: :any,                 ventura:        "3250164d38bdca155ab140cbed0d3e1c3af9adb01d92e4c0df132c74a22ba14f"
+    sha256 cellar: :any,                 monterey:       "0251706bcea94e97119486b8249b34e8ff3ec27992732919208b67730955f395"
+    sha256 cellar: :any,                 big_sur:        "75654199ace88853110e1d06daa41c46f933c4798c7d8c4275fdbff9a60cb81a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "80d70c566fcc127038285f15d9ae1602fd1321aa39e4c169a433628c1b96ab4a"
   end
 
   depends_on "pkg-config" => :build
@@ -31,12 +31,12 @@ class AstrometryNet < Formula
   depends_on "libpng"
   depends_on "netpbm"
   depends_on "numpy"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
   depends_on "wcslib"
 
   resource "fitsio" do
-    url "https://files.pythonhosted.org/packages/23/ec/280f91842d5aeaa1a95dc1d86d64d3fe57a5a37a98bb39b73a963f5dc91d/fitsio-1.1.6.tar.gz"
-    sha256 "3e7e5d4fc025d8b6328ae330e72628b92784d4c2bb2f1f0caeb75e730b2f91a5"
+    url "https://files.pythonhosted.org/packages/1f/0e/b312ff3f6b588c13fc2256a5df4c4d63c527a07e176012d0593136af53ee/fitsio-1.1.8.tar.gz"
+    sha256 "61f569b2682a0cadce52c9653f0c9b81f951d000522cef645ce1cb49f78300f9"
   end
 
   def install
@@ -44,19 +44,20 @@ class AstrometryNet < Formula
     # See https://github.com/dstndstn/astrometry.net/issues/178#issuecomment-592741428
     ENV.deparallelize
 
+    python = which("python3.11")
     ENV["NETPBM_INC"] = "-I#{Formula["netpbm"].opt_include}/netpbm"
     ENV["NETPBM_LIB"] = "-L#{Formula["netpbm"].opt_lib} -lnetpbm"
     ENV["SYSTEM_GSL"] = "yes"
-    ENV["PYTHON"] = Formula["python@3.9"].opt_bin/"python3"
+    ENV["PYTHON"] = python
 
-    venv = virtualenv_create(libexec, Formula["python@3.9"].opt_bin/"python3")
+    venv = virtualenv_create(libexec, python)
     venv.pip_install resources
 
     ENV["INSTALL_DIR"] = prefix
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    ENV["PY_BASE_INSTALL_DIR"] = libexec/"lib/python#{xy}/site-packages/astrometry"
-    ENV["PY_BASE_LINK_DIR"] = libexec/"lib/python#{xy}/site-packages/astrometry"
-    ENV["PYTHON_SCRIPT"] = libexec/"bin/python3"
+    site_packages = Language::Python.site_packages(python)
+    ENV["PY_BASE_INSTALL_DIR"] = libexec/site_packages/"astrometry"
+    ENV["PY_BASE_LINK_DIR"] = libexec/site_packages/"astrometry"
+    ENV["PYTHON_SCRIPT"] = libexec/"bin/python"
 
     system "make"
     system "make", "py"
@@ -66,18 +67,18 @@ class AstrometryNet < Formula
   end
 
   test do
-    system "#{bin}/image2pnm", "-h"
-    system "#{bin}/build-astrometry-index", "-d", "3", "-o", "index-9918.fits",
+    system bin/"image2pnm", "-h"
+    system bin/"build-astrometry-index", "-d", "3", "-o", "index-9918.fits",
                                             "-P", "18", "-S", "mag", "-B", "0.1",
                                             "-s", "0", "-r", "1", "-I", "9918", "-M",
-                                            "-i", "#{prefix}/examples/tycho2-mag6.fits"
+                                            "-i", prefix/"examples/tycho2-mag6.fits"
     (testpath/"99.cfg").write <<~EOS
       add_path .
       inparallel
       index index-9918.fits
     EOS
-    system "#{bin}/solve-field", "--config", "99.cfg", "#{prefix}/examples/apod4.jpg",
-                                 "--continue", "--dir", "."
+    system bin/"solve-field", "--config", "99.cfg", prefix/"examples/apod4.jpg",
+                              "--continue", "--dir", "."
     assert_predicate testpath/"apod4.solved", :exist?
     assert_predicate testpath/"apod4.wcs", :exist?
   end

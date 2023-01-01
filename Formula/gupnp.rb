@@ -6,14 +6,17 @@ class Gupnp < Formula
   url "https://download.gnome.org/sources/gupnp/1.4/gupnp-1.4.3.tar.xz"
   sha256 "14eda777934da2df743d072489933bd9811332b7b5bf41626b8032efb28b33ba"
   license "LGPL-2.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "1937e917519b9784475606a21cc66d5b2ed5914c2008105c992b91a04bee834f"
-    sha256 cellar: :any, arm64_big_sur:  "811b1ec251e75dcec1a4f0b885edb3ec50f3b26e27ef0220f2da02bdc19017ff"
-    sha256 cellar: :any, monterey:       "56d15f95db673670a3cb899a223bba0b683daa6ddc3c65aadb0a6a85b0a51cef"
-    sha256 cellar: :any, big_sur:        "82379629f5708acfbfb767f53e6a0bdfd69ae3a8aeb4b3b747b0c906d7fcda44"
-    sha256 cellar: :any, catalina:       "7e2f769606feeb7276facb34f936b547cbabe451dcd76e3428ccf11c03c32f86"
-    sha256               x86_64_linux:   "5c70c2506558b48c9457ab89025929328f31333a14afe65d8d96010c7d8ed7f4"
+    rebuild 1
+    sha256 cellar: :any, arm64_ventura:  "81898c6f9183f8a141769c6aadd63f8835ab7dbb9a3fca0145b0862f4d4af04c"
+    sha256 cellar: :any, arm64_monterey: "7124e700f0f5f5ba2ea1d8b5666dd14738419a0a5476ac04a5de4a0eebf05290"
+    sha256 cellar: :any, arm64_big_sur:  "70b42ccefc7c188fa66a9d8fec99c64db4269e6a3364d765b778be23efa2d368"
+    sha256 cellar: :any, ventura:        "9288f119efbbe36f19bd6462e0acd10dfd9e1dc1fb92019742d6af2f00a73b50"
+    sha256 cellar: :any, monterey:       "4f0b3dbfd0daf7822f822958336f4e02d4c08983754294084edfac0da4927a35"
+    sha256 cellar: :any, big_sur:        "cd0880e2a66e5984f0d9a10bc76d2112bc23feeb250afd8f1d4bab3579f7dfdb"
+    sha256               x86_64_linux:   "6014f70bdae037603987199b6182a7fb70cdfa0184ed3c1a46f5c6a607cbf926"
   end
 
   depends_on "docbook-xsl" => :build
@@ -27,21 +30,18 @@ class Gupnp < Formula
   depends_on "gssdp"
   depends_on "libsoup@2"
   depends_on "libxml2"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   def install
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["libsoup@2"].opt_lib/"pkgconfig"
     ENV.prepend_path "XDG_DATA_DIRS", Formula["libsoup@2"].opt_share
     ENV.prepend_path "XDG_DATA_DIRS", HOMEBREW_PREFIX/"share"
+    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
-    mkdir "build" do
-      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
-
-      system "meson", *std_meson_args, ".."
-      system "ninja"
-      system "ninja", "install"
-      rewrite_shebang detected_python_shebang, *bin.children
-    end
+    system "meson", *std_meson_args, "build"
+    system "meson", "compile", "-C", "build", "-v"
+    system "meson", "install", "-C", "build"
+    rewrite_shebang detected_python_shebang, *bin.children
   end
 
   test do

@@ -1,18 +1,20 @@
 class Dsq < Formula
   desc "CLI tool for running SQL queries against JSON, CSV, Excel, Parquet, and more"
   homepage "https://github.com/multiprocessio/dsq"
-  url "https://github.com/multiprocessio/dsq/archive/refs/tags/0.16.0.tar.gz"
-  sha256 "d8feb5a1fc195a30e6a6f5648d9ec678dbd51fb792197797819642b2b1c31453"
+  url "https://github.com/multiprocessio/dsq/archive/refs/tags/v0.23.0.tar.gz"
+  sha256 "02c923f9089399bf66809bedcb3fec27022f11829e0ed2ac9c7ff87f72e85d8d"
   license "Apache-2.0"
   head "https://github.com/multiprocessio/dsq.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "eceb54636b218964145e15d878432843b506fc8d4f6ea5d427af6b6f6dfa8c6b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c94dfc5efddd55a5a1ab1933a1e49e76437d1620e5fb3bb3df1c43885e337ec0"
-    sha256 cellar: :any_skip_relocation, monterey:       "ed5ce7e33774fc9c3ea642b48935652691f56f8a98a308615dafc468d0265b21"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fb2cd0c479bb3da6d7e3e9afa7b418d26be148a11a3a6271c25db0dbe1055e49"
-    sha256 cellar: :any_skip_relocation, catalina:       "e317c84ab16572071ffe27a3e3d23b6728f7b4323cf17c9616b2c0246610d5fb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f21ab9ff7909467f7d269edebb0a392579c6b6103ab2a3f89dfe6691c29bf55"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "eaf172ab4d1aecede0ecfd67bc1faeeb7925d3e7494889ccb91f3b1aa0127cc3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "13453e55035ec7f611bf1497d34c7e0eefae9e74a85bc2cd97b88ac158e93ac3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "63fe0d51ed81cbfe1b078d92c30ab1c643107ab77239941b1fcda4fee473167e"
+    sha256 cellar: :any_skip_relocation, ventura:        "cb66853afae665e55d8fe3fac0c9cfcfcf32136390928a62a1c6f4138b226145"
+    sha256 cellar: :any_skip_relocation, monterey:       "1378c8a63d25c81803072c3ae5092e9abb3edd3ac5dd56f51409671f1ff3b8b9"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f18c7a77e60d4c6ffebab006f5eacb751c8a0ffa729f506b153e837c03f59934"
+    sha256 cellar: :any_skip_relocation, catalina:       "4733972637d9dd70139520cf2dfd0b243fcd3a8bd62b455efc144dd8bcd1c895"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "328ba290cbe117afa004b3ac9c9ea32fad38b062150ba47de467ba409ebd0069"
   end
 
   depends_on "go" => :build

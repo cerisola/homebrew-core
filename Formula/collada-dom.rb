@@ -3,26 +3,36 @@ class ColladaDom < Formula
   homepage "https://www.khronos.org/collada/wiki/Portal:COLLADA_DOM"
   url "https://github.com/rdiankov/collada-dom/archive/v2.5.0.tar.gz"
   sha256 "3be672407a7aef60b64ce4b39704b32816b0b28f61ebffd4fbd02c8012901e0d"
-  revision 1
+  revision 4
   head "https://github.com/rdiankov/collada-dom.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "6baf8c9373cc9694ee34a651bcc5e7f334853969394d3d4b6b64d20688cf396a"
-    sha256 cellar: :any,                 arm64_big_sur:  "d4c611de9f56ddadaf4e34fdea1049c02289fc81bd0bd9c6e6665f7f15c0f4cb"
-    sha256 cellar: :any,                 monterey:       "764bd5de44b51b088e61df10fd3b8f66581b31ec37821810c6e24d9dd2bc4e32"
-    sha256 cellar: :any,                 big_sur:        "b0987e22d6e0eb6a4b5d5c2413fd629204d1b32c13dd4798bca499446ff89391"
-    sha256 cellar: :any,                 catalina:       "7f2ca06cafbed79ee7df9d03f7842a6bdee997f5d77ed8421b528f79fbe75dd3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4e38b4a56ab6e5192f8f8d287fb33f0810c3a09fc1bbd32a490bc1486484594c"
+    sha256 cellar: :any,                 arm64_ventura:  "c920a17cba52a9eddfcf9951004af4f929ac75c332aea326d6526302b26a7392"
+    sha256 cellar: :any,                 arm64_monterey: "3f4c94c87fcf91e70742ee59d9beaac2795f0338732d5416a68e498d58c4067d"
+    sha256 cellar: :any,                 arm64_big_sur:  "0fd24a0542b44e9718527d769a8f3b2229ee2f3f9e0c114472d0d28f9499edc7"
+    sha256 cellar: :any,                 ventura:        "e44ce87f14897e0656a82496c88935dee68e96e509a58c4f47ea03aa74ab8284"
+    sha256 cellar: :any,                 monterey:       "70bca431ec07f8e203c0fb60621527a6df11a122871c02af2e3b34cb615542bb"
+    sha256 cellar: :any,                 big_sur:        "45fe76243a5bfb058c5e5e618d7fa974177097c52ffedcaa53e2b19180634221"
+    sha256 cellar: :any,                 catalina:       "8cfbaf5caa2d489b860348d49596907fb137048241f64645a60d5156f4378ffc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01048c13f1eb1ac249b40ff691c712724d0cbcaabfbc0d11eead0db21f15f5fa"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "boost"
+  depends_on "minizip"
   depends_on "pcre"
+
   uses_from_macos "libxml2"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    # Remove bundled libraries to avoid fallback
+    (buildpath/"dom/external-libs").rmtree
+
+    ENV.cxx11 if OS.linux? # due to `icu4c` dependency in `libxml2`
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

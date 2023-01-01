@@ -1,18 +1,19 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "https://rocksdb.org/"
-  url "https://github.com/facebook/rocksdb/archive/v7.0.3.tar.gz"
-  sha256 "85bcdcd4adcd77eed6748804d5672d5725b5d2a469694e2a3dbd21b175cf4fd2"
+  url "https://github.com/facebook/rocksdb/archive/v7.8.3.tar.gz"
+  sha256 "b85408a374770897332bf15e51620a5f35720dd416a4749e3899057f9cfaf84d"
   license any_of: ["GPL-2.0-only", "Apache-2.0"]
   head "https://github.com/facebook/rocksdb.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "72d280af1e3cc131ef2de59781a7eb89d4ce61df0defc23a2e3ddb0c8d21bb4e"
-    sha256 cellar: :any,                 arm64_big_sur:  "7749fba348ffefb6fe0830146c031d038e2e5cf3d5e863abf6a8b61ae200dcee"
-    sha256 cellar: :any,                 monterey:       "7ec3031bd34da67798b9b5aa6090b5ba438e1aea18ff7a098b3834c0051e15c2"
-    sha256 cellar: :any,                 big_sur:        "bc59c25326447c43172e92f784533d722dca9ae1edf5cd4b0200056fc046dda3"
-    sha256 cellar: :any,                 catalina:       "94b0de194cd78db1eaeb43220754fdec2349734b7098a6fc44bb681e8e712e88"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "262d1ae78f4a4c82220f64d915aec54bdc4e6e923268b7848524bae2e314b754"
+    sha256 cellar: :any,                 arm64_ventura:  "86d6086c42b41596f7ada2307676f56c8e0e002d6e00b51c2ace43b0f064e59a"
+    sha256 cellar: :any,                 arm64_monterey: "56aa2836bd613d91a37577e03f0f921680e2909dad6415be9f05ebb978dbff88"
+    sha256 cellar: :any,                 arm64_big_sur:  "3cd399195acd4c55aaf36bffe0f9f4b5fecd4c49ebba28a5e40e551bc6fdd3de"
+    sha256 cellar: :any,                 ventura:        "7f5f34f672fdfe5deb65ff111bc94d5736fb9d0bc9b5ee3857833cc0095bac03"
+    sha256 cellar: :any,                 monterey:       "572097b1c71f91bd72ba8433bd78442133d4590c0b406e470b9ad66c526d15cc"
+    sha256 cellar: :any,                 big_sur:        "fcd02cefb851fde0327621fe315050e6de9de1bc45cc0269eafca417bec9924f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "282951afeadd54320f61d8f786c6ec8e70881338cec85e2ab089815014666552"
   end
 
   depends_on "cmake" => :build
@@ -23,10 +24,6 @@ class Rocksdb < Formula
 
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with :gcc do
     version "6"

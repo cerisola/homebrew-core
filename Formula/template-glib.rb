@@ -1,34 +1,35 @@
 class TemplateGlib < Formula
   desc "GNOME templating library for GLib"
   homepage "https://gitlab.gnome.org/GNOME/template-glib"
-  url "https://download.gnome.org/sources/template-glib/3.34/template-glib-3.34.1.tar.xz"
-  sha256 "9ec9b71e04d4f5cb14f755ef790631cd0b45c0603e11c836fc7cfd9e268cd07a"
+  url "https://download.gnome.org/sources/template-glib/3.36/template-glib-3.36.0.tar.xz"
+  sha256 "1c129525ae64403a662f7666f6358386a815668872acf11cb568ab39bba1f421"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "be8fc4d72fbfb17644f0b2ed2b7d75491d2530b2710b078b02cbfdf5304a0682"
-    sha256 cellar: :any, arm64_big_sur:  "0228c360582623dcb8bd4bb14b2d47baf6ae637e4bb4776780ae75fc86ffeba6"
-    sha256 cellar: :any, monterey:       "2808b8b2d0eee2992afcda86682184b347c502fd84c48029edf69819072ac606"
-    sha256 cellar: :any, big_sur:        "ef0d03c969f03f069ad1f7ba60a160dc1c9c04adfb6d39b5c9af8b43ad84fcf6"
-    sha256 cellar: :any, catalina:       "e74fa0049981920556c9f421a117c623abca2795b9a3a4c6ccad886ce4fe341c"
-    sha256               x86_64_linux:   "8231a498d96ef26c2da9bfb311ca936c57fffb14f59177aef8594dcb6a02ed7d"
+    rebuild 1
+    sha256 cellar: :any, arm64_ventura:  "7000f81cbd5236aa9e0bf70da2c98ef863b3149b8df04a02b13fbbf4ddd5d44b"
+    sha256 cellar: :any, arm64_monterey: "d8f59e2becba0ca4f4a8cfe84e4a267dbfc84a2264f36c45fbb99bd97fe93553"
+    sha256 cellar: :any, arm64_big_sur:  "d6a2fb29f7d64b8d4e7972eb0f65396cff0fb7522011fac4bedff013efbcd0fe"
+    sha256 cellar: :any, ventura:        "7428702cc2136dc1d4d3c5bcb53a327d1331a1aead0d45a02d50029fb27bacbf"
+    sha256 cellar: :any, monterey:       "4af0e6fe31c9292a6e0bcfb52fe0bf5ef643f4c6fb5905873fc25bffbd2cb9f2"
+    sha256 cellar: :any, big_sur:        "51e0f8bd19c26f7175482d581f60985fa8bccf7090e01929e92b28858d6f8cb6"
+    sha256               x86_64_linux:   "0ee3bc0d18e77f69efbf558af857a3360a3729cbf1563b8c66423c435b5e918c"
   end
 
   depends_on "bison" => :build # does not appear to work with system bison
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+  depends_on "vala" => :build
   depends_on "glib"
   depends_on "gobject-introspection"
 
   uses_from_macos "flex"
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, "-Dwith_vapi=false", ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", "-Dvapi=true", "-Dintrospection=enabled", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do

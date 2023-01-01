@@ -1,18 +1,19 @@
 class Hcl2json < Formula
   desc "Convert HCL2 to JSON"
   homepage "https://github.com/tmccombs/hcl2json"
-  url "https://github.com/tmccombs/hcl2json/archive/v0.3.4.tar.gz"
-  sha256 "41c63b892e9a1488c5380faee83d341482352199175588fb46fa838f3b75e6a3"
+  url "https://github.com/tmccombs/hcl2json/archive/refs/tags/v0.3.6.tar.gz"
+  sha256 "500a7a6b85c2ca2da357c8b95fd39caa298e9e9bd46167651c62c380d9ebfc7e"
   license "Apache-2.0"
   head "https://github.com/tmccombs/hcl2json.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cc74090b0abcd15cdcc1f2a23450ad6dcd7255ad4826932d613f53409a9b96ae"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cc74090b0abcd15cdcc1f2a23450ad6dcd7255ad4826932d613f53409a9b96ae"
-    sha256 cellar: :any_skip_relocation, monterey:       "9d4ba59c2ac8d5f10dc848f68704647f8fb6e67fd447efd1a2c81762c40f7d64"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9d4ba59c2ac8d5f10dc848f68704647f8fb6e67fd447efd1a2c81762c40f7d64"
-    sha256 cellar: :any_skip_relocation, catalina:       "9d4ba59c2ac8d5f10dc848f68704647f8fb6e67fd447efd1a2c81762c40f7d64"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13d812e1296de5f1ccc26bbafe8a79fd42f7fc19f0b8e34da06c626a692440e4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "11f8d47d705d970f6f311b60ae52e49c15cd4ea5dfc0522b754af7db86c02132"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "11f8d47d705d970f6f311b60ae52e49c15cd4ea5dfc0522b754af7db86c02132"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "11f8d47d705d970f6f311b60ae52e49c15cd4ea5dfc0522b754af7db86c02132"
+    sha256 cellar: :any_skip_relocation, ventura:        "63d8ce597be648f1c4c798c35af743a981cdb141d0e612f790157f28d65f0582"
+    sha256 cellar: :any_skip_relocation, monterey:       "63d8ce597be648f1c4c798c35af743a981cdb141d0e612f790157f28d65f0582"
+    sha256 cellar: :any_skip_relocation, big_sur:        "63d8ce597be648f1c4c798c35af743a981cdb141d0e612f790157f28d65f0582"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "647256c3d6e217b7362377461de59e4c1bdbca7ce79cd0afd358c96b493f4115"
   end
 
   depends_on "go" => :build

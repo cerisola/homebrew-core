@@ -1,17 +1,19 @@
 class Velero < Formula
   desc "Disaster recovery for Kubernetes resources and persistent volumes"
   homepage "https://github.com/vmware-tanzu/velero"
-  url "https://github.com/vmware-tanzu/velero/archive/v1.8.1.tar.gz"
-  sha256 "675034d30d3539f9292ca5896e28df6159cdf1c6436d806795a79c61bfe37cd7"
+  url "https://github.com/vmware-tanzu/velero/archive/v1.10.0.tar.gz"
+  sha256 "47feb6863ec7248e8c3ba964fabbab8be154b15393521d420285cf8cb2bda3f6"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1d5e7dd1ec446795b48ee1216e986c73fb30a8578ac8c2ce4302189e5e41d0d3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "867c35bbc9c2c4cb084c88234979161ed92232c0fe86104e8aec4803b51182d3"
-    sha256 cellar: :any_skip_relocation, monterey:       "62f38614bdb6942df5c685c51c960f990e22121affdc612d8ceb42823f1586ce"
-    sha256 cellar: :any_skip_relocation, big_sur:        "84261d846c7d13f02a9ddb406fb6f9037388dab17bfd7da28ac4b36dbfc2ef07"
-    sha256 cellar: :any_skip_relocation, catalina:       "72b446ff30792fd7e486ddd0a106dd4a74a27321fb7d597fd407160005ac1846"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9d3245f03f0a719fb9d0e2621f3c1ef6a27936fed7650fe5ee9b0a419dc2b75"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c54af8d501fa971fbbef5b80980a4cf94354a4797c134c4d8e573716ee5ffd31"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c3501d73859f630fa2074584b6ff39bb1fb9c5c3efe0dbdad78b806060d8e8a4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0a3d308fa3cbddc7a056997a62ce57685335b702e45cafc2c0f77996e07108fe"
+    sha256 cellar: :any_skip_relocation, ventura:        "f3eefcadd74a868a00e648c3b57841d79273b28221ff069ee12b1838711b97b9"
+    sha256 cellar: :any_skip_relocation, monterey:       "3b0b0d1a2a98c320b5350e86893a5361b68552b7d9d5160b7e59b9d7d9a373e6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "cf79ae529e6d7f1b260f7d3660e9f267bd01e4a72b0d860a509d4777ea8f3d10"
+    sha256 cellar: :any_skip_relocation, catalina:       "bcdbf769f38b5289ac582213f4226a4006d821f427b8692a50a602b032de9d03"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac38f76bcb5c01c792a4e151095dfd5e12438238450b2e9c956c7145cbc47534"
   end
 
   depends_on "go" => :build
@@ -23,17 +25,7 @@ class Velero < Formula
     ]
     system "go", "build", *std_go_args(ldflags: ldflags), "-installsuffix", "static", "./cmd/velero"
 
-    # Install bash completion
-    output = Utils.safe_popen_read(bin/"velero", "completion", "bash")
-    (bash_completion/"velero").write output
-
-    # Install zsh completion
-    output = Utils.safe_popen_read(bin/"velero", "completion", "zsh")
-    (zsh_completion/"_velero").write output
-
-    # Install fish completion
-    output = Utils.safe_popen_read(bin/"velero", "completion", "fish")
-    (fish_completion/"velero.fish").write output
+    generate_completions_from_executable(bin/"velero", "completion")
   end
 
   test do

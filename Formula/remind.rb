@@ -1,8 +1,8 @@
 class Remind < Formula
   desc "Sophisticated calendar and alarm"
   homepage "https://dianne.skoll.ca/projects/remind/"
-  url "https://dianne.skoll.ca/projects/remind/download/remind-03.04.00.tar.gz"
-  sha256 "b88a48ca0c55e65d76d8537cb33f8e31e421f222f8572f3b10cd7f0a316f2d52"
+  url "https://dianne.skoll.ca/projects/remind/download/remind-04.02.00.tar.gz"
+  sha256 "a6476cf0dfe71bc4668e774669100c58d68b68dc6ccf08ca7ea9fa3345e72739"
   license "GPL-2.0-only"
   head "https://git.skoll.ca/Skollsoft-Public/Remind.git", branch: "master"
 
@@ -12,12 +12,14 @@ class Remind < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9573483c77af49e52088d766d3c0f548789f3e709d4ec35a35653d3c68711024"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d7066f56602d865a30b595cd90f847cf1a5cddc9d9122701bf5ef4aaa13cd785"
-    sha256 cellar: :any_skip_relocation, monterey:       "449e45e90bd3764aecb2deaa736563d6e18129cabfa7537204fbb32daf4a0d1c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fed7ca6f5f2d6cbaa515cc7162fd63816a9c6272521d42d3e07539d8174ebeb4"
-    sha256 cellar: :any_skip_relocation, catalina:       "50962095453bfac586ae0977e6bb7fa309344f756670e43496e97ba1a075ac07"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22a3a3df2462715a1107fd0c4811808545b1d9986240832e50b3e15b3b37aa1d"
+    sha256 arm64_ventura:  "c2a1bcba977aababd25e119a83616cbac66d72356e93d33c95309a22fb9cc47d"
+    sha256 arm64_monterey: "57b522818917aa6dec6a28809c4b805c3b558fead531fb0fa9da448c415fe8c0"
+    sha256 arm64_big_sur:  "730775e3d26daf1a7a35f0e746b42db40dd1595e528aeb3a17bb44bd92510706"
+    sha256 ventura:        "4d4b1976006f2f3b998bb39f21f2e4a60857076e850de8cbc810ca1949910f1e"
+    sha256 monterey:       "57afc2cac915902842d0c1aaeaf280801e74328978efd371fc86d4135d0ecc63"
+    sha256 big_sur:        "d1610819c3951655ebc9cb637d41462a9459dacd18675735e75ddf0d87cd4c15"
+    sha256 catalina:       "0be7f6a1bbc14850a2d4ad39b43783ea6acc4f991d3d8c0b15a61917b3ddfc9b"
+    sha256 x86_64_linux:   "15b9fd47be67f496d6019be45856a4b200f150fe2ff64aace9b49a21287fd50e"
   end
 
   conflicts_with "rem", because: "both install `rem` binaries"

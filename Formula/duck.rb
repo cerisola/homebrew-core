@@ -1,8 +1,8 @@
 class Duck < Formula
   desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-8.3.3.37544.tar.gz"
-  sha256 "32d7b3e966e4faf6572b30bd145b3512e651346ead93ada0c2eab25583e4ed8b"
+  url "https://dist.duck.sh/duck-src-8.5.3.38959.tar.gz"
+  sha256 "a0c04ed874fb07eb1062b142c3aaa1190adc0789503b82e4898681e6eaedab3c"
   license "GPL-3.0-only"
   head "https://github.com/iterate-ch/cyberduck.git", branch: "master"
 
@@ -12,22 +12,22 @@ class Duck < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "9a1e7518db63c20d091e3683fd920d344bbf94219817dfa55d89b21e3aaf9c1f"
-    sha256 cellar: :any, arm64_big_sur:  "77eea3daebae6527e0233f37b173d77365ac1cedab793f70d7593d46757262d5"
-    sha256 cellar: :any, monterey:       "76c0fb3281c6b5489f896805fcd321d79eb8b9d376aa9f252a967c6bc98e5538"
-    sha256 cellar: :any, big_sur:        "c7d955410dd8f949fe630bb3ffeffdfb04a91d65ad1943f92daf0747d12c6f32"
-    sha256 cellar: :any, catalina:       "094737c11314b75b5363518ad6b30400d3de64a501d0981829d4c980f0bb001c"
-    sha256               x86_64_linux:   "81f56532a64c7e6e3ea50be4d9e7263f3951fde2e09c6268f816a1b21bb2786c"
+    sha256 cellar: :any, arm64_ventura:  "2b1cf5a5612efd2645f9c2ca56a0537de96b057e6eed0c0b7c704e94cec9f903"
+    sha256 cellar: :any, arm64_monterey: "b0561c0e6809a09f2d156c80e31fa942379b86b53de0b68284b1f61ac79a0122"
+    sha256 cellar: :any, arm64_big_sur:  "67b993b1f224b119ae3edd9068f31a63006a9c9179b2e4ddeee8faaf331296c7"
+    sha256 cellar: :any, ventura:        "dab4145b64fd4194374dd708767d5a35898432df42e641a528d577c736ac9942"
+    sha256 cellar: :any, monterey:       "95ddea4573bb8536e2f11881e848d2fff7fa792a01821cda370e3d4804e91cdd"
+    sha256 cellar: :any, big_sur:        "e5385dc323c7709be62943f7bd7f8664948f7b47be3902815779eb2bb75cec70"
+    sha256               x86_64_linux:   "5c896f55405ba4026e6d667e2495effc6d12bf2a5d633b8c644fb04c5f94d024"
   end
 
   depends_on "ant" => :build
   depends_on "maven" => :build
   depends_on "pkg-config" => :build
-  depends_on xcode: :build
-
-  depends_on "libffi"
+  depends_on xcode: ["13.1", :build]
   depends_on "openjdk"
 
+  uses_from_macos "libffi", since: :monterey # Uses `FFI_BAD_ARGTYPE`.
   uses_from_macos "zlib"
 
   on_linux do
@@ -38,13 +38,11 @@ class Duck < Formula
     depends_on "libxi"
     depends_on "libxrender"
     depends_on "libxtst"
-
-    ignore_missing_libraries "libjvm.so"
   end
 
   resource "jna" do
-    url "https://github.com/java-native-access/jna/archive/refs/tags/5.10.0.tar.gz"
-    sha256 "6ef63cbf6ff7c8eea7d72331958e79c9fd3635c987ce419c9f296db6c4fd66a4"
+    url "https://github.com/java-native-access/jna/archive/refs/tags/5.12.1.tar.gz"
+    sha256 "2046655137ecd7f03e57a14bbe05e14d8299440604f993cef171c449daa3789c"
   end
 
   resource "rococoa" do
@@ -61,12 +59,18 @@ class Duck < Formula
     # Consider creating a formula for this if other formulae need the same library
     resource("jna").stage do
       os = if OS.mac?
-        # Add linker flags for libffi because Makefile call to pkg-config doesn't seem to work properly.
-        inreplace "native/Makefile", "LIBS=", "LIBS=-L#{Formula["libffi"].opt_lib} -lffi"
-        # Force shared library to have dylib extension on macOS instead of jnilib
-        inreplace "native/Makefile",
-                  "LIBRARY=$(BUILD)/$(LIBPFX)jnidispatch$(JNISFX)",
-                  "LIBRARY=$(BUILD)/$(LIBPFX)jnidispatch$(LIBSFX)"
+        inreplace "native/Makefile" do |s|
+          libffi_libdir = if MacOS.version >= :monterey
+            MacOS.sdk_path/"usr/lib"
+          else
+            Formula["libffi"].opt_lib
+          end
+          # Add linker flags for libffi because Makefile call to pkg-config doesn't seem to work properly.
+          s.change_make_var! "LIBS", "-L#{libffi_libdir} -lffi"
+          library_var = s.get_make_var("LIBRARY")
+          # Force shared library to have dylib extension on macOS instead of jnilib
+          s.change_make_var! "LIBRARY", library_var.sub("JNISFX", "LIBSFX")
+        end
 
         "mac"
       else
@@ -90,10 +94,12 @@ class Duck < Formula
         ENV.deparallelize
         ENV["JAVA_HOME"] = Language::Java.java_home(Formula["openjdk"].version.major.to_s)
 
-        # Fix zip error on macOS because libjnidispatch.dylib is not in file list
-        inreplace "build.sh", "libjnidispatch.so", "libjnidispatch.so libjnidispatch.dylib" if OS.mac?
-        # Fix relative path in build script, which is designed to be run out extracted zip archive
-        inreplace "build.sh", "cd native", "cd ../native"
+        inreplace "build.sh" do |s|
+          # Fix zip error on macOS because libjnidispatch.dylib is not in file list
+          s.gsub! "libjnidispatch.so", "libjnidispatch.so libjnidispatch.dylib" if OS.mac?
+          # Fix relative path in build script, which is designed to be run out extracted zip archive
+          s.gsub! "cd native", "cd ../native"
+        end
 
         system "sh", "build.sh"
         buildpath.install shared_library("libjnidispatch")

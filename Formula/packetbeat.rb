@@ -2,23 +2,24 @@ class Packetbeat < Formula
   desc "Lightweight Shipper for Network Data"
   homepage "https://www.elastic.co/products/beats/packetbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.2.0",
-      revision: "045da3a1bb89944373c33332c18ca99ef6192df2"
+      tag:      "v8.5.3",
+      revision: "6d03209df870c63ef9d59d609268c11dfdc835dd"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2f65696b21ca45515413ea58e87badf2971c1ef487487fdb637fde8414cd24cd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "1929e45b0b6f7f3a949df9e4f8d88971b49038b5960eca63183e93f082264581"
-    sha256 cellar: :any_skip_relocation, monterey:       "1aabe496da8bbaff0eb4ce5f91e738e168ebddb5bbe7dfb93a14584060b03148"
-    sha256 cellar: :any_skip_relocation, big_sur:        "77b0d66d902397109e248958e6cbf02a0dc59efd6526554b94bb5d359cfad862"
-    sha256 cellar: :any_skip_relocation, catalina:       "b9756f8b1f6f64d9a4b8e19501af7ea879d885527e49f55ad41b86bbc54472c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bec80e642ad4d98904531954da2593644c03fe783319bd41024fd814b3f44140"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "723259a10eb2d9fac063ddff1ffe3111464820a26ffb3f9b67ddc8f165153dad"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "250c2f9943f66b087104757a6476349e6494a55afc8fc53b2c57f015778565e3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e9503e601dca7c0353f88ea912b2ba76dcd1b77fceb42b158eb24a515318b205"
+    sha256 cellar: :any_skip_relocation, ventura:        "a221e1efd25337f459c8c9978e608f68ef402d25890e81a83801ce3832f2996e"
+    sha256 cellar: :any_skip_relocation, monterey:       "caeea547be237c4f358804e5eee1faba3334f5c14e17d21fb393357f49928357"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f90637d0f003614f78c7fe147767fe992f284bfb94c4be47d6a66557c5a6ebcd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e3283e8c621b450acc04ed9850f7aa5b73b13dd3033f5f91f72f0a5eb605f0d"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
 
   uses_from_macos "libpcap"
 
@@ -49,6 +50,9 @@ class Packetbeat < Formula
         --path.logs #{var}/log/packetbeat \
         "$@"
     EOS
+
+    chmod 0555, bin/"packetbeat" # generate_completions_from_executable fails otherwise
+    generate_completions_from_executable(bin/"packetbeat", "completion", shells: [:bash, :zsh])
   end
 
   service do

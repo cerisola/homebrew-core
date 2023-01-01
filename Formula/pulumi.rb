@@ -2,18 +2,19 @@ class Pulumi < Formula
   desc "Cloud native development platform"
   homepage "https://pulumi.io/"
   url "https://github.com/pulumi/pulumi.git",
-      tag:      "v3.32.1",
-      revision: "fb8070829f9965455f351acb9bb52f57492518c2"
+      tag:      "v3.50.2",
+      revision: "9eddc8ab041bae07eca911c34c9eeda39bb7aea3"
   license "Apache-2.0"
   head "https://github.com/pulumi/pulumi.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ce92d35df36106da4c3142e10b21c00fe38a41e9a258b46ce53393c49af5e827"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d10ad2716d756bb939ab9e777edf7cd0e962b6c7297fa2b647be52670303babd"
-    sha256 cellar: :any_skip_relocation, monterey:       "8488fc8d4f4f5cc8b453b7340b93399a279199b3d4211f24dccfb68eca568074"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5cb2e05b38cf924e9b16fcac3e478142ff8ebf10066a2948cc80bcd51a677929"
-    sha256 cellar: :any_skip_relocation, catalina:       "b676ae39274ece491b07a0c0864c85ea320deefcf6a780fef067a748163cdb3a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b84060bc6fd256c985f0bec0b9dbe0594089858b258ec8d56cf4c4fd657ac57"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9248d7cb03c0a8d3cce6426b782ccc821ec1d86f93e5a0f582d4b89a7fc50829"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "19a8ffb98b3033f675212dd029e93a3ea5063fb37e220270992c27f39ed4a2ae"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "83f4b1b1d57b2819c77a71c42dcdd1d3d761027d947aad626ff0482c648006c9"
+    sha256 cellar: :any_skip_relocation, ventura:        "1ca83c1fceffb08a28b8b2c80f6d3260488da08a435849ba62860220849b047f"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b92b0deae9793c25ba0789a66b41e6ca9a29564f713773703c5ca2334da3a73"
+    sha256 cellar: :any_skip_relocation, big_sur:        "706c19fb58363fd01622e43d8e2214d579c9702c818516f9f191bab26d4a14eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4b6d0a7b9cc8381d5e75189e2637f1c47a1cba6d4a92ffdf3edbdc215ed68170"
   end
 
   depends_on "go" => :build
@@ -31,9 +32,7 @@ class Pulumi < Formula
     bin.install Dir["#{ENV["GOPATH"]}/bin/pulumi*"]
 
     # Install shell completions
-    (bash_completion/"pulumi.bash").write Utils.safe_popen_read(bin/"pulumi", "gen-completion", "bash")
-    (zsh_completion/"_pulumi").write Utils.safe_popen_read(bin/"pulumi", "gen-completion", "zsh")
-    (fish_completion/"pulumi.fish").write Utils.safe_popen_read(bin/"pulumi", "gen-completion", "fish")
+    generate_completions_from_executable(bin/"pulumi", "gen-completion")
   end
 
   test do

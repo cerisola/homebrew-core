@@ -1,10 +1,9 @@
 class Heimdal < Formula
   desc "Free Kerberos 5 implementation"
   homepage "https://www.h5l.org"
-  url "https://github.com/heimdal/heimdal/releases/download/heimdal-7.7.0/heimdal-7.7.0.tar.gz"
-  sha256 "f02d3314d634cc55eb9cf04a1eae0d96b293e45a1f837de9d894e800161b7d1b"
+  url "https://github.com/heimdal/heimdal/releases/download/heimdal-7.8.0/heimdal-7.8.0.tar.gz"
+  sha256 "fd87a207846fa650fd377219adc4b8a8193e55904d8a752c2c3715b4155d8d38"
   license "BSD-3-Clause"
-  revision 2
 
   livecheck do
     url :stable
@@ -13,12 +12,13 @@ class Heimdal < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "ca2abda2838279230776bba8fdb40cc49b7b94b0efb604005f7f1a168c9de32f"
-    sha256 arm64_big_sur:  "dca8fd3504c57f0825dbf60ec136292d2861d61b8a5837102689e08c72da0ff8"
-    sha256 monterey:       "ee8a3f90eabe04a9ad5ec050ad0363d1513c632479d7aa2793b77dbf8b88c19b"
-    sha256 big_sur:        "29d91fd8667d520f8061f8f3d6b2d903d916b6cbffc3794b9489172af00bf8d2"
-    sha256 catalina:       "d919e8aa4fd538bec0e26ed00623119e10631eeb2df25796fdb20849cb6e90be"
-    sha256 x86_64_linux:   "cda884fdd14cd54ff9c41866adbc31f86c3165f351b564ab93013c7ab860b8b3"
+    sha256 arm64_ventura:  "2a26a718345cbf16201908464eabc918470312b9490b411160d044ca91fffeda"
+    sha256 arm64_monterey: "469605c086a6f466b383c621b9696a01f506be578c47a89f8afb6627ab799979"
+    sha256 arm64_big_sur:  "817169ac078417ff4cb1e3a6f2c8b06f0d13033ac8498416125db75eaed29d9d"
+    sha256 ventura:        "1a6f53d8e4629ef7b0cf5b73797e0c2121e7b7cfcc8d8c86028d990d3a6831cc"
+    sha256 monterey:       "083a6661b4cb4c6d121b5627f440bfa733d5b0b86d4ff547d648888eaa2a4da2"
+    sha256 big_sur:        "34fb4389ad538efbbf671e42b20a9aafd503ce2cdc38ca8437d87d42bdac0127"
+    sha256 x86_64_linux:   "239f40e6405e0ac3231537a89872a94610d07e6c8e6324a593b55404b3c52e55"
   end
 
   keg_only "conflicts with Kerberos"
@@ -30,17 +30,17 @@ class Heimdal < Formula
   depends_on "openldap"
   depends_on "openssl@1.1"
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "perl"
 
-  resource "JSON" do
-    url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.02.tar.gz"
-    sha256 "444a88755a89ffa2a5424ab4ed1d11dca61808ebef57e81243424619a9e8627c"
+  on_linux do
+    depends_on "pkg-config" => :build
+    depends_on "python@3.11" => :build
   end
 
-  # Fix -flat_namespace being used on Big Sur and later.
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-    sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
+  resource "JSON" do
+    url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz"
+    sha256 "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35"
   end
 
   def install

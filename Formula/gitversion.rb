@@ -1,37 +1,42 @@
 class Gitversion < Formula
   desc "Easy semantic versioning for projects using Git"
   homepage "https://gitversion.net"
-  url "https://github.com/GitTools/GitVersion/archive/5.10.1.tar.gz"
-  sha256 "3e65444ef3c017187d5f16f3d43f7ea07eec9bce9e73d69438e893136a8136be"
+  # TODO: Switch `dotnet@6` to `dotnet` with v6 release
+  url "https://github.com/GitTools/GitVersion/archive/5.11.1.tar.gz"
+  sha256 "98ed28bfb22fadde72da412634f309d81030a76997ca998e1b34edc39beff489"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "e4b5f35ac7c8a3849f216a44d94deee0f7e4e6ec1b4dd4be0bf6dea29bd1fc25"
-    sha256 cellar: :any,                 arm64_big_sur:  "b8a8f5da513769bf0a24fdfec3096627711df2529e163e6c09754c20119b37c8"
-    sha256 cellar: :any,                 monterey:       "41d255127c87ae0e230504a1c8566b23b48c9da159f45d98e3b5e31cab677c66"
-    sha256 cellar: :any,                 big_sur:        "d129b46619dd7beec3998f535b75a14bbc830e0c5bfd23f8045fdb542b9c1678"
-    sha256 cellar: :any,                 catalina:       "a06a65c57f86567757fe58e96c31f9771dd9c370db4b0189f8f0582532ed0da4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b9f5183e6b87a58ea902a44881b1ff9795faa5609b862b13ae1bc5836934cc5"
+    sha256 cellar: :any,                 arm64_ventura:  "dab9486fded11ba18ab033fdca31afca9ff5aad0456ee48c40a65d87fc2dbadf"
+    sha256 cellar: :any,                 arm64_monterey: "7aced285a32f399f6c216af712c0745655152ec21ac016cd697c006d8e65c375"
+    sha256 cellar: :any,                 arm64_big_sur:  "8427313824f9cd563c5dd3271826484a28a0644694b59154e48157bda93b06b0"
+    sha256 cellar: :any,                 ventura:        "5402d2a6acb294d9bb2ccbd029a9ecd5a44f7d0348ddfaee001fc1fc79b77067"
+    sha256 cellar: :any,                 monterey:       "8d67d167194126c8e2d992e2eae39bb14acdb84f4a8bfd040949a603315a87ac"
+    sha256 cellar: :any,                 big_sur:        "b2b362d2d07235f1bbbbfcb51cc7d2d1b531cf0238de565145cab3bfccbdddde"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fcb1a9e046e2542f7de19c4abdb49f21ca78e54c3c73480216c835826f880386"
   end
 
-  depends_on "dotnet"
+  depends_on "dotnet@6"
 
   def install
+    dotnet = Formula["dotnet@6"]
     os = OS.mac? ? "osx" : OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
 
     args = %W[
       --configuration Release
-      --framework net#{Formula["dotnet"].version.major_minor}
+      --framework net#{dotnet.version.major_minor}
       --output #{libexec}
       --runtime #{os}-#{arch}
       --no-self-contained
       -p:PublishSingleFile=true
+      -p:Version=#{version}
     ]
     args << "-p:OsxArm64=true" if OS.mac? && Hardware::CPU.arm?
 
     system "dotnet", "publish", "src/GitVersion.App/GitVersion.App.csproj", *args
-    env = { DOTNET_ROOT: "${DOTNET_ROOT:-#{Formula["dotnet"].opt_libexec}}" }
+    env = { DOTNET_ROOT: "${DOTNET_ROOT:-#{dotnet.opt_libexec}}" }
     (bin/"gitversion").write_env_script libexec/"gitversion", env
   end
 

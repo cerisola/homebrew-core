@@ -3,8 +3,8 @@ class GstDevtools < Formula
 
   desc "GStreamer development and validation tools"
   homepage "https://gstreamer.freedesktop.org/modules/gstreamer.html"
-  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.20.1.tar.xz"
-  sha256 "81f1c7ef105b8bdb63412638952f6320723b3161c96a80f113b020e2de554b2b"
+  url "https://gstreamer.freedesktop.org/src/gst-devtools/gst-devtools-1.20.5.tar.xz"
+  sha256 "5684436121b8bae07fd00b74395f95e44b5f26323dce4fa045fa665676807bba"
   license "LGPL-2.1-or-later"
   head "https://gitlab.freedesktop.org/gstreamer/gst-devtools.git", branch: "master"
 
@@ -14,12 +14,13 @@ class GstDevtools < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "d5b04612f32ad4a8864a85f760ac35f32198451105bb3e40c3cbe4f13c443f2c"
-    sha256 arm64_big_sur:  "5b461d72973b6b7ecc1c965fe9f15736e71a1b44090bd37a636bf8caad60080a"
-    sha256 monterey:       "779b3f85e3a1c01701226556ebc2c8d47d3049d63d6e3b33e8df8aed1c7724cf"
-    sha256 big_sur:        "0f0b65caace74c66f89237416b872d9bd6e329edb7604f1523869d6d9d6517d5"
-    sha256 catalina:       "cb0501d73a7b280411e37da5f37b5453c0eabe9ebb570137d12d962191ca7c34"
-    sha256 x86_64_linux:   "78be42d6e58ea96f538018396a948aebf3e68a751a1f3a12b64621d85e9cde31"
+    sha256 arm64_ventura:  "fd54ccc7cff8566b374875d65899ef1a36913e1e4048bab2b74efe941f263994"
+    sha256 arm64_monterey: "8e70edceb0d37d00142e838b23985f713f5a2893937ca77c3fa10907453c8d4e"
+    sha256 arm64_big_sur:  "fbcc046496fa19f38210bebfef79d53e5073c775866316126f5bdea515ebaf73"
+    sha256 ventura:        "79be9fb59c15220c5d6dc9ad978537883251f35fa2a17792f1c03fd18addacea"
+    sha256 monterey:       "348827f557cab2431747a6387a3c5b647ab4cfb13b37886b45830bd0c094e9ab"
+    sha256 big_sur:        "8ace31da36bac519db16469a83a180354d853968c9153c980aedec981dd2e187"
+    sha256 x86_64_linux:   "4d5e361535caf26074c61d1615f57323c7a30cfb250f60b606afbed1dcb3dadb"
   end
 
   depends_on "gobject-introspection" => :build
@@ -30,25 +31,23 @@ class GstDevtools < Formula
   depends_on "gst-plugins-base"
   depends_on "gstreamer"
   depends_on "json-glib"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   def install
-    args = std_meson_args + %w[
+    args = %w[
       -Dintrospection=enabled
       -Dvalidate=enabled
       -Dtests=disabled
     ]
 
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
 
     rewrite_shebang detected_python_shebang, bin/"gst-validate-launcher"
   end
 
   test do
-    system "#{bin}/gst-validate-launcher", "--usage"
+    system bin/"gst-validate-launcher", "--usage"
   end
 end

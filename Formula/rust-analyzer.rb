@@ -1,25 +1,23 @@
 class RustAnalyzer < Formula
   desc "Experimental Rust compiler front-end for IDEs"
   homepage "https://rust-analyzer.github.io/"
-  url "https://github.com/rust-analyzer/rust-analyzer.git",
-       tag:      "2022-05-02",
-       revision: "5dce1ff0212e467271c9e895478670c74d847ee9"
-  version "2022-05-02"
+  url "https://github.com/rust-lang/rust-analyzer.git",
+       tag:      "2022-12-26",
+       revision: "74ae2dd3039cd80fc77e4ed0c0a206be6660dd9a"
+  version "2022-12-26"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "87a976b807e49fab1c904fdf22fe14c2ab9dd380175556045cabb67078e03c56"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5cdd545c2bf412cc1d46b099c2758c40f062cbdd434e1b866b4cb158da1c046f"
-    sha256 cellar: :any_skip_relocation, monterey:       "923e7fe4dfa9cfbb90c4ccfbd3dbea636c5b38552d603b3263a9bba60ec7aff3"
-    sha256 cellar: :any_skip_relocation, big_sur:        "93329c551ed3a1bf4a119eaeff27b79f3fedd2e338eeb96aa90781f2dda43506"
-    sha256 cellar: :any_skip_relocation, catalina:       "1d317a59fbc5388c4fa3e40a0732825e93efe01ea4f1c3b5689003247ea87d1d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b75b137e33e8a02af41f67a20b7f97ac5acca06cc80c91de237034e007fbca22"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "39dcd34ad21ea938e2e2ce1012cf215c96d8fa2780dcfef6e38de58ce280d76e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "15a8c73949556da874e4d6ad71b8eb8b18ea7420d641a9a1a0e87568d8ee2bad"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "03fbeb44c3a3399dc44c6954f2b752d807e6df62016c519b21b9d361d8d341a5"
+    sha256 cellar: :any_skip_relocation, ventura:        "b4631389b45414823a08ca63af0309e9957a1fc600558554d865583e0d6ae29d"
+    sha256 cellar: :any_skip_relocation, monterey:       "8298b68613c1840db301c55a2b709a58e61c18db74107addd83fee83ba6a33b6"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5d55893d5528b366a63fbdab0cd29928fe3681961fab0e83df404053a423d78a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ecc1d67fe70fb42e7ea3d1db30ef1bd1dcfb595945f2e2cdc24d5300706c380"
   end
 
   depends_on "rust" => :build
-
-  # Remove this patch after rust 1.60 (https://github.com/rust-lang/rust-analyzer/issues/12080)
-  patch :DATA
 
   def install
     cd "crates/rust-analyzer" do
@@ -27,13 +25,13 @@ class RustAnalyzer < Formula
     end
   end
 
-  test do
-    def rpc(json)
-      "Content-Length: #{json.size}\r\n" \
-        "\r\n" \
-        "#{json}"
-    end
+  def rpc(json)
+    "Content-Length: #{json.size}\r\n" \
+      "\r\n" \
+      "#{json}"
+  end
 
+  test do
     input = rpc <<-EOF
     {
       "jsonrpc":"2.0",
@@ -76,22 +74,3 @@ class RustAnalyzer < Formula
     assert_match output, pipe_output("#{bin}/rust-analyzer", input, 0)
   end
 end
-
-
-__END__
-diff --git a/Cargo.lock b/Cargo.lock
-index 1937b8936..e6f321394 100644
---- a/Cargo.lock
-+++ b/Cargo.lock
-@@ -1571,9 +1571,9 @@ checksum = "f2dd574626839106c320a323308629dcb1acfc96e32a8cba364ddc61ac23ee83"
- 
- [[package]]
- name = "smol_str"
--version = "0.1.22"
-+version = "0.1.21"
- source = "registry+https://github.com/rust-lang/crates.io-index"
--checksum = "167ee181c12079444893cec9c8f21b13d6b314af789c9fdb041a0645f11ed9d2"
-+checksum = "61d15c83e300cce35b7c8cd39ff567c1ef42dde6d4a1a38dbdbf9a59902261bd"
- dependencies = [
-  "serde",
- ]

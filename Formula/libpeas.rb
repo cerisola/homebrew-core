@@ -1,17 +1,19 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://wiki.gnome.org/Projects/Libpeas"
-  url "https://download.gnome.org/sources/libpeas/1.32/libpeas-1.32.0.tar.xz"
-  sha256 "d625520fa02e8977029b246ae439bc218968965f1e82d612208b713f1dcc3d0e"
+  url "https://download.gnome.org/sources/libpeas/1.34/libpeas-1.34.0.tar.xz"
+  sha256 "4305f715dab4b5ad3e8007daec316625e7065a94e63e25ef55eb1efb964a7bf0"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "95e58fd14df242b90173b9ba0d5d40b8234e84f87cc6ebc30b3824928cbf205e"
-    sha256 arm64_big_sur:  "bc72e8a73ee764c86763198b676002e6a1edd724572920e30a4757048a8c0388"
-    sha256 monterey:       "ec9eeb3cdf1f4272b23e0a34c32eb26b4438ae07f4800c7981fdf9fc35e124a7"
-    sha256 big_sur:        "23f1cf3fdadc9f3586e442a7bafbe3ddc781063578bc1728ddcb818646f304d3"
-    sha256 catalina:       "57cba039daf7d11664e656f8fd3d02fe1083fd3ab11c7e45ba025b621fa325a5"
-    sha256 x86_64_linux:   "f994ca714e319d0cdff07e30f37fc0794887fee5389fff0dfb818e104e65621d"
+    rebuild 1
+    sha256 arm64_ventura:  "6c55f3faba5fd8041d403af6746948ce644ecd642fdec395c1864c8fb6cc1b6b"
+    sha256 arm64_monterey: "ae9194d2a8ed9a6a73b67f2c335013bc1c92fac1dc07df1b14786ac45724a5f6"
+    sha256 arm64_big_sur:  "d75fd0e883aa0871286a6bb92e538fc14aa52a26fe301d9322a4228340abdd74"
+    sha256 ventura:        "91dd8fe4c9b107fd84ad77b060fec01cdfaea39325035e1cd68061d102d3accc"
+    sha256 monterey:       "f49b5722a67a59138d7eead6bccfd6ccbff5b874467e0c7afb1c96816ddf63c1"
+    sha256 big_sur:        "228667efcb0e3f0e2a78a96a882cdecf63f2c8632e93a75a241e05b9a70aedb7"
+    sha256 x86_64_linux:   "b7879166a232ddb8b0cfe5080e440e86b47179e6a920e3f1d40fb44e0a54e54f"
   end
 
   depends_on "meson" => :build
@@ -22,10 +24,10 @@ class Libpeas < Formula
   depends_on "gobject-introspection"
   depends_on "gtk+3"
   depends_on "pygobject3"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   def install
-    args = std_meson_args + %w[
+    args = %w[
       -Dpython3=true
       -Dintrospection=true
       -Dvapi=true
@@ -33,11 +35,9 @@ class Libpeas < Formula
       -Ddemos=false
     ]
 
-    mkdir "build" do
-      system "meson", *args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *args, *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do

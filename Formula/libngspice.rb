@@ -3,8 +3,8 @@ class Libngspice < Formula
   homepage "https://ngspice.sourceforge.io/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/36/ngspice-36.tar.gz"
-    sha256 "4f818287efba245341046635b757ae81f879549b326a4316b5f6e697aa517f8c"
+    url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/38/ngspice-38.tar.gz"
+    sha256 "2c3e22f6c47b165db241cf355371a0a7558540ab2af3f8b5eedeeb289a317c56"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
@@ -18,12 +18,14 @@ class Libngspice < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "9d58e20b687ede651ca723c47a35bbc772478ab75768159021b38cb3d2f70a91"
-    sha256 cellar: :any,                 arm64_big_sur:  "06bfd009199b8955829ee232e8af51d8f5d9f18251cdfff08f957ec3cb5d4ee9"
-    sha256 cellar: :any,                 monterey:       "31d9faaad4c639bb2b16330c68bd9345df81cecc91946cf2f579ab2725ff11e0"
-    sha256 cellar: :any,                 big_sur:        "6234e617fda518242b252264e3ffdfab258711469adfdfbdf6586bb50e1776fe"
-    sha256 cellar: :any,                 catalina:       "f3d15531e93ab0c0bd4c19a17e85c1474352d04fbcd8c6592f11b687a8474138"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "179a9d7162f4dbda06ff91e35c6775cff85fcc40ff6cb65929be8bfa15823734"
+    sha256 cellar: :any,                 arm64_ventura:  "1cc7171cb7d6abde17e2dc04d8a508a53818d643f094216e1952fd3343a703ce"
+    sha256 cellar: :any,                 arm64_monterey: "6050333fe137e8588d00246b64d24d09691a6b9d71ad2609493f3a967915ff28"
+    sha256 cellar: :any,                 arm64_big_sur:  "f939d3c2d40d5cc3b3264202453dfa8b18c77dfa9d9fa3fbb31205f0aae88ab9"
+    sha256 cellar: :any,                 ventura:        "48489a02e4433452e849f84c7dc7b28c34ed43a94e0aad25921afc43f8a07b32"
+    sha256 cellar: :any,                 monterey:       "d79b24f3980fecb7b6d1b52529be345edece474121efbc8636da106d6f2a3f86"
+    sha256 cellar: :any,                 big_sur:        "61d787f0d5358831155d1c3d1238e7ca00b25a54865496e9190919e8007ff3fa"
+    sha256 cellar: :any,                 catalina:       "170c8aae880863774486a8d74b54971a3e78c8fd6e8d151f303fcd89cc728541"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "612e1aa668db6d7f3574c846af876fa6a09e45944e74e6a1213d096ab4dbb3c1"
   end
 
   head do

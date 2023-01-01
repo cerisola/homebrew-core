@@ -6,16 +6,20 @@ class Openmodelica < Formula
       tag:      "v1.18.0",
       revision: "49be4faa5a625a18efbbd74cc2f5be86aeea37bb"
   license "GPL-3.0-only"
-  revision 2
+  revision 6
   head "https://github.com/OpenModelica/OpenModelica.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_monterey: "75002fbf9d3c198532225e4f6a37bec61d97699ed70e716b346ceef7b2193182"
-    sha256 cellar: :any, arm64_big_sur:  "7ea8eb11f80949d5c4a73edc5d763cfe45189bc1db3ea5b470ce341129d076a0"
-    sha256 cellar: :any, monterey:       "1962a20583637845546a2406580a735f0dc618ab28628293aea75e1c7800390b"
-    sha256 cellar: :any, big_sur:        "fa9307c4afd3b7b44058bd34103ca20f589d0645a37402fa535efaf73890a633"
-    sha256 cellar: :any, catalina:       "0046d95490220b162ed08423070f6912bc7fd8db770fe6b09d71e4632bf42358"
+    sha256 cellar: :any, arm64_monterey: "ca8e1b846f44e62ae8492eb6973307d5878451d9d12b55ab581a5d0db30835b1"
+    sha256 cellar: :any, arm64_big_sur:  "55974df231d76548401fdda50717f93b0a5900e37483b1f7619d78cd7ae42d07"
+    sha256 cellar: :any, monterey:       "4ff01ed6d41b604a6323a33939ac918360bfdc340bff8836b70cea40e99e01e1"
+    sha256 cellar: :any, big_sur:        "727699c2d6e510c6cb271594644ef0eec12f28e7b4acb047c778ffa1f68efbf0"
   end
+
+  # https://openmodelica.org/download/download-mac
+  # The Mac builds of OpenModelica were discontinued after version 1.16.
+  # Depends on legacy qt@5
+  deprecate! date: "2022-12-19", because: :unsupported
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

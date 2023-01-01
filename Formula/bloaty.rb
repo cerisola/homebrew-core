@@ -4,15 +4,16 @@ class Bloaty < Formula
   url "https://github.com/google/bloaty/releases/download/v1.1/bloaty-1.1.tar.bz2"
   sha256 "a308d8369d5812aba45982e55e7c3db2ea4780b7496a5455792fb3dcba9abd6f"
   license "Apache-2.0"
-  revision 8
+  revision 10
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "ba9f5939fc1a0b26f069c79e03e82c46172f3e7414cdd9a8575180535dd7ac74"
-    sha256 cellar: :any,                 arm64_big_sur:  "0f3047ba12a5f2094fda29e2deb3247dfbdd4812367e27708dee4c6237688e79"
-    sha256 cellar: :any,                 monterey:       "28c336018b3967d6588ff4973e579ab4fb33035a01489ea21ed2db45ef1dad68"
-    sha256 cellar: :any,                 big_sur:        "f1f5844b6791049e0fed204d4e585292fdbb31b30f14399303c1649f0d5589d0"
-    sha256 cellar: :any,                 catalina:       "9ba7cb7e18921902ae6539bb92087d609266913a47a380ccd8ba7e40d8a630d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "183c718270cf78df476bfd92945beebc6141ad794916c024dec0421c617304e4"
+    sha256 cellar: :any,                 arm64_ventura:  "485449be09072bf5044e7a8252cf4385d3f1b4365a7907fb5cea4646dbfae409"
+    sha256 cellar: :any,                 arm64_monterey: "6f7fe502951cf3d07307e67df4b5813ab9aeacf75582fbf4ae6ed9faf54defb7"
+    sha256 cellar: :any,                 arm64_big_sur:  "2f1d101a8d32c7ae3a27cf35d2ba3244e9497e9d87a8d3166905ba5794d0ca9e"
+    sha256 cellar: :any,                 ventura:        "6af103ce721c668c67e36cfabb7ac5ba83bb5d5579b03bb53cb75e11847ae79f"
+    sha256 cellar: :any,                 monterey:       "1d3dd26f8b27220c07b0afeff8b33ee47b105362c99378f731295a3207e6e3b7"
+    sha256 cellar: :any,                 big_sur:        "d5a19327b5539c53a956e006f3cca6d40227757eec2eac6d32a76f95241342d5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "56b54d53756f1662d6c73b914b42140c96fc6e6478555452701423551805cc8d"
   end
 
   depends_on "cmake" => :build
@@ -22,8 +23,11 @@ class Bloaty < Formula
   depends_on "re2"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    # https://github.com/protocolbuffers/protobuf/issues/9947
+    ENV.append_to_cflags "-DNDEBUG"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

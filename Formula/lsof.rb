@@ -1,20 +1,25 @@
 class Lsof < Formula
   desc "Utility to list open files"
   homepage "https://github.com/lsof-org/lsof"
-  url "https://github.com/lsof-org/lsof/archive/4.95.0.tar.gz"
-  sha256 "8ff4c77736cc7d9556da9e2c7614cc4292a12f1979f20bd520d3c6f64b66a4d7"
+  url "https://github.com/lsof-org/lsof/archive/refs/tags/4.96.5.tar.gz"
+  sha256 "e9030af1123ff052ab69e12ef55b8a17dc47ac4bccfba85ee1ca1f31acf29607"
   license "Zlib"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca6a2618c47390c2c21a77eafef3fcefa7f139df3a3148f33e147aa1508adc91"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c691f9b32a92b4da66a0b0936317604e7f9861bfc2b3bf82fc5969e9c355bb01"
-    sha256 cellar: :any_skip_relocation, monterey:       "86f1ed5ca097d51d5484e3e935270076f9f118aac8dff9918c14c29333663730"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2ad5bdb2879e358fb7b268b667068552f8068a0d6b1df02d9b8c134ab1d3b68c"
-    sha256 cellar: :any_skip_relocation, catalina:       "5756f095537745ba7e2782a36636779965af3a4bb911c03c0fa46b3dad88ae50"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "905f85033932bae924e52ba4b3cd8a1288901686df6b28a376a60c7db5442ff3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5cc0913200a813f86945f75394e4e9ecde296f8912d472c89d3101412e1b382c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f886f81f7d3ed92535e42a56ec2156983120774782ae3a4e737d2a24c618e707"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bd65ff2f77172bb550c210337c5b1d1d504218acb1f9f5cbd8b72f4092b318e3"
+    sha256 cellar: :any_skip_relocation, ventura:        "d667f9432546a4e7a4e2e8bc31c820887a43b98721f520b355700ce7cb7601f3"
+    sha256 cellar: :any_skip_relocation, monterey:       "b9c4d6e2f8a4e4c0d7bcd006bb0654a2e307854abef869bf18656d335569d8b4"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a64869d34df81c1aa1ba50707f2e2173c648962162008175e6433e97560b8620"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9645696b4e94d5201f30920535b865f204566cef005f11948ff3494eae8aa789"
   end
 
   keg_only :provided_by_macos
+
+  on_linux do
+    depends_on "libtirpc"
+  end
 
   def install
     if OS.mac?
@@ -26,6 +31,8 @@ class Lsof < Formula
         dialects/darwin/kmem/machine.h
         dialects/darwin/libproc/machine.h
       ], "/usr/include", MacOS.sdk_path/"usr/include"
+    else
+      ENV["LSOF_INCLUDE"] = HOMEBREW_PREFIX/"include"
     end
 
     ENV["LSOF_CC"] = ENV.cc

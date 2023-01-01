@@ -2,18 +2,19 @@ class Helm < Formula
   desc "Kubernetes package manager"
   homepage "https://helm.sh/"
   url "https://github.com/helm/helm.git",
-      tag:      "v3.8.2",
-      revision: "6e3701edea09e5d55a8ca2aae03a68917630e91b"
+      tag:      "v3.10.3",
+      revision: "835b7334cfe2e5e27870ab3ed4135f136eecc704"
   license "Apache-2.0"
   head "https://github.com/helm/helm.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "78901162559cfde0d695e74c82e78a8f37f7d0cf9a2a0a613a6a694196e57f50"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0516554247a183ea3a7c404a217b3c320f78fdbebc59ae58ad3088fb7d8448ff"
-    sha256 cellar: :any_skip_relocation, monterey:       "300526edf608faec380e94684fc5561e6640d574ee76f7975340ca6ef7c3dca4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4a5af378b7905afe6a6edf7beac1deb6ad05b9f38a85c274e2debb6a10c3d5be"
-    sha256 cellar: :any_skip_relocation, catalina:       "85af7192de62274fd60598b0d1486f5efe9c25afaa725e8311c8c46c44e7158b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db18f47ce16dddaecc48be564eb6b4782b9f85ad3ff7a42274bf535fb719aa3b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cf8e67d0a71bb12520e3536e3b905ac32f698d06034ace92486bce6ef28968b4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "7bf83cd1d2e6e04e6ae1082c877cf5d3015c647d4cd5dfce8caf1d2bd295db42"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c05c489110a5c44f3670afd22ac3e63d085cc01ddd41ce81c427a1b200155ebe"
+    sha256 cellar: :any_skip_relocation, ventura:        "3814d570ceb6ec7177df57eb2e5ce7bbca724e75d9c8a43ec7fba0a8b9058664"
+    sha256 cellar: :any_skip_relocation, monterey:       "fe1b3bf4f5f3c5777ce91628665e7e217447e6db711e35e4766352f8a4c10a26"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3d5bea06fd3e7bca8fbe73f3b5a11e295349e80f01643ac1ca797b884f390bb4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b1ed627be65bc9277cee50a8e2fd2d6e89e0eb9e11e01d080d5b9909a9a2ca6"
   end
 
   depends_on "go" => :build
@@ -30,14 +31,7 @@ class Helm < Formula
       man1.install Dir["*"]
     end
 
-    output = Utils.safe_popen_read(bin/"helm", "completion", "bash")
-    (bash_completion/"helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "zsh")
-    (zsh_completion/"_helm").write output
-
-    output = Utils.safe_popen_read(bin/"helm", "completion", "fish")
-    (fish_completion/"helm.fish").write output
+    generate_completions_from_executable(bin/"helm", "completion")
   end
 
   test do

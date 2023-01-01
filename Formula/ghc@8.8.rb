@@ -20,23 +20,25 @@ class GhcAT88 < Formula
 
   keg_only :versioned_formula
 
+  deprecate! date: "2022-12-08", because: :unmaintained
+
   depends_on "python@3.10" => :build
   depends_on arch: :x86_64
 
   uses_from_macos "m4" => :build
   uses_from_macos "ncurses"
 
-  on_macos do
-    resource "gmp" do
+  on_linux do
+    depends_on "gmp" => :build
+  end
+
+  resource "gmp" do
+    on_macos do
       url "https://ftp.gnu.org/gnu/gmp/gmp-6.1.2.tar.xz"
       mirror "https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz"
       mirror "https://ftpmirror.gnu.org/gmp/gmp-6.1.2.tar.xz"
       sha256 "87b565e89a9a684fe4ebeeddb8399dce2599f9c9049854ca8c0dfbdea0e21912"
     end
-  end
-
-  on_linux do
-    depends_on "gmp" => :build
   end
 
   # https://www.haskell.org/ghc/download_ghc_8_8_3.html#macosx_x86_64

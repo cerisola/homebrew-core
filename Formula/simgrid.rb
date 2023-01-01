@@ -3,9 +3,9 @@ class Simgrid < Formula
 
   desc "Studies behavior of large-scale distributed systems"
   homepage "https://simgrid.org/"
-  url "https://framagit.org/simgrid/simgrid/uploads/6ca357e80bd4d401bff16367ff1d3dcc/simgrid-3.29.tar.gz"
-  sha256 "83e8afd653555eeb70dc5c0737b88036c7906778ecd3c95806c6bf5535da2ccf"
-  revision 1
+  url "https://framagit.org/simgrid/simgrid/uploads/c45f7fd6872b3b0d26b9ba2e607d6e3a/simgrid-3.32.tar.gz"
+  sha256 "837764eb81562f04e49dd20fbd8518d9eb1f94df00a4e4555e7ec7fa8aa341f0"
+  license "LGPL-2.1-only"
 
   livecheck do
     url :homepage
@@ -13,23 +13,21 @@ class Simgrid < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "f842c89e78c2cc0e3d8a7be9e86375ad003c27e6b58d98c979de1774276539c3"
-    sha256 arm64_big_sur:  "fe40ff68cf7f114399e88f509be1fcf74a83cc5f98876f4152af1c0f0c3f00dd"
-    sha256 monterey:       "e94b0a7096d04a00db2edec83439173f1ac884da520ccdb71821a3e28f41e537"
-    sha256 big_sur:        "8ef7cfe90c699af81d0ccc7d870d88ed6ba1cb3054ea7c9873f2a261346273d6"
-    sha256 catalina:       "619eabbb9f950b247fe0c6b840ec0c47f24965ddf607bd0c5bc08215244a5cd4"
-    sha256 x86_64_linux:   "2c8061e2f328aa583babf64b511da54f219a1cdb1b9a2b87a5e1621c1591a679"
+    rebuild 1
+    sha256 arm64_ventura:  "802eb4e58ef2b7a6c32e5cda9c2a217db56acec16d0b8caa9dc106207cc8c156"
+    sha256 arm64_monterey: "75c535fd3154a3917fde30bf2ae0f48be8f1b19bf3c011b9e3ac88e15b67a21d"
+    sha256 arm64_big_sur:  "76e6d4f133d4b678f0edda2d456c067ba655c1c8abc3dfd9f9d730bd212e7623"
+    sha256 ventura:        "8681bd0c3d92f081f491b02d5374529407ef3472524bdc62579bae65d4ff2aaa"
+    sha256 monterey:       "a5db9baf84829ec052d45837a8e1eb2ceaa07067eea0cff309eccc5e69457cb6"
+    sha256 big_sur:        "81bd5eab76a7a75adc6328196d6c82e21271c92f5671d9ffeaf298849eeac55b"
+    sha256 x86_64_linux:   "f63d6bf8056e1d5c43f4303f448ce5746db2df6ac94baf59512d53854165110e"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "boost"
   depends_on "graphviz"
-  depends_on "python@3.9"
-
-  on_linux do
-    depends_on "gcc"
-  end
+  depends_on "python@3.11"
 
   fails_with gcc: "5"
 
@@ -38,12 +36,16 @@ class Simgrid < Formula
     inreplace "src/smpi/smpicc.in", "@CMAKE_C_COMPILER@", DevelopmentTools.locate(ENV.cc)
     inreplace "src/smpi/smpicxx.in", "@CMAKE_CXX_COMPILER@", DevelopmentTools.locate(ENV.cxx)
 
-    system "cmake", ".",
+    # Work around build error: ld: library not found for -lcgraph
+    ENV.append "LDFLAGS", "-L#{Formula["graphviz"].opt_lib}"
+
+    system "cmake", "-S", ".", "-B", "build",
                     "-Denable_debug=on",
                     "-Denable_compile_optimizations=off",
                     "-Denable_fortran=off",
                     *std_cmake_args
-    system "make", "install"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
     rewrite_shebang detected_python_shebang, *bin.children
   end

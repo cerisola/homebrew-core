@@ -1,18 +1,20 @@
 class Yaegi < Formula
   desc "Yet another elegant Go interpreter"
   homepage "https://github.com/traefik/yaegi"
-  url "https://github.com/traefik/yaegi/archive/v0.11.3.tar.gz"
-  sha256 "46e73955145cd829e41a906677edfcd78846862ca0274770dd4668dda2a949c1"
+  url "https://github.com/traefik/yaegi/archive/v0.14.3.tar.gz"
+  sha256 "8519560f142657e09d08e9ff292f9aecdf9dde93fecb810f54172dc775747730"
   license "Apache-2.0"
   head "https://github.com/traefik/yaegi.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "35af9f3f3cac5ec10b6c757e103a52a27feb570a68664a1e4880b01837d406bf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bb59cfe0916259b042edb66b9df478ac53f61117b74d7cf616b32c9d2c04593e"
-    sha256 cellar: :any_skip_relocation, monterey:       "3ed5cf0e20f9b8c348b2c8296d96ac8aa5b40e50a87f5c0f42e2a7124a8c8625"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8ef53b51931f7cbc241b9774cfd0adf9a3578f3f87213127e53f7af2db43d68e"
-    sha256 cellar: :any_skip_relocation, catalina:       "b59d9ce2db6f2b316b56960d399824044b40192b0a4ac6be7ca40665733c9dc1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "76c8fe40521c36a673eb867ac81f1bcd44c85fe5119db1c3555d5ead3d9e1f3c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "767f3eb77721608d83c8c15e94d04a260d91bf4e178d94c49fb0c5cb518448dd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "70e9c53f8c1fcf3333f171d331c9069e020e1799ef46370923eb6709c18cd13c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "a348d0482dd35be117bc9c9f70640d6f447159bed825442084c37cc224d192aa"
+    sha256 cellar: :any_skip_relocation, ventura:        "bcb1c493605b69a9913c48ebd52fdfec6b1be39a32d4dfe1698dc0e0eb3e8c36"
+    sha256 cellar: :any_skip_relocation, monterey:       "77c7884e2d649f850d6a308c9bb6b4774f566fa735aa618c0b6e3727c317e42a"
+    sha256 cellar: :any_skip_relocation, big_sur:        "341432d91658a01fa199a2dc399015f767857f37ce9934ccf3505eb765000eab"
+    sha256 cellar: :any_skip_relocation, catalina:       "003001e8a7fc7f0c41d60aec4b2ea19fafe36cfd0abb81d9515322103240625d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a837bd81816c63f046e0b1d1705d65f8c53ca90c011fe004defd9376855b715"
   end
 
   depends_on "go" => :build

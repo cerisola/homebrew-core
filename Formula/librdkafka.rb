@@ -1,8 +1,8 @@
 class Librdkafka < Formula
   desc "Apache Kafka C/C++ library"
   homepage "https://github.com/edenhill/librdkafka"
-  url "https://github.com/edenhill/librdkafka/archive/refs/tags/v1.8.2.tar.gz"
-  sha256 "6a747d293a7a4613bd2897e28e8791476fbe1ae7361f2530a876e0fd483482a6"
+  url "https://github.com/edenhill/librdkafka/archive/refs/tags/v1.9.2.tar.gz"
+  sha256 "3fba157a9f80a0889c982acdd44608be8a46142270a389008b22d921be1198ad"
   license "BSD-2-Clause"
   head "https://github.com/edenhill/librdkafka.git", branch: "master"
 
@@ -13,20 +13,25 @@ class Librdkafka < Formula
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_monterey: "62d464f0c91804cbc7e243d2947a3684fbe7f984fed62a61911c4e758274b213"
-    sha256 cellar: :any,                 arm64_big_sur:  "f173038bf4ca75233c4d323dd07743d04accce68aa8513284b4ec1465a689589"
-    sha256                               monterey:       "a3852aef4d08f02186ac10d3ac20dbbf5270b1ded8c8a2ceac004bfde3936488"
-    sha256                               big_sur:        "40c00838eb97e3781930de8c4c743319fb126cbfd63195cd3ccc561380835c02"
-    sha256                               catalina:       "00b5f82f5bdc5e71d80355125634e30ec04059fce88dac2b4560259bdabbe990"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e11b1becd5dc7eabf9f453e92cd4a9f71fa0e16ff92a07baa265021f4efebd99"
+    sha256 cellar: :any,                 arm64_ventura:  "aaf5be4abca614fec8e7b1ce7de8cd1ca2bc3289a5987b35e76bc4492572e817"
+    sha256 cellar: :any,                 arm64_monterey: "3ad6b84bb1812a86b79037ef3712cac8c655378d391baf34f7e7c7a78ce35bca"
+    sha256 cellar: :any,                 arm64_big_sur:  "5b9081eb9326f365f263869ac727aa1c54f93a6e81a4a6bf6ea5f45d56e5bfd3"
+    sha256                               ventura:        "853179bfed485e17203f48bce282df6e9e4cbb8c28a6682cb2891d05d9e83851"
+    sha256                               monterey:       "6fdf31963089900e263a2ecf9b9d9d4311663cd70e3f333d925262c6b41c976c"
+    sha256                               big_sur:        "e56ea38be19a683be72690eead6e4394f00ca008de64f34008fe477d2539dd6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "146e7981060c0a030695cea369cfbc587c139f1dc024ebc01d4872883837241e"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => :build
   depends_on "lz4"
   depends_on "lzlib"
   depends_on "openssl@1.1"
   depends_on "zstd"
+
+  uses_from_macos "curl"
+  uses_from_macos "cyrus-sasl"
+  uses_from_macos "zlib"
 
   def install
     system "./configure", "--prefix=#{prefix}"

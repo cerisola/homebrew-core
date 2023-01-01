@@ -1,10 +1,10 @@
 class MbedtlsAT2 < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
-  url "https://github.com/ARMmbed/mbedtls/archive/mbedtls-2.28.0.tar.gz"
-  sha256 "f644248f23cf04315cf9bb58d88c4c9471c16ca0533ecf33f86fb7749a3e5fa6"
+  url "https://github.com/Mbed-TLS/mbedtls/archive/mbedtls-2.28.2.tar.gz"
+  sha256 "1db6d4196178fa9f8264bef5940611cd9febcd5d54ec05f52f1e8400f792b5a4"
   license "Apache-2.0"
-  head "https://github.com/ARMmbed/mbedtls.git", branch: "development_2.x"
+  head "https://github.com/Mbed-TLS/mbedtls.git", branch: "development_2.x"
 
   livecheck do
     url :stable
@@ -12,12 +12,13 @@ class MbedtlsAT2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "480c3df5089fb6a963a13b8ccb14d4d81ed3ecced160a69072f93ed65114c814"
-    sha256 cellar: :any,                 arm64_big_sur:  "71d898a6da3baec04462fc74d637d43a3b4515fe82f6c7822ee46a8cba0175c6"
-    sha256 cellar: :any,                 monterey:       "fa7d7034bb61d649726a9d9ae3451ab8ac703f47f16d765b821ea77c67cce54d"
-    sha256 cellar: :any,                 big_sur:        "cf925beaf286bae475950b3aab234a7f4f192ae2ab7b5c998002153a3b24aa87"
-    sha256 cellar: :any,                 catalina:       "d19f714bfccd87cc8dc6c1536bad7d581ed74e4c1009db9a80f645f01ed65256"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "283c9006292ec1fef627a3366aa818b67ebeb7d1086f575f4d50f539e5f19c1c"
+    sha256 cellar: :any,                 arm64_ventura:  "11bdbdfac1856bac179d00e3d4f817b56eb9dbf6226304083aba407e50a0132f"
+    sha256 cellar: :any,                 arm64_monterey: "9929799ce303833ce06c3ca5f53baab4d2be56f670b4bf20f605a1a50fed604f"
+    sha256 cellar: :any,                 arm64_big_sur:  "169614a9cdba21b3a6e87a55c3b4269fb613c5fdbd70706ffb15347f3a9c9da0"
+    sha256 cellar: :any,                 ventura:        "f7bb83a0f5b5345bd83f70d7b1575e1b8da02029dabf80ccd628c133c2ef9b4e"
+    sha256 cellar: :any,                 monterey:       "e2e7ff9ad34ef5d08a2579a755f9e5e205ba65e83f0275b6bc08d6e08d0b802f"
+    sha256 cellar: :any,                 big_sur:        "02461f5f2aa5cac6e4eb749ab88d56505026fbd3c84c15d834851e291bfd809c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dec992c648e1e0e3d1fd3b08acce0b82a451a5f09464c0a7852a6417c587da18"
   end
 
   keg_only :versioned_formula
@@ -35,11 +36,11 @@ class MbedtlsAT2 < Formula
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DUSE_SHARED_MBEDTLS_LIBRARY=On",
-                    "-DPython3_EXECUTABLE=#{Formula["python@3.10"].opt_bin}/python3",
+                    "-DPython3_EXECUTABLE=#{which("python3.10")}",
                     *std_cmake_args
     system "cmake", "--build", "build"
     # We run CTest because this is a crypto library. Running tests in parallel causes failures.
-    # https://github.com/ARMmbed/mbedtls/issues/4980
+    # https://github.com/Mbed-TLS/mbedtls/issues/4980
     with_env(CC: DevelopmentTools.locate(DevelopmentTools.default_compiler)) do
       system "ctest", "--parallel", "1", "--test-dir", "build", "--rerun-failed", "--output-on-failure"
     end

@@ -1,19 +1,18 @@
 class Libxau < Formula
   desc "X.Org: A Sample Authorization Protocol for X"
   homepage "https://www.x.org/"
-  url "https://www.x.org/archive/individual/lib/libXau-1.0.9.tar.bz2"
-  sha256 "ccf8cbf0dbf676faa2ea0a6d64bcc3b6746064722b606c8c52917ed00dcb73ec"
+  url "https://www.x.org/archive/individual/lib/libXau-1.0.11.tar.xz"
+  sha256 "f3fa3282f5570c3f6bd620244438dbfbdd580fc80f02f549587a0f8ab329bbeb"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "c77eb765b889d6863d4ca9fd1d2d8d37a94d92b6faac51778718cfc33f10f22d"
-    sha256 cellar: :any,                 arm64_big_sur:  "c266397e5e2417a4dc5827a504f27153c12a3938a91b19697abf24d3cfba8ac5"
-    sha256 cellar: :any,                 monterey:       "49ba22c2891f3db16a0a9695bb06e70dc14362485dc57deb169157b9834ea2e8"
-    sha256 cellar: :any,                 big_sur:        "b21411d706ca7a61346e6d9e62bda5fb34e46f5d9ed4ca96b4c52f3f4a1c6ef8"
-    sha256 cellar: :any,                 catalina:       "d10771f476b47134c9c3f18a33fb4d4d86c37e2a4d6dbbc87c13b7ffd06c7248"
-    sha256 cellar: :any,                 mojave:         "3a34b529a2092bf1aaffc6603056871c2b0c4b8bd1fe728a14ae6b35e8cf3f77"
-    sha256 cellar: :any,                 high_sierra:    "15522122382cdc3e364167c71835e4885a0241189be938853cc4744f38e82aa0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7a733e5d4e05d82227129aadb680501e18ce206de6deaeca422d63b71d96307"
+    sha256 cellar: :any,                 arm64_ventura:  "d8cc440c5804ecf424d96d3cd4e92e88c83d43e7f927126c768caee2dffe36a8"
+    sha256 cellar: :any,                 arm64_monterey: "8f7c0378757601370d13539c5f1a11f560326464d9ba1f9fb9f5e2631163d559"
+    sha256 cellar: :any,                 arm64_big_sur:  "1bd9a72f005e6d7e746a95baf003b561756076623a074d7ea9d6fd0207d15eff"
+    sha256 cellar: :any,                 ventura:        "7da43230a047e78a346707b6673d9f8a4077af03f1676121df279f7f5f1dc6c2"
+    sha256 cellar: :any,                 monterey:       "3b8790c3aaf98e0ce10fd088f66b2591e6b5fb8b6b95df8ec254f389e15f81cf"
+    sha256 cellar: :any,                 big_sur:        "306524aec65e6ea22e5d18fbf5b09f1a544fce2a9bc37349b3bc5d98a14d7984"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ba968fc488e6fa7d6d1f734ff79b85f0b4ed2ffa8dd7d19b0e61e48ec7f2cd44"
   end
 
   depends_on "pkg-config" => :build

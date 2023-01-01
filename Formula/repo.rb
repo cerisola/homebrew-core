@@ -4,22 +4,25 @@ class Repo < Formula
   desc "Repository tool for Android development"
   homepage "https://source.android.com/source/developing.html"
   url "https://gerrit.googlesource.com/git-repo.git",
-      tag:      "v2.25",
-      revision: "501733c2abb1180679f25b2f78970d73a2f8d413"
+      tag:      "v2.31",
+      revision: "a621254b263664efa308a645214d3d140e068676"
   license "Apache-2.0"
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "79c25299915ae2ceb08ef1eb424cfa0811a597a04809936fc4f43644260de409"
+    sha256 cellar: :any_skip_relocation, all: "9404e919d2f51d27981802103ab75d2c75a50fbceb8e78ae3b09b6e0ac5013b6"
   end
 
-  depends_on "python@3.10"
+  uses_from_macos "python"
 
   def install
     bin.install "repo"
-    rewrite_shebang detected_python_shebang, bin/"repo"
-
     doc.install (buildpath/"docs").children
+
+    # Need Catalina+ for `python3`.
+    return if OS.mac? && MacOS.version < :catalina
+
+    rewrite_shebang detected_python_shebang(use_python_from_path: true), bin/"repo"
   end
 
   test do

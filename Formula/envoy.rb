@@ -1,11 +1,8 @@
 class Envoy < Formula
   desc "Cloud-native high-performance edge/middle/service proxy"
   homepage "https://www.envoyproxy.io/index.html"
-  # Switch to a tarball when the following issue is resolved:
-  # https://github.com/envoyproxy/envoy/issues/2181
-  url "https://github.com/envoyproxy/envoy.git",
-      tag:      "v1.21.1",
-      revision: "af50070ee60866874b0a9383daf9364e884ded22"
+  url "https://github.com/envoyproxy/envoy/archive/refs/tags/v1.24.1.tar.gz"
+  sha256 "385e5345e9bc73dcdae311d1df61e16e998860fc958571be9c9b781ad20e14f8"
   license "Apache-2.0"
   head "https://github.com/envoyproxy/envoy.git", branch: "main"
 
@@ -15,18 +12,19 @@ class Envoy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cd040355dcf85a5329f4b4183f8e2349375f638c229846ecd41a3196792f6f1d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c79e20485986dcb6a808e285e80895fc049d2006451b043a52364f7bd12c3472"
-    sha256 cellar: :any_skip_relocation, monterey:       "9c183ed8572762a704cf81e9da4996d9120a26edc7e7f71692fddf9b953c1820"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e52e76c005d586a18399dc7e560179554bfdeb58977e09c0db7c3a2cca4c74c5"
-    sha256 cellar: :any_skip_relocation, catalina:       "8cb1b2dc93193366e72763619811e22bd35cfd27e4bfd81a0501888b42c460ef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fad41038273bfb42e45949d8ba1a6a1467a2b541497df4782396bdc150a3828d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b8884c61777053dace6c9d72c689efb7b985ae24a4315ec61a8d86e49981a7ef"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "745f7a1a124bfc02be2bf6b6434049c904bbc38abd3dda69c3ef738169468de7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "616703b5342050555532080fe98f12f57f8fcdff403e390d828f19ad88ad83db"
+    sha256 cellar: :any_skip_relocation, ventura:        "29d3129e51b2d6c06cd0213d34bc0dab46098224e7e12e13fc88f951c18c2060"
+    sha256 cellar: :any_skip_relocation, monterey:       "c851e41349c8586834d6f0976a6aab6562d7910b99d6e49e8cb785e4883266ca"
+    sha256 cellar: :any_skip_relocation, big_sur:        "774a1c8b479942cf41bf400f074a51e5add628e6bd72141da65e452a13cf0dad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8efb10dce3c4963f6767d3f26e037b5bea3de29af428544984f337b9f62e5657"
   end
 
   depends_on "automake" => :build
   depends_on "bazelisk" => :build
   depends_on "cmake" => :build
-  depends_on "coreutils" => :build
   depends_on "libtool" => :build
   depends_on "ninja" => :build
   # Starting with 1.21, envoy requires a full Xcode installation, not just
@@ -34,47 +32,63 @@ class Envoy < Formula
   depends_on xcode: :build
   depends_on macos: :catalina
 
-  on_linux do
-    # GCC added as a test dependency to work around Homebrew issue. Otherwise `brew test` fails.
-    # CompilerSelectionError: envoy cannot be built with any available compilers.
-    depends_on "gcc@9" => [:build, :test]
-    depends_on "python@3.10" => :build
+  uses_from_macos "python" => :build
+
+  on_macos do
+    depends_on "coreutils" => :build
   end
 
   # https://github.com/envoyproxy/envoy/tree/main/bazel#supported-compiler-versions
-  fails_with gcc: "5"
-  fails_with gcc: "6"
-  # GCC 10 build fails at external/com_google_absl/absl/container/internal/inlined_vector.h:469:5:
-  # error: '<anonymous>.absl::inlined_vector_internal::Storage<char, 128, std::allocator<char> >::data_'
-  # is used uninitialized in this function [-Werror=uninitialized]
-  fails_with gcc: "10"
-  # GCC 11 build fails at external/boringssl/src/crypto/curve25519/curve25519.c:503:57:
-  # error: argument 2 of type 'const uint8_t[32]' with mismatched bound [-Werror=array-parameter=]
-  fails_with gcc: "11"
+  fails_with :gcc do
+    version "8"
+    cause "C++17 support and tcmalloc requirement"
+  end
+
+  # Fix build with GCC 11 by updating brotli. Remove in the next release with commit
+  patch do
+    on_linux do
+      url "https://github.com/envoyproxy/envoy/commit/b58fb72476fac20f213c4a4a09a97d709f736442.patch?full_index=1"
+      sha256 "7ec3ae77702c7e373eb4050e2947499708f5c8cb0df065479e204290902810c6"
+    end
+  end
 
   def install
-    env_path = if OS.mac?
-      "#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin"
-    else
-      "#{Formula["python@3.10"].opt_bin}:#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin"
-    end
+    env_path = "#{HOMEBREW_PREFIX}/bin:/usr/bin:/bin"
     args = %W[
       --compilation_mode=opt
       --curses=no
-      --show_task_finish
       --verbose_failures
       --action_env=PATH=#{env_path}
       --host_action_env=PATH=#{env_path}
     ]
 
     if OS.linux?
-      # Disable extension `tcp_stats` which requires Linux headers >= 4.6
-      # It's a directive with absolute path `#include </usr/include/linux/tcp.h>`
-      args << "--//source/extensions/transport_sockets/tcp_stats:enabled=false"
+      # Build fails with GCC 10+ at external/com_google_absl/absl/container/internal/inlined_vector.h:448:5:
+      # error: '<anonymous>.absl::inlined_vector_internal::Storage<char, 128, std::allocator<char> >::data_'
+      # is used uninitialized in this function [-Werror=uninitialized]
+      # Try to remove in a release that uses a newer abseil
+      args << "--cxxopt=-Wno-uninitialized"
+      args << "--host_cxxopt=-Wno-uninitialized"
+    else
+      # The clang available on macOS catalina has a warning that isn't clean on v8 code.
+      # The warning doesn't show up with more recent clangs, so disable it for now.
+      args << "--cxxopt=-Wno-range-loop-analysis"
+      args << "--host_cxxopt=-Wno-range-loop-analysis"
+
+      # To supress warning on deprecated declaration on v8 code. For example:
+      # external/v8/src/base/platform/platform-darwin.cc:56:22: 'getsectdatafromheader_64'
+      # is deprecated: first deprecated in macOS 13.0.
+      # https://bugs.chromium.org/p/v8/issues/detail?id=13428.
+      # Reference: https://github.com/envoyproxy/envoy/pull/23707.
+      args << "--cxxopt=-Wno-deprecated-declarations"
+      args << "--host_cxxopt=-Wno-deprecated-declarations"
     end
 
-    system Formula["bazelisk"].opt_bin/"bazelisk", "build", *args, "//source/exe:envoy-static"
-    bin.install "bazel-bin/source/exe/envoy-static" => "envoy"
+    # Write the current version SOURCE_VERSION.
+    system "python3", "tools/github/write_current_source_version.py", "--skip_error_in_git"
+
+    system Formula["bazelisk"].opt_bin/"bazelisk", "build", *args, "//source/exe:envoy-static.stripped"
+    bin.install "bazel-bin/source/exe/envoy-static.stripped" => "envoy"
     pkgshare.install "configs", "examples"
   end
 

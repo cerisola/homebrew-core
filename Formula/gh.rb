@@ -1,8 +1,8 @@
 class Gh < Formula
   desc "GitHub command-line tool"
   homepage "https://github.com/cli/cli"
-  url "https://github.com/cli/cli/archive/v2.10.1.tar.gz"
-  sha256 "a94ba6a731ad558f7937d0ac46ff8034b56214ec9e24a9ad70296331b1bb12ed"
+  url "https://github.com/cli/cli/archive/v2.21.1.tar.gz"
+  sha256 "7c57f77ce5c8f1f418582b891224cedb364672f397251a1c593b8875f7c34f87"
   license "MIT"
 
   head "https://github.com/cli/cli.git", branch: "trunk"
@@ -13,12 +13,13 @@ class Gh < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "049de180c8094f1d4dd375c02281e27bd6e32697f329e47d78e7a48339d87dec"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e1aa21d4313a551a3384fba9e22936ab811e3f250aacdd95fd7f979e195aa432"
-    sha256 cellar: :any_skip_relocation, monterey:       "b34ba14a6359cbe623fb38ba46b1215f6a8582b914393122cb42f940ac3979cc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "82468484a018b7ab5dd8daa831e4e2c40c22c2d2826a7b0c06a224eea49eebe0"
-    sha256 cellar: :any_skip_relocation, catalina:       "df1b398630733ffb098f012b0af88c6ac5a6f40f3ea6a1f8d0234a2bfadc2b26"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3275fb7591057e8e0fbddd658cbb46b6bfdf51dc170c314e5b47de80745827c3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a65c963638f4cbdc86566b15eb0327b753c78216e06937a2c1442f451c1799ef"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c771a160f354859b0868c1cf11cd3559e04cc23fc1e3fd45c852712258543828"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "86e0fa9b8c1594436746f5e8b68e93c6a0dc5510ca63fc69232e96cc87f9dc0f"
+    sha256 cellar: :any_skip_relocation, ventura:        "d54bad49e982d6c1b47ad9a17317f5b8c3fb64209b235a0c0239fa3da4a402e6"
+    sha256 cellar: :any_skip_relocation, monterey:       "0d933fb1531bf439d13d1a7a2d47a2a0ac67b46fb163638c4b2c71d75a9cd868"
+    sha256 cellar: :any_skip_relocation, big_sur:        "09c2b7ba64796b4f86722b9e891baa72c2981da4da9e73aef481e244ddf73704"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ff449c4975b1ff2a117a3d63f7f13aa660055d4c6edb1aaa782e2be1f4228d0"
   end
 
   depends_on "go" => :build
@@ -32,9 +33,7 @@ class Gh < Formula
     end
     bin.install "bin/gh"
     man1.install Dir["share/man/man1/gh*.1"]
-    (bash_completion/"gh").write `#{bin}/gh completion -s bash`
-    (fish_completion/"gh.fish").write `#{bin}/gh completion -s fish`
-    (zsh_completion/"_gh").write `#{bin}/gh completion -s zsh`
+    generate_completions_from_executable(bin/"gh", "completion", "-s")
   end
 
   test do

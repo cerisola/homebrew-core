@@ -6,24 +6,24 @@ class Eralchemy < Formula
   url "https://files.pythonhosted.org/packages/87/40/07b58c29406ad9cc8747e567e3e37dd74c0a8756130ad8fd3a4d71c796e3/ERAlchemy-1.2.10.tar.gz"
   sha256 "be992624878278195c3240b90523acb35d97453f1a350c44b4311d4333940f0d"
   license "Apache-2.0"
-  revision 5
+  revision 6
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "4078f3edd263be83b197c693a0d840a444e45b885cdd6e9ddd05f7f01c8c325c"
-    sha256 cellar: :any,                 arm64_big_sur:  "d925eb8686a32d2bbf7b9bab62f65f6b761952dcb32923ef7b6428f5325c11a1"
-    sha256 cellar: :any,                 monterey:       "dcf339a6df3abf232c794911db58daa4ed85c47c4ce36c816684f045e01f7a90"
-    sha256 cellar: :any,                 big_sur:        "2a5ce41209235c75eeb092f0b6c17c6c46c03f2faada2b2a337fcda7f28a4288"
-    sha256 cellar: :any,                 catalina:       "e844701e7824dc9497969cc6592302bf56ac060d5aa18105e1ee2887411a5f12"
-    sha256 cellar: :any,                 mojave:         "cfb423a7299d1d307e58aa756675f26ea65ad405e6e2fb707727de49aa36eb64"
-    sha256 cellar: :any,                 high_sierra:    "cb2442baa298aa27c860ad7d80116131f286ea283625dbd809d4b518ba81707a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "33457b7cd8520565ade9b63b2ea9597b0e695652ded2414d0da61425a2eb8744"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_ventura:  "90c54e151e6f6a65d761bc571c32ef9add975cff7503efa7a24a725e8fd3da8d"
+    sha256 cellar: :any,                 arm64_monterey: "ecbfa57048711bf1cbfd0f67f55e1bd7f8b13fae8302826dcd794a8c4010ec01"
+    sha256 cellar: :any,                 arm64_big_sur:  "0a9a6d6ce98d3d19315ec3cb0e810a14aba6feff359c3ae54e83c9b93caa94e0"
+    sha256 cellar: :any,                 ventura:        "c3b0e88597a3e45526fde52fa0f819b6394ccc40d205a9b3ce23e09069addaaa"
+    sha256 cellar: :any,                 monterey:       "65b851f69ab987e5d8cc2182c136fdfc39b45fcc2ceaa9dbcf5eec84e2267edc"
+    sha256 cellar: :any,                 big_sur:        "0cbb8202c92ed769fc0ad59c2355ecafaa5a07e3b1d2c98394f2af55c76fd4cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1360dcd9c43951db50971b9942b62043d45165a7dddc8c5205c57d1490170665"
   end
 
   depends_on "pkg-config" => :build
   depends_on "graphviz"
   depends_on "libpq"
   depends_on "openssl@1.1"
-  depends_on "python@3.9"
+  depends_on "python@3.11"
 
   resource "psycopg2" do
     url "https://files.pythonhosted.org/packages/fd/ae/98cb7a0cbb1d748ee547b058b14604bd0e9bf285a8e0cc5d148f8a8a952e/psycopg2-2.8.6.tar.gz"
@@ -46,13 +46,8 @@ class Eralchemy < Formula
   end
 
   def install
-    venv = virtualenv_create(libexec, Formula["python@3.9"].opt_bin/"python3")
-
-    res = resources.reject { |r| r.name == "er_example" }
-    res.each do |r|
-      venv.pip_install r
-    end
-
+    venv = virtualenv_create(libexec, "python3.11")
+    venv.pip_install resources.reject { |r| r.name == "er_example" }
     venv.pip_install_and_link buildpath
   end
 

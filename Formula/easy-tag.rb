@@ -4,18 +4,23 @@ class EasyTag < Formula
   url "https://download.gnome.org/sources/easytag/2.4/easytag-2.4.3.tar.xz"
   sha256 "fc51ee92a705e3c5979dff1655f7496effb68b98f1ada0547e8cbbc033b67dd5"
   license "GPL-2.0-or-later"
-  revision 6
+  revision 8
 
   bottle do
-    sha256 arm64_big_sur: "8a1cef2c91b3216179ce0eb8ace40e845c2956bb08602747d9c4b433b8c138e2"
-    sha256 big_sur:       "f10db53f7c6852dc2d83920c64b5166612b7ebfcfd8b8789228bcc2917b183c4"
-    sha256 catalina:      "cf12b241113c19be8fb1b91871d0428f29c9d4e39066c5fd0c197bba1f12088a"
+    rebuild 1
+    sha256 arm64_ventura:  "2842fbc4cf1533ae7f7734797839ef1658526719b4050a4293f9cbe57af6b88d"
+    sha256 arm64_monterey: "62610eeb362c3239309e9559cf01632f86c4c3b55b119aec1c4b8f79fbd5ce9d"
+    sha256 arm64_big_sur:  "b9e4f4fb767f1bcacaa1fa4f527814681d92ce47d7d091f22e3bb506f7e4c3f7"
+    sha256 ventura:        "d79741edf9f1f7351596ee388e1fc4b80f0e817f66b1f63303ae7c33e99dfbb6"
+    sha256 monterey:       "e07457b1fe81c61d43908dae2964dba03e56631e4788f1546c194079c7be2ddb"
+    sha256 big_sur:        "51c76274e95501746d8f92476e2d9d9fe4163b00f2750ba9e703e8b4e8c0f670"
+    sha256 x86_64_linux:   "2990dcdd7b0c5eb9c23aa7bb3af2720d8ead25ef00ae9d2f6edf5004d32526e1"
   end
 
   depends_on "intltool" => :build
   depends_on "itstool" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.9" => :build
+  depends_on "python@3.11" => :build
   depends_on "adwaita-icon-theme"
   depends_on "flac"
   depends_on "gtk+3"
@@ -28,16 +33,17 @@ class EasyTag < Formula
   depends_on "taglib"
   depends_on "wavpack"
 
+  uses_from_macos "perl" => :build
+
   # disable gtk-update-icon-cache
   patch :DATA
 
   def install
-    xy = Language::Python.major_minor_version Formula["python@3.9"].opt_bin/"python3"
-    ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python#{xy}/site-packages"
+    ENV.append_path "PYTHONPATH", Formula["libxml2"].opt_prefix/Language::Python.site_packages("python3")
+    ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
+    ENV.append "LDFLAGS", "-lz"
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-schemas-compile"
+    system "./configure", *std_configure_args, "--disable-schemas-compile"
     system "make"
     ENV.deparallelize # make install fails in parallel
     system "make", "install"
@@ -49,6 +55,10 @@ class EasyTag < Formula
   end
 
   test do
+    # Disable test on Linux because it fails with:
+    # Gtk-WARNING **: 18:38:23.471: cannot open display
+    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
+
     system "#{bin}/easytag", "--version"
   end
 end

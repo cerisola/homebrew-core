@@ -3,35 +3,33 @@ class LuaLanguageServer < Formula
   homepage "https://github.com/sumneko/lua-language-server"
   # pull from git tag to get submodules
   url "https://github.com/sumneko/lua-language-server.git",
-      tag:      "3.2.2",
-      revision: "5933902449c992179a0958a7d401a1d970e874a7"
+      tag:      "3.6.4",
+      revision: "8132f4c9da02858c23813d15c2cb6ded6df57ea1"
   license "MIT"
   head "https://github.com/sumneko/lua-language-server.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4c642d465b0533acaa4ca3b6741238202c05c6658c13e164593a8b51777cc615"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f89d1014d49308f7b136b2e81d25d56ecfdd27620805ef0abeefd2a41856d871"
-    sha256 cellar: :any_skip_relocation, monterey:       "d31ad020518e65baa92b4e45e2b7ddbe71d6ebbe8dc4381f4bcb29b04fe91bcb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5c01b82bd3a3944ff4325dedf4bf4c8ff37bc7ef3f106d46b5472d8035fd535d"
-    sha256 cellar: :any_skip_relocation, catalina:       "5ba96e87054902f909b602efdecffa38020076c95bbfd9c76c07fa7b18d76e1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fe50d31acbf04fdf56f6599f8893da5d259400f377b6fc9de2b2282cc44280f7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2e64defb1f3729347383366fcf22e4d61efb37cf5125d3b9d2dab82c48c0c3bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "4da4edcd367b34879130de21d44616abef120f9eb13a965f3b215792e4f8b93b"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "47ead821a9276c553da43bb98a39ff064ad0dfb78e36a0f2c8c7b36bb82d4a17"
+    sha256 cellar: :any_skip_relocation, ventura:        "b52fb5eec50a2ea3489125eb26c654b2e1cc00b9576ba1e64d6f1e5d25e3eb50"
+    sha256 cellar: :any_skip_relocation, monterey:       "d886103ff531e14ef7f93a05471e635b316e1e5cb444f651dc162e0bb13226ff"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a84752cc0c0240d0da8e6875a5fd9100a39710322f53276d76d1aa9a3eb9ab91"
+    sha256 cellar: :any_skip_relocation, catalina:       "083ddc82334dcff3a92119ae2757b956c92f806eca12be494fbde1b50e080ecf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bf03903c074fff39aae05c223f257d718ff36b09e109f78623189622733849ab"
   end
 
   depends_on "ninja" => :build
 
-  on_linux do
-    depends_on "gcc" # For C++17
-  end
-
-  fails_with gcc: 5
+  fails_with gcc: 5 # For C++17
 
   def install
     ENV.cxx11
 
     # disable all tests by build script (fail in build environment)
     inreplace buildpath.glob("**/3rd/bee.lua/test/test.lua"),
-      "local success = lt.run()",
-      "local success = true"
+      "os.exit(lt.run(), true)",
+      "os.exit(true, true)"
 
     chdir "3rd/luamake" do
       system "compile/install.sh"
@@ -48,7 +46,7 @@ class LuaLanguageServer < Formula
     require "pty"
     output = /^Content-Length: \d+\s*$/
 
-    stdout, stdin, lua_ls = PTY.spawn bin/"lua-language-server"
+    stdout, stdin, lua_ls = PTY.spawn bin/"lua-language-server", "--logpath=#{testpath}/log"
     sleep 5
     stdin.write "\n"
     sleep 25

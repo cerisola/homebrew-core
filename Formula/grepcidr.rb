@@ -11,8 +11,10 @@ class Grepcidr < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "61836780a0413a58d38b7cf1acd66ad5b1f96554889cde682b2db21df0c5f037"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e1e9fe9d6d9eeed951aa7bc502e9bea2e03f6196225d57826bf4882854c86980"
     sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d2a44c09499df8266ce513c939722e15a3b8365cb9802a1311450d470ad01b0e"
+    sha256 cellar: :any_skip_relocation, ventura:        "642f5f57ecbc3b84581648265f483180d40b741e3e3092b9689e25f7d9472248"
     sha256 cellar: :any_skip_relocation, monterey:       "bd5e42708f90385a347624dafd62092c377d8ae0b31d4fb244203f505f427055"
     sha256 cellar: :any_skip_relocation, big_sur:        "1aee569b691f9aee204924d4059b55b5d28be63394350b9ed5993d42a131c081"
     sha256 cellar: :any_skip_relocation, catalina:       "29222220edfad5ce8db2a197f1e0a3fe1d703a62338c5dc8d28ed8ce47afe987"
@@ -20,7 +22,6 @@ class Grepcidr < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "7266be7b9262d50ab08d63529cf9858764573784ab63918010454ec2d76363b6"
     sha256 cellar: :any_skip_relocation, sierra:         "12dfa49026bffb77ed1c4a08e9b60b56859eb183bbf791754d0b1d476ba6d795"
     sha256 cellar: :any_skip_relocation, el_capitan:     "31ccf6792cab3c5022530ef4576ea53e6dedd4855b939d11212fea0d7fa294dc"
-    sha256 cellar: :any_skip_relocation, yosemite:       "d0024b81610b4a698de415aef87958e2a61f74a9f1f2b7acf875f2f3d50ecc05"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "cb0c1384a2e7e8c25c10ca2c767732ba49a4b57d7e2249ce415d11b76c4dadc0"
   end
 

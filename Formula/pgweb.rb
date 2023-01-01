@@ -1,17 +1,18 @@
 class Pgweb < Formula
   desc "Web-based PostgreSQL database browser"
   homepage "https://sosedoff.github.io/pgweb/"
-  url "https://github.com/sosedoff/pgweb/archive/v0.11.11.tar.gz"
-  sha256 "4d8c64db7ec463a9366d404cbaf12215db855a5bdbf09253494d79dedd92db98"
+  url "https://github.com/sosedoff/pgweb/archive/v0.13.1.tar.gz"
+  sha256 "5b2343c96d5e095f1596bba22e97e695e39eed0dccac1ff21f993e7b6b34d380"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4ab4d7f6ef6f033ba9e255ba5ba1192f2f835e6a430d03dc553872011d516d14"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4de10cd67782077f391a212cecc978605813488eaf1f09d66a339aaf99f1b6c7"
-    sha256 cellar: :any_skip_relocation, monterey:       "9ef3651c6bca97057478b218a913d4d83c53825283e82f20a40138ee278de3c0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "65bbbca6901f6bf3ae3022250e2f138ad9dbc386476503641eaac9bbac4585c1"
-    sha256 cellar: :any_skip_relocation, catalina:       "a30327b12de71ad523c7efdc94e53b1f7b855879c8396499f7d095d84a39a946"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7f7e79fae8d7692422706790b129dd609c4b93d5bcf7e6d67343e19e53fba034"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f2166f14974abbb9e66c07c5eda1ad7c510111249d1252b7dd6cd8635ae020e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f3e6b2a7490131fb93d515e2026be78478e844c284c99c87fc10a39d1b609a8c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5e018ae2cb5bce8cb004cfe69308d642d96913ecec97037d8e24053f89ba2f86"
+    sha256 cellar: :any_skip_relocation, ventura:        "957d99827a58e57b9188ef148baa696146ee90dc14b07cd22d2d7c03fe69901f"
+    sha256 cellar: :any_skip_relocation, monterey:       "fb60f3b7169d889668c20f89e5ac54876c6d3f7b6d92cbe9752d881e497985aa"
+    sha256 cellar: :any_skip_relocation, big_sur:        "c98972f5d06728a7601c134ea6dbcef231aa45eafd7cd7e960c01937c6d19cf8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f31b67ba65c30b05491d6a3ea89fa6f6511591866c317160873bc121cac53815"
   end
 
   depends_on "go" => :build

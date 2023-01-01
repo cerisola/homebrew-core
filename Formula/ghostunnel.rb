@@ -1,19 +1,18 @@
 class Ghostunnel < Formula
   desc "Simple SSL/TLS proxy with mutual authentication"
   homepage "https://github.com/ghostunnel/ghostunnel"
-  url "https://github.com/ghostunnel/ghostunnel/archive/refs/tags/v1.6.0.tar.gz"
-  sha256 "c86c04b927b45cbaa3dbb6339d9e89e00fe0f4235bb3c0a50c837f3f89a42df4"
+  url "https://github.com/ghostunnel/ghostunnel/archive/refs/tags/v1.7.1.tar.gz"
+  sha256 "b4eced76660e5e4bcdead3a3026608d500576fac574e49371cf9de8c98041b71"
   license "Apache-2.0"
   head "https://github.com/ghostunnel/ghostunnel.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0ea9fe350020419353724b00bab8df806958b690f793f35411163bc2ffbe1ad5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e29c9322e028759b02a968914b4739157d3db6abc6ba367e9a5c9f1995b282b0"
-    sha256 cellar: :any_skip_relocation, monterey:       "e91c415434646d525d228aac3bcfdd6a247ee312fab44c8e1874067624c2cdad"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b93ac43836099084bb444f2572886e0925bbe3184160a219cc4ab667c8ca23f8"
-    sha256 cellar: :any_skip_relocation, catalina:       "6e3a12df1cd0d68dc23bd0ebdb73d0fb30e92a8c4cfa56e3601302123a45a908"
-    sha256 cellar: :any_skip_relocation, mojave:         "2b518ddd7d5cba3bf9dfb99980ae5f8fa8cc9ad5b1cd8be8e275408886d20290"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea9e91ff93f4a79212f2a0363769be3879a3d6b656a6044ef8aa3a9ac9d7f794"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f6456eea77410787d8fe28c7f9cae2ae8624fbaffc2fba2e06d11dda74b3bc9c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b66f6e2fec5210fe2189461b3732ff558386fcc98d0850442a5df862bdec0910"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3d37b5c7e36c2192474cbc43bcc966af03534f8c8ab7da0ab192aae4e3650d8f"
+    sha256 cellar: :any_skip_relocation, ventura:        "9fd269914394018868615f572f955d0d0cf733565ef51715ce8c33e0806b440c"
+    sha256 cellar: :any_skip_relocation, monterey:       "7ff079fa2a391da1c5e3cae5b8a117fb8d6db3ab0e0998961cd2253339eb9f2c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "1a675c369ce55275aaa2905e42b1b2ef2f14d1bbc0fb08ca681b442caded0e7b"
   end
 
   depends_on "go" => :build

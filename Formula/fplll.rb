@@ -1,18 +1,18 @@
 class Fplll < Formula
   desc "Lattice algorithms using floating-point arithmetic"
   homepage "https://github.com/fplll/fplll"
-  url "https://github.com/fplll/fplll/releases/download/5.4.1/fplll-5.4.1.tar.gz"
-  sha256 "7bd887957173aa592091772c1c36f6aa606b3b2ace0d14e2c26c7463dcf2deb7"
+  url "https://github.com/fplll/fplll/releases/download/5.4.3/fplll-5.4.3.tar.gz"
+  sha256 "43cf1a3e016d94f85ddff2888e62853c510774521a4abdfb5055c90f40e6eba1"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 arm64_monterey: "c1b9a32a5c3bb69d36bcaabc02be954994327c5af0c730754d9fccb8d036990c"
-    sha256 arm64_big_sur:  "377b5606bb5c319ad73824afcc907f946a1c7c60ddb5a0e181d257fcafc5c5ce"
-    sha256 monterey:       "f76e9a6cce440bc8651b8e699067078c7673c371dd85a758909e8333ab1241bd"
-    sha256 big_sur:        "6290a0d579e8ffba1dab159d70f9e10f58d6600cad8564469fe066b24aa8f170"
-    sha256 catalina:       "bf39fa78c92642f571b4514a61ebe43c5aef39ff25d0e4de969cbf6bf323cc11"
-    sha256 mojave:         "2219fe4523fced68e1f9a8038848cf54d0588cc652229bcbf2bf03e696f7b971"
-    sha256 x86_64_linux:   "fca671625e1f741805cc846d31b03a23506180343dcbe3393cb73a61282703df"
+    sha256                               arm64_ventura:  "7a5959521c876aed29742a738728b7c7bfa5d1ad2315347feebc1377b3ad4ff6"
+    sha256                               arm64_monterey: "3ba1dfcca3b1b574d96ee070345fe1f4ff1ff64f1168a7ba7c5824d609a06ec5"
+    sha256                               arm64_big_sur:  "d35475cea0b4d09c295bee7fff000212326fb5434d09af1eb039d9f2dd21c835"
+    sha256                               ventura:        "6511ac8e85961b4c84b5109500fb57c89f6dc450d2d13f08fb6df3d8d0e8e35f"
+    sha256                               monterey:       "faa8b1c5f86ece266b726246dd2614041e369916a1b732183ea8a66a9118fe8a"
+    sha256                               big_sur:        "bd64e8930e222533b94e6ac862fc4efc39dac5776489cadde16a77cefda23440"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2da213da7edfafbf5e2ae3d778683fb3750827ae758991d6abdf00f016ceef3"
   end
 
   depends_on "automake" => :build
@@ -39,6 +39,7 @@ class Fplll < Formula
       #include <fplll.h>
       #include <vector>
       #include <stdio.h>
+      using namespace fplll;
       int main(int c, char **v) {
         ZZ_mat<mpz_t> b;
         std::vector<Z_NR<mpz_t>> sol_coord;

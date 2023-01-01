@@ -2,30 +2,25 @@ class Glslviewer < Formula
   desc "Live-coding console tool that renders GLSL Shaders"
   homepage "http://patriciogonzalezvivo.com/2015/glslViewer/"
   url "https://github.com/patriciogonzalezvivo/glslViewer.git",
-      tag:      "2.0.5",
-      revision: "788bb17bfa10759dd88def6979f1d16b31591ff6"
+      tag:      "v3.10.1",
+      revision: "2671e0f0b362bfd94ea5160f2ecb7f7363d4991d"
   license "BSD-3-Clause"
   head "https://github.com/patriciogonzalezvivo/glslViewer.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "f1f56f94f020e9cbd7687a4050b593c994f88c7171cf9b8844269f274a63b154"
-    sha256 cellar: :any,                 arm64_big_sur:  "1cd53a4a542feeb3339d14b6864385431dafde36b4c0c40168932fe1b6ccaddd"
-    sha256 cellar: :any,                 monterey:       "60e3894913d8fe9ca335bdce56bcf3500c50980524751dbe091c48a7208cc7c9"
-    sha256 cellar: :any,                 big_sur:        "83847db14457a67a4018444b572da153f64faee492cad55bf25fcdd2b7258c30"
-    sha256 cellar: :any,                 catalina:       "4193fa09eca8907ea14c05d04a843396c0610cd85af7f483f21242884cc5c6d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e9871545c27387e50f6f0ca0a36791b1e8c27e47857ad7c1bf457547c15a2b2c"
+    sha256 cellar: :any,                 arm64_ventura:  "fa2379f7279b8e64880f7685f2a256e104e2fb2b8e57a47ee292cbf5ce475997"
+    sha256 cellar: :any,                 arm64_monterey: "e7fa27cf2e7eeed7429268623e63548db57a1c27f44e37a2a30700adbd1f90b3"
+    sha256 cellar: :any,                 arm64_big_sur:  "c0e1850b1180eab586d3140a64a5a7b75094cc2bae12dbf309656f13e968a737"
+    sha256 cellar: :any,                 ventura:        "b4ab276e1948ddfa3983d228a337ae2fb65555f12645b72af3966e25bd029fde"
+    sha256 cellar: :any,                 monterey:       "d8cb6038670c1a4c353a30af813b854f23c3b7e35fd0386862a19827d706fe3c"
+    sha256 cellar: :any,                 big_sur:        "c5070b326126322ab37af402a9324dc85cf16c683b1e6316c4fe40a902fd6644"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b6b25dff1066f4dd4682b48e7473089d2f710e97efb30460fbff3c1dc15edc7a"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "ffmpeg@4"
+  depends_on "ffmpeg"
   depends_on "glfw"
-
-  on_linux do
-    depends_on "gcc"
-  end
-
-  fails_with gcc: "5" # rubberband is built with GCC
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
@@ -36,8 +31,8 @@ class Glslviewer < Formula
   end
 
   test do
-    cp_r "#{pkgshare}/examples/2D/01_buffers/.", testpath
-    pid = fork { exec "#{bin}/glslViewer", "00_ripples.frag", "-l" }
+    cp_r "#{pkgshare}/examples/io/.", testpath
+    pid = fork { exec "#{bin}/glslViewer", "orca.frag", "-l" }
   ensure
     Process.kill("HUP", pid)
   end

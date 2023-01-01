@@ -1,10 +1,9 @@
 class Mx < Formula
   desc "Command-line tool used for the development of Graal projects"
   homepage "https://github.com/graalvm/mx"
-  url "https://github.com/graalvm/mx/archive/refs/tags/5.296.0.tar.gz"
-  sha256 "d6867cdfa80575c70a3e64ada62e8cb22a226e2df6dc4c4bf6db5964bd9a8fde"
+  url "https://github.com/graalvm/mx/archive/refs/tags/6.14.9.tar.gz"
+  sha256 "23ff44244c4ff8a3b88702463665de11a0c72f82541b00e4d162ee7ea6240f38"
   license "GPL-2.0-only"
-  revision 1
 
   livecheck do
     url :stable
@@ -12,28 +11,35 @@ class Mx < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "cceb7b6accacf43b11dbb6a34955cdce563c4d6fed0802ab6c542fad59289550"
+    sha256 cellar: :any_skip_relocation, all: "cb0b6992feb0b25660e63b79795ac1dfc1de4f944a6d0c36166b921933da85ab"
   end
 
   depends_on "openjdk" => :test
-  depends_on arch: :x86_64
-  depends_on "python@3.10"
+  depends_on "python@3.11"
 
-  resource("testdata") do
-    url "https://github.com/oracle/graal/archive/refs/tags/vm-21.0.0.2.tar.gz"
-    sha256 "fcb144de48bb280f7d7f6013611509676d9af4bff6607fe7aa73495f16b339b7"
+  resource "homebrew-testdata" do
+    url "https://github.com/oracle/graal/archive/refs/tags/vm-22.1.0.1.tar.gz"
+    sha256 "7653558bc4e4a5f89e5ddef7242ddc1ec5582ec75bdc94997feb76ed12ce8e94"
   end
 
   def install
     libexec.install Dir["*"]
-    (bin/"mx").write_env_script libexec/"mx", MX_PYTHON: "#{Formula["python@3.10"].opt_bin}/python3"
+    (bin/"mx").write_env_script libexec/"mx", MX_PYTHON: "#{Formula["python@3.11"].opt_libexec}/bin/python"
     bash_completion.install libexec/"bash_completion/mx" => "mx"
+  end
+
+  def post_install
+    # Run a simple `mx` command to create required empty directories inside libexec
+    Dir.mktmpdir do |tmpdir|
+      system bin/"mx", "--user-home", tmpdir, "version"
+    end
   end
 
   test do
     ENV["JAVA_HOME"] = Language::Java.java_home
+    ENV["MX_ALT_OUTPUT_ROOT"] = testpath
 
-    testpath.install resource("testdata")
+    testpath.install resource("homebrew-testdata")
     cd "vm" do
       output = shell_output("#{bin}/mx suites")
       assert_match "distributions:", output

@@ -1,17 +1,19 @@
 class Brook < Formula
   desc "Cross-platform strong encryption and not detectable proxy. Zero-Configuration"
   homepage "https://txthinking.github.io/brook/"
-  url "https://github.com/txthinking/brook/archive/refs/tags/v20220501.tar.gz"
-  sha256 "31474d3a9667a153986710b989d99a4f971255f407d47eebaf15b6fc9c2f4128"
+  url "https://github.com/txthinking/brook/archive/refs/tags/v20221212.tar.gz"
+  sha256 "bc0bf33d65a31fd85a2eb50ea9dcfffa0fb66f0213e5d6eb94a69fcdd8a6007d"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "250ef1e71e1ad92daf620eb3db2db76b20488612eb1fcf20924848ca0d29e80d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "68f7a3ca9c1bb5410572325e5fcfe63b4512eba1436f6c5dad280d3887073cf5"
-    sha256 cellar: :any_skip_relocation, monterey:       "406f6a75ef631958da89f59c8def5359792210fb7dce1f18a64d16ffd6fe8eda"
-    sha256 cellar: :any_skip_relocation, big_sur:        "81a0773a91102467aabd4f3d4546150f98481a22e333aea44d91f49b7347ce30"
-    sha256 cellar: :any_skip_relocation, catalina:       "83048afb43d2820605ce1202c817078cedc51ecb4769b95d9822e5d29421138f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1e0ee782d1a17445855b2d432cdb4e844c1fb7a4fc3a92d5e2fa3d908659c95"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "785162e87c02d99a4badfadca1de0ecd235f7864d2c8887166b12d3b95daa69e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6408ffb549f9adc493ce3364dbdece1439f7a0b62d58f959f6f279fe7a3cdbf4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8dc14ee60421131a30b3de7a8e0f79dc2a8942e5ef251b95b53b39a3be2509f2"
+    sha256 cellar: :any_skip_relocation, ventura:        "8a100ea09c5160d9ae4b3e71501c914b103334a21214b07f3c55a6bb9a832375"
+    sha256 cellar: :any_skip_relocation, monterey:       "e560e4f41415f2b20f8d2e773465c47eaf26472478a2cbf89c948f57c2e3904d"
+    sha256 cellar: :any_skip_relocation, big_sur:        "5928388c4c9fdee31ffb58db5aed486484735c2f0991e15b2af765407b2c6c53"
+    sha256 cellar: :any_skip_relocation, catalina:       "39194d775f5bb9ae40fe4571c99202d7b729668e27dfa2dafeadcbfbc5b91444"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6262104353f3ce66f85e8820e306b0f5d45791f500b0523418d14acad0ff12f2"
   end
 
   depends_on "go" => :build

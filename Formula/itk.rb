@@ -1,10 +1,9 @@
 class Itk < Formula
   desc "Insight Toolkit is a toolkit for performing registration and segmentation"
   homepage "https://itk.org"
-  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.2.1/InsightToolkit-5.2.1.tar.gz"
-  sha256 "192d41bcdd258273d88069094f98c61c38693553fd751b54f8cda308439555db"
+  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.3.0/InsightToolkit-5.3.0.tar.gz"
+  sha256 "57a4471133dc8f76bde3d6eb45285c440bd40d113428884a1487472b7b71e383"
   license "Apache-2.0"
-  revision 2
   head "https://github.com/InsightSoftwareConsortium/ITK.git", branch: "master"
 
   livecheck do
@@ -13,59 +12,62 @@ class Itk < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "61495c81d0131912bb28cca71f5194361f8b0f0771c2ff33d61020f04a7d35cd"
-    sha256 arm64_big_sur:  "334aab09cb5b4244dbb87831929294648e1194aa5be370b62208825ed128b064"
-    sha256 monterey:       "5888e5ec1cfce99a2d8eb26704b0f357f7e2e11ec62ae4bcce828fbb0cb128eb"
-    sha256 big_sur:        "325f815e996d953f180429e20db4765e894f201c07f1a465ae1f4690346852d5"
-    sha256 catalina:       "040cb820d85b99db6c07bb18e20e150146cea866a399303f30e128cbdbeb3646"
-    sha256 x86_64_linux:   "4ce4d3bf54ace26caab4df9f975bf39e8abc454983130b8d37d9d1f2cde3f210"
+    sha256 arm64_ventura:  "6c5ae4caaa5db0b4c9c5d5947f7432e7933e2ec4b0047ad656318c7eaf291376"
+    sha256 arm64_monterey: "999621dcc8212ac650e40035de6c6d9558f7564e2868e09040372d391f8e54e5"
+    sha256 arm64_big_sur:  "9d72b5bf086019b8a7b88a24f8188de0f1121630168f54cc94d161d50b8993d8"
+    sha256 ventura:        "e18ca58d6e7ef0b136e3d5bac7b13b027c6f21e4d6200c28735828f7eac0c462"
+    sha256 monterey:       "05b28cb5148887ced4e7b9f14c8a89b7e0dcfddf812bcecf61ef525703f16f3a"
+    sha256 big_sur:        "9220db75ade46836b878577fd095f6998117cdf2a937dd9b68614646e2a2d504"
+    sha256 x86_64_linux:   "99ffd8c6b3faf1dcde531cd549571726a3445e5c60173aa6d3e3ceff18e16486"
   end
 
   depends_on "cmake" => :build
+  depends_on "double-conversion"
   depends_on "fftw"
   depends_on "gdcm"
   depends_on "hdf5"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
-  depends_on "vtk@8.2" # needed for gdcm
+  depends_on "vtk"
 
   on_linux do
     depends_on "alsa-lib"
-    depends_on "gcc"
     depends_on "unixodbc"
-
-    ignore_missing_libraries "libjvm.so"
   end
 
   fails_with gcc: "5"
 
   def install
-    args = std_cmake_args + %W[
+    # Avoid CMake trying to find GoogleTest even though tests are disabled
+    (buildpath/"Modules/ThirdParty/GoogleTest").rmtree
+
+    args = %W[
       -DBUILD_SHARED_LIBS=ON
-      -DBUILD_TESTING=OFF
       -DCMAKE_INSTALL_RPATH:STRING=#{lib}
       -DCMAKE_INSTALL_NAME_DIR:STRING=#{lib}
-      -DITK_USE_64BITS_IDS=ON
-      -DITK_USE_STRICT_CONCEPT_CHECKING=ON
-      -DITK_USE_SYSTEM_ZLIB=ON
-      -DITK_USE_SYSTEM_EXPAT=ON
-      -DModule_SCIFIO=ON
       -DITKV3_COMPATIBILITY:BOOL=OFF
-      -DITK_USE_SYSTEM_FFTW=ON
+      -DITK_LEGACY_REMOVE=ON
+      -DITK_USE_64BITS_IDS=ON
       -DITK_USE_FFTWF=ON
       -DITK_USE_FFTWD=ON
+      -DITK_USE_SYSTEM_FFTW=ON
       -DITK_USE_SYSTEM_HDF5=ON
       -DITK_USE_SYSTEM_JPEG=ON
       -DITK_USE_SYSTEM_PNG=ON
       -DITK_USE_SYSTEM_TIFF=ON
       -DITK_USE_SYSTEM_GDCM=ON
-      -DITK_LEGACY_REMOVE=ON
+      -DITK_USE_SYSTEM_ZLIB=ON
+      -DITK_USE_SYSTEM_EXPAT=ON
+      -DITK_USE_SYSTEM_DOUBLECONVERSION=ON
+      -DITK_USE_SYSTEM_LIBRARIES=ON
       -DModule_ITKReview=ON
       -DModule_ITKVtkGlue=ON
+      -DModule_SCIFIO=ON
     ]
-
-    args << "-DITK_USE_GPU=ON" if OS.mac?
+    # Cannot compile on macOS with this arg
+    # Upstream issue: https://github.com/InsightSoftwareConsortium/ITK/issues/3821
+    # args << "-DITK_USE_GPU=ON" if OS.mac?
 
     # Avoid references to the Homebrew shims directory
     inreplace "Modules/Core/Common/src/CMakeLists.txt" do |s|
@@ -80,11 +82,12 @@ class Itk < Formula
               "\\\"#{ENV.cxx}\\\", \\\"The CXX compiler.\\\");")
     end
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    # Remove the bundled JRE installed by SCIFIO ImageIO plugin
+    (lib/"jre").rmtree if OS.linux? || Hardware::CPU.intel?
   end
 
   test do
@@ -101,13 +104,13 @@ class Itk < Formula
 
     v = version.major_minor
     # Build step
-    system ENV.cxx, "-std=c++11", "-isystem", "#{include}/ITK-#{v}", "-o", "test.cxx.o", "-c", "test.cxx"
+    system ENV.cxx, "-std=c++14", "-isystem", "#{include}/ITK-#{v}", "-o", "test.cxx.o", "-c", "test.cxx"
     # Linking step
-    system ENV.cxx, "-std=c++11", "test.cxx.o", "-o", "test",
-                    shared_library("#{lib}/libITKCommon-#{v}", 1),
-                    shared_library("#{lib}/libITKVNLInstantiation-#{v}", 1),
-                    shared_library("#{lib}/libitkvnl_algo-#{v}", 1),
-                    shared_library("#{lib}/libitkvnl-#{v}", 1)
+    system ENV.cxx, "-std=c++14", "test.cxx.o", "-o", "test",
+                    lib/shared_library("libITKCommon-#{v}", 1),
+                    lib/shared_library("libITKVNLInstantiation-#{v}", 1),
+                    lib/shared_library("libitkvnl_algo-#{v}", 1),
+                    lib/shared_library("libitkvnl-#{v}", 1)
     system "./test"
   end
 end

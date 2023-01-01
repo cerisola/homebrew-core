@@ -1,21 +1,11 @@
 class OrTools < Formula
   desc "Google's Operations Research tools"
   homepage "https://developers.google.com/optimization/"
+  url "https://github.com/google/or-tools/archive/v9.5.tar.gz"
+  sha256 "57f81b94949d35dc042690db3fa3f53245cffbf6824656e1a03f103a3623c939"
   license "Apache-2.0"
   revision 1
   head "https://github.com/google/or-tools.git", branch: "stable"
-
-  stable do
-    url "https://github.com/google/or-tools/archive/v9.3.tar.gz"
-    sha256 "6fe981326563136fbb7a697547dc0fe6495914b5b42df559c2d88b35f6bcc661"
-
-    # Allow building with `re2` formula rather than bundled & patched copy.
-    # TODO: remove in the next release
-    patch do
-      url "https://github.com/google/or-tools/commit/0d3572bda874ce30b35af161a713ecd1793cd296.patch?full_index=1"
-      sha256 "b15dcbaf130ce1e6f51dccfd2e97e92ad43694e3019d2179a9c1765909b7ffb8"
-    end
-  end
 
   livecheck do
     url :stable
@@ -23,12 +13,13 @@ class OrTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "64c2b3a6438460e17d56d3d78e567ef0e293ef5ec911a335c6f13d47a7d95073"
-    sha256 cellar: :any,                 arm64_big_sur:  "311a532e8b53e98c3e61d1d544c1f6cf04cd151b3e76e5b47e7ef3448e1ce77b"
-    sha256 cellar: :any,                 monterey:       "ec2a0fe33bb8b859f910efee4c4f74a936ecff27e715275cf081c215107f7015"
-    sha256 cellar: :any,                 big_sur:        "fc541facffb873535919dd270960ea045cc3ca005b3ef7b964b89bf1f37632d6"
-    sha256 cellar: :any,                 catalina:       "f7bd6fb05b39983c5dcbc7f25f2bfd140d6c43d3832f76675cea2ed3a0f8055b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "32ef7af2c61144bf1d8c658a9cef4b2e9355a8907889c395e34a71250b0d5216"
+    sha256 cellar: :any,                 arm64_ventura:  "34672a686112e2ab7442f8de1797bc05687293a4944e8842c608d2a41afe4874"
+    sha256 cellar: :any,                 arm64_monterey: "3ced7d174d313cde8a5b20e927874bbdd6b6da06ec3b8cc0df7f0fdc3c9a95fc"
+    sha256 cellar: :any,                 arm64_big_sur:  "8ac085ee9c00cffe72f5a3bb0c1dd408e6db905a47e44a74fd6c71fb29b25a4c"
+    sha256 cellar: :any,                 ventura:        "b0fc71da27ce2eeb84543019cbac3297e40ce518fadacb854d4cc788844a3f82"
+    sha256 cellar: :any,                 monterey:       "d3f678e1e2bc35aaac3fcb0681e23eb2a988c07fa8e8192c093d11bce2942967"
+    sha256 cellar: :any,                 big_sur:        "5232b03160dc6e21ae602a961dec8c016bfb68a260ed00609a33332c870acd48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f6eb897000a0ec9c357d25be591587c9030ecbb660e602f8800039876b0b200"
   end
 
   depends_on "cmake" => :build
@@ -46,11 +37,10 @@ class OrTools < Formula
 
   uses_from_macos "zlib"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
+
+  # Add missing <errno.h> include to numbers.cc
+  patch :DATA
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
@@ -66,21 +56,35 @@ class OrTools < Formula
 
   test do
     # Linear Solver & Glop Solver
-    system ENV.cxx, "-std=c++17",
+    system ENV.cxx, "-std=c++17", pkgshare/"simple_lp_program.cc",
            "-I#{include}", "-L#{lib}", "-lortools",
            "-L#{Formula["abseil"].opt_lib}", "-labsl_time",
-           pkgshare/"simple_lp_program.cc", "-o", "simple_lp_program"
+           "-o", "simple_lp_program"
     system "./simple_lp_program"
     # Routing Solver
-    system ENV.cxx, "-std=c++17",
+    system ENV.cxx, "-std=c++17", pkgshare/"simple_routing_program.cc",
            "-I#{include}", "-L#{lib}", "-lortools",
-           pkgshare/"simple_routing_program.cc", "-o", "simple_routing_program"
+           "-o", "simple_routing_program"
     system "./simple_routing_program"
     # Sat Solver
-    system ENV.cxx, "-std=c++17",
+    system ENV.cxx, "-std=c++17", pkgshare/"simple_sat_program.cc",
            "-I#{include}", "-L#{lib}", "-lortools",
            "-L#{Formula["abseil"].opt_lib}", "-labsl_raw_hash_set",
-           pkgshare/"simple_sat_program.cc", "-o", "simple_sat_program"
+           "-o", "simple_sat_program"
     system "./simple_sat_program"
   end
 end
+
+__END__
+diff --git a/ortools/base/numbers.cc b/ortools/base/numbers.cc
+index e9f5a57..e49182c 100644
+--- a/ortools/base/numbers.cc
++++ b/ortools/base/numbers.cc
+@@ -16,6 +16,7 @@
+
+ #include "ortools/base/numbers.h"
+
++#include <errno.h>
+ #include <cfloat>
+ #include <cstdint>
+ #include <cstdlib>

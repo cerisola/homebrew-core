@@ -1,18 +1,19 @@
 class Skylighting < Formula
   desc "Flexible syntax highlighter using KDE XML syntax descriptions"
   homepage "https://github.com/jgm/skylighting"
-  url "https://github.com/jgm/skylighting/archive/0.12.3.tar.gz"
-  sha256 "50126e6589a3507f19bc5ec83a933441c6f61b95fb5754a9d7c400194dceae70"
+  url "https://github.com/jgm/skylighting/archive/0.13.2.tar.gz"
+  sha256 "36b97d63a447c513294163b49d9f2d61714df2b5ae84ca03f9ab24ae9f09598e"
   license "GPL-2.0-or-later"
   head "https://github.com/jgm/skylighting.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a6361c56a877edd985d119f47beb2f3373da15308f919f1c09fa365204812573"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f4f674513c229f92cb5ef509c63e8cc1eab96ebf891c559dc0ea63fa0109a260"
-    sha256 cellar: :any_skip_relocation, monterey:       "f6be3405550535352133fbb98008f87b733260af6cada1c34c40f1cef74345f5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f86128838ce68540a2d67648e100ba3dbbd1f138b693cd6d2367170a27eb37ff"
-    sha256 cellar: :any_skip_relocation, catalina:       "5cf4fa77d96e296388409747439f034b868b93933f7b17c64edbbaa654cf2c2f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2cc48bc6dad6b29a12a42cdf43008f55d3c754a602fd82c87cfeb1e402f15d72"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6cc51f5ed42935912fd055e0ebcee6a50197205898932570fc8e38aefc4df227"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a43af1a236699f3950319b9f5e9efde134792f4e92960e9307ff071441820aa4"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7b874b669fb444dad2fbf637826b6c53bfa87fc4c1e4fc0ceae2c2ddd2564110"
+    sha256 cellar: :any_skip_relocation, ventura:        "9203e387fd575c4549db7e40791ea2d10c2baee8559fbfeabdeebb46ff2b7c5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "19634026095b492d54c547b81cd0287dfde1970935722105b4fb0ac4c8fe7b2b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "afdcb1ceaf5bb64d69565985ea6c0b09edd1bdce4b5b3b021d04272f2d944692"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5533883c13077d823efb3bd479e8713a7745564431694260bfdf3c4f2b64a0dd"
   end
 
   depends_on "cabal-install" => :build

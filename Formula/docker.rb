@@ -2,8 +2,8 @@ class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
   url "https://github.com/docker/cli.git",
-      tag:      "v20.10.15",
-      revision: "fd82621d35d2d9662854c8351976d5cc1e4186ce"
+      tag:      "v20.10.22",
+      revision: "3a2c30b63ab20acfcc3f3550ea756a0561655a77"
   license "Apache-2.0"
   head "https://github.com/docker/cli.git", branch: "master"
 
@@ -13,12 +13,13 @@ class Docker < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2cfb86b8bac67b5a9a4ca22de1f84d8cf1647c4e00ab068828593cf3cd23724b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c8405bbd97e27a2a84dd8e7790d8c8471fe16836ed4578635fc4bb0e819f79e3"
-    sha256 cellar: :any_skip_relocation, monterey:       "2258d1b64ddae96eb53e2919d5e7ac0e6e9f64190d9b515dfd8112a7f8d2e941"
-    sha256 cellar: :any_skip_relocation, big_sur:        "74c3c18ea3f99ad04bce2d1e3d3b446fad543d3cce78457d3cebce681ca2a031"
-    sha256 cellar: :any_skip_relocation, catalina:       "b2ef1818c48476e19137ec43010d6849ea850bdb8d4bf68d14237eddff533d0f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "de556f2818f5860ba0c142a26afde830480fa2f70a91cf9f1d8b8f41b34039a5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "37ee4ed9e2354f89f4e3247e5bea687281d3c71a9773c9a169e7d19996ef1a02"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d6762bc55f1086e7ab75598e88a583ca5d569f4bf9b5f7c91aa56e95bbf80ef1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6756150ec302a7bf5f93cf1a7a1186b48053fff656f2ad2ba9210c13097940e8"
+    sha256 cellar: :any_skip_relocation, ventura:        "c2b5b13fc92178684960837326bddd6b9b513e52d35923e7dad5739c43d33dc5"
+    sha256 cellar: :any_skip_relocation, monterey:       "350ae01379a0a0bb70d9468fce7d8dcc07ef44ef54bb8715c79e13a595642acf"
+    sha256 cellar: :any_skip_relocation, big_sur:        "3ebd7558b7119de7826628d08ba487a2d40ea1926f047a1e0c0cebc7a68f40a4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3920453f6f7a0bf8bdded82158e7e9940f5fed10adc21c8955465df2536e83b8"
   end
 
   depends_on "go" => :build

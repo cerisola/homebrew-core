@@ -1,18 +1,19 @@
 class Openfpgaloader < Formula
   desc "Universal utility for programming FPGA"
   homepage "https://github.com/trabucayre/openFPGALoader"
-  url "https://github.com/trabucayre/openFPGALoader/archive/v0.8.0.tar.gz"
-  sha256 "1d94c2b40c4d6b22d4099ef48b7ed4cb3f3ebfc73f36b1e87c739418a7d3045d"
+  url "https://github.com/trabucayre/openFPGALoader/archive/v0.10.0.tar.gz"
+  sha256 "966b4629df86b1d520ddd8a4e0a3fc00060b26b5ab4e172b596bd9d4659a196e"
   license "Apache-2.0"
   head "https://github.com/trabucayre/openFPGALoader.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0d5aa0dabfedf7425f462a5bacd32e249d19c2762c36adcd3cbb04b07d25f160"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "307a7a664358b43d6281b067af97ee7dba47095929118d16ab4ecaeccc4e2fb4"
-    sha256 cellar: :any_skip_relocation, monterey:       "c4f6417721e855b3b19ac481db833c9ddd16188f43f5012ab903ef41788cd738"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1cb1f8ab058d833c7b744290bfa97ee31ed3b67ad6a5a7ea3dbb39000a077758"
-    sha256 cellar: :any_skip_relocation, catalina:       "fc6fbb2bf1056f376901db3f246cabb6b685abfe5c11177721cbba43a9a765a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd15f028b4ad1c4a89d4eaa582fe6c652a24e6c3a143b477b39c136474d38848"
+    sha256 cellar: :any,                 arm64_ventura:  "d4b309035e824959bfc0a802e0d4f31501082e1508fbea0c622ec95576220a5c"
+    sha256 cellar: :any,                 arm64_monterey: "0a8a0865cee8216b22463607eef522eb9b5a0530f55e8cf2946890f8eaca49f4"
+    sha256 cellar: :any,                 arm64_big_sur:  "206a214c5ca198b8e105d3311426965b8467bee1bc5f4bd2dcd32e3927d40ae0"
+    sha256 cellar: :any,                 ventura:        "d32d70c3674b960046f995f1014bd299f7446c9b052f1b4d114eedb80bd80157"
+    sha256 cellar: :any,                 monterey:       "48bb9db99d81f75cae462f7097e6c9f76b8dba57ca4d2752353323111bac957b"
+    sha256 cellar: :any,                 big_sur:        "178b66c07d0c8241f131f87225369e674cc3a900b2e40edb41c475affccb17cb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "666014c49ff365fcbd120ddbbf0569b4044c521133985e09acc44c35bbda6d6f"
   end
 
   depends_on "cmake" => :build

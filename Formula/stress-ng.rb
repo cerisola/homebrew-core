@@ -1,21 +1,23 @@
 class StressNg < Formula
   desc "Stress test a computer system in various selectable ways"
   homepage "https://wiki.ubuntu.com/Kernel/Reference/stress-ng"
-  url "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.14.01.tar.gz"
-  sha256 "cd4795166867eb4dba7cc11f246660d444b414afdb4033401ef5545a8e00776e"
+  url "https://github.com/ColinIanKing/stress-ng/archive/refs/tags/V0.15.01.tar.gz"
+  sha256 "2168627350d8e3b7f4571732d6117ab054a9851600899c30ad82fd3c9649d644"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4cef3fce1752f55d80c5ec17cd02884ad129cef371ab15e0d8d677a46fa54d60"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "48317638a24525fd5a1e6d4279b1a23dbb3de7922e96773cf5d43e8608ed95ce"
-    sha256 cellar: :any_skip_relocation, monterey:       "261ac1ed0712aa23b2119f4e7fcd62d8e2cdca6dc5d07ca5b14962f4a959ccd5"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0e466cab2063a41cff34826b6eb95a714b9110d2b6d9ce435f2193a5c9207861"
-    sha256 cellar: :any_skip_relocation, catalina:       "19274fd86a07aa9178a8810b56e72935f39f7a8e799221efd7b0aecc39a0618b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d98573f50516cea506dc8dd2681613ebb0173ead526f543c51bbf6ac23b0f95"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34fb254ca79ff2d9dc6d398f87165409fa7bf05a0ae3bbd722c62f88427cc15e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2cdb1a3f403d356f70dad581c0858a0fa7ebca073be1443dc9055605ed8dd1c3"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "53149c9820459c5af1a237a8880ff5d40ec84f411afa502a68b5c1ef60306aeb"
+    sha256 cellar: :any_skip_relocation, ventura:        "df68363c71ea60a996b9bbb8ccf4e2f22a30850307e02b40b3a31ef446e49f5e"
+    sha256 cellar: :any_skip_relocation, monterey:       "42811eeb27a9f83065c54e0f29a77254e3e3673ab77a19a6a8ad1a38ae930e6c"
+    sha256 cellar: :any_skip_relocation, big_sur:        "837e4b001b87338b4178309b9d4a5fd4e0b44d1e0354c58d837e7cfddeac0755"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7fa55f4f5958ed9866cfd76f82aba02de4fe80c8ef833cdd08a35df8b52d8961"
   end
 
   depends_on macos: :sierra
 
+  uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
 
   def install

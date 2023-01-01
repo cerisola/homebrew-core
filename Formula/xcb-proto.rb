@@ -1,16 +1,21 @@
 class XcbProto < Formula
   desc "X.Org: XML-XCB protocol descriptions for libxcb code generation"
   homepage "https://www.x.org/"
-  url "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.tar.xz"
-  sha256 "d34c3b264e8365d16fa9db49179cfa3e9952baaf9275badda0f413966b65955f"
+  url "https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz"
+  sha256 "7072beb1f680a2fe3f9e535b797c146d22528990c72f63ddb49d2f350a3653ed"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "ba8f85669a932e77cb5d2d280331d768d50ed2de4b85894c7066c2ca805e326d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "7aff8671654c8a9bde8b257cff31f05a6f09a322f35c16c5d985eb525faae8f2"
   end
 
   depends_on "pkg-config" => [:build, :test]
-  depends_on "python@3.10" => :build
+  depends_on "python@3.11" => [:build, :test]
+
+  def python3
+    "python3.11"
+  end
 
   def install
     args = %W[
@@ -18,7 +23,7 @@ class XcbProto < Formula
       --sysconfdir=#{etc}
       --localstatedir=#{var}
       --disable-silent-rules
-      PYTHON=python3
+      PYTHON=#{python3}
     ]
 
     system "./configure", *args
@@ -28,5 +33,10 @@ class XcbProto < Formula
 
   test do
     assert_match "#{share}/xcb", shell_output("pkg-config --variable=xcbincludedir xcb-proto").chomp
+    system python3, "-c", <<~EOS
+      import collections
+      output = collections.defaultdict(int)
+      from xcbgen import xtypes
+    EOS
   end
 end

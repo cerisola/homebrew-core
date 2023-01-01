@@ -1,30 +1,28 @@
 class Swiftformat < Formula
   desc "Formatting tool for reformatting Swift code"
   homepage "https://github.com/nicklockwood/SwiftFormat"
-  url "https://github.com/nicklockwood/SwiftFormat/archive/0.49.8.tar.gz"
-  sha256 "36c78ebe82cf0e1135d3b48a92be1d65d575833455b042b414f7817112ee6eae"
+  url "https://github.com/nicklockwood/SwiftFormat/archive/0.50.7.tar.gz"
+  sha256 "6b4f9831b038c1edc9b4595822f862a7dce71a6b1ec02b710752e4d94425102b"
   license "MIT"
   head "https://github.com/nicklockwood/SwiftFormat.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c8b2d8ff8f3a1d6c8e1aded5fb48ea638a9c6f7e3e0c24a8365a90a66b8c2c93"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0ce097e10e1598798db0362ce5df40070f47943a34881e128b5f75f75c122105"
-    sha256 cellar: :any_skip_relocation, monterey:       "45f50e61598935c7f39ac4cd62a26258bc62766e97f68709b436fad0576c2910"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d6749cbf272acd6ccebf4644180215bb710f30cb29b2c10c06b05e75abd24a00"
-    sha256 cellar: :any_skip_relocation, catalina:       "b51010bc91a76ca90fc94abe6989db3a977d881aba9043b330e34a5b630b3198"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5649f3bf5fc4444e7aa679248f39023c7b401acba530bb3613e508f6a6d129c4"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "df2ad10d717e89f5b48f1a11a9a91e0d48935275226ab0853cc985b12da36fa7"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e212110bc90c4117e5cecace8d3be4de7f22927abdda110bb504348dd1afc23e"
+    sha256 cellar: :any_skip_relocation, ventura:        "f74a5ad15b47ecab57b14304283030becc42763a6a9c1007ba9dc6bdbd776a83"
+    sha256 cellar: :any_skip_relocation, monterey:       "c8df903080e91fa7c0db1b01227ac15ba006adfa657ed7fd144bfd943d790573"
+    sha256 cellar: :any_skip_relocation, big_sur:        "16e18697e6da3cfbba63d58ac80e4a864f2cea51cebaaef3dac7a1135b404c46"
+    sha256                               x86_64_linux:   "ffec3ad79f92ecc57343df0d2b36d18c22fd4f9fbd9a67c6fb58d5e97e727ef7"
   end
 
   depends_on xcode: ["10.1", :build]
-  depends_on :macos
+
+  uses_from_macos "swift"
 
   def install
-    xcodebuild "-arch", Hardware::CPU.arch,
-        "-project", "SwiftFormat.xcodeproj",
-        "-scheme", "SwiftFormat (Command Line Tool)",
-        "-configuration", "Release",
-        "CODE_SIGN_IDENTITY=",
-        "SYMROOT=build", "OBJROOT=build"
-    bin.install "build/Release/swiftformat"
+    system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    bin.install ".build/release/swiftformat"
   end
 
   test do

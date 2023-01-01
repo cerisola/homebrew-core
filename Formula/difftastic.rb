@@ -1,24 +1,21 @@
 class Difftastic < Formula
   desc "Diff that understands syntax"
   homepage "https://github.com/Wilfred/difftastic"
-  url "https://github.com/Wilfred/difftastic/archive/refs/tags/0.28.0.tar.gz"
-  sha256 "ef8d6dc2eb5d1beb1855636e582891465dd512bf2ad7ba69b1fcae668ca98005"
+  url "https://github.com/Wilfred/difftastic/archive/refs/tags/0.40.0.tar.gz"
+  sha256 "c544573f94d8d1e464683c9dfd5d6300e0502fcc9bea349d2c9422cf4e4cef41"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "95da11d8b816d4b69afa547bf8bc6c3c9049b2dd55daa69fe10695525ea6a0b5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2817f31b2eb1f1574ded2db6aa1533b99835da329e9a4dd742e45603b2f126fe"
-    sha256 cellar: :any_skip_relocation, monterey:       "725fa8d0db99a3033e74d6135b94b32ef73e68423a42b6af4ad467799c5894f0"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8bde130d5c09bf61aac5e6a70fbd49312601b2ea47a0e6486c1cf904c69fd6a1"
-    sha256 cellar: :any_skip_relocation, catalina:       "c5097af85726619d28cde7393c4b51365c91a60715f13d1d0b06ccf33ee14f65"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "15eb8c75bb65d1077768f2a36e0e59fe8d6b1b5813dacccfb61052fa6bb49eed"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "03b904a0779d45e0a1e5b800d33ba2c565fd086faf08fdf9b8c0021ec809b1dd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b9580fc0dde8197326112b891a50d765ba29a7b0505aa1d51e1cc32f0b15c8af"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "92e5027a2f6814f49df3832e340926cbee6c9372cfd6976307fe8bb2af73dc89"
+    sha256 cellar: :any_skip_relocation, ventura:        "227c83bb473ef343711ca45dc43415c12546a4a886214950cd200d277cdffc5b"
+    sha256 cellar: :any_skip_relocation, monterey:       "3af4cff1c154a43aa03fd85a3b5ce893577316422bb1fab7adaddc7fa54d0525"
+    sha256 cellar: :any_skip_relocation, big_sur:        "a691ee98dc55e07a022e47616bd8ec8a506813a585d2b21691bc49b974c4fc55"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0d28821b5efae61765f0042af774ae353ca6935262f64bcb16acb93c6163bff"
   end
 
   depends_on "rust" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

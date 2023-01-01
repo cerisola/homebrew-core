@@ -1,8 +1,8 @@
 class Spot < Formula
   desc "Platform for LTL and ω-automata manipulation"
   homepage "https://spot.lrde.epita.fr/"
-  url "https://www.lrde.epita.fr/dload/spot/spot-2.10.4.tar.gz"
-  sha256 "e8629cdb6cce83077826960cd01ece5213daaf9a283d6f62aaf69afa0623478a"
+  url "https://www.lrde.epita.fr/dload/spot/spot-2.11.3.tar.gz"
+  sha256 "c32c8be65cf22d9420c533c7e758ac5b08257beaa674980f647bfb65e6953343"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,19 +11,16 @@ class Spot < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "68bf87b6061e1ca497ff20a5c465fb587a14d240131383b18ecc2935f054f2ea"
-    sha256 cellar: :any,                 arm64_big_sur:  "d74469da724e5e5c4f6e6fb352b7ebe6a655ed89d564513e6592f1d4c601815d"
-    sha256 cellar: :any,                 monterey:       "3b8b8fb05bb561021e036e20db485310f0e30eb489653c11a4b07d1dbd5b2c0b"
-    sha256 cellar: :any,                 big_sur:        "bb673787ddc9583b9d6ee547beaeb32d803646e87ee3db744f6283d07cafbc59"
-    sha256 cellar: :any,                 catalina:       "4ce9d5981659d531e3a630e519bc8284815aa1eb80c8bb081945d557dd7bca63"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "644a4629a97e723c97a1f312c921ecb4ac9e8dfc67f742dfb70ed5d9d287e4ba"
+    sha256 cellar: :any,                 arm64_ventura:  "dfd446959c92ffa4e9197409459d678d3f5f3dfc807d70af429b3abd00eaf13c"
+    sha256 cellar: :any,                 arm64_monterey: "91d818b86373a7ea7457dc4ab940f3505a9d5735526667ffa5171d2a9246bab4"
+    sha256 cellar: :any,                 arm64_big_sur:  "167ed3322e26397b3c4763c236df4a1ba682d05737094aec01422c70256efcb3"
+    sha256 cellar: :any,                 ventura:        "6289210b5bc136a5c046e7c783fc57d7ad3f0c01b89b789e2aa62dbd1d0d8222"
+    sha256 cellar: :any,                 monterey:       "63caabadce0b19a1841bac643a91766ff48c89bc41fbc3b63e1eada1d1bacc50"
+    sha256 cellar: :any,                 big_sur:        "c7fea38fcde87107302070706f9cf408ab0557ec408527c83c25f32737c4e919"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ee358551ed36c7f37a7b453984bce63b4420536ab48dad96fb3371f15f2a70a3"
   end
 
-  depends_on "python@3.10" => :build
-
-  on_linux do
-    depends_on "gcc"
-  end
+  depends_on "python@3.11" => :build
 
   fails_with gcc: "5" # C++17
 

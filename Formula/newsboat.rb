@@ -1,18 +1,19 @@
 class Newsboat < Formula
   desc "RSS/Atom feed reader for text terminals"
   homepage "https://newsboat.org/"
-  url "https://newsboat.org/releases/2.27/newsboat-2.27.tar.xz"
-  sha256 "fd5a40096689d4fc0f18441319197769fa377709821b1a3f1b2ba1f006625285"
+  url "https://newsboat.org/releases/2.30.1/newsboat-2.30.1.tar.xz"
+  sha256 "413ffdb44a2c348eb22491dc85ac73e1ca2489925f7cf59e96c62b1b0755602f"
   license "MIT"
   head "https://github.com/newsboat/newsboat.git", branch: "master"
 
   bottle do
-    sha256 arm64_monterey: "5d427433333b4e939c6df190d48ddcfdc478741b50dedc7a8d768e3e48046938"
-    sha256 arm64_big_sur:  "1dca815bfae3a16fe6584fc19b3beef3d3c46f1c7e68de3a9d239b6246ba4c06"
-    sha256 monterey:       "927eea1ffe54ff0160df8bf1e0396ee5f921eebfedaa35fe8d18204824873695"
-    sha256 big_sur:        "38491cea257a12b0c6a4a7b064391f4f6414cdfe26eccdc7b43bcd6ab4a51c01"
-    sha256 catalina:       "7956bbdcf7ac42950fa55dd96eced474b0f3092fa5a2634174d02d43d6f242e9"
-    sha256 x86_64_linux:   "9c2853e6153aca681027f183fbcdc56de08d67c0575479af1e54310e10f36fad"
+    sha256 arm64_ventura:  "f68bb7f6d850e20d8411886f0a73b9c3d010d4676037129c07ff3e20c1d6ccf7"
+    sha256 arm64_monterey: "2ae3dafc04a261f7690206eaa44fbbae7a2c81a41d80b840df689dd4b399665a"
+    sha256 arm64_big_sur:  "71df7598b0d1b98cc67de2db2fb3fb1e1c7b987bb0f85ad00233da22c7e8f6ac"
+    sha256 ventura:        "494bce5b1b367bcf971a38be2b7b715375cfbf50f15f7fdc3b6c2de170982d8e"
+    sha256 monterey:       "4f1c91e330807fb0122fd2b64cb93fd76bac1b6f8a33e956178ac3df4fc45da8"
+    sha256 big_sur:        "f96a6a5fe762be8e62c170a3840a7ee2b1be8dac30443a0a1fb07cc2fc7eee73"
+    sha256 x86_64_linux:   "4735dc6b63c1f8d5e4d741f45aed39aaa04966049dda14d60f9f40f905c8c393"
   end
 
   depends_on "asciidoctor" => :build
@@ -27,6 +28,10 @@ class Newsboat < Formula
   uses_from_macos "libxslt"
   uses_from_macos "ncurses"
   uses_from_macos "sqlite"
+
+  on_macos do
+    depends_on "make" => :build
+  end
 
   # Newsboat have their own libstfl fork. Upstream libsftl is gone:
   # https://github.com/Homebrew/homebrew-core/pull/89981
@@ -83,7 +88,11 @@ class Newsboat < Formula
     ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
     ENV.append "LDFLAGS", "-Wl,-rpath,#{libexec}/lib"
 
-    system "make", "install", "prefix=#{prefix}"
+    if OS.mac?
+      system Formula["make"].opt_bin/"gmake", "install", "prefix=#{prefix}"
+    else
+      system "make", "install", "prefix=#{prefix}"
+    end
   end
 
   test do

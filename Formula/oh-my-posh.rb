@@ -1,18 +1,19 @@
 class OhMyPosh < Formula
   desc "Prompt theme engine for any shell"
   homepage "https://ohmyposh.dev"
-  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/v7.82.1.tar.gz"
-  sha256 "48d66db46b6afcac02458f60494dc7b131607e8023f0da4e05b2d9b39f5afd59"
+  url "https://github.com/JanDeDobbeleer/oh-my-posh/archive/v12.34.3.tar.gz"
+  sha256 "6d644e07a6d4dfaa51fd4a22c047c5dadaafb13797602265d64c74bbab180b96"
   license "MIT"
   head "https://github.com/JanDeDobbeleer/oh-my-posh.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "524a9b45656c65907cac25dddaf82de3e78f0f002cc9594440bcbf780a591753"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5dadc7c02cf378202df01704e4d45294200e263df1b38997a855f7147f8f22cf"
-    sha256 cellar: :any_skip_relocation, monterey:       "f3b54c9a421156241f9e8269297629afb050a1200f19e84fc5a2a5c5f32615b1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "47b1068d5116c5ad6c86d026d16004f8ac44e072a521319e7092dbe148788095"
-    sha256 cellar: :any_skip_relocation, catalina:       "61e959d22711290a80db6ddd079011f33f940a9ca07d5e6ab60ec689d68440eb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8c492ab102ea42cacbac2f33f7341f07e3a8841e4586701304fc9a01d0a5e76"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "73fd0a0f1bea7571483cb06d8a633479bd3bed256813ceae030b2beb0422b4da"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "43653eed232aa51837dbe906d3e535fe7e016fc4d5131b6aecef625d5e388f9c"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ec33e93e89df6d250a1fa4106b5bafee68d02da771b70830fd0c096a66bbd23"
+    sha256 cellar: :any_skip_relocation, ventura:        "5f818a0c0a13b3213ba17389a3489146a69fe33685c68e55a3d25d3ebbdaeb8d"
+    sha256 cellar: :any_skip_relocation, monterey:       "c0b91877dfc7f7725b7546567838b782eec63c67fe711030391ad3fb61ea1cf0"
+    sha256 cellar: :any_skip_relocation, big_sur:        "f61c2683136ea261246ea564e41f9a331feb4f87aed36fbc156b9739b516cba3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eaa90768167f2e4cf84028f42a0e9d9ffadda5c4c5c1c58aa7f81629e54ade3e"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,9 @@ class OhMyPosh < Formula
     cd "src" do
       system "go", "build", *std_go_args(ldflags: ldflags)
     end
-    pkgshare.install "themes"
+
+    prefix.install "themes"
+    pkgshare.install_symlink prefix/"themes"
   end
 
   test do

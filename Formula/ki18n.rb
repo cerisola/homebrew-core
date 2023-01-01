@@ -1,8 +1,8 @@
 class Ki18n < Formula
   desc "KDE Gettext-based UI text internationalization"
   homepage "https://api.kde.org/frameworks/ki18n/html/index.html"
-  url "https://download.kde.org/stable/frameworks/5.93/ki18n-5.93.0.tar.xz"
-  sha256 "c2705400d175f18612dfe1afb28dc14accf614f7cfd65409dfa7fdcde5237339"
+  url "https://download.kde.org/stable/frameworks/5.101/ki18n-5.101.0.tar.xz"
+  sha256 "bf1530be9279d476c0531988eeb1c032e208f6010c8f00880bb5d694229fef65"
   license all_of: [
     "BSD-3-Clause",
     "LGPL-2.0-or-later",
@@ -18,25 +18,23 @@ class Ki18n < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "4a1cbcc48fe6d0e1f1fcd47b584e877a5030e320bb6b648564e02f898418db32"
-    sha256 arm64_big_sur:  "666ca62a68b38596c20e9f2b504d93f1ed3b9b50b9ac81c6e708803485496c71"
-    sha256 monterey:       "ee6c393c214fe92d314d2d9c3a87390f14d1d7e8060dc24ad79e78389371a0ff"
-    sha256 big_sur:        "a3f59e7e36cebf6054e714b3ab9f24a7a849473cf9fb0181496a0d1c2c16ed53"
-    sha256 catalina:       "acb27decefb7f57b0225ee881e139ff914c6e21eb52ab7cbd4f339f5e3a17a58"
-    sha256 x86_64_linux:   "2210379cc5d54caf36d465c4bd3ae36b61513957aed37b1794d9d19fd4ec1cc4"
+    sha256 arm64_ventura:  "65fa762162be209d346815beb6c05e7c989ada313fb66f273d569fe34817fdab"
+    sha256 arm64_monterey: "10a1bdbfa8d7709b43e90f40fefab4debd0664bbcd84e51ddd6d49359f13ae26"
+    sha256 arm64_big_sur:  "bda696c0235f2f93fa120224dc432fcdba5c0ea7c923bfd1b861100ca0e416f6"
+    sha256 ventura:        "60ff407c7a9342ce659552c15eb2153cbad419fbdcafd67dfdde7245b641b553"
+    sha256 monterey:       "5138baeb4ecc3d954afbc94223c1a3a2d8106d2dd6f9b2c4445a18e0e8806d3f"
+    sha256 big_sur:        "4f0fedebe6e0a7bce8bd0a62fc5ac58e393b3a21530e1edcf578f7476b4ca3db"
+    sha256 x86_64_linux:   "5c3b66325ab39069c406e86c709a7ecafd28e45f7a52754ff526999bc15afeca"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "doxygen" => :build
   depends_on "extra-cmake-modules" => [:build, :test]
   depends_on "graphviz" => :build
+  depends_on "python@3.11" => :build
   depends_on "gettext"
   depends_on "iso-codes"
   depends_on "qt@5"
-
-  on_linux do
-    depends_on "gcc"
-  end
 
   fails_with gcc: "5"
 

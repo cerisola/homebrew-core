@@ -1,22 +1,29 @@
 class Janet < Formula
   desc "Dynamic language and bytecode vm"
   homepage "https://janet-lang.org"
-  url "https://github.com/janet-lang/janet/archive/v1.22.0.tar.gz"
-  sha256 "7c6969f8e82badc7afa28aa1054555c1c91d2858f9f45c41a82557f5c5ce85bd"
+  url "https://github.com/janet-lang/janet/archive/v1.25.1.tar.gz"
+  sha256 "0f8a4afaf7b58091e0a61c972ddd959bd61acb2a6306d3120492dee936bf751e"
   license "MIT"
   head "https://github.com/janet-lang/janet.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_monterey: "bf9e4c6bede61e305a36f78202d7e371892028aa91a0dfa6c02cf2f4725eb211"
-    sha256 cellar: :any,                 arm64_big_sur:  "62b7e8808167d0326a481f65788a5596d199a1ae4537431e14a2a5eb29e0914a"
-    sha256 cellar: :any,                 monterey:       "ed969cbfd0a1ed33e5bfeac6696ad1e20b047e220d1a77160dcfb500a68282e9"
-    sha256 cellar: :any,                 big_sur:        "50bc3a803726c317dbcc92fdb3f27c71a31ffeb2f01f4da56449f25058813871"
-    sha256 cellar: :any,                 catalina:       "e9d4b8d8a50e2c8bffb79e6feb36e52809ebb3407a19a36ad0d08009be8c4a5d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e561715c89e38aa649546b7851ec93ed8e6a21fc047f137c821af47834dfcae"
+    sha256 cellar: :any,                 arm64_ventura:  "c6deaf13e3401ec0b929324224b04e94948c0b219855997652a690a4e1d190bf"
+    sha256 cellar: :any,                 arm64_monterey: "da6a5175726641da200ca353bc3b3cb0311161b61f17918177396e3eca1ef30c"
+    sha256 cellar: :any,                 arm64_big_sur:  "e74fe5fbaa37a6a3fd1972daea26cf783aff534e249d4f7cdac49aacd3b59f87"
+    sha256 cellar: :any,                 ventura:        "3b9a6cda60e70eac143ade05592ad4e1f24a007a015e9d8afa1dfd5e46ec34e0"
+    sha256 cellar: :any,                 monterey:       "5e99427c6720819e26fff4c0e6353348499bdf9f762cae9e033e9dd70b5be197"
+    sha256 cellar: :any,                 big_sur:        "469af239c98f99bc0b38a2fbb09e6ccc9c585874f27a329debea283945c24ab8"
+    sha256 cellar: :any,                 catalina:       "52801cff99c35dfa418cf4acb6030c8d486bdedcc4bea49a3b98e9fc2ac7aa61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c654c3f46a43de2034bdf19ee183c4262005b163cf4ba143da145465d54c3564"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
+
+  resource "jpm" do
+    url "https://github.com/janet-lang/jpm/archive/refs/tags/v1.1.0.tar.gz"
+    sha256 "337c40d9b8c087b920202287b375c2962447218e8e127ce3a5a12e6e47ac6f16"
+  end
 
   def install
     system "meson", "setup", "build", *std_meson_args
@@ -24,9 +31,16 @@ class Janet < Formula
       system "ninja"
       system "ninja", "install"
     end
+    ENV["PREFIX"] = prefix
+    resource("jpm").stage do
+      system bin/"janet", "bootstrap.janet"
+    end
   end
 
   test do
     assert_equal "12", shell_output("#{bin}/janet -e '(print (+ 5 7))'").strip
+    assert_predicate HOMEBREW_PREFIX/"bin/jpm", :exist?, "jpm must exist"
+    assert_predicate HOMEBREW_PREFIX/"bin/jpm", :executable?, "jpm must be executable"
+    assert_match prefix.to_s, shell_output("#{bin}/jpm show-paths")
   end
 end

@@ -2,19 +2,19 @@ class Dcd < Formula
   desc "Auto-complete program for the D programming language"
   homepage "https://github.com/dlang-community/DCD"
   url "https://github.com/dlang-community/DCD.git",
-      tag:      "v0.13.6",
-      revision: "02acaa534b9be65142aed7b202a6a8d5524abf2a"
+      tag:      "v0.15.1",
+      revision: "4c426d73d1a7e8428a66eddd4fb98cc70ab1cff8"
   license "GPL-3.0-or-later"
   head "https://github.com/dlang-community/dcd.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "56500aa45f06a73e05c97dc0162ded325510615148e59cda54ef9e9187951a39"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7e2b6351728ee0dad099824dd51e31042a3f66f3e66695063530e115e1e3e44e"
-    sha256 cellar: :any_skip_relocation, monterey:       "9e223a3fef8a39d75bbec9012bfa534d50772aa2d536857160c39221fe08f5bb"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e97405796485c96ea4dd9f7458cd548ed609f61ed8d5e006fb73ec00072d0811"
-    sha256 cellar: :any_skip_relocation, catalina:       "1455dd1a3d4919d261c6cc8a73d05f62f4436f17b66d8790db249bcf4fbdcc6f"
-    sha256 cellar: :any_skip_relocation, mojave:         "484f3c51a322172c8bab3cfa850685f91ce9dfdcccc85daeedead97cc63f13e1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "58b613aa6a40fb855b592944f97bc7d66cbf87ee30e2243fd4e1551536b02d4f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "36ee6bdaefd057942dcc2a5a4d387df5d47bb09e487edc80c1240078735250f9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6d52547750440908fc8f1646034117ef4b5525b70e20ecda8cf2c2ce5ca1d988"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "485932b715aca6f2933b3de52fad0ae62f810f54074a188fc0dca169e386a854"
+    sha256 cellar: :any_skip_relocation, ventura:        "43c016c67b3a697c9e0a3cd75d7de70d697424b13009a37e3864fd077260b90b"
+    sha256 cellar: :any_skip_relocation, monterey:       "0893ea92f8fac15b65c5898cb3b3f460e5939a0d1c4445689a962b0956b18079"
+    sha256 cellar: :any_skip_relocation, big_sur:        "ab5cd04e3819d96d32178bed4ffb845b4bfe12e0f6d55f97ba165863fc058fb6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a203585eb808b95325695dd101f8d4dc7d637fa0055e93964b6c89372c0195f0"
   end
 
   on_macos do
@@ -27,6 +27,7 @@ class Dcd < Formula
 
   def install
     target = OS.mac? ? "ldc" : "dmd"
+    ENV.append "DFLAGS", "-fPIC" if OS.linux?
     system "make", target
     bin.install "bin/dcd-client", "bin/dcd-server"
   end

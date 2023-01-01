@@ -2,9 +2,9 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.1.6.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.1.6.tar.xz"
-  sha256 "da38d65bb0d5dd56f711cd478204f2b62a74a2c2b0d2d523a78d6eb865b2364c"
+  url "https://www.php.net/distributions/php-8.2.0.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.2.0.tar.xz"
+  sha256 "6ea4c2dfb532950fd712aa2a08c1412a6a81cd1334dd0b0bf88a8e44c2b3a943"
   license "PHP-3.01"
 
   livecheck do
@@ -13,12 +13,13 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "20c3a8aa878c227f9f3ea6d4c02d159d3299a769df81ef7b236956cbe726e829"
-    sha256 arm64_big_sur:  "f54b85fb38173bd2d1f33c8de4b1414a6ba0d4387bad219cfa7faf841812a07a"
-    sha256 monterey:       "6cb398b1a363e526693ad545fa6f9a542b2d1cc3a2743bc1325aad7f2879b624"
-    sha256 big_sur:        "0cf6da38842c684d2cd270bb2e53ffe319590b391303ff4775d559390f67a274"
-    sha256 catalina:       "7ad357da00251bf37c2d84f57b58e723aea2257220c240c4ead2c8ba1ef41977"
-    sha256 x86_64_linux:   "3e09d103c7f1e98ee98e9366545bd0beae8a46a6a0dd2bb366a145a703f86137"
+    sha256 arm64_ventura:  "1cd68cd16bad12a23e4e3f8ab4be87455ff3e35d58ba22212cb8a3f0be5e83f5"
+    sha256 arm64_monterey: "3a6df9ae8fc672c12df1db29eaa7585d3f482fa1142cea0c751a79573028a1ba"
+    sha256 arm64_big_sur:  "f305c6a7053e819ce2a1afa0397debd97737fbccf013ed62f742778fc0596882"
+    sha256 ventura:        "f1b15af07a08e7e494d1ee469784fdd32f1a703b7a47f08198d44b7a062b681f"
+    sha256 monterey:       "b2776587333c8755a0a30249ff13110e8ae30ee461a0306424a2d5af66571038"
+    sha256 big_sur:        "1d4a3e676be4aefd7b2f95e6aaaf6c5c19768f38fcf937b863d05ca471460946"
+    sha256 x86_64_linux:   "8afad2a52f4fa331f0853c96533ce379c6c9b7dcf741491ecf9b5a6079cab2ef"
   end
 
   head do
@@ -88,8 +89,8 @@ class Php < Formula
     # possible to recompile as suggested in the original message
     inreplace "sapi/apache2handler/sapi_apache2.c",
               "You need to recompile PHP.",
-              "Homebrew PHP does not support a thread-safe php binary. "\
-              "To use the PHP apache sapi please change "\
+              "Homebrew PHP does not support a thread-safe php binary. " \
+              "To use the PHP apache sapi please change " \
               "your httpd config to use the prefork MPM"
 
     inreplace "sapi/fpm/php-fpm.conf.in", ";daemonize = yes", "daemonize = no"
@@ -316,7 +317,6 @@ class Php < Formula
     EOS
   end
 
-  plist_options manual: "php-fpm"
   service do
     run [opt_sbin/"php-fpm", "--nodaemonize"]
     run_type :immediate

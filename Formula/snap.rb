@@ -1,9 +1,9 @@
 class Snap < Formula
   desc "Tool to work with .snap files"
   homepage "https://snapcraft.io/"
-  url "https://github.com/snapcore/snapd/releases/download/2.55.3/snapd_2.55.3.vendor.tar.xz"
-  version "2.55.3"
-  sha256 "1b50db46166465dfe64af305756a699f766d17fd95ecb0f93872c55edbbe3912"
+  url "https://github.com/snapcore/snapd/releases/download/2.58/snapd_2.58.vendor.tar.xz"
+  version "2.58"
+  sha256 "ef3905ba1b27cae409e961db9d5fdfeba17a9b97196e2fe936a9af096561265a"
   license "GPL-3.0-only"
 
   livecheck do
@@ -12,12 +12,13 @@ class Snap < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3fc83335dad921f14cd2494e8b9962ed454a719071cd795083445d9024014dbe"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fe1a3c7a6fabf723c73e02d36944587b95886a23a3ad663718dceed8caa6f59c"
-    sha256 cellar: :any_skip_relocation, monterey:       "bbd9d1a822c7f568b3868c4ae2fc15f0b57ace1704ef3f30f9c815931fbd1750"
-    sha256 cellar: :any_skip_relocation, big_sur:        "30dae319e599d99893f71f61b5f81582db88fccedc1f5f4ad407f2e2f437ce2d"
-    sha256 cellar: :any_skip_relocation, catalina:       "db0421d48031735ad98b9cada21231d8c8d2aaa1c525e481430fa58f0121b5a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7fe514d09a59b455acbb84a37c234a41b7c63712aff9d8a8c9122fb3b40702e1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "11699c79dbb8d2988f7cdb06baae6640f29924a135e49cd41a21b4dff3474b4d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "3127203425ed5c1bb3e7892f5ca5ac13eb6ea23748a50446320a6b8791a00cb8"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3eccbcff73b2a3bb246bd28d8b43c918b46962aace65ecbf294cad85b319558f"
+    sha256 cellar: :any_skip_relocation, ventura:        "866ce0c85ec3b389ea1195a84ef7717a6cfe219569a451bba883aeac0e5dcd9f"
+    sha256 cellar: :any_skip_relocation, monterey:       "c68eba501be8696a1c80a682ce970d254fc2fc29d2b6d350e05b3d69af931c8b"
+    sha256 cellar: :any_skip_relocation, big_sur:        "785943a9b855c45ed8aeca24d76768b6657240afc62748c8cd49399724795e14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6cf119a3aaadd59b5d25867f72e33999bbd148ff894fe560b329c59abf322365"
   end
 
   depends_on "go" => :build

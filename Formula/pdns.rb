@@ -1,8 +1,8 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.6.2.tar.bz2"
-  sha256 "f443848944bb11bbb4850221613b3a01ffb57febf2671da6caa57362ee0b19b8"
+  url "https://downloads.powerdns.com/releases/pdns-4.7.3.tar.bz2"
+  sha256 "8bad351b2e09426f6d4fb0346881a5155fe555497c3d85071e531e7c7afe3e76"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,13 @@ class Pdns < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "5f11785a7f2ee10469a79ce44fc7c58debd796445de4710ade9169e7f0a6396d"
-    sha256 arm64_big_sur:  "7488177bc07804ef18d17979aa9693c938d70b91c4b2f9c6fcdf453bb67c578b"
-    sha256 monterey:       "5b8647690138a9cbd97f5dd525a407d115d77ad4fd0e4fb70e10a947df0d187e"
-    sha256 big_sur:        "67ec5b6f05c1d9f73a43ecde2f6fe66de077bf5ca80163f5f0c616fe878a6b39"
-    sha256 catalina:       "01424ecf828fb8645eec581e9bdcfdab89662d8bde2f9d8c7c9825890b3dbaf2"
-    sha256 x86_64_linux:   "f139bc7ba7de91a697ef355d3b1eb201fbb02219e809754d3b4266978a6372ae"
+    sha256 arm64_ventura:  "f296a4ce2268379b0b976e2362701123054e6dc77668cfb8290d5b377824709f"
+    sha256 arm64_monterey: "a10e3f0382db16369e12efcc28686a58a954dbe915ffed71c62f0634df7fa343"
+    sha256 arm64_big_sur:  "aa4996dd49f264094be930ab9816f9a3c5bfeb6dd629a7864d5f8d3c50d776f7"
+    sha256 ventura:        "cc64ef4d5267f92b5f1b3a331d5c93823df38e6022ac8b5cb87088d695fc98d9"
+    sha256 monterey:       "dd6e300214a5d6f8651f0c949e66db3fb3069b6c8f9d0e746f934338fa2f43eb"
+    sha256 big_sur:        "69e2848ad8c674cb42343dd52c04027a549aa8646b5ac1bd0ffff8b0187115d9"
+    sha256 x86_64_linux:   "2f933e6faf5412c9225e64a103ea3c3f11548746911dcd59dd7f857ec9bc4cdd"
   end
 
   head do
@@ -36,11 +37,7 @@ class Pdns < Formula
 
   uses_from_macos "curl"
 
-  on_linux do
-    depends_on "gcc" # for C++17
-  end
-
-  fails_with gcc: "5"
+  fails_with gcc: "5" # for C++17
 
   def install
     args = %W[

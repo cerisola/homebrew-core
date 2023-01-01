@@ -1,8 +1,8 @@
 class PopplerQt5 < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-22.05.0.tar.xz"
-  sha256 "a969ced458e050d6202367bd7427054e2bd19bae39e8f969910d3b9151abf958"
+  url "https://poppler.freedesktop.org/poppler-22.12.0.tar.xz"
+  sha256 "d9aa9cacdfbd0f8e98fc2b3bb008e645597ed480685757c3e7bc74b4278d15c0"
   license "GPL-2.0-only"
   head "https://gitlab.freedesktop.org/poppler/poppler.git", branch: "master"
 
@@ -11,12 +11,13 @@ class PopplerQt5 < Formula
   end
 
   bottle do
-    sha256 arm64_monterey: "e690694445f88518c4ec7006f62cf8f7d32a59eb26aea81e5117aa128e528d84"
-    sha256 arm64_big_sur:  "21b1482316c512b8750b6d830939b3e5928812e1b4d049c559828d67c38a3a1b"
-    sha256 monterey:       "719341456e4259509894b3ccbcea19ffd47629e08437fcbc062d5d9bcb2ef512"
-    sha256 big_sur:        "aebba944b3ed13916c0dbda8ee838a821f6eebbbf7bf460cb0e34a59f4abc31f"
-    sha256 catalina:       "15d251c060fee37a81fd2ca948e37cf4eaaab7f2bf2a54f2510220b043988dc1"
-    sha256 x86_64_linux:   "7305f6f279ea2676f2c6385031e6af2b35bf062127dfbd500750ace875bebabb"
+    sha256                               arm64_ventura:  "443b94fd706ac27a020cae94ba86cd74e6738cb24813196fd0e6db48136daa10"
+    sha256                               arm64_monterey: "3245f9e3837f7b8b45cb3dde9155117d614595c26554910f72d49b26a58963b5"
+    sha256                               arm64_big_sur:  "69c5d7bf6dbd339c7f95520d2485b2d7afe6545f405e6b8350e184990a1655e0"
+    sha256                               ventura:        "e0394000e1d0572baf3a36862bc6847b27f920fc0e074abe9819b9a97aa0cf9d"
+    sha256                               monterey:       "21d400f9e5c77ce814a82ec1b452020bc39b39e6c0126b813a3d1b8c115cb7ec"
+    sha256                               big_sur:        "662fcde7884fe4b658ee203e643c9785d5bdd06cec486cb82bb99c468cb3cbc7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c614c5bb92220a3e14063e37cacf92fd66398272d23372046dd41a82962a0728"
   end
 
   keg_only "it conflicts with poppler"
@@ -40,10 +41,6 @@ class PopplerQt5 < Formula
   uses_from_macos "gperf" => :build
   uses_from_macos "curl"
 
-  on_linux do
-    depends_on "gcc"
-  end
-
   fails_with gcc: "5"
 
   resource "font-data" do
@@ -54,7 +51,7 @@ class PopplerQt5 < Formula
   def install
     ENV.cxx11
 
-    args = std_cmake_args + %w[
+    args = std_cmake_args + %W[
       -DBUILD_GTK_TESTS=OFF
       -DENABLE_BOOST=OFF
       -DENABLE_CMS=lcms2
@@ -63,6 +60,7 @@ class PopplerQt5 < Formula
       -DENABLE_QT6=OFF
       -DENABLE_UNSTABLE_API_ABI_HEADERS=ON
       -DWITH_GObjectIntrospection=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
     ]
 
     system "cmake", ".", *args
@@ -75,20 +73,6 @@ class PopplerQt5 < Formula
     lib.install "glib/libpoppler-glib.a"
     resource("font-data").stage do
       system "make", "install", "prefix=#{prefix}"
-    end
-
-    if OS.mac?
-      libpoppler = (lib/"libpoppler.dylib").readlink
-      [
-        "#{lib}/libpoppler-cpp.dylib",
-        "#{lib}/libpoppler-glib.dylib",
-        "#{lib}/libpoppler-qt5.dylib",
-        *Dir["#{bin}/*"],
-      ].each do |f|
-        macho = MachO.open(f)
-        macho.change_dylib("@rpath/#{libpoppler}", "#{opt_lib}/#{libpoppler}")
-        macho.write!
-      end
     end
   end
 
