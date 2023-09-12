@@ -43,12 +43,12 @@ module Homebrew
     tags = formula.bottle_specification.collector.tags
     runners = if tags.count == 1 && tags.first.system == :all
       # Build on all supported macOS versions and Linux.
-      MacOSVersions::SYMBOLS.values.flat_map do |version|
-        macos_version = MacOS::Version.new(version)
+      MacOSVersion::SYMBOLS.keys.flat_map do |symbol|
+        macos_version = MacOSVersion.from_symbol(symbol)
         if macos_version.outdated_release? || macos_version.prerelease?
           nil
         else
-          ephemeral_suffix = "-#{ENV.fetch("GITHUB_RUN_ID")}-#{ENV.fetch("GITHUB_RUN_ATTEMPT")}"
+          ephemeral_suffix = "-#{ENV.fetch("GITHUB_RUN_ID")}"
           macos_runners = [{ runner: "#{macos_version}#{ephemeral_suffix}" }]
           if macos_version >= :ventura
             macos_runners << { runner: "#{macos_version}-arm64#{ephemeral_suffix}" }
@@ -67,12 +67,11 @@ module Homebrew
         else
           runner = macos_version.to_s
           runner += "-#{tag.arch}" if tag.arch != :x86_64
-          if tag.arch == :x86_64 || macos_version >= :ventura
-            runner += "-#{ENV.fetch("GITHUB_RUN_ID")}-#{ENV.fetch("GITHUB_RUN_ATTEMPT")}"
-          end
+          runner += "-#{ENV.fetch("GITHUB_RUN_ID")}" if tag.arch == :x86_64 || macos_version >= :ventura
+
           { runner: runner }
         end
-      rescue MacOSVersionError
+      rescue MacOSVersion::Error
         if tag.system == :linux && tag.arch == :x86_64
           linux_runner_spec
         elsif tag.system == :all
@@ -84,6 +83,9 @@ module Homebrew
       end
     end.compact
 
-    puts "::set-output name=runners::#{runners.to_json}"
+    github_output = ENV.fetch("GITHUB_OUTPUT") { raise "GITHUB_OUTPUT is not defined" }
+    File.open(github_output, "a") do |f|
+      f.puts("runners=#{runners.to_json}")
+    end
   end
 end

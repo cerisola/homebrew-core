@@ -1,11 +1,7 @@
 [
-  "couchdb-lucene",
+  "dafny",
   "hive",
-  "libgaiagraphics",
-  "librasterlite",
-  "predictionio",
-  "sqoop",
-  "swtpm",
-  "synergy-core",
-  "tomcat-native"
+  "mariadb@10.4",
+  "mysql@5.7",
+  "sslyze"
 ]
