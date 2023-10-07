@@ -1,23 +1,23 @@
 class Petsc < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (real)"
   homepage "https://petsc.org/"
-  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.19.5.tar.gz"
-  sha256 "511aa78cad36db2dfd298acf35e9f7afd2ecc1f089da5b0b5682507a31a5d6b2"
+  url "https://web.cels.anl.gov/projects/petsc/download/release-snapshots/petsc-3.20.0.tar.gz"
+  sha256 "c152ccb12cb2353369d27a65470d4044a0c67e0b69814368249976f5bb232bd4"
   license "BSD-2-Clause"
 
   livecheck do
-    url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/"
+    url "https://web.cels.anl.gov/projects/petsc/download/release-snapshots/"
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_ventura:  "46d058b508d1903c0885745c294b1861dac8f3464b3d43815d3cd3e3c1baaf9f"
-    sha256 arm64_monterey: "64560eeed1c2d5dd32bce9758c7748f0cd9561d2d3d61f9e15a8426214160888"
-    sha256 arm64_big_sur:  "7f3da5735a586ecfc808cb6fe3c72fa34abad551c33645a4182b29d1ce1efdcb"
-    sha256 ventura:        "a956e6422c380af16e999466a1ae880ab17a9fc9fa835c2cecf3f0a7e2b0ceeb"
-    sha256 monterey:       "c1f604413f3ed8c2422dcf1442bea7065c672beac25268c93b01e160e5ba92a5"
-    sha256 big_sur:        "938ddfb33bac63563fe0e0ee9937691163f68fcc9ee95db4ed4fbef396bae13a"
-    sha256 x86_64_linux:   "23128291d7798c04bc1c8f242b216054e345b21d871e02855e31c8db7927cd86"
+    sha256 arm64_sonoma:   "c78014b6a3cd3cc208c56f0b02c5b723d4ec9f29a2d3eb23baef1ecb16f5e2b0"
+    sha256 arm64_ventura:  "6e73cce9123e157b74fb3133a4766346599d0b623322a03e0d1cb6f65cb7d81a"
+    sha256 arm64_monterey: "010c5813abfefff52e8235f1524ba17eef237e886536bd77ea667489afff2ab9"
+    sha256 sonoma:         "b7e6bfb57bbdd45563bf4de12709f286375c18a525d359deae00faa062db6396"
+    sha256 ventura:        "cffcf53b11307a4bf2de183637ad541e31eb34cebc610102e1621c0eeb93487a"
+    sha256 monterey:       "269dabe901fba6f7563b0cbfa9ac6f6e0e3d75fe347979894938678edb14584e"
+    sha256 x86_64_linux:   "94a06924f6587c76d9961fe19c18f844e860289eafe97105ec02143de4125c32"
   end
 
   depends_on "hdf5"

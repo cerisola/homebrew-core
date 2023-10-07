@@ -1,19 +1,19 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "https://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.216.1.tar.gz"
-  sha256 "8e843429a29f35d13513a30963b6d2a3c05673d95d0be4b9f9c2b1f12c035578"
+  url "https://github.com/facebook/flow/archive/v0.218.0.tar.gz"
+  sha256 "c657e58b017bab9377bc2b3fad2da0e065de5e445df15280e006abe58057deea"
   license "MIT"
   head "https://github.com/facebook/flow.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9aad52f396be2403c173e231b2ccad2bf3208ce37b4f4bc9775aacfcec592a17"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1a33e8372d8802cf81e02a0aa3b5f9dfe5995b03291b8592a15964f8fbecc556"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "10d507bbbd5cc691cfe92255a7039607408c2c92f8667bbf5aa2faeeac08fd98"
-    sha256 cellar: :any_skip_relocation, ventura:        "184e157aae2366e929d9fc47fa8d0688996220479a33921ab4a16d27879bbf71"
-    sha256 cellar: :any_skip_relocation, monterey:       "df5ff0cbc62432bfa133231cfd64ae48e73fdd8878e1f94264ed4f718a4655cd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5d2223f9a41b292e169a346987f8398347716bee1eb55551b363fee5cb1ae5c1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "578d0497c7d31e8d6058a7675c45e5ace98409bf80819c1b2e27b340d6bcefdd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ddeb70afe5ad00f42e2f969e28ed14d417b84cf0337c63dfe8cb561eccd4c153"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8e36d6c5682a36fe21414f77e53528f57cf9059974ff2a5fc2dd10a49cd0d0bd"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e9b1982873d7c275b04663e97118877b25b91d2ade25c80ba3324472c225c3ea"
+    sha256 cellar: :any_skip_relocation, sonoma:         "41e8686a57b29db08b9ada150fb17fc57a79c23aba545d21f0fc26fc3209d7ec"
+    sha256 cellar: :any_skip_relocation, ventura:        "70d470059e975e71c9518e9f08faded0be2817aa82333de67abe05011d8a4fb8"
+    sha256 cellar: :any_skip_relocation, monterey:       "98eafa7fdc74f74b27519079f9c188acf7b6078bcf3c07984a6b71a38f6b5828"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "63073607990a1f60f79a8603391fd81f0be0119774fcf0f169891237f88568a6"
   end
 
   depends_on "ocaml" => :build

@@ -3,18 +3,17 @@ class Vineyard < Formula
 
   desc "In-memory immutable data manager. (Project under CNCF)"
   homepage "https://v6d.io"
-  url "https://github.com/v6d-io/v6d/releases/download/v0.17.1/v6d-0.17.1.tar.gz"
-  sha256 "c9a0e1c573f66c2858496a1b10006d1d8b13bf47a31b5cb8055b77e0cf8fcd0d"
+  url "https://github.com/v6d-io/v6d/releases/download/v0.17.3/v6d-0.17.3.tar.gz"
+  sha256 "34178fbc814a28b0dae8f26bf1c140ef0163c4c6fb57d5c4be06cd6c4d904718"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256                               arm64_ventura:  "ea6cd1f3fe24345d360a9c9477ed1e95791fbdfa37527b3f8c310a8ebf229853"
-    sha256                               arm64_monterey: "38a54bf86d1735912784518860bedd60c11cbc76fced237f231572d266191593"
-    sha256                               arm64_big_sur:  "1521337901a05523d64608264d8438f494f08cd6dc10d38f91360b48c2563976"
-    sha256                               ventura:        "27d9cd849031e60145551bc4e0aa20e7732642624f227d78a9f30b2d17cfa94f"
-    sha256                               monterey:       "2156d93107ad701c74325e118c9df15b1eca4e0ae45608f2365fcedbb6431484"
-    sha256                               big_sur:        "3336ee2dd688dd467f4c5ed7dcc0e4ed544a09faee633e34c88b2ac8a0195fc2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "020a0400711963bd4e86683b8b2d206801aa78890634cbdac12d047a0c2bd756"
+    sha256                               arm64_ventura:  "25ff02a074aef9b042994536f1cf2606ea7a48ce8a079818e5b21e042fb4901e"
+    sha256                               arm64_monterey: "011dc086caefdeece5d6a2c0313096807204e0aad25348b4252cb711123e1f55"
+    sha256                               ventura:        "b9ddd2ec3f4dce5ff900de6f0d2c28e6a838b90d526250546c03550fcd3e23e2"
+    sha256                               monterey:       "795a6db23f0ba06eb29868f837533138f854b75bda6f942af66078025e9b1ab6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b2c0d1fd660e4c12fe13b4c282fd1c27f29a79177192992b3e3c6af0d1103b1a"
   end
 
   depends_on "cmake" => :build

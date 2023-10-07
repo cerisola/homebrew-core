@@ -2,19 +2,27 @@ class Ollama < Formula
   desc "Create, run, and share large language models (LLMs)"
   homepage "https://ollama.ai/"
   url "https://github.com/jmorganca/ollama.git",
-      tag:      "v0.0.19",
-      revision: "45ac07cd025f9d1e84917db3f00e0f3e5651aede"
+      tag:      "v0.1.1",
+      revision: "1852755154a8f82cc2dcb01c37159340a55347ca"
   license "MIT"
   head "https://github.com/jmorganca/ollama.git", branch: "main"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c28605511527744c3ab620cac100eb06b37cc61a2ae25787cceb39a3e5453a4c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "76a75f39312e93533fc994a4834c81b8eb299a0112c2581f7cdbd543588d8732"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0f0a925eb20550fc7692e265098b041d1ce1a48ae33a8f5fca280043f0b536db"
-    sha256 cellar: :any_skip_relocation, ventura:        "20ba83604dadb1d87737b2268c33e27a6cf2115d3412c06ba2db3ae12488cbeb"
-    sha256 cellar: :any_skip_relocation, monterey:       "4db836410137eabb475fa8c57e9b8a2e814c28a1e51d0c98694b232bac215745"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d1df20f8318a30f2ad5ff6262d8a0c754d08670b36af281a5462e26c16c3da8c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "87a5f4499beb3e41c73d758346921342f87443581059870a224cb01e22b6bc62"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a62c639d203568b6abd871dcd0451615ea88130a85c8fbe3b535a06997f36224"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "476888c4759b853e10f773c657f36edca8cb58c66b1a57f789346a155c738418"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "388a0686e067e599b05507d2c05afb718c4b2fabe0a93b83df50144d41713d1a"
+    sha256 cellar: :any_skip_relocation, sonoma:         "33d7dc247495a9e78a7152c9c9ee5e2955e859c0274ca7725ba31e0f87dd8cf4"
+    sha256 cellar: :any_skip_relocation, ventura:        "3e53b91608d665171ba15a1038bd479026e7964d6e5d1be56201a93075d64bad"
+    sha256 cellar: :any_skip_relocation, monterey:       "1239e41c35ca2d0164f50071b53ab8040f7bd2e5ce2febdeef5c436986f6113a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "62d454923d5b1600e3ab57aaee76a1845b03c8d37a90afdf1294d7ef891ce044"
   end
 
   depends_on "cmake" => :build
@@ -37,8 +45,7 @@ class Ollama < Formula
 
   test do
     port = free_port
-    ENV["OLLAMA_HOST"] = "localhost"
-    ENV["OLLAMA_PORT"] = port.to_s
+    ENV["OLLAMA_HOST"] = "localhost:#{port}"
 
     pid = fork { exec "#{bin}/ollama", "serve" }
     sleep 1

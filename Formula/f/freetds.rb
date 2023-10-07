@@ -4,8 +4,8 @@ class Freetds < Formula
   license "GPL-2.0-or-later"
 
   stable do
-    url "https://www.freetds.org/files/stable/freetds-1.3.20.tar.bz2", using: :homebrew_curl
-    sha256 "20ae11f3b806e4fbc0fa0b5931fb473bb5748bee9d487f6aa12885083578a5ed"
+    url "https://www.freetds.org/files/stable/freetds-1.4.2.tar.bz2", using: :homebrew_curl
+    sha256 "8acd1339989c64709803e227d2082b7ad264be66aebd4dba2c69a768acb86713"
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
@@ -20,13 +20,13 @@ class Freetds < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "4ffa11f6eb718120ff017a3407a40fafe3f2933d37f34e816bd40b0731719974"
-    sha256 arm64_monterey: "4fa8ee2c787bf7401ed5b11293f6e35aa8f085f2a8b78ab5647384f7e08205f1"
-    sha256 arm64_big_sur:  "01a8ae05c60d2baf841e1d7748c73df29270fe9631fc79666d5ebd36fe918581"
-    sha256 ventura:        "417dbf14ad640826c8cadbbb089b1437a37058ef6c0b295ff1ec30e3e8f07761"
-    sha256 monterey:       "14fb4ec50ee6f57e531ae990e25754dbc04e80d9f0a385d8ebe23b8a571b4aa1"
-    sha256 big_sur:        "ad42d0fd4e34ee3e8494a1a25f3c5b7d4fd9acaeecf49723f50c4eb7164ab8c9"
-    sha256 x86_64_linux:   "459bec628449c248b6d93c714c1a8caa745e5a3c774ba093af40c1e969b6a8ea"
+    sha256 arm64_sonoma:   "c9120bd2e0eeb8ac83070e2b4dd85bac6d4ede21060b97b4617ef2fa1cef3ad8"
+    sha256 arm64_ventura:  "c4ee0537863f8d5cb891610541a66f38dd85dee478bb3282ce2ad67079ee10f0"
+    sha256 arm64_monterey: "21f428399d59d6ac8a63e34b6aa50e3866085ad60f84930d1d129a872ea8ba59"
+    sha256 sonoma:         "7c300eab4b6a19e18780e8df18fdc20f88aff63d7faf5178093d757eee9a8bf3"
+    sha256 ventura:        "1b22d5bb693f17394314e54c38277182d25322a16d2f93e4a3a4dfc979e6b86c"
+    sha256 monterey:       "4484def0b0373f0416f2d50dc22e5c80a83e1602f9028f90d0d25553edcf0906"
+    sha256 x86_64_linux:   "64910efa73986bbb9038e762f498be159026cd75f7c435e293111a7d9f305d5b"
   end
 
   head do

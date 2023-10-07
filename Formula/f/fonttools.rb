@@ -3,26 +3,26 @@ class Fonttools < Formula
 
   desc "Library for manipulating fonts"
   homepage "https://github.com/fonttools/fonttools"
-  url "https://files.pythonhosted.org/packages/45/40/94a4c9b4248dd3d1aa7c17a46e4cfbe493350d0d09548141223fbed6c0fa/fonttools-4.42.1.tar.gz"
-  sha256 "c391cd5af88aacaf41dd7cfb96eeedfad297b5899a39e12f4c2c3706d0a3329d"
+  url "https://files.pythonhosted.org/packages/43/bc/6051ee22b88c5d9d39ea68e8e2422d3036d9b52ac2afc559f7397d59bc64/fonttools-4.43.1.tar.gz"
+  sha256 "17dbc2eeafb38d5d0e865dcce16e313c58265a6d2d20081c435f84dc5a9d8212"
   license "MIT"
   head "https://github.com/fonttools/fonttools.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "acfa78542160665f0f79a129eefd5471393581ce7b3d8fdee6221e13974d9775"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d51d9d8c32ec020e3a8dfebd20d9cab13620d4f5a9c024beeb4dc4f89a7af176"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "31494f70ec21c16eb45b00188bdabb166f3ec2e41437fc7927e2765be8d203f5"
-    sha256 cellar: :any_skip_relocation, ventura:        "a94b8713d5de261683e8249aed765f212917c7bff1fa2ba5cd6b0563c08fdd6a"
-    sha256 cellar: :any_skip_relocation, monterey:       "7b7bce5a88ee88b41dc8c1396638929071aa4174dcbedfeed50523d4ddbf0c9a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "34638df5d0d4adc9656b581b58255be27c387c16b287b7cad836d0d7b536b290"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6212a1a9be533e156363326265ee948cb50d5757cb534fdc8c0d98a17bdd18eb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d9722530a2bc6bc22c22b3e2e2c80bb88cedbee826711fc7e1fc494be876e849"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ad76117dd49caf7279dbe84f8c0fe77981353e2fd80c226cc051687569149518"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2795a349a88224ebc3d9cc0fa648f09f0b8bd70292122a0fa9ee3de8b831769"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ade256fc430114ae2b91b1a49ae78611f55083a620de20fbb90cd05f72d12731"
+    sha256 cellar: :any_skip_relocation, ventura:        "42f1277fea70d5bfc5b2c9fd381c064fc0b08f69eedc10c40ad7c90bbd3ac2df"
+    sha256 cellar: :any_skip_relocation, monterey:       "5d4dd4d52adf8e6236712a6b6d2b83a51f6b28171ccf518f66e5447271cd44f9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "033a0eea986c0cc4192336caa6007e7b6a94aade8805c7c395c69efabe17ee2d"
   end
 
   depends_on "python@3.11"
 
   resource "brotli" do
-    url "https://files.pythonhosted.org/packages/2a/18/70c32fe9357f3eea18598b23aa9ed29b1711c3001835f7cf99a9818985d0/Brotli-1.0.9.zip"
-    sha256 "4d1b810aa0ed773f81dceda2cc7b403d01057458730e309856356d4ef4188438"
+    url "https://files.pythonhosted.org/packages/2f/c2/f9e977608bdf958650638c3f1e28f85a1b075f075ebbe77db8555463787b/Brotli-1.1.0.tar.gz"
+    sha256 "81de08ac11bcb85841e440c13611c00b67d3bf82698314928d0b676362546724"
   end
 
   def install

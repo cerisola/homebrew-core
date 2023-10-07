@@ -9,14 +9,16 @@ class Charmcraft < Formula
   revision 2
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any,                 arm64_ventura:  "6df408d6e44a8d24f67b43c4407121cd0889e85b3c88abee3b3d8bc0e0a1af80"
-    sha256 cellar: :any,                 arm64_monterey: "84b05ce134ca8c3636c7100d7c16eced2ffb59898351255465100510497c77fc"
-    sha256 cellar: :any,                 arm64_big_sur:  "334ed21ab42da4ecff81374fbc6fbdac7f1cd495e52ad4e33626536cb23faeb1"
-    sha256 cellar: :any,                 ventura:        "6f7cfa41c8c6783631d94bbffaf39aab5088f267e38d918a124669a8c2d43c8f"
-    sha256 cellar: :any,                 monterey:       "4677953e47bc210439fb52e17195ba80974cebcd3c82e5979ef4e44b338b4fcf"
-    sha256 cellar: :any,                 big_sur:        "c4dbe9a195a7ee3de0673fc50b10e5c760487fa0afca2333bdc58f360af71fb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eab273d36d7eaec1394ddbd44cf629b42e5f96dbf593235a5c3bf924295fbd08"
+    rebuild 4
+    sha256 cellar: :any,                 arm64_sonoma:   "3dd0ea220cbfadcf07e6cf4316d8ad1ddb05dc4821849024dd2852c948f7c3f2"
+    sha256 cellar: :any,                 arm64_ventura:  "1bde9a0953e11f0c2282ab53f8f16efd048763794b1ac4230848a8e3f1973b2d"
+    sha256 cellar: :any,                 arm64_monterey: "3ff96991b6d6d07583d469650a110032673489802eb1976c590e1847a195ae28"
+    sha256 cellar: :any,                 arm64_big_sur:  "3cd774b49ad84dcf83c8b2672aec8aa80ee26840006979b62f3f0aeb04463dc7"
+    sha256 cellar: :any,                 sonoma:         "5aba3396be249d92d81ff0e3a2316682429fe6192ce9ea669047a18b3c6006d9"
+    sha256 cellar: :any,                 ventura:        "9e30b374a05d68d5dbadfa74e67347506b63e13f1f5a043b0c82348c0d5c0faf"
+    sha256 cellar: :any,                 monterey:       "01b12f124b363fe6b83ac1078af60909ff1d8a484bdbec632c0bb24b6eeaa657"
+    sha256 cellar: :any,                 big_sur:        "2fa14041e36f62cfe8f18f34790c6b2ebf2629a33b20a7352427db52c4a53fe5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "291818595ecf7bdfd2ecaac29a2d9e4c29fdfb42dc1bb51be29465343399089d"
   end
 
   depends_on "rust" => :build # for rpds-py
@@ -26,6 +28,7 @@ class Charmcraft < Formula
   depends_on "pycparser"
   depends_on "python-certifi"
   depends_on "python-cryptography"
+  depends_on "python-packaging"
   depends_on "python-pytz"
   depends_on "python-tabulate"
   depends_on "python-typing-extensions"
@@ -126,11 +129,6 @@ class Charmcraft < Formula
   resource "overrides" do
     url "https://files.pythonhosted.org/packages/f6/39/e2e3c2c7eba7793a01b5f592c3c7fd6b27da53d75de81430407ef18befb7/overrides-7.3.1.tar.gz"
     sha256 "8b97c6c1e1681b78cbc9424b138d880f0803c2254c5ebaabdde57bb6c62093f2"
-  end
-
-  resource "packaging" do
-    url "https://files.pythonhosted.org/packages/b9/6c/7c6658d258d7971c5eb0d9b69fa9265879ec9a9158031206d47800ae2213/packaging-23.1.tar.gz"
-    sha256 "a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
   end
 
   resource "platformdirs" do
@@ -251,8 +249,8 @@ class Charmcraft < Formula
   end
 
   def install
-    # Workaround for Xcode 14.3
-    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version == 1403
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
     virtualenv_install_with_resources
 

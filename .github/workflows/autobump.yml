@@ -493,7 +493,6 @@ env:
     minetest
     minikube
     miniserve
-    mitmproxy
     mmark
     mmctl
     moar

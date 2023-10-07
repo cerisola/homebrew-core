@@ -3,19 +3,19 @@ class Ipython < Formula
 
   desc "Interactive computing in Python"
   homepage "https://ipython.org/"
-  url "https://files.pythonhosted.org/packages/15/d0/b84b1131d7b958b2e4564f784c9a88b63ce7c181af914f0c26ac07970dc1/ipython-8.15.0.tar.gz"
-  sha256 "2baeb5be6949eeebf532150f81746f8333e2ccce02de1c7eedde3f23ed5e9f1e"
+  url "https://files.pythonhosted.org/packages/17/ff/23116d95eeb974bd08b57b7d477fb57d68446e04718b6c330d2854ad9923/ipython-8.16.1.tar.gz"
+  sha256 "ad52f58fca8f9f848e256c629eff888efc0528c12fe0f8ec14f33205f23ef938"
   license "BSD-3-Clause"
   head "https://github.com/ipython/ipython.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "25ab3d98095fac752392e707d8db27a73fc36c6672382df961b1baf9023130c0"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1340cd2fd5d08406c8ff0a321aa9cdcdadb25282c6f4a4f00c5fb8791becc6cf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0cd02457aaf3838e61278d15b123b22c9dcc348bb6d12072e59a737f16bf579f"
-    sha256 cellar: :any_skip_relocation, ventura:        "492aefb2db5cdede9b4bc44a62a2c65ccb7cec4ab0c56af11eb73501fd5c7a24"
-    sha256 cellar: :any_skip_relocation, monterey:       "0257e2650602e4b74681ea8d59c956bfadaca7d9c78827ea613fff4184a59825"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b2375cd720bf0a7b04e73bf98f1c701977b637b3fe9fc58b565f73cb3ed17afc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ea7dee9e561f96b8df9271692e5dd447b32b72ea03bde8ba5758ebbbdaeaf76e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "104e32be6db95073453b32f546fd7f3489c3e07c2fb3511572d635987e4f210e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5244465625332676ab97663f9ee28a64f1b1a2771d1ecc69fcbadd04753c67aa"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e3bd0ff617d70f42b829cb8ca0cfd8fe0bd8957121039d616cd3ad2996b8ed99"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e52b504e41ee34582a618a8050d1f1b1f0beace1dd92f204802769f3f479477b"
+    sha256 cellar: :any_skip_relocation, ventura:        "231e44dcea65718e5555681c5c76b3430828f9954f98a9ee6ec1b4139fcd878a"
+    sha256 cellar: :any_skip_relocation, monterey:       "aa0bd73d272e5a27c05d18f5b65ae013173a305a83ae1198c040c68c76ee0819"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "328fa142ecc6dbf57fae55aafdbc0ca9ffe36a3b42b607e27cafe823e2fb3a6e"
   end
 
   depends_on "pygments"
@@ -28,8 +28,8 @@ class Ipython < Formula
   end
 
   resource "asttokens" do
-    url "https://files.pythonhosted.org/packages/c8/e3/b0b4f32162621126fbdaba636c152c6b6baec486c99f48686e66343d638f/asttokens-2.2.1.tar.gz"
-    sha256 "4622110b2a6f30b77e1473affaa97e711bc2f07d3f10848420ff1898edbe94f3"
+    url "https://files.pythonhosted.org/packages/ed/e0/7e5af07a090b9ef4f88e29b6edb8db8ca3366a0d7736ae9c3a6522fae140/asttokens-2.4.0.tar.gz"
+    sha256 "2e0171b991b2c959acc6c49318049236844a5da1d65ba2672c4880c1c894834e"
   end
 
   resource "backcall" do
@@ -43,13 +43,13 @@ class Ipython < Formula
   end
 
   resource "executing" do
-    url "https://files.pythonhosted.org/packages/8f/ac/89ff37d8594b0eef176b7cec742ac868fef853b8e18df0309e3def9f480b/executing-1.2.0.tar.gz"
-    sha256 "19da64c18d2d851112f09c287f8d3dbbdf725ab0e569077efb6cdcbd3497c107"
+    url "https://files.pythonhosted.org/packages/11/e3/207e956e01bd4a7809a1d7c4302fd2a64ab0b7a56c40711252a2d5d41ba7/executing-2.0.0.tar.gz"
+    sha256 "0ff053696fdeef426cda5bd18eacd94f82c91f49823a2e9090124212ceea9b08"
   end
 
   resource "jedi" do
-    url "https://files.pythonhosted.org/packages/57/38/4ac6f712c308de92af967142bd67e9d27e784ea5a3524c9e84f33507d82f/jedi-0.19.0.tar.gz"
-    sha256 "bcf9894f1753969cbac8022a8c2eaee06bfa3724e4192470aaffe7eb6272b0c4"
+    url "https://files.pythonhosted.org/packages/d6/99/99b493cec4bf43176b678de30f81ed003fd6a647a301b9c927280c600f0a/jedi-0.19.1.tar.gz"
+    sha256 "cf0496f3651bc65d7174ac1b7d043eff454892c708a87d1b683e57b569927ffd"
   end
 
   resource "matplotlib-inline" do
@@ -88,18 +88,18 @@ class Ipython < Formula
   end
 
   resource "stack-data" do
-    url "https://files.pythonhosted.org/packages/db/18/aa7f2b111aeba2cd83503254d9133a912d7f61f459a0c8561858f0d72a56/stack_data-0.6.2.tar.gz"
-    sha256 "32d2dd0376772d01b6cb9fc996f3c8b57a357089dec328ed4b6553d037eaf815"
+    url "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29519eb6884dd1415ecb53b0e934862d3559ddcb7e20b/stack_data-0.6.3.tar.gz"
+    sha256 "836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9"
   end
 
   resource "traitlets" do
-    url "https://files.pythonhosted.org/packages/39/c3/205e88f02959712b62008502952707313640369144a7fded4cbc61f48321/traitlets-5.9.0.tar.gz"
-    sha256 "f6cde21a9c68cf756af02035f72d5a723bf607e862e7be33ece505abf4a3bad9"
+    url "https://files.pythonhosted.org/packages/3a/ae/362f1733cbd3160771fa059beb0e2bdab442b7065e7651465b01bc5e4ffa/traitlets-5.10.1.tar.gz"
+    sha256 "db9c4aa58139c3ba850101913915c042bdba86f7c8a0dda1c6f7f92c5da8e542"
   end
 
   resource "wcwidth" do
-    url "https://files.pythonhosted.org/packages/5e/5f/1e4bd82a9cc1f17b2c2361a2d876d4c38973a997003ba5eb400e8a932b6c/wcwidth-0.2.6.tar.gz"
-    sha256 "a5220780a404dbe3353789870978e472cfe477761f06ee55077256e509b156d0"
+    url "https://files.pythonhosted.org/packages/cb/ee/20850e9f388d8b52b481726d41234f67bc89a85eeade6e2d6e2965be04ba/wcwidth-0.2.8.tar.gz"
+    sha256 "8705c569999ffbb4f6a87c6d1b80f324bd6db952f5eb0b95bc07517f4c1813d4"
   end
 
   def install

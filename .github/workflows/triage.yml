@@ -86,8 +86,8 @@ jobs:
 
             - label: no ARM bottle
               path: Formula/.+
-              content: '\n    sha256.* big_sur: +"[a-fA-F0-9]+"\n'
-              missing_content: '\n    sha256.* arm64_big_sur: +"[a-fA-F0-9]+"\n'
+              content: '\n    sha256.* (?!.*(?:arm64_|_linux)).+: +"[a-fA-F0-9]+"\n'
+              missing_content: '\n    sha256.* (arm64_.+|all): +"[a-fA-F0-9]+"\n'
 
             - label: no Linux bottle
               path: Formula/.+
@@ -111,9 +111,9 @@ jobs:
                 - Formula/b/bash-completion@2.rb
                 - Formula/o/openssl@3.rb
                 - Formula/p/postgresql@15.rb
-                - Formula/p/python@3.11.rb
-                - Formula/p/python-gdbm@3.11.rb
-                - Formula/p/python-tk@3.11.rb
+                - Formula/p/python@3.12.rb
+                - Formula/p/python-gdbm@3.12.rb
+                - Formula/p/python-tk@3.12.rb
 
             - label: missing license
               path: Formula/.+
@@ -213,7 +213,7 @@ jobs:
               keep_if_no_match: true
 
             - label: CI-linux-self-hosted
-              path: Formula/.+/(alsa-lib|brotli|dbus|envoy|freetype|gdbm|glib|glslang|gmp|gtk4|gzip|harfbuzz|hdf5|json-c|krb5|libarchive|libedit|libnghttp2|libsndfile|libssh2|libtiff|libxcrypt|libxml2|llvm|minizip|nghttp2|openexr|pygments|python@3.11|systemd|qt(@5)?|unbound|utf8cpp|util-linux|xz|zlib|zstd).rb
+              path: Formula/.+/(alsa-lib|brotli|cups|dart-sdk|dbus|envoy|freetype|gdbm|glib|glslang|gmp|gtk4|gzip|harfbuzz|hdf5|json-c|krb5|libarchive|libedit|libnghttp2|libsndfile|libssh2|libtiff|libxcrypt|libxml2|llvm|minizip|nghttp2|openexr|pygments|python@3.11|systemd|qt(@5)?|unbound|utf8cpp|util-linux|webp|xz|zlib|zstd).rb
               keep_if_no_match: true
 
             - label: large-bottle-upload

@@ -1,19 +1,21 @@
 class Octobuild < Formula
   desc "Compiler cache for Unreal Engine"
   homepage "https://github.com/octobuild/octobuild"
-  url "https://github.com/octobuild/octobuild/archive/refs/tags/0.7.0.tar.gz"
-  sha256 "332ea5672430adfb6b919554cf6edc1986b848d0226237374d0756113a2500f4"
+  url "https://github.com/octobuild/octobuild/archive/refs/tags/0.8.0.tar.gz"
+  sha256 "033341ae371c1b62294d3c6068b6737f9d37bcba3a708fe3702007a7505e21c7"
   license "MIT"
   head "https://github.com/octobuild/octobuild.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "59c1c47401e3260d2bd2506d91c092feeaf9323e7d7a23358c4ecdde40ebf836"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1647e7bf016df46c6942d86093386061fb779357a64d2602a165b8196d37ae9d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "cfaed5a5e6391537bf9953131121e3bcc69d55a60c8a2a0392fb5cc0fd28efab"
-    sha256 cellar: :any_skip_relocation, ventura:        "97ee047318ebddbe10c64303fbc2c5c225b015f0733524ad3058ea234dddb792"
-    sha256 cellar: :any_skip_relocation, monterey:       "559e9277930a7a10e2572d748b569727762f1d465790f1f1e092d96f602c0b04"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c18ac51a7560cdb029b495a1cf23b0ea0c1442dd6fa7a01850b3f26d6340885"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "01bf121bc97d6b991babe2bd02a08999526047602accd0f5088f77ce88d75d88"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e86ca624f886e68de1788803e8f2bc67198a3219d4757a10ab5dbf92c5c2bca0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "10ea936e9fbb96b2cc8249156936c2d43bca6b494037ee2c2fbb766438532eee"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d92ff0acd07349aa767fa89283a6a9420e762d974c08d31df60363506a897aa1"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "aebe8d1c8d2c7137fe4af4b4018c822d77465189231d451dfadabf7fac1086d9"
+    sha256 cellar: :any_skip_relocation, sonoma:         "3220ff55b9546c08d2108ef201314dd195cf5cb040d50ef147f9891d02e33ea4"
+    sha256 cellar: :any_skip_relocation, ventura:        "41706153fe80d676fb8bcd4662f14893190328a0c09d3ed432cc9235dc19549f"
+    sha256 cellar: :any_skip_relocation, monterey:       "1a13351a1d4733591a2a340fef9c023f03d9d393dabe9fdcfb4a89d38f3a62ba"
+    sha256 cellar: :any_skip_relocation, big_sur:        "e7de7f950cb6edc24013f3b99e1f8a4cf578115d46b077a4614e96612f725e64"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "133f9be1bb0225d0e3675b17851d07b7cbdc34b22b7fda8e7520ca9f7c726896"
   end
 
   depends_on "rust" => :build

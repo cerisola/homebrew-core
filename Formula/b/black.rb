@@ -14,15 +14,17 @@ class Black < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "175e20f2cb757664ac1937a92570c5c4143c460f5d45d202dab7de3252d988e9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e6f9d79475b3ae51f094ee1189c69f16a34019eb9427a2bce5a2432834b17441"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2a612a7b228c2b88ccc53fb7c865cb299c78d48d0bc14a0d9fd4e7d6e34100f6"
-    sha256 cellar: :any_skip_relocation, ventura:        "ab607d8bc69741b2c0dd879a91bf807f61b99ec7a1d89c33ddb88911f663f7f0"
-    sha256 cellar: :any_skip_relocation, monterey:       "6882fe33fc919b02ccfd66b366573fb09ac345e4022e7cbcfcd14aee4f8de8e8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3c5066e72be883c2a4e291305851eadf213b707584d248fa81e084e67958d463"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cfca7f3ac5ea582c9415e26d7728a0f3632aa2849caf77cdc195937bf34f4cd1"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e1a41d76bf17a5ce90c2edb1be9738b59167572e4dc1c988f4796b91c022dce5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c2fd4e6ee3a432d6f227a091bde4b27957707fe991a0a2d7ff4275837076c25"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "41f856c0fd2cfb7f98ea70b227c6f63ae768ad16597df91bdf00e79ec695572d"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9d534163aff582e87464b31af16165e9f806fedef39ce16368b35842598684a0"
+    sha256 cellar: :any_skip_relocation, ventura:        "d481315de5417c9360d68a7cce50ba83966909088ade096af878e680964ddc64"
+    sha256 cellar: :any_skip_relocation, monterey:       "4cbf8b783e863bc853c2c3a1e656a0885b8475404ddc28d9101c6b352d3b8111"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98d00109034ec1d24e6566617af51cc691b24f37ad325b4b4941fe5ac597556e"
   end
 
+  depends_on "python-packaging"
   depends_on "python@3.11"
 
   resource "aiohttp" do
@@ -75,11 +77,6 @@ class Black < Formula
     sha256 "75dbf8955dc00442a438fc4d0666508a9a97b6bd41aa2f0ffe9d2f2725af0782"
   end
 
-  resource "packaging" do
-    url "https://files.pythonhosted.org/packages/b9/6c/7c6658d258d7971c5eb0d9b69fa9265879ec9a9158031206d47800ae2213/packaging-23.1.tar.gz"
-    sha256 "a392980d2b6cffa644431898be54b0045151319d1e7ec34f0cfed48767dd334f"
-  end
-
   resource "pathspec" do
     url "https://files.pythonhosted.org/packages/a0/2a/bd167cdf116d4f3539caaa4c332752aac0b3a0cc0174cdb302ee68933e81/pathspec-0.11.2.tar.gz"
     sha256 "e0d8d0ac2f12da61956eb2306b69f9469b42f4deb0f3cb6ed47b9cce9996ced3"
@@ -97,6 +94,8 @@ class Black < Formula
 
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(bin/"black", shells: [:fish, :zsh], shell_parameter_format: :click)
   end
 
   service do

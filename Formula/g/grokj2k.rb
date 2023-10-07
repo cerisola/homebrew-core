@@ -12,9 +12,11 @@ class Grokj2k < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sonoma:   "97d23005578ffc4079d6644f3fdae12b40e552f58830f35e1e55914363e5e2f2"
     sha256 cellar: :any,                 arm64_ventura:  "454e5db3da106f4a05d3e910d2a9eddad4d8686da39b6d3960d6fa3e30396040"
     sha256 cellar: :any,                 arm64_monterey: "ec19f0bd07ad94ead5ff5ae27f67c3a5865cb7ba44675c5ef80625d93c701ea3"
     sha256 cellar: :any,                 arm64_big_sur:  "b3fc7d488dd1744db86fe4dccae13a73c3864abdef7f9341ab6106372312f42b"
+    sha256 cellar: :any,                 sonoma:         "a579ebd1aa0ddbb4ff87b4bb8ee44ce557641b254922bf556881f4da42a0e3cd"
     sha256 cellar: :any,                 ventura:        "60f638ed5e3b00f3e6e0539adecf6983214f55098da5d07d615625499d7cfa8f"
     sha256 cellar: :any,                 monterey:       "b30205941ca26a9db98b3e9df4db4cb7bf178bb0b4ee786d41f2f7acb4eab3b7"
     sha256 cellar: :any,                 big_sur:        "167f3e00b817fb9627fd4016a450d9e1699a26e42d976558b2de4a95e652bf5c"
@@ -47,11 +49,6 @@ class Grokj2k < Formula
   fails_with :gcc do
     version "9"
     cause "GNU compiler version must be at least 10.0"
-  end
-
-  resource "homebrew-test_image" do
-    url "https://raw.githubusercontent.com/GrokImageCompression/input_image_test_suite/173de0ae73371751f857d16fdaf2c3301e54a3a6/exif-samples/tiff/Tless0.tiff"
-    sha256 "32f6aab90dc2d284a83040debe379e01333107b83a98c1aa2e6dabf56790b48a"
   end
 
   def install
@@ -97,6 +94,11 @@ class Grokj2k < Formula
   end
 
   test do
+    resource "homebrew-test_image" do
+      url "https://github.com/GrokImageCompression/grok-test-data/raw/43ce4cb/input/nonregression/basn6a08.tif"
+      sha256 "d0b9715d79b10b088333350855f9721e3557b38465b1354b0fa67f230f5679f3"
+    end
+
     (testpath/"test.c").write <<~EOS
       #include <grok/grok.h>
 
@@ -116,7 +118,7 @@ class Grokj2k < Formula
 
     # Test Exif metadata retrieval
     resource("homebrew-test_image").stage do
-      system bin/"grk_compress", "-in_file", "Tless0.tiff",
+      system bin/"grk_compress", "-in_file", "basn6a08.tif",
                                  "-out_file", "test.jp2", "-out_fmt", "jp2",
                                  "-transfer_exif_tags"
       output = shell_output("#{Formula["exiftool"].bin}/exiftool test.jp2")

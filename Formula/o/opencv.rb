@@ -1,10 +1,9 @@
 class Opencv < Formula
   desc "Open source computer vision library"
   homepage "https://opencv.org/"
-  url "https://github.com/opencv/opencv/archive/refs/tags/4.8.0.tar.gz"
-  sha256 "cbf47ecc336d2bff36b0dcd7d6c179a9bb59e805136af6b9670ca944aef889bd"
+  url "https://github.com/opencv/opencv/archive/refs/tags/4.8.1.tar.gz"
+  sha256 "62f650467a60a38794d681ae7e66e3e8cfba38f445e0bf87867e2f2cdc8be9d5"
   license "Apache-2.0"
-  revision 6
 
   livecheck do
     url :stable
@@ -12,13 +11,13 @@ class Opencv < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "20f0c4e5f9c5e000bed82f7260ee49f90ee807e5c7ec37c0759a34296a7a7443"
-    sha256 arm64_monterey: "5a54c0961578e05d6b98ce0fee25076db997978008b45507e62dfc6143d5230c"
-    sha256 arm64_big_sur:  "4bf617abe99e8d7470c366801adf8bdf3b7ec02aaf146d02911f52101d6d7a94"
-    sha256 ventura:        "3881c329ab397b713d6b2061d88d69613c5b5f71b39d8952a3a79b4eef2bdb66"
-    sha256 monterey:       "61e7613924348584e03e23621334dc5a0343f6e88026c78d445d109149b48cbe"
-    sha256 big_sur:        "8f04c889356404bc499c8cf5e657f6b818100b1cebdc073644910dc26ee8f4c3"
-    sha256 x86_64_linux:   "2642acf6062eed751bb78d79c7d5653db848337c330115bc41239712b1deae9a"
+    sha256 arm64_sonoma:   "8598e159f57ae66a9d05009db6ce4bba55929993751aebf3c034683d28425b1c"
+    sha256 arm64_ventura:  "5516a97cf31d38135050a381335603a032de9a0c28a285c236fe43951c585ddb"
+    sha256 arm64_monterey: "10c4c9e7d67fc27d98aa099e8ae9dfedd2928b35104aa3b24abb7f5f7c9ee3ea"
+    sha256 sonoma:         "4a51c3fb04735a89b7d1c173ac9babe88f4d0dc64ba513b15866a6a732d067cc"
+    sha256 ventura:        "f7d345a11a8df65d1496ae9e40650ca5e08fe93f7e80bc1ebec560bce89dbf7b"
+    sha256 monterey:       "b9bd7ba2ca18752c657985d3f44f6733e2daed3fe38bb1c1b0a7e25bbced6bd7"
+    sha256 x86_64_linux:   "5cf5e082ac6e274fbb188a73e1859947c299284962ccca2a0691598f3014c9f6"
   end
 
   depends_on "cmake" => :build
@@ -47,8 +46,8 @@ class Opencv < Formula
   fails_with gcc: "5" # ffmpeg is compiled with GCC
 
   resource "contrib" do
-    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.0.tar.gz"
-    sha256 "b4aef0f25a22edcd7305df830fa926ca304ea9db65de6ccd02f6cfa5f3357dbb"
+    url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.8.1.tar.gz"
+    sha256 "0c082a0b29b3118f2a0a1856b403bb098643af7b994a0080f402a12159a99c6e"
   end
 
   # Fix static build with OpenVINO (https://github.com/opencv/opencv/pull/23963)

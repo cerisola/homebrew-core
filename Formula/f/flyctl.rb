@@ -2,24 +2,29 @@ class Flyctl < Formula
   desc "Command-line tools for fly.io services"
   homepage "https://fly.io"
   url "https://github.com/superfly/flyctl.git",
-      tag:      "v0.1.91",
-      revision: "ec9362243de864edf786d177048639016c52004a"
+      tag:      "v0.1.104",
+      revision: "682c341cb1b8fc0bc80589fd96d7cad34f1772f0"
   license "Apache-2.0"
   head "https://github.com/superfly/flyctl.git", branch: "master"
 
+  # Upstream tags versions like `v0.1.92` and `v2023.9.8` but, as of writing,
+  # they only create releases for the former and those are the versions we use
+  # in this formula. We could omit the date-based versions using a regex but
+  # this uses the `GithubLatest` strategy, as the upstream repository also
+  # contains over a thousand tags (and growing).
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa69645b39019daf0a03f91cbe1910243f7d76d51e5b75843a65f676ecbe71f3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa69645b39019daf0a03f91cbe1910243f7d76d51e5b75843a65f676ecbe71f3"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fa69645b39019daf0a03f91cbe1910243f7d76d51e5b75843a65f676ecbe71f3"
-    sha256 cellar: :any_skip_relocation, ventura:        "6103651189f35b65d9ddb028749bfe7e56c415ab9822c8a58b5fa87e9c8276a2"
-    sha256 cellar: :any_skip_relocation, monterey:       "6103651189f35b65d9ddb028749bfe7e56c415ab9822c8a58b5fa87e9c8276a2"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6103651189f35b65d9ddb028749bfe7e56c415ab9822c8a58b5fa87e9c8276a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "68dc01f5a294e23cc00b2a4955af408e30b5325510ed81a1cd5addfbcb4f2ee7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2b74e44623496d80464eb9a3a74f7889b5ca59a53464e697894abe8acc088f9f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b74e44623496d80464eb9a3a74f7889b5ca59a53464e697894abe8acc088f9f"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "2b74e44623496d80464eb9a3a74f7889b5ca59a53464e697894abe8acc088f9f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ea15a58926f8fa36cadd185d1ab4ec2af326186c5b9d958c810b2805b5141dce"
+    sha256 cellar: :any_skip_relocation, ventura:        "ea15a58926f8fa36cadd185d1ab4ec2af326186c5b9d958c810b2805b5141dce"
+    sha256 cellar: :any_skip_relocation, monterey:       "ea15a58926f8fa36cadd185d1ab4ec2af326186c5b9d958c810b2805b5141dce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4bf7e0ce4b31c685dcb68103565ac53861b5c26102f7e409313e6acde983b6a6"
   end
 
   depends_on "go" => :build

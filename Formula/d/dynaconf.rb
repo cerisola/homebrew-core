@@ -3,21 +3,22 @@ class Dynaconf < Formula
 
   desc "Configuration Management for Python"
   homepage "https://www.dynaconf.com/"
-  url "https://files.pythonhosted.org/packages/d3/d4/e0f6346a9937173ccfaf2ba299cdb85ff53094edb1b300902d564e42e6cf/dynaconf-3.2.2.tar.gz"
-  sha256 "2f98ec85a2b8edb767b3ed0f82c6d605d30af116ce4622932a719ba70ff152fc"
+  url "https://files.pythonhosted.org/packages/f3/11/a1cbc9bd1c07a5ef8254c969aa9f5549c8bc6bb38bbd369b2020df554bd1/dynaconf-3.2.3.tar.gz"
+  sha256 "8a37ba3b16df64cb1db383eaad9c733aece218413be0fad5d785f7a907612106"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "979837ec3435b0de70d8c7016d92a4c6ecbfcd0a4b2924ec885924415c9fbd82"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec89a25f9cad8bfc744e9dda0045445559616cecd2d89ee1588e487a30b271cf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c1635666a5516a380b7be98b1a97e0d9902f9c6c73a0fe9b1d39a57ee3617b5"
-    sha256 cellar: :any_skip_relocation, ventura:        "3c2c24c8966561a3700b610398b9ba0c258a444b45237eeff94367038fdb1e65"
-    sha256 cellar: :any_skip_relocation, monterey:       "97d9607f01682037c1cf0259215932c2fee1ba37fa1f2d9ab817bdce9efe6368"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c18098e391fbe19ff2496e99ad2e4fc6d08d57d718915d5c2969afc9e3a25cdd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a9dd8b17c626a7320ee7a1f6a69fb8bff36ed2b199cbc1ed2b28c1c903b5dd2"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e742f84c74b5a55b6c35dacc3ba4a9bbfbf6d22bbf69ca71c1545ca95bd166e2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e1542a2c33afc8b7f5bf82d0567bcbc8f05d96c05f628964912a28d2619f9b57"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6526aa5bbf021af9e9a8ea6d63746ae3c5eb9928134f26839af971d6e463202e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2a5bfd7e2d30d238b3412fd6c65803825fb4b9fdbef90a87ec1315ec4d207e45"
+    sha256 cellar: :any_skip_relocation, ventura:        "ce8922ab39f253878c3a56efcbc99bf7556ebdf14083c62f78f422253d1a5ac7"
+    sha256 cellar: :any_skip_relocation, monterey:       "04685ffff7af1f56a105879cedf1ed38e005c6d1deb06e7fdd86a75cd2662481"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4f008dcc13b8e488c34982a01f6786e439f358a22e8989e3744459b5467c07f1"
   end
 
-  depends_on "python@3.11"
+  depends_on "python@3.12"
 
   def install
     virtualenv_install_with_resources

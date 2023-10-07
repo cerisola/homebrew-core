@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v20.6.1/node-v20.6.1.tar.xz"
-  sha256 "3aec5e728daa38800c343b129221d3488064a2529a39bb5467bc55be226c6a2b"
+  url "https://nodejs.org/dist/v20.8.0/node-v20.8.0.tar.xz"
+  sha256 "412be847ae6df61010ba9da3cc3e6be5b67aa002e354e919f59ec8360371704c"
   license "MIT"
   head "https://github.com/nodejs/node.git", branch: "main"
 
@@ -12,13 +12,13 @@ class Node < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "5472a05178ec04b0c012b4cffbaa4293a981726038889bbefe2fe2e8c0321f4c"
-    sha256 arm64_monterey: "299d576db4bf5bb9a1f1066a64ebbd1f18834e547fd0c98eb4f1706f39be6f67"
-    sha256 arm64_big_sur:  "e091893f3f888f4b863ad0da9286cc2f6021b9418a43c6520ded5938a339b51c"
-    sha256 ventura:        "576936ee387380fb3ffa29a3b5522ff69897da74302c4062775caf9cc291792c"
-    sha256 monterey:       "3d4d558757a6e964623eea492c271c8c95489dddc108461a754a97fa7b704634"
-    sha256 big_sur:        "578cec503931c456948b5b6f38e9610f396792c4013573969b951c2b5a0da594"
-    sha256 x86_64_linux:   "b509df0d093f112272f943ae923fd3d26fffe270230bd2a2f1de99f0ab4f4aab"
+    sha256 arm64_sonoma:   "e890913b6be256f1f441b823aefde1d10e609b457f276130df8528427395d097"
+    sha256 arm64_ventura:  "8b7d223bf571e3f3acbf8a1a065f4070bc836abc79bcbf41ebf95bd44fdc7bf4"
+    sha256 arm64_monterey: "95d8f0d137b74376fccabecc0a7755012de9682dc85f7889a5ac21fcced40f93"
+    sha256 sonoma:         "95978cebe26247c5f0b04e012517b4f77ae5561febd1baa9a895b92849055637"
+    sha256 ventura:        "808ac5dac602c1d27d20aa5ed0f0b07f3a520a2d3d4b3092950e8767291d7524"
+    sha256 monterey:       "32495b336e0342c4dfdf3841542bf3fccd629d4d35eaab305d6ce2b3a1deb0f9"
+    sha256 x86_64_linux:   "f1c91d726a89e0485638329e93cba3115643c4b10bf7f1e6465f39e02851356a"
   end
 
   depends_on "pkg-config" => :build
@@ -49,12 +49,15 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-9.8.1.tgz"
-    sha256 "0f3e2ae9569291274114b765d8d79b644f63fa162497daee54446d9a600e0f79"
+    url "https://registry.npmjs.org/npm/-/npm-10.1.0.tgz"
+    sha256 "7cb31c0a881964a22577fd84e5a9a5b11e6f49ef8aa0893036b0b68015056252"
   end
 
   def install
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
+
+    # The new linker crashed during LTO due to high memory usage.
+    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
 
     # make sure subprocesses spawned by make are using our Python 3
     ENV["PYTHON"] = which("python3.11")

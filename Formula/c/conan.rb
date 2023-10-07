@@ -3,19 +3,20 @@ class Conan < Formula
 
   desc "Distributed, open source, package manager for C/C++"
   homepage "https://conan.io"
-  url "https://files.pythonhosted.org/packages/8b/da/070b32134413a7752278a8e3330fc60a4998733752182cfebb03455456cf/conan-2.0.10.tar.gz"
-  sha256 "cbe1fa40a9f7e9ca076848617a4b58eed72b3afe228986d019c035c060494206"
+  url "https://files.pythonhosted.org/packages/8a/68/0c7ff95b7e22a41d9c6dc390099c565e6a89ed82cda667fba8861a9d01b1/conan-2.0.13.tar.gz"
+  sha256 "695f3ffc512107818dc81e1dd3bab8cb7c4588cd5eced92147ed23de0e7c3b0a"
   license "MIT"
+  revision 1
   head "https://github.com/conan-io/conan.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b2850bda08645fe9417d44681f0e4f44d754537bf8fed7fd6f90da541b7bffee"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "19004b5a4580db9b4dec4ef018319a0a0b779571d77828e084c0277c519db7b1"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c5192127f74caa0d40e5f03c6c85f93eb3c3d173fd954422d9a87e585cc90d01"
-    sha256 cellar: :any_skip_relocation, ventura:        "193966c1e99f9a9502aeba9eb43d40eb38182911a5dd35de8eb77071ff838b68"
-    sha256 cellar: :any_skip_relocation, monterey:       "a3b16840681962b0097e88352c8ad760146a131a65a77bb1965b40a57ac5aae7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "11fd071f0cb8e40127979618684a2a85f365864569e4e711dc5d2d5bb762d37d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1106d15ea363abd0545f1167922ff8055458c91f49afd0365ec92344ba42adcf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a7b796dafdb882005c1c3b5a357a5a7149f21c5b330b1bb4f8940c1f0d2595cc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fb656ac1d55b7490b7245ef399bc904d338d07ad5e96c3f4ca9855e23e28617e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5ca41206b5f1ef238b4810f6447f86d3a327521b2e96edff62068efe94ae6445"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6e54442b86a5428b9aa33933394711ff5399772aa13f29f83b621f236caca2bb"
+    sha256 cellar: :any_skip_relocation, ventura:        "79569eaa77368f544c607642fa24ab525ee2893866b391bd265a3bc57ed25492"
+    sha256 cellar: :any_skip_relocation, monterey:       "1614579b31b465f40a6ee25c548bd26e77e80f5b82138e504bf2d4d90130bda3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec384c5323faacaed6e22dfe43cf5cf127067320c6d7d98e06f20c6ed0ca12c0"
   end
 
   depends_on "pkg-config" => :build
@@ -27,8 +28,8 @@ class Conan < Formula
   depends_on "six"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/2a/53/cf0a48de1bdcf6ff6e1c9a023f5f523dfe303e4024f216feac64b6eb7f67/charset-normalizer-3.2.0.tar.gz"
-    sha256 "3bb3d25a8e6c0aedd251753a79ae98a093c7e7b471faa3aa9a93a81431987ace"
+    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
+    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
   end
 
   resource "colorama" do
@@ -42,8 +43,8 @@ class Conan < Formula
   end
 
   resource "fasteners" do
-    url "https://files.pythonhosted.org/packages/f5/9a/e613fc7f7fa157bea028d8d823a13ba5583a49a2dea926ca86b6cbf0fd00/fasteners-0.18.tar.gz"
-    sha256 "cb7c13ef91e0c7e4fe4af38ecaf6b904ec3f5ce0dda06d34924b6b74b869d953"
+    url "https://files.pythonhosted.org/packages/5f/d4/e834d929be54bfadb1f3e3b931c38e956aaa3b235a46a3c764c26c774902/fasteners-0.19.tar.gz"
+    sha256 "b4f37c3ac52d8a445af3a66bce57b33b5e90b97c696b7b984f530cf8f0ded09c"
   end
 
   resource "idna" do
@@ -77,8 +78,8 @@ class Conan < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/e2/7d/539e6f0cf9f0b95b71dd701a56dae89f768cd39fd8ce0096af3546aeb5a3/urllib3-1.26.16.tar.gz"
-    sha256 "8f135f6502756bde6b2a9b28989df5fbe87c9970cecaa69041edcce7f0589b14"
+    url "https://files.pythonhosted.org/packages/dd/19/9e5c8b813a8bddbfb035fa2b0c29077836ae7c4def1a55ae4632167b3511/urllib3-1.26.17.tar.gz"
+    sha256 "24d6a242c28d29af46c3fae832c36db3bbebcc533dd1bb549172cd739c82df21"
   end
 
   def install

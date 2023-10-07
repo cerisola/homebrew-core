@@ -1,19 +1,19 @@
 class Deno < Formula
   desc "Secure runtime for JavaScript and TypeScript"
   homepage "https://deno.land/"
-  url "https://github.com/denoland/deno/releases/download/v1.36.4/deno_src.tar.gz"
-  sha256 "6cb639ee21bc6306a321a502b12cd336f5f9be5ffa37096293b413d4b8895baf"
+  url "https://github.com/denoland/deno/releases/download/v1.37.1/deno_src.tar.gz"
+  sha256 "4e8916a591b5f5d288899a7638dc9d425df58dec11ebc1fa7f7b1c163d0c08b5"
   license "MIT"
   head "https://github.com/denoland/deno.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e65493d30794cb61bececd92d17ff64f5408c0b5fc2ed094faf9738154c3b585"
-    sha256 cellar: :any,                 arm64_monterey: "316a706669c0fd55c675aba16901b7d0873866c3bb3850c1a60e5ea40ba69a9f"
-    sha256 cellar: :any,                 arm64_big_sur:  "8cbd53b5023c2d2b48522f7b78a2cfe0627f8892e66eb1c6c21d39244534c1d0"
-    sha256 cellar: :any,                 ventura:        "6ea9bc9cbd5119ff5e6980b6266400947f5a2fc711153c8153c6c7151a26720c"
-    sha256 cellar: :any,                 monterey:       "4c511bac53b1ce41dc27beaffc0c6af548500cd3d21bcd65cf3b01d767b47aa0"
-    sha256 cellar: :any,                 big_sur:        "8228327c84937ad21327b45f7a1af2368e5b78209564018b9faa5292b36e6b98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "008dc1e397fcfef4972c6da9a84312eb4c5230f469e8751b3e1f68e05fbd8b2c"
+    sha256 cellar: :any,                 arm64_sonoma:   "1ba45fed8ee63f42a642760b07b3f257b0d06facbfbae17c267ce4d1432db302"
+    sha256 cellar: :any,                 arm64_ventura:  "f86cf6bee6c56f0c5641e6dc61d9c422c060323e6a4323fde194efd4229bf450"
+    sha256 cellar: :any,                 arm64_monterey: "f93105a4462cfa84dc58a699c1b9b3e66d956789bc5d0747a33e3391a5fa8fb9"
+    sha256 cellar: :any,                 sonoma:         "32536f3c8c2ae8bd5f5d4cd146788179cceb91fc8fdb4c2c28a20137f0407357"
+    sha256 cellar: :any,                 ventura:        "6e152ccae36cdc6d86ae4b18521414d26fed28c1294d4d26b463f003d2e230dd"
+    sha256 cellar: :any,                 monterey:       "11830b2653d51e53de6eda458a2b141f5a81db0406391d4a2ab8a441dbf5a6b3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c138fa311a1831a316165644972a293a0907db3cf296adc4932bee4a1f1fb1a0"
   end
 
   depends_on "cmake" => :build
@@ -45,23 +45,23 @@ class Deno < Formula
   # Use the version of `v8` crate at: https://github.com/denoland/deno/blob/v#{version}/Cargo.lock
   # Search for 'name = "v8"' (without single quotes).
   resource "rusty_v8" do
-    url "https://static.crates.io/crates/v8/v8-0.74.3.crate"
-    sha256 "2eedac634b8dd39b889c5b62349cbc55913780226239166435c5cf66771792ea"
+    url "https://static.crates.io/crates/v8/v8-0.78.0.crate"
+    sha256 "f6c96f70e8fc6c009af99d4e8ac4f5e84655a0fc3ec6e58147933b9c99f8b43c"
   end
 
   # Find the v8 version from the last commit message at:
   # https://github.com/denoland/rusty_v8/commits/v#{rusty_v8_version}/v8
   # Then, use the corresponding tag found in https://github.com/denoland/v8/tags.
   resource "v8" do
-    url "https://github.com/denoland/v8/archive/refs/tags/11.6.189.12-denoland-96bea5eafa4374f3c7ab.tar.gz"
-    sha256 "56fd627eb19e219a88cf956a4b282fb567726c1e1b0ea2984754202f17e409f4"
+    url "https://github.com/denoland/v8/archive/refs/tags/11.8.172.6-denoland-6dccdd60aac64dc962c3.tar.gz"
+    sha256 "c9a1320de81a9ed2c5d4d1e0edf2bdf073efe46bd3f489d9afd5501aaf646d40"
   end
 
   # Use the version of `deno_core` crate at: https://github.com/denoland/deno/blob/v#{version}/Cargo.lock
   # Search for 'name = "deno_core"' (without single quotes).
   resource "deno_core" do
-    url "https://github.com/denoland/deno_core/archive/refs/tags/0.204.0.tar.gz"
-    sha256 "32946d1b5ac8b7e66a52ee3e6ae5b10a8e80046a0b3663a8050c0af23e371c8b"
+    url "https://github.com/denoland/deno_core/archive/refs/tags/0.218.0.tar.gz"
+    sha256 "454d2bcd9c5c412f36525216660155213a449e431d45d53f0e28cce5ded05e27"
   end
 
   # To find the version of gn used:
@@ -114,6 +114,10 @@ class Deno < Formula
     ENV["V8_FROM_SOURCE"] = "1"
     # Build with llvm and link against system libc++ (no runtime dep)
     ENV["CLANG_BASE_PATH"] = Formula["llvm"].prefix
+
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    ENV.remove "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib
 
     resource("gn").stage buildpath/"gn"
     cd "gn" do

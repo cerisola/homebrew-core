@@ -1,8 +1,8 @@
 class TyposCli < Formula
   desc "Source code spell checker"
   homepage "https://github.com/crate-ci/typos"
-  url "https://github.com/crate-ci/typos/archive/refs/tags/v1.16.11.tar.gz"
-  sha256 "4a81f6f0af1601465877f685cf3a5a50018cf39b79e4f09092e8bc797a10075b"
+  url "https://github.com/crate-ci/typos/archive/refs/tags/v1.16.17.tar.gz"
+  sha256 "7c5987170f02edb1df34a7626855639b8ab2c159b4f6b08b29d8f43727584c70"
   license any_of: ["Apache-2.0", "MIT"]
 
   livecheck do
@@ -11,13 +11,13 @@ class TyposCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d7bdd844d0dbfff63d05383403bef94b9a2156c067c807eaab484dd5c613c04f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7e992f88dd4c1fd39b47556043524cd4ead8b18106156d4b7b91a01d460e0add"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "71870e40ed61adf4c9ac3d21c8e3760af6a9552786b4edc8de673eb3b2759a66"
-    sha256 cellar: :any_skip_relocation, ventura:        "b901829fc48bd363ab5c3361782fdc8236e93c0d87b171bc6c093adabeee8bbc"
-    sha256 cellar: :any_skip_relocation, monterey:       "627e0e0066137ee8d82ad285d6bf20197e3942f1a171c3e77cd2587106a78462"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c66448c5d5342c400812f46aead70bb23892feb34345293b9336f5e20c5746e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4c9a58cf1d1e08c0c826ea1b366cd62b1ee95544d22a6dac5e3d700ae4840f0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "39a818352114d62f7b56e5d7ed6117e8ebe842041221e3233b5f9c59856cb345"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d8d9395b621a9a6f2a77596a5b08ecc76ebc4ddb76c032ebf18a9b720c7d9a00"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "af52adaf3d18de53a018c62fd915df4b8f7379c154bb66eb508726610efe4b6b"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d00250b03afd4dfabfee70bd897e0f04f41eaf0535e1909e23982a0d709f9892"
+    sha256 cellar: :any_skip_relocation, ventura:        "bc8067a66b5cefb1813221cf3c2415999c556fc18f0612c712f0d71f73b32da4"
+    sha256 cellar: :any_skip_relocation, monterey:       "c05f6139a2d15e68a21c5d6d821645cb3cbd8a9a1c9f39e2f914cc8e746b920e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c8248f9945d956245e3528c296dfa767cb41fc57ae16d06054d3382189122edf"
   end
 
   depends_on "rust" => :build

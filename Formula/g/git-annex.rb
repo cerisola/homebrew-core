@@ -1,20 +1,20 @@
 class GitAnnex < Formula
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-10.20230828/git-annex-10.20230828.tar.gz"
-  sha256 "0b3469d932f0d8f133d79b3b8efc770d95e7db74f99c14679b494bdec840665d"
+  url "https://hackage.haskell.org/package/git-annex-10.20230926/git-annex-10.20230926.tar.gz"
+  sha256 "e7ded189aa10b7926ec8624a30755c63d117b59d2d714c5f79b0b1962f70a41a"
   license all_of: ["AGPL-3.0-or-later", "BSD-2-Clause", "BSD-3-Clause",
                    "GPL-2.0-only", "GPL-3.0-or-later", "MIT"]
   head "git://git-annex.branchable.com/", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "c67d186fa14ac1d27ae203a422182daa0ad0566fe8c77876f2d028a913797f42"
-    sha256 cellar: :any,                 arm64_monterey: "e9ee8eb396a9ebe8696c366275163e4f270d626b074367925e5b0bd047d02699"
-    sha256 cellar: :any,                 arm64_big_sur:  "0e70a0a2050e3690b531fcaa03479b0e6f1c9cf29ada54f58febdd9bd4bee644"
-    sha256 cellar: :any,                 ventura:        "ff4ceba69c808a598c876510ef2993a0f9f91e4b959941cbf63e958cd2577700"
-    sha256 cellar: :any,                 monterey:       "63967797e338ec30573a9e0fd1678f0b2f91454611a6faac48922d2fbf0915c8"
-    sha256 cellar: :any,                 big_sur:        "20e644c65c61bb258f922175e34a9a1b015ba2782f9fd3d4e04c9de4cc8535da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8fa9995951ffae58290ffd24586b93e5a93aeb967e754adf153099e6b2cdf17b"
+    sha256 cellar: :any,                 arm64_sonoma:   "59d124ef423c9f6e6bfb92b06f74a0d20855f19c688d705c7c8aa96328f98158"
+    sha256 cellar: :any,                 arm64_ventura:  "72111a427c64eeded953fdf5da51dbc2b7463d3a4e649d5cf75b50dd785fcabf"
+    sha256 cellar: :any,                 arm64_monterey: "54d201f6cca9371551b665aaba0211651e527f253361555cc6486cf136b6c5ca"
+    sha256 cellar: :any,                 sonoma:         "578d2c2fd6a6eca84f97333a4a9fbd99e73a19122e7ccb26c50be35e46643e30"
+    sha256 cellar: :any,                 ventura:        "31f7af0aee41392c0e319e23c708a5a33347327bc35c072bf7133825d0655226"
+    sha256 cellar: :any,                 monterey:       "1716c05f2eb5ced147458dd23b33e3cbf18f54e403632a617be3a390be318751"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c7abeed7e3d80b67c2b79a039f9f74a6a84fa32be4e5bd84def04bd71ffafc2"
   end
 
   depends_on "cabal-install" => :build
@@ -23,8 +23,10 @@ class GitAnnex < Formula
   depends_on "libmagic"
 
   def install
+    # https://github.com/aristidb/aws/issues/288
+    cabal_args = std_cabal_v2_args + ["--constraint=attoparsec-aeson<2.2.0.0"]
     system "cabal", "v2-update"
-    system "cabal", "v2-install", *std_cabal_v2_args, "--flags=+S3"
+    system "cabal", "v2-install", *cabal_args, "--flags=+S3"
     bin.install_symlink "git-annex" => "git-annex-shell"
   end
 

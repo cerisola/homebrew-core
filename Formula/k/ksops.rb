@@ -1,18 +1,18 @@
 class Ksops < Formula
   desc "Flexible Kustomize Plugin for SOPS Encrypted Resources"
   homepage "https://github.com/viaduct-ai/kustomize-sops"
-  url "https://github.com/viaduct-ai/kustomize-sops/archive/refs/tags/v4.2.1.tar.gz"
-  sha256 "0e9501af7ac0323d246c9fa4d49d9f12fe4ddf65be21e9fbbe58a041dbfbeece"
+  url "https://github.com/viaduct-ai/kustomize-sops/archive/refs/tags/v4.2.3.tar.gz"
+  sha256 "f3d1eb070661a339f1946800ae125729a7cffb7f6f2d04476004891af6968148"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7be87fae2bd05f216b4ae5d6658ba5304fb8df6856a44d22800ea9f725ee46a4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7be87fae2bd05f216b4ae5d6658ba5304fb8df6856a44d22800ea9f725ee46a4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "7be87fae2bd05f216b4ae5d6658ba5304fb8df6856a44d22800ea9f725ee46a4"
-    sha256 cellar: :any_skip_relocation, ventura:        "d4033ab623c841873a1ab5ac10e54e315f2cdd18e7cfb4fea26dac9535353956"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4033ab623c841873a1ab5ac10e54e315f2cdd18e7cfb4fea26dac9535353956"
-    sha256 cellar: :any_skip_relocation, big_sur:        "d4033ab623c841873a1ab5ac10e54e315f2cdd18e7cfb4fea26dac9535353956"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac116c085b91608fcce4350d0af4c8f97d88525a983f3f93acbc161150f9d875"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fa625c8942a8b539dd04d99a5ce979cd7ed0df56c3cd83b9253c18e9b786cc10"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d40c0adced8550b5ebad438e66ea1309447eca6b91fa23ee000a317551c408b1"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8bee71e09ae9162984a9eb2a9aaf88a67cfce0b85371e28d6e41bee6f8172705"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5feb3ccbffd97cd9594c862edd61e585333d8a456cedf5bc2ead8b8759898949"
+    sha256 cellar: :any_skip_relocation, ventura:        "dc9d775d5cbd208b8d0adadf6b7b0466f2cbaa6b3a3c2ddfe6a3c60cdb7d1bf2"
+    sha256 cellar: :any_skip_relocation, monterey:       "078c8c864bc6ead4d6aa651ffb4d6ec61995b8ca65ed4ac5b8380fb3adce9f5c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "98d37a1fdad52dcfaa48890f7ee197b14551024ca0876ff8ba6f73356599277b"
   end
 
   depends_on "go" => :build

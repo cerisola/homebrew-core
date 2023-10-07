@@ -1,18 +1,18 @@
 class Libcoap < Formula
   desc "Lightweight application-protocol for resource-constrained devices"
   homepage "https://github.com/obgm/libcoap"
-  url "https://github.com/obgm/libcoap/archive/v4.3.3.tar.gz"
-  sha256 "790a657daa98f942560859b432de7672a0ac5ff171d861ba7fc997d793e1a2c8"
+  url "https://github.com/obgm/libcoap/archive/v4.3.4.tar.gz"
+  sha256 "ae61a48c21f7b40e1442c9e1da9aab9e6f2cf0deccb02f3fed4de232a0b0522e"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "f0a4b5bfb7167e42c73ab56b1420ffe70106a46582eba3ab639cb71c7514bdcc"
-    sha256 cellar: :any,                 arm64_monterey: "b5681b016f932be8c9adf1a1b6b6232c00185bd3ee22348e19a914e087c88a14"
-    sha256 cellar: :any,                 arm64_big_sur:  "ae20f5a9b46bfdde22bf1bd01b41539815ca2ab96d93416c77b78f6ad4d5c079"
-    sha256 cellar: :any,                 ventura:        "6dd0cec93ce11f4e41c1681b09bf0c526ace9b56a4fb3dc48651b688e3b8895d"
-    sha256 cellar: :any,                 monterey:       "cee4b37b76662376290f97e5cd8385393c75633953e82ac493c9ab538b5c8db8"
-    sha256 cellar: :any,                 big_sur:        "3d2110aeb7c6961cee20fe8cd66184c6b63a08e8ddba34cef37720ac49aff192"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4573838ac7365af81891b8258bc9651de621d2ce3b23ea95f05ba39ce894261"
+    sha256 cellar: :any,                 arm64_sonoma:   "c5318807d70629d11a4b4d66f3eb50ee7edba115141ada20e551b7780f80df78"
+    sha256 cellar: :any,                 arm64_ventura:  "5be317341fa4f1116c8bde8a7a7228b6565b906a915e079cd11b2be8837b9f73"
+    sha256 cellar: :any,                 arm64_monterey: "aced78b02de0f56db571a4fec3a43ba552ef55cd51c74c6b0d779a54ff732a13"
+    sha256 cellar: :any,                 sonoma:         "7e7a9c9739409132a254b650e7f6b4511ed76f5b218630b437b1cf880bdc16f0"
+    sha256 cellar: :any,                 ventura:        "be3732c2372e3ed2e45ade2f2f5accadb0d6ad119c274623ed8b61d807aba666"
+    sha256 cellar: :any,                 monterey:       "c09e0bce7754763e69ca660fcb233339f396435985027ce270fab5922d065e66"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19c81e44ed492de2e8ea366ace3f52c88cadc1f19e5b60a4f98b8cc6b3b4a7e0"
   end
 
   depends_on "autoconf" => :build
