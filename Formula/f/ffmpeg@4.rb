@@ -1,11 +1,12 @@
 class FfmpegAT4 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-4.4.4.tar.xz"
-  sha256 "e80b380d595c809060f66f96a5d849511ef4a76a26b76eacf5778b94c3570309"
+  url "https://ffmpeg.org/releases/ffmpeg-4.4.5.tar.xz"
+  sha256 "f9514e0d3515aee5a271283df71636e1d1ff7274b15853bcd84e144be416ab07"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
+  revision 3
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -13,20 +14,19 @@ class FfmpegAT4 < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "15c4a32adc718d753b6cb503430d646e49acde84fdc8ebd34cd25177bb1fb1f9"
-    sha256 arm64_ventura:  "9db8f8fbee8211261e1dc05ee7c3fe45eec0b6cbae92dc0292b95f97c1d12cf4"
-    sha256 arm64_monterey: "8a66960be41d02a89598d31c4bd6533ed4fd173ac25792dcc711980cb0082410"
-    sha256 sonoma:         "515c0777d65ee82a6bcf354c4463ac7d48bc4cf66bf58d66d4143523610e6514"
-    sha256 ventura:        "f40b6990aa6568eaf90218bb970c0ab038fda0328562ef0a5795d07ca4c7e171"
-    sha256 monterey:       "b452dd762ba928773f2d8b325e19091344970883f48483102ac69923a33f5315"
-    sha256 x86_64_linux:   "52ba7c46775df566cc4281349a878adcf794d2f41815e10cefc92b7781a5d309"
+    sha256 arm64_sequoia: "7ba55aabaf7f392fd82a0237a3af26b269109da24637cbe7993a033c663dd832"
+    sha256 arm64_sonoma:  "6740ca2e4930657d8a988837f99e47c4af85c9c9c744ab2afefa2a8c8c572c57"
+    sha256 arm64_ventura: "24c0e63bbd4c28ac9f8b633e2a874af3dac3d25c30bfec4a9b8406ee2de44c69"
+    sha256 sonoma:        "ebab393886ca4290430648aa1819126171765184e63198512daba0031e701b58"
+    sha256 ventura:       "12fcd8ca5ed3698a30a9c3ad86c35ef6d9318e35c6258d9c922603167a40c489"
+    sha256 x86_64_linux:  "a7bdce89cfd26e96b357a7b3cd0faad87f552897f9d14b6aa5b232446c04c421"
   end
 
   keg_only :versioned_formula
 
   depends_on "nasm" => :build
   depends_on "pkg-config" => :build
+
   depends_on "aom"
   depends_on "dav1d"
   depends_on "fontconfig"
@@ -39,9 +39,9 @@ class FfmpegAT4 < Formula
   depends_on "librist"
   depends_on "libsoxr"
   depends_on "libvidstab"
-  depends_on "libvmaf"
   depends_on "libvorbis"
   depends_on "libvpx"
+  depends_on "libxcb"
   depends_on "opencore-amr"
   depends_on "openjpeg"
   depends_on "opus"
@@ -65,18 +65,21 @@ class FfmpegAT4 < Formula
   uses_from_macos "libxml2"
   uses_from_macos "zlib"
 
+  on_macos do
+    depends_on "libarchive"
+    depends_on "libogg"
+    depends_on "libsamplerate"
+    depends_on "libvmaf"
+  end
+
   on_linux do
     depends_on "alsa-lib"
+    depends_on "libx11"
+    depends_on "libxext"
     depends_on "libxv"
   end
 
   fails_with gcc: "5"
-
-  # Fixes assembling with binutil as >= 2.41
-  patch do
-    url "https://github.com/FFmpeg/FFmpeg/commit/effadce6c756247ea8bae32dc13bb3e6f464f0eb.patch?full_index=1"
-    sha256 "9800c708313da78d537b61cfb750762bb8ad006ca9335b1724dbbca5669f5b24"
-  end
 
   def install
     args = %W[
@@ -104,7 +107,6 @@ class FfmpegAT4 < Formula
       --enable-libtesseract
       --enable-libtheora
       --enable-libvidstab
-      --enable-libvmaf
       --enable-libvorbis
       --enable-libvpx
       --enable-libwebp
@@ -130,13 +132,6 @@ class FfmpegAT4 < Formula
 
     # Needs corefoundation, coremedia, corevideo
     args << "--enable-videotoolbox" if OS.mac?
-
-    # Replace hardcoded default VMAF model path
-    %w[doc/filters.texi libavfilter/vf_libvmaf.c].each do |f|
-      inreplace f, "/usr/local/share/model", HOMEBREW_PREFIX/"share/libvmaf/model"
-      # Since libvmaf v2.0.0, `.pkl` model files have been deprecated in favor of `.json` model files.
-      inreplace f, "vmaf_v0.6.1.pkl", "vmaf_v0.6.1.json"
-    end
 
     # The new linker leads to duplicate symbol issue
     # https://github.com/homebrew-ffmpeg/homebrew-ffmpeg/issues/140

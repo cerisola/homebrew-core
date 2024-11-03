@@ -1,20 +1,19 @@
 class Mtbl < Formula
   desc "Immutable sorted string table library"
   homepage "https://github.com/farsightsec/mtbl"
-  url "https://dl.farsightsecurity.com/dist/mtbl/mtbl-1.5.1.tar.gz"
-  sha256 "2e2055d2a2a776cc723ad9e9ba4b781b783a29616c37968b724e657987b8763b"
+  url "https://dl.farsightsecurity.com/dist/mtbl/mtbl-1.6.1.tar.gz"
+  sha256 "bf2711aa81a996cddf99f270cc7cb1c32dbed7f1bfc95e23ec6227e4bd08365d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "8f3ad7ea28ca47d37fe5d937fff2bd15fe8936e1d0e1950753b8fa516dd9181e"
-    sha256 cellar: :any,                 arm64_ventura:  "e02194db1f9ef963735cb575efe5951ad893b8c30bee6d73b50ee8965ca9d87f"
-    sha256 cellar: :any,                 arm64_monterey: "e2cf79aa153386e9ed772df5223e235af08fd45aef8be820493e62954417f37a"
-    sha256 cellar: :any,                 arm64_big_sur:  "c61ab094b68cfe432563fbfe322b29703dbdabbfdcba4635ebcc7b706a0d2e59"
-    sha256 cellar: :any,                 sonoma:         "022f3195ff8a16a911a100bbd4adfead3832453da906fd963efb995f92087ffb"
-    sha256 cellar: :any,                 ventura:        "37112cadb47292fb89d739cf5909382d3562951ed8ce175a1d6430f67c8fe3cd"
-    sha256 cellar: :any,                 monterey:       "5dc58c7014a5f07293e53b4adf53b76d43f83b20464b039cb6c43673c591da04"
-    sha256 cellar: :any,                 big_sur:        "5e44a0eded743f0e9d1126df36995745e31d10cc4512ebaff0714accad2c4d59"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bba00c246994dd7cfcbfbddd9d7e9c439bbca98d6a1c2cf7748e59d9150c0d07"
+    sha256 cellar: :any,                 arm64_sequoia:  "97317e41371a31ef89d654600743ffc15294f36629f1d21800b641588d9491a5"
+    sha256 cellar: :any,                 arm64_sonoma:   "8abec69768a50d89975e04072e3e546453ecd2f1c3271f645769ab4b23a9aa58"
+    sha256 cellar: :any,                 arm64_ventura:  "3e16710be45c82ca1ca31d823f426e5b07959b2f9e0c186a6f696100fead851b"
+    sha256 cellar: :any,                 arm64_monterey: "3f35f8a96d4ebb6473f3961c040815b881a47bc6c62404147dbc2a39c601f362"
+    sha256 cellar: :any,                 sonoma:         "5db2ff6ea378e07fdbd774dd921d4ac381520594d41be21b1582dbbc4b836ace"
+    sha256 cellar: :any,                 ventura:        "b3dcf394a52c3c61b44d0d64f222cb6b97ea84bb60b3360b011b38293d782a17"
+    sha256 cellar: :any,                 monterey:       "b1dc6d9dd474ba23598bd51a5e2144f0ceae07d3eb79ece4c2e310bb02866602"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "532d7f6bddb7a756fa3413224c56c6e20094df7f16bcd1700cd34ba959996f9a"
   end
 
   head do

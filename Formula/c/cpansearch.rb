@@ -1,7 +1,7 @@
 class Cpansearch < Formula
   desc "CPAN module search written in C"
   homepage "https://github.com/c9s/cpansearch"
-  url "https://github.com/c9s/cpansearch/archive/0.2.tar.gz"
+  url "https://github.com/c9s/cpansearch/archive/refs/tags/0.2.tar.gz"
   sha256 "09e631f361766fcacd608a0f5b3effe7b66b3a9e0970a458d418d58b8f3f2a74"
   revision 1
   head "https://github.com/c9s/cpansearch.git", branch: "master"
@@ -19,11 +19,20 @@ class Cpansearch < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f88cd961acac2cdd3fd6711aea3c5e7fde3a23356c0a299f08cf440bed88d7d"
   end
 
+  # upstream missing license report, https://github.com/c9s/cpansearch/issues/5
+  disable! date: "2024-08-10", because: :no_license
+
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "ncurses"
 
   uses_from_macos "curl"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "pcre2"
+  end
 
   def install
     unless OS.mac?

@@ -3,43 +3,39 @@ class NicotinePlus < Formula
 
   desc "Graphical client for the Soulseek peer-to-peer network"
   homepage "https://nicotine-plus.org"
-  url "https://files.pythonhosted.org/packages/70/d5/15d8c60e3d27d3482fb8cba3ae0c49e57efe00f28e51b8aaea09f979bc48/nicotine-plus-3.2.9.tar.gz"
-  sha256 "41a86dc68b175d1dcac2ec2d79553cff4e5fbcca7f9f384c51cbaa393081b0c0"
+  url "https://files.pythonhosted.org/packages/5a/d3/a489967ab67165a6893f23e03c5134cf1b9cd35fd826c0a7c9ea3c743cb9/nicotine_plus-3.3.6.tar.gz"
+  sha256 "6a0b39c5ff4fb4768689516a3a2cfe3aafdc568b5237f19553c51b1de712ee66"
   license "GPL-3.0-or-later"
   head "https://github.com/nicotine-plus/nicotine-plus.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dcb6cc973d437536e48441319193eb5b29bb20176f6743b5940f98c6149af86f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dae22739f46074ff222fb8b6a132f4e2a7f671c40ac9c9661217160d675e5ea6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dae22739f46074ff222fb8b6a132f4e2a7f671c40ac9c9661217160d675e5ea6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dae22739f46074ff222fb8b6a132f4e2a7f671c40ac9c9661217160d675e5ea6"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d6b78dd020d8a9f964ab95c36f384aacd019b13b1efece6f9b74aa063b5e0772"
-    sha256 cellar: :any_skip_relocation, ventura:        "b6a2c3a40eef25cfe31c57bc010993e7bc91685c30d3f7c72e402b69b1c5b9a6"
-    sha256 cellar: :any_skip_relocation, monterey:       "b6a2c3a40eef25cfe31c57bc010993e7bc91685c30d3f7c72e402b69b1c5b9a6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b6a2c3a40eef25cfe31c57bc010993e7bc91685c30d3f7c72e402b69b1c5b9a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5443bc6c67686123968bbf9ac266ee0ccbd8e95b962e1e5bf24c23e7fe32151d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "46eb3f81ef052c61ac9773805d61a9bf899b0046c3838af24762a00204508be1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "46eb3f81ef052c61ac9773805d61a9bf899b0046c3838af24762a00204508be1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "46eb3f81ef052c61ac9773805d61a9bf899b0046c3838af24762a00204508be1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "46eb3f81ef052c61ac9773805d61a9bf899b0046c3838af24762a00204508be1"
+    sha256 cellar: :any_skip_relocation, ventura:       "46eb3f81ef052c61ac9773805d61a9bf899b0046c3838af24762a00204508be1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "908e029ce3d7145c98aed1039e75399718f33adb0182ddf2cf2aac91a58df20a"
   end
 
   depends_on "adwaita-icon-theme"
-  depends_on "gtk+3"
+  depends_on "gtk4"
+  depends_on "libadwaita"
   depends_on "py3cairo"
   depends_on "pygobject3"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   on_linux do
     depends_on "gettext" => :build # for `msgfmt`
   end
+
+  conflicts_with "httm", because: "both install `nicotine` binaries"
 
   def install
     virtualenv_install_with_resources
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/nicotine -v")
-    pid = fork do
-      exec bin/"nicotine", "-s"
-    end
-    sleep 3
-    Process.kill("TERM", pid)
+    # nicotine is a GUI app
+    assert_match version.to_s, shell_output("#{bin}/nicotine --version")
   end
 end

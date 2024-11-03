@@ -2,10 +2,11 @@ class Php < Formula
   desc "General-purpose scripting language"
   homepage "https://www.php.net/"
   # Should only be updated if the new version is announced on the homepage, https://www.php.net/
-  url "https://www.php.net/distributions/php-8.2.11.tar.xz"
-  mirror "https://fossies.org/linux/www/php-8.2.11.tar.xz"
-  sha256 "29af82e4f7509831490552918aad502697453f0869a579ee1b80b08f9112c5b8"
+  url "https://www.php.net/distributions/php-8.3.13.tar.xz"
+  mirror "https://fossies.org/linux/www/php-8.3.13.tar.xz"
+  sha256 "89adb978cca209124fe53fd6327bc4966ca21213a7fa2e9504f854e340873018"
   license "PHP-3.01"
+  revision 1
 
   livecheck do
     url "https://www.php.net/downloads"
@@ -13,13 +14,12 @@ class Php < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "86e273ac2b5d64d2b3c1a23d253df0eca981f3b87e232e7588aa5a9c44f6cbba"
-    sha256 arm64_ventura:  "dc007003563de596ac2d95de735c5c928c2221fdfdd066a9c4172e1d4f807ff9"
-    sha256 arm64_monterey: "ae14a5fa3d44f4c03810bb68bfb4706290d286e61b10cad2ce8726800b667a34"
-    sha256 sonoma:         "a2635b2703e92a86f76960d79093754b377ac4dc096c29cf29d16e90c9fec49d"
-    sha256 ventura:        "abc3a1b3e77a135871be0fba39ce4938c841129a7873477a9d2234efe7a5f13a"
-    sha256 monterey:       "cee4ecaa70d02b445ad185dc5af5ac5f239c635fff48dd84f58a1714862a892a"
-    sha256 x86_64_linux:   "94ec51f23caead10adc4502fedfe5c321a8d09029366bfc0d7ce695fa8d7283e"
+    sha256 arm64_sequoia: "15c560986b678304b096290de5943d82819c070fd10f2dd5d17de80dac9e21f3"
+    sha256 arm64_sonoma:  "4302da5c442fc94e48ebe38b5ddaa3f10cbed2ee7814c943cf7b5c551363e5bc"
+    sha256 arm64_ventura: "6aaa841763fb70aa5bc6ecd1d7438fb572aa84c962845b1cfd45913456835a11"
+    sha256 sonoma:        "89a4a8786d7f0e896918383e22b5f35c8ad6d9e09fe85323d782f031eb6ab191"
+    sha256 ventura:       "39f80dbed8b83782b872be7f035921a70d33de3040e8786b20209bfa6d2c8841"
+    sha256 x86_64_linux:  "c85a942302bbddf5d33dff3037084118599407bad7b6ccff5e9b2cc150e9e082"
   end
 
   head do
@@ -41,7 +41,7 @@ class Php < Formula
   depends_on "gd"
   depends_on "gettext"
   depends_on "gmp"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "jpeg-turbo"
   depends_on "krb5"
   depends_on "libpq"
@@ -203,7 +203,7 @@ class Php < Formula
     system "make", "install"
 
     # Allow pecl to install outside of Cellar
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     orig_ext_dir = File.basename(extension_dir)
     inreplace bin/"php-config", lib/"php", prefix/"pecl"
     %w[development production].each do |mode|
@@ -261,7 +261,7 @@ class Php < Formula
     pecl_path = HOMEBREW_PREFIX/"lib/php/pecl"
     pecl_path.mkpath
     ln_s pecl_path, prefix/"pecl" unless (prefix/"pecl").exist?
-    extension_dir = Utils.safe_popen_read("#{bin}/php-config", "--extension-dir").chomp
+    extension_dir = Utils.safe_popen_read(bin/"php-config", "--extension-dir").chomp
     php_basename = File.basename(extension_dir)
     php_ext_dir = opt_prefix/"lib/php"/php_basename
 
@@ -338,8 +338,8 @@ class Php < Formula
                     (Formula["libpq"].opt_lib/shared_library("libpq", 5)).to_s
 
     system "#{sbin}/php-fpm", "-t"
-    system "#{bin}/phpdbg", "-V"
-    system "#{bin}/php-cgi", "-m"
+    system bin/"phpdbg", "-V"
+    system bin/"php-cgi", "-m"
     # Prevent SNMP extension to be added
     refute_match(/^snmp$/, shell_output("#{bin}/php -m"),
       "SNMP extension doesn't work reliably with Homebrew on High Sierra")
@@ -400,7 +400,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
 
@@ -413,7 +413,7 @@ class Php < Formula
       pid = fork do
         exec Formula["httpd"].opt_bin/"httpd", "-X", "-f", "#{testpath}/httpd-fpm.conf"
       end
-      sleep 3
+      sleep 10
 
       assert_match expected_output, shell_output("curl -s 127.0.0.1:#{port}")
     ensure

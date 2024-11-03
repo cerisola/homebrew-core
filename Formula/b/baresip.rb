@@ -1,25 +1,26 @@
 class Baresip < Formula
   desc "Modular SIP useragent"
   homepage "https://github.com/baresip/baresip"
-  url "https://github.com/baresip/baresip/archive/refs/tags/v3.5.1.tar.gz"
-  sha256 "622122edf376145870bc7749af0463c5f04a668b3d095c025b718f1910f1b77b"
+  url "https://github.com/baresip/baresip/archive/refs/tags/v3.16.0.tar.gz"
+  sha256 "95338c4e4dd6931c94d425d69089b66d32c173e48cb992344e856ead7ba9393b"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 arm64_sonoma:   "e3f262a7535a4f37e27b393f36c438fa0d736bb10e3ca93f70de66ae53b09c4e"
-    sha256 arm64_ventura:  "b1d138965195bbfbd1a99fa170fc79e752cd5516e8da79acc631242bab38015e"
-    sha256 arm64_monterey: "65d5fffcdf78d5dc1ce05c6c77e292d2956acf8d3fb4c2b56e72deb248521f0f"
-    sha256 arm64_big_sur:  "68f0d30cd925bfd35b8e1125a01cd42901f6cdee4c916e50b53dd1f42759657c"
-    sha256 sonoma:         "72f52db51ce059dbbc11134f157124d95f1fe7629a213986b42ffd3809de64fa"
-    sha256 ventura:        "0366b6521dd81370af41e2b448596dcb258638ebbdf86b205547af6eb1e31c73"
-    sha256 monterey:       "37e695efbeac83a59e1a27bec079a5c0c8473a34b4eaa8edd0785582da4b5af9"
-    sha256 big_sur:        "35a448b5467a408a8b4789b64492a89fadf1876ef93c7c05a0cf23436b6831f5"
-    sha256 x86_64_linux:   "d6cc0a7aab9a239df5a885912d96cb62026df26c8d9111b7a7dd8399dd8b35e5"
+    sha256 arm64_sequoia: "49a8420cd3d1396970d6ac46087d834f32ca854bffc962f4854344300a0f8636"
+    sha256 arm64_sonoma:  "432052f6f43a9b98496614ec023a91c05c87d5efda3a65a1947f3c437c37f179"
+    sha256 arm64_ventura: "744a1ef3f143f0e61638b1a6d7f5305e0c579322b0bf97c4ee45da08af13d1af"
+    sha256 sonoma:        "287fc83ff9ec9eb95a625c30bb966c77e7994de44f27dcbaf9b716acaa7414e9"
+    sha256 ventura:       "fba7e99b3b3956476c8cd60caee9abef3b2d4eb3cec0e8dbc539a656902ed92b"
+    sha256 x86_64_linux:  "288f35f9a26024105b41af71df13cc0aaa61253316dc1423a0a27cbdbf5cd427"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "libre"
+
+  on_macos do
+    depends_on "openssl@3"
+  end
 
   def install
     libre = Formula["libre"]

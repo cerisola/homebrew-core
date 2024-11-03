@@ -1,11 +1,12 @@
 class Nuraft < Formula
   desc "C++ implementation of Raft core logic as a replication library"
   homepage "https://github.com/eBay/NuRaft"
-  url "https://github.com/eBay/NuRaft/archive/v2.1.0.tar.gz"
+  url "https://github.com/eBay/NuRaft/archive/refs/tags/v2.1.0.tar.gz"
   sha256 "42d19682149cf24ae12de0dabf70d7ad7e71e49fbfa61d565e9b46e2b3cd517f"
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "ed4e1168c59ea1e986ca986e299b85258d59b8b3d7b3cfdbb05894f3f7d0d9cc"
     sha256 cellar: :any,                 arm64_sonoma:   "c920e4db840519a912a09fdc910ea3460c629d7b86094117cef833a921789b48"
     sha256 cellar: :any,                 arm64_ventura:  "17cdd2860bbcd32bfa028c1706c02da066a796b0f1abfca96c76bdbcb05ca012"
     sha256 cellar: :any,                 arm64_monterey: "5d024f15a5a6644bb74b7293ab5939376e9115102c3dcf466d9ef209496a27c4"

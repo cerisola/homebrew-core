@@ -1,7 +1,7 @@
 class GitCal < Formula
   desc "GitHub-like contributions calendar but on the command-line"
   homepage "https://github.com/k4rthik/git-cal"
-  url "https://github.com/k4rthik/git-cal/archive/v0.9.1.tar.gz"
+  url "https://github.com/k4rthik/git-cal/archive/refs/tags/v0.9.1.tar.gz"
   sha256 "783fa73197b349a51d90670480a750b063c97e5779a5231fe046315af0a946cd"
   license "MIT"
   revision 1
@@ -13,6 +13,7 @@ class GitCal < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e1c5fa0db903b82620858fb7e5913e9de7d21e75f697b1cfc889b1fc0f0227ed"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3c7c3ba94ee664f9c479f64ed4ade96645c824c2820f738581ced5dbb3f2d423"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e6228f62ffe5b766fb9b546613777249e348dd5caa14e83138397974f198ba20"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e6228f62ffe5b766fb9b546613777249e348dd5caa14e83138397974f198ba20"

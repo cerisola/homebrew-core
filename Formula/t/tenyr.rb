@@ -1,13 +1,14 @@
 class Tenyr < Formula
   desc "32-bit computing environment (including simulated CPU)"
-  homepage "https://tenyr.info/"
-  url "https://github.com/kulp/tenyr/archive/v0.9.9.tar.gz"
+  homepage "https://kulp.github.io/tenyr/"
+  url "https://github.com/kulp/tenyr/archive/refs/tags/v0.9.9.tar.gz"
   sha256 "29010e3df8449e9210faf96ca5518d573af4ada4939fe1e7cfbc169fe9179224"
   license "MIT"
   head "https://github.com/kulp/tenyr.git", branch: "develop"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "4067084c37f782e15f3b179f7dedc7a599c66b791e3c0aa013e7dbc8ae804e0f"
     sha256 cellar: :any,                 arm64_sonoma:   "8e373dabed5c34e87d91d2456d4bf011df0ed7d49a5e1eecf21d1dbca6e2501f"
     sha256 cellar: :any,                 arm64_ventura:  "655a2c3c2841cca8dc2a9a12251050701c738425dc78687f2062357ded8bf4a2"
     sha256 cellar: :any,                 arm64_monterey: "9254f0926869364cd952129f192c9fc230ef6a6343e373c1640872bbe9c51345"
@@ -20,6 +21,8 @@ class Tenyr < Formula
   end
 
   depends_on "bison" => :build # tenyr requires bison >= 2.5
+
+  depends_on "sdl2"
   depends_on "sdl2_image"
 
   uses_from_macos "flex" => :build
@@ -47,9 +50,9 @@ class Tenyr < Formula
     (testpath/"part1").write "B <- 9\n"
     (testpath/"part2").write "C <- B * 3\n"
 
-    system "#{bin}/tas", "--output=a.to", "part1"
-    system "#{bin}/tas", "--output=b.to", "part2"
-    system "#{bin}/tld", "--output=test.texe", "a.to", "b.to"
+    system bin/"tas", "--output=a.to", "part1"
+    system bin/"tas", "--output=b.to", "part2"
+    system bin/"tld", "--output=test.texe", "a.to", "b.to"
 
     assert_match "C 0000001b", shell_output("#{bin}/tsim -vvvv test.texe 2>&1")
   end

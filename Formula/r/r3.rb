@@ -1,7 +1,7 @@
 class R3 < Formula
   desc "High-performance URL router library"
   homepage "https://github.com/c9s/r3"
-  url "https://github.com/c9s/r3/archive/1.3.4.tar.gz"
+  url "https://github.com/c9s/r3/archive/refs/tags/1.3.4.tar.gz"
   sha256 "db1fb91e51646e523e78b458643c0250231a2640488d5781109f95bd77c5eb82"
   license "MIT"
   head "https://github.com/c9s/r3.git", branch: "master"
@@ -12,6 +12,7 @@ class R3 < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "0e983875043e6a6111ce6f46615faf14adb57a8fa96c7a1cf5ae10d7d415a879"
     sha256 cellar: :any,                 arm64_sonoma:   "9648d6bd8f125398cc101581e8ee3b8b304fa6e8ab92f018dc538843c04fd920"
     sha256 cellar: :any,                 arm64_ventura:  "fa1e649709ce6c6d16c631a2192d2dd7fea34b7398e55eabe5f7bd51953745ab"
     sha256 cellar: :any,                 arm64_monterey: "2f26748893003e7e0b99a574126c06c451222144979b0230babe37128328214f"

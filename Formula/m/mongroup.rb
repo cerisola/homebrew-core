@@ -1,7 +1,7 @@
 class Mongroup < Formula
   desc "Monitor a group of processes with mon"
   homepage "https://github.com/jgallen23/mongroup"
-  url "https://github.com/jgallen23/mongroup/archive/0.4.1.tar.gz"
+  url "https://github.com/jgallen23/mongroup/archive/refs/tags/0.4.1.tar.gz"
   sha256 "50c6fb0eb6880fa837238a2036f9bc77d2f6db8c66b8c9a041479e2771a925ae"
 
   bottle do
@@ -22,6 +22,8 @@ class Mongroup < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "16deb20baa844034c6a1c8bfcb61971a71f576fbebd0dd6170321aeed2866ee7"
   end
 
+  disable! date: "2024-08-10", because: :no_license
+
   depends_on "mon"
 
   def install
@@ -30,6 +32,6 @@ class Mongroup < Formula
   end
 
   test do
-    system "#{bin}/mongroup", "-V"
+    system bin/"mongroup", "-V"
   end
 end

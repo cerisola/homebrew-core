@@ -1,19 +1,19 @@
 class Smake < Formula
   desc "Portable make program with automake features"
-  homepage "https://s-make.sourceforge.net/"
-  url "https://codeberg.org/schilytools/schilytools/archive/2023-09-28.tar.gz"
-  version "1.7-2023-09-28"
-  sha256 "564ea2365876a53eba02f184c565016399aee188c26d862589906cf3f92198e6"
+  homepage "https://codeberg.org/schilytools/schilytools"
+  url "https://codeberg.org/schilytools/schilytools/archive/2024-03-21.tar.gz"
+  sha256 "4d66bf35a5bc2927248fac82266b56514fde07c1acda66f25b9c42ccff560a02"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f96bcc9d691106585693783553b709cf4366170f1dadfbe76121e22eb94a2f2f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "090a8a9be4f73f219b85f283f833de8336d8009418c64195cc6aba8599a96889"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a3710a51c46dead615576fa397995c278615e2cb7e094678da14a41906a7eebc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1e51561e230f171753c2d163ed67ebba865fafeeca559f514c98a18b9e358b34"
-    sha256 cellar: :any_skip_relocation, ventura:        "15cd5351102ca3e6b5b93fe36e3c92d4e88015175077ffafacd182b54284c33c"
-    sha256 cellar: :any_skip_relocation, monterey:       "43af100fd2db88ded7bb3d9628b9b7b2d786458f7b698448287b597353aa9918"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d6cf53c6412f3e5e5ae1ba150ca4f3f54624bd8ecc5ef9dc5ada42c4f59ded1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b2c9095c632a8c91be31c300a3a21234bc06c0cfec1772d9ca0af21a4230c69c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "54d5687fe82a141e445b3e6bf8404dda343c41e57b0c67bc3292241b5af28d1a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b1f63df56d0dd8903164a3fa57dbf30b9d71904ddf051ef907e616e8b535da79"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "a88dc2fafc2b3f3745e1ad3a79e82c0c252faf403ff54a2f67e66298114e9ff4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "f46933438ba16e6944354e43afc1ed55572ded080b4267af8cb2e6fb7744107c"
+    sha256 cellar: :any_skip_relocation, ventura:        "76c0564c658f45e7d92c1ffaaedf2b5394ace1f29a124867288a47575f40a339"
+    sha256 cellar: :any_skip_relocation, monterey:       "8cf227992ec09344d3a74e81e4aa24b5c3b6747896bba6fdf8bc5b8ca55f57cc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b51d8b0c121455fff0ae8f7b5329566f202885e5d4ca0a8720e9a42c489435f"
   end
 
   def install
@@ -39,6 +39,6 @@ class Smake < Formula
   end
 
   test do
-    system "#{bin}/smake", "-version"
+    system bin/"smake", "-version"
   end
 end

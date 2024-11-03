@@ -3,9 +3,11 @@ class Apng2gif < Formula
   homepage "https://apng2gif.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/apng2gif/1.8/apng2gif-1.8-src.zip"
   sha256 "9a07e386017dc696573cd7bc7b46b2575c06da0bc68c3c4f1c24a4b39cdedd4d"
+  license all_of: ["libpng-2.0", "Zlib"]
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "0f86e3508b3328f66e3ada01096160126c5ef87912d0a6a187a0200293d0d93f"
     sha256 cellar: :any,                 arm64_sonoma:   "20bcd262d61b96408beb4146b7adc55fa3f18d5a9170949670245bc9e0128f58"
     sha256 cellar: :any,                 arm64_ventura:  "96885dd78971006a1a9c2110cf491436d16cb705fd29c67a8506c06c41cf867c"
     sha256 cellar: :any,                 arm64_monterey: "06feb5f45bd0926a23bcda94caf5af7eb1f29166b71853ea3c9136c74c63d000"

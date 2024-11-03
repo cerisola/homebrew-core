@@ -1,7 +1,7 @@
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/v0.13.3.tar.gz"
+  url "https://github.com/Masterminds/glide/archive/refs/tags/v0.13.3.tar.gz"
   sha256 "817dad2f25303d835789c889bf2fac5e141ad2442b9f75da7b164650f0de3fee"
   license "MIT"
   head "https://github.com/Masterminds/glide.git", branch: "master"
@@ -22,7 +22,7 @@ class Glide < Formula
   end
 
   # See: https://github.com/Masterminds/glide/commit/c64b14592409a83052f7735a01d203ff1bab0983
-  deprecate! date: "2023-01-21", because: :deprecated_upstream
+  disable! date: "2024-01-21", because: :deprecated_upstream
 
   depends_on "go"
 

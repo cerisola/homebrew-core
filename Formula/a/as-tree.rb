@@ -1,12 +1,13 @@
 class AsTree < Formula
   desc "Print a list of paths as a tree of paths"
   homepage "https://github.com/jez/as-tree"
-  url "https://github.com/jez/as-tree/archive/0.12.0.tar.gz"
+  url "https://github.com/jez/as-tree/archive/refs/tags/0.12.0.tar.gz"
   sha256 "2af03a2b200041ac5c7a20aa1cea0dcc21fb83ac9fe9a1cd63cb02adab299456"
   license "BlueOak-1.0.0"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5059a4f64cd775588b4f57a258964415373c09346d65f121f9e61464bbc6789a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c54dc2d8c4eb0848cf008d1aba865d566d31a711fcba898e06d50553f14e4720"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f1ff59d33ae1147f903973d50d44e945b7d4ef2564d8877be6fc38b9433bafb6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "7ffe542490373f69918fbb37ef7e93c94a7d26e87f4be282b491816713b7d049"
@@ -26,6 +27,6 @@ class AsTree < Formula
   end
 
   test do
-    assert_equal ".\n└── file\n", pipe_output("#{bin}/as-tree", "file")
+    assert_equal ".\n└── file\n", pipe_output(bin/"as-tree", "file")
   end
 end

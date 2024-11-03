@@ -1,22 +1,22 @@
 class Folly < Formula
   desc "Collection of reusable C++ library artifacts developed at Facebook"
   homepage "https://github.com/facebook/folly"
-  url "https://github.com/facebook/folly/archive/refs/tags/v2023.10.02.00.tar.gz"
-  sha256 "8b7dd6857b9cc42a43e346776dbea32e16b953026b213d47ad5f14e6ef04bb08"
+  url "https://github.com/facebook/folly/archive/refs/tags/v2024.10.28.00.tar.gz"
+  sha256 "fe544b549cd8094759113882a969082eedadb2732d2ede85d603e8066f753d5d"
   license "Apache-2.0"
   head "https://github.com/facebook/folly.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a7bb633684864bc5e75be705496ee87102266e5f45d549f0b1794cea5a5262b3"
-    sha256 cellar: :any,                 arm64_ventura:  "c2da6040c0c43fb1ec852ff59389b0687ef235b75143453b97e6568234e430d0"
-    sha256 cellar: :any,                 arm64_monterey: "a752418a3c4a73ba4c84ec45f83a96f2187e35d8dfb2ee913a6bee0ff453deca"
-    sha256 cellar: :any,                 sonoma:         "08937aa2b52e08bc81b6aaf7f6b33213eced3c4c627b087fb46fda25d5df5158"
-    sha256 cellar: :any,                 ventura:        "db3a13428848567404590e8388c1eed4e0710137556b4f8ae3b7eb01f99bd309"
-    sha256 cellar: :any,                 monterey:       "60188a1e8dba9126d68affa79c3472610ebda32fd31aa3ba6af02917ca6c0a65"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c36f572160ef67e054f273d62fcd680f78d740701185a0d244e6df933e45040"
+    sha256 cellar: :any,                 arm64_sequoia: "df99d0d1a71400451f22b377489c443f03f87c063d5f98f54d0169f8c25e69ad"
+    sha256 cellar: :any,                 arm64_sonoma:  "dbec4ed7882bc2c29e7cc772ccaa155dcc115f8249e88de254749e910a4741a6"
+    sha256 cellar: :any,                 arm64_ventura: "1dcad87ee41af58460b3ea92a31d99572eeeb4ee611df578059522fb928f2ffa"
+    sha256 cellar: :any,                 sonoma:        "815c012d28fdf1ff32458841e7276100bad3e62d60b1989b4b98c4812fdaf6ca"
+    sha256 cellar: :any,                 ventura:       "53aa8abe4022c77f2f68218fc85135f35e2082f5aa6e6475fd07a7b36a975758"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eabcb29084cde6d170c8216a835edce294eb2fd15e3f48336a97bfee79611b4b"
   end
 
   depends_on "cmake" => :build
+  depends_on "fast_float" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "double-conversion"
@@ -30,6 +30,9 @@ class Folly < Formula
   depends_on "snappy"
   depends_on "xz"
   depends_on "zstd"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   on_macos do
     depends_on "llvm" if DevelopmentTools.clang_build_version <= 1100
@@ -72,7 +75,7 @@ class Folly < Formula
     # Force use of Clang rather than LLVM Clang
     ENV.clang if OS.mac?
 
-    (testpath/"test.cc").write <<~EOS
+    (testpath/"test.cc").write <<~CPP
       #include <folly/FBVector.h>
       int main() {
         folly::fbvector<int> numbers({0, 1, 2, 3});
@@ -83,8 +86,8 @@ class Folly < Formula
         assert(numbers[6] == 12);
         return 0;
       }
-    EOS
-    system ENV.cxx, "-std=c++14", "test.cc", "-I#{include}", "-L#{lib}",
+    CPP
+    system ENV.cxx, "-std=c++17", "test.cc", "-I#{include}", "-L#{lib}",
                     "-lfolly", "-o", "test"
     system "./test"
   end

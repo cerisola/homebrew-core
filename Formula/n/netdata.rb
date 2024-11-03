@@ -1,36 +1,37 @@
 class Netdata < Formula
   desc "Diagnose infrastructure problems with metrics, visualizations & alarms"
   homepage "https://netdata.cloud/"
-  url "https://github.com/netdata/netdata/releases/download/v1.42.4/netdata-v1.42.4.tar.gz"
-  sha256 "412f9612341132e978f76da0e4b26dd22f3ba4df20f063083ddf2e7b75d6bc9e"
+  url "https://github.com/netdata/netdata/releases/download/v1.44.3/netdata-v1.44.3.tar.gz"
+  sha256 "50df30a9aaf60d550eb8e607230d982827e04194f7df3eba0e83ff7919270ad2"
   license "GPL-3.0-or-later"
+  revision 11
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a90a665b3ab025652db75b18ea073821d2cec9b612853d9f86bed1c0c9466a93"
-    sha256 arm64_ventura:  "7c8d8df5ee9302c30c50e24fa58e22a7093bc9528a4325497267584744013032"
-    sha256 arm64_monterey: "2782ae3c60e121fe779eb961f066d142370f609b3585f460e730db6a12803331"
-    sha256 arm64_big_sur:  "f62cfc58feb690b4169ef7d69cad35474aaf42c051cc0c0f98ae97f2f9b51e9b"
-    sha256 sonoma:         "5a19633f1a6d740a95cf7766dcc8c397d32aeb30289f6cc5d4cbb0a6ab4dbaa4"
-    sha256 ventura:        "84ed2c860ad536ad6e6b4f3761753075fe200ee5e3caf42059e71f603c2ea7a0"
-    sha256 monterey:       "aacb2516f927bb427de7d2869fd90b9c6147cd9187524ab92fc5bbc6e4416a57"
-    sha256 big_sur:        "2543ca3b7ed49581f3573181bef00974bab1c5b8eddbbf1a3f1450b9442766cc"
-    sha256 x86_64_linux:   "95fad5695a25b665e9f0945fde0d6899ab860cbb414eda9d249ee23f1fc4bef2"
+    sha256 arm64_sequoia: "0264f081824850fae9f84c45da923bcd0cb0fc40b9f9b95075bff6bfbdcae835"
+    sha256 arm64_sonoma:  "01cf0fadee729dd44b513f96d0595d9d60e64432e98fd229cfdf052e815555ee"
+    sha256 arm64_ventura: "f22e44cba420acae6b52cdbbbd72df25834ffc8d346af3f81571e16b4b454f68"
+    sha256 sonoma:        "48dadff024c77c53c6f1fa6f2e70854a94aa8bafb0b1c9f4ce074369adddc78e"
+    sha256 ventura:       "be3cdd3216ed48ecdc8609fb0d29856e06bb89d776ff826756f82b0434e710bc"
+    sha256 x86_64_linux:  "6acf29980f1adfe92789d2959fe66089c35711f3e61c78d371d6020976697886"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "m4" => :build
   depends_on "pkg-config" => :build
+  depends_on "abseil"
   depends_on "json-c"
   depends_on "libuv"
   depends_on "libyaml"
   depends_on "lz4"
   depends_on "openssl@3"
+  depends_on "pcre2"
   depends_on "protobuf"
   depends_on "protobuf-c"
 

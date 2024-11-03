@@ -1,49 +1,54 @@
 class OpenImageDenoise < Formula
   desc "High-performance denoising library for ray tracing"
   homepage "https://openimagedenoise.github.io"
-  url "https://github.com/OpenImageDenoise/oidn/releases/download/v2.0.1/oidn-2.0.1.src.tar.gz"
-  sha256 "328eeb9809d18e835dca7203224af3748578794784c026940c02eea09c695b90"
+  url "https://github.com/OpenImageDenoise/oidn/releases/download/v2.3.0/oidn-2.3.0.src.tar.gz"
+  sha256 "cce3010962ec84e0ba1acd8c9055a3d8de402fedb1b463517cfeb920a276e427"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6e4ef95fd31065991efbf45e04a96cffde811f5bc04c6f6d95eaa5f1f827e4d1"
-    sha256 cellar: :any,                 arm64_ventura:  "bdaf6403a929f235b0ff6da19baba1c951ac94e8cbf9ba09a0394a7ef322ee24"
-    sha256 cellar: :any,                 arm64_monterey: "ea08619a2c5659543660997d7bcf3f39e94d34b4ad6b4dfefd0a8a94922a97af"
-    sha256 cellar: :any,                 arm64_big_sur:  "35736aee28ab714cf7709dc2c537db39d05ebd77e223718224f222466ef057b7"
-    sha256 cellar: :any,                 sonoma:         "be419814b6cd235fdd5f746c7730a4adaf25d5d5146b6c96e38b29a72e54a9a6"
-    sha256 cellar: :any,                 ventura:        "e1d90b853cc0b39eb5e7b4bda9a2a6dcfd10a07691583bfd371e9968fcc63b73"
-    sha256 cellar: :any,                 monterey:       "7ac3e7ef40abca3755ff98de4de0b8da25ce17526da61f4ed21682e1a601d992"
-    sha256 cellar: :any,                 big_sur:        "24c6e0b8efbdd9b888c2190ba1d1380c40002957993d10bd8bf2362552f0aa12"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5fae9536588c4cc4d1528bf42df82faaf756d3230690d6b51444a23b01083551"
+    sha256 cellar: :any,                 arm64_sequoia:  "bf78ad262815065ef8b81dc58e08c6b07a7c0451c0312fc9b0b744fcdf9b4539"
+    sha256 cellar: :any,                 arm64_sonoma:   "fc3c4ba67d53d8e2fa8bb99ed1c69cc307bb89c06557d711dee97901f45364a5"
+    sha256 cellar: :any,                 arm64_ventura:  "01ce7b7dd522c6393a12889fcd12219d0a55b64b1acfa8d9fa825876bdff202a"
+    sha256 cellar: :any,                 arm64_monterey: "b0c477236d04837d0b49d84e9704eba22a17d539bcef29755809964b6f39dab5"
+    sha256 cellar: :any,                 sonoma:         "3eeffedc9f75b74c36a2a1f714abc363bf978112870a2c26377414afd7a4af3c"
+    sha256 cellar: :any,                 ventura:        "5b18013ad5adc8291c15201537c5a0eaddef36dedb0dc58d07b330640292152b"
+    sha256 cellar: :any,                 monterey:       "73919cbd7bd7ad3827cb362cbe262301edc58c613be4b094fbfc9fe222082436"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d2a4435f06185707e8a6706f21444a11c93fdb1bf3257d7a15f36b9bbda7ee0"
   end
 
   depends_on "cmake" => :build
   depends_on "ispc" => :build
-  depends_on "python@3.11" => :build
   # clang: error: unknown argument: '-fopenmp-simd'
   # https://github.com/OpenImageDenoise/oidn/issues/35
   depends_on macos: :high_sierra
   depends_on "tbb"
 
+  uses_from_macos "python" => :build
+
+  # fix compile error when using old libc++ (e.g. from macOS 12 SDK)
+  patch do
+    url "https://github.com/RenderKit/oidn/commit/e5e52d335c58365b6cbd91f9a8a6f9ee9a085bf5.patch?full_index=1"
+    sha256 "e5e42bb52b9790bbce3c8f82413986d5a23d389e1488965b738810b0d9fb0d2a"
+  end
+
   def install
     # Fix arm64 build targeting iOS
     inreplace "cmake/oidn_ispc.cmake", 'set(ISPC_TARGET_OS "--target-os=ios")', ""
 
-    mkdir "build" do
-      system "cmake", *std_cmake_args, ".."
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <OpenImageDenoise/oidn.h>
       int main() {
         OIDNDevice device = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
         oidnCommitDevice(device);
         return oidnGetDeviceError(device, 0);
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}", "test.c", "-L#{lib}", "-lOpenImageDenoise"
     system "./a.out"
   end

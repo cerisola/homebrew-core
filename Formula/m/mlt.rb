@@ -1,36 +1,53 @@
 class Mlt < Formula
   desc "Author, manage, and run multitrack audio/video compositions"
   homepage "https://www.mltframework.org/"
-  url "https://github.com/mltframework/mlt/releases/download/v7.20.0/mlt-7.20.0.tar.gz"
-  sha256 "7472372b31f76b2eb0ac66c756391be7cb859a3a779c97ccb7dcf7086ac9d816"
+  url "https://github.com/mltframework/mlt/releases/download/v7.28.0/mlt-7.28.0.tar.gz"
+  sha256 "bc425bf9602213f5f4855b78cfbbcd43eeb78097c508588bde44415963955aa1"
   license "LGPL-2.1-only"
+  revision 1
   head "https://github.com/mltframework/mlt.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "9670b42ea7651685b0c031583bc5c667346d4f4fe6e1d831063e1f2611129349"
-    sha256 arm64_ventura:  "00b18c247272bc344ae719dc86546930bbbd406f3877d4556f0609ef588086cd"
-    sha256 arm64_monterey: "14f9ba4644bb93f548b57bcfcec89c6d20c1e69ac803cb0765aba2f3b49c3780"
-    sha256 sonoma:         "f487696f45a50fb33d05ad34202f42aeb2b9a40e2d19194167bec071070d2068"
-    sha256 ventura:        "a5598fa8ba7af371b1f26f9094cf4425558dcaadd842fd8af710b40fa10e9ba0"
-    sha256 monterey:       "f5b5c8927074069b39f3e557e32d183c3659687380e87c390f01e19630463535"
-    sha256 x86_64_linux:   "febb8a904cff64ced7eea55369d1721d0a5a54ab019c548cf98ab2e6c52377b3"
+    sha256 arm64_sonoma:  "f00c9c76c5bc5a751ce1624e0772c585c709f44875d82440c0a388dbb09cdde9"
+    sha256 arm64_ventura: "e643461ac282fb5edddcb7ff631756018442fbb42049386cdeead1031eb061be"
+    sha256 sonoma:        "4c32850aaf200194157ca6dab467effb8095058f6f31036d16d076ea5cced641"
+    sha256 ventura:       "565336d117b263f8a0aaffc764d9d1e6f10d70d599023aa6b37dc83815491441"
+    sha256 x86_64_linux:  "dbea62eda468a8117ef1f61cba567c1927ec88c7992c7c70b80ef8e863d59262"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "ffmpeg"
   depends_on "fftw"
+  depends_on "fontconfig"
   depends_on "frei0r"
   depends_on "gdk-pixbuf"
+  depends_on "glib"
   depends_on "libdv"
   depends_on "libexif"
   depends_on "libsamplerate"
+  depends_on "libvidstab"
   depends_on "libvorbis"
   depends_on "opencv"
   depends_on "pango"
   depends_on "qt"
+  depends_on "rubberband"
   depends_on "sdl2"
   depends_on "sox"
+
+  uses_from_macos "libxml2"
+
+  on_macos do
+    depends_on "freetype"
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
+
+  on_linux do
+    depends_on "alsa-lib"
+    depends_on "pulseaudio"
+  end
 
   fails_with gcc: "5"
 

@@ -1,12 +1,13 @@
 class Blitz < Formula
   desc "Multi-dimensional array library for C++"
   homepage "https://github.com/blitzpp/blitz/wiki"
-  url "https://github.com/blitzpp/blitz/archive/1.0.2.tar.gz"
+  url "https://github.com/blitzpp/blitz/archive/refs/tags/1.0.2.tar.gz"
   sha256 "500db9c3b2617e1f03d0e548977aec10d36811ba1c43bb5ef250c0e3853ae1c2"
   license "Artistic-2.0"
   head "https://github.com/blitzpp/blitz.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "f5c76acfde9f6b4ff49baaaddad03106654788518afcebd6e15b1511c965fe92"
     sha256 cellar: :any,                 arm64_sonoma:   "c1ce7b13ac8453f28f88f8828e05210332135de7b38886318b1146b8ff7507c8"
     sha256 cellar: :any,                 arm64_ventura:  "c12b81ef4cb76e7ab76b557ef4a57ac431a6a39ab63bce8f1d786a6e2c316140"
     sha256 cellar: :any,                 arm64_monterey: "3403559216a7fe96f965537612fdbe8852810870a54c2ba96b6c0d15c9d03726"
@@ -23,28 +24,34 @@ class Blitz < Formula
 
   depends_on "cmake" => :build
 
+  uses_from_macos "python" => :build
+
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "lib"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"testfile.cpp").write <<~EOS
+    (testpath/"testfile.cpp").write <<~CPP
       #include <blitz/array.h>
       #include <cstdlib>
+
       using namespace blitz;
       int main(){
         Array<float,2> A(3,1);
         A = 17, 2, 97;
         cout << "A = " << A << endl;
         return 0;}
-    EOS
+    CPP
+
     system ENV.cxx, "testfile.cpp", "-o", "testfile"
     output = shell_output("./testfile")
-    var = "/A = (0,2) x (0,0)\n[ 17 \n  2 \n  97 ]\n\n/"
-    assert_match output, var
+    assert_match <<~EOS, output
+      A = (0,2) x (0,0)
+      [ 17\s
+        2\s
+        97 ]
+    EOS
   end
 end

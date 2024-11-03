@@ -1,8 +1,8 @@
 class Pkgconf < Formula
   desc "Package compiler and linker metadata toolkit"
   homepage "https://github.com/pkgconf/pkgconf"
-  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.0.3.tar.xz"
-  sha256 "cabdf3c474529854f7ccce8573c5ac68ad34a7e621037535cbc3981f6b23836c"
+  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.3.0.tar.xz"
+  sha256 "3a9080ac51d03615e7c1910a0a2a8df08424892b5f13b0628a204d3fcce0ea8b"
   license "ISC"
 
   livecheck do
@@ -11,15 +11,15 @@ class Pkgconf < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "e43cf7bf3262964d17b5c07e1a2d065dc46705eb0749adb5af3b98df523f90a7"
-    sha256 arm64_ventura:  "6c97564eb8b3746671f0c6f5fdb0a544a3af326fab41b5781a99fcc810fbab00"
-    sha256 arm64_monterey: "54bd66532feb26f055b3fc79a39a3ad27ed210eed32231d8c096805ee67f6e1c"
-    sha256 arm64_big_sur:  "a5ac60ba814d8d8fe4bc6379a2279078a77a46c39cd6d1d3709223a59addbc7b"
-    sha256 sonoma:         "ab4f89cd2efa5d6ed06a7a5554c244abf10c5d5cfa7010f25f7f4df674ada58a"
-    sha256 ventura:        "ad8c5070e4445df33eb1857f7995a5a0310bd3f97ee46c4fe2947a7a01c20717"
-    sha256 monterey:       "d5a9ca2ead811a1b3814329863df3c0f68c82d90534c861a47eb7b9a1180b6b7"
-    sha256 big_sur:        "5ae0b4ed4bf6880d99a433844bfd62059eddec8c92f0c7c8bc6cfe5cea04a990"
-    sha256 x86_64_linux:   "f35562a79af267639bf31f991a97412d9ed6b14042020762b4407cafdf0b6851"
+    sha256 arm64_sequoia:  "18c4da47fd2032c4edfac853b772e1a16a745a0c67335b86931fb2bec8c10933"
+    sha256 arm64_sonoma:   "4d7c5803943bf2dcc8cb9ff8c838ea4283eeab24f49982df044cbc3031856fd8"
+    sha256 arm64_ventura:  "e0b2a95c807578a166fab8467305f1d54db32fe0656a4d6cb746c2356146b074"
+    sha256 arm64_monterey: "ac13529811ba6f3e57f7f4048711720d073e10a8797768073626f5d6daabbf76"
+    sha256 sequoia:        "9b44fe313d296fa10617d6b58ea1eab78bf217b6f00478ad98b01e0375475472"
+    sha256 sonoma:         "1db60da1d512bb109dd455f03856e790a156137f9d77f1f507ac72d538a1c1e2"
+    sha256 ventura:        "5f272a6b79920f7c236eaa01d94fc8da99ebc79947a56d1808a19d436571c9c8"
+    sha256 monterey:       "802a81f3ca1ea1a14699d6e2359e0ccd30ef310142c6c305b17d881cbd6d2ed0"
+    sha256 x86_64_linux:   "67710376078e1191ece25d69214d9ced135195b07c24a386db0d9aee590c8ead"
   end
 
   head do
@@ -29,6 +29,8 @@ class Pkgconf < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
+
+  conflicts_with "pkg-config", because: "both install `pkg.m4` file"
 
   def install
     if build.head?
@@ -79,7 +81,7 @@ class Pkgconf < Formula
     assert_equal "-lfoo", shell_output("#{bin}/pkgconf --libs-only-l foo").strip
     assert_equal "-I/usr/include/foo", shell_output("#{bin}/pkgconf --cflags foo").strip
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <assert.h>
       #include <libpkgconf/libpkgconf.h>
 
@@ -87,7 +89,7 @@ class Pkgconf < Formula
         assert(pkgconf_compare_version(LIBPKGCONF_VERSION_STR, LIBPKGCONF_VERSION_STR) == 0);
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}/pkgconf", "-L#{lib}", "-lpkgconf"
     system "./a.out"

@@ -1,25 +1,24 @@
 class Gifski < Formula
   desc "Highest-quality GIF encoder based on pngquant"
   homepage "https://gif.ski/"
-  url "https://github.com/ImageOptim/gifski/archive/refs/tags/1.12.2.tar.gz"
-  sha256 "daaeefd21d8328282d2c1082faddbc1f4870c60c1453e6e85e1a421aa77738d6"
+  url "https://github.com/ImageOptim/gifski/archive/refs/tags/1.32.0.tar.gz"
+  sha256 "9a9145c31936f6e6e3b30e7feb8a741bcc02e8bcec6fd480d03c25ffa55f372c"
   license "AGPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "88852eb048bc4a649783505818410e8f606ab084d2c32fb37ab5f0970d8a18ec"
-    sha256 cellar: :any,                 arm64_ventura:  "241c6d9928465d33cf91c8c704a07d9b1da5c4836773e3fc3d044c67d68cc788"
-    sha256 cellar: :any,                 arm64_monterey: "366cbf286f39497de764e0cbb5e15295e9d579c64af565fc2be3eacfd4b65cdb"
-    sha256 cellar: :any,                 arm64_big_sur:  "d819e23d2c30a92eb809f7ae8831ac0290b6e74c2fa2aa296108c64a7e38de95"
-    sha256 cellar: :any,                 sonoma:         "901561ba7b02de8beb85a030fb53f994084a37a938483831bb6e282f6003af6a"
-    sha256 cellar: :any,                 ventura:        "d0d92370ea89d281fe10d0717b226407f31184faf7ee944ce87e2f6054a414e0"
-    sha256 cellar: :any,                 monterey:       "8df2267b7fa3203ed573e7660d37140045bce5dbbe6e8261b2f09b803f492ed5"
-    sha256 cellar: :any,                 big_sur:        "afefc72dcb0d3e8223c2a1df12bf38b730d9b169de34f45bc6b706ed9c2d77d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4bb51932f9e4a6c37f974a01724620a0d99eec8354536ff78bd0f6afe85e0fb"
+    sha256 cellar: :any,                 arm64_sequoia:  "b889ed9f65467b0e919d9403c03b784ba9a200459dd6b684bb3526197b35448a"
+    sha256 cellar: :any,                 arm64_sonoma:   "7eed39c25338fafdfb6547e305a02f137c10e6624852be3c60dfa36527be35de"
+    sha256 cellar: :any,                 arm64_ventura:  "482fba0d44f69d1e5b137051022f2ab2fd83ed61ecee0f34d9e6909a422c9dac"
+    sha256 cellar: :any,                 arm64_monterey: "c0e54ca91ce8e920d50461c7bef2432881f9ddc347648f23617c871b1448611a"
+    sha256 cellar: :any,                 sonoma:         "106b8f0b03fc6e059aec0d3274f92da8ae33cc0919980d60a36e0b8917046755"
+    sha256 cellar: :any,                 ventura:        "e4320c33cbe202bdcab24640377483950c90ee27c47192791300c109f190a8df"
+    sha256 cellar: :any,                 monterey:       "f68b1f53e4ee3b59a627f93752461a68f94711e7c8cc68f4fa3e7c0883cf75f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2b5acc7e25a1311ea15611f213bbe144de06db490c002321bda776eeb0722b22"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
-  depends_on "ffmpeg"
+  depends_on "ffmpeg@6"
 
   uses_from_macos "llvm" => :build
 

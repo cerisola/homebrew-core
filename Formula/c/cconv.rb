@@ -1,11 +1,12 @@
 class Cconv < Formula
   desc "Iconv based simplified-traditional Chinese conversion tool"
   homepage "https://github.com/xiaoyjy/cconv"
-  url "https://github.com/xiaoyjy/cconv/archive/v0.6.3.tar.gz"
+  url "https://github.com/xiaoyjy/cconv/archive/refs/tags/v0.6.3.tar.gz"
   sha256 "82f46a94829f5a8157d6f686e302ff5710108931973e133d6e19593061b81d84"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "09a537e89790d6af0c6c2f1bd9331b1860b86800285c55c5f4420317aeac02ce"
     sha256 cellar: :any,                 arm64_sonoma:   "da6b870d250ca95eff392c8da4c1e703d292a764c02df3b44f3a2ebf1ff06e31"
     sha256 cellar: :any,                 arm64_ventura:  "90c54593dd333d215cd536457021fde2a90c768b9d3cbac601be53d4b793f268"
     sha256 cellar: :any,                 arm64_monterey: "26691ab7b01031ee988442fb08c173d48da19e26d9cc494c829284b0248ee6d2"
@@ -32,7 +33,7 @@ class Cconv < Formula
     system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
-    rm_f include/"unicode.h"
+    rm(include/"unicode.h")
   end
 
   test do

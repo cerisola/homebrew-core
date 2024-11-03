@@ -1,7 +1,7 @@
 class Gecode < Formula
   desc "Toolkit for developing constraint-based systems and applications"
   homepage "https://www.gecode.org/"
-  url "https://github.com/Gecode/gecode/archive/release-6.2.0.tar.gz"
+  url "https://github.com/Gecode/gecode/archive/refs/tags/release-6.2.0.tar.gz"
   sha256 "27d91721a690db1e96fa9bb97cec0d73a937e9dc8062c3327f8a4ccb08e951fd"
   license "MIT"
   revision 1
@@ -12,6 +12,7 @@ class Gecode < Formula
 
   bottle do
     rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia:  "884ec5f071d961e87c4d6200ea3f81e7452066cca47c226f649ca4b9cf12f5f0"
     sha256 cellar: :any,                 arm64_sonoma:   "fe7f8c7a62e4d933818fbf4a10c69ca85285639c8f362b7d8021c3d7516dfc92"
     sha256 cellar: :any,                 arm64_ventura:  "d4034d14e93b5320709f5935ab5c338aa8944d6969a5641ac54533a38aec807d"
     sha256 cellar: :any,                 arm64_monterey: "3d84e1de9c817d479b07246fe62a5496d59f236f04e10c20b435ebab144a26c0"
@@ -40,7 +41,7 @@ class Gecode < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <gecode/driver.hh>
       #include <gecode/int.hh>
       #include <QtWidgets/QtWidgets>
@@ -72,7 +73,7 @@ class Gecode < Formula
         Script::run<Test, DFS, Options>(opt);
         return 0;
       }
-    EOS
+    CPP
 
     args = %W[
       -std=c++11

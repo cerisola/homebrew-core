@@ -4,10 +4,10 @@ class Glooctl < Formula
   # NOTE: Please wait until the newest stable release is finished building and
   # no longer marked as "Pre-release" before creating a PR for a new version.
   url "https://github.com/solo-io/gloo.git",
-      tag:      "v1.15.9",
-      revision: "fb08ee144af426f383e808a57667121f65fddeda"
+      tag:      "v1.17.15",
+      revision: "f371f9e342519ac4d1c637411ba747b4fb07ec71"
   license "Apache-2.0"
-  head "https://github.com/solo-io/gloo.git", branch: "master"
+  head "https://github.com/solo-io/gloo.git", branch: "main"
 
   livecheck do
     url :stable
@@ -15,13 +15,12 @@ class Glooctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bdc29ec74aaf36f811e49ee8b6f8c762aa672e41301c810c9f0e46369ac4dd4d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3a3df4342f0fc0554eac22bce7cc3809747a94410e4e44347a63869d6d6fe90a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "833769343e71d683f10621144ceac648de039dce39054ebc85440885338e6c2d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a317fbe85bd63621ca26ba116c8467064c145d4150abd2aa10206518fd0a8832"
-    sha256 cellar: :any_skip_relocation, ventura:        "3ccebe4ae7341ee6beadd560e4a1c60292d900758f16dd24b4b444ebaf688c2f"
-    sha256 cellar: :any_skip_relocation, monterey:       "31ede86729bb875cd60cd431719c8ad2b7142e8dab083de50fb121aa8a13b0a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "41aabb86a706643f968c98d7ef043071719925102cb0f71e9bdec401c6c90de7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3b2a6206d3a66bfaeaf40e74311b85ba84a8f7118b66a1880afd3fbc675b9387"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "358c584df6cb31f9ca5bf6a80dbf84255a6e5b73873a73d49150f7d227e050b4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a9c20eeca421a71a62d0377ab5f08d3c2167b451e2d71b48eba4b71fa25c4428"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0527b319d334a87100bee3dfb773df5851232866ace78114e24155779d58912c"
+    sha256 cellar: :any_skip_relocation, ventura:       "87c69184a59c4a69ea54449be1968a297f98ca916969050d48ec875e0c61d370"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "77aa2741861a823b5305a2f2a53c955251e993ef05f02a4c8b2bfa7c689d71a3"
   end
 
   depends_on "go" => :build
@@ -38,7 +37,7 @@ class Glooctl < Formula
     assert_match "glooctl is the unified CLI for Gloo.", run_output
 
     version_output = shell_output("#{bin}/glooctl version 2>&1")
-    assert_match "Client: {\"version\":\"#{version}\"}", version_output
+    assert_match "\"client\": {\n    \"version\": \"#{version}\"\n  }\n}", version_output
     assert_match "Server: version undefined", version_output
 
     # Should error out as it needs access to a Kubernetes cluster to operate correctly

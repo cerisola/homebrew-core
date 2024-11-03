@@ -1,7 +1,7 @@
 class Clash < Formula
   desc "Rule-based tunnel in Go"
   homepage "https://github.com/Dreamacro/clash"
-  url "https://github.com/Dreamacro/clash/archive/v1.18.0.tar.gz"
+  url "https://github.com/Dreamacro/clash/archive/refs/tags/v1.18.0.tar.gz"
   sha256 "139794f50d3d94f438bab31a993cf25d7cbdf8ca8e034f3071e0dd0014069692"
   license "GPL-3.0-only"
 
@@ -17,6 +17,8 @@ class Clash < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "edb29d947930fd06526bd829940a3acd5cad459d9f4005dee6233e35b010f4bc"
   end
 
+  disable! date: "2024-09-09", because: :repo_removed
+
   depends_on "go" => :build
   depends_on "shadowsocks-libev" => :test
 
@@ -26,7 +28,7 @@ class Clash < Formula
       -X "github.com/Dreamacro/clash/constant.Version=#{version}"
       -X "github.com/Dreamacro/clash/constant.BuildTime=#{time.iso8601}"
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   service do
@@ -63,8 +65,8 @@ class Clash < Formula
           password: "test"
           cipher: chacha20-ietf-poly1305
     EOS
-    system "#{bin}/clash", "-t", "-d", testpath # test config && download Country.mmdb
-    client = fork { exec "#{bin}/clash", "-d", testpath }
+    system bin/"clash", "-t", "-d", testpath # test config && download Country.mmdb
+    client = fork { exec bin/"clash", "-d", testpath }
 
     sleep 3
     begin

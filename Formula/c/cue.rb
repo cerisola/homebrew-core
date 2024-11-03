@@ -1,21 +1,18 @@
 class Cue < Formula
   desc "Validate and define text-based and dynamic configuration"
   homepage "https://cuelang.org/"
-  url "https://github.com/cue-lang/cue/archive/v0.6.0.tar.gz"
-  sha256 "8e884d9cf6138e05136ba7110ddd5ec20a312ed0d75868dc0a2fdb235e69f5e1"
+  url "https://github.com/cue-lang/cue/archive/refs/tags/v0.10.1.tar.gz"
+  sha256 "e6587287de35ea5d1d0cc0f9952f8b1491324114b5e4233b78750c1ab786461b"
   license "Apache-2.0"
   head "https://github.com/cue-lang/cue.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7525e2bee56f08fb471a2c1572c2f0bcf8958c7dd122261d1a54095539e70d80"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "579ff886b7061cb195f93b7a9c13d019b834513815e5c2ce706e24168a65018c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "579ff886b7061cb195f93b7a9c13d019b834513815e5c2ce706e24168a65018c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "579ff886b7061cb195f93b7a9c13d019b834513815e5c2ce706e24168a65018c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9c664c052560e1c35a7edf4d3894f9f8d49b04eb17d7544708adb8a5f6f7d249"
-    sha256 cellar: :any_skip_relocation, ventura:        "30a66bac2695a5c2c7b3e2c37338f396311e22cd228d9de69b2f7d8a1c3dbe2e"
-    sha256 cellar: :any_skip_relocation, monterey:       "30a66bac2695a5c2c7b3e2c37338f396311e22cd228d9de69b2f7d8a1c3dbe2e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "30a66bac2695a5c2c7b3e2c37338f396311e22cd228d9de69b2f7d8a1c3dbe2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4070a5fc5bfe013ac103e94efdafd8c5e0c162e38a8591491f277b6a67711fb1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5366c09fc11877565d8c07e8174e73443ee0031df62722a74ab15d524ec3c8d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b5366c09fc11877565d8c07e8174e73443ee0031df62722a74ab15d524ec3c8d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b5366c09fc11877565d8c07e8174e73443ee0031df62722a74ab15d524ec3c8d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1f324a306703e26e9f9b61206a659162bae7edfa952bbf2ac374f8627e2848a9"
+    sha256 cellar: :any_skip_relocation, ventura:       "1f324a306703e26e9f9b61206a659162bae7edfa952bbf2ac374f8627e2848a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f9f30d4fc6114d2f90af6d8c7a62fa7ba2175b9c339c6a9eb6d8d85e5c7c2541"
   end
 
   depends_on "go" => :build
@@ -43,7 +40,7 @@ class Cue < Formula
     expected = <<~EOS
       max: invalid value 5 (out of bound >10):
           ./check.cue:2:16
-          ./ranges.yml:5:7
+          ./ranges.yml:5:6
     EOS
 
     assert_equal expected, shell_output(bin/"cue vet ranges.yml check.cue 2>&1", 1)

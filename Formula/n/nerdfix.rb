@@ -1,20 +1,19 @@
 class Nerdfix < Formula
   desc "Find/fix obsolete Nerd Font icons"
   homepage "https://github.com/loichyan/nerdfix"
-  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.3.1.tar.gz"
-  sha256 "c1e4264db7de66666c5ddd73b90d7aa32fe5e7afd8a2eb8fe781288e84f93f27"
+  url "https://github.com/loichyan/nerdfix/archive/refs/tags/v0.4.1.tar.gz"
+  sha256 "37f13ccf0eb6567b31862bc46e694a60177cbf5b76667fe73f22cef8f7ea68df"
   license any_of: ["MIT", "Apache-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d5c61942d8898f08178d9372e8c6e961049a634dedcd15bf824af9dc3b383028"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bb5c87ddeac8dc0f6f3e8af968db9b2063b2d74ec77df0f415b67c2c27898da3"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "adddcea0e3438970fe8966db87e6645e8c5ad637b232eb511653de0800f13d34"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9817e8b6e248e9db23bd10db514522f09b28adc285c7ab3c72f0e4028bec912b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7acb338b289e7e3e0fda25b000c90b4de6d018973fda1d896aff8d0b1ea123f9"
-    sha256 cellar: :any_skip_relocation, ventura:        "8e4377979365a134dbfe6ceb713986fb920c44ac101a8733a43b74bc6b597688"
-    sha256 cellar: :any_skip_relocation, monterey:       "6af6516e2d93ccafae14ea25399d491ee2bb972a66d17370337f57781da8aa7b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8e97877cb970fac207f9389544f52977ac28cb526b911bb4ba76d6655b6e65a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a491cd9e012e1075c7f034cb53fd6c8c22c4d9f5baa8e4416b72b0e12b579099"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "548bbdbad743bb28524493de7787f61c17f5275a3213825364a197e7a6e8e001"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1d5798e7f09af5bb1fcb64a7e502ecfddb3fc4ead85c5611e3e2bd7210fe13cd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "daef9dbadb1db61fefd923a3699b3a9edbf8d8e9ace06db181fdd4e150d181bc"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f757476796838ce2f18d9dc9e9b25f9e561f6c3fed81b85a2b91bcab03b4480f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "236056a7d51fcf434977df5b05aa8c29c93cec4db96c202bc2931737ad5de28a"
+    sha256 cellar: :any_skip_relocation, ventura:        "48758a489aacd7bdf98f3943ded3ee3f7a825ab56a0edbaf296e780ec59a108a"
+    sha256 cellar: :any_skip_relocation, monterey:       "e57e9613e67a27b46c6959483c24f72630c614c2cfd0a9108ead154a19dfcdb4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0e22edc2daee1185ccef621bb5ebcaaf5e8b2544194843cfbafc8e850f5683b5"
   end
 
   depends_on "rust" => :build

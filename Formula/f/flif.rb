@@ -1,12 +1,13 @@
 class Flif < Formula
   desc "Free Loseless Image Format"
   homepage "https://flif.info/"
-  url "https://github.com/FLIF-hub/FLIF/archive/v0.4.tar.gz"
+  url "https://github.com/FLIF-hub/FLIF/archive/refs/tags/v0.4.tar.gz"
   sha256 "cc98313ef0dbfef65d72bc21f730edf2a97a414f14bd73ad424368ce032fdb7f"
   license "LGPL-3.0-or-later"
   head "https://github.com/FLIF-hub/FLIF.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "7ab5f6dea4a3bf05a201e221b47042ea4ff6d4372f64c1be2a306604d5710b38"
     sha256 cellar: :any,                 arm64_sonoma:   "6e2f70fa17688130a568e64fd6a4abdfe8e61681c1948cf2ecca01dfb04ee535"
     sha256 cellar: :any,                 arm64_ventura:  "398fe8152e8f752057a746c1369b9d8313ed3c7556c6e1011670ce2d4e060747"
     sha256 cellar: :any,                 arm64_monterey: "20c8b44c6ce76226aa53c3dc217bfe4ed82e7f181fb6122df515bf86e4e434f9"

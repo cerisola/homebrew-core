@@ -1,28 +1,36 @@
 class Clifm < Formula
   desc "Command-line Interface File Manager"
   homepage "https://github.com/leo-arch/clifm"
-  url "https://github.com/leo-arch/clifm/archive/refs/tags/v1.14.6.tar.gz"
-  sha256 "f26b9ee1c41f02ec50dcae4108865b7f463d6dcf5dbd1f0271fbe1dbed93b2a1"
+  url "https://github.com/leo-arch/clifm/archive/refs/tags/v1.21.tar.gz"
+  sha256 "cb219ca6ce1b4a31ec98701a43da51142c8bc7f15a22cb81dda93f881e6f6877"
   license "GPL-2.0-or-later"
 
+  # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
+  # labeled as "pre-release" on GitHub before the version is released, so it's
+  # necessary to use the `GithubLatest` strategy.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 arm64_sonoma:   "48a91f74710d9575f33e85673707a5270ae2e516d0f2fdd3c49cdd84ea14d8f8"
-    sha256 arm64_ventura:  "e3bd211f34fd99670724ed5b334f54fd141097e120c8f2431e5008fb218d1baa"
-    sha256 arm64_monterey: "2ab7f27b8d53efcf6c5a1449f3cf4d751fbb5d11557166b52968889b901682e9"
-    sha256 arm64_big_sur:  "ba5fcb45b1c66b9ccaa0a2dd68c799154af693c32f1fa2b6d02849065a89183a"
-    sha256 sonoma:         "3b364c581ff722c8af0788dbf6d06bee6264e259f87171697eebc2d7e422e4cb"
-    sha256 ventura:        "9ed28887dd4d23ec26247224ceec5332b8166da887412d5e4892154a5f3b3362"
-    sha256 monterey:       "a11b66a2b67c2306638c4db3cdb48087f5ec57e15d4e4be63047a8c55bb826e7"
-    sha256 big_sur:        "fa0149d54de9a375ff250ea2a0d8aca27ff276d7fcd7dfc04edb4521bac25832"
-    sha256 x86_64_linux:   "fa273ff811c036be867199414107b2410e1b2b4069e924e86946dd12fb538c5a"
+    sha256 arm64_sequoia: "813fcf5ca1ca698994f1a9676006a8994537493da00d3f04b853148d0a0b956a"
+    sha256 arm64_sonoma:  "bfd80b3ac7618b8fe15cb4fabe6a08f8e5d5cdb9e3d258a7def151c8a03f3578"
+    sha256 arm64_ventura: "6c0b56d150377237acd97158ef4a053abd9976231478416a77a75659ab92464d"
+    sha256 sonoma:        "8045b1e47890e2967a5bdc07a7b69bb9059fac00a566e7b3543c85fff6d39028"
+    sha256 ventura:       "d51436543ac15d87bb2413a94e1d5e8bc24167b00cb439afbaced448a4324b73"
+    sha256 x86_64_linux:  "15fe4caffb4840029995eb9cca88563e2bbd2b2997b3eeeca11fc6d9494ae3e9"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
 
-  depends_on "gettext"
   depends_on "libmagic"
   depends_on "readline"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   on_linux do
     depends_on "acl"
@@ -40,7 +48,7 @@ class Clifm < Formula
     ENV["TERM"] = "xterm"
 
     output = shell_output("#{bin}/clifm nonexist 2>&1", 2)
-    assert_match "clifm: nonexist: No such file or directory", output
+    assert_match "clifm: 'nonexist': No such file or directory", output
     assert_match version.to_s, shell_output("#{bin}/clifm --version")
   end
 end

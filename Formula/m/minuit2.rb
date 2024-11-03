@@ -1,8 +1,8 @@
 class Minuit2 < Formula
   desc "Physics analysis tool for function minimization"
-  homepage "https://root.cern.ch/doc/master/md_math_minuit2_doc_Minuit2.html"
-  url "https://root.cern.ch/download/root_v6.26.06.source.tar.gz"
-  sha256 "b1f73c976a580a5c56c8c8a0152582a1dfc560b4dd80e1b7545237b65e6c89cb"
+  homepage "https://root.cern.ch/doc/master/Minuit2Page.html"
+  url "https://root.cern.ch/download/root_v6.32.06.source.tar.gz"
+  sha256 "3fc032d93fe848dea5adb1b47d8f0a86279523293fee0aa2b3cd52a1ffab7247"
   license "LGPL-2.1-or-later"
   head "https://github.com/root-project/root.git", branch: "master"
 
@@ -11,29 +11,25 @@ class Minuit2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "9b1050abd25bea7ee6a9f998a377e09896ea72901d8e927dc90c7afd3c710252"
-    sha256 cellar: :any,                 arm64_ventura:  "2f7d577acba62cc976fa3c653eb12cc499054fd0fdc23d96ee1ce61c0792aa2e"
-    sha256 cellar: :any,                 arm64_monterey: "6e205879629a898f1a797da87058b2cd7f727b5a5f21742af6227c74542977c0"
-    sha256 cellar: :any,                 arm64_big_sur:  "937bc1d4b5613eadde5eb9b8706509ac46fba4b213df914b3a34f0b9645f9e8a"
-    sha256 cellar: :any,                 sonoma:         "b057ca509ec4f3fba79c981df6afa36bf09dd707df3aec47e12bd6a6530d0e48"
-    sha256 cellar: :any,                 ventura:        "1038f1c50451e93a9195bf3fedd9b206da67c5d0981787ce29ca15c093431931"
-    sha256 cellar: :any,                 monterey:       "4738710f5a36f8c52c56650f6a7f6b5ed9470ad9d9fa8f1a5aaf2c9292bcb269"
-    sha256 cellar: :any,                 big_sur:        "d5d4d4ce8c56607be1a02cbb2703d396cda084c04cef18be6cd6665364478ab4"
-    sha256 cellar: :any,                 catalina:       "13bf91dd19a6a1a2eb4a291cca8cc07e00b79fca07896216f15e09b2ae90a0e3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b5ea379da72fbca8dc6af5079d08dcdec09879a14abb0f1a52b6a9a1cd293f1"
+    sha256 cellar: :any,                 arm64_sequoia: "49aeffaff9072575263eb90b99b2420b58936afd647088d100c9e1328f1815bf"
+    sha256 cellar: :any,                 arm64_sonoma:  "780a87169e2c08c83bfa182b311f679dc801837fb3fb52b47e1cdcd3a69c4123"
+    sha256 cellar: :any,                 arm64_ventura: "81df76464de7aedcebef53166c87db4ff989f1598711c05cb9142563061b0cac"
+    sha256 cellar: :any,                 sonoma:        "9a44140aebdc9759f0304d970782d2168c4bc4b849206d66c426a636f5162a39"
+    sha256 cellar: :any,                 ventura:       "95995709b388aec69aae024bef400157c10b21adb66d0459c0529ffaf612b4eb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "adbe1fad75e82d7795f079a71136f18304ce4073570b53381d5f69a11efc891c"
   end
 
   depends_on "cmake" => :build
 
   def install
     system "cmake", "-S", "math/minuit2", "-B", "build/shared", *std_cmake_args,
-                    "-Dminuit2_standalone=ON", "-DBUILD_SHARED_LIBS=ON",
+                    "-Dminuit2_standalone=ON", "-DCMAKE_CXX_FLAGS='-std=c++14'", "-DBUILD_SHARED_LIBS=ON",
                     "-DCMAKE_INSTALL_RPATH=#{rpath}"
     system "cmake", "--build", "build/shared"
     system "cmake", "--install", "build/shared"
 
     system "cmake", "-S", "math/minuit2", "-B", "build/static", *std_cmake_args,
-                    "-Dminuit2_standalone=ON", "-DBUILD_SHARED_LIBS=OFF"
+                    "-Dminuit2_standalone=ON", "-DCMAKE_CXX_FLAGS='-std=c++14'", "-DBUILD_SHARED_LIBS=OFF"
     system "cmake", "--build", "build/static"
     lib.install Dir["build/static/lib/libMinuit2*.a"]
 
@@ -42,7 +38,7 @@ class Minuit2 < Formula
 
   test do
     cp Dir[pkgshare/"MnTutorial/{Quad1FMain.cxx,Quad1F.h}"], testpath
-    system ENV.cxx, "-std=c++11", "Quad1FMain.cxx", "-o", "test", "-I#{include}/Minuit2", "-L#{lib}", "-lMinuit2"
+    system ENV.cxx, "-std=c++14", "Quad1FMain.cxx", "-o", "test", "-I#{include}/Minuit2", "-L#{lib}", "-lMinuit2"
     assert_match "par0: -8.26907e-11 -1 1", shell_output("./test")
   end
 end

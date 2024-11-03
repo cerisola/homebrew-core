@@ -3,43 +3,41 @@ class AivenClient < Formula
 
   desc "Official command-line client for Aiven"
   homepage "https://docs.aiven.io/docs/tools/cli"
-  url "https://files.pythonhosted.org/packages/27/05/bdde8a0a85a59e06cc243e07145884ab58fe50540f957ce5ee3d9dedce52/aiven_client-3.1.1.tar.gz"
-  sha256 "421a00c9955b8704812395cc7add3bacb03977657cd87391028fdb9894252509"
+  url "https://files.pythonhosted.org/packages/02/e8/687f8d55bce44b8bfa33a48c508f5a575624db4b9832dfa5843e92a7c8ee/aiven_client-4.4.0.tar.gz"
+  sha256 "2cb0542643ad575a7a3135078264783faf845227c89238b0b6346f824b9a08e3"
   license "Apache-2.0"
-  revision 1
   head "https://github.com/aiven/aiven-client.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "46cdbbd41f6f6af1fd800435cb6511c7d32bb574b6d262d3a2f52960a9792c7d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7091ec3d90be6d5adf419aeda57e0b4c0736e23909d55d17b372731600809ea6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "254c45f94e28baaa9b7fa8149f8d7a9c3eb49505b5d93152df8fa5a53c1f804f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b7e5401598e2f8efb7f0f21963ae6957afc909a8cd89a83e6dd66b9886ead346"
-    sha256 cellar: :any_skip_relocation, ventura:        "77e8151f5511e6ba444aadb85baa3e88a516e5379a82af6172f858771e3e731b"
-    sha256 cellar: :any_skip_relocation, monterey:       "009187ab4dccc4d231c11b511c5344f498a18913d2dedae3a4567de872aeeb6f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0e438338c91e0b0156633015f62d5eaa08bde64f27e119c609051e49bd6cb20"
+    sha256 cellar: :any_skip_relocation, all: "a1c37513bf39b103072c6b7475a8dc6bd34f6e886a7415d752c066a0c08338db"
   end
 
-  depends_on "python-certifi"
-  depends_on "python@3.11"
+  depends_on "certifi"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+  end
+
+  resource "requests-toolbelt" do
+    url "https://files.pythonhosted.org/packages/f3/61/d7545dafb7ac2230c70d38d31cbfe4cc64f7144dc41f6e4e4b78ecd9f5bb/requests-toolbelt-1.0.0.tar.gz"
+    sha256 "7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/8b/00/db794bb94bf09cadb4ecd031c4295dd4e3536db4da958e20331d95f1edb7/urllib3-2.0.6.tar.gz"
-    sha256 "b19e1a85d206b56d7df1d5e683df4a7725252a964e3993648dd0fb5a1c157564"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

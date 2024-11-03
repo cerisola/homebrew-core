@@ -3,22 +3,15 @@ class GitMachete < Formula
 
   desc "Git repository organizer & rebase workflow automation tool"
   homepage "https://github.com/VirtusLab/git-machete"
-  url "https://pypi.org/packages/source/g/git-machete/git-machete-3.18.3.tar.gz"
-  sha256 "b15b9abae64595aee80687ef5a76304a4eae10cd36499b95b7308777594484df"
+  url "https://files.pythonhosted.org/packages/65/0e/f6bd863ee67d8f087e4077fb3ce0244cd0dc202506834686565e3f0279ad/git_machete-3.30.0.tar.gz"
+  sha256 "f9944dbac8c6496a3ba3962d5aac6125eb353c6185f05190b3d50feb08754cc6"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2110a6ac3603f52433573feb7ee98064257723a4a085f677adf053d84ef71a6b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3762d7b3b175c08e509badd35f1e422d1e07a59e6caaf9149c65a278af3778d7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b4b00707e4f0c341f0d8c9273baedab60e66d518f2ad525a9c20fa88572aadf9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "394c87b6243e24b61e7ede4470bdd5ab79caab07e40eb8d261e26f7c90048aae"
-    sha256 cellar: :any_skip_relocation, ventura:        "da918966414f7ed27de13664dad334dcb8703bd958bbdb992fd2c9fddc833dcd"
-    sha256 cellar: :any_skip_relocation, monterey:       "76e290403af47c0483d92663a56bcadc88da997f2bb2a765048f67b509d8301f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f56de3a1ce0345c589114dbc31db9315a3c3401bf2dbdd83526877e16634ef30"
+    sha256 cellar: :any_skip_relocation, all: "9842c235332c66eb070b49c14c9b56db8f5d692020b99acfb33da7c06b0eca86"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
     virtualenv_install_with_resources

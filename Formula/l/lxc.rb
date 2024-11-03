@@ -1,21 +1,20 @@
 class Lxc < Formula
   desc "CLI client for interacting with LXD"
   homepage "https://ubuntu.com/lxd"
-  url "https://github.com/canonical/lxd/releases/download/lxd-5.18/lxd-5.18.tar.gz"
-  sha256 "e05e2afa39f2a44e08dbfe43eb9513dcd4697497abb524678bc26f1e4a531552"
-  license "Apache-2.0"
+  url "https://github.com/canonical/lxd/releases/download/lxd-6.1/lxd-6.1.tar.gz"
+  sha256 "ef073f19b5e666f306232d7c086ec1f39bbc14672237f2fd7b65d259caead1b9"
+  license "AGPL-3.0-only"
   head "https://github.com/canonical/lxd.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5cb897a1d36a91d28e376dc4d2a82f399ebfb1423cecebb125f97e129417b46f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2f7ef6cdc351d394f301026de28714e536048ab768bcfcfbaa0440f289553d5b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "76d9a9ec06e8abce1704465af0bb543ed0fc958545280cf7fece121632ee3bbe"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "159fd7530ff285211db64338bdc53a50ced3b22a7ddc580f42aa32d0dab77372"
-    sha256 cellar: :any_skip_relocation, sonoma:         "841f5ea7251a6f35f6e06644c71ca3b0d3e372d491663ee22b8b11c56c76efb4"
-    sha256 cellar: :any_skip_relocation, ventura:        "3dcb07da04278afc607ffdd2aa22ec947e214cba4911f77e1888485a44df3030"
-    sha256 cellar: :any_skip_relocation, monterey:       "f235c25ed6d59bd527e5e6f555ff15a5693524062b779a68a6e664774d4ea6ea"
-    sha256 cellar: :any_skip_relocation, big_sur:        "87f6b3950ccbd890a8087340469f3617999fb278e1b6c9c80fee16f6c56ba86b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0f0bbdf45d4833217bfc75bc8af5addce2bc644fef169eb6908cdfa8ef5a936d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4819357eca98fa9b3275b36c9aa346a9933c7cd3562fc84cc3551d9ce05836c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2a80b2547e2b6db519b582309a06f4f7905820aa626555cf4ec259ee6db58c92"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d0a71f095561e5c2ed19054c16455079bae4d6fdbe367f45364fcc2535c395a2"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "5fd47741213d1e89b424321a723f6c5a3157cebd794d8a49899f7002e7b49f59"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e21a2bfe721dc23fce826f3f9dcf63060d24eadee5b2322bd23ba72d09755df3"
+    sha256 cellar: :any_skip_relocation, ventura:        "5c8951a235c73e4ed0205ea9ec398b23a048bb0470b76c25892774e1e94085a6"
+    sha256 cellar: :any_skip_relocation, monterey:       "c91c3b6382c0f3c1d07cc2cf96609baffce5667bc5fbd4c7fc07f218d89d9336"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a78e129573f90fa081adf1a31f7824ea4690dc93e88c21b3da97ca08aeab163"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Lxc < Formula
 
   test do
     output = JSON.parse(shell_output("#{bin}/lxc remote list --format json"))
-    assert_equal "https://images.linuxcontainers.org", output["images"]["Addr"]
+    assert_equal "https://cloud-images.ubuntu.com/releases", output["ubuntu"]["Addr"]
 
     assert_match version.to_s, shell_output("#{bin}/lxc --version")
   end

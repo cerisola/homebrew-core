@@ -1,39 +1,47 @@
 class Libgr < Formula
   desc "GR framework: a graphics library for visualisation applications"
   homepage "https://gr-framework.org/"
-  url "https://github.com/sciapp/gr/archive/refs/tags/v0.72.10.tar.gz"
-  sha256 "32c829660d4634f4097fb0a2729719071e201115900a193f608413850314f3ba"
+  url "https://github.com/sciapp/gr/archive/refs/tags/v0.73.8.tar.gz"
+  sha256 "1eb9f15096f839f6cd8581cf8b4a427de3dcdcd1d2d76dbc3e7d933e637ccd71"
   license "MIT"
 
   bottle do
-    sha256 arm64_sonoma:   "a4237b240e6d881a65b9a27a92f6475a1bd7d89bd92fcd6dc1c4f127123269b9"
-    sha256 arm64_ventura:  "2e1eab780ff547ab0c5b81bd8ff523cc5a6add81e62ed2562f04743f3bfc4139"
-    sha256 arm64_monterey: "c84b2e82fbb8b6b0b17336010f1f99fa62ea7c0a46dd8274bf0e56d33da55761"
-    sha256 arm64_big_sur:  "1e2e3b15e2f668d43dd8cba51a5614c2856c706bb70bb380504b2173d8ce6acd"
-    sha256 sonoma:         "7f7a1fd955ba02341f10e3b19983850fbdb53eafbbbee5f88059d3ee0955bad6"
-    sha256 ventura:        "b44eeac18464077c54f95a3fbf579db3fa6dc8084341c4424eb72cb7dc15a58d"
-    sha256 monterey:       "5374ae7fec2483fb6db32084d739cd780e982aea380d0024c433ce02ef9a4209"
-    sha256 big_sur:        "6ee088103e077df839074c71ebcf102d7f5b99fa807f1cd16693c999f5c349a9"
+    sha256 arm64_sonoma:  "8b62829c85bdadaa6e580778908cc35f77cc2c77ad8d087b24faa3e63809278a"
+    sha256 arm64_ventura: "028634a8e7da865ba9c30f56ec4db6464c68f5c6d02de0a83bc20ddb0c9efd78"
+    sha256 sonoma:        "911929b594cd54ca72270cc27aa58496662d885b27eb290973cfe37815f9c985"
+    sha256 ventura:       "90343b750d2dc752fa579f0d34135e8681b313bc17a07c4d580219aac3a0b943"
+    sha256 x86_64_linux:  "970e8d4f63b3d6a1b0ad4f151669f5c3844ae2e0cdaed99c298bd83263cc54ab"
   end
 
   depends_on "cmake" => :build
   depends_on "cairo"
+  depends_on "ffmpeg"
+  depends_on "freetype"
   depends_on "glfw"
+  depends_on "jpeg-turbo"
+  depends_on "libpng"
   depends_on "libtiff"
+  depends_on "pixman"
   depends_on "qhull"
   depends_on "qt"
   depends_on "zeromq"
 
+  uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "libx11"
+    depends_on "libxt"
+    depends_on "mesa"
+  end
+
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <gr.h>
 
@@ -49,7 +57,7 @@ class Libgr < Formula
           gr_emergencyclosegks();
           return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-L#{lib}", "-lGR"
     system "./test"

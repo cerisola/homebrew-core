@@ -1,9 +1,9 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://varnish-cache.org/_downloads/varnish-7.4.1.tgz"
-  mirror "https://fossies.org/linux/www/varnish-7.4.1.tgz"
-  sha256 "874d837aaf49b8f2718cb60b8c8c7900e9ea10c264f218c88cd672d596f4b89f"
+  url "https://varnish-cache.org/_downloads/varnish-7.6.0.tgz"
+  mirror "https://fossies.org/linux/www/varnish-7.6.0.tgz"
+  sha256 "aba283c5a31baaa5356a6db38f38748cbb9158feca018193445ccc8514715d5c"
   license "BSD-2-Clause"
 
   livecheck do
@@ -12,30 +12,25 @@ class Varnish < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "baa3d9b974e396658f8d4afbbc2fb616855440ae9e45584be3c0bef4880cf0a7"
-    sha256 arm64_ventura:  "a5e1cf1c5e87ce6437207125acaa7a0687ea0f267c4562399090efcb563edcb0"
-    sha256 arm64_monterey: "410ab72c7543e5ef5345b75bff89c0f6afc451303693fd1cc56e5c60c515c2b7"
-    sha256 arm64_big_sur:  "de9393b3f2895e5d8b3c6f647e136073a7f2b57858f272987d116f0055e4ef07"
-    sha256 sonoma:         "40502e21422208af128171163215cf3b5fd8e7cc61a8d1fe324392d319479beb"
-    sha256 ventura:        "40a9a68b2572b1c4c033ea7e2023578211d53ff85aa022ea90643f91d7c52186"
-    sha256 monterey:       "84213e33e6ab7068af70c6bff3592822d569eb61a1322c0b33a7fd048f07a76d"
-    sha256 big_sur:        "e457a51ea02ff7b3c00b36c536507742d3995a7cfa2aa1f81105d20d0e5c60f6"
-    sha256 x86_64_linux:   "f8827726b9f6936bf4c3d7ca70027be86433c90a22fa20cbd55073fe99ee4cd6"
+    sha256 arm64_sequoia: "0cfc073c2158e6dcb2af053cdfcef99688993f62c37664bf1417e77cb355c283"
+    sha256 arm64_sonoma:  "1aaab04a079d9cbe8d35a1b3dfb80f128d1f34dfa7badb137104c23e256aecc9"
+    sha256 arm64_ventura: "d4f1b0b7c46dfe7d116a09787a19d9aefd3e5b3811f99681c10e8c29f7536a2a"
+    sha256 sonoma:        "2c14d407cead72f4dfdcb4aa68f538224170d31397e9cb61fd5ed2d0a3a3ab86"
+    sha256 ventura:       "cbd7fb43946486f9b967bc0c9829e339a92c674f00fc45f16855bacb6309707d"
+    sha256 x86_64_linux:  "9ab568dc9dd39df73ea8e03a8ee9d4d3ba1315b6114ed0001ce01e8615f7fab2"
   end
 
   depends_on "docutils" => :build
   depends_on "graphviz" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
   depends_on "sphinx-doc" => :build
   depends_on "pcre2"
 
+  uses_from_macos "python" => :build
   uses_from_macos "libedit"
   uses_from_macos "ncurses"
 
   def install
-    ENV["PYTHON"] = Formula["python@3.11"].opt_bin/"python3.11"
-
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}"
@@ -79,6 +74,8 @@ class Varnish < Formula
     timeout_tests = [
       testpath/"m00000.vtc",
       testpath/"b00047.vtc",
+      testpath/"b00084.vtc",
+      testpath/"b00086.vtc",
       testpath/"u00008.vtc",
     ]
     tests = testpath.glob("[bmu]*.vtc") - timeout_tests

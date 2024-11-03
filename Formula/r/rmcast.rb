@@ -1,7 +1,7 @@
 class Rmcast < Formula
   desc "IP Multicast library"
-  homepage "http://www.land.ufrj.br/tools/rmcast/rmcast.html"
-  url "http://www.land.ufrj.br/tools/rmcast/download/rmcast-2.0.0.tar.gz"
+  homepage "https://www.land.ufrj.br/tools/rmcast/rmcast.html"
+  url "https://www.land.ufrj.br/tools/rmcast/download/rmcast-2.0.0.tar.gz"
   sha256 "79ccbdbe4a299fd122521574eaf9b3e2d524dd5e074d9bc3eb521f1d934a59b1"
   license "QPL-1.0"
 
@@ -11,6 +11,7 @@ class Rmcast < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "2550872c1731058ae467f82b6258659ace4cc86e091fa54f827daa61cd5677fc"
     sha256 cellar: :any,                 arm64_sonoma:   "d82904f97cda3eb5874bfca8ac452568a04efeadd88524fc2b1e03cb594ecca9"
     sha256 cellar: :any,                 arm64_ventura:  "07939c86d1018aeb45c483ea2e96514f24cc92fcca30f5ffe3ebdaa8f1a53b9d"
     sha256 cellar: :any,                 arm64_monterey: "bb3d3a129e3ac532f960335c23adb657e333751efee7243577c772f92abf31a6"

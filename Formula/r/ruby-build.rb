@@ -1,17 +1,18 @@
 class RubyBuild < Formula
   desc "Install various Ruby versions and implementations"
   homepage "https://github.com/rbenv/ruby-build"
-  url "https://github.com/rbenv/ruby-build/archive/v20230919.tar.gz"
-  sha256 "367956ebb1c5bdda3802f27de87367cd1aaf319ed7249ce8133481fb894bef4d"
+  url "https://github.com/rbenv/ruby-build/archive/refs/tags/v20241030.tar.gz"
+  sha256 "21b95d0cd726914f6cd8c8271cbe293f5f7705256fa4ac89793f9f66cbc9a1d2"
   license "MIT"
   head "https://github.com/rbenv/ruby-build.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "b83ddf3da4e267856bc595440711489a6e4a59e76cf04d5bc1fe3d86c543e2d4"
+    sha256 cellar: :any_skip_relocation, all: "8e2343d8e618f97001d54fb76f67142477f00b7b43b4f70f6ac24330425377c7"
   end
 
   depends_on "autoconf"
   depends_on "libyaml"
+  depends_on "openssl@3"
   depends_on "pkg-config"
   depends_on "readline"
 
@@ -20,21 +21,7 @@ class RubyBuild < Formula
     # prevent having identical bottles between platforms so let's fix that.
     inreplace "bin/ruby-build", "/usr/local", HOMEBREW_PREFIX
 
-    ENV["PREFIX"] = prefix
-    system "./install.sh"
-  end
-
-  def caveats
-    <<~EOS
-      ruby-build installs a non-Homebrew OpenSSL for each Ruby version installed and these are never upgraded.
-
-      To link Rubies to Homebrew's OpenSSL 1.1 (which is upgraded) add the following
-      to your shell profile e.g. ~/.profile or ~/.zshrc:
-        export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
-
-      Note: this may interfere with building old versions of Ruby (e.g <2.4) that use
-      OpenSSL <1.1.
-    EOS
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do

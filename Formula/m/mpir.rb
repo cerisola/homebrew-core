@@ -20,7 +20,7 @@ class Mpir < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "255666a3f9f3520885fba30dbe76714a89a10d914473e6cf834f55caba125a2a"
   end
 
-  deprecate! date: "2023-02-18", because: :unmaintained
+  disable! date: "2024-02-12", because: :unmaintained
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -42,7 +42,7 @@ class Mpir < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <mpir.h>
       #include <stdlib.h>
 
@@ -55,7 +55,7 @@ class Mpir < Formula
         if (mpz_get_si (j) != 5 || mpz_get_si (k) != 1) abort();
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lmpir", "-o", "test"
     system "./test"
   end

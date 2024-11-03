@@ -1,12 +1,13 @@
 class Forego < Formula
   desc "Foreman in Go for Procfile-based application management"
   homepage "https://github.com/ddollar/forego"
-  url "https://github.com/ddollar/forego/archive/20180216151118.tar.gz"
+  url "https://github.com/ddollar/forego/archive/refs/tags/20180216151118.tar.gz"
   sha256 "23119550cc0e45191495823aebe28b42291db6de89932442326340042359b43d"
   license "Apache-2.0"
   head "https://github.com/ddollar/forego.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ef67ea741e0294b822fc3dfb3cfd124e9621b2c8f24ab6e8c023f95782cd81eb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f46dbdf37d045a718a27858ca874d1eb69b67bbd04e5778f549e4f632dd4f01a"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "544f9c669387997e9197bf3de714106580d23b38fbcd7ba5d5dfba80876563e7"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "add9895abd190b3c092406ff31939139d7f4e84ea4b8826a3e81e701ce5a482f"
@@ -31,7 +32,7 @@ class Forego < Formula
     (buildpath/"src/github.com/ddollar/forego").install buildpath.children
     cd "src/github.com/ddollar/forego" do
       ldflags = "-X main.Version=#{version} -X main.allowUpdate=false"
-      system "go", "build", *std_go_args(ldflags: ldflags)
+      system "go", "build", *std_go_args(ldflags:)
     end
   end
 

@@ -1,29 +1,29 @@
 class Erigon < Formula
   desc "Implementation of Ethereum (execution client), on the efficiency frontier"
   homepage "https://github.com/ledgerwatch/erigon"
-  url "https://github.com/ledgerwatch/erigon/archive/refs/tags/v2.51.0.tar.gz"
-  sha256 "5d91fd54952cd8a56d029cea0b784352434f90d698d95160bf46a5d8fcfd7ebe"
+  url "https://github.com/ledgerwatch/erigon/archive/refs/tags/v2.55.1.tar.gz"
+  sha256 "2e340bb5504f565bb9fe8c4d246dea50bd54bfcf6a91e9196aeb4fbda722ae9e"
   license all_of: ["GPL-3.0-or-later", "LGPL-3.0-or-later"]
   head "https://github.com/ledgerwatch/erigon.git", branch: "devel"
 
-  livecheck do
-    url :stable
-    strategy :github_latest
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "450e82a964c4c0f8091ae2ffab8cfc741e77d44c1752ee6f2eaa660044c16975"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ae35586de98a7067a18a36323c65a8573fd2a5cf3c4467efa1daa7f625b72edc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1b3595711fe008717c82ccfa82836e9753f2319b7f66c2848ee4f891879737b5"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e976d99a3ee32f34a3fa3dedfc5c84dbe348781034c72ba26510c954ca1076d2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "4fe3b15261883faf113b87f3373d9b26e4119c607c456d6ac62415974534b32e"
+    sha256 cellar: :any_skip_relocation, ventura:        "6a0bbabd1ab15aa833c7311b3d13fbf176002fc5695e26ce9cf5a821f1f0e9f1"
+    sha256 cellar: :any_skip_relocation, monterey:       "6e2fe466bbb29af8ef4d9d5f06767ac32188730a3bb276b9f0cfd4227ed64acd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d66f64987e1828b5098e40d6ec7e4fe4ece0240059d2151abca6f9959f6c88aa"
   end
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7c0a4b25de2f1d56e0aa8b0e5a088f48f218ab303d9d7ccdca7b0c1604876ece"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "777d1802065bfdf163b81f4aabe7cf4b670d64903392ecafe76cc5e4466b782f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "869d0149fd0987288e57e2735adb9c376fbcc33522f781a84e4757a516231a26"
-    sha256 cellar: :any_skip_relocation, sonoma:         "cafc61245218fcc5bcafd205d22bd7295388a684731366e626331712ec154e7a"
-    sha256 cellar: :any_skip_relocation, ventura:        "09a1be765a9f2cb7347e49d4093103555a943b2fe7e324ef272e1637af0b39be"
-    sha256 cellar: :any_skip_relocation, monterey:       "153a9d180ca533924860c047e153314cd4accf5d5173afb1d72d70295a2feda5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6a6d4818c2acb0db29e8ba509b47897cba0d3967a0829959e58e709093bfd702"
-  end
+  # Upstream includes pre-built libsilkworm_capi inside silkworm-go and recommends copying to installation:
+  # https://github.com/ledgerwatch/erigon?tab=readme-ov-file#how-to-run-erigon-as-a-separate-user-eg-as-a-systemd-daemon
+  # Trying to build library from source only works with `conan` which would use their pre-built libraries.
+  deprecate! date: "2024-02-29", because: "needs a pre-built copy of libsilkworm_capi"
 
   depends_on "gcc" => :build
-  # upstream issue to support go 1.21, https://github.com/ledgerwatch/erigon/issues/7984
-  depends_on "go@1.20" => :build
+  depends_on "go" => :build
 
   conflicts_with "ethereum", because: "both install `evm` binaries"
 
@@ -60,7 +60,7 @@ class Erigon < Formula
       --log.dir.verbosity debug
       --log.dir.path #{testpath}
     ]
-    system "#{bin}/erigon", *args, "init", "genesis.json"
+    system bin/"erigon", *args, "init", "genesis.json"
     assert_predicate testpath/"erigon.log", :exist?
   end
 end

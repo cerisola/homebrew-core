@@ -1,11 +1,12 @@
 class Wiki < Formula
   desc "Fetch summaries from MediaWiki wikis, like Wikipedia"
   homepage "https://github.com/walle/wiki"
-  url "https://github.com/walle/wiki/archive/v1.4.1.tar.gz"
+  url "https://github.com/walle/wiki/archive/refs/tags/v1.4.1.tar.gz"
   sha256 "529c6a58b3b5c5eb3faab07f2bf752155868b912e4f753e432d14040ff4f4262"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f04d4a1f0e1ff026faa5c23ff76285373b149aee6ea15cac6e15675566f2c0d5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ff6fe02817f0844c04ab7f49950a4002ddb29aec162412c8dae098ee3d8a27af"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e8f38ae68a67e5c67b256d0081aa958367b37082454d56d0138a59168a47e20c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "eb361e567c70bd6019dc7a16f16eaefbc5166fd158586360a70f1fbd445db572"

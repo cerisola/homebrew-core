@@ -2,22 +2,20 @@ class PrometheusCpp < Formula
   desc "Prometheus Client Library for Modern C++"
   homepage "https://github.com/jupp0r/prometheus-cpp"
   url "https://github.com/jupp0r/prometheus-cpp.git",
-      tag:      "v1.1.0",
-      revision: "c9ffcdda9086ffd9e1283ea7a0276d831f3c8a8d"
+      tag:      "v1.2.4",
+      revision: "ad99e21f4706193670c42b36c9824dc997f4c475"
   license "MIT"
   head "https://github.com/jupp0r/prometheus-cpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7e77071a73a92d8433236e2d532224f02a62fd7408070db00f124cbdb61c4282"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d6e257e9946b0cde088a86af5d0a839e2236972c662c2983b813557b7eb02ede"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1878e13f58c5fd8a0372e1e3f2716b87fc44b38463c684eca1630c6f6fbdb689"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2f0502684fa4c30929c1cfdf07f9aa7e5d4d38b4d0714e01c329115fada715f2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "828e356709ad1d531f885d3843df137de9ca3a3834cba1ab89f477eb14f46913"
-    sha256 cellar: :any_skip_relocation, ventura:        "1c91c6b106e041efdade1811e5924c883e6c7e69a56008ce50bec35a98f318a5"
-    sha256 cellar: :any_skip_relocation, monterey:       "f40470268823a385b19db6ba6341573ad006901f4702f9b6db2fe7165278b497"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8d2f91d1402fc65e4a5e0803dbf8c315b6d14db84559a32fe024c741f520e9a6"
-    sha256 cellar: :any_skip_relocation, catalina:       "1d472883a72631b29594c8c06b342300c717a6dc36f8dcd5edccdf629e7bdd5b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "19eec03c31caaf8bc45b222a578b81a90fefe8a7ae5be01a9377d3cb257058c4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c2571779537dc5ab9240204f8abc79daa0e004d1e0706bfad50f8572a1b429a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d668756a9f2cce815bb21d4cc57f6650033e16c9f6075e182a83c9be2b8faf87"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed12e2d6e073c2cf5d8d944f38ba7b825c464db9cea604c786442ee87c68f2f7"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ec2d1f82b26e4646b33f50555000040a2b60092ceb3e12b0141134644aa7e973"
+    sha256 cellar: :any_skip_relocation, sonoma:         "60fc60c44cc6a6ebcb497fbd1bf1e5b55d4edabfc8be33f7983409ffd8beeee0"
+    sha256 cellar: :any_skip_relocation, ventura:        "9ed018a937326f595e2d8b0901471e804bf1656249410f6d41d6e3d3a4ac9eb2"
+    sha256 cellar: :any_skip_relocation, monterey:       "d0a4bc233403aa98f488f60cb7e6d1d8f3d03348b88b7ded8e18c2fb4e59ff35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00a319b9c7930f5555e55783aa88a149b738d34565069e19b6141c20300e59ed"
   end
 
   depends_on "cmake" => :build

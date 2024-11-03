@@ -1,12 +1,13 @@
 class CmarkGfm < Formula
   desc "C implementation of GitHub Flavored Markdown"
   homepage "https://github.com/github/cmark-gfm"
-  url "https://github.com/github/cmark-gfm/archive/0.29.0.gfm.13.tar.gz"
+  url "https://github.com/github/cmark-gfm/archive/refs/tags/0.29.0.gfm.13.tar.gz"
   version "0.29.0.gfm.13"
   sha256 "5abc61798ebd9de5660bc076443c07abad2b8d15dbc11094a3a79644b8ad243a"
   license "BSD-2-Clause"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "85d7af0fca04c40443c4ed376656271c88814f43c935ec59a1704382fd59f35e"
     sha256 cellar: :any,                 arm64_sonoma:   "02ea9335249ea4b4749ebdb3770deadd78e9e135431ad4552ff23941fe83edb9"
     sha256 cellar: :any,                 arm64_ventura:  "db367b57679f3f5ff972e89fb35c51fb30bbb343ce8e13b9202bf202ca8ae24b"
     sha256 cellar: :any,                 arm64_monterey: "88f430ffc95c1e948082963bd58dc7b710033f69b7aa74b11d4f4fd7c567603a"
@@ -19,15 +20,16 @@ class CmarkGfm < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
+  uses_from_macos "python" => :build
 
   conflicts_with "cmark", because: "both install a `cmark.h` header"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args, "-DCMAKE_INSTALL_RPATH=#{rpath}"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build",
+                        "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                        *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

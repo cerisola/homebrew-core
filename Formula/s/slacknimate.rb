@@ -1,12 +1,13 @@
 class Slacknimate < Formula
   desc "Text animation for Slack messages"
   homepage "https://github.com/mroth/slacknimate"
-  url "https://github.com/mroth/slacknimate/archive/v1.1.0.tar.gz"
+  url "https://github.com/mroth/slacknimate/archive/refs/tags/v1.1.0.tar.gz"
   sha256 "71c7a65192c8bbb790201787fabbb757de87f8412e0d41fe386c6b4343cb845c"
   license "MPL-2.0"
   head "https://github.com/mroth/slacknimate.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d9ac5eee6054981abdbaf4e761840dbc63ec20dfdf7c5e36abbc2f7537fd9804"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1932450215802048e308af408e1255649dadb49e440a4dd1e172d1497d890e70"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e1dcbf1a976b1addb776b43655464f1139969ade15c765d1fbad335529227c1a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "438d35da4f542723602cbaa0cb136069389c6216632d0145295b744eb473cfc8"
@@ -25,11 +26,11 @@ class Slacknimate < Formula
 
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/slacknimate"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/slacknimate"
   end
 
   test do
-    system "#{bin}/slacknimate", "--version"
-    system "#{bin}/slacknimate", "--help"
+    system bin/"slacknimate", "--version"
+    system bin/"slacknimate", "--help"
   end
 end

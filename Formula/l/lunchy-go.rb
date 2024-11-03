@@ -1,11 +1,12 @@
 class LunchyGo < Formula
   desc "Friendly wrapper for launchctl"
   homepage "https://github.com/sosedoff/lunchy-go"
-  url "https://github.com/sosedoff/lunchy-go/archive/v0.2.1.tar.gz"
+  url "https://github.com/sosedoff/lunchy-go/archive/refs/tags/v0.2.1.tar.gz"
   sha256 "58f10dd7d823eff369a3181b7b244e41c09ad8fec2820c9976b822b3daee022e"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fba65395dd87db751184f0d6a5023465484f321d47b4cd62ff0095837656c1e6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ce24f8e0a143748b271ad64e33834336cc504c8e14f8dd61ebaac7b06f4eafd5"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf0dbfac8d527789d752334946988aba0d6bc4a1858e1d94963a8214ee291041"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9dadf4a849956c4f09eba6b8c18aed458686138e91254675004e7d15caf4a2a6"

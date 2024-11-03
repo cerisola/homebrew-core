@@ -1,12 +1,13 @@
 class Threemux < Formula
   desc "Terminal multiplexer inspired by i3"
   homepage "https://github.com/aaronjanse/3mux"
-  url "https://github.com/aaronjanse/3mux/archive/v1.1.0.tar.gz"
+  url "https://github.com/aaronjanse/3mux/archive/refs/tags/v1.1.0.tar.gz"
   sha256 "0f4dae181914c73eaa91bdb21ee0875f21b5da64c7c9d478f6d52a2d0aa2c0ea"
   license "MIT"
   head "https://github.com/aaronjanse/3mux.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3d8d3f42362a72fe5ef6390d24223c572b596d234c590d7dcd51129678f6aae5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "358ebf92a4d1ccf5844e2b21c3918d4fdc0344f3d5aea110b170e2c5244bd438"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "cef0aa7766c9cf4045c403ae53f20fa8fcb4913c80148b01755b4a4da7449d8e"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "471a6870e6b9d45e994d2977c855e0aea4ed22b1f59f0d09afaf4d096edd0e2c"

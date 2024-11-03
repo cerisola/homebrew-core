@@ -1,7 +1,7 @@
 class HttpParser < Formula
   desc "HTTP request/response parser for c"
   homepage "https://github.com/nodejs/http-parser"
-  url "https://github.com/nodejs/http-parser/archive/v2.9.4.tar.gz"
+  url "https://github.com/nodejs/http-parser/archive/refs/tags/v2.9.4.tar.gz"
   sha256 "467b9e30fd0979ee301065e70f637d525c28193449e1b13fbcb1b1fab3ad224f"
   license "MIT"
 
@@ -22,7 +22,7 @@ class HttpParser < Formula
 
   # "http-parser is not actively maintained. New projects and projects looking
   # to migrate should consider llhttp (https://github.com/nodejs/llhttp)."
-  deprecate! date: "2023-01-03", because: :repo_archived
+  disable! date: "2024-01-12", because: :repo_archived
 
   depends_on "coreutils" => :build
 

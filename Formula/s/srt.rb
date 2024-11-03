@@ -1,12 +1,13 @@
 class Srt < Formula
   desc "Secure Reliable Transport"
   homepage "https://www.srtalliance.org/"
-  url "https://github.com/Haivision/srt/archive/v1.5.3.tar.gz"
+  url "https://github.com/Haivision/srt/archive/refs/tags/v1.5.3.tar.gz"
   sha256 "befaeb16f628c46387b898df02bc6fba84868e86a6f6d8294755375b9932d777"
   license "MPL-2.0"
   head "https://github.com/Haivision/srt.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "f0cc017d29f0d2e3661849d96018c568daf970e0ee45e0933e2c12b81bd4df32"
     sha256 cellar: :any,                 arm64_sonoma:   "b77e98814ca5b954a11620a787f6e008950e39b7929a45d02e2362b2858e8462"
     sha256 cellar: :any,                 arm64_ventura:  "4f4d675e7fb8193e53e23b95b993dd069d8bfd22bdb743b252a1679bb2fd7efc"
     sha256 cellar: :any,                 arm64_monterey: "3add52bf295a9ec73412af7da7dd62af22068b0b8a045bedc2069f0a509fadb2"

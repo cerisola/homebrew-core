@@ -1,18 +1,17 @@
 class Rswift < Formula
   desc "Get strong typed, autocompleted resources like images, fonts and segues"
   homepage "https://github.com/mac-cain13/R.swift"
-  url "https://github.com/mac-cain13/R.swift/releases/download/7.4.0/rswift-7.4.0-source.tar.gz"
-  sha256 "0f9c88a46b826d0e6bbb1e9a73edc5039013d43b78948bb286e6a879959d2a9d"
+  url "https://github.com/mac-cain13/R.swift/releases/download/7.7.0/rswift-7.7.0-source.tar.gz"
+  sha256 "0886dcb46b33fe99cd800e0bc50dd1f097e007aa40c5480a3b545732f500c1f7"
   license "MIT"
   head "https://github.com/mac-cain13/R.swift.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1bcdbc699d12c8fe89c504984a512068a27f0481d57b9b4d56a9e549f503a72c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d451507fc8e00f6bed6d156b2138c86378454b2e10ebb0c8d0c48d27a1f51a0c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6761c81018971df341d852b13ebfcf94845897352b09e0fc63e378801ba4ef2f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7d0120c82921025c1723c6cec6a67d852a1603e71b5780b77e70ae185fdd30fb"
-    sha256 cellar: :any_skip_relocation, ventura:        "c9aa20b05c383ca493bc96d793d173efa77fa267706f4243a9a79a6ad68db310"
-    sha256 cellar: :any_skip_relocation, monterey:       "c3e8ac7f82bda6f2140cb3aee08d34aecc53ae3c0c9e422b6d303fe48049c899"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1460dc8f90ef7644614da9821e8d7cf62cfa5b6cb1c81dc53f6cf826d9d069db"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "53c39fd3fc24c8032635dacc897806355e714248b0b578d7da5a589350d48994"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d6a270ca10a5b70e0bfb2c68d121685d40e74b17a6a52832dcb6635fb8ac9ca3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c2bd81e6d5e1b476bf50515bde6ace9b2a9a1fde00cbbec691f0c4f0d84fd15c"
+    sha256 cellar: :any_skip_relocation, ventura:       "609fae158de18f1bc94cecad8f424640339c5673fccfc4fcbb77911ccd36ddbd"
   end
 
   depends_on :macos # needs CoreGraphics, a macOS-only library

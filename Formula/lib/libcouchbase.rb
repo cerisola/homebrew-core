@@ -1,21 +1,26 @@
 class Libcouchbase < Formula
   desc "C library for Couchbase"
   homepage "https://docs.couchbase.com/c-sdk/current/hello-world/start-using-sdk.html"
-  url "https://packages.couchbase.com/clients/c/libcouchbase-3.3.9.tar.gz"
-  sha256 "ae1ae8fff068c99e37c26f1399e5ac5c646c55b1d8e3ca78fc909317b4fcb9bc"
+  url "https://packages.couchbase.com/clients/c/libcouchbase-3.3.13.tar.gz"
+  sha256 "51de483251a84696ac2793ad9a805d563e214efed2161ea6d26285192c1832a6"
   license "Apache-2.0"
   head "https://github.com/couchbase/libcouchbase.git", branch: "master"
 
+  # github_releases is used here as there have been tags pushed for new
+  # releases but without a corresponding GitHub release
+  livecheck do
+    url :head
+    regex(/^?(\d+(?:\.\d+)+)$/i)
+    strategy :github_releases
+  end
+
   bottle do
-    sha256 arm64_sonoma:   "cec5e46ca83e2ccb2ca36365b511b8974d919d5f31168eadea4b6156ddcfe1f4"
-    sha256 arm64_ventura:  "737c903a05fb271b7813a88b9e729d2411d71b8bc5a0855034f8b6d2fc5c015b"
-    sha256 arm64_monterey: "9cae5d8cc8ce3e080a81b2d17f2d9649188d9745fa9725e318ce2a34f94fa283"
-    sha256 arm64_big_sur:  "7bceef0deb0e6cc5c08934e32a1604c62e1d2518b41a6e964671bcfcc00fe64d"
-    sha256 sonoma:         "c353961c6b85e6878e88657f7bb946aa8803c0493c01e9187757f961e3d716b8"
-    sha256 ventura:        "a57abe1a67642168ce296ebe2b60e737084b8a7c475d1f2a7586b0cbf5f17890"
-    sha256 monterey:       "1b342afd260c0c7f33ac6f8acfc8c177fab2c2f15a27d54d564029b5e7b0c892"
-    sha256 big_sur:        "976a5e8c7cbc5f202575ed91a23c3e7c4021144a81cb3781c83995d9a83327c2"
-    sha256 x86_64_linux:   "eff5613489964873be888b26eb90641cce7192e982279fcfdf4a1b96ddc0a298"
+    sha256 arm64_sequoia: "a4b121b14d4bbb9ed0843f55797fb96e13e825d0b7d1e762485da68515b8d323"
+    sha256 arm64_sonoma:  "f527bb3b8f45c11369c13d572025303db9412bc2a4039d9593b08f27c3a7cf45"
+    sha256 arm64_ventura: "30ca320a61fea75b2e08d0c311af69677f71bf4fb08d66ec18070aaa30480e0d"
+    sha256 sonoma:        "b9fff3514c8f63ec2813ca4d373bade1dd81282000585d977b5b5ff1268b2b9e"
+    sha256 ventura:       "103a2b962f8152293a16429a055e675b942e007e83bee40b3af75d67ff471e7f"
+    sha256 x86_64_linux:  "8f0b1e56054e0881d7022398b8ad8e827fbcfe764578d78e2951f07179585b46"
   end
 
   depends_on "cmake" => :build
@@ -23,6 +28,8 @@ class Libcouchbase < Formula
   depends_on "libevent"
   depends_on "libuv"
   depends_on "openssl@3"
+
+  conflicts_with "cbc", because: "both install `cbc` binaries"
 
   def install
     system "cmake", "-S", ".", "-B", "build",

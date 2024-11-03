@@ -1,11 +1,9 @@
 class Mavsdk < Formula
-  include Language::Python::Virtualenv
-
   desc "API and library for MAVLink compatible systems written in C++17"
   homepage "https://mavsdk.mavlink.io"
   url "https://github.com/mavlink/MAVSDK.git",
-      tag:      "v1.4.17",
-      revision: "34b0c051f70b7018e3d98c2fe0e78677d4c3af14"
+      tag:      "v2.12.12",
+      revision: "a82b29756dcc4ea44c8c2c18f116b2cbdf4142c3"
   license "BSD-3-Clause"
   revision 1
 
@@ -15,18 +13,16 @@ class Mavsdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "b5b57e3f5ddcedb637f3bdc4c78495dc7e8d39fff16a1348237fbd6c181d4d69"
-    sha256 cellar: :any,                 arm64_ventura:  "42186f56631b3feda9afc5fd4635574e8ac8e00b282fad97375a9f259cd14615"
-    sha256 cellar: :any,                 arm64_monterey: "e0d6731d3d30a07dadd60d59b944f716e9cb0d98bbab462f1bc94387dce1643a"
-    sha256 cellar: :any,                 sonoma:         "c04bfb88643ad0d3c23da64f1f79fe390a8a58779b41d1d4034653a363bd69d2"
-    sha256 cellar: :any,                 ventura:        "cf5e26980101f6056d9f6a40183fa5efb6690ecd85f637c5b804f833369a67a8"
-    sha256 cellar: :any,                 monterey:       "ee866b8798a26a6cedaaa35213edbd6ba738c458791f3e5a3fe64f4aa3b15cb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d5e8a6c5f7076b7f1448da61c73fafb305d7050ffca133794f7bd7b079a825e0"
+    sha256 cellar: :any,                 arm64_sequoia: "4bab1d1fe30a901998bbc9c6221c933690c9fdcf6cad987a0d73d45121b3b1e1"
+    sha256 cellar: :any,                 arm64_sonoma:  "5238bdca1c66dcc5877b774e6b9f31e22b39a05263ee15912cd0497f23e58f8c"
+    sha256 cellar: :any,                 arm64_ventura: "97ff971409615b08a399d9ca0964befa23c738ec969d4baaa09e214a1c22e47d"
+    sha256 cellar: :any,                 sonoma:        "6385476bb61a390f02a54e523106704cd0fe1b7a324720f018af3b13bb052be0"
+    sha256 cellar: :any,                 ventura:       "8939f0004611fd039e2c76d31d2a32153cbd9b7845339fdea92f30f342664726"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "08dfbfce09b32b7a9e765f6c1bc518306e71c3d889c8e6cc88d6f153ed89cc40"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
-  depends_on "six" => :build
+  depends_on "python@3.12" => :build
   depends_on "abseil"
   depends_on "c-ares"
   depends_on "curl"
@@ -36,6 +32,7 @@ class Mavsdk < Formula
   depends_on "protobuf"
   depends_on "re2"
   depends_on "tinyxml2"
+  depends_on "xz"
 
   uses_from_macos "zlib"
 
@@ -53,59 +50,44 @@ class Mavsdk < Formula
 
   fails_with gcc: "5"
 
-  # To update the resources, use homebrew-pypi-poet on the PyPI package `protoc-gen-mavsdk`.
-  # These resources are needed to install protoc-gen-mavsdk, which we use to regenerate protobuf headers.
-  # This is needed when brewed protobuf is newer than upstream's vendored protobuf.
-  resource "future" do
-    url "https://files.pythonhosted.org/packages/8f/2e/cf6accf7415237d6faeeebdc7832023c90e0282aa16fd3263db0eb4715ec/future-0.18.3.tar.gz"
-    sha256 "34a17436ed1e96697a86f9de3d15a3b0be01d8bc8de9c1dffd59fb8234ed5307"
-  end
-
-  resource "Jinja2" do
-    url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
-    sha256 "31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"
-  end
-
-  resource "MarkupSafe" do
-    url "https://files.pythonhosted.org/packages/6d/7c/59a3248f411813f8ccba92a55feaac4bf360d29e2ff05ee7d8e1ef2d7dbf/MarkupSafe-2.1.3.tar.gz"
-    sha256 "af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"
+  # ver={version} && \
+  # curl -s https://raw.githubusercontent.com/mavlink/MAVSDK/v$ver/third_party/mavlink/CMakeLists.txt && \
+  # | grep 'MAVLINK_GIT_HASH'
+  resource "mavlink" do
+    url "https://github.com/mavlink/mavlink.git",
+        revision: "f1d42e2774cae767a1c0651b0f95e3286c587257"
   end
 
   def install
+    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
+
     # Fix version being reported as `v#{version}-dirty`
     inreplace "CMakeLists.txt", "OUTPUT_VARIABLE VERSION_STR", "OUTPUT_VARIABLE VERSION_STR_IGNORED"
 
-    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
+    # Regenerate files to support newer protobuf
+    system "tools/generate_from_protos.sh"
 
-    # Install protoc-gen-mavsdk deps
-    venv_dir = buildpath/"bootstrap"
-    venv = virtualenv_create(venv_dir, "python3.11")
-    venv.pip_install resources
-
-    # Install protoc-gen-mavsdk
-    venv.pip_install "proto/pb_plugins"
-
-    # Run generator script in an emulated virtual env.
-    with_env(
-      VIRTUAL_ENV: venv_dir,
-      PATH:        "#{venv_dir}/bin:#{ENV["PATH"]}",
-    ) do
-      system "tools/generate_from_protos.sh"
-
-      # Source build adapted from
-      # https://mavsdk.mavlink.io/develop/en/contributing/build.html
-      system "cmake", *std_cmake_args,
-                      "-Bbuild/default",
-                      "-DSUPERBUILD=OFF",
-                      "-DBUILD_SHARED_LIBS=ON",
-                      "-DBUILD_MAVSDK_SERVER=ON",
-                      "-DBUILD_TESTS=OFF",
-                      "-DVERSION_STR=v#{version}-#{tap.user}",
-                      "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                      "-H."
+    resource("mavlink").stage do
+      system "cmake", "-S", ".", "-B", "build",
+                      "-DPython_EXECUTABLE=#{which("python3.12")}",
+                      *std_cmake_args(install_prefix: libexec)
+      system "cmake", "--build", "build"
+      system "cmake", "--install", "build"
     end
-    system "cmake", "--build", "build/default"
-    system "cmake", "--build", "build/default", "--target", "install"
+
+    # Source build adapted from
+    # https://mavsdk.mavlink.io/develop/en/contributing/build.html
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DSUPERBUILD=OFF",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DBUILD_MAVSDK_SERVER=ON",
+                    "-DBUILD_TESTS=OFF",
+                    "-DVERSION_STR=v#{version}-#{tap.user}",
+                    "-DCMAKE_PREFIX_PATH=#{libexec}",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -115,8 +97,9 @@ class Mavsdk < Formula
     (testpath/"test.cpp").write <<~EOS
       #include <iostream>
       #include <mavsdk/mavsdk.h>
+      using namespace mavsdk;
       int main() {
-          mavsdk::Mavsdk mavsdk;
+          Mavsdk mavsdk{Mavsdk::Configuration{Mavsdk::ComponentType::GroundStation}};
           std::cout << mavsdk.version() << std::endl;
           return 0;
       }

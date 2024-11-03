@@ -1,11 +1,12 @@
 class Bingrep < Formula
   desc "Greps through binaries from various OSs and architectures"
   homepage "https://github.com/m4b/bingrep"
-  url "https://github.com/m4b/bingrep/archive/v0.11.0.tar.gz"
+  url "https://github.com/m4b/bingrep/archive/refs/tags/v0.11.0.tar.gz"
   sha256 "3012aef73b3ef5e8b100824af0db2131f81771338fec5f9fe47dc71bf3782506"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bfce04e9d779487f7d4469abcd3be17916615d499f84a06e0580911cbac1ee0b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c6ee2f9dd4398cc8a6897481e0f799cbe79227cedc35623c5d0a8c8e6d0895ee"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "349e4cd6b80fc83621693d1e68dd4e5c6ab29aa5259eb76edf8926e22f29e8e5"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "20e1eb2ccd61e211cd3c6bba229b4ccc15ec3594337e20be2f68a2b141fd22c1"
@@ -24,14 +25,14 @@ class Bingrep < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       int homebrew_test() {
         return 0;
       }
       int main() {
         return homebrew_test();
       }
-    EOS
+    C
     system ENV.cc, testpath/"test.c"
     assert_match "homebrew_test", shell_output("#{bin}/bingrep a.out")
   end

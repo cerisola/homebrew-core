@@ -1,21 +1,21 @@
 class Autojump < Formula
   desc "Shell extension to jump to frequently used directories"
   homepage "https://github.com/wting/autojump"
-  url "https://github.com/wting/autojump/archive/release-v22.5.3.tar.gz"
+  url "https://github.com/wting/autojump/archive/refs/tags/release-v22.5.3.tar.gz"
   sha256 "00daf3698e17ac3ac788d529877c03ee80c3790472a85d0ed063ac3a354c37b1"
   license "GPL-3.0-or-later"
   revision 3
   head "https://github.com/wting/autojump.git", branch: "master"
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, all: "186ebf3a980da0c5f3d7ab1436fb367ad5a47554d09d5b2cfbe0c37097cf287e"
+    rebuild 6
+    sha256 cellar: :any_skip_relocation, all: "b172a04f1d109b558ed126cc14250e41e804adecbdcf9f1ef68941825613b283"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
-    python_bin = Formula["python@3.12"].opt_libexec/"bin"
+    python_bin = Formula["python@3.13"].opt_libexec/"bin"
     system python_bin/"python", "install.py", "-d", prefix, "-z", zsh_completion
 
     # ensure uniform bottles

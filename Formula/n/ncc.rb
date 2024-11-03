@@ -1,20 +1,18 @@
-require "language/node"
-
 class Ncc < Formula
   desc "Compile a Node.js project into a single file"
   homepage "https://github.com/vercel/ncc"
-  url "https://registry.npmjs.org/@vercel/ncc/-/ncc-0.38.0.tgz"
-  sha256 "49b0c11121fe40682235585f7aae6ec8126bebe445cb1f91bfde395acd581e54"
+  url "https://registry.npmjs.org/@vercel/ncc/-/ncc-0.38.2.tgz"
+  sha256 "6d07c32da3e6d2e01ef03598a3f2aa6b58636473a2f43e51cdde1629610b53e1"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "ec61387571bbba06493fdb7da1c54f716db4a620c3283c3de1988dde3f20a1d8"
+    sha256 cellar: :any_skip_relocation, all: "f1cf16395842b95925773b2bbf6db4b6c7f00cf4bddd67eec63c03ea57e0b9f5"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

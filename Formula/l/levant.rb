@@ -1,12 +1,13 @@
 class Levant < Formula
   desc "Templating and deployment tool for HashiCorp Nomad jobs"
   homepage "https://github.com/hashicorp/levant"
-  url "https://github.com/hashicorp/levant/archive/v0.3.3.tar.gz"
+  url "https://github.com/hashicorp/levant/archive/refs/tags/v0.3.3.tar.gz"
   sha256 "0e87c27e2d4be7cd2a24cb0459d0a55f1bb7b5d65e6f7da4a2babd7d95d1bd92"
   license "MPL-2.0"
   head "https://github.com/hashicorp/levant.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cea6e51299dcb25689bb89534f249efced99ea5caf759edca53099bd0507a978"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a8cb3d327f3a6c17677eab41ee6563397989c678c6db90894684c2e0979a46ff"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "c58edcdb61ded77c7f1852bfa19f172d9c72bfa5de19afac3b351f73af2e98e8"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "36afeec80aadd0c4eec3df654890e5675006f0b291f7c0072a77e212fc08598a"
@@ -25,7 +26,7 @@ class Levant < Formula
       -X github.com/hashicorp/levant/version.VersionPrerelease=#{tap.user}
     ]
 
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

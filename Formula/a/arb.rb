@@ -1,7 +1,7 @@
 class Arb < Formula
   desc "C library for arbitrary-precision interval arithmetic"
   homepage "https://arblib.org"
-  url "https://github.com/fredrik-johansson/arb/archive/2.23.0.tar.gz"
+  url "https://github.com/fredrik-johansson/arb/archive/refs/tags/2.23.0.tar.gz"
   sha256 "977d41bde46f5442511d5165c705cec32c03e852c84d7d1836135d412ce702bb"
   license "LGPL-2.1-or-later"
   head "https://github.com/fredrik-johansson/arb.git", branch: "master"
@@ -19,6 +19,9 @@ class Arb < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a222fdd6fb56ff3fd9499ea8b6b0626e5935af09a922bff4692988c630d7aeb7"
   end
 
+  # See upstream discussion, https://github.com/fredrik-johansson/arb/issues/453
+  disable! date: "2024-03-19", because: "arb has been merged into flint 3.0.0"
+
   depends_on "cmake" => :build
   depends_on "flint"
   depends_on "gmp"
@@ -30,7 +33,7 @@ class Arb < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <arb.h>
 
       int main()
@@ -55,7 +58,7 @@ class Arb < Formula
           arb_clear(x); arb_clear(y);
           flint_cleanup();
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-I#{Formula["flint"].opt_include}",
            "-L#{lib}", "-L#{Formula["flint"].opt_lib}",

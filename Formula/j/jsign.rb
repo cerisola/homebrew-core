@@ -1,28 +1,26 @@
 class Jsign < Formula
   desc "Tool for signing Windows executable files, installers and scripts"
   homepage "https://ebourg.github.io/jsign/"
-  url "https://github.com/ebourg/jsign/archive/refs/tags/5.0.tar.gz"
-  sha256 "7b77a12aaea4f404e7b243bd58cfde485eb03b44219e128338c9fe6617ad1fa1"
+  url "https://github.com/ebourg/jsign/archive/refs/tags/6.0.tar.gz"
+  sha256 "df98690164440627bbecab7498690231c80fb19a68cdf7784b88e19ba24bd7a8"
   license "Apache-2.0"
   head "https://github.com/ebourg/jsign.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "67e85c4ba9ad0a084c568deb11c2eadcaaa143699824bceca3466ce56723cdbc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d3c8696ed5589fe3b66b01b6c049ab9f49a3e81fe0fd3efe671e4187e30824ca"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2274a1daceded682726c51bb0e55567ff59c1ce526a9494b37c0cf668a1b559a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6271342afec98071599b74af7c900bc6bb200da69d0d149b5a71b7e845d70e0c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2aa17dfd04c712b81e2384fd16222e48f5518c983fbea60c1eca97edc49deaa9"
-    sha256 cellar: :any_skip_relocation, ventura:        "69fe2bb7930593d71f86377523387a05cbde3b45e56204e9f862f234c4bf7fe3"
-    sha256 cellar: :any_skip_relocation, monterey:       "5b6a5ba3eeff3b9ae4e8ae8b916da3cb71e606f07ae9fef2f53f43d2982ddb88"
-    sha256 cellar: :any_skip_relocation, big_sur:        "cf37117fca040abbadb8d4d534eaf29d843e80deabcb9ad254a6f8dbc6ca874f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8f72976289410f0c649fc16494b354ea88a61fd270cf4d6b4ecaa29b4f10abb"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24033e21246e7d13267d179314ce519e859cf9bef4285049a652dc8790ff7e56"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4b8c8a17f4e9d31e48d26de1b4f4b576ea1167e3d9cfb11ba5a61cc6f58a0f23"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e345dc02f318332b975d8c9cf046c3bc26d9e896b1fb19889f6970a6fb46c7ae"
+    sha256 cellar: :any_skip_relocation, sonoma:        "31f1d1de5c61a4b3d676736aee2a84ba9165602afeedbb00a85dfc5c90bdd976"
+    sha256 cellar: :any_skip_relocation, ventura:       "4e45ee386b5c2d0f48cf9fc0452faa2912f8269dc6e710b3d42da17146d944cb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c8d5b9be18eb3997161637c60bc4e22058cde49ef23e5320398fe80c473ef61"
   end
 
   depends_on "maven" => :build
-  depends_on "openjdk@17" # The build fails with more recent JDKs
+  depends_on "openjdk@21" # The build fails with more recent JDKs
 
   def install
-    ENV["JAVA_HOME"] = Formula["openjdk@17"].opt_prefix
+    ENV["JAVA_HOME"] = Language::Java.java_home("21")
     system "mvn", "--batch-mode", "package",
                   "--projects", "jsign-core,jsign-cli,jsign-ant,jsign",
                   "-DskipTests",
@@ -49,15 +47,15 @@ class Jsign < Formula
     stable.stage testpath
     res = "jsign-core/src/test/resources"
 
-    system "#{bin}/jsign", "--keystore", "#{res}/keystores/keystore.p12",
+    system bin/"jsign", "--keystore", "#{res}/keystores/keystore.p12",
                            "--storepass", "password",
                            "#{res}/wineyes.exe"
 
-    system "#{bin}/jsign", "--keystore", "#{res}/keystores/keystore.jks",
+    system bin/"jsign", "--keystore", "#{res}/keystores/keystore.jks",
                            "--storepass", "password",
                            "#{res}/minimal.msi"
 
-    system "#{bin}/jsign", "--keyfile", "#{res}/keystores/privatekey.pvk",
+    system bin/"jsign", "--keyfile", "#{res}/keystores/privatekey.pvk",
                            "--certfile", "#{res}/keystores/jsign-test-certificate-full-chain.spc",
                            "--storepass", "password",
                            "#{res}/hello-world.vbs"

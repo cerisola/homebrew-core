@@ -1,22 +1,25 @@
 class PscPackage < Formula
   desc "Package manager for PureScript based on package sets"
   homepage "https://psc-package.readthedocs.io"
-  url "https://github.com/purescript/psc-package/archive/v0.6.2.tar.gz"
+  url "https://github.com/purescript/psc-package/archive/refs/tags/v0.6.2.tar.gz"
   sha256 "96c3bf2c65d381c61eff3d16d600eadd71ac821bbe7db02acec1d8b3b6dbecfc"
   license "BSD-3-Clause"
   revision 2
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "caa3fd862fbd5b0fee519827956ee81da5cb790c8f4818b63c25e4e3b4647f9d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "60ce822c848d09c9d477d37c8c3e7667ffae266897f06d538368c5d66746e1f2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d218b3190d7af58a6dee769d8fc8b0543ac7eed760af9552b871ec9e6c28b918"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "0f896fa8803f8405c76b6814302c9a81bc88ad63facccf653f302ca6c7314862"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2745b40b2ca64e1a6e369b79ab2c3141ea04c84538d335be866978c594e2bde6"
     sha256 cellar: :any_skip_relocation, ventura:        "34a6d89e4900fadd0f3844622d53df285ab26a54fb2b46c61191bd6b1b835c29"
     sha256 cellar: :any_skip_relocation, monterey:       "c96222df112a5a511469867e560157aab7ffc0fba812261302ac227fc682aebe"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "57150c2dfc8edce29db3b116563bb83d58c573b95cf497381a711f960f804378"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@9.4" => :build
+  depends_on "ghc@9.8" => :build
   depends_on "purescript"
 
   # Apply upstream patch to fix build. Remove with next release.

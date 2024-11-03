@@ -3,8 +3,10 @@ class Alac < Formula
   homepage "https://web.archive.org/web/20150319040222/craz.net/programs/itunes/alac.html"
   url "https://web.archive.org/web/20150510210401/craz.net/programs/itunes/files/alac_decoder-0.2.0.tgz"
   sha256 "7f8f978a5619e6dfa03dc140994fd7255008d788af848ba6acf9cfbaa3e4122f"
+  license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "726f02f4e73857ebafaf7d5d554e6c659b4795ef682aa0ce46c3ee21ffef952c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "78ed3a6e07c6093f26c14a5f0a468369a4b2822f456101c0539386e2aeb2c4ad"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "71a71cbbe491b65fd89198aab4168b7ec3d2436896c913a43858c806469a56ea"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "71cd043cec976255c6ae78ad79021dd5ba499b5678e5163e6353f571cae2eb6d"
@@ -20,6 +22,8 @@ class Alac < Formula
     sha256 cellar: :any_skip_relocation, el_capitan:     "4cb85c125553c6c2a49576790c5be5e0b89096569131df3b8576f3499e65ef5a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "01ddb3fb230954f624b068100ddcffa8c288481489f6cd62143beac4cd1e3c45"
   end
+
+  deprecate! date: "2024-01-10", because: :repo_removed
 
   def install
     system "make", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"

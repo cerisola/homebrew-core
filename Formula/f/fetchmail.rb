@@ -1,8 +1,8 @@
 class Fetchmail < Formula
   desc "Client for fetching mail from POP, IMAP, ETRN or ODMR-capable servers"
   homepage "https://www.fetchmail.info/"
-  url "https://downloads.sourceforge.net/project/fetchmail/branch_6.4/fetchmail-6.4.37.tar.xz"
-  sha256 "4a182e5d893e9abe6ac37ae71e542651fce6d606234fc735c2aaae18657e69ea"
+  url "https://downloads.sourceforge.net/project/fetchmail/branch_6.5/fetchmail-6.5.0.tar.xz"
+  sha256 "42611aea4861a5311e5116843f01c203dceadf440bf2eb1b4a43a445f2977668"
   license all_of: [
     "LGPL-2.1-or-later",
     "ISC",
@@ -17,15 +17,12 @@ class Fetchmail < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "63ae08bc0189d73211633da19f466b5690a6b8fc5a6438deeaae7aef66475966"
-    sha256 cellar: :any, arm64_ventura:  "ccbfc5c57049d74a455b25e579332d416c822ced8dfe7f814c6dba0aeeb28a95"
-    sha256 cellar: :any, arm64_monterey: "cc9f08926e10e29fa015a543aff8e6f8cc26949bcb548011265d3d5c7cfb9199"
-    sha256 cellar: :any, arm64_big_sur:  "4646ca118b2cc0432b5737bc91dcac6e4583671ba54300fe44ade2c6204fc1db"
-    sha256 cellar: :any, sonoma:         "e8c3380eecf7af72d20fe6ada177dbac03a7bb4f23d05690a6ca5acb2f8bad48"
-    sha256 cellar: :any, ventura:        "e9973922c9a0633e5d4c8a45992db42886c7e9ed43c6ae45f24b7ee0ea1935f4"
-    sha256 cellar: :any, monterey:       "ac1c1e07a255b9d4446d942d142729f1e572dabdb71cb39b7b5542b4e89fbb06"
-    sha256 cellar: :any, big_sur:        "717c5476915d9ff3390ee9e05da0f3cd1bbb8d2d455ef338edacb84aeb1754d7"
-    sha256               x86_64_linux:   "26c20275fc354b2c2828ae3c4cbb616a23208b6cd06583f1d06e54410f183be7"
+    sha256 cellar: :any, arm64_sequoia: "b76509619fe246396587c9803f98bfbef6462a7b9a06b5b0a32e234811d31656"
+    sha256 cellar: :any, arm64_sonoma:  "7c195c68726a64d224126e5430233cc6458ec80c1fb905c7e305bc18bec704aa"
+    sha256 cellar: :any, arm64_ventura: "bd350d81590e440f7bd507e35d2cf9447c571f54580d25a4fa06acfa33e38eb5"
+    sha256 cellar: :any, sonoma:        "abb7e44d3200d2a6f0f9b5fed7bef9f235fa366b736a9c1cb991f9abc63e166a"
+    sha256 cellar: :any, ventura:       "c02640540d7246853572eb0b478823e2cd8facb085bb0f9dabdb536921b2c1fa"
+    sha256               x86_64_linux:  "8480cfc2b3f6ea0090c6ece015bba18b356be0ea024c39c7956f3e8aa44a27a4"
   end
 
   depends_on "openssl@3"
@@ -38,6 +35,6 @@ class Fetchmail < Formula
   end
 
   test do
-    system "#{bin}/fetchmail", "--version"
+    system bin/"fetchmail", "--version"
   end
 end

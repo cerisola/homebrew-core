@@ -1,7 +1,7 @@
 class Hashpump < Formula
   desc "Tool to exploit hash length extension attack"
   homepage "https://github.com/bwall/HashPump"
-  url "https://github.com/bwall/HashPump/archive/v1.2.0.tar.gz"
+  url "https://github.com/bwall/HashPump/archive/refs/tags/v1.2.0.tar.gz"
   sha256 "d002e24541c6604e5243e5325ef152e65f9fcd00168a9fa7a06ad130e28b811b"
   license "MIT"
   revision 7
@@ -16,7 +16,7 @@ class Hashpump < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "542fd495cbe83aed52b7766926946f923d1e395f46cb4245b6ac6387cbeb0276"
   end
 
-  deprecate! date: "2023-10-02", because: :repo_removed
+  disable! date: "2024-09-16", because: :repo_removed
 
   depends_on "openssl@3"
   depends_on "python@3.11"

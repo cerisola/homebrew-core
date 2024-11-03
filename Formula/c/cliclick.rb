@@ -1,7 +1,7 @@
 class Cliclick < Formula
   desc "Tool for emulating mouse and keyboard events"
   homepage "https://www.bluem.net/jump/cliclick/"
-  url "https://github.com/BlueM/cliclick/archive/5.1.tar.gz"
+  url "https://github.com/BlueM/cliclick/archive/refs/tags/5.1.tar.gz"
   sha256 "58bb36bca90fdb91b620290ba9cc0f885b80716cb7309b9ff4ad18edc96ce639"
   license "BSD-3-Clause"
   head "https://github.com/BlueM/cliclick.git", branch: "master"
@@ -18,6 +18,7 @@ class Cliclick < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "65b6fcb0620720f8cc572bd3cc7ab260664e39629b9ff4fdf26e5fa24f81e6ea"
   end
 
+  depends_on maximum_macos: [:sonoma, :build] # https://github.com/BlueM/cliclick/issues/178
   depends_on :macos
 
   def install

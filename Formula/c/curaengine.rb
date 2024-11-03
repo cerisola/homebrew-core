@@ -1,7 +1,7 @@
 class Curaengine < Formula
   desc "C++ 3D printing GCode generator"
   homepage "https://github.com/Ultimaker/CuraEngine"
-  url "https://github.com/Ultimaker/CuraEngine/archive/4.13.1.tar.gz"
+  url "https://github.com/Ultimaker/CuraEngine/archive/refs/tags/4.13.1.tar.gz"
   sha256 "283f62326c6072cdcef9d9b84cb8141a6072747f08e1cae6534d08ad85b1c657"
   license "AGPL-3.0-or-later"
   version_scheme 1
@@ -22,7 +22,7 @@ class Curaengine < Formula
   end
 
   # Requires extensive patching to build & has minimal installs
-  deprecate! date: "2023-01-06", because: :does_not_build
+  disable! date: "2024-01-12", because: :does_not_build
 
   depends_on "cmake" => :build
 
@@ -65,6 +65,6 @@ class Curaengine < Formula
       endsolid Star
     EOS
 
-    system "#{bin}/CuraEngine", "slice", "-j", "fdmprinter.def.json", "-l", "#{testpath}/t.stl"
+    system bin/"CuraEngine", "slice", "-j", "fdmprinter.def.json", "-l", "#{testpath}/t.stl"
   end
 end

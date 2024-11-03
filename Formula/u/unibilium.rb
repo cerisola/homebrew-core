@@ -1,35 +1,32 @@
 class Unibilium < Formula
   desc "Very basic terminfo library"
   homepage "https://github.com/neovim/unibilium"
-  url "https://github.com/neovim/unibilium/archive/v2.1.1.tar.gz"
-  sha256 "6f0ee21c8605340cfbb458cbd195b4d074e6d16dd0c0e12f2627ca773f3cabf1"
+  url "https://github.com/neovim/unibilium/archive/refs/tags/v2.1.2.tar.gz"
+  sha256 "370ecb07fbbc20d91d1b350c55f1c806b06bf86797e164081ccc977fc9b3af7a"
   license "LGPL-3.0-or-later"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "62e3649d689c32c0d3042436395bf2bcd8d316c30d22d2f9dc666d9776968f51"
-    sha256 cellar: :any,                 arm64_ventura:  "27a0c608e5bb1926436855ea5e9c6b1154ff001237aaee905faa1fef9f943396"
-    sha256 cellar: :any,                 arm64_monterey: "b4172b327c9ab41032fecb648eedac18e867add559b3cc7951b15f10ae6cd0e1"
-    sha256 cellar: :any,                 sonoma:         "0ffc646d060f5e39096f7c3869530b412ad104c21c91fbec057561e9ff1d5112"
-    sha256 cellar: :any,                 ventura:        "3f0176e90ac411b252263a1ce8cc2a765bdaabee52af58df33cd5af6bc4dd933"
-    sha256 cellar: :any,                 monterey:       "62654f38ea347e7d00e1339dbf6e495d38822fe7484661546ac7fa009d621ac5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b83976c8990c0f8a2be32686b8b5ed284184065aea16e4a3c304842d78da7b26"
+    sha256 cellar: :any,                 arm64_sequoia: "c154ef3c2f532ebb1e73372a76230d144057983813624abbad7ca85d1ce3a2b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "dbd59e13386ef0e756eac19424e54c8b3d30ae65eb4c7c7f7d102a290fd409f7"
+    sha256 cellar: :any,                 arm64_ventura: "db2c6a451a395ff30ceff7e6dbfd30f7b02343bf08e850ae9d0e20d6c9da42b1"
+    sha256 cellar: :any,                 sonoma:        "19a58769977601b8bbc47959efeefb4bad5cc938d7dcde0c083c8227d8296026"
+    sha256 cellar: :any,                 ventura:       "0fc063e7d4d00b0b93b8b71c5d57921afad9d09d21ddb044e4e6cc44cecfe9ba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62bf69d2c9fe15ec8c9fe12e690befc1d8971c05b7f3f2fb890e2f4740e88798"
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "libtool" => :build
 
   def install
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
+
     # Check Homebrew ncurses terminfo if available.
     terminfo_dirs = [Formula["ncurses"].opt_share/"terminfo"]
 
     terminfo_dirs += if OS.mac?
-      if MacOS.version == :sonoma
-        # There is a bug in ncurses5.4-config in the 14.0 SDK (FB13204756)
-        # We know what it should output, so enforce it.
-        ["/usr/share/terminfo"]
-      else
-        [Utils.safe_popen_read("ncurses5.4-config", "--terminfo-dirs").strip]
-      end
+      [Utils.safe_popen_read("ncurses5.4-config", "--terminfo-dirs").strip]
     else
       # Unibilium's default terminfo path
       %w[
@@ -47,7 +44,7 @@ class Unibilium < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <unibilium.h>
       #include <stdio.h>
 
@@ -59,7 +56,7 @@ class Unibilium < Formula
         printf("%s", unibi_terminfo_dirs);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}", "test.c", "-L#{lib}", "-lunibilium", "-o", "test"
     assert_match %r{\A#{Formula["ncurses"].opt_share}/terminfo:}o, shell_output("./test")
   end

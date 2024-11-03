@@ -1,8 +1,8 @@
 class Fheroes2 < Formula
-  desc "Free Heroes of Might and Magic II is a recreation of HoMM2 game engine"
+  desc "Recreation of the Heroes of Might and Magic II game engine"
   homepage "https://ihhub.github.io/fheroes2/"
-  url "https://github.com/ihhub/fheroes2/archive/1.0.8.tar.gz"
-  sha256 "44047c787597a2b4a1f57f6189c9c7b0248729932327aa0a7973b55e9889ae87"
+  url "https://github.com/ihhub/fheroes2/archive/refs/tags/1.1.3.tar.gz"
+  sha256 "f91760f7e8a512fa4b2b5eb02d852d358106fca50faa13db942d8314926ca6d8"
   license "GPL-2.0-or-later"
   head "https://github.com/ihhub/fheroes2.git", branch: "master"
 
@@ -12,23 +12,19 @@ class Fheroes2 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "27f93254c2b3398eda565a17f597b006733e42ab615b4eab9726e9cd850d03a5"
-    sha256 arm64_ventura:  "a20a19a84a697602a3ec95e349c516cbce5f2f7f33ef36d9ffae08b28df8c860"
-    sha256 arm64_monterey: "7eb214c8e971b24bcc523b6c46be6d4b20e648fc57ef5fe7c6dafd543cbc15ee"
-    sha256 arm64_big_sur:  "dff372935b5db6df5462e0c7615f045e10fc7c006843502a98411c0fdb8e268a"
-    sha256 sonoma:         "3c17033dde9419f1d1eae86bad833c0b2e38b2067cfd3a34eb01331d0cfb3ecb"
-    sha256 ventura:        "bbbf64733b9bfd17ee966d37ce327c2548e57e2c85fba15b23c30b5e6c7459b7"
-    sha256 monterey:       "b19661be09880839fbb664e3d17bbff376fdff7c6b5b35556286bd7e054cbebc"
-    sha256 big_sur:        "6b3864d5ba521bc1ece7480dd06f90761bc126c66e29edade9f6241e7e369631"
-    sha256 x86_64_linux:   "ef5cbe653a931d360e8e4a00d79fcd2a113004e29609af29f76356432389051b"
+    sha256 arm64_sequoia: "abd77f3c7b0748848798a86ced7e6db626a2d5e30a2a8d209d70ae7614b3699a"
+    sha256 arm64_sonoma:  "73c1a13e93e0ebc14e5f8c50cdba23ccc54b4865e4d5ede1a1155e89946fd817"
+    sha256 arm64_ventura: "929d227e53e7e290a1e65ea7571c97e0a0866e2338dc3d634474d92cced55603"
+    sha256 sonoma:        "d73ad420578eee3093ac978ce6c3718f4b5baefb723c3b7a25517f0a3edaca7c"
+    sha256 ventura:       "90909dd4ea8a865b40bcc9d5c388bae3e4cf5011c91bb9c018c0656dd03dc2fa"
+    sha256 x86_64_linux:  "0831cfb9c4feb8703f716628d937685457164e33d88bb90ae2269ca28a9379f5"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
 
-  depends_on "libpng"
+  depends_on "innoextract"
   depends_on "sdl2"
-  depends_on "sdl2_image"
   depends_on "sdl2_mixer"
 
   uses_from_macos "zlib"

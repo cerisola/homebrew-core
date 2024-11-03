@@ -1,8 +1,8 @@
 class Pgrouting < Formula
   desc "Provides geospatial routing for PostGIS/PostgreSQL database"
   homepage "https://pgrouting.org/"
-  url "https://github.com/pgRouting/pgrouting/releases/download/v3.5.1/pgrouting-3.5.1.tar.gz"
-  sha256 "fb0d9ef3247a95166e172412734fda9746233912601a4891cbcf02fe87764140"
+  url "https://github.com/pgRouting/pgrouting/releases/download/v3.6.3/pgrouting-3.6.3.tar.gz"
+  sha256 "d14b424534be8f69cfd1fdc8cb41a23e531c04954ee8d974514615b74b8219fe"
   license "GPL-2.0-or-later"
   head "https://github.com/pgRouting/pgrouting.git", branch: "main"
 
@@ -12,32 +12,46 @@ class Pgrouting < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ef3cb20c9c0b654bc9c7f96c4664e7bdc040cbd8e098eb9e48cc7a598d1bb530"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "26ae5aeb6db94e9da691ed81a4be05994398730a800909d3fd3ae236295ded24"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b26288f9833c98cfe48ae40f991b8c08f01ce1e820e506f2e3c99f0a70f29ebf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "060a8154f509bd913706a97e348fd686325f684772cc43058428c344219b4266"
-    sha256 cellar: :any_skip_relocation, ventura:        "5bf098ea7aa1dd85a73b218b1929700b9736939807cd9b17fbb647ca1eb3d594"
-    sha256 cellar: :any_skip_relocation, monterey:       "b4a4fd2dddcd4703752f44a6ab9c2bae75dafa4ba57e2505f48019323c374a7f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f148f8d642b78601414d57a203e09cef54286431bd7f66db47fb705aed951abe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cbc060dd3b3f21c9c8e5c7bd091c06da1882bb87dc4a584eed872252f4afaf58"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b243c0c00f57cee018a984ad86292aa101d6e6903fc78e633abebb93de9c61ec"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eac3e97e1c5b78ae141cdeb5d61da280673613e585965dcf8eaead2b951f707b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b27222a70bdf94958343b3284d97d6c8e133d85eb0c1f49b16c9b0e7bfc58e4c"
+    sha256 cellar: :any_skip_relocation, ventura:       "f2f328df5ac533a2f283b6451fe275297fac07c34a82187632df838ab104a6ee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "db4620981db99025ab7487cdc89b0561c86a2bef97c57f3e4a956ddb1d0331f1"
   end
 
+  depends_on "boost" => :build
   depends_on "cmake" => :build
-  depends_on "boost"
-  depends_on "cgal"
-  depends_on "gmp"
+  depends_on "postgresql@14" => [:build, :test]
+  depends_on "postgresql@17" => [:build, :test]
   depends_on "postgis"
-  depends_on "postgresql@14"
 
-  def postgresql
-    Formula["postgresql@14"]
+  def postgresqls
+    deps.map(&:to_formula).sort_by(&:version).filter { |f| f.name.start_with?("postgresql@") }
   end
 
   def install
-    mkdir "stage"
-    mkdir "build" do
-      system "cmake", "-DPOSTGRESQL_PG_CONFIG=#{postgresql.opt_bin}/pg_config", "..", *std_cmake_args
-      system "make"
-      system "make", "install", "DESTDIR=#{buildpath}/stage"
+    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
+    # libunwind due to it being present in a library search path.
+    if DevelopmentTools.clang_build_version >= 1500
+      recursive_dependencies
+        .select { |d| d.name.match?(/^llvm(@\d+)?$/) }
+        .map { |llvm_dep| llvm_dep.to_formula.opt_lib }
+        .each { |llvm_lib| ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm_lib }
+    end
+
+    ENV["DESTDIR"] = buildpath/"stage"
+
+    postgresqls.each do |postgresql|
+      builddir = "build-pg#{postgresql.version.major}"
+      args = ["-DPOSTGRESQL_PG_CONFIG=#{postgresql.opt_bin}/pg_config"]
+      # CMake MODULE libraries use .so on macOS but PostgreSQL 16+ looks for .dylib
+      # Ref: https://github.com/postgres/postgres/commit/b55f62abb2c2e07dfae99e19a2b3d7ca9e58dc1a
+      args << "-DCMAKE_SHARED_MODULE_SUFFIX_CXX=.dylib" if OS.mac? && postgresql.version >= 16
+
+      system "cmake", "-S", ".", "-B", builddir, *args, *std_cmake_args
+      system "cmake", "--build", builddir
+      system "cmake", "--install", builddir
     end
 
     stage_path = File.join("stage", HOMEBREW_PREFIX)
@@ -46,21 +60,25 @@ class Pgrouting < Formula
   end
 
   test do
-    pg_ctl = postgresql.opt_bin/"pg_ctl"
-    psql = postgresql.opt_bin/"psql"
-    port = free_port
+    ENV["LC_ALL"] = "C"
+    postgresqls.each do |postgresql|
+      pg_ctl = postgresql.opt_bin/"pg_ctl"
+      psql = postgresql.opt_bin/"psql"
+      port = free_port
 
-    system pg_ctl, "initdb", "-D", testpath/"test"
-    (testpath/"test/postgresql.conf").write <<~EOS, mode: "a+"
+      datadir = testpath/postgresql.name
+      system pg_ctl, "initdb", "-D", datadir
+      (datadir/"postgresql.conf").write <<~EOS, mode: "a+"
 
-      shared_preload_libraries = 'libpgrouting-#{version.major_minor}'
-      port = #{port}
-    EOS
-    system pg_ctl, "start", "-D", testpath/"test", "-l", testpath/"log"
-    begin
-      system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"pgrouting\" CASCADE;", "postgres"
-    ensure
-      system pg_ctl, "stop", "-D", testpath/"test"
+        shared_preload_libraries = 'libpgrouting-#{version.major_minor}'
+        port = #{port}
+      EOS
+      system pg_ctl, "start", "-D", datadir, "-l", testpath/"log-#{postgresql.name}"
+      begin
+        system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"pgrouting\" CASCADE;", "postgres"
+      ensure
+        system pg_ctl, "stop", "-D", datadir
+      end
     end
   end
 end

@@ -1,8 +1,8 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.38.tar.xz"
-  sha256 "a17901adbe43f481a6bf53c15a2a20268bc8dc7ad5ccf685a0d17c1456dbaf6e"
+  url "https://notmuchmail.org/releases/notmuch-0.38.3.tar.xz"
+  sha256 "9af46cc80da58b4301ca2baefcc25a40d112d0315507e632c0f3f0f08328d054"
   license "GPL-3.0-or-later"
   head "https://git.notmuchmail.org/git/notmuch", using: :git, branch: "master"
 
@@ -12,15 +12,14 @@ class Notmuch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "8c3e06ef8b2aa40df2cce195a1f08e7d5060ac9b825573434e1112e3db9e98ed"
-    sha256 cellar: :any,                 arm64_ventura:  "dd9ce318f993e932a562519a047e9bb8509549c1c7baf23e51894fcf2ccc97dd"
-    sha256 cellar: :any,                 arm64_monterey: "d5e2f6c85fe241e503f3d427308476a453bcbbd573253d191a22ef6ac69a997d"
-    sha256 cellar: :any,                 arm64_big_sur:  "03b4bd37d3208ee63332ab72a06c9547e59a6ab8b07a87b7a7ba909292a22acb"
-    sha256 cellar: :any,                 sonoma:         "295713e495bd4bc744d5141621a58ecaa1c9aaacaff115298225099a1b04713a"
-    sha256 cellar: :any,                 ventura:        "1142fb66ea9482b075f399fa8214e39ef15b9afec690b5963a33af81e8a0fdbe"
-    sha256 cellar: :any,                 monterey:       "0e85ce4e585e7d4fb12853f2e3db4a8203e92849aaf5681e36cfb5134d3c7d04"
-    sha256 cellar: :any,                 big_sur:        "d14ee543acd0c0155ea53c33030fffcdbaaad7fb43c1755ff2a0a888c64f4958"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5461181e8ec5fda26da1a67f9a08c34dc3d598aa0a1b783824d021ddd7d9f260"
+    sha256 cellar: :any,                 arm64_sequoia:  "26f075815a3971c6e6fd67895e1e9009f2828c08469b3ec2a32fe365db2f0343"
+    sha256 cellar: :any,                 arm64_sonoma:   "dc0c9e64e45666c7b504edd124623723793d558f9b92841318cfb57e1905a2bc"
+    sha256 cellar: :any,                 arm64_ventura:  "5866c39776242b60bdffeae0cd8a8e72f4b436fff63eb3fcf2b33d7be69c32a4"
+    sha256 cellar: :any,                 arm64_monterey: "8040db968c5da6d96e90ccd2c1044f1c8eb0dfd0a6c5edc864f33105d31f4894"
+    sha256 cellar: :any,                 sonoma:         "f1017f9efe6fc4487a494f9838dd6ff4177a351ee914fa9845cd3be72132898d"
+    sha256 cellar: :any,                 ventura:        "2f10a85b0c2155e200abc0a4592f6285aaa8b754b20fb3b4cc90ac25a94731ab"
+    sha256 cellar: :any,                 monterey:       "57d086ced8e109e947cdabbaeb81ef9a50b079630b2b73eda20c912d314bb90f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3db984b392cccc361c5ffe324b79ea2e49631c1a468b1ab088bd01162dbcb66"
   end
 
   depends_on "doxygen" => :build
@@ -28,17 +27,22 @@ class Notmuch < Formula
   depends_on "libgpg-error" => :build
   depends_on "pkg-config" => :build
   depends_on "sphinx-doc" => :build
+
   depends_on "cffi"
   depends_on "glib"
   depends_on "gmime"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "talloc"
   depends_on "xapian"
 
   uses_from_macos "zlib", since: :sierra
 
+  on_macos do
+    depends_on "gettext"
+  end
+
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -63,7 +67,7 @@ class Notmuch < Formula
     (prefix/"vim").install "vim/syntax"
 
     ["python", "python-cffi"].each do |subdir|
-      system python3, "-m", "pip", "install", *std_pip_args, "./bindings/#{subdir}"
+      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "./bindings/#{subdir}"
     end
   end
 

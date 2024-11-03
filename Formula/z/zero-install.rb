@@ -13,6 +13,7 @@ class ZeroInstall < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c693f4d80b111a0a5358f8b473320134c026a20d87febc6f827bab257876baff"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b751e193e9b5105e46de557b3d09b57dac2e36457358c66d5af441955c98b6b1"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "29193da44165014972823b152963e10f4b016964418842bf24e944d9e29d47ac"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e681ef011946eee260f580f0faaf250803ffe7df97875db1560f24d26de68e44"
@@ -29,9 +30,9 @@ class ZeroInstall < Formula
   depends_on "ocamlbuild" => :build
   depends_on "opam" => :build
   depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
   depends_on "gnupg"
 
+  uses_from_macos "python" => :build
   uses_from_macos "unzip" => :build
   uses_from_macos "curl"
 
@@ -41,9 +42,6 @@ class ZeroInstall < Formula
 
   def install
     ENV.append_path "PATH", Formula["gnupg"].opt_bin
-
-    # Use correct curl headers
-    ENV["HOMEBREW_SDKROOT"] = MacOS::CLT.sdk_path(MacOS.version) if MacOS.version >= :mojave && MacOS::CLT.installed?
 
     Dir.mktmpdir("opamroot") do |opamroot|
       ENV["OPAMROOT"] = opamroot

@@ -1,11 +1,12 @@
 class Shellz < Formula
   desc "Small utility to track and control custom shellz"
   homepage "https://github.com/evilsocket/shellz"
-  url "https://github.com/evilsocket/shellz/archive/v1.6.0.tar.gz"
+  url "https://github.com/evilsocket/shellz/archive/refs/tags/v1.6.0.tar.gz"
   sha256 "3a89e3d573563a0c2ccb1831ff41fc0204c8b4efb011c10108ab98451a309b1c"
   license "GPL-3.0-only"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e7da7409e05430d93aa136b8dbd83e40aa4ee2c8abb708606b27f5d42867096e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0c129b18cdafdaa6f3cff5fef8bf0f4f76ef7d7b07a491e6cf7e3053a3169f06"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f988ca6178c77343dfea20c9b4adf2eb0742605f4e0402dac2e2ad963ab5881c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ac21c3ae7ea28b170bf5b3eb29b70ea61c512060807833de7ef1723a66316f6b"

@@ -1,12 +1,13 @@
 class RbenvGemset < Formula
   desc "Adds basic gemset support to rbenv"
   homepage "https://github.com/jf/rbenv-gemset"
-  url "https://github.com/jf/rbenv-gemset/archive/v0.5.10.tar.gz"
+  url "https://github.com/jf/rbenv-gemset/archive/refs/tags/v0.5.10.tar.gz"
   sha256 "91b9e6f0cced09a40df5817277c35c654d39feaea4318cc63a5962689b649c94"
   license :public_domain
   head "https://github.com/jf/rbenv-gemset.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f4b32914a93a0af5a444ff4ace90678f07969a6e0e3aa5d63d0af655e3e570f1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f3a6b6c538ac4b69ed5322a2d056b782ee42a40260359c71465c7817ee87d71a"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "cd878825e721949e665c84452d74ec2c36c1b04a2da825ffb7dec3301d663fea"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "cd878825e721949e665c84452d74ec2c36c1b04a2da825ffb7dec3301d663fea"

@@ -1,8 +1,8 @@
 class CargoCrev < Formula
   desc "Code review system for the cargo package manager"
   homepage "https://web.crev.dev/rust-reviews/"
-  url "https://github.com/crev-dev/cargo-crev/archive/refs/tags/v0.25.0.tar.gz"
-  sha256 "cf47787896d27b866a30c1c5432f3335a35489e1e96a7da212e8bafd3f9367dc"
+  url "https://github.com/crev-dev/cargo-crev/archive/refs/tags/v0.25.11.tar.gz"
+  sha256 "b3f74da472a800805c79b32982c3d63d27149181d2c02d53304c67e3a0e84cb6"
   license "Apache-2.0"
 
   livecheck do
@@ -11,19 +11,16 @@ class CargoCrev < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "fc0a54343513092fc266aa556dd646c9040c92506ec073b6679eac9d59f3150c"
-    sha256 cellar: :any,                 arm64_ventura:  "d9442463c0f068cc155707e5863655b2942741f47e0ad6425d49aa412e03f55a"
-    sha256 cellar: :any,                 arm64_monterey: "6aa21f5406cb13217a82f76bcffc0556b4aa05da63377c2c04d9015958b70861"
-    sha256 cellar: :any,                 arm64_big_sur:  "a71044e0be5b827ba94a4a575011997c1cb7db9166d95e3f7c199a9a104a00d0"
-    sha256 cellar: :any,                 sonoma:         "b2403d97062233b88c870257274e9d8355efe384396550286e2731413144d6ae"
-    sha256 cellar: :any,                 ventura:        "2f44cd13f105688622672e3b9eeba429117e5f73c53cb3c1f4b12fe863fe2c40"
-    sha256 cellar: :any,                 monterey:       "b3e3d310257afac449d16e321d695872262691a03290e667b5ab29f823e881c5"
-    sha256 cellar: :any,                 big_sur:        "325bc8db3ae10e41ed2a4d5887e4ec3022f6343eda4814009894abc7834b0391"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "94ccdffe2adf832cd8b1c8385415cbf726e1b3408dc951e143d08b3ebb135579"
+    sha256 cellar: :any,                 arm64_sequoia: "e5f44c3678e8fd73d051b338f3a63b922605c6e6e367d3750d7593f732fd5231"
+    sha256 cellar: :any,                 arm64_sonoma:  "e63df8dcca92fad3e2983ce6190a7b5149e36fe7776a6a98c68ce6bbe633aa9c"
+    sha256 cellar: :any,                 arm64_ventura: "cf868b3b70d163f2665a1608926b6f95da9b88a3815b9f1074398b5fcb535953"
+    sha256 cellar: :any,                 sonoma:        "13ce45a9ff45ca0508509ea5f36ed41f7144ede7dd03f42cf074d7a1cd4339c4"
+    sha256 cellar: :any,                 ventura:       "bcc8d1fe3bbc6e98c88fd8d208c2ef59f46fc88dbacf3d24dd61a2d1e507580f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3a4896631809adb0ae4bd2f2f92667e27e8fc5cf535677bd5c7fb989fabb0666"
   end
 
   depends_on "rust" => :build
-  depends_on "rustup-init" => :test
+  depends_on "rustup" => :test
   depends_on "openssl@3"
 
   uses_from_macos "zlib"
@@ -45,10 +42,9 @@ class CargoCrev < Formula
   test do
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
-    ENV["RUSTUP_INIT_SKIP_PATH_CHECK"] = "yes"
-    rustup_init = Formula["rustup-init"].bin/"rustup-init"
-    system rustup_init, "-y", "--profile", "minimal", "--default-toolchain", "beta", "--no-modify-path"
-    ENV.prepend_path "PATH", HOMEBREW_CACHE/"cargo_cache/bin"
+    ENV.prepend_path "PATH", Formula["rustup"].bin
+    system "rustup", "default", "beta"
+    system "rustup", "set", "profile", "minimal"
 
     system "cargo", "crev", "config", "dir"
 

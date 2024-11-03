@@ -1,21 +1,25 @@
 class Goplus < Formula
   desc "Programming language for engineering, STEM education, and data science"
   homepage "https://goplus.org"
-  url "https://github.com/goplus/gop/archive/v1.1.7.tar.gz"
-  sha256 "312b8e72cf8ae933845459bd75683fd70d43c1fd57e757940e86d0a387821ecc"
+  url "https://github.com/goplus/gop/archive/refs/tags/v1.2.6.tar.gz"
+  sha256 "51db5c4116fd229d7cd65c3b45552dc0cd7aa9c89798a9ba71ae2f0f243c7f05"
   license "Apache-2.0"
   head "https://github.com/goplus/gop.git", branch: "main"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 arm64_sonoma:   "121b57fd62fc4e2e94f4ca2128f3b5403045306084a11fdee5109b5c9a8d0bfb"
-    sha256 arm64_ventura:  "d0544b5466345294e0bada6202c89744393f33f4ef93b2afb49b5aa3ac51dfe8"
-    sha256 arm64_monterey: "5680ce882b36ec919783c071420f50a465f1d95ecdd4dd0c40aa3cff49c95b31"
-    sha256 arm64_big_sur:  "ff51a28464e6a5b934df97f1b42df14f0a4fa0f1a12a184d80fb3d5b2e2c6089"
-    sha256 sonoma:         "948011706979f93ebb0b44e02228df6ecf93021fcc1711ccb708183a79b580cd"
-    sha256 ventura:        "08eb8bb59b6f295c3f93480a6dd1643e7052428eeeec40509b5e0625344f3a11"
-    sha256 monterey:       "150a07d2c1800acc2d68cd9e92debb40bd9305475a8adbd408323259c283d7f2"
-    sha256 big_sur:        "e884d340b88b65c96d0dc7093d3f7dd6420f4825cd1d2c872d953914199a18ca"
-    sha256 x86_64_linux:   "e89bec312a3d4b5cdebde7a263ddd44ca28829a272bced14b7ac3ec909f419a6"
+    sha256 arm64_sequoia:  "fe0832efcd98cc11821ead934130a36a38b58990ca730a1a5ac266abd17d7cd8"
+    sha256 arm64_sonoma:   "30286ecee2169db6a0e94bba10db54b4e64f1b7d9515645577b63792fafd9717"
+    sha256 arm64_ventura:  "82b9263ee8902427ae05adef43e88d03b706d7777e3fa642b2469a28824e30d2"
+    sha256 arm64_monterey: "41709633aaebd432c31033b3aaa859244e82916f121533c503124afdbaf8fcac"
+    sha256 sonoma:         "47c58fe9d037ebb24bd73a19b27465393be5f266fca5675a9064f0cdfa18548c"
+    sha256 ventura:        "99f652be78900129bb9fd131df5c8b6b8b40630c71f4447c75288b5c65e3c510"
+    sha256 monterey:       "ab73c20e21526ee3b2e6f905f9a14a29e56f292b61c8f8ab9dc7e4ce10491e80"
+    sha256 x86_64_linux:   "ae23a9efa61937f365d0d248e8da1b210de1e31d49ad6d89a9940eeb64c17162"
   end
 
   depends_on "go"
@@ -36,7 +40,7 @@ class Goplus < Formula
     # Run gop fmt, run, build
     ENV.prepend "GO111MODULE", "on"
 
-    assert_equal "v#{version}", shell_output("#{bin}/gop env GOPVERSION").chomp unless head?
+    assert_equal "v#{version}", shell_output("#{bin}/gop env GOPVERSION").chomp
     system bin/"gop", "fmt", "hello.gop"
     assert_equal "Hello World\n", shell_output("#{bin}/gop run hello.gop")
 

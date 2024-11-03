@@ -2,21 +2,18 @@ class KubeScore < Formula
   desc "Kubernetes object analysis recommendations for improved reliability and security"
   homepage "https://kube-score.com"
   url "https://github.com/zegl/kube-score.git",
-      tag:      "v1.17.0",
-      revision: "0b3f154ca3f06a13323431a7d2199a74a1869fbc"
+      tag:      "v1.19.0",
+      revision: "a0a0f48c808611965e2690d8af1b1d8a5415fd0b"
   license "MIT"
   head "https://github.com/zegl/kube-score.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4b765da9a1434f1de7a612bae28b6a7e4c45b0a416ec1035b36e769b25846063"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d49a76e867e9a5dfa6b38a0185042688f5caf38d6cb774b074e901ebf3b6ad15"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d49a76e867e9a5dfa6b38a0185042688f5caf38d6cb774b074e901ebf3b6ad15"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d49a76e867e9a5dfa6b38a0185042688f5caf38d6cb774b074e901ebf3b6ad15"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c708aa75ca0c9b15afc82b01a306ff107257c51cdfb0f7c3fc45c4429b8519f8"
-    sha256 cellar: :any_skip_relocation, ventura:        "b78dcbef67b48e688d354b718ed6db212f447b158fe86a633bf250bda3d61d22"
-    sha256 cellar: :any_skip_relocation, monterey:       "b78dcbef67b48e688d354b718ed6db212f447b158fe86a633bf250bda3d61d22"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b78dcbef67b48e688d354b718ed6db212f447b158fe86a633bf250bda3d61d22"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8e8db51267850718bd4f6bee0dd2fbc85b4810bad8511a1c9b4f8460db329de6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f0983996db902e80972d36c5603393d1acbdcdb5dddc27372ca6aefc3a6bce4d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f0983996db902e80972d36c5603393d1acbdcdb5dddc27372ca6aefc3a6bce4d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f0983996db902e80972d36c5603393d1acbdcdb5dddc27372ca6aefc3a6bce4d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6dec538635aec13f3bfe6b3ce099865dce2e44d702a7bc8cccf2bac1a11d9546"
+    sha256 cellar: :any_skip_relocation, ventura:       "6dec538635aec13f3bfe6b3ce099865dce2e44d702a7bc8cccf2bac1a11d9546"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "65d549417ebbcbd918ee04ec73f56d0032a8bbd5909862fd3b1929ec186b224e"
   end
 
   depends_on "go" => :build
@@ -28,7 +25,7 @@ class KubeScore < Formula
       -X main.commit=#{Utils.git_head}
       -X main.date=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/kube-score"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/kube-score"
   end
 
   test do

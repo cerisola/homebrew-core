@@ -1,13 +1,14 @@
 class Hostess < Formula
   desc "Idempotent command-line utility for managing your /etc/hosts file"
   homepage "https://github.com/cbednarski/hostess"
-  url "https://github.com/cbednarski/hostess/archive/v0.5.2.tar.gz"
+  url "https://github.com/cbednarski/hostess/archive/refs/tags/v0.5.2.tar.gz"
   sha256 "ece52d72e9e886e5cc877379b94c7d8fe6ba5e22ab823ef41b66015e5326da87"
   license "MIT"
   head "https://github.com/cbednarski/hostess.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5af8f3803260637b3938948d0a18cf210279b7cd6b6abeb9e197e373feb5a53f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0186aaf7affa768a218d00dc949003d663a5e13c0282c2b95b18135070254118"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "70fb5d0bdf6c6c22082affae3027953e8c59d51a795bd6983b30a58fecf5088c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "277bc64d736ab7413d771e469943d1037b196e6b3aafd987a5c09602ada6b499"

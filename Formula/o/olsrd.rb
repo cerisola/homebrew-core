@@ -1,9 +1,7 @@
 class Olsrd < Formula
   desc "Implementation of the optimized link state routing protocol"
-  homepage "http://www.olsr.org"
-  # olsr's website is "ill" and does not contain the latest release.
-  # https://github.com/OLSR/olsrd/issues/48
-  url "https://github.com/OLSR/olsrd/archive/v0.9.8.tar.gz"
+  homepage "https://github.com/OLSR/olsrd"
+  url "https://github.com/OLSR/olsrd/archive/refs/tags/v0.9.8.tar.gz"
   sha256 "ee9e524224e5d5304dcf61f1dc5485c569da09d382934ff85b233be3e24821a3"
   license "BSD-3-Clause"
   revision 1
@@ -14,6 +12,7 @@ class Olsrd < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "874cb9fc08951755b92d6f4310d46d3204bf67785ae95d96d07ef754f22fbb83"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d6c4e30770465a800d9d40fbf7098db2cbcffb15c511fdff67f9e6efda615122"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "5855775631424ec0e2b51d6f3a08a83e595865c4f3090c24756d77a36f2d088b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "595f6879e8ea37977d87ce63927c7e731dde41717b070cec7faa8426e1c43109"

@@ -1,12 +1,13 @@
 class Glyr < Formula
   desc "Music related metadata search engine with command-line interface and C API"
   homepage "https://github.com/sahib/glyr"
-  url "https://github.com/sahib/glyr/archive/1.0.10.tar.gz"
+  url "https://github.com/sahib/glyr/archive/refs/tags/1.0.10.tar.gz"
   sha256 "77e8da60221c8d27612e4a36482069f26f8ed74a1b2768ebc373c8144ca806e8"
   license "LGPL-3.0-or-later"
   revision 2
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "75c0b25000de973e7ea592d3ae07a610f54038c6e73adddf93ca8f50e0df12ff"
     sha256 cellar: :any,                 arm64_sonoma:   "74187740cb6f6aabc0c532714c8753435c33a49408407c3ba5b0236c5b85cc03"
     sha256 cellar: :any,                 arm64_ventura:  "0b11085d86604b659fe43f99e91838695ff2c6bb4a1e5f2790e6af6fc90246da"
     sha256 cellar: :any,                 arm64_monterey: "800ed9d047c06e8490f6318b36c88c34feb4dac7dbe60a539edd752f4568a08e"

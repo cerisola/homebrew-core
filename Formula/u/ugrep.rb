@@ -1,24 +1,27 @@
 class Ugrep < Formula
   desc "Ultra fast grep with query UI, fuzzy search, archive search, and more"
-  homepage "https://github.com/Genivia/ugrep"
-  url "https://github.com/Genivia/ugrep/archive/v4.2.0.tar.gz"
-  sha256 "6692d4b556894d0d4539057b8e0f0c3d6273998cbd2c61e3f17e1bb22b1a475a"
+  homepage "https://ugrep.com/"
+  url "https://github.com/Genivia/ugrep/archive/refs/tags/v7.0.2.tar.gz"
+  sha256 "9fb583a1569d070016ee8cf801b923f55b10556e64770fb369837f141d180449"
   license "BSD-3-Clause"
 
   bottle do
-    sha256                               arm64_sonoma:   "8211a7a5efa42af37129eb757132b41d4980c0ab747b3ef517acd10092e657e4"
-    sha256                               arm64_ventura:  "a85d5938f6c36f68b06e41f457ba8e3d2bea4d54c7b9f69512853ff0c564c766"
-    sha256                               arm64_monterey: "5800a020f5c74a2b34000b613328ea0d3ffaf12e6211a37173f1c6f442caed07"
-    sha256                               arm64_big_sur:  "f4fa4ab4fc9c32056f59c929b5ab48185e3d7a659f75856c1170ff3a606d9817"
-    sha256                               sonoma:         "7ca9ff8147af82ca0e3e581bb2ca1b2b4f9674f1db736814b708870f9b42aafe"
-    sha256                               ventura:        "340082f9bbe172cc9b0eb82ce76c3682370b74071ed068fb63a487bbe7bcb64d"
-    sha256                               monterey:       "750c52e5d97b4b95ee2ce23f89978f237f0805b18bada612787393941c21dd25"
-    sha256                               big_sur:        "16ae90ba7640d0f4300630b0caa8b24f7b90c3ae47b2b365c8ccd20babf21c3a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "763f6edc6cccd538311cf859db6503581d61e1d54c7391597edd9391d7c8e035"
+    sha256                               arm64_sequoia: "2bc41f9b678e1ee01068bb12d0a2b945a660d97a4d7969959a0487f6db3c3170"
+    sha256                               arm64_sonoma:  "4d3d478dc4980f8c5dcc704c19cd42d9ad01e28b780c71f501584717f0ca13de"
+    sha256                               arm64_ventura: "3e65134bd5a454ac7d799c21e7b13f5d637576122d4467f939e711bab1f0d50e"
+    sha256                               sonoma:        "768fe56380aacf8169f2eb69ba0c9ab9c85ae65e56ee683779cb71368ce0721e"
+    sha256                               ventura:       "df55e58452d295aa9049c5ac448ac892a4f6b8cfc39592d2fba1000689521787"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ac2f9effed061b2610c9aa87a150813a66526f26046e999a4af244edaf5ceaab"
   end
 
+  depends_on "brotli"
+  depends_on "lz4"
   depends_on "pcre2"
   depends_on "xz"
+  depends_on "zstd"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   def install
     system "./configure", "--enable-color",

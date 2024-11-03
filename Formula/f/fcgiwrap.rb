@@ -1,11 +1,12 @@
 class Fcgiwrap < Formula
   desc "CGI support for Nginx"
   homepage "https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/"
-  url "https://github.com/gnosek/fcgiwrap/archive/1.1.0.tar.gz"
+  url "https://github.com/gnosek/fcgiwrap/archive/refs/tags/1.1.0.tar.gz"
   sha256 "4c7de0db2634c38297d5fcef61ab4a3e21856dd7247d49c33d9b19542bd1c61f"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "c5bbbd4868035ccb9d9f03b894456f3d2e61a167a55f3d934f8c093d26a27e84"
     sha256 cellar: :any,                 arm64_sonoma:   "8978a76429865262b1d5acef3279849a91f46a49adfdee6555a9e0985d355c77"
     sha256 cellar: :any,                 arm64_ventura:  "0037b9cebb42c65b4381625dd9ae10a228ad246527ffe73ba718f4c2a7d5b551"
     sha256 cellar: :any,                 arm64_monterey: "8ddb35ceaf8709ed245ad937b559a8539c6fc1f2135b6ad40781cdf6ff86726f"

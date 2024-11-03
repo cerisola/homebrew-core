@@ -1,12 +1,13 @@
 class Brainfuck < Formula
   desc "Interpreter for the brainfuck language"
   homepage "https://github.com/fabianishere/brainfuck"
-  url "https://github.com/fabianishere/brainfuck/archive/2.7.3.tar.gz"
+  url "https://github.com/fabianishere/brainfuck/archive/refs/tags/2.7.3.tar.gz"
   sha256 "d99be61271b4c27e26a8154151574aa3750133a0bedd07124b92ccca1e03b5a7"
   license "Apache-2.0"
   head "https://github.com/fabianishere/brainfuck.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4e316f33095c63723b7cc707d1c3c484d2049292606c673e99053a2364ce2a0e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "44592a40d38925f1bd3093e343168d66e20f642883cbf5f00cf705b05aa9dbf2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d4112d01c4118b43ef74885ec4a4b5ca2042a2fe3fcb6094e0d9b27d98749052"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b753b7dd2274926dbd763571f8b922fe270e25ee527ddd3a71cc4a1f7acb94de"

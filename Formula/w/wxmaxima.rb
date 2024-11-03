@@ -1,9 +1,10 @@
 class Wxmaxima < Formula
   desc "Cross platform GUI for Maxima"
   homepage "https://wxmaxima-developers.github.io/wxmaxima/"
-  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-23.10.0.tar.gz"
-  sha256 "1c41352be0d88dc3b2413bab06f0a2e791579d61ac1e3a406c3349f5ea0fffe7"
+  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-24.08.0.tar.gz"
+  sha256 "a0957c1852ca2d93e34f8f0329673f40af065e7648739d088da28bd33627b758"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/wxMaxima-developers/wxmaxima.git", branch: "main"
 
   livecheck do
@@ -12,17 +13,18 @@ class Wxmaxima < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ca1436ac23726f58a3ec07010b6cb29eb12e430fb4b5057acb380b82a7f5cd28"
-    sha256 arm64_ventura:  "6ee1024fad8f3731a20fecd696ae95d474b462c0a90d8030ef7ad86b0e9eba30"
-    sha256 arm64_monterey: "a49d8dd60079b066600dcdd827de8a51fc76c8e3f68481d1478cb92489ee7bb9"
-    sha256 sonoma:         "cac016670e8a7c7663a1810724404d2633cae2d41d2bcc8921cd266d7f013969"
-    sha256 ventura:        "41e0f8278845f6b903531a325a7c8e78e6c026c7751deef0584908a42a664196"
-    sha256 monterey:       "a197b0e89b0990eb8ddfee8a4da412e11f1a0237a297ed234ff39190a62bac95"
+    sha256 arm64_sonoma:   "0eeda3a7b713fd21cb1e016f65d73f5affd0b3d6785c0259d8c8ed1abf383cd9"
+    sha256 arm64_ventura:  "68800dc51d4e13f01814472d80b906f5976487d3c4c77156f6bf67b039e6f5b3"
+    sha256 arm64_monterey: "639c86d978ddaee16e23c0f5dc892ba3cc282a66dd11337eb9e6e42a9337b7a1"
+    sha256 sonoma:         "9ef91f92fc84d0f06743bb449f2e89621dbab5b45a30fecf8b44d7d26b19df6e"
+    sha256 ventura:        "fe84da6ef807ee8bda2dc98ce1bdd4a378efa66805d88908c02f1d1b90c812ed"
+    sha256 monterey:       "ea1ad330fa139f2e9c0c2657a84e1a788301bc2ca430941338b28693240aeee4"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
   depends_on "ninja" => :build
+
   depends_on "maxima"
   depends_on "wxwidgets"
 
@@ -40,8 +42,17 @@ class Wxmaxima < Formula
     EOS
   end
 
+  # fix version output, upstream patch ref, https://github.com/wxMaxima-developers/wxmaxima/pull/1937
+  patch do
+    url "https://github.com/wxMaxima-developers/wxmaxima/commit/077ec646a11bfb5aa83a478e636a715a38a9b68b.patch?full_index=1"
+    sha256 "15fb4db52cb7e1237ee5d0934653db06809d172e2bf54709435ec24d1f7ab7a9"
+  end
+
   def install
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1300)
+
+    # Disable CMake fixup_bundle to prevent copying dylibs
+    inreplace "src/CMakeLists.txt", "fixup_bundle(", "# \\0"
 
     system "cmake", "-S", ".", "-B", "build-wxm", "-G", "Ninja", *std_cmake_args
     system "cmake", "--build", "build-wxm"
@@ -50,8 +61,7 @@ class Wxmaxima < Formula
 
     return unless OS.mac?
 
-    prefix.install "build-wxm/src/wxMaxima.app"
-    bin.write_exec_script prefix/"wxMaxima.app/Contents/MacOS/wxmaxima"
+    bin.write_exec_script prefix/"wxmaxima.app/Contents/MacOS/wxmaxima"
   end
 
   def caveats
@@ -70,6 +80,7 @@ class Wxmaxima < Formula
     # Error: Unable to initialize GTK+, is DISPLAY set properly
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    assert_match "algebra", shell_output("#{bin}/wxmaxima --help 2>&1")
+    assert_equal "wxMaxima #{version}", shell_output(bin/"wxmaxima --version 2>&1").chomp
+    assert_match "extra Maxima arguments", shell_output("#{bin}/wxmaxima --help 2>&1", 1)
   end
 end

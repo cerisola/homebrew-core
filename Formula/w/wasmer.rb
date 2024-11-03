@@ -1,19 +1,18 @@
 class Wasmer < Formula
   desc "Universal WebAssembly Runtime"
   homepage "https://wasmer.io"
-  url "https://github.com/wasmerio/wasmer/archive/refs/tags/v4.2.2.tar.gz"
-  sha256 "8ca4cf3afb1baa9a56d7d63ef01b5d3e4e4a9b2c67360285f1c53e7eb3ac7be1"
+  url "https://github.com/wasmerio/wasmer/archive/refs/tags/v5.0.0.tar.gz"
+  sha256 "ad957e7aecf5b2d3813dcb04285625d640a284fcc648d81a3eabca3f0f7eca4e"
   license "MIT"
   head "https://github.com/wasmerio/wasmer.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c6f3c0794734a59a53ecf0bf340836a3dfb4b8f9c410f55e1981c48186184e79"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "af75cefe3603af013998871f3b8cc7a3ca81caa30dea85ac4e6b0aeeee8cc95b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1ec9b35048be1347ad273e17ace363a2ddcf1fd49deb0478070baec3b0dfaea9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "66f840031953fae1658e35666c97c18159c85852ab5e7a9604c4747903c9091e"
-    sha256 cellar: :any_skip_relocation, ventura:        "092f5470d7e4c71a6b17439ed3f451963aafa17400ccf592ba51263d7a49e649"
-    sha256 cellar: :any_skip_relocation, monterey:       "fd1fa29a446b1ca47d2e21458e756c9584c3f6ad53032e457f483cde3fb66f1f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "17aa90e5042be3743108668bcfd95647f5cd9872826e28d972a06c64ef4642d1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0c8ab0cb6ab437e931641c54fc42129df08c6dff634c9e89e86eef267e03916d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d0925934f04e5b8d54eeeafb82074b553b8101a301dfc7ccc42d0952d139327"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f185ab5ce2c03ff5a22a655b982b9cc3ad9e3981dbfb1452e939d954e76514b8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "84ec6b4bb8cb3fd23681cc69374b58569e5992a747a5316decfdcfaaf2cf6d17"
+    sha256 cellar: :any_skip_relocation, ventura:       "91554f91c5d0b2ff54f6ba8790f9076185e445c3d58d3ac048d237b872155e4f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "61d75445d7728a729eb433f04fbd9b0196b8ada3c76519716e507dd8fbe64fd7"
   end
 
   depends_on "cmake" => :build

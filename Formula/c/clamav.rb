@@ -1,9 +1,9 @@
 class Clamav < Formula
   desc "Anti-virus software"
   homepage "https://www.clamav.net/"
-  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.2.0/clamav-1.2.0.tar.gz"
-  mirror "https://www.clamav.net/downloads/production/clamav-1.2.0.tar.gz"
-  sha256 "97a192dffe141480b56cabf1063d79a9fc55cd59203241fa41bfc7a98a548020"
+  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.4.1/clamav-1.4.1.tar.gz"
+  mirror "https://www.clamav.net/downloads/production/clamav-1.4.1.tar.gz"
+  sha256 "a318e780ac39a6b3d6c46971382f96edde97ce48b8e361eb80e63415ed416ad8"
   license "GPL-2.0-or-later"
   head "https://github.com/Cisco-Talos/clamav.git", branch: "main"
 
@@ -13,15 +13,14 @@ class Clamav < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a8c290528ce8411d786da5447b3be3c518b1ef05c6d184cd986bad617764fdcc"
-    sha256 arm64_ventura:  "fd638307f830a404756174db11191ba74f4fd8998d46dadde6e75cd78dc1b26c"
-    sha256 arm64_monterey: "493f53d403bb2ef411f75c5536f4980f1a949272d52b107cdbe8424c18faa128"
-    sha256 arm64_big_sur:  "61479084f9a8ebf52262db7da991fc176fd2ddbad091d3d67324b517b3a06e38"
-    sha256 sonoma:         "0524d73dc7b9d6d0a9281532a2fbf7907a71b6c38a8f13ca455f41f20ed2b22b"
-    sha256 ventura:        "439057e74bc0ffe16c513e1498ff3fc753a370905c66d6163dddd8ed18316d5a"
-    sha256 monterey:       "b539a9a4dbcbc7f8f992f739ac2142c7e5559620fb2d9e2070a54c9d69f3327d"
-    sha256 big_sur:        "9dc3f5ac74f101656047fc9e2a8680a9dded50dfb7cba57ac82178060b7ba4e7"
-    sha256 x86_64_linux:   "bb824d3ad1d8525327efc28379c0bbc7b7f42e074f8d245de9c6d0fed26ff888"
+    sha256 arm64_sequoia:  "735ca3297cb540df3fd811546931268748426b980ad1dbfb181ae2bc6619c743"
+    sha256 arm64_sonoma:   "082646090205a5dde7f4acc9aabddf96d0bab2e2fa267558f7a03950066c5db0"
+    sha256 arm64_ventura:  "4d06f08932594ea40a9cfeaa549882788bf58ddb1166fbf3216e94945ad68c54"
+    sha256 arm64_monterey: "9aca3a2b0fe35c774976dc10c7e3ec6fce449781cd2f7ac5bc77db08c5f8bbd0"
+    sha256 sonoma:         "0b841adeea58f249fbc4ba37abadd832551f63e9f2a8d40f3edc92555ed61af3"
+    sha256 ventura:        "ae68a990d66f6d4bb85f8e2e7b78b8f6f1505e2f083448dd4779d7e1c8e899a4"
+    sha256 monterey:       "60f5814cb36fe8c75eae0e5a56af261ab16652609bbb3dd142cc468252ed428d"
+    sha256 x86_64_linux:   "7159d15800cd958ef4f474a4bc2309b79e32d186da765cb7f9a9d3d0be642ba2"
   end
 
   depends_on "cmake" => :build
@@ -76,11 +75,13 @@ class Clamav < Formula
 
   test do
     assert_match "Database directory: #{var}/lib/clamav", shell_output("#{bin}/clamconf")
+
     (testpath/"freshclam.conf").write <<~EOS
       DNSDatabaseInfo current.cvd.clamav.net
       DatabaseMirror database.clamav.net
     EOS
-    system "#{bin}/freshclam", "--datadir=#{testpath}", "--config-file=#{testpath}/freshclam.conf"
-    system "#{bin}/clamscan", "--database=#{testpath}", testpath
+
+    system bin/"freshclam", "--datadir=#{testpath}", "--config-file=#{testpath}/freshclam.conf"
+    system bin/"clamscan", "--database=#{testpath}", testpath
   end
 end

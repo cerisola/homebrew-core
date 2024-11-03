@@ -1,27 +1,26 @@
-require "language/node"
-
 class Commitlint < Formula
   desc "Lint commit messages according to a commit convention"
   homepage "https://commitlint.js.org/#/"
-  url "https://registry.npmjs.org/commitlint/-/commitlint-17.7.2.tgz"
-  sha256 "d268c88c1b2ecc4efe8738b18f61128ae8003fe7def2a4197751aa9a0631633f"
+  url "https://registry.npmjs.org/commitlint/-/commitlint-19.5.0.tgz"
+  sha256 "2d2705b457826f260f9d76671bb75080ce0ff5bfd44dcc4d15627fa21a8d56a2"
   license "MIT"
   head "https://github.com/conventional-changelog/commitlint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "30dd89eef718b2e04b17c0f4f8e9aac736d8702a6f978ee57dfe920208f01af1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "30dd89eef718b2e04b17c0f4f8e9aac736d8702a6f978ee57dfe920208f01af1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "30dd89eef718b2e04b17c0f4f8e9aac736d8702a6f978ee57dfe920208f01af1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ef60a6ce442141d8d8e462e79da802e87690303da03ca44c93552006a88fd1f9"
-    sha256 cellar: :any_skip_relocation, ventura:        "ef60a6ce442141d8d8e462e79da802e87690303da03ca44c93552006a88fd1f9"
-    sha256 cellar: :any_skip_relocation, monterey:       "ef60a6ce442141d8d8e462e79da802e87690303da03ca44c93552006a88fd1f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "30dd89eef718b2e04b17c0f4f8e9aac736d8702a6f978ee57dfe920208f01af1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
+    sha256 cellar: :any_skip_relocation, ventura:        "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
+    sha256 cellar: :any_skip_relocation, monterey:       "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
@@ -34,6 +33,6 @@ class Commitlint < Formula
         };
     EOS
     assert_match version.to_s, shell_output("#{bin}/commitlint --version")
-    assert_equal "", pipe_output("#{bin}/commitlint", "foo: message")
+    assert_equal "", pipe_output(bin/"commitlint", "foo: message")
   end
 end

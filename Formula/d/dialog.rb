@@ -1,8 +1,8 @@
 class Dialog < Formula
   desc "Display user-friendly message boxes from shell scripts"
   homepage "https://invisible-island.net/dialog/"
-  url "https://invisible-mirror.net/archives/dialog/dialog-1.3-20231002.tgz"
-  sha256 "315640ab0719225d5cbcab130585c05f0791fcf073072a5fe9479969aa2b833b"
+  url "https://invisible-mirror.net/archives/dialog/dialog-1.3-20240619.tgz"
+  sha256 "5d8c4318963db3fd383525340276e0e05ee3dea9a6686c20779f5433b199547d"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,13 +11,14 @@ class Dialog < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "abb3e7a15a47cd3e1e27c3d8c9db1c35d931077a25a01405825e3f464b9d2e12"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "92dbd5cf6e09fbc364060428696bd128c3c0bad31d45a10e8d5918638c1b994f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "66142033e4e1d62bd8312577b9e824964c7242ba2f5ad10ac08f320d0def9259"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e361e68c1a9d2f8c4b72d79d0f9cb813e86d9d25c09123ec11c6ed86e74dbd17"
-    sha256 cellar: :any_skip_relocation, ventura:        "6622f148d643c71339086d1a30e11c387ba3b0a3c007993b8c97fbe97f4140f9"
-    sha256 cellar: :any_skip_relocation, monterey:       "b8d3ce6a999b385c726f34a6dbbd7c85dd9a1d842b5866921a8d63d69cfca17e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "10ceae6488044f204f40d316b1b752e1194988f330258bffeff3124c4f11ef19"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9f7090669978888d1cac3055e3eb119055cbbf63d5adef3cd370480096253d6a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c5c48877fe16832b1ab4898c94a642e8b5bf78683202a9996498a0049e0217c5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf1e44f6a3456d9fc125a5c980df2a45cb104cd8d6b3883c7617743ff0ef9a15"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "0a639f7053e72045fd49d4ea0d48d89d56d82261c881bdedc9f48806489cdd99"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6f95c25a531ae22049228e4b326ac6a34407fa6c9bb2ba1c95aa142546fa0333"
+    sha256 cellar: :any_skip_relocation, ventura:        "0566e9e30b16caa72edd7890d9abfc362f1a4b2f246ed5ac3ffe5604d9a0aeb6"
+    sha256 cellar: :any_skip_relocation, monterey:       "80e53812d09c9edee3593f510b6923b02c808c81d2de6f490dde51a615c27d96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "46d4079965af97a483e15e0141ead64496a412008bf17021485a28680eeb7aa4"
   end
 
   uses_from_macos "ncurses"
@@ -28,6 +29,6 @@ class Dialog < Formula
   end
 
   test do
-    system "#{bin}/dialog", "--version"
+    system bin/"dialog", "--version"
   end
 end

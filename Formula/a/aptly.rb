@@ -1,13 +1,14 @@
 class Aptly < Formula
   desc "Swiss army knife for Debian repository management"
   homepage "https://www.aptly.info/"
-  url "https://github.com/aptly-dev/aptly/archive/v1.5.0.tar.gz"
+  url "https://github.com/aptly-dev/aptly/archive/refs/tags/v1.5.0.tar.gz"
   sha256 "07e18ce606feb8c86a1f79f7f5dd724079ac27196faa61a2cefa5b599bbb5bb1"
   license "MIT"
   head "https://github.com/aptly-dev/aptly.git", branch: "master"
 
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f689184731329b1c22f23af361e31cd8aa6992084434d49281227654281a8f45"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0d022b595e520ea53e23b1dfceb4a45139e7e2ba735994196135c1f9c1a36d4c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "c6fa91fb368a63d5558b8c287b330845e04f90bd4fe7223e161493b01747c869"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "19c0c8c0b35c1c5faa2a71fc0bd088725f5623f465369dcca5b2cea59322714c"

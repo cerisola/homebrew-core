@@ -1,12 +1,13 @@
 class Jpegoptim < Formula
   desc "Utility to optimize JPEG files"
   homepage "https://github.com/tjko/jpegoptim"
-  url "https://github.com/tjko/jpegoptim/archive/v1.5.5.tar.gz"
+  url "https://github.com/tjko/jpegoptim/archive/refs/tags/v1.5.5.tar.gz"
   sha256 "90a309d1c092de358bb411d702281ac3039b489d03adb0bc3c4ef04cf0067d38"
   license "GPL-3.0-or-later"
   head "https://github.com/tjko/jpegoptim.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "6f2da3ecfcd521abededbff7aa2d8578773ef9951e9ad2b859fd5cdc05470102"
     sha256 cellar: :any,                 arm64_sonoma:   "ca3a05d563b803911fcec6940ee9a26bd6e7bb21519e5841947635c856e1bc50"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ebded7c6ca4bc0d67213156202bf36cecf058ed16552c085f6b48dd57a334fd2"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2b388ed2fb35def26b59849050da22ba28c31a94f6a820ea39d396e322c9d70a"

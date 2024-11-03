@@ -1,5 +1,3 @@
-require "language/node"
-
 class Charge < Formula
   desc "Opinionated, zero-config static site generator"
   homepage "https://charge.js.org"
@@ -23,10 +21,14 @@ class Charge < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "624762292729f409a6f737af99495aff8c24340d4b9b6e93c8e155dfa12cff6e"
   end
 
+  # Does not work with supported Node versions
+  # Last release on 2020-03-12
+  disable! date: "2024-09-09", because: :unmaintained
+
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink libexec.glob("bin/*")
 
     # Replace universal binaries with their native slices.

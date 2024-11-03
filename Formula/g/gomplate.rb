@@ -1,10 +1,10 @@
 class Gomplate < Formula
   desc "Command-line Golang template processor"
-  homepage "https://gomplate.hairyhenderson.ca/"
-  url "https://github.com/hairyhenderson/gomplate/archive/v3.11.5.tar.gz"
-  sha256 "49d68aef8c0358b5f292444f378bdf40361a71f26ab0292f5468c701367142d8"
+  homepage "https://gomplate.ca/"
+  url "https://github.com/hairyhenderson/gomplate/archive/refs/tags/v4.1.0.tar.gz"
+  sha256 "6f2481f8e57e5bc0301a8e9234008997649a6076f866bbec6d30bee8c93aa6e6"
   license "MIT"
-  head "https://github.com/hairyhenderson/gomplate.git", branch: "master"
+  head "https://github.com/hairyhenderson/gomplate.git", branch: "main"
 
   livecheck do
     url :stable
@@ -12,13 +12,14 @@ class Gomplate < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0f018acf7fd9b2b2339f2ae757ea4368314fab088f1da247f50db6e443245c82"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e17a2b3ff906f99841e7af1fe1fe408cd35f6a8293547b88f856393bfba77123"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e8af25968009c6d42dc1776df3dc5c63a83a2b2cec471da2539a6b43f0903916"
-    sha256 cellar: :any_skip_relocation, ventura:        "dc8773b5f4cf4cb8e28a30824273b7468b011de581eec2ebadf7ca1f645e5e71"
-    sha256 cellar: :any_skip_relocation, monterey:       "b661975e15ceb6b4fd5560e128cae35190cce686309048e7d629d0b3789d1f4f"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0d592cb70865f8a6ef26b1f8c2dc36263e508983a9a944451f759ff5e49255bb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3fc73692e6a399c1b5a2d7d138c75e473ab4b7c977d830f7db0f3561911e1cee"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a7f54ee5dbd15945f5a6ca4a88c1d6cbdb7adaa05663e5bcf2bfbc7514e80ef2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f2f727ddc32701fcb7c44e94c146998bcae3155e5542536aa65e9da1cbd7a1c3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0b4b21d75709d75ec7164c31801d7610168a63ea3c606994209a4648e95ccaf9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e0401459ace21ca5b25f04d129a4b8f48c5b9fb8c46aecd12124b2059b73dd85"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d1a6be71ab8f828078f27bfa4536c37992452bba6306931c15546a70ce0a3035"
+    sha256 cellar: :any_skip_relocation, ventura:        "57acb0b98fe9a50a442d3153ae74a83ddfb41934d1f23172ca80561b3b77eae8"
+    sha256 cellar: :any_skip_relocation, monterey:       "030adc882b1ce35c328b8d44708f765b76dbd9b609f0aed1c9e200c4e789dbdb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fba294d67e3e1cddbf5332bce359e26822a8c1f8d555cf9e2e2ac5f940a67924"
   end
 
   depends_on "go" => :build
@@ -26,7 +27,6 @@ class Gomplate < Formula
   def install
     system "make", "build", "VERSION=#{version}"
     bin.install "bin/gomplate" => "gomplate"
-    prefix.install_metafiles
   end
 
   test do
@@ -43,6 +43,6 @@ class Gomplate < Formula
       bar:baz
     EOS
 
-    assert_match expected, pipe_output("#{bin}/gomplate", test_template, 0)
+    assert_match expected, pipe_output(bin/"gomplate", test_template, 0)
   end
 end

@@ -1,30 +1,36 @@
-require "language/node"
-
 class Serverless < Formula
   desc "Build applications with serverless architectures"
   homepage "https://www.serverless.com/"
-  url "https://github.com/serverless/serverless/archive/v3.35.2.tar.gz"
-  sha256 "8c70db7c3409efe898dc646985076ed4890189e38a868aca90bbb3fa21876a39"
+  url "https://github.com/serverless/serverless/archive/refs/tags/v3.39.0.tar.gz"
+  sha256 "8f9f90af64b4ddf9df872b6a998ce943d82a479d0f138f804a0e84d4f24b74e3"
   license "MIT"
-  head "https://github.com/serverless/serverless.git", branch: "main"
+  head "https://github.com/serverless/serverless.git", branch: "v3"
+
+  livecheck do
+    url :stable
+    regex(/^v?(3(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "711305e83f9c3d7f70ff0cc13cccf482f20fc0a2025f05debfe3c1ff3a21eb7a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c2b11c1ce9db71ab1f6fb6fc276c65780f957825c953c6a73d0690688cac4278"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c2b11c1ce9db71ab1f6fb6fc276c65780f957825c953c6a73d0690688cac4278"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c2b11c1ce9db71ab1f6fb6fc276c65780f957825c953c6a73d0690688cac4278"
-    sha256 cellar: :any_skip_relocation, sonoma:         "dc29fa8c416af3ac5a1b1ce6dbe7ca81c04c43e46211865815ca7dd8b01d9605"
-    sha256 cellar: :any_skip_relocation, ventura:        "e740523929e6ba1e97548ead5119f15c3965d62afacc320f7dd39f83681ac405"
-    sha256 cellar: :any_skip_relocation, monterey:       "e740523929e6ba1e97548ead5119f15c3965d62afacc320f7dd39f83681ac405"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e740523929e6ba1e97548ead5119f15c3965d62afacc320f7dd39f83681ac405"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d88c95bf016d8aa131dcb1477b084fcbfc1ec6362ef7e2390688eb96ffcebc6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "40a382f6cdcf4825bbb0118b438aed6df7c90eb2b7059cf6ffcddcb74a7d90a6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e02bdf9c7eef601c900ef5a53ab322401177dde6d819bf5d45a680516e02eb0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e02bdf9c7eef601c900ef5a53ab322401177dde6d819bf5d45a680516e02eb0"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e02bdf9c7eef601c900ef5a53ab322401177dde6d819bf5d45a680516e02eb0"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b66193d11a01a3796d856e79ec07d97729c2f589d0d9c478baaa9c7b31f881bc"
+    sha256 cellar: :any_skip_relocation, ventura:        "b66193d11a01a3796d856e79ec07d97729c2f589d0d9c478baaa9c7b31f881bc"
+    sha256 cellar: :any_skip_relocation, monterey:       "b66193d11a01a3796d856e79ec07d97729c2f589d0d9c478baaa9c7b31f881bc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a06872b8191f9c75f9b346aa19a134db12ac6641683039ffe87eecebf8df9582"
   end
+
+  # v3 will be maintained through 2024
+  # Ref: https://www.serverless.com/framework/docs/guides/upgrading-v4#license-changes
+  deprecate! date: "2024-12-31", because: "uses proprietary licensed software in v4"
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
-    bin.install_symlink Dir[libexec/"bin/*"]
+    system "npm", "install", *std_npm_args
+    bin.install_symlink libexec.glob("bin/*")
 
     # Delete incompatible Linux CPython shared library included in dependency package.
     # Raise an error if no longer found so that the unused logic can be removed.
@@ -32,9 +38,6 @@ class Serverless < Formula
       .glob("sdk-py/serverless_sdk/vendor/wrapt/_wrappers.cpython-*-linux-gnu.so")
       .map(&:unlink)
       .empty? && raise("Unable to find wrapt shared library to delete.")
-
-    # Replace universal binaries with their native slices
-    deuniversalize_machos libexec/"lib/node_modules/serverless/node_modules/fsevents/fsevents.node"
   end
 
   test do
@@ -47,7 +50,7 @@ class Serverless < Formula
         region: eu-west-1
     EOS
 
-    system("#{bin}/serverless", "config", "credentials", "--provider", "aws", "--key", "aa", "--secret", "xx")
+    system bin/"serverless", "config", "credentials", "--provider", "aws", "--key", "aa", "--secret", "xx"
     output = shell_output("#{bin}/serverless package 2>&1")
     assert_match "Packaging homebrew-test for stage dev", output
   end

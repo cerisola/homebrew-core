@@ -1,27 +1,24 @@
-require "language/node"
-
 class GitlabCiLocal < Formula
   desc "Run gitlab pipelines locally as shell executor or docker executor"
   homepage "https://github.com/firecow/gitlab-ci-local"
-  url "https://registry.npmjs.org/gitlab-ci-local/-/gitlab-ci-local-4.44.0.tgz"
-  sha256 "ebcbae723b6fd2317cc79a2c422b678a3a7051e1bb7f4050d62b5cbd9ac20c67"
+  url "https://registry.npmjs.org/gitlab-ci-local/-/gitlab-ci-local-4.55.0.tgz"
+  sha256 "4acb80ab5e493d493ffca22217d9034005c50d46305d75d68101d8610fa425d6"
   license "MIT"
   head "https://github.com/firecow/gitlab-ci-local.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f48ca6c21777ebfab2a9ab1daac94d16a8dc6bef29899bca3c47473654851d9b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f48ca6c21777ebfab2a9ab1daac94d16a8dc6bef29899bca3c47473654851d9b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f48ca6c21777ebfab2a9ab1daac94d16a8dc6bef29899bca3c47473654851d9b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fcc70061b78db1424a330f68f26ed80e8e9d30e080fc5b84e6b97aff5efb2ae2"
-    sha256 cellar: :any_skip_relocation, ventura:        "fcc70061b78db1424a330f68f26ed80e8e9d30e080fc5b84e6b97aff5efb2ae2"
-    sha256 cellar: :any_skip_relocation, monterey:       "fcc70061b78db1424a330f68f26ed80e8e9d30e080fc5b84e6b97aff5efb2ae2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f48ca6c21777ebfab2a9ab1daac94d16a8dc6bef29899bca3c47473654851d9b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6a1a4ad13dce5ec2dd7948ffe0508d5c938f6028934afbc90840d9fc1b2f3dd5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6a1a4ad13dce5ec2dd7948ffe0508d5c938f6028934afbc90840d9fc1b2f3dd5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6a1a4ad13dce5ec2dd7948ffe0508d5c938f6028934afbc90840d9fc1b2f3dd5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "099302864fdab9c20d92c73af4cf73d7cfa42f6e6faeaf5ec3862e6bb3a67b68"
+    sha256 cellar: :any_skip_relocation, ventura:       "099302864fdab9c20d92c73af4cf73d7cfa42f6e6faeaf5ec3862e6bb3a67b68"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6a1a4ad13dce5ec2dd7948ffe0508d5c938f6028934afbc90840d9fc1b2f3dd5"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

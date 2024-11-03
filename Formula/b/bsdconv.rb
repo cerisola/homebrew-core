@@ -1,12 +1,13 @@
 class Bsdconv < Formula
   desc "Charset/encoding converter library"
   homepage "https://github.com/buganini/bsdconv"
-  url "https://github.com/buganini/bsdconv/archive/11.6.tar.gz"
+  url "https://github.com/buganini/bsdconv/archive/refs/tags/11.6.tar.gz"
   sha256 "e856e24474deb3731ac059a96af0078ba951895f2cb3b31f125148a29cc32b70"
   license "BSD-2-Clause"
   head "https://github.com/buganini/bsdconv.git", branch: "master"
 
   bottle do
+    sha256 arm64_sequoia:  "eb27911fad713a1d8d36146105cb0abffcf7a6c78bdd358c09e5ff64c207e3fd"
     sha256 arm64_sonoma:   "d5f2086f8915426931817985ce3a3b379b4cac7ba2c31ea1b8ba69f46a51ebb2"
     sha256 arm64_ventura:  "3677f1c3ddd940126cdbaef44ea54ee40e8912572886d490e75139dd1950e268"
     sha256 arm64_monterey: "bc26b770aa6622c467bb6adb345593c59cee51d1071211dd5acc913b4f0932c8"

@@ -1,9 +1,9 @@
 class Vecx < Formula
   desc "Vectrex emulator"
   homepage "https://github.com/jhawthorn/vecx"
-  url "https://github.com/jhawthorn/vecx/archive/v1.1.tar.gz"
+  url "https://github.com/jhawthorn/vecx/archive/refs/tags/v1.1.tar.gz"
   sha256 "206ab30db547b9c711438455917b5f1ee96ff87bd025ed8a4bd660f109c8b3fb"
-  license "GPL-3.0"
+  license "GPL-3.0-only"
   revision 1
   head "https://github.com/jhawthorn/vecx.git", branch: "master"
 
@@ -23,7 +23,7 @@ class Vecx < Formula
   # Upstream PR for SDL 2 support was opened on 2019-04-13 but no progress on merging.
   # PR ref: https://github.com/jhawthorn/vecx/pull/5
   # Last release on 2016-08-19
-  deprecate! date: "2023-02-05", because: "uses deprecated `sdl_gfx` and `sdl_image`"
+  disable! date: "2024-02-07", because: "uses deprecated `sdl_gfx` and `sdl_image`"
 
   depends_on "sdl12-compat"
   depends_on "sdl_gfx"

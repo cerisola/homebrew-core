@@ -1,20 +1,16 @@
 class Libqalculate < Formula
   desc "Library for Qalculate! program"
   homepage "https://qalculate.github.io/"
-  url "https://github.com/Qalculate/libqalculate/releases/download/v4.8.1/libqalculate-4.8.1.tar.gz"
-  sha256 "a55fbdc14cb183c62a95e430823017b5f958f0758d3476578f8cc05369157c54"
+  url "https://github.com/Qalculate/libqalculate/releases/download/v5.3.0/libqalculate-5.3.0.tar.gz"
+  sha256 "61dd60b1d43ad3d2944cff9b2f45c9bc646c5a849c621133ef07231e8289e35b"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256                               arm64_sonoma:   "4fbdcbac052a935359cc161b8600eb21497bf8bfb9988a8940dd5dc2a0ad67bf"
-    sha256                               arm64_ventura:  "4c9a4d8618d5e8ed3dd4624647e96b38707ff834dde8a5156c9ccb8e457e810b"
-    sha256                               arm64_monterey: "b70536e9dbbf78b8c32826d1b7c923b001fb19d63b1cd4ffbf74bdec856c5c96"
-    sha256                               arm64_big_sur:  "6181e366634d910d88bba46e09112167d474325ea1d3ac2d8da4664502754c40"
-    sha256                               sonoma:         "dea8eb89c3864c4b8409e206e8a9f773fcef4ab36be46d1546536bad5abaeae7"
-    sha256                               ventura:        "e0523a2ed7938e0739b419f96918b5a8882e7edcbda33e50f2dce967b04c0875"
-    sha256                               monterey:       "1ef9b50a7f26324a8aa8e1104dd2dbfb87175de9506f569f64aa41854711f67d"
-    sha256                               big_sur:        "18ccf3e7480764f553df5527fc535c75e9d3152da41205d40fda55a29807de2e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4dc9812fbe663c3f79730b45e9cfb7de9216c616d12ea0b304eca4a513cb2b9"
+    sha256                               arm64_sonoma:  "5e91f7eda5d004a1560a1123fc5ad5458e0f429dc1e308e8f1326ed84fbe5f0f"
+    sha256                               arm64_ventura: "2426676ec5818a5cac6aecb75d7a881b3d46248cd4ace86d2d9d47be7368625b"
+    sha256                               sonoma:        "928333f3a86483068b3452bfd94e3d4917da1a1ad4efda26a2ef8fe7c25a8a5c"
+    sha256                               ventura:       "fb7a6fa06d032729459057d66e1a8f208b48f0ab774f8d5602edbd3e9ec1f8ad"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2a4524258b85f3cfc277e7f1da310728e5ca837d18cd3ae649b04ad432e1103"
   end
 
   depends_on "intltool" => :build
@@ -26,18 +22,27 @@ class Libqalculate < Formula
 
   uses_from_macos "perl" => :build
   uses_from_macos "curl"
+  uses_from_macos "libxml2"
+
+  on_macos do
+    depends_on "gmp"
+  end
+
+  on_linux do
+    depends_on "perl-xml-parser" => :build
+    depends_on "gmp"
+  end
 
   def install
-    ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5" unless OS.mac?
+    ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5" unless OS.mac?
     ENV.cxx11
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--without-icu",
-                          "--prefix=#{prefix}"
+                          *std_configure_args.reject { |s| s["--disable-debug"] }
     system "make", "install"
   end
 
   test do
-    system "#{bin}/qalc", "-nocurrencies", "(2+2)/4 hours to minutes"
+    system bin/"qalc", "-nocurrencies", "(2+2)/4 hours to minutes"
   end
 end

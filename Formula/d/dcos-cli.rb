@@ -1,18 +1,14 @@
 class DcosCli < Formula
   desc "Command-line interface for managing DC/OS clusters"
   homepage "https://docs.d2iq.com/mesosphere/dcos/latest/cli"
-  url "https://github.com/dcos/dcos-cli/archive/1.2.0.tar.gz"
+  url "https://github.com/dcos/dcos-cli/archive/refs/tags/1.2.0.tar.gz"
   sha256 "d75c4aae6571a7d3f5a2dad0331fe3adab05a79e2966c0715409d6a2be2c6105"
   license "Apache-2.0"
   head "https://github.com/dcos/dcos-cli.git", branch: "master"
 
-  livecheck do
-    url :stable
-    strategy :github_latest
-  end
-
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ce669ecdf711ee9694e40d12a22866fae9e14c59ac55436cc6284133c25b88d5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "566aeb81f1c506438c9f5b503f775c540dfef7a4aa5e728e710e50a2e0c10993"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "4cf3b69223bb06a5b08f8f48eb320a2b45ef2fcf8e3f63c2e5fb49881872b7bb"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "4b7c3e8a7a0d91d84fd13cad41079bd7d718928b1acbaede6f7c5fc0f419b1bc"
@@ -25,6 +21,9 @@ class DcosCli < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "759770809a74366f84721771b18702a3d27c9e6aa9099f25895200462df17ab8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ca96957a95df6e3084eeddf3d45cd52a26bdd69446647af7e52f297c6b1f1ce"
   end
+
+  # D2iQ (formerly Mesosphere) has shutdown last year
+  deprecate! date: "2024-07-07", because: :unmaintained
 
   depends_on "go" => :build
 

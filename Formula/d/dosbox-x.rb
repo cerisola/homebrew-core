@@ -1,8 +1,8 @@
 class DosboxX < Formula
   desc "DOSBox with accurate emulation and wide testing"
   homepage "https://dosbox-x.com/"
-  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2023.09.01.tar.gz"
-  sha256 "71bf4477ae1640406fa24023f51766ab158ebf26f0e2f317f6fd7bd84c15b4e6"
+  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2024.10.01.tar.gz"
+  sha256 "9940662759b9910e3c4549216be8db0278ceaaa80ace5b19f87b04d0b6ff8a3a"
   license "GPL-2.0-or-later"
   version_scheme 1
   head "https://github.com/joncampbell123/dosbox-x.git", branch: "master"
@@ -19,30 +19,38 @@ class DosboxX < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "9074aec5d1e36f2229d2887d7c5515543c2b0d22dee3848ee091cc5906bf11f2"
-    sha256 arm64_ventura:  "624373d0a30ed5639434432e333076cc4ae3b3eaaf55f162163dcaa2150ceef0"
-    sha256 arm64_monterey: "6752e60c1c2f99b9e93cfd80cef21e85143a666c2659f97792265752cade29ec"
-    sha256 arm64_big_sur:  "d2a0bac203d16a92c6b53627231e5b41d838efcd417e9ca0e0c3f447238aafb7"
-    sha256 sonoma:         "51e464f089e003d55648b0c4a70fb974227303a8dcf4f66de29853c46b978f09"
-    sha256 ventura:        "e5fee193ccbd2bcce67464cd7cd9a1125e59be262a914ba2ec79c79e01687060"
-    sha256 monterey:       "fe6568b9b67ae1badefe13228b9d63867be1f9754ad7366fd73452aa0b140d1f"
-    sha256 big_sur:        "00db7767780674a386babca9522a07b86fc9afbc7eca306f5da23c6dcfc93a8e"
-    sha256 x86_64_linux:   "6bde23080e8e1e0e11fcc99506902400b0c01ac1c989cb7130cca0611e35afd7"
+    sha256 arm64_sequoia: "63a69fa78f5e233fcffab6603d0adfe11fc4bfdc627d7522fb994865cd479320"
+    sha256 arm64_sonoma:  "ee12e910570c143fe748c6a7f7406be1a917c6d566a580dc06656e0bb49bd727"
+    sha256 arm64_ventura: "94bacc0eda5263ffdb07c51111b0cae5146c511a879e9714eba2d75454af626b"
+    sha256 sonoma:        "bd61a5e1889cddaa086047b6ec899eeb00982c1eaee4bbb287c7dee34c5b9a0f"
+    sha256 ventura:       "776db85c289ed70159da126fd4a7c6d9672ce054cbc122c756ac2d83c8651fe0"
+    sha256 x86_64_linux:  "69851fb6278d41a426c011ebfcf7f2b0d631cd196f395d3e56b686ad692f6523"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "fluid-synth"
   depends_on "freetype"
   depends_on "libpng"
   depends_on "libslirp"
   depends_on macos: :high_sierra # needs futimens
   depends_on "sdl2"
+
+  uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "glib"
+  end
 
   on_linux do
     depends_on "linux-headers@5.15" => :build
+    depends_on "alsa-lib"
+    depends_on "libx11"
+    depends_on "libxrandr"
   end
 
   fails_with gcc: "5"
@@ -52,7 +60,7 @@ class DosboxX < Formula
 
     # See flags in `build-macos-sdl2`.
     args = %w[
-      --enable-core-inline
+      --enable-debug=heavy
       --enable-sdl2
       --disable-sdl2test
       --disable-sdl
@@ -60,7 +68,7 @@ class DosboxX < Formula
     ]
 
     system "./autogen.sh"
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make" # Needs to be called separately from `make install`.
     system "make", "install"
   end

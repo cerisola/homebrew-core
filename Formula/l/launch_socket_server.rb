@@ -1,12 +1,13 @@
 class LaunchSocketServer < Formula
   desc "Bind to privileged ports without running a server as root"
   homepage "https://github.com/mistydemeo/launch_socket_server"
-  url "https://github.com/mistydemeo/launch_socket_server/archive/v2.0.0.tar.gz"
+  url "https://github.com/mistydemeo/launch_socket_server/archive/refs/tags/v2.0.0.tar.gz"
   sha256 "507184544d170dab63e6112198212033aaa84edf0e092c1dfe641087f092f365"
   license "MIT"
   head "https://github.com/mistydemeo/launch_socket_server.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4dc5f49b22d19b1a6d79d1697b52883dfb9ef8f39d2777a49c6aed182b9ef0be"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9ce6af2c7124bc91494a306292073b296f109482869a4c01870ef97e81d5d62d"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f097f91e97343b78e0208793705506ccec3ea9deddb38d9a15d11c11103888cf"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "055953e5098f4c8e2c823d58e123eb3a905174c9619791b3fa54de1d671b193d"

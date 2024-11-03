@@ -1,20 +1,19 @@
 class Gitui < Formula
   desc "Blazing fast terminal-ui for git written in rust"
   homepage "https://github.com/extrawurst/gitui"
-  url "https://github.com/extrawurst/gitui/archive/v0.24.3.tar.gz"
-  sha256 "a5fc6b52a4db0037c3351b9743af49c8bb9ccff4dda5bdb064bab9e59f68fde2"
+  url "https://github.com/extrawurst/gitui/archive/refs/tags/v0.26.3.tar.gz"
+  sha256 "8075e180f3b01ff0c290b690488a7628c44b4de12346e04a77d823914a48918b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "aa71574beb27b9a1ddba3fc4ac495f991b09d35084aedec6ee744c599b14e37b"
-    sha256 cellar: :any,                 arm64_ventura:  "1c1d3e0f13419a058c3e5634fae152513ff5ef0b413037d4be38e579f9ad9bc3"
-    sha256 cellar: :any,                 arm64_monterey: "367eeda857726379cc53f0279ce04f9aaca2de6129bab1221d88f4d8c8240348"
-    sha256 cellar: :any,                 arm64_big_sur:  "a0c27c3c2e8a69bc1d9253e7498e37f9dd568a12c3958af5235cbd77542782e9"
-    sha256 cellar: :any,                 sonoma:         "c8b0e6739065bc706c626d93420fd3f123f5d45ee09b302f7cd6dee0189954bd"
-    sha256 cellar: :any,                 ventura:        "306d806daf9d1a1c229e7927c0453a45ecca4cec8fd280f26b45eadc518145f1"
-    sha256 cellar: :any,                 monterey:       "ed0cdd39146ae050f79f933cd2023f3415646bf8520920c2a6d9a301526f432e"
-    sha256 cellar: :any,                 big_sur:        "b44fc0ad42cdb69b323422f55a2c950cf66f7d2562163ca49df56e2c9809fbe5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bbabb6ee576993edf714abc9d2f7505a486ceaeec503dd927f43c2e08bf31a56"
+    sha256 cellar: :any,                 arm64_sequoia:  "c5d995cb59c58bb5d44c61bb2d5b88073164561de392e929422c352ef2b2ccef"
+    sha256 cellar: :any,                 arm64_sonoma:   "d6f7ec14145cf4230fb6370f48f0daaa1c67cd03a6cda7b22979080714a44b7a"
+    sha256 cellar: :any,                 arm64_ventura:  "98bffe2fea54b264392059fff7a0091c7cedc384fdff15cad427eed0390bb5ff"
+    sha256 cellar: :any,                 arm64_monterey: "c882077be795e50d065d975928d3ef66636ab05fe1d884968691841cf8919fd2"
+    sha256 cellar: :any,                 sonoma:         "d8d54259afc4edb877d269603a16dd4097a95926c92c7008783770006c7617b5"
+    sha256 cellar: :any,                 ventura:        "afff6b29de302997785496f4238a3c501e894e6da643228d2dcbbf715285f14e"
+    sha256 cellar: :any,                 monterey:       "eec269d68c591c21ad9c4beee25b00e051e3be34f97b94cfa2965b95848315e1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "350a9f635cea158f6d0c49b6859dbb91c65e9b4a29c224e34469362e758b9ac5"
   end
 
   depends_on "rust" => :build
@@ -71,7 +70,6 @@ class Gitui < Formula
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
     ]
-    linked_libraries << (Formula["openssl@3"].opt_lib/shared_library("libcrypto")) if OS.mac?
     linked_libraries.each do |library|
       assert check_binary_linkage(bin/"gitui", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."

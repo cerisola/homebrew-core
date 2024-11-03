@@ -1,18 +1,9 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "https://www.freetds.org/"
+  url "https://www.freetds.org/files/stable/freetds-1.4.23.tar.bz2", using: :homebrew_curl
+  sha256 "93a3f186b82c6042a66a1970bd478d7914edb1c5669b642d80b4eaacf2a2d17e"
   license "GPL-2.0-or-later"
-
-  stable do
-    url "https://www.freetds.org/files/stable/freetds-1.4.2.tar.bz2", using: :homebrew_curl
-    sha256 "8acd1339989c64709803e227d2082b7ad264be66aebd4dba2c69a768acb86713"
-
-    # Fix -flat_namespace being used on Big Sur and later.
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
-      sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
-    end
-  end
 
   livecheck do
     url "https://www.freetds.org/files/stable/"
@@ -20,13 +11,12 @@ class Freetds < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "c9120bd2e0eeb8ac83070e2b4dd85bac6d4ede21060b97b4617ef2fa1cef3ad8"
-    sha256 arm64_ventura:  "c4ee0537863f8d5cb891610541a66f38dd85dee478bb3282ce2ad67079ee10f0"
-    sha256 arm64_monterey: "21f428399d59d6ac8a63e34b6aa50e3866085ad60f84930d1d129a872ea8ba59"
-    sha256 sonoma:         "7c300eab4b6a19e18780e8df18fdc20f88aff63d7faf5178093d757eee9a8bf3"
-    sha256 ventura:        "1b22d5bb693f17394314e54c38277182d25322a16d2f93e4a3a4dfc979e6b86c"
-    sha256 monterey:       "4484def0b0373f0416f2d50dc22e5c80a83e1602f9028f90d0d25553edcf0906"
-    sha256 x86_64_linux:   "64910efa73986bbb9038e762f498be159026cd75f7c435e293111a7d9f305d5b"
+    sha256 arm64_sequoia: "038c79a890f8bfa86b4ad80b023a5d2d159e5560ee9fff8cb4843b744c35017a"
+    sha256 arm64_sonoma:  "567e374c5d48379edfcd1a337b8c2276369beee0a2c1feedf0286f4085919888"
+    sha256 arm64_ventura: "59d2dd5e0115c72865f8a2be26c6fd592f3c0b42029749e1d2f3c5ca206a21c6"
+    sha256 sonoma:        "47ec787d486077556a1da8a31107f49177c7db669d90ec3136f8ca2f7c5386ca"
+    sha256 ventura:       "a5844d1abc79fb45eadd6c8bff150e899b8afed949c82bb161ffe232bd99c461"
+    sha256 x86_64_linux:  "23ed83a76e8d45128b5ca26d4b1ed3b44c5738b1aa23149cc8045e6ecf08b057"
   end
 
   head do
@@ -72,6 +62,6 @@ class Freetds < Formula
   end
 
   test do
-    system "#{bin}/tsql", "-C"
+    system bin/"tsql", "-C"
   end
 end

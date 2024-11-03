@@ -5,8 +5,17 @@ class Httping < Formula
   sha256 "37da3c89b917611d2ff81e2f6c9e9de39d160ef0ca2cb6ffec0bebcb9b45ef5d"
   license "GPL-3.0-only"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "c6a1ee0e3a64c03c26a9c17a4d3f23a89faf5603d55052187f05202b94d9e701"
     sha256 cellar: :any,                 arm64_sonoma:   "f23584840d9dcfe8b4b7feefd73ac8fab046f59d67289ac23f3c85669dcdd2f3"
     sha256 cellar: :any,                 arm64_ventura:  "3141fe1d3df5213ea50d737dcbe5a22d19470b1b71bb5224cc31ab8cae5b1c7e"
     sha256 cellar: :any,                 arm64_monterey: "94510b3f65c4e5e09f50416ed42dc3cea4919d423b44fb535abf33c931852fff"

@@ -1,7 +1,7 @@
 class Kona < Formula
   desc "Open-source implementation of the K programming language"
   homepage "https://github.com/kevinlawler/kona"
-  url "https://github.com/kevinlawler/kona/archive/Win64-20211225.tar.gz"
+  url "https://github.com/kevinlawler/kona/archive/refs/tags/Win64-20211225.tar.gz"
   sha256 "cd5dcc03394af275f0416b3cb2914574bf51ec60d1c857020fbd34b5427c5faf"
   license "ISC"
   head "https://github.com/kevinlawler/kona.git", branch: "master"
@@ -13,6 +13,7 @@ class Kona < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "84c61f1623af99fce59ff37ac3310eeb4c20bfa9ed42b78eec9dcacb8c9d57c5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3173ebdcc5b42b89e00caa74715d04512069ef0fd7d124f0c9b8fb92fd2a54a0"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8b0943e3d66400117a41dd547e627750c8c98ae95a1430831343995151cf3349"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8b1a6b849baa2c0423981e8a528551d49ce8a18f0772a6381038e0b3f27adb9f"

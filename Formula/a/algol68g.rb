@@ -1,8 +1,8 @@
 class Algol68g < Formula
   desc "Algol 68 compiler-interpreter"
   homepage "https://jmvdveer.home.xs4all.nl/algol.html"
-  url "https://jmvdveer.home.xs4all.nl/algol68g-3.3.24.tar.gz"
-  sha256 "bd26e3dd89720ace1b003a43ab10247120b556ca106768fe8c829ee7bed6b435"
+  url "https://jmvdveer.home.xs4all.nl/algol68g-3.5.9.tar.gz"
+  sha256 "cf7c076cfb376e284cf81be1f30657ffeb0168ae37170552f4e7b4f6b8c155e3"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,25 +11,21 @@ class Algol68g < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e303f97d906324d1f7eed7260a549e04f4d6bb780fcf9dcc6b183551d3f1ea99"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b7bcd3eedcd382e9c20261285f7cbdf054ecfb6ce86b096204018324619b5d14"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "918d68128a39d18f95f9105d6e27968ad5fff1277f6532d9b9d4f84b3de2c81d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4bc8f1b9f0394fb7f0b69864d1d79fdeaa6d204031cd6f9fd9ad85888007b893"
-    sha256                               sonoma:         "7441b5119962d987db294dbda9fed952eca07b43e039e153f8349db6e3c265c7"
-    sha256                               ventura:        "d35a5d8d5a8e92a3b85676850c798d2619f4627ac71cc56b9e297ab8761be5dd"
-    sha256                               monterey:       "f75a2e2c62f9a5885742025cc498f98c25d8e6c7f5a7540bb5055e3374314133"
-    sha256                               big_sur:        "b73301d2334ccc872c2b16b2ab428f350b2b7de4c90a7c5211856faefc228058"
-    sha256                               x86_64_linux:   "fb1fbf24c41c50352926682283cc177879c50d4ac36f9d786e01b1b2029a13c9"
+    sha256 arm64_sequoia: "a998dac4245a434be64d97da9b9e2f593b3a4dcd1e5c9bdb2e3c48de84f3c56c"
+    sha256 arm64_sonoma:  "faa36cc0298123337ed4aba2049a3a1d10b0c583f93a101e427ed69b54602aae"
+    sha256 arm64_ventura: "7ab6e8b319fd1c7a8e6cad1a9a8c11a71aa14630ed220833495e0f60328a49bf"
+    sha256 sonoma:        "5027c4fa8aca9a6cfa7b5925e09dec2c105cb2e05560cc929f671bf2eb95fb2a"
+    sha256 ventura:       "746165fcf4d74261fadcc3d2936ca6a895a6a6f3a4b66bee7cf94ce34f6ad315"
+    sha256 x86_64_linux:  "40cc120d3fe014d3a9bf1d4c085d45a145407b62037f746cbfe2278abe3b5765"
   end
+
+  uses_from_macos "ncurses"
 
   on_linux do
     depends_on "libpq"
   end
 
   def install
-    # Fix compile with newer Clang
-    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
-
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end

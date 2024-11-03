@@ -1,8 +1,8 @@
 class JenkinsLts < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://www.jenkins.io/"
-  url "https://get.jenkins.io/war-stable/2.414.2/jenkins.war"
-  sha256 "922bbf6269fddad614bb6540241ed0ce5523a4a5328229e15f5e7bb7ffd565b8"
+  url "https://get.jenkins.io/war-stable/2.479.1/jenkins.war"
+  sha256 "dbf987b3aaab16ce20e9413b3082fa323e3724cbb64562ddb64c1e4d4f58b470"
   license "MIT"
 
   livecheck do
@@ -11,24 +11,16 @@ class JenkinsLts < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, ventura:        "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, monterey:       "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3271a88fe7ca2471ad67518d27770c7f047c7960e5011041fa9e31f8a9b332fc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ae3c16e88c5232bcde493cca9d3af3208bcde9c0bc6d266b070a6da70b992741"
+    sha256 cellar: :any_skip_relocation, all: "510a45e3edeffc6403704087fc1a49e34eb820930cd5b4b43405065e3276fbff"
   end
 
-  depends_on "openjdk@17"
+  depends_on "openjdk@21"
 
   def install
-    system "#{Formula["openjdk@17"].opt_bin}/jar", "xvf", "jenkins.war"
+    system "#{Formula["openjdk@21"].opt_bin}/jar", "xvf", "jenkins.war"
     libexec.install "jenkins.war", "WEB-INF/lib/cli-#{version}.jar"
-    bin.write_jar_script libexec/"jenkins.war", "jenkins-lts", java_version: "17"
-    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-lts-cli", java_version: "17"
+    bin.write_jar_script libexec/"jenkins.war", "jenkins-lts", java_version: "21"
+    bin.write_jar_script libexec/"cli-#{version}.jar", "jenkins-lts-cli", java_version: "21"
   end
 
   def caveats
@@ -38,7 +30,7 @@ class JenkinsLts < Formula
   end
 
   service do
-    run [Formula["openjdk@17"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
+    run [Formula["openjdk@21"].opt_bin/"java", "-Dmail.smtp.starttls.enable=true", "-jar", opt_libexec/"jenkins.war",
          "--httpListenAddress=127.0.0.1", "--httpPort=8080"]
   end
 

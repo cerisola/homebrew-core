@@ -2,8 +2,8 @@ class ArchiSteamFarm < Formula
   desc "Application for idling Steam cards from multiple accounts simultaneously"
   homepage "https://github.com/JustArchiNET/ArchiSteamFarm"
   url "https://github.com/JustArchiNET/ArchiSteamFarm.git",
-      tag:      "5.4.10.3",
-      revision: "f2563c582c45847c0f3c6175075785a0ffd0f3dd"
+      tag:      "6.0.8.7",
+      revision: "6dddaa59926c1e48419e5d374deef8aa712ad610"
   license "Apache-2.0"
   head "https://github.com/JustArchiNET/ArchiSteamFarm.git", branch: "main"
 
@@ -13,11 +13,12 @@ class ArchiSteamFarm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34026fa3ddf22c225705c554b041dd26c76d687b76fe105106d6df5b41b73632"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d295859055d410efb4a4617a8be289735cb441c9edc790d89e83205fc850090c"
-    sha256 cellar: :any_skip_relocation, ventura:        "35246ee1bfd1a485d32317390ac7f2e0bcd10b1bd5144cbe69d2213aa65e95f3"
-    sha256 cellar: :any_skip_relocation, monterey:       "cb9a0be8dc42a97ba1ef04b1b76d2f85808dd05898b36c6d35b0249423e5a18c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4767aca0cef61f4e241a1555b4bbedbb8b662c27d289a53e652f1fc1db6507c4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2f24faa5b51214ab397457659b1ccc762326838b11830ff5b4a172aba55adfe4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "81f4c5700219ddd6e4985d99626ca6c0cf1d7a93dc78b0461436fecb386f7d60"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7cce50bdc9e5c9571d0ed1a44a63e632124f248528ef74f85cb7f6052ac3f1c4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a85aba84e903b06ea25de654c8f3513a6c2e633f550efca7dc72dc4f0da58c86"
+    sha256 cellar: :any_skip_relocation, ventura:       "2d66e00e8bade512b95191b8f1ec1f3df40f7d176b672355f8d7306b446484c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ab7f434ff00838f5624ae8bbcfae725be034cf139261513b7923ab9def0aed5e"
   end
 
   depends_on "dotnet"
@@ -34,7 +35,7 @@ class ArchiSteamFarm < Formula
     EOS
 
     etc.install libexec/"config" => "asf"
-    rm_rf libexec/"config"
+    rm_r(libexec/"config")
     libexec.install_symlink etc/"asf" => "config"
   end
 

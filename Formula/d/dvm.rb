@@ -1,12 +1,13 @@
 class Dvm < Formula
   desc "Docker Version Manager"
   homepage "https://github.com/howtowhale/dvm"
-  url "https://github.com/howtowhale/dvm/archive/1.0.3.tar.gz"
+  url "https://github.com/howtowhale/dvm/archive/refs/tags/1.0.3.tar.gz"
   sha256 "148c2c48a17435ebcfff17476528522ec39c3f7a5be5866e723c245e0eb21098"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "10b8afedcce7c95c0d246413aa284e6d7ace1171365c4ccb69998e7a42142d11"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "06639c9a34e778933bae9918ec1eb9c3dfea72d1b5556e086b6ba5fa1b1938a5"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "93c9c5d7862ccb6954d87aa1a467cfcde32355801dea1cb09a216488b7ba4e1a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2a5182fb125b4cb85e293513b2ffa19220070ddaf4a17a1369c709350b7b5332"

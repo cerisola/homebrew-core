@@ -1,9 +1,10 @@
 class Node < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v20.8.0/node-v20.8.0.tar.xz"
-  sha256 "412be847ae6df61010ba9da3cc3e6be5b67aa002e354e919f59ec8360371704c"
+  url "https://nodejs.org/dist/v23.1.0/node-v23.1.0.tar.xz"
+  sha256 "57cbfd3dd51f9300ea2b8e60a8ed215b1eaa71fbde4c3903a7d31a443a4a4423"
   license "MIT"
+  revision 1
   head "https://github.com/nodejs/node.git", branch: "main"
 
   livecheck do
@@ -12,20 +13,19 @@ class Node < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "e890913b6be256f1f441b823aefde1d10e609b457f276130df8528427395d097"
-    sha256 arm64_ventura:  "8b7d223bf571e3f3acbf8a1a065f4070bc836abc79bcbf41ebf95bd44fdc7bf4"
-    sha256 arm64_monterey: "95d8f0d137b74376fccabecc0a7755012de9682dc85f7889a5ac21fcced40f93"
-    sha256 sonoma:         "95978cebe26247c5f0b04e012517b4f77ae5561febd1baa9a895b92849055637"
-    sha256 ventura:        "808ac5dac602c1d27d20aa5ed0f0b07f3a520a2d3d4b3092950e8767291d7524"
-    sha256 monterey:       "32495b336e0342c4dfdf3841542bf3fccd629d4d35eaab305d6ce2b3a1deb0f9"
-    sha256 x86_64_linux:   "f1c91d726a89e0485638329e93cba3115643c4b10bf7f1e6465f39e02851356a"
+    sha256 arm64_sequoia: "23880f5ec9a76db3849a3f37b65536f94c67244f91096aef2e0a7c20c5a53f9c"
+    sha256 arm64_sonoma:  "4933b550c70a22bdf1f3f22eb344db6da5c6881b0a0df8efd87135032700f347"
+    sha256 arm64_ventura: "ea816bfb85d12377f6e140eb307ef093c4b64bc0d3f2db63304838ddfbeb727a"
+    sha256 sonoma:        "6a3605890e590286f117dc94779ea1df756546c92c9f3766eecfe5b95716f05f"
+    sha256 ventura:       "45a8ebd5667cc203abbc45f4cc8e7b651aff64612cc316371cdc36361ed1f359"
+    sha256 x86_64_linux:  "e44cf954f3834ae57ade5d162c9bae349da4be5364a857b4a7d7a4cae3113df4"
   end
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.13" => :build
   depends_on "brotli"
   depends_on "c-ares"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libnghttp2"
   depends_on "libuv"
   depends_on "openssl@3"
@@ -49,8 +49,15 @@ class Node < Formula
   # We track major/minor from upstream Node releases.
   # We will accept *important* npm patch releases when necessary.
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-10.1.0.tgz"
-    sha256 "7cb31c0a881964a22577fd84e5a9a5b11e6f49ef8aa0893036b0b68015056252"
+    url "https://registry.npmjs.org/npm/-/npm-10.9.0.tgz"
+    sha256 "c12def16fe3efdc80b1e652d60903d807ac4b78b9e7c3e76f633f4b13a32897c"
+  end
+
+  # Apply fix for ICU 76+ from open PR.
+  # PR ref: https://github.com/nodejs/node/pull/55563
+  patch do
+    url "https://github.com/nodejs/node/commit/54299ac3a3d4e4520b8604dce43c2584092ccde2.patch?full_index=1"
+    sha256 "1d047dd275ca615551a6c40c4f766f2d1c9913a3d7aacc5e94039e0fa55aa537"
   end
 
   def install
@@ -60,14 +67,13 @@ class Node < Formula
     ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
 
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = which("python3.11")
+    ENV["PYTHON"] = which("python3.13")
 
     # Never install the bundled "npm", always prefer our
     # installation from tarball for better packaging control.
     args = %W[
       --prefix=#{prefix}
       --without-npm
-      --without-corepack
       --with-intl=system-icu
       --shared-libuv
       --shared-nghttp2
@@ -93,7 +99,7 @@ class Node < Formula
     # terminate called after throwing an instance of 'std::out_of_range'
     # Pre-Catalina macOS also can't build with LTO
     # LTO is unpleasant if you have to build from source.
-    args << "--enable-lto" if MacOS.version >= :catalina && build.bottle?
+    args << "--enable-lto" if OS.mac? && MacOS.version >= :catalina && build.bottle?
 
     system "./configure", *args
     system "make", "install"
@@ -113,7 +119,7 @@ class Node < Formula
     # This copies back over the vanilla `package.json` to fix this issue.
     cp bootstrap/"package.json", libexec/"lib/node_modules/npm"
     # These symlinks are never used & they've caused issues in the past.
-    rm_rf libexec/"share"
+    rm_r libexec/"share" if (libexec/"share").exist?
 
     bash_completion.install bootstrap/"lib/utils/completion.sh" => "npm"
   end
@@ -122,7 +128,7 @@ class Node < Formula
     node_modules = HOMEBREW_PREFIX/"lib/node_modules"
     node_modules.mkpath
     # Kill npm but preserve all other modules across node updates/upgrades.
-    rm_rf node_modules/"npm"
+    rm_r node_modules/"npm" if (node_modules/"npm").exist?
 
     cp_r libexec/"lib/node_modules/npm", node_modules
     # This symlink doesn't hop into homebrew_prefix/bin automatically so
@@ -130,15 +136,17 @@ class Node < Formula
     # bottle-npm-and-retain-a-private-copy-in-libexec setup
     # All other installs **do** symlink to homebrew_prefix/bin correctly.
     # We ln rather than cp this because doing so mimics npm's normal install.
-    ln_sf node_modules/"npm/bin/npm-cli.js", HOMEBREW_PREFIX/"bin/npm"
-    ln_sf node_modules/"npm/bin/npx-cli.js", HOMEBREW_PREFIX/"bin/npx"
+    ln_sf node_modules/"npm/bin/npm-cli.js", bin/"npm"
+    ln_sf node_modules/"npm/bin/npx-cli.js", bin/"npx"
+    ln_sf bin/"npm", HOMEBREW_PREFIX/"bin/npm"
+    ln_sf bin/"npx", HOMEBREW_PREFIX/"bin/npx"
 
     # Create manpage symlinks (or overwrite the old ones)
     %w[man1 man5 man7].each do |man|
       # Dirs must exist first: https://github.com/Homebrew/legacy-homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       # still needed to migrate from copied file manpages to symlink manpages
-      rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.,npx.}*"]
+      rm(Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.,package.json.,npx.}*"])
       ln_sf Dir[node_modules/"npm/man/#{man}/{npm,package-,shrinkwrap-,npx}*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
@@ -168,7 +176,7 @@ class Node < Formula
     assert_predicate HOMEBREW_PREFIX/"bin/npm", :executable?, "npm must be executable"
     npm_args = ["-ddd", "--cache=#{HOMEBREW_CACHE}/npm_cache", "--build-from-source"]
     system HOMEBREW_PREFIX/"bin/npm", *npm_args, "install", "npm@latest"
-    system HOMEBREW_PREFIX/"bin/npm", *npm_args, "install", "ref-napi" unless head?
+    system HOMEBREW_PREFIX/"bin/npm", *npm_args, "install", "nan"
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :exist?, "npx must exist"
     assert_predicate HOMEBREW_PREFIX/"bin/npx", :executable?, "npx must be executable"
     assert_match "< hello >", shell_output("#{HOMEBREW_PREFIX}/bin/npx --yes cowsay hello")

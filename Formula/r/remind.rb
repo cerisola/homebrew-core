@@ -1,8 +1,8 @@
 class Remind < Formula
   desc "Sophisticated calendar and alarm"
   homepage "https://dianne.skoll.ca/projects/remind/"
-  url "https://dianne.skoll.ca/projects/remind/download/remind-04.02.06.tar.gz"
-  sha256 "12150b3a1a42ac996dc1efd2abaee7e6100308c793a5c1aa69745f38e4735635"
+  url "https://dianne.skoll.ca/projects/remind/download/remind-05.00.07.tar.gz"
+  sha256 "89ddf2572287452256866f2be1999cfe4eb501952dd706b7940ad092d0dbb7dc"
   license "GPL-2.0-only"
   head "https://git.skoll.ca/Skollsoft-Public/Remind.git", branch: "master"
 
@@ -12,15 +12,12 @@ class Remind < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "438043f1b2584712003a5869d39bed54869baf9126e17e0cbc90dd7447f8df48"
-    sha256 arm64_ventura:  "4dbe8786d98452b1390523026b7e31ddf8b1aed3bd6f159249bfe3b96e20fcbc"
-    sha256 arm64_monterey: "e86736aaf74a58ade5ed53cd466ef33c9c2d0c6398ca20f3d11be035b8db690f"
-    sha256 arm64_big_sur:  "052c5b0622a607704ebc997ff93e7c0e84036f639b017b7267fb35feadaa3891"
-    sha256 sonoma:         "5513f5afb081cb3725eb9569bec555e958e4ec9effc547018f697c51b504eed6"
-    sha256 ventura:        "68a6840d0c435361c6c573ac1c988a7fb006a1adc65c4300adecc005bc100e9c"
-    sha256 monterey:       "71be33dbd0e83c97fc237c06ebca130937881b13de54cc2c928def10f392f7fd"
-    sha256 big_sur:        "1c43d8f5314608d27e0ca2329f581731bb814f428f43026ef76d8c1566fefb78"
-    sha256 x86_64_linux:   "1943b27db853ff573c1695b1e5ede8fea2a9dae73385f3d8de0a8f2e59d612f2"
+    sha256 arm64_sequoia: "faf4a5bce9783b078d5de8023f6594625ce5581b88e896a9345dbc76f1c8e1cd"
+    sha256 arm64_sonoma:  "3053c160dfe9a926fe66c0a4155da07b9ddc6605a0cdf6942e9f4d855c728aaa"
+    sha256 arm64_ventura: "f6cd9737ce3b3ec3fc18817aa4a75c2fecbd10589e1e23d2c41f71335cdb02d9"
+    sha256 sonoma:        "8263bf2271072432dc48b1c5f7e8493f544359ff5fb58b99c496390e5e9a422e"
+    sha256 ventura:       "2b4606ecef6e4cd8560a5f3f4b67f6ef3b7055d91e767dada8e15d9647cee593"
+    sha256 x86_64_linux:  "d00f1c6437745bca6fb5418948a3056659ecf0900f8ada3a96074dc3003580ab"
   end
 
   conflicts_with "rem", because: "both install `rem` binaries"

@@ -1,22 +1,25 @@
 class Octave < Formula
   desc "High-level interpreted language for numerical computing"
-  homepage "https://www.gnu.org/software/octave/index.html"
-  url "https://ftp.gnu.org/gnu/octave/octave-8.3.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/octave/octave-8.3.0.tar.xz"
-  sha256 "919c9494f02ca435e1e3474990e6df8ddef9acbc9c90565e08d40b8f50445ba9"
+  homepage "https://octave.org/index.html"
+  url "https://ftp.gnu.org/gnu/octave/octave-9.2.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/octave/octave-9.2.0.tar.xz"
+  sha256 "21417afb579105b035cac0bea09201522e384893ae90a781b8727efa32765807"
   license "GPL-3.0-or-later"
-  revision 2
+  revision 1
+
+  # New tarballs appear on https://ftp.gnu.org/gnu/octave/ before a release is
+  # announced, so we check the octave.org download page instead.
+  livecheck do
+    url "https://octave.org/download"
+    regex(%r{Octave\s+v?(\d+(?:\.\d+)+)(?:\s*</[^>]+?>)?\s+is\s+the\s+latest\s+stable\s+release}im)
+  end
 
   bottle do
-    sha256 arm64_sonoma:   "8ae5e8c4a431f922a5aa6bf7f5e8f5232645150af909681541767acb33e6cef8"
-    sha256 arm64_ventura:  "0fde25bc570c10a6d9849c836ba3f1debc7c754deae1bcd776ea7e9822c0f826"
-    sha256 arm64_monterey: "43803af5509d210d34d002931fd788377cad1ce1e98c4661743287aa934e44d3"
-    sha256 arm64_big_sur:  "ffc066b4a4b17475943b4af0b918a55068ce285e919f8933af8d98b6999bacc3"
-    sha256 sonoma:         "122d9e2bd794827b14f46b693e1a1bdc8138866d01eb5207ed09ad99a26badfa"
-    sha256 ventura:        "f8a4358ab506f538f18b26680c02473671515330839b55f9fa7ea416c1fe674f"
-    sha256 monterey:       "3ce5276b7678a148ffc6571eeaa7c4d4feab2efb244f3eeff5ba17cce5e4ed5c"
-    sha256 big_sur:        "96d558383ae7a1c265c903e96e6c6805e3b4f9c9255532bbdae81b61a311b7d7"
-    sha256 x86_64_linux:   "f0b9501a82ba1d4aac132c4f84d2bd9a5529cd3f50172ce6e66a0c422863aed5"
+    sha256 arm64_sonoma:  "eaba3042a683132820050d28e43c85f2a12b56f20af27c2712e7be396a428e25"
+    sha256 arm64_ventura: "f261ca0b6b3a4024228d3f0f5c14c0a59f6bc41b09d0a5500caee4841dd61f4b"
+    sha256 sonoma:        "0a7e9049bb310f613b1145f83f3dc5a73f01d37862acabe773ade658686761d5"
+    sha256 ventura:       "bf27e37a8e660d94a4bf4c1614b5a8229eda97530c1be46d9905d8f01a1505cf"
+    sha256 x86_64_linux:  "b3b7c0c2eb41dfba1154bd368921a79e6a1a30408f90295060d94e7a201da093"
   end
 
   head do
@@ -55,16 +58,20 @@ class Octave < Formula
   depends_on "qhull"
   depends_on "qrupdate"
   depends_on "qscintilla2"
-  # Stuck on qt@5
-  # https://octave.discourse.group/t/transition-octave-to-qt6/3139/15
-  depends_on "qt@5"
+  depends_on "qt"
   depends_on "rapidjson"
   depends_on "readline"
   depends_on "suite-sparse"
   depends_on "sundials"
   depends_on "texinfo"
 
+  uses_from_macos "bzip2"
   uses_from_macos "curl"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "little-cms2"
+  end
 
   on_linux do
     depends_on "autoconf"
@@ -86,33 +93,21 @@ class Octave < Formula
               /%OCTAVE_CONF_OCT(AVE)?_LINK_(DEPS|OPTS)%/,
               '""'
 
-    # SUNDIALS 6.4.0 and later needs C++14 for C++ based features
-    # Configure to use gnu++14 instead of c++14 as octave uses GNU extensions
-    ENV.append "CXX", "-std=gnu++14"
-
-    # Qt 5.12 compatibility
-    # https://savannah.gnu.org/bugs/?55187
-    ENV["QCOLLECTIONGENERATOR"] = "qhelpgenerator"
-    # These "shouldn't" be necessary, but the build breaks without them.
-    # https://savannah.gnu.org/bugs/?55883
-    ENV["QT_CPPFLAGS"]="-I#{Formula["qt@5"].opt_include}"
-    ENV.append "CPPFLAGS", "-I#{Formula["qt@5"].opt_include}"
-    ENV["QT_LDFLAGS"]="-F#{Formula["qt@5"].opt_lib}"
-    ENV.append "LDFLAGS", "-F#{Formula["qt@5"].opt_lib}"
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["qt"].opt_libexec/"lib/pkgconfig" if OS.mac?
 
     system "./bootstrap" if build.head?
-    args = ["--prefix=#{prefix}",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--enable-shared",
-            "--disable-static",
-            "--with-hdf5-includedir=#{Formula["hdf5"].opt_include}",
-            "--with-hdf5-libdir=#{Formula["hdf5"].opt_lib}",
-            "--with-java-homedir=#{Formula["openjdk"].opt_prefix}",
-            "--with-x=no",
-            "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
-            "--with-portaudio",
-            "--with-sndfile"]
+    args = [
+      "--disable-silent-rules",
+      "--enable-shared",
+      "--disable-static",
+      "--with-hdf5-includedir=#{Formula["hdf5"].opt_include}",
+      "--with-hdf5-libdir=#{Formula["hdf5"].opt_lib}",
+      "--with-java-homedir=#{Formula["openjdk"].opt_prefix}",
+      "--with-x=no",
+      "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
+      "--with-portaudio",
+      "--with-sndfile",
+    ]
 
     if OS.linux?
       # Explicitly specify aclocal and automake without versions
@@ -129,8 +124,11 @@ class Octave < Formula
       system "aclocal"
     end
 
-    system "./configure", *args
-    system "make", "all"
+    system "./configure", *args, *std_configure_args
+    # https://github.com/Homebrew/homebrew-core/pull/170959#issuecomment-2351023470
+    ENV.deparallelize do
+      system "make", "all"
+    end
 
     # Avoid revision bumps whenever fftw's, gcc's or OpenBLAS' Cellar paths change
     inreplace "src/mkoctfile.cc" do |s|
@@ -146,6 +144,7 @@ class Octave < Formula
   end
 
   test do
+    ENV["LC_ALL"] = "en_US.UTF-8"
     system bin/"octave", "--eval", "(22/7 - pi)/pi"
     # This is supposed to crash octave if there is a problem with BLAS
     system bin/"octave", "--eval", "single ([1+i 2+i 3+i]) * single ([ 4+i ; 5+i ; 6+i])"
@@ -166,5 +165,7 @@ class Octave < Formula
       mkoctfile ('-v', '-std=c++11', '-L#{lib}/octave/#{version}', args{:}, 'oct_demo.cc');
       assert(oct_demo, 42)
     EOS
+    ENV["QT_QPA_PLATFORM"] = "minimal"
+    system bin/"octave", "--gui"
   end
 end

@@ -1,8 +1,8 @@
 class Grails < Formula
   desc "Web application framework for the Groovy language"
   homepage "https://grails.org"
-  url "https://github.com/grails/grails-core/releases/download/v6.0.0/grails-6.0.0.zip"
-  sha256 "2e1d1b7d4d40fdd790893ba78c66e112b77c197895c0224223772ebc29554535"
+  url "https://github.com/grails/grails-core/releases/download/v6.2.1/grails-6.2.1.zip"
+  sha256 "fb1c103ddf5aecd41cae5d2964d0aa92d1abc8b4d75c8f15ffcd5af2993f8f8f"
   license "Apache-2.0"
 
   livecheck do
@@ -11,24 +11,34 @@ class Grails < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, ventura:        "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, monterey:       "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, big_sur:        "9ad002a03561858bcdc20c3922ec58a8bda981f204d630ebca03dd72f66e3b60"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a5bf81ef6be6f46ceb070b6b07908027006988721b714c801bbc975a22e0eaff"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c2d0eb3ee0abb5295b1b4087b6df68672900ccf56730b8007a910901cb37a5c6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c2d0eb3ee0abb5295b1b4087b6df68672900ccf56730b8007a910901cb37a5c6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c2d0eb3ee0abb5295b1b4087b6df68672900ccf56730b8007a910901cb37a5c6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7a8096f4ba68c2d3068cea5b91772540075a827e8c3c2b05c05933d65fa5845e"
+    sha256 cellar: :any_skip_relocation, ventura:       "7a8096f4ba68c2d3068cea5b91772540075a827e8c3c2b05c05933d65fa5845e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2d0eb3ee0abb5295b1b4087b6df68672900ccf56730b8007a910901cb37a5c6"
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk@17"
+
+  resource "cli" do
+    url "https://github.com/grails/grails-forge/releases/download/v6.2.1/grails-cli-6.2.1.zip"
+    sha256 "44cfa9d9fff9d79c6258e2c1f6b739ecab7c0ca4cc660015724b5078afade60f"
+  end
 
   def install
-    rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
+    odie "cli resource needs to be updated" if version != resource("cli").version
+
     libexec.install Dir["*"]
-    bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env("11")
+
+    resource("cli").stage do
+      rm("bin/grails.bat")
+      (libexec/"lib").install Dir["lib/*.jar"]
+      bin.install "bin/grails"
+      bash_completion.install "bin/grails_completion" => "grails"
+    end
+
+    bin.env_script_all_files libexec/"bin", Language::Java.overridable_java_home_env("17")
   end
 
   def caveats
@@ -43,6 +53,6 @@ class Grails < Formula
     assert_predicate testpath/"brew-test/gradle.properties", :exist?
     assert_match "brew.test", File.read(testpath/"brew-test/build.gradle")
 
-    assert_match "Grails Version: #{version}", shell_output("#{bin}/grails -v")
+    assert_match "Grails Version: #{version}", shell_output("#{bin}/grails --version")
   end
 end

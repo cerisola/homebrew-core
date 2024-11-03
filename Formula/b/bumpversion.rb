@@ -11,17 +11,16 @@ class Bumpversion < Formula
   revision 1
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4e11723522beaffcdca4d1914d36d0ae5369248a6c3749edddb4e12bc656b78a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "873410ca4e9032ab9e70b04af7d04d481bbf6a142bdeb45ffe79c14d4471c827"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8a26b282fd5d8c23e7cd37c709fae5c4da19b962c3548654a6374051d5fbe87"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6f0af6ac266ccd03452b59c5de0c0dc0c27bf611407318c3a0b615e9db3f7ec1"
-    sha256 cellar: :any_skip_relocation, ventura:        "3b9d16690e15616243b507edb4638ee41b625dc84bc8fb8fb2de883459632118"
-    sha256 cellar: :any_skip_relocation, monterey:       "d41942f1e6929d68fcb17ae927388f37eb636afdd21272d0bb92d7fb2b7372a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d0bbaf895f4bc339e8e7c9f724767a0b495a90632bf1a7fc55ea08073da23edd"
+    rebuild 6
+    sha256 cellar: :any_skip_relocation, all: "166ec2e234ca2b7970dac12809f1eb9642c8647cd030169049b866c7d03f19ee"
   end
 
-  depends_on "python@3.12"
+  # Original and fork are both unmaintained:
+  # https://github.com/peritus/bumpversion/commit/cc3c8cfd77380ef50eeac740efe627509a248101
+  # https://github.com/c4urself/bump2version/commit/c3a1995b35335da6fa7932e4bac089992c947bba
+  deprecate! date: "2024-09-08", because: :unmaintained
+
+  depends_on "python@3.13"
 
   def install
     virtualenv_install_with_resources

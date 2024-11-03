@@ -2,20 +2,17 @@ class Argo < Formula
   desc "Get stuff done with container-native workflows for Kubernetes"
   homepage "https://argoproj.io"
   url "https://github.com/argoproj/argo-workflows.git",
-      tag:      "v3.4.11",
-      revision: "ee939bbd2d8950a2fa1badd7cfad3b88c039da26"
+      tag:      "v3.5.12",
+      revision: "8fe8de2e16ec39a5477df17586a3d212ec63a4bd"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "772bfe7bed30e566610662ceca61b6ddf9b4c203ce48cbd5efcfe88f91bfa1a0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "daeef9c482119a0fdc8e068bfee3155d49fa50e65befd79c795012ca24b70e30"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf8b51cfdc0cbf9ff12df0362b622b0ee728f28dada95fb719b5c7b38a00f737"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b47c6334643be52bc45a849885d3a7488c1af51e29541f39cb4828fc75e9ab2d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7432f2e7303c0924d8c2f903c88fb44bc4c49e1b8b788d7e81c8124f86b9cc87"
-    sha256 cellar: :any_skip_relocation, ventura:        "792c440293441f83564d60be7e53efb7389d1466132e5dc2e63501c31eebebec"
-    sha256 cellar: :any_skip_relocation, monterey:       "42fd983fec9e2801866ede9a7254353c7b990000e31662e0ff9b4f6a06b097e4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "bfd6b6dfb1ebfcca1e92cadde1b4a9c17f2b6e78decd78c836ed426b495ed271"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6f336d07d31ea0ccabedd5edd3c8304aeaeb9223121fa41fc602db9db2ddd19f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "14cf8c0aa5509140bf337acbdcaf04a2369dd89ff9f820e86cf36abfb18c467a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8fb431233f0d858b2f62e67d6c67285808d25fcae7002467d38968740265aa30"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2cfcbe3ccb3edbf04e06a448d292e9439a66891c20703354a00c0f1a2ebd8ff6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4c6a7c4eb22147511e02ffb080193ad3e8d2cce451fd3e3c0b6700b8e69a9670"
+    sha256 cellar: :any_skip_relocation, ventura:       "0436ee08f82cfe503aea8e1c7e2e4a8afaef32651ac0b853e97b458b31eaf1ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6eb83572c88fe05671446888b4374dffd40574e150a28c712dc254ef7b3c98b5"
   end
 
   depends_on "go" => :build

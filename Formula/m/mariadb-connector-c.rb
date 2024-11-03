@@ -1,9 +1,9 @@
 class MariadbConnectorC < Formula
   desc "MariaDB database connector for C applications"
   homepage "https://mariadb.org/download/?tab=connector&prod=connector-c"
-  url "https://archive.mariadb.org/connector-c-3.3.7/mariadb-connector-c-3.3.7-src.tar.gz"
-  mirror "https://fossies.org/linux/misc/mariadb-connector-c-3.3.7-src.tar.gz/"
-  sha256 "975a9a862fed80f84e0206373f7ef05537aada5b65d99b71b36ab892b44240bf"
+  url "https://archive.mariadb.org/connector-c-3.4.1/mariadb-connector-c-3.4.1-src.tar.gz"
+  mirror "https://fossies.org/linux/misc/mariadb-connector-c-3.4.1-src.tar.gz/"
+  sha256 "0a7f2522a44a7369c1dda89676e43485037596a7b1534898448175178aedeb4d"
   license "LGPL-2.1-or-later"
   head "https://github.com/mariadb-corporation/mariadb-connector-c.git", branch: "3.3"
 
@@ -23,20 +23,26 @@ class MariadbConnectorC < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b3fd17ed00d02ee39413789b9467ec510fac207764b5600dfac1aec25ca3c4cc"
-    sha256 arm64_ventura:  "9ad8814f5fd5d03c3a782be578e5082638c231a72a6f7d10a04cbf9bf22b35b5"
-    sha256 arm64_monterey: "260368c40aa6a3102dbbfb6f69220ecd9c4c6a8098a5d00a46547b2b3d94bf0f"
-    sha256 sonoma:         "5e836e44c11ac7b7784499c4c5efaac130d26957d5d12dbf62a1bfddbe6c12a2"
-    sha256 ventura:        "c94065a0ed7331499c6ab8cfa14d8bba6c70362229a60cc4753b20066403f6d4"
-    sha256 monterey:       "ae6c7e9deab5fba2d2966adeb015656c9707e7356d84623b3d5abce3f8f014b2"
-    sha256 x86_64_linux:   "75ed6249b11a1aa1b6eb93161999484f8cc52eec4e602d0b0578bc7313c9a465"
+    sha256 arm64_sequoia:  "25f4e277c66f07d9a44a9fa1de9bb8ae8e48263990bd15670d7b59c453c02adf"
+    sha256 arm64_sonoma:   "9ab49eed7ae6ecd45418141b22d8adaa132e34d017f35f271af537a1e25f0107"
+    sha256 arm64_ventura:  "9372de968ba5aa44d100641b56f5f83776a1a983f407c6cea0825699b59b9e4e"
+    sha256 arm64_monterey: "a3af823c47ba2a1bc560cd2baaed6b55b46c1ea6f88bf9e718e78b91495b56a7"
+    sha256 sonoma:         "ab0d5e5a88633b85c506310c58a6a1708524f6bf193388c1a5908c664b161b19"
+    sha256 ventura:        "184babcbdf95cfa26185cba6a739b4e2cf8202bab863ece1e64a23346b8cf714"
+    sha256 monterey:       "fa37fe897f387a4ede7236b22e45d1009bb28f35ab373a2fb6c20c3e7a0a4ee1"
+    sha256 x86_64_linux:   "13cdebe984f4f9e6344d552fda0bd4fb304099becaf1e7918140220d87de8b45"
   end
 
   depends_on "cmake" => :build
   depends_on "openssl@3"
 
   uses_from_macos "curl"
+  uses_from_macos "krb5"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "zstd"
+  end
 
   conflicts_with "mariadb", because: "both install `mariadb_config`"
 
@@ -53,6 +59,6 @@ class MariadbConnectorC < Formula
   end
 
   test do
-    system "#{bin}/mariadb_config", "--cflags"
+    system bin/"mariadb_config", "--cflags"
   end
 end

@@ -1,13 +1,14 @@
 class Fmdiff < Formula
   desc "Use FileMerge as a diff command for Subversion and Mercurial"
   homepage "https://github.com/brunodefraine/fmscripts"
-  url "https://github.com/brunodefraine/fmscripts/archive/20150915.tar.gz"
+  url "https://github.com/brunodefraine/fmscripts/archive/refs/tags/20150915.tar.gz"
   sha256 "45ead0c972aa8ff5b3f9cf1bcefbc069931fd8218b2e28ff76958437a3fabf96"
   license :public_domain
   head "https://github.com/brunodefraine/fmscripts.git", branch: "master"
 
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8ab942e4b04b177d43cf53476f9643e8ebe9bee8c549cf2d40eb9745c196785c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8c310e5be827c54caeb3806dc3cadc5c07854376c4e00a1e47302a80da5eef94"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "edb8bfe9b90e82db787a068b452976814e41ee0cd1be7672f1439b45dee8cd43"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "d55ab53b4e1f2ffb241d5b26422e2fb33dcaf8cbfdb287e0c21044ad450e0084"

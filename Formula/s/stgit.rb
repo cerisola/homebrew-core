@@ -1,20 +1,20 @@
 class Stgit < Formula
   desc "Manage Git commits as a stack of patches"
   homepage "https://stacked-git.github.io"
-  url "https://github.com/stacked-git/stgit/releases/download/v2.3.3/stgit-2.3.3.tar.gz"
-  sha256 "49c6e93939e4c8256529eb828ce86470435a11aa73f73f8d0b36b584bace4c7b"
+  url "https://github.com/stacked-git/stgit/releases/download/v2.4.12/stgit-2.4.12.tar.gz"
+  sha256 "78e57becdf234bf3396f4271b32e9c2e44ef03204ad1b2494ee347b22f34f786"
   license "GPL-2.0-only"
   head "https://github.com/stacked-git/stgit.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "08f0139088a10c7c0b35e093f4c2302330149777558246a78ee9d3bab8caadca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9aedf92f8f1068c4f2def6e98d76dd14639273be53b8837d28e4ced0668ea043"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7b127cc5e7de61a7daac9e8be4c852b17728602375533eabdab79b0217472c13"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2590e547b615c7ac57f201dd3571d75937954d77603aa4183e62e5cee924eb16"
-    sha256 cellar: :any_skip_relocation, ventura:        "e0c9deffe3a87d6c47818112b58764d048cea9aa2ca6eaabb4f353fb07516f5d"
-    sha256 cellar: :any_skip_relocation, monterey:       "b956c43885b0e675e8a04a8962f725e55a942eb1e999449efc2c034a46c97a4e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ed3dd8448b516e6f31aa4c9f223f4f0bcd1b56374663639652c1e1e5944d02d8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ed27903a4ea3cd3095848af457761a8036b35c8f15547fe34ea9ede13608ca97"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "98635dcc816c2edb4f918c6636dc5972b0e2479090e469cc754201576fe65af5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b75458852972d1216ffc523044d16ce37838f345fd46ed09a8270f825f8d9e2d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "48ab6b54cbb091457fe22323ea8da1dc81beb270df8afc63da609c8447d7c845"
+    sha256 cellar: :any_skip_relocation, sonoma:         "0eded4fff5e0349d544b686bba62cb7138d7cad49856707acd2c45b86417d377"
+    sha256 cellar: :any_skip_relocation, ventura:        "8d1de537506841b95835671c19fa5d284c29c0bf53beb32110e146c7c370b917"
+    sha256 cellar: :any_skip_relocation, monterey:       "1430445be35828b0c38c68365969e77b070d5486db42b809dcd5fa070570e7ef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9b0257d2ec41199c32d8f2c3701994732bfabfbec92fbdf9138e169d03306d7a"
   end
 
   depends_on "asciidoc" => :build
@@ -40,12 +40,12 @@ class Stgit < Formula
     (testpath/"test").write "test"
     system "git", "add", "test"
     system "git", "commit", "--message", "Initial commit", "test"
-    system "#{bin}/stg", "--version"
-    system "#{bin}/stg", "init"
-    system "#{bin}/stg", "new", "-m", "patch0"
+    system bin/"stg", "--version"
+    system bin/"stg", "init"
+    system bin/"stg", "new", "-m", "patch0"
     (testpath/"test").append_lines "a change"
-    system "#{bin}/stg", "refresh"
-    system "#{bin}/stg", "log"
-    system "man", "#{man}/man1/stg.1"
+    system bin/"stg", "refresh"
+    system bin/"stg", "log"
+    system "man", man/"man1/stg.1"
   end
 end

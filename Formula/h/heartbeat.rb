@@ -2,31 +2,29 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.10.2",
-      revision: "480bccf4f0423099bb2c0e672a44c54ecd7a805e"
+      tag:      "v8.15.3",
+      revision: "bbed3ae55602e83f57c62de85b57a3593aa49efa"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4fbd215f96153c8de93303b06a5b9e809915f945807a045d1b23bbbf0945b799"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8ce67e77b0a1044314b805df5d4664ca2aa94c5fbb2182ee8afb771d39fc502"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "47a19d45f2c8e67c5b6b00c3c6cc1893272c02e77e786516f3661b998e5ce703"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4165b44213e09b100816f04a45c30407bf5467f1a70b04913b1cfd5ba17290a2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c75159ceac0aa9fd5f1ff4553d685491bb4b9bc1ff938bb5f4d90434389c1c4b"
-    sha256 cellar: :any_skip_relocation, ventura:        "ec58c429d958530e5797c6635cad540cdbadaf33c7e050865c3b736c2e4579f6"
-    sha256 cellar: :any_skip_relocation, monterey:       "ee6a9da13d33590f38668f3b002cc36de1d304e0e41597d8751e28367f6c42c6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ed75cda4c5d769774c0414cc9f004e75f7b240f004ec86c99e369fb6f0468bd9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0ecce173d700343e4c802a6843a6c5e3b110ce72cf51895556dab09f4616a4ea"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d6113519f910332309fb639e2b7b03bc99b1b9b6a3f3a76040d879249449c568"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ad1a4dad8aad9407f5cfc54b03d72c7d65abc3652047d141e81f2c23545c7c8b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eb9e0bc1f034c0c7f1a4914747892bba65d20edf7059ef4be28fe41f1a004687"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bddf58fac8536bed40493d19fe6b783fc1a8b94a7f07d781d9f2100f2ba506cb"
+    sha256 cellar: :any_skip_relocation, ventura:       "343dc7dd42afc4577e924a5cfeafe76b9f67cf8fd034da3a4f819c75a30f30d6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ad795c28f00b925ecd571b2da11050d1a6ae9418efa39f27457c96ce1ba5620a"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.12" => :build
+
   uses_from_macos "netcat" => :test
 
   def install
     # remove non open source files
-    rm_rf "x-pack"
+    rm_r("x-pack")
 
     cd "heartbeat" do
       # prevent downloading binary wheels during python setup

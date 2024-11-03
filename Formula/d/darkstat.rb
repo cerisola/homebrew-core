@@ -1,12 +1,13 @@
 class Darkstat < Formula
   desc "Network traffic analyzer"
   homepage "https://unix4lyfe.org/darkstat/"
-  url "https://github.com/emikulic/darkstat/archive/3.0.721.tar.gz"
+  url "https://github.com/emikulic/darkstat/archive/refs/tags/3.0.721.tar.gz"
   sha256 "0b405a6c011240f577559d84db22684a6349b25067c3a800df12439783c25494"
   license all_of: ["BSD-4-Clause-UC", "GPL-2.0-only", "GPL-3.0-or-later", "X11"]
   head "https://github.com/emikulic/darkstat.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5373a3a8b0c7a8138b1dd756814c5d0f383a530170822c5cec37260145a55bf0"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e3e4f63fec4c167ff2ac71b28b5cdb1f163c2e961c4316792355500f96c85671"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "97674e5bd9b7f7924b24cff91ae6460327cc250272e9b67ef8d98c27f218f8d0"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "5981250184af819d33927ff9c81ab3249ee0ebe1f30c16fe6fdf59383946b718"

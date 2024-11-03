@@ -9,12 +9,8 @@ class Consul < Formula
   license "MPL-2.0"
   head "https://github.com/hashicorp/consul.git", branch: "main"
 
-  livecheck do
-    url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
-  end
-
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5ecfde4c3c53d2ecacc3eb9f95b6445943751af420f27bb7aa1fbee5d85d1fab"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6784612460c0d45dd1ebeb8c579100dcdb9daadc498c61474aebc98d3fa4b660"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "3a67ab933f39fe146541aed6e6c578e1064afb7311c63eba85664693ca97ccef"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b2238d0e5d5a02af34d0a9e53f6f8f455b7778ce22167eb1e32accdbb220d62a"
@@ -25,6 +21,9 @@ class Consul < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "b4c0fafe916d70a9ceb15d92bdb9f44fd50352eb78d6790cd69ba0dde49a99a4"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "27d8f2e7148d80ec16fdc26b3a75e4c46f2f1d5227944f5c79de76d6a21b8d97"
   end
+
+  # https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license
+  deprecate! date: "2024-02-15", because: "will change its license to BUSL on the next release"
 
   depends_on "go" => :build
 
@@ -38,6 +37,16 @@ class Consul < Formula
     error_log_path var/"log/consul.log"
     log_path var/"log/consul.log"
     working_dir var
+  end
+
+  def caveats
+    <<~EOS
+      We will not accept any new Consul releases in homebrew/core (with the BUSL license).
+      The next release will change to a non-open-source license:
+      https://www.hashicorp.com/blog/hashicorp-adopts-business-source-license
+      See our documentation for acceptable licences:
+        https://docs.brew.sh/License-Guidelines
+    EOS
   end
 
   test do

@@ -15,20 +15,11 @@ class EyeD3 < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "82de04337c58285d3e4abcfb67a60272f03c1ce916fa35dbe61498c9588b8af0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "34ae7dc502d54944b88aecf0fbe5e6ac8ab2aae47aad909349a9b8aac5d0554f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9500fc35318cdeec986c0aacdb289357aeb8493711753f7d7b31b2c89d120c31"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b40280bcfd1888396cb45cefa346437aab970870ba033bf4c4fde30d4909cdb6"
-    sha256 cellar: :any_skip_relocation, ventura:        "96bd883c69dde8ff0cf42d94e922820288b606626abced08ee8e7ed44aeb1092"
-    sha256 cellar: :any_skip_relocation, monterey:       "77c5ea63850535725c13d37b5f20e513fac18a0107a2c73d4764cc0878060ae1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "599358308609858956faa08bbc1e00c50893d7cb743f475823f1ef79ce8a71ce"
+    rebuild 6
+    sha256 cellar: :any_skip_relocation, all: "8faeb282de11f645e221dc739a28c1ba308ab14f26cd19da5378179eb040217e"
   end
 
-  depends_on "python@3.12"
-
-  # Looking for documentation? Please submit a PR to build some!
-  # See https://github.com/Homebrew/homebrew/issues/32770 for previous attempt.
+  depends_on "python@3.13"
 
   resource "coverage" do
     url "https://files.pythonhosted.org/packages/38/df/d5e67851e83948def768d7fb1a0fd373665b20f56ff63ed220c6cd16cb11/coverage-5.5.tar.gz"
@@ -46,8 +37,8 @@ class EyeD3 < Formula
   end
 
   resource "packaging" do
-    url "https://files.pythonhosted.org/packages/fb/2b/9b9c33ffed44ee921d0967086d653047286054117d584f1b1a7c22ceaf7b/packaging-23.2.tar.gz"
-    sha256 "048fb0e9405036518eaaf48a55953c750c11e1a1b68e0dd1a9d62ed0c092cfc5"
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "toml" do

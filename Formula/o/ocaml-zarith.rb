@@ -1,20 +1,19 @@
 class OcamlZarith < Formula
   desc "OCaml library for arbitrary-precision arithmetic"
   homepage "https://github.com/ocaml/Zarith"
-  url "https://github.com/ocaml/Zarith/archive/release-1.13.tar.gz"
-  sha256 "a5826d33fea0103ad6e66f92583d8e075fb77976de893ffdd73ada0409b3f83b"
+  url "https://github.com/ocaml/Zarith/archive/refs/tags/release-1.14.tar.gz"
+  sha256 "5db9dcbd939153942a08581fabd846d0f3f2b8c67fe68b855127e0472d4d1859"
   license "LGPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "30941c4d36a66cd0fdb3ba0204f4f93a18ee4a68d92d5952db4a5834f50321a9"
-    sha256 cellar: :any,                 arm64_ventura:  "6ea3674d28c24ef63bbe635871fbac608eb8215370058e8bb067e52fac64ad31"
-    sha256 cellar: :any,                 arm64_monterey: "f19a7da2a824ac3881aeb88979badb774fd3f5181908b6280961b7bc7b031b9e"
-    sha256 cellar: :any,                 arm64_big_sur:  "d79d6bb89cb272f3dbaed00db063e3e8e50de18b37a6e6193c69980d3a27f7a4"
-    sha256 cellar: :any,                 sonoma:         "b5d882477447d006f8243de0c05f6bd9c9aa616fe695d3d61503c20fc81473a2"
-    sha256 cellar: :any,                 ventura:        "2395358b13bed8bc9cf57f891bf9d3cf5576154df991869dbe7613ce1403e71a"
-    sha256 cellar: :any,                 monterey:       "2dc837f6b5b386f2903d62b044736474561083c866727bf65b7fea8cbd7ed0a1"
-    sha256 cellar: :any,                 big_sur:        "e062e7f558a9d3e4115126e5255d28908ee5800803d41fa5681119c75a2c94ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b4133fea100b0af1214fb2fb9ba1db745f4ffb8702726b9744c153750f00948c"
+    sha256 cellar: :any,                 arm64_sequoia:  "9c6e011f7957d6fb4c36bcd17ebbad4f01aba13815c1835f1398b4e5411517b3"
+    sha256 cellar: :any,                 arm64_sonoma:   "515898c18f57cf4f95848363cad9ddc0bcce5822a0cbb19f3a61bd5f28584094"
+    sha256 cellar: :any,                 arm64_ventura:  "d9e1fad027a101b902d9fd0c3bfcc58c6b6d4928092d80f9aeb043029ed5743d"
+    sha256 cellar: :any,                 arm64_monterey: "a6afc5a2871d654eedf99c6d134f6507cfce542cfe4d41b9460636026bac2090"
+    sha256 cellar: :any,                 sonoma:         "4ee869c844b6dd77c9df7e5997c042aeffa2d5ca06e403f689cd896f308040a7"
+    sha256 cellar: :any,                 ventura:        "757d2465c37550081fc1ba9b00830f0c406e1c70bef3f0f1a021d226e482866b"
+    sha256 cellar: :any,                 monterey:       "1d5b4d9293b256249cc5fbaa84329f95aaf7ee9e20aafd74c9de4b2528231144"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e783e507b26e4860a591abdc72e215bd8c067a13142f5cf05d567af392b33d87"
   end
 
   depends_on "ocaml-findlib" => :build
@@ -22,6 +21,11 @@ class OcamlZarith < Formula
   depends_on "ocaml"
 
   def install
+    # Work around for https://github.com/Homebrew/homebrew-test-bot/issues/805
+    if ENV["HOMEBREW_GITHUB_ACTIONS"] && !(Formula["ocaml-findlib"].etc/"findlib.conf").exist?
+      ENV["OCAMLFIND_CONF"] = Formula["ocaml-findlib"].opt_libexec/"findlib.conf"
+    end
+
     ENV["OCAMLFIND_DESTDIR"] = lib/"ocaml"
 
     (lib/"ocaml").mkpath

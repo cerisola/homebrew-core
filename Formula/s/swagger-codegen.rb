@@ -1,19 +1,18 @@
 class SwaggerCodegen < Formula
   desc "Generate clients, server stubs, and docs from an OpenAPI spec"
-  homepage "https://swagger.io/swagger-codegen/"
-  url "https://github.com/swagger-api/swagger-codegen/archive/refs/tags/v3.0.47.tar.gz"
-  sha256 "8481d60b89bdfe0c4ed7816da065b839439d5b37cfdb48d44ad07f546387c71b"
+  homepage "https://swagger.io/tools/swagger-codegen/"
+  url "https://github.com/swagger-api/swagger-codegen/archive/refs/tags/v3.0.63.tar.gz"
+  sha256 "dcc3f38baa8c13a2ea7c7ccd77f035d79574a79633f3986a6dfae00ee10f3b22"
   license "Apache-2.0"
   head "https://github.com/swagger-api/swagger-codegen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2cbd58e99741a5d98a0ffd3d35abf009bc5c038e49b8f979c0256d705e8b8ede"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a4f68bf7b48ab5aa347463ff04cb7a878b3e666689a6d87b999850d4d5a30573"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8b4233b925873b1986580bc631209d4d19e4006041a85c13ca84858e8b658825"
-    sha256 cellar: :any_skip_relocation, sonoma:         "875908e531ab7bca7f17739727adbba2522505be7e867965e3cb0bcbf4e5adfb"
-    sha256 cellar: :any_skip_relocation, ventura:        "0fd187974e3e577480a0c0220798e7ffbf70f2ef51df3a23f4c353827f53ac72"
-    sha256 cellar: :any_skip_relocation, monterey:       "8c261d417a9b51d21da43e97fd3b22c8aefc1807e6a8c82b1f0f1d5eb37d8dac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9259f85140d16dfcf30de72d39ceffd60ed7c83db91ea1ce60e7c5a7bd9d975"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "30fa318e2ef4cf0cc46c3edf48ebe779560039d514a8cc26b6ebdd37ecf1e017"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e664848f93a98481af6565b78888e43b56b97720bbc4a0ebdb8e705ea6b7c96c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5206873b3c0d3f49a174552cd04329d1af542dfc821366812442092b8892b49b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9d22dc2965d66dcacb745183f29e869c24cd9289ed7ef8d5740d8ce8a37f7d44"
+    sha256 cellar: :any_skip_relocation, ventura:       "630418f3917a26b6602f19d09c30fdfc953bba23f9208029f00bfc892fb06d0c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d03e72f8ce24d8ba86833148a511897763c82468713449ce5d500970f71af996"
   end
 
   depends_on "maven" => :build
@@ -42,7 +41,7 @@ class SwaggerCodegen < Formula
               200:
                 description: OK
     EOS
-    system "#{bin}/swagger-codegen", "generate", "-i", "minimal.yaml", "-l", "html"
+    system bin/"swagger-codegen", "generate", "-i", "minimal.yaml", "-l", "html"
     assert_includes File.read(testpath/"index.html"), "<h1>Simple API</h1>"
   end
 end

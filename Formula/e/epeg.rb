@@ -1,12 +1,13 @@
 class Epeg < Formula
   desc "JPEG/JPG thumbnail scaling"
   homepage "https://github.com/mattes/epeg"
-  url "https://github.com/mattes/epeg/archive/v0.9.3.tar.gz"
+  url "https://github.com/mattes/epeg/archive/refs/tags/v0.9.3.tar.gz"
   sha256 "efcd7e72c530c3ff46f9efd86ec1dbb042e4a55fc5a7ea75e6ade9f83cf77ba3"
   license "MIT-enna"
   head "https://github.com/mattes/epeg.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "f76fb3cb8de88a494ad312352ac1cf1c34091c19f042ff330ff9bcd0ec8ea47c"
     sha256 cellar: :any,                 arm64_sonoma:   "a75e74989ce84ab632a526be0e13096687ad08b7204139d3dae623435446dbb9"
     sha256 cellar: :any,                 arm64_ventura:  "dc12942fff332ba2c9848f81f18fc7841f6eaacf577fa5fbdd1614dd0ca2d830"
     sha256 cellar: :any,                 arm64_monterey: "1f3486392ac95bb6bf814dc349c22e0fc7dcbe5152db567862545fc3d1ead791"
@@ -30,7 +31,7 @@ class Epeg < Formula
   end
 
   test do
-    system "#{bin}/epeg", "--width=1", "--height=1", test_fixtures("test.jpg"), "out.jpg"
+    system bin/"epeg", "--width=1", "--height=1", test_fixtures("test.jpg"), "out.jpg"
     assert_predicate testpath/"out.jpg", :exist?
   end
 end

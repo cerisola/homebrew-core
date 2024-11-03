@@ -1,12 +1,13 @@
 class Fasttext < Formula
   desc "Library for fast text representation and classification"
   homepage "https://fasttext.cc"
-  url "https://github.com/facebookresearch/fastText/archive/v0.9.2.tar.gz"
+  url "https://github.com/facebookresearch/fastText/archive/refs/tags/v0.9.2.tar.gz"
   sha256 "7ea4edcdb64bfc6faaaec193ef181bdc108ee62bb6a04e48b2e80b639a99e27e"
   license "MIT"
   head "https://github.com/facebookresearch/fastText.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "2f34f054bcdc5336bfc1dd00166ee8a07de80c678f0466b79544544608854def"
     sha256 cellar: :any,                 arm64_sonoma:   "365036caa34f9ade5d4f9685b516fd7973c2806c04b39c4aa1c54b06006ba58f"
     sha256 cellar: :any,                 arm64_ventura:  "891397ee186031bd9cda06521af21d17f1ddad2f493353320c924bb9f60aca76"
     sha256 cellar: :any,                 arm64_monterey: "5a2a2a202ee6d5b21bc1857be97e41876353e9ef9c4a2af5466b7def501bc1ce"
@@ -21,6 +22,8 @@ class Fasttext < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a90d77cb50372ab1172b354ee29e813f26543067beac35dd24b3da882352718"
   end
 
+  deprecate! date: "2024-03-19", because: :repo_archived
+
   depends_on "cmake" => :build
 
   def install
@@ -30,7 +33,7 @@ class Fasttext < Formula
 
   test do
     (testpath/"trainingset").write("__label__brew brew")
-    system "#{bin}/fasttext", "supervised", "-input", "trainingset", "-output", "model"
+    system bin/"fasttext", "supervised", "-input", "trainingset", "-output", "model"
     assert_predicate testpath/"model.bin", :exist?
   end
 end

@@ -1,10 +1,16 @@
 class PysideAT2 < Formula
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.10-src/pyside-setup-opensource-src-5.15.10.tar.xz"
-  sha256 "2af691d3613a41f83a60439b46568fc2c696dbfae42f7cd7b07152d115ead33a"
-  license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
+  url "https://download.qt.io/official_releases/QtForPython/pyside2/PySide2-5.15.15-src/pyside-setup-opensource-src-5.15.15.tar.xz"
+  sha256 "21d6818b064834b08501180e48890e5fd87df2fb3769f80c58143457f548c408"
+  # NOTE: We omit some licenses:
+  # 1. LICENSE.COMMERCIAL is removed from "OR" options as non-free
+  # 2. GFDL-1.3-only is only used by not installed docs, e.g. sources/{pyside2,shiboken2}/doc
+  # 3. BSD-3-Clause is only used by not installed examples
+  license all_of: [
+    { "GPL-3.0-only" => { with: "Qt-GPL-exception-1.0" } },
+    { any_of: ["LGPL-3.0-only", "GPL-2.0-only", "GPL-3.0-only"] },
+  ]
 
   livecheck do
     url "https://download.qt.io/official_releases/QtForPython/pyside2/"
@@ -12,20 +18,22 @@ class PysideAT2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "ec7c9044c32f3701a0ff94e6f2540b226aee50bc120942219e501338821cedd3"
-    sha256 cellar: :any, arm64_ventura:  "28af314823f58cb216bb57e1c74d2fb22904f736cb026c1788713661fa58dac2"
-    sha256 cellar: :any, arm64_monterey: "cb7496bdae5f86a816371365a7d365d148ac5df4adbba53e89bf211e6307fc70"
-    sha256 cellar: :any, arm64_big_sur:  "4cfb6722551c4ee4f935c8f81f74fc594158ae01dcc8529e5ca374c27e0d3ca0"
-    sha256 cellar: :any, sonoma:         "9c6483852001da2747972d002be95c77ad7498a57f78a901e5ab81a7427865b7"
-    sha256 cellar: :any, ventura:        "43b8c564ba4bcae4efc92f5108c847c52fb91ca8bdee8d2c9090e8ac6c5ec8a7"
-    sha256 cellar: :any, monterey:       "e49318662072baa98a393d468a14135f2c3367d22c24e44e9938f0ede9464014"
-    sha256 cellar: :any, big_sur:        "b7ec686cddddf16f2be64ffc086df0af7ce3ddeb067181336e063623b78a1226"
+    rebuild 1
+    sha256 cellar: :any, arm64_sequoia: "2a18d3d225e93333d6c8d1ef3ff4600ef93b57f1349b652b38d5cc06adaed6bc"
+    sha256 cellar: :any, arm64_sonoma:  "790b699c7c8b2c8661a9c87071da19e7a684401b09d10364ba420afa0f1b8ac0"
+    sha256 cellar: :any, arm64_ventura: "98f0de431b0fd516596e41df5203051b3ee999c6acb3c3475aebe399dccbd1cf"
+    sha256 cellar: :any, sonoma:        "2629043ff748a72a706180cb6cfa31c6b87c61df28a9944918231e758889d892"
+    sha256 cellar: :any, ventura:       "dc681795199bbb8e5000042b3d38a7083f8eefdcee403b0152289def8657b0dd"
   end
 
   keg_only :versioned_formula
 
+  # Requires various patches and cannot be built with `FORCE_LIMITED_API` with Python 3.12.
+  # `qt@5` is also officially EOL on 2025-05-25.
+  disable! date: "2025-05-26", because: :versioned_formula
+
   depends_on "cmake" => :build
-  depends_on "llvm@15" # Upstream issue ref: https://bugreports.qt.io/browse/PYSIDE-2268
+  depends_on "llvm"
   depends_on "python@3.10"
   depends_on "qt@5"
 
@@ -45,14 +53,19 @@ class PysideAT2 < Formula
     sha256 "ede69549176b7b083f2825f328ca68bd99ebf8f42d245908abd320093bac60c9"
   end
 
-  # Fix error: use of undeclared identifier 'NPY_ARRAY_UPDATEIFCOPY'.
-  # Remove when the patch available in the next release.
-  # Ref: https://codereview.qt-project.org/c/pyside/pyside-setup/+/418321
-  # Ref: https://bugreports.qt.io/browse/PYSIDE-2035
-  patch :p3 do
-    url "https://code.qt.io/cgit/pyside/pyside-setup.git/patch/sources/shiboken6/libshiboken/sbknumpyarrayconverter.cpp?id=1422cf4a7f277fb13fd209f24a90d6c02641497d"
-    sha256 "2148af37249932be15ca417076baa9539d487b38a434ec901a67fa9ede724f52"
-    directory "sources/shiboken2"
+  # Apply Debian patches to support newer Clang
+  # Upstream issue ref: https://bugreports.qt.io/browse/PYSIDE-2268
+  patch do
+    url "http://deb.debian.org/debian/pool/main/p/pyside2/pyside2_5.15.14-1.debian.tar.xz"
+    sha256 "a0dae3cc101b50f4ce1cda8076d817261feaa66945f9003560a3af2c0a9a7cd8"
+    apply "patches/shiboken2-clang-Fix-clashes-between-type-name-and-enumera.patch",
+          "patches/shiboken2-clang-Fix-and-simplify-resolveType-helper.patch",
+          "patches/shiboken2-clang-Remove-typedef-expansion.patch",
+          "patches/shiboken2-clang-Fix-build-with-clang-16.patch",
+          "patches/shiboken2-clang-Record-scope-resolution-of-arguments-func.patch",
+          "patches/shiboken2-clang-Suppress-class-scope-look-up-for-paramete.patch",
+          "patches/shiboken2-clang-Write-scope-resolution-for-all-parameters.patch",
+          "patches/Modify-sendCommand-signatures.patch"
   end
 
   def python3

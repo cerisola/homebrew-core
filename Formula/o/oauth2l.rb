@@ -1,12 +1,13 @@
 class Oauth2l < Formula
   desc "Simple CLI for interacting with Google oauth tokens"
   homepage "https://github.com/google/oauth2l"
-  url "https://github.com/google/oauth2l/archive/v1.3.0.tar.gz"
+  url "https://github.com/google/oauth2l/archive/refs/tags/v1.3.0.tar.gz"
   sha256 "3f708e3fab87c6ae50e0608b02b01a66ce427a4097f3a73f1fa8c6ea43839110"
   license "Apache-2.0"
   head "https://github.com/google/oauth2l.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c2105ac1026337bfbf630414d57046676c195edace350ccddf708b5d4e9c3d29"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f7fe4e6ee261e41648a2007dece3b439d5e400f8e1b62e6ebba4be84d01c6959"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "cc2222b38a273a02d10469b8afc109f2a4a56aa7a00c7d73d0cd7c7e40f8d8ae"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "536c361c46b2a7cebd434232a569a58bf8b3d3f044d87a0039e9bc15fed649a0"

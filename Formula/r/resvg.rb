@@ -1,19 +1,18 @@
 class Resvg < Formula
   desc "SVG rendering tool and library"
   homepage "https://github.com/RazrFalcon/resvg"
-  url "https://github.com/RazrFalcon/resvg/archive/refs/tags/v0.36.0.tar.gz"
-  sha256 "193cb27744c223579eee5f227549be8c53c3e31270d2c85522987dbf3bec3869"
+  url "https://github.com/RazrFalcon/resvg/archive/refs/tags/v0.44.0.tar.gz"
+  sha256 "b45c906b4c72ff46405d74eb98ec1b93842f1528a8e835860f22b057b210306a"
   license "MPL-2.0"
   head "https://github.com/RazrFalcon/resvg.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4e48b04c38e2fd150727ce60fb071ec583b7939c595b8464df8f98db64095f46"
-    sha256 cellar: :any,                 arm64_ventura:  "42a85e40d88dab404c4aeddc913922d25fa9b4a5c0a23d080faad8944805796b"
-    sha256 cellar: :any,                 arm64_monterey: "b4f09d01d80e058757a117eebf90371f1bedab9a14a99f7ca4691b4b7e3394de"
-    sha256 cellar: :any,                 sonoma:         "e1f557afa92b5336ab48deda1d8f042432757c526dfdab6219df26f422642186"
-    sha256 cellar: :any,                 ventura:        "387637a43befc056a193a8c13709dea501366f9f66b7fa6c0f936868ebf472fc"
-    sha256 cellar: :any,                 monterey:       "1b44210571642485831334cab7af83739d8414f7c54bd9fcf710aa934cba2b50"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "957562727722555bc491890fbd4c691ce2b2e7f114d09fc7e8b5a06c87e8aaa0"
+    sha256 cellar: :any,                 arm64_sequoia: "28531276a8f61a155cd5d3a13fbb3a4a356b7c097251c204e17145f83693383a"
+    sha256 cellar: :any,                 arm64_sonoma:  "7c252685b1357316339380fa2d9b2234decc48e2225b02850ec62f4302c3d22b"
+    sha256 cellar: :any,                 arm64_ventura: "07ff4b74fc351966c5175af27bc02559f6dc9b4b24da217799f0c40742d1dc44"
+    sha256 cellar: :any,                 sonoma:        "498b1b2d02ff385020bd7d7fe6033b7a79a20903816ef378d1337f7eb1b232ed"
+    sha256 cellar: :any,                 ventura:       "e36cea208fde141c0c174d75b2b6e4a7772633c54c48c7a834e54e045b398395"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11bf96aa1daaab9003c19e0daac5477387f61cc7132dc3069fb855ca92241e3a"
   end
 
   depends_on "rust" => :build
@@ -40,7 +39,7 @@ class Resvg < Formula
     system bin/"usvg", testpath/"circle.svg", testpath/"test.svg"
     assert_predicate testpath/"test.svg", :exist?
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdlib.h>
       #include <stdio.h>
       #include <resvg.h>
@@ -66,7 +65,7 @@ class Resvg < Formula
         resvg_tree_destroy(tree);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lresvg", "-o", "test"
     assert_equal "160 35", shell_output("./test #{test_fixtures("test.svg")}").chomp
   end

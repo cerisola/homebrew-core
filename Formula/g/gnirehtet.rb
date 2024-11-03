@@ -1,12 +1,13 @@
 class Gnirehtet < Formula
   desc "Reverse tethering tool for Android"
   homepage "https://github.com/Genymobile/gnirehtet"
-  url "https://github.com/Genymobile/gnirehtet/archive/v2.5.1.tar.gz"
+  url "https://github.com/Genymobile/gnirehtet/archive/refs/tags/v2.5.1.tar.gz"
   sha256 "0d41361b9ac8b3b7fa4f4a0aff933472a72886556bd3fc4659be299b546274e6"
   license "Apache-2.0"
   head "https://github.com/Genymobile/gnirehtet.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5f0e5fbe1add7c5624e860f5301ff482236f9730fd5d9fa3d563a961bc54e22b"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ab10ed478b79d0bd8877a477d1f8bdecf2ca129755cbc3a8270d99e11d911c97"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f5b5df70aa9d156188c4a83b6817064309e53eccaca64d4c21fc6e3dd17b026c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "cc70af0b7c95793dc71b60f38a8ac0eff9c24956f3b9424468117c2cc8d9c8b5"

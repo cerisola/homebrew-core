@@ -1,7 +1,7 @@
 class Certigo < Formula
   desc "Utility to examine and validate certificates in a variety of formats"
   homepage "https://github.com/square/certigo"
-  url "https://github.com/square/certigo/archive/v1.16.0.tar.gz"
+  url "https://github.com/square/certigo/archive/refs/tags/v1.16.0.tar.gz"
   sha256 "a6ce89964ca2fbe7d45d2e2019b06a21984f133c4f1f110eee12a67dd60c4145"
   license "Apache-2.0"
   head "https://github.com/square/certigo.git", branch: "master"
@@ -12,6 +12,7 @@ class Certigo < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bedd60c233d5c81a9a6b79cd90d02570948d21d65e81bfbf356a0d49d4767467"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4b5b86dcb9c261113bc75c507822f26c1774ee29a16886471ffc72121218ff20"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "7030162d50a9cc7a151ef7e5bb30c6ec6de9717c5ed71c56fc207548334142a0"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "a663a86882876335dfd364332494270957a0b6778975aa0f9e8ba2fd83f8aa52"

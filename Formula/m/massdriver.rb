@@ -1,19 +1,26 @@
 class Massdriver < Formula
   desc "Manage applications and infrastructure on Massdriver Cloud"
   homepage "https://www.massdriver.cloud/"
-  url "https://github.com/massdriver-cloud/mass/archive/refs/tags/1.5.5.tar.gz"
-  sha256 "752e4696b2035b0725a72365fdead38c7e9d1b3ecc4827032e7d765a4d539a09"
+  url "https://github.com/massdriver-cloud/mass/archive/refs/tags/1.10.3.tar.gz"
+  sha256 "aa31bc09fcaa94bcc023db8ce35473ec2a5b79a964b89c0d51279f000e2cf5af"
   license "Apache-2.0"
   head "https://github.com/massdriver-cloud/mass.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b2039713468a3a0f7dab279e4606ddc6d10b14bf9593789d4d0349167fd189e3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "776f86ec02e651a4e13a3c8417e48117013051f61744da4848600474f709d82d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a31cd50350e3b903e73ce22b12f2eacf7592c6b98e798649bfbfab2ffe6fc967"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e14cfc38c9032b37da8cadb3b7e0562253a644413c834f2f0ce643dcfa2b8a6b"
-    sha256 cellar: :any_skip_relocation, ventura:        "8960795d03843b9e67cbfd7fb4c7f6c59f0349502e62dad17a9dd9cadf5824cb"
-    sha256 cellar: :any_skip_relocation, monterey:       "163e4637c56b66b56bc84b1e4744f5a94c0a3bebc9f581d0500df1568e86cca5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa9d1d6667a84b3d784f0c2e78ab5542bf6d63700ee716327b790b57fdbe240f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4047239b003e8b4d9fc5e731a6eca32abadfc1a85ebb2647ea19896154ce785e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4047239b003e8b4d9fc5e731a6eca32abadfc1a85ebb2647ea19896154ce785e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4047239b003e8b4d9fc5e731a6eca32abadfc1a85ebb2647ea19896154ce785e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6946ca7546a43f55d41287bb0f24604bb992ae6fe372e5969920913e6cbaa11a"
+    sha256 cellar: :any_skip_relocation, ventura:       "6946ca7546a43f55d41287bb0f24604bb992ae6fe372e5969920913e6cbaa11a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f348d26f088f1ae074238a6718b5ac723a2a88ec672ce05458f16dce1b9f8f4d"
   end
 
   depends_on "go" => :build
@@ -24,7 +31,7 @@ class Massdriver < Formula
       -X github.com/massdriver-cloud/mass/pkg/version.version=#{version}
       -X github.com/massdriver-cloud/mass/pkg/version.gitSHA=#{tap.user}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags, output: bin/"mass")
+    system "go", "build", *std_go_args(ldflags:, output: bin/"mass")
     generate_completions_from_executable(bin/"mass", "completion")
   end
 

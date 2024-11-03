@@ -1,9 +1,9 @@
 class WildflyAs < Formula
   desc "Managed application runtime for building applications"
   homepage "https://www.wildfly.org/"
-  url "https://github.com/wildfly/wildfly/releases/download/29.0.1.Final/wildfly-29.0.1.Final.tar.gz"
-  sha256 "af974eed6f095f49c250ddbc121050fa5c1bf9a1575f880eff9418898aef4269"
-  license "LGPL-2.1-or-later"
+  url "https://github.com/wildfly/wildfly/releases/download/34.0.0.Final/wildfly-34.0.0.Final.tar.gz"
+  sha256 "374254a534cac6455897e72716d078bd58b1aa604db9e52e151279dc3626c35b"
+  license "Apache-2.0"
 
   livecheck do
     url "https://www.wildfly.org/downloads/"
@@ -11,14 +11,11 @@ class WildflyAs < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "9cab7370edc5fcb4844e658ac38ec11ef8d9c99c43dc4e8b9983499e50fc4dd6"
-    sha256 cellar: :any, arm64_ventura:  "9cab7370edc5fcb4844e658ac38ec11ef8d9c99c43dc4e8b9983499e50fc4dd6"
-    sha256 cellar: :any, arm64_monterey: "9cab7370edc5fcb4844e658ac38ec11ef8d9c99c43dc4e8b9983499e50fc4dd6"
-    sha256 cellar: :any, arm64_big_sur:  "9cab7370edc5fcb4844e658ac38ec11ef8d9c99c43dc4e8b9983499e50fc4dd6"
-    sha256 cellar: :any, sonoma:         "6814dc8c437460bd9cf02b420c81a4ac37576e7751cdd296a21100e92910167d"
-    sha256 cellar: :any, ventura:        "6814dc8c437460bd9cf02b420c81a4ac37576e7751cdd296a21100e92910167d"
-    sha256 cellar: :any, monterey:       "6814dc8c437460bd9cf02b420c81a4ac37576e7751cdd296a21100e92910167d"
-    sha256 cellar: :any, big_sur:        "6814dc8c437460bd9cf02b420c81a4ac37576e7751cdd296a21100e92910167d"
+    sha256 cellar: :any, arm64_sequoia: "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, arm64_sonoma:  "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, arm64_ventura: "6e1df42a0d83b0a82c9b0d8af053c36730269eaff6098d961a0d5c9ff5ec0dfb"
+    sha256 cellar: :any, sonoma:        "dbb39676d9e867b2c0cc3c7bdd1f045b49634337fda21d9d321740e3615bd308"
+    sha256 cellar: :any, ventura:       "dbb39676d9e867b2c0cc3c7bdd1f045b49634337fda21d9d321740e3615bd308"
   end
 
   # Installs a pre-built `libartemis-native-64.so` file with linkage to libaio.so.1
@@ -63,7 +60,7 @@ class WildflyAs < Formula
 
   test do
     ENV["JBOSS_HOME"] = opt_libexec
-    system "#{opt_libexec}/bin/standalone.sh --version | grep #{version}"
+    ENV["JBOSS_LOG_DIR"] = testpath
 
     port = free_port
 

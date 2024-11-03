@@ -4,18 +4,15 @@ class Bloaty < Formula
   url "https://github.com/google/bloaty/releases/download/v1.1/bloaty-1.1.tar.bz2"
   sha256 "a308d8369d5812aba45982e55e7c3db2ea4780b7496a5455792fb3dcba9abd6f"
   license "Apache-2.0"
-  revision 17
+  revision 32
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "b394ea0935385079416cdc4e0fcf54b3fa204ed512281a1bd5a12b737074c395"
-    sha256 cellar: :any,                 arm64_ventura:  "3fac406a0ec1ca79cff005abbde0b2eb3583e12437b16416700aef4a71465d09"
-    sha256 cellar: :any,                 arm64_monterey: "9df61277d6cab0d016289b488df9cab8a1ebb42be9b081665d6f72669db86d75"
-    sha256 cellar: :any,                 arm64_big_sur:  "1eaaef8d8e5370cfa247e89a311d46a23f669fb6f62613cd2c04ad33f8546027"
-    sha256 cellar: :any,                 sonoma:         "9af7a8d12d62aa7ac70db482349f01bbfd7901bc8ebeb8feb6e26ff6efbd0724"
-    sha256 cellar: :any,                 ventura:        "38ebaaa88f32202facfd508083f9000918f51b4f25bf64331f62a2f9b5d1f5dc"
-    sha256 cellar: :any,                 monterey:       "241b3a651e3cff5bd4a26bb807f865e4edfcb3f6cae36f1e1d0e6d6102391f1a"
-    sha256 cellar: :any,                 big_sur:        "3f25a3ffd9e738dbdc7492381094fcbe97ce8ab87af95a6dbd4415196dfb3db6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f167593af47fcc2a92180def23e4580a2071296d63fa471a4f69d1a495ce0b81"
+    sha256 cellar: :any,                 arm64_sequoia: "6ea6ad2a18c50a8381daed6520b7be110bc20d4aa8f909fc25377340175dcf21"
+    sha256 cellar: :any,                 arm64_sonoma:  "addd1d7c03488ff0d18ec6cc8891c5151e5bb2b95228bdc4277c4a6d25a30ba5"
+    sha256 cellar: :any,                 arm64_ventura: "b1f3207318f2156b8caf626d9f5d59560d9701c28e75ae40387b724efc13aa9a"
+    sha256 cellar: :any,                 sonoma:        "0940470ec3c169c3e5c3cd886fa779c19e64341f06632c9443f2e3e5741e3195"
+    sha256 cellar: :any,                 ventura:       "199ffb69cbc6a2cd3620526bf23ce7f4da2199a0db6fe6d3b647aa993864d049"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0512f5da7f9ebc11a451c84baaf572aae09a3190bc077ed18c02e943b6782ab8"
   end
 
   depends_on "cmake" => :build
@@ -36,8 +33,11 @@ class Bloaty < Formula
     # https://github.com/protocolbuffers/protobuf/issues/9947
     ENV.append_to_cflags "-DNDEBUG"
     # Remove vendored dependencies
-    %w[abseil-cpp capstone protobuf re2].each { |dir| (buildpath/"third_party"/dir).rmtree }
-    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_CXX_STANDARD=17", *std_cmake_args
+    %w[abseil-cpp capstone protobuf re2].each { |dir| rm_r(buildpath/"third_party"/dir) }
+    abseil_cxx_standard = 17 # Keep in sync with C++ standard in abseil.rb
+    inreplace "CMakeLists.txt", "CMAKE_CXX_STANDARD 11", "CMAKE_CXX_STANDARD #{abseil_cxx_standard}"
+    inreplace "CMakeLists.txt", "-std=c++11", "-std=c++17"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_CXX_STANDARD=#{abseil_cxx_standard}", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

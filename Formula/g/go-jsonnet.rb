@@ -1,7 +1,7 @@
 class GoJsonnet < Formula
   desc "Go implementation of configuration language for defining JSON data"
   homepage "https://jsonnet.org/"
-  url "https://github.com/google/go-jsonnet/archive/v0.20.0.tar.gz"
+  url "https://github.com/google/go-jsonnet/archive/refs/tags/v0.20.0.tar.gz"
   sha256 "bf9923a848dba65fa99f6e926221ab4222c2f259ba837d279b43917962bc7d70"
   license "Apache-2.0"
   head "https://github.com/google/go-jsonnet.git", branch: "master"
@@ -12,6 +12,7 @@ class GoJsonnet < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3bc19e31a7ea1de9376c90135df48fdd8ed498f594dd0f7916dac2f41b5a2d31"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7eed7e4575bf7d5222f5d2e40ab27c0fbc5ef5a1c06cb45bb69a84060500a8cb"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d7ef4c5d8638c9eb8197bd5be4bfc1e1e52d6dcb7275fe193850b4729ca199af"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9f6ee690b5458c98426e668d40adc3d9f392b1a3d66a084eb5661dd032ba25d6"

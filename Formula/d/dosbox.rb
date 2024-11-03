@@ -3,7 +3,7 @@ class Dosbox < Formula
   homepage "https://www.dosbox.com/"
   url "https://downloads.sourceforge.net/project/dosbox/dosbox/0.74-3/dosbox-0.74-3.tar.gz"
   sha256 "c0d13dd7ed2ed363b68de615475781e891cd582e8162b5c3669137502222260a"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   revision 1
 
   bottle do
@@ -27,8 +27,8 @@ class Dosbox < Formula
 
   # Has dependencies on deprecated `sdl_net` and `sdl_sound`.
   # Recommend available forks that support SDL 2 or the Cask (macOS-only).
-  deprecate! date:    "2023-02-13",
-             because: "uses deprecated SDL 1.2. Consider `dosbox-x`/`dosbox-staging` formulae or `dosbox` cask"
+  disable! date:    "2024-02-16",
+           because: "uses deprecated SDL 1.2. Consider `dosbox-x`/`dosbox-staging` formulae or `dosbox` cask"
 
   depends_on "libpng"
   depends_on "sdl12-compat"
@@ -49,6 +49,6 @@ class Dosbox < Formula
   end
 
   test do
-    system "#{bin}/dosbox", "-version"
+    system bin/"dosbox", "-version"
   end
 end

@@ -1,19 +1,20 @@
 class Cloudlist < Formula
   desc "Tool for listing assets from multiple cloud providers"
   homepage "https://github.com/projectdiscovery/cloudlist"
-  url "https://github.com/projectdiscovery/cloudlist/archive/refs/tags/v1.0.4.tar.gz"
-  sha256 "e7f6e981d20c95a34eb5b858ac554f39003b01f5a50d37980be4bf87e98c7712"
+  url "https://github.com/projectdiscovery/cloudlist/archive/refs/tags/v1.1.0.tar.gz"
+  sha256 "63f288b08ec4c1bd0969111b54fc3bb09a1423eaa0e60a9c9183e088742cd0bd"
   license "MIT"
   head "https://github.com/projectdiscovery/cloudlist.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "121415517c2ffae1ebd74d21c8c37f04701104a87a586dc3af5d614ee905e58b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6081054e42b76cb3e6900c7318afe4f406557fe628297d3778700a4a26791d34"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7a7ce8f029a1a8b38c0557af2ce5560b2bbe85f7adda84d38969fdaf704ff9f5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b3d2332ad2ccb77262bf7897e065c11fe9752430d1be772cd7d934d1dab1a7d1"
-    sha256 cellar: :any_skip_relocation, ventura:        "73f1722ffa51ad3ba35fa470aedcf98d06b8e72754e5f149cce72c19fec772cd"
-    sha256 cellar: :any_skip_relocation, monterey:       "975b011092d859efe769ae39a103c3ebb4e702f1ef63ceae4970fca724be8c4a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b5fe0f1dfa6fd33f5d9f329200d7d3c16ed59cbba465287432cb072ffeebbdf4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5e5f2262604a56516bbf29acd9a60cf926eb956c4c3874569d051265f9279d09"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "faad163c13c4c1c6c4735c4ba6416e40afd090cc5d37f7c4182985730243e601"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b1df534116d2a7f31eb6376b7bb6b5d54f2aae4b48a07635cd1906e95619c873"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bfbd68af5b5e83e65f674315d3d16c9107927c44bda26e756564e89522f65f5d"
+    sha256 cellar: :any_skip_relocation, sonoma:         "bac836cba3909d086d61494d0449036bc7a5ef66fec2464430e64713428a770e"
+    sha256 cellar: :any_skip_relocation, ventura:        "e05ef7ca27fb2dd7b8675884355ac56b508c19b26484f43275a331fceae889ae"
+    sha256 cellar: :any_skip_relocation, monterey:       "477994afb4b05abcaf618a83c873677282e63d91f8b0297501c8fe66a38a887e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a9241a072e559afb179fe4726894f47d4cc20bb623eb1bf74a3fe10b9780ae4"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,7 @@ class Cloudlist < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/cloudlist -version 2>&1")
 
-    output = shell_output "#{bin}/cloudlist", 1
+    output = shell_output bin/"cloudlist", 1
     assert_match output, "invalid provider configuration file provided"
   end
 end

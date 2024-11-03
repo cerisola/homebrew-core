@@ -1,12 +1,13 @@
 class ConsulBackinator < Formula
   desc "Consul backup and restoration application"
   homepage "https://github.com/myENA/consul-backinator"
-  url "https://github.com/myENA/consul-backinator/archive/v1.6.6.tar.gz"
+  url "https://github.com/myENA/consul-backinator/archive/refs/tags/v1.6.6.tar.gz"
   sha256 "b668801ca648ecf888687d7aa69d84c3f2c862f31b92076c443fdea77c984c58"
   license "MPL-2.0"
   head "https://github.com/myENA/consul-backinator.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8839abd4d9ee77b2e2378c281bb982e4af742ea32996c592cbd70e39f882a131"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8dd6cbcb9488966e0c5452941ff2568e991cef265c705f3e20a465bb1346c238"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "a382c9d7060ffefb09aa0aa62509ab46dddd90f9d65d0248bb6c75003869be3a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "aed17c5c263df3f56c445b9ed9416206802102d3cefbf38ab893f7237c94e622"

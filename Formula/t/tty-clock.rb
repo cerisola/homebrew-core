@@ -1,12 +1,13 @@
 class TtyClock < Formula
   desc "Digital clock in ncurses"
   homepage "https://github.com/xorg62/tty-clock"
-  url "https://github.com/xorg62/tty-clock/archive/v2.3.tar.gz"
+  url "https://github.com/xorg62/tty-clock/archive/refs/tags/v2.3.tar.gz"
   sha256 "343e119858db7d5622a545e15a3bbfde65c107440700b62f9df0926db8f57984"
   license "BSD-3-Clause"
   head "https://github.com/xorg62/tty-clock.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "7068bc510258482b8643c72d3cd98e5aeb11ec1c870a4f843b4dab323adc5437"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d9d3a157ca3d9c96d55c96e377ce0adf1033d388971438793fce2646976d5ab2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa482bfe16706d591d196d62b30fd517e4b0e677ee9c320466a0f4021e6ad361"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "da788fd6f94799b9cb8fe52dae41d592871e9c7e422e216d90d08350f2f51a48"
@@ -34,6 +35,6 @@ class TtyClock < Formula
   end
 
   test do
-    system "#{bin}/tty-clock", "-i"
+    system bin/"tty-clock", "-i"
   end
 end

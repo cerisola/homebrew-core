@@ -1,19 +1,21 @@
 class Orogene < Formula
   desc "`node_modules/` package manager and utility toolkit"
   homepage "https://orogene.dev"
-  url "https://github.com/orogene/orogene/archive/refs/tags/v0.3.33.tar.gz"
-  sha256 "7f2048f146a968639237ce997254494d677daa31958e92ecc3832fcc98fdae87"
+  url "https://github.com/orogene/orogene/archive/refs/tags/v0.3.34.tar.gz"
+  sha256 "d4e50c2c3965e62160cf6a15db3734e4a847ca79629599fdd5ce30579aaae9a3"
   license "Apache-2.0"
   head "https://github.com/orogene/orogene.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a6d936f7d19b198941307a214b54093fd183e4f5e6353be3a24670b85d79aa9e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0c4d546cdcbe78d0a65294bfa6ee7de6f69b4bc5cad394635fbd15c3b986c74f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9f56a9497948718778346597eb2049641d751e83063c10a3afb7276d28cfba64"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c2c9e333a74f0f8045d7caefabbfa4de073bb7613c952a80129b997a74fd1056"
-    sha256 cellar: :any_skip_relocation, ventura:        "73686e176d83e5e75d9121f0736dedf294ddb6f51a6270843b637a1333f0f4cd"
-    sha256 cellar: :any_skip_relocation, monterey:       "3498e0466e8b1b74cd5fd1781b89f0da252ed354e5103b05a6ccb2fbb61e1d04"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e21d60bbe5eaa0458e2cda651fa9a64d700c333ad6b11fe9332cb44bace16203"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "68164cd2ef24f2cc58c5562c7c81cb72bc9139ef96975f459f1bd6ce05c3e73a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f7a9c9b9ca6a84e14304d3d5e1f5fcb8d44d7546c0fe635c14e3bbd468175421"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1279bf1b9a1d443e8e4e5173be1e015438c0c3c0fdaa263879209fbd9fb8758b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "e223abe73a6f15d8ae775209bb721c9a9513b4edac55af8b5f463587802039a4"
+    sha256 cellar: :any_skip_relocation, sonoma:         "e72c4f89a0517891879aab76a95a3f12b9055d1dfd8510275bb5211883153c52"
+    sha256 cellar: :any_skip_relocation, ventura:        "f94a9aa11660b3e6ad47ba48c38fdd988a8a51435ed7e6f1533983d5b939a66b"
+    sha256 cellar: :any_skip_relocation, monterey:       "eecf977924a2d78a5b4871f5a58b3ea1733aa5b918849d743f0c2f1d9aec0e79"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ead950a69b6ee4a7d7023264f55372d0d84e83984c46af445280d8f5281871fc"
   end
 
   depends_on "pkg-config" => :build
@@ -21,6 +23,12 @@ class Orogene < Formula
 
   on_linux do
     depends_on "openssl@3"
+  end
+
+  # rust 1.80 build patch, upstream pr ref, https://github.com/orogene/orogene/pull/315
+  patch do
+    url "https://github.com/orogene/orogene/commit/2f774bb5b1067fb0f5f827140aff328190af0452.patch?full_index=1"
+    sha256 "c91711588a6fddee3055a356723a8a044cd82d287c59a7cf83802129d2ffa89b"
   end
 
   def install
@@ -33,6 +41,7 @@ class Orogene < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/oro --version")
-    system "#{bin}/oro", "ping"
+
+    system bin/"oro", "ping"
   end
 end

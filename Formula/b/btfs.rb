@@ -1,14 +1,15 @@
 class Btfs < Formula
   desc "BitTorrent filesystem based on FUSE"
   homepage "https://github.com/johang/btfs"
-  url "https://github.com/johang/btfs/archive/v2.24.tar.gz"
+  url "https://github.com/johang/btfs/archive/refs/tags/v2.24.tar.gz"
   sha256 "d71ddefe3c572e05362542a0d9fd0240d8d4e1578ace55a8b3245176e7fd8935"
   license "GPL-3.0-only"
   revision 1
   head "https://github.com/johang/btfs.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "440c3be8b9952616f1aa74044ff4aad74fe9a2ba8f584c7d650546b5ee129ac2"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "c13f8e1ccf19a55a3bfe37a185a7f58d79ec7a2a69e318e662434b917c17b5d1"
   end
 
   depends_on "autoconf" => :build
@@ -29,6 +30,6 @@ class Btfs < Formula
   end
 
   test do
-    system "#{bin}/btfs", "--help"
+    system bin/"btfs", "--help"
   end
 end

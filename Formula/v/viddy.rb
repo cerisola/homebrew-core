@@ -1,40 +1,39 @@
 class Viddy < Formula
   desc "Modern watch command"
   homepage "https://github.com/sachaos/viddy"
-  url "https://github.com/sachaos/viddy/archive/refs/tags/v0.3.7.tar.gz"
-  sha256 "fe7b0756491d6f997daba56a2363ccfde66dcf253979b0f08b0a360439a128d4"
+  url "https://github.com/sachaos/viddy/archive/refs/tags/v1.2.0.tar.gz"
+  sha256 "bc74f8b42c24025af69376f1bb3a3927d2f1bea656205e37a07f5f4576e8fb00"
   license "MIT"
   head "https://github.com/sachaos/viddy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "adf07219126eb47d7216cc6b22f93865a519ee1917db30e0896df7017288d4c8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dbc7c12a15061ea6e1387bf563c77459aedce964b0bd2644ab687f347a339849"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b09b1260095abe4c76db68d3d6f7e184d7fa0fc9c43fa5d4abdbe76b38567e9b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0178846dbab54c9e683e793a5deb73ac44dcb804e02e0365611c1bb5a2aa8e2b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a2cc35fc9d3bd041b9905cc19d10d8f670985b5e64da507b473b13da1010df26"
-    sha256 cellar: :any_skip_relocation, ventura:        "b9951c6a134f22524b4b6afeefce54586560578aa69f4ac247f7edcc783026bb"
-    sha256 cellar: :any_skip_relocation, monterey:       "d3adb935f90306236576c3ee12f8cc6241ec4c07816993c666c29357ad60983c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8cfb28fa87544017b55a1990ea8416e5a7130773ca7ed838cb85108088baa9d9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c67228b0ac66527bb42e7648a4c969357ed8e6dc89f43146f73d1a26e946dc05"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d4d6b2715e844dd65dffd703ef7c542d093519b7b86553e6d00fd0055c106b9c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ea62db782b8cf5a614c558f47ca3bc7da63633ea1c3543f447e870d7e0672564"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "048ed3a2d53dabd60072ac3e1757c0719b6367247dc725289c53df7971fbebb5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "50bc79d1da15b1dc30131146ca4ec326ebf168538cbb7ea03f841754fe8a99a0"
+    sha256 cellar: :any_skip_relocation, ventura:       "d9af779c75bda5773983e8e20e6389e639e0fe403aa5e31abdbe317095a9b36f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "48f8db4f1ca340aea473a927442ce6575a9133596b803fe974ad94279694a370"
   end
 
-  depends_on "go" => :build
+  depends_on "rust" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=v#{version}")
+    system "cargo", "install", *std_cargo_args
   end
 
   test do
     # Errno::EIO: Input/output error @ io_fread - /dev/pts/0
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    ENV["TERM"] = "xterm"
-    require "pty"
-    r, _, pid = PTY.spawn "#{bin}/viddy echo hello"
-    sleep 1
-    Process.kill "SIGINT", pid
-    assert_includes r.read, "Every"
+    begin
+      pid = fork do
+        system bin/"viddy", "--interval", "1", "date"
+      end
+      sleep 2
+    ensure
+      Process.kill("TERM", pid)
+    end
 
-    assert_equal 0, $CHILD_STATUS.exitstatus
+    assert_match "viddy #{version}", shell_output("#{bin}/viddy --version")
   end
 end

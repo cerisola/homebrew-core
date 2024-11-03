@@ -1,49 +1,62 @@
 class Fizz < Formula
   desc "C++14 implementation of the TLS-1.3 standard"
   homepage "https://github.com/facebookincubator/fizz"
-  url "https://github.com/facebookincubator/fizz/releases/download/v2023.10.02.00/fizz-v2023.10.02.00.tar.gz"
-  sha256 "f0103ae08a1459f89fe5aa4fba4441319de27ca1c3801a837e732049e40aad9e"
+  url "https://github.com/facebookincubator/fizz/releases/download/v2024.10.28.00/fizz-v2024.10.28.00.tar.gz"
+  sha256 "027b06d06a441f05a4a60891322596f89ece798730e7b4ff9d23df93e99151db"
   license "BSD-3-Clause"
   head "https://github.com/facebookincubator/fizz.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5ff96fa186dfb447c894b2cf626108ef0a7d55c7823413c0deb51334e6e05341"
-    sha256 cellar: :any,                 arm64_ventura:  "4176ca25234855a3d448f747aac154e3255bb4bcac5334b1952348858be8fc5d"
-    sha256 cellar: :any,                 arm64_monterey: "bd34c89aed227c095fb6d6d878e5ee5ed1ebd6b8f7c6198528751da58c952baa"
-    sha256 cellar: :any,                 sonoma:         "4014df66e75bcb63a483656faf41dcc227fd66f7bd8209c4ac15c749def39994"
-    sha256 cellar: :any,                 ventura:        "4c196ace83e1f14c19485b09568012d01efc9330a2e1a53085cd60fa002a45bd"
-    sha256 cellar: :any,                 monterey:       "694100119a1f6635587a7c6d6b5fc02416b2916ac8e6d1763e860c276ab59cd7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c3f233e997496d9970ba8ffc77a4be26b6c67ffad87d9a83b82d1e510eef85c2"
+    sha256 cellar: :any,                 arm64_sequoia: "41aec35a26428a700e2edac9c0959457ebfb7f29b6820f510d4f757da511ab78"
+    sha256 cellar: :any,                 arm64_sonoma:  "a2512f195ba44554a29fb0db9add2bb18824cfe57c5b0279857a8b5c217cb9be"
+    sha256 cellar: :any,                 arm64_ventura: "7b2d605a89952f889ceafbb64c26308bbc2670f74bf91249d0fc0991c8148a64"
+    sha256 cellar: :any,                 sonoma:        "792bca8f2f5364014278d5a83a578be6cbce15e759ed6bcdb43856f5769a7ad3"
+    sha256 cellar: :any,                 ventura:       "7401dabc92d3883a3af90d3424a153bc207279178c9699061a5ffaa472947690"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73ae498fc5b3ef13054fa39d60faa215c5af617d96dc7778973a858ee26d39da"
   end
 
-  depends_on "cmake" => :build
-  depends_on "boost"
+  depends_on "cmake" => [:build, :test]
+  depends_on "libevent" => :build
   depends_on "double-conversion"
   depends_on "fmt"
   depends_on "folly"
   depends_on "gflags"
   depends_on "glog"
-  depends_on "libevent"
   depends_on "libsodium"
-  depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "snappy"
   depends_on "zstd"
+
+  uses_from_macos "zlib"
 
   fails_with gcc: "5"
 
   def install
-    system "cmake", "-S", "fizz", "-B", "build",
-                    "-DBUILD_TESTS=OFF",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    *std_cmake_args
+    args = ["-DBUILD_TESTS=OFF", "-DBUILD_SHARED_LIBS=ON", "-DCMAKE_INSTALL_RPATH=#{rpath}"]
+    if OS.mac?
+      # Prevent indirect linkage with boost and snappy.
+      args += [
+        "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-dead_strip_dylibs",
+        "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-dead_strip_dylibs",
+      ]
+    end
+    system "cmake", "-S", "fizz", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
+
+    # `libsodium` does not install a CMake package configuration file. There
+    # is a find module (at least in 1.0.20 tarball), but upstream has deleted
+    # it in HEAD. Also, find modules are usually not shipped by upstream[^1].
+    #
+    # Since fizz-config.cmake requires FindSodium.cmake[^2], we save a copy in
+    # libexec that can be used internally for testing `fizz` and dependents.
+    #
+    # [^1]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#find-module-packages
+    # [^2]: https://github.com/facebookincubator/fizz/issues/141
+    (libexec/"cmake").install "build/fbcode_builder/CMake/FindSodium.cmake"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <fizz/client/AsyncFizzClient.h>
       #include <iostream>
 
@@ -51,17 +64,24 @@ class Fizz < Formula
         auto context = fizz::client::FizzClientContext();
         std::cout << toString(context.getSupportedVersions()[0]) << std::endl;
       }
-    EOS
-    system ENV.cxx, "-std=c++17", "test.cpp", "-o", "test",
-                    "-I#{include}",
-                    "-I#{Formula["openssl@3"].opt_include}",
-                    "-L#{lib}", "-lfizz",
-                    "-L#{Formula["folly"].opt_lib}", "-lfolly",
-                    "-L#{Formula["gflags"].opt_lib}", "-lgflags",
-                    "-L#{Formula["glog"].opt_lib}", "-lglog",
-                    "-L#{Formula["libevent"].opt_lib}", "-levent",
-                    "-L#{Formula["libsodium"].opt_lib}", "-lsodium",
-                    "-L#{Formula["openssl@3"].opt_lib}", "-lcrypto", "-lssl"
+    CPP
+
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.5)
+      project(test LANGUAGES CXX)
+      set(CMAKE_CXX_STANDARD 17)
+
+      list(APPEND CMAKE_MODULE_PATH "#{libexec}/cmake")
+      find_package(gflags REQUIRED)
+      find_package(fizz CONFIG REQUIRED)
+
+      add_executable(test test.cpp)
+      target_link_libraries(test fizz::fizz)
+    CMAKE
+
+    ENV.delete "CPATH"
+    system "cmake", ".", *std_cmake_args
+    system "cmake", "--build", "."
     assert_match "TLS", shell_output("./test")
   end
 end

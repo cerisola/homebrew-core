@@ -1,13 +1,14 @@
 class Leaf < Formula
   desc "General purpose reloader for all projects"
   homepage "https://pkg.go.dev/github.com/vrongmeal/leaf"
-  url "https://github.com/vrongmeal/leaf/archive/v1.3.0.tar.gz"
+  url "https://github.com/vrongmeal/leaf/archive/refs/tags/v1.3.0.tar.gz"
   sha256 "00ba86c1670e4a547d6f584350d41d174452d0679be25828e7835a8da1fe100a"
   license "MIT"
   head "https://github.com/vrongmeal/leaf.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "09207a280786c059e1101f26dd85aab2ae159a8f295de090825959f88671e165"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "41ac38180d691799c039e350fe1a9b3f6231b55bb7e3081495709c07cd69a3d9"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "5bd1b00e0418f45e3d96f7f2bfab43c68dda0d3f667335c64f4427bc6dad12ce"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2bb7a962b8708d9d607dcff6ed3dba9e485a0963164608662bfcf70e84ad1d5d"

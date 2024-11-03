@@ -3,29 +3,26 @@ class Httpie < Formula
 
   desc "User-friendly cURL replacement (command-line HTTP client)"
   homepage "https://httpie.io/"
-  url "https://github.com/httpie/cli/archive/refs/tags/3.2.2.tar.gz"
-  sha256 "01b4407202fac3cc68c73a8ff1f4a81a759d9575fabfad855772c29365fe18e6"
+  url "https://github.com/httpie/cli/archive/refs/tags/3.2.4.tar.gz"
+  sha256 "b185cd8d81325f97c773582e50f1c5e047c2d8575b53d676469c9daf2a52f341"
   license "BSD-3-Clause"
-  revision 2
   head "https://github.com/httpie/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a3e85aae8da6a3434a7c361f8c3a207d7036003ce7bab173ab9adabbd2a3afe7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fd835699130bca00f5b34eeba0c13b3c5ccbb24da93a729efbee1339b37d385e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "926ce32af2713648623f31ef04817cd89100d7bd236fbad6faded17625d3f1af"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c8805aca4645dd3bb835943692eac548fe49ee81e694b3b4fac2102414d10276"
-    sha256 cellar: :any_skip_relocation, ventura:        "363f75a19dd3ca01a93e3e460434a3995b418438378d2eec7aa55e0b99df46f1"
-    sha256 cellar: :any_skip_relocation, monterey:       "28b3fd2d141b186f4d78bfad16f64c3f724ce7af9b4a92116a050a119fa0d0db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9affaf6988e6a1c63e9ed9402bb653620e2c8b792fa50af6f9a696b1d186e706"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "83e92884af29f9d3f550603b35715ad22d04a353d754a0c9f237318166f24147"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5e6306cd7e9fb707552d406186b25a1774e436e218ec2ca1f8cc44319d73f591"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7e92db0acf947533e3ef430e7c0030819d2a616ad0290bbd2ba3038cdd53afcc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2c2b7f472c1baf574ac82ad47299ad3b838b1cb287d98165a395d5b05e371ad6"
+    sha256 cellar: :any_skip_relocation, ventura:       "49df2e4365298b54ebf24b0bd661e06f73dd3844d7575de76c74467c8cda8f3e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "72dc884db737283760aae001baadbf96fc3dd71119545eb09783f1523654408b"
   end
 
-  depends_on "pygments"
-  depends_on "python-certifi"
-  depends_on "python@3.11"
+  depends_on "certifi"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
   end
 
   resource "defusedxml" do
@@ -34,8 +31,8 @@ class Httpie < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
+    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
   end
 
   resource "markdown-it-py" do
@@ -49,8 +46,13 @@ class Httpie < Formula
   end
 
   resource "multidict" do
-    url "https://files.pythonhosted.org/packages/4a/15/bd620f7a6eb9aa5112c4ef93e7031bcd071e0611763d8e17706ef8ba65e0/multidict-6.0.4.tar.gz"
-    sha256 "3666906492efb76453c0e7b97f2cf459b0682e7402c0489a95484965dbc1da49"
+    url "https://files.pythonhosted.org/packages/d6/be/504b89a5e9ca731cd47487e91c469064f8ae5af93b7259758dcfc2b9c848/multidict-6.1.0.tar.gz"
+    sha256 "22ae2ebf9b0c69d206c003e2f6a914ea33f0a932d4aa16f236afc049d9958f4a"
+  end
+
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "pysocks" do
@@ -59,8 +61,8 @@ class Httpie < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
   resource "requests-toolbelt" do
@@ -69,13 +71,18 @@ class Httpie < Formula
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/b1/0e/e5aa3ab6857a16dadac7a970b2e1af21ddf23f03c99248db2c01082090a3/rich-13.6.0.tar.gz"
-    sha256 "5c14d22737e6d5084ef4771b62d5d4363165b403455a30a1c8ca39dc7b644bef"
+    url "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz"
+    sha256 "439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/ed/22/a438e0caa4576f8c383fa4d35f1cc01655a46c75be358960d815bfbb12bd/setuptools-75.3.0.tar.gz"
+    sha256 "fba5dd4d766e97be1b1681d98712680ae8f2f26d7881245f2ce9e40714f1a686"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/8b/00/db794bb94bf09cadb4ecd031c4295dd4e3536db4da958e20331d95f1edb7/urllib3-2.0.6.tar.gz"
-    sha256 "b19e1a85d206b56d7df1d5e683df4a7725252a964e3993648dd0fb5a1c157564"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install
@@ -83,11 +90,7 @@ class Httpie < Formula
     # was used to install httpie.
     File.write("httpie/internal/__build_channel__.py", "BUILD_CHANNEL = \"homebrew\"")
 
-    virtualenv_install_with_resources
-
-    man1.install_symlink libexec/"share/man/man1/http.1"
-    man1.install_symlink libexec/"share/man/man1/https.1"
-    man1.install_symlink libexec/"share/man/man1/httpie.1"
+    virtualenv_install_with_resources(link_manpages: true)
 
     bash_completion.install "extras/httpie-completion.bash" => "httpie"
     fish_completion.install "extras/httpie-completion.fish" => "httpie.fish"

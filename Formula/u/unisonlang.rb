@@ -1,32 +1,45 @@
-require "language/node"
-
 class Unisonlang < Formula
   desc "Friendly programming language from the future"
   homepage "https://unison-lang.org/"
-  url "https://github.com/unisonweb/unison.git",
-      tag:      "release/M5f",
-      revision: "04ba01c6372c5b9ddf64d985b649e05313ca5947"
-  version "M5f"
   license "MIT"
-  head "https://github.com/unisonweb/unison.git", branch: "trunk"
+
+  stable do
+    url "https://github.com/unisonweb/unison.git",
+        tag:      "release/0.5.27",
+        revision: "bb3b5f1c9e9d11287906e8dea4ab186068b160ba"
+
+    resource "local-ui" do
+      url "https://github.com/unisonweb/unison-local-ui/archive/refs/tags/release/0.5.27.tar.gz"
+      sha256 "eaefe430187f936f7af1a2052b7f4d4d3aaa81b11d3c2697e116b3de69373781"
+    end
+  end
 
   livecheck do
     url :stable
-    regex(%r{^release/(M\d+[a-z]*)$}i)
+    regex(%r{^release/v?(\d+(?:\.\d+)+)$}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "47a5327b2e9356d82a7a0c581f5be6d6269f8b8a10c0b7196696f1774a18e53b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "fbd8a5fe611dfd9f61e4110fbef149787fa705275512609f77b8fe40017fd234"
-    sha256 cellar: :any_skip_relocation, ventura:        "bf4c489e1f7ed9756710fb621b10b12bb26e60a8a76cc875443ca0b7fac429fe"
-    sha256 cellar: :any_skip_relocation, monterey:       "3f062f42e82d5186ed533e5973bb4f111ddf6243f7c8b2931d3661d70c08daea"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8089a855ed40041e818a99af9b2c4a3187db2eb68936e6b7628bbc8152cc37f1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e2fb2da2b4a3940763e250042884dc564a3dc527da842f3213e79be1aa6ef811"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c932ce73cc4a460b374a84658886fb0340f37fc57d3e29d26d8d3d71fd4c003e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ef3a71e79da0bc262378436daee748db052a95562df7706d9b20917dbc8659fa"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9608de524d053b08952821a8f60135315f8cd6dc146b4fc02f1a4b8a69617343"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7a7aca5dd9bdabcc1ad1dfccdbe797239f8288b995259fe2179141a1bc2c1790"
+    sha256 cellar: :any_skip_relocation, ventura:       "4faa61a66721d02b8fe75094bff502a55701b3b91a2b84bceb72d9c4c521a609"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "025cd5e87f536511ce28e66861da12c4d471fcfe5618959b74e45466af302ed3"
   end
 
-  depends_on "ghc@9.2" => :build
+  head do
+    url "https://github.com/unisonweb/unison.git", branch: "trunk"
+
+    resource "local-ui" do
+      url "https://github.com/unisonweb/unison-local-ui.git", branch: "main"
+    end
+  end
+
+  depends_on "elm" => :build
+  depends_on "ghc@9.6" => :build
   depends_on "haskell-stack" => :build
-  depends_on "node@18" => :build
+  depends_on "node@20" => :build
 
   uses_from_macos "python" => :build
   uses_from_macos "xz" => :build
@@ -36,29 +49,19 @@ class Unisonlang < Formula
     depends_on "ncurses"
   end
 
-  on_arm do
-    depends_on "elm" => :build
-  end
-
-  resource "local-ui" do
-    url "https://github.com/unisonweb/unison-local-ui/archive/refs/tags/release/M5f.tar.gz"
-    version "M5f"
-    sha256 "26becc00486f1574b14d86452b3e1f45b3361af009c576d3a17b0cb518a07191"
-  end
-
   def install
+    odie "local-ui resource needs to be updated" if build.stable? && version != resource("local-ui").version
+
     jobs = ENV.make_jobs
     ENV.deparallelize
 
     # Build and install the web interface
     resource("local-ui").stage do
-      system "npm", "install", *Language::Node.local_npm_install_args
-      if Hardware::CPU.arm?
-        # Replace x86_64 elm binary to avoid dependency on Rosetta
-        elm = Pathname("node_modules/elm/bin/elm")
-        elm.unlink
-        elm.parent.install_symlink Formula["elm"].opt_bin/"elm"
-      end
+      system "npm", "install", *std_npm_args(prefix: false)
+      # Replace pre-built x86_64 elm binary
+      elm = Pathname("node_modules/elm/bin/elm")
+      elm.unlink
+      elm.parent.install_symlink Formula["elm"].opt_bin/"elm"
       # HACK: Flaky command occasionally stalls build indefinitely so we force fail
       # if that occurs. Problem seems to happening while running `elm-json install`.
       # Issue ref: https://github.com/zwilias/elm-json/issues/50
@@ -70,13 +73,13 @@ class Unisonlang < Formula
       prefix.install "dist/unisonLocal" => "ui"
     end
 
-    stack_args = [
-      "-v",
-      "--system-ghc",
-      "--no-install-ghc",
-      "--skip-ghc-check",
-      "--copy-bins",
-      "--local-bin-path=#{buildpath}",
+    stack_args = %W[
+      -v
+      --system-ghc
+      --no-install-ghc
+      --skip-ghc-check
+      --copy-bins
+      --local-bin-path=#{buildpath}
     ]
 
     system "stack", "-j#{jobs}", "build", "--flag", "unison-parser-typechecker:optimized", *stack_args
@@ -86,9 +89,6 @@ class Unisonlang < Formula
   end
 
   test do
-    # Ensure the local-ui version matches the ucm version
-    assert_equal version, resource("local-ui").version
-
     (testpath/"hello.u").write <<~EOS
       helloTo : Text ->{IO, Exception} ()
       helloTo name =
@@ -101,7 +101,7 @@ class Unisonlang < Formula
 
     (testpath/"hello.md").write <<~EOS
       ```ucm
-      .> project.create test
+      scratch/main> project.create test
       test/main> load hello.u
       test/main> add
       test/main> run hello

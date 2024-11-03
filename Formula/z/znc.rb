@@ -1,70 +1,52 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "https://wiki.znc.in/ZNC"
-  url "https://znc.in/releases/archive/znc-1.8.2.tar.gz"
-  sha256 "ff238aae3f2ae0e44e683c4aee17dc8e4fdd261ca9379d83b48a7d422488de0d"
+  url "https://znc.in/releases/znc-1.9.1.tar.gz"
+  sha256 "e8a7cf80e19aad510b4e282eaf61b56bc30df88ea2e0f64fadcdd303c4894f3c"
   license "Apache-2.0"
-  revision 9
+  revision 2
+
+  livecheck do
+    url "https://znc.in/releases/"
+    regex(/href=.*?znc[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
 
   bottle do
-    sha256 arm64_sonoma:   "f5203a1a153a859e7961f45030fca30f417ae67ce16ba826bbd13c2ddcb8e74b"
-    sha256 arm64_ventura:  "9d22b6e33c6538bab946604ba4317459e185897e2f2ae491cc7b66076073e065"
-    sha256 arm64_monterey: "ed9dcc7af9880176e7a29ef421c4acd240160ddd67920bd6649aa158b9e37bc7"
-    sha256 arm64_big_sur:  "1868c389351fd86e5c9c5847974b57007fd794819213f864d1854fa5d4139db0"
-    sha256 sonoma:         "40284fd3a3dd6ad38c55ded93610b94d43539ecbe644e747084b27fe085bdec8"
-    sha256 ventura:        "b553390d14bff7112a6bc0adae40d427cccd0a1ba3a01f69ad8a5dea698bc5e2"
-    sha256 monterey:       "5365f2987a95d6a84b0e7e1137903f25d8b8f20d69003c9ddbbee1bcd92d4a9a"
-    sha256 big_sur:        "ad659f597cbbed3de79d83d580d4f65608ff342b18a95bf971f4cc3818470ec6"
-    sha256 x86_64_linux:   "4b7acf8d5d88524f8091a79a19cbfd2b8ac1ba89cb0245f4cac579fad82d7961"
+    sha256 arm64_sequoia: "47a4377429c552b85f0f0d01c4bd626c16b870b25e5c236b3638d7d364b8515f"
+    sha256 arm64_sonoma:  "cd03c571acd62e9278b6a4a516e8eb62e4b6094c3207130b6bae9aa8e15e022b"
+    sha256 arm64_ventura: "8d500898246859202ec756125592c33b07419d7d42e19ec739d3cdb7a87d6339"
+    sha256 sonoma:        "f7d4596fc318adca1268a55c3e0d065999e69dedc7b55f84b89a72cb8fb1ae51"
+    sha256 ventura:       "ab19a326ac21a984ff8e0594239d567d8bbe9c793566040d54d283eefd8c37b4"
+    sha256 x86_64_linux:  "0da654df490b1c2eb22af53ec756b181d5116006b24ecb78451a325812929a14"
   end
 
-  head do
-    url "https://github.com/znc/znc.git", branch: "master"
-
-    depends_on "cmake" => :build
-    depends_on "swig" => :build
-  end
-
+  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "icu4c"
+  depends_on "boost"
+  depends_on "icu4c@76"
   depends_on "openssl@3"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   uses_from_macos "zlib"
 
   def install
-    python3 = "python3.11"
+    python3 = "python3.13"
     xy = Language::Python.major_minor_version python3
 
-    ENV.cxx11
-    # These need to be set in CXXFLAGS, because ZNC will embed them in its
-    # znc-buildmod script; ZNC's configure script won't add the appropriate
-    # flags itself if they're set in superenv and not in the environment.
-    ENV.append "CXXFLAGS", "-std=c++11"
-    ENV.append "CXXFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+    # Fixes: CMake Error: Problem with archive_write_header(): Can't create 'swigpyrun.h'
+    ENV.deparallelize
 
-    if OS.linux?
-      ENV.append "CXXFLAGS", "-I#{Formula["zlib"].opt_include}"
-      ENV.append "LIBS", "-L#{Formula["zlib"].opt_lib}"
-    end
+    args = %W[
+      -DWANT_PYTHON=ON
+      -DWANT_PYTHON_VERSION=python-#{xy}
+    ]
 
-    if build.head?
-      system "cmake", "-S", ".", "-B", "build",
-                      "-DWANT_PYTHON=ON",
-                      "-DWANT_PYTHON_VERSION=python-#{xy}",
-                      *std_cmake_args
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
-    else
-      system "./configure", "--prefix=#{prefix}", "--enable-python=python-#{xy}"
-      system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-      # Replace dependencies' Cellar paths with opt paths
-      inreplace [bin/"znc-buildmod", lib/"pkgconfig/znc.pc"] do |s|
-        s.gsub! Formula["icu4c"].prefix.realpath, Formula["icu4c"].opt_prefix
-        s.gsub! Formula["openssl@3"].prefix.realpath, Formula["openssl@3"].opt_prefix
-      end
-    end
+    # Avoid references to Homebrew shims directory
+    inreplace lib/"pkgconfig/znc.pc", Superenv.shims_path/ENV.cxx, ENV.cxx
   end
 
   service do

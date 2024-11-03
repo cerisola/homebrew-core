@@ -1,7 +1,7 @@
 class Textql < Formula
   desc "Executes SQL across text files"
   homepage "https://github.com/dinedal/textql"
-  url "https://github.com/dinedal/textql/archive/2.0.3.tar.gz"
+  url "https://github.com/dinedal/textql/archive/refs/tags/2.0.3.tar.gz"
   sha256 "1fc4e7db5748938c31fe650e882aec4088d9123d46284c6a6f0ed6e8ea487e48"
   license "MIT"
 
@@ -27,7 +27,7 @@ class Textql < Formula
   # Ref: https://github.com/dinedal/textql/issues/131
   # Ref: https://github.com/dinedal/textql/issues/139
   # Last release on 2015-12-16
-  deprecate! date: "2023-01-21", because: "depends on `glide` to build"
+  disable! date: "2024-01-21", because: "depends on `glide` to build"
 
   depends_on "glide" => :build
   depends_on "go" => :build
@@ -43,7 +43,6 @@ class Textql < Formula
       system "go", "build", "-ldflags", "-X main.VERSION=#{version}",
              "-o", bin/"textql", "./textql"
       man1.install "man/textql.1"
-      prefix.install_metafiles
     end
   end
 

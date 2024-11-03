@@ -1,21 +1,19 @@
 class Arpack < Formula
   desc "Routines to solve large scale eigenvalue problems"
   homepage "https://github.com/opencollab/arpack-ng"
-  url "https://github.com/opencollab/arpack-ng/archive/3.9.0.tar.gz"
-  sha256 "24f2a2b259992d3c797d80f626878aa8e2ed5009d549dad57854bbcfb95e1ed0"
+  url "https://github.com/opencollab/arpack-ng/archive/refs/tags/3.9.1.tar.gz"
+  sha256 "f6641deb07fa69165b7815de9008af3ea47eb39b2bb97521fbf74c97aba6e844"
   license "BSD-3-Clause"
   head "https://github.com/opencollab/arpack-ng.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c59b248e39c00999957fe58bce73d086ce71c5ffc7f84bd37281dd07ef461f0c"
-    sha256 cellar: :any,                 arm64_ventura:  "00a4522b3c828a4c01fd217b4f3e463e244f78176be12ef4254ea717cf777ec2"
-    sha256 cellar: :any,                 arm64_monterey: "183e7b26a4013b2e985bcb9378fcfe9a26737f8453221573bd028d1195fb70e0"
-    sha256 cellar: :any,                 arm64_big_sur:  "3e3d2a125a0db65151f83ce69260d269c372ff1b33de4eff237c67227f4e3897"
-    sha256 cellar: :any,                 sonoma:         "b11b29b6efc1fa039f3eec304501f4e826fb6c0e19a924a76c0dbc46e24d04d1"
-    sha256 cellar: :any,                 ventura:        "9f66d8634e9912fa4f307df1c9416f282cd07a24652ab5078dc5720c5cb3e87b"
-    sha256 cellar: :any,                 monterey:       "f942ff4f061694774405aa2acd05f834222f2609c3609d237ca2427224154055"
-    sha256 cellar: :any,                 big_sur:        "fe8f01ba84d9d5d706afa83764f795c60f6c5396e8766c3d01458c7a09d64631"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "38b19cff9601f7590571e03e820d65ecf1edb85875528b1f0b86991a68bfd623"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "bbc370902c31da397dea1116ad0cea384c2ab8fabebfcf57a5b59dead58ed53d"
+    sha256 cellar: :any,                 arm64_sonoma:  "2a38b56bc96151574fd11c85f0244f63a31f3d51305b1902b2cf2bd21c7784fa"
+    sha256 cellar: :any,                 arm64_ventura: "653947ce18a5e7189e1e45a568e96670a847583cc46d979fde56f8fc295f2704"
+    sha256 cellar: :any,                 sonoma:        "1694ae0fc82302280d5c96327965ca61e32bcc2c4aa75a41ba1eec6e2b0ec38f"
+    sha256 cellar: :any,                 ventura:       "965eca12081b1cc6152ae3ec03c97bc9e3e90ee82c5211350e476cb90b88214e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a96492c90636b4f299ae95a9dfcf92a9b19caa8219dd6cd27bbd73c1d7d4d9f0"
   end
 
   depends_on "autoconf" => :build
@@ -36,7 +34,7 @@ class Arpack < Formula
       F77=mpif77
       --enable-mpi
       --enable-icb
-      --enable-icb-exmm
+      --enable-eigen
     ]
 
     system "./bootstrap"
@@ -52,9 +50,10 @@ class Arpack < Formula
 
   test do
     ENV.fortran
-    system ENV.fc, "-o", "test", pkgshare/"dnsimp.f", pkgshare/"mmio.f",
-                       "-L#{lib}", "-larpack",
-                       "-L#{Formula["openblas"].opt_lib}", "-lopenblas"
+    args = (OS.mac? && MacOS.version >= :sequoia) ? ["-O2"] : []
+    system ENV.fc, *args, "-o", "test", pkgshare/"dnsimp.f", pkgshare/"mmio.f",
+                   "-L#{lib}", "-larpack",
+                   "-L#{Formula["openblas"].opt_lib}", "-lopenblas"
     cp_r pkgshare/"testA.mtx", testpath
     assert_match "reached", shell_output("./test")
   end

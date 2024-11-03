@@ -1,7 +1,7 @@
 class Prodigal < Formula
   desc "Microbial gene prediction"
   homepage "https://github.com/hyattpd/Prodigal"
-  url "https://github.com/hyattpd/Prodigal/archive/v2.6.3.tar.gz"
+  url "https://github.com/hyattpd/Prodigal/archive/refs/tags/v2.6.3.tar.gz"
   sha256 "89094ad4bff5a8a8732d899f31cec350f5a4c27bcbdd12663f87c9d1f0ec599f"
   license "GPL-3.0-or-later"
 
@@ -11,6 +11,7 @@ class Prodigal < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0586dd1f22c8cdb1ed73c2eefc20f80ff3ad711cfb16e2f72ca7f72798161f51"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7dfefaef30d736f08630c536dc66bfe2608c36793dde08eea5b3d13d3d7ff76f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "a790b0ef414bf71bd6382b1e7e2acee149988003a3def80085c4ae555e436ed0"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "bcf9c5deb46b542d95f4bcca4f4f947d60fee5138b76eab5018b61eb6f86279d"

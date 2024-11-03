@@ -1,11 +1,12 @@
 class Termshark < Formula
   desc "Terminal UI for tshark, inspired by Wireshark"
   homepage "https://termshark.io"
-  url "https://github.com/gcla/termshark/archive/v2.4.0.tar.gz"
+  url "https://github.com/gcla/termshark/archive/refs/tags/v2.4.0.tar.gz"
   sha256 "949c71866fcd2f9ed71a754ea9e3d1bdc23dee85969dcdc78180f1d18ca8b087"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a0c4f19d16204de97425576057c2ac0d841a78bb26981703c919ed102e104982"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "097ad857907c26ef893a9f0863fbe6d21d49d5015068c3bc981f0c7a522ba52f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "11cf99e534c667d968ea4daff6c3baf9a86345a6823627ad722398e5c5daeedd"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "37948c9f61f945ad6044eb03753da35bf735a2ef0599c21ee957c24c6549e670"

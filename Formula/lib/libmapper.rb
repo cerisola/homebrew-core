@@ -1,20 +1,17 @@
 class Libmapper < Formula
   desc "Distributed system for media control mapping"
   homepage "http://www.libmapper.org"
-  url "https://github.com/libmapper/libmapper/releases/download/2.4.4/libmapper-2.4.4.tar.gz"
-  sha256 "2204f610f6a3eff4f66cb866101c3cda911a5e5a9fe04b518a0a99608a8473ff"
+  url "https://github.com/libmapper/libmapper/releases/download/2.4.13/libmapper-2.4.13.tar.gz"
+  sha256 "63ac6dd0ab5d17a9ec16f700665a6593a13667dd9fbc0f06df7f2f26d427defa"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f815735aacd516f08d19dcbdf52d1e8e1debc016d74cdce1a0dff48d7ca219c4"
-    sha256 cellar: :any,                 arm64_ventura:  "35cfd6a1ebeb7b1972ba02e2a72ebced311ca8105c1578cfd6430f4b39b63143"
-    sha256 cellar: :any,                 arm64_monterey: "f376d8f2b23d4a31021455cc5bccb4eb5a18680bba3cc005735dda8240800dd0"
-    sha256 cellar: :any,                 arm64_big_sur:  "fac6bccd4981c29700fa149986fd16c72a7abfef4afe263ae8a25fe731df123a"
-    sha256 cellar: :any,                 sonoma:         "822493d0745260d7a1b65dd808f9e79580f8b6735af11d8292eee06c30d90420"
-    sha256 cellar: :any,                 ventura:        "c3f5d81edf4cc1fb4445c7cb97d5eb712f1b82d8e537afbbd37c167c0ffe39d4"
-    sha256 cellar: :any,                 monterey:       "96e34dcaee6d6d07e05bca570aefe3601ad8c24e6d850258f21aaf7144529b2a"
-    sha256 cellar: :any,                 big_sur:        "5affd8c13da08159d12f496a6abe4ce7d4900cb2d3d21a25ddee94a59009fe73"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "089ec04b44e1bd620ac7e68c60c6c31a0367b5daeb80e0d9fe389ba0c18aa3cd"
+    sha256 cellar: :any,                 arm64_sequoia: "c8d007e6c0d2e7efb0c8a4241a04c66294efeb33e43e1c9d5b92af69d5eb8075"
+    sha256 cellar: :any,                 arm64_sonoma:  "be189c480f4350519834a307f654bc3dfc0c9581205add371a3c56ba8be7792d"
+    sha256 cellar: :any,                 arm64_ventura: "64b6a17e57ccfb107db15abdd59a7bf1bbd1a4f656f9b8301677786c9564f6ff"
+    sha256 cellar: :any,                 sonoma:        "d840f004b8216a9241755f6661e77fbd883eb80d8821e0cec80b92edd26c354e"
+    sha256 cellar: :any,                 ventura:       "8da31eb36dda5ba63dbb01111cac4347fb966648cd6820073efea0c1fb3f029c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7fc5bb105d25a71ab4d2010230a93e14c9f2d2b429846c1e3d49b9be969242d"
   end
 
   depends_on "autoconf" => :build
@@ -31,14 +28,14 @@ class Libmapper < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include "mapper/mapper.h"
       int main() {
         printf("%s", mpr_get_version());
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lmapper", "-o", "test"
     assert_match version.to_s, shell_output("./test")
   end

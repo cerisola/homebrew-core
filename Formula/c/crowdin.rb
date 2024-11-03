@@ -1,8 +1,8 @@
 class Crowdin < Formula
   desc "Command-line tool that allows to manage your resources with crowdin.com"
   homepage "https://support.crowdin.com/cli-tool/"
-  url "https://github.com/crowdin/crowdin-cli/releases/download/3.14.0/crowdin-cli.zip"
-  sha256 "61be33391b66120646bbd874e7fb78b10e9e4e58c76daf3d2592a1eefcc8a764"
+  url "https://github.com/crowdin/crowdin-cli/releases/download/4.3.0/crowdin-cli.zip"
+  sha256 "07387cb2b30a4c74da037f7ab0f01b2025ca189ff333e218303f75cdf3cb73b2"
   license "MIT"
 
   livecheck do
@@ -11,7 +11,7 @@ class Crowdin < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "cf9b07c4b8a242514e093097dc2e712cd970f489309dd38799b3b591029d2264"
+    sha256 cellar: :any_skip_relocation, all: "0d73271afc5dd5d621418c13f60d78d3bbf6442d59501724afd80e38183d188e"
   end
 
   depends_on "openjdk"
@@ -38,10 +38,9 @@ class Crowdin < Formula
       ]
     EOS
 
-    assert "Your configuration file looks good",
-      shell_output("#{bin}/crowdin lint")
+    system bin/"crowdin", "init"
 
-    assert "Failed to authorize in Crowdin",
-      shell_output("#{bin}/crowdin upload sources --config #{testpath}/crowdin.yml", 1)
+    assert "Failed to collect project info",
+      shell_output("#{bin}/crowdin upload sources --config #{testpath}/crowdin.yml 2>&1", 102)
   end
 end

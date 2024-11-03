@@ -1,14 +1,10 @@
-require "language/perl"
-
 class PerconaToolkit < Formula
-  include Language::Perl::Shebang
-
   desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.5.4/source/tarball/percona-toolkit-3.5.4.tar.gz"
-  sha256 "822003a386593352780e5d974a53de9bc5a7e35e64f7bbe631652f153c710ef8"
+  url "https://www.percona.com/downloads/percona-toolkit/3.6.0/source/tarball/percona-toolkit-3.6.0.tar.gz"
+  sha256 "48c2a0f7cfc987e683f60e9c7a29b0ca189e2f4b503f6d01c5baca403c09eb8d"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
-  revision 1
+  revision 2
   head "lp:percona-toolkit", using: :bzr
 
   livecheck do
@@ -17,19 +13,16 @@ class PerconaToolkit < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "94cd33c93f4a5986bea8fa1f62d6aeadaa569e5fbe5a7034d707f4607999f7ee"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6f73efec47769d7b701ebda892a64b21a086de1189cdeece38a2e2328c61c84a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "611538615f6a27b335e080696b51632e28bf96f62e69d64c9ddd85c3a4071735"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e4a7ba167d73b2cad33917512833d6c5ac295a9af6a1644a2aff09f324dab48"
-    sha256 cellar: :any,                 sonoma:         "4ac9af79c70124ca63fb12ed035fec663ff5cc269e7a600d3c19400fa87eb388"
-    sha256 cellar: :any_skip_relocation, ventura:        "4b57892eddf70deb84d120196cc3500840a5abda97215ca027fce5780fa627f6"
-    sha256 cellar: :any_skip_relocation, monterey:       "a3da68d2e1c2e1e3a6bdc0403a69ae53a5c89db0e2b2ae3fe61c3f89b6c95082"
-    sha256 cellar: :any_skip_relocation, big_sur:        "40a0b46b42ca674bd5081e12a830ee71c5b7f6e346f0fcff5c44f61151b9783b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72c5307b2ece3580680883017356ff7b12788b26b9bcee8f82e4ea98c00065d2"
+    sha256 cellar: :any,                 arm64_sequoia: "a1134b153a117ab438762c198f47170b24eb8b09aa4bc5eecfd0c5511dc6e8e4"
+    sha256 cellar: :any,                 arm64_sonoma:  "5f0de6236a3b694a6d6789fd33546ccbbf7fafd3926f6c428693c67bfba1c6de"
+    sha256 cellar: :any,                 arm64_ventura: "b2946e3784bab092642da4a5031e9ca0607accd6952584d026c5b00b46e2bee6"
+    sha256 cellar: :any,                 sonoma:        "6d42bf7568d502d97272e1ebbf7a3cf5c7b996b46d028310acdcf38ad0cb601a"
+    sha256 cellar: :any,                 ventura:       "7f01e906b9474648465bb533e93ed918b27f295e6ad00b056e0ce03b1687c829"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ebe3d5dc418029eb174269d47e4b2d7f74bff8581f11653b5de8b48a6514a00"
   end
 
+  depends_on "go" => :build
   depends_on "mysql-client"
-  depends_on "openssl@3"
 
   uses_from_macos "perl"
 
@@ -45,8 +38,8 @@ class PerconaToolkit < Formula
   end
 
   resource "DBD::mysql" do
-    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-4.050.tar.gz"
-    sha256 "4f48541ff15a0a7405f76adc10f81627c33996fbf56c95c26c094444c0928d78"
+    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.008.tar.gz"
+    sha256 "a2324566883b6538823c263ec8d7849b326414482a108e7650edc0bed55bcd89"
   end
 
   resource "JSON" do
@@ -66,26 +59,26 @@ class PerconaToolkit < Formula
         else
           libexec
         end
-        system "perl", "Makefile.PL", "INSTALL_BASE=#{install_base}"
-        system "make", "install"
+
+        make_args = []
+        make_args << "OTHERLDFLAGS=-Wl,-dead_strip_dylibs" if r.name == "DBD::mysql" && OS.mac?
+
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{install_base}", "NO_PERLLOCAL=1", "NO_PACKLIST=1"
+        system "make", "install", *make_args
       end
     end
 
-    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
+    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}", "INSTALLSITEMAN1DIR=#{man1}"
     system "make", "install"
-    share.install prefix/"man"
-
-    # Disable dynamic selection of perl which may cause segfault when an
-    # incompatible perl is picked up.
-    # https://github.com/Homebrew/homebrew-core/issues/4936
-    rewrite_shebang detected_perl_shebang, *bin.children
-
-    bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
+    bin.env_script_all_files(libexec/"bin", PERL5LIB: libexec/"lib/perl5")
   end
 
   test do
     input = "SELECT name, password FROM user WHERE id='12823';"
     output = pipe_output("#{bin}/pt-fingerprint", input, 0)
     assert_equal "select name, password from user where id=?;", output.chomp
+
+    # Test a command that uses a native module, like DBI.
+    assert_match version.to_s, shell_output("#{bin}/pt-online-schema-change --version")
   end
 end

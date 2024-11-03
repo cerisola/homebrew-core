@@ -1,25 +1,35 @@
 class GopassJsonapi < Formula
   desc "Gopass Browser Bindings"
   homepage "https://github.com/gopasspw/gopass-jsonapi"
-  url "https://github.com/gopasspw/gopass-jsonapi/archive/refs/tags/v1.15.8.tar.gz"
-  sha256 "753b1628ab379dea0cd4b599939fb46b11fdc46af76d049e7addc46477bf593c"
+  url "https://github.com/gopasspw/gopass-jsonapi/archive/refs/tags/v1.15.14.tar.gz"
+  sha256 "2ff6a1b03d5b7befe81d6465990ea5b13b9ad052d6c9cf1638b795767307d9ea"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b433230cf2363e07e50d496b804607cd72c9ba2cd3ad54de1174b4c989467e9d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "62dc045602e90ae00c3451db8d9131ccf6f7f13da4969c712818a0104a51d924"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4fae49704230de1561bcba05b9ce45882cc5b65bbf56bfc913485b290309ff9a"
-    sha256 cellar: :any_skip_relocation, ventura:        "d7ab7bd88ead1fabc6ceca36bea95aa0e03ccd0ace0233a4a724d53c97aa15a9"
-    sha256 cellar: :any_skip_relocation, monterey:       "fb12bce8c366340839affc183e71f72193805beb94c0568bc7a42f44641b9bd9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "a742f55cef8cd630b24fa2a93f3945543c57c7f1918b102fa31ed5bbe8851fd7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9faebf571426dabdfb566614961123daab44eacae6b4cd7593e54347621be5ca"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7f16a5232c13d2ba977dd043b0f507c86c9c876b826687f89fe3ad884ee77b04"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e9d8d8f1c501c3ea65d500696775286246a84edc5d85bcf56d8c1be13b24594c"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "64cc4724a4a0ac92dae382d952b92f31835892269d64e0942228787bd1d60ca9"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9341168b05cda035be152b94dd3659de2126226f0b742df82a9aaeeb1c65d417"
+    sha256 cellar: :any_skip_relocation, ventura:        "c99fa5c3240121fdb17a547eb3db32d12e0375eb12b767b7331055516709cde3"
+    sha256 cellar: :any_skip_relocation, monterey:       "984ec10a8134bb0a33a0338ecfd2425d2a011ebe83ed3a8fd60e435459ca4fc5"
   end
 
   depends_on "go" => :build
   depends_on "gopass"
 
+  # update screenshot to build with macos sequoia
+  # upstram pr ref, https://github.com/gopasspw/gopass-jsonapi/pull/130
+  patch do
+    on_sonoma :or_newer do
+      url "https://github.com/gopasspw/gopass-jsonapi/commit/bcab9c40e9dc63c39bdc45c91a534eb34d95a8dc.patch?full_index=1"
+      sha256 "29254a57c99136d1bfaa059d497e6b3e7e7e6e3cf495e584519c6fe7291f7d49"
+    end
+  end
+
   def install
     ldflags = "-s -w -X main.version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

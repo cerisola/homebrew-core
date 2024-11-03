@@ -1,9 +1,9 @@
 class Grepcidr < Formula
   desc "Filter IP addresses matching IPv4 CIDR/network specification"
-  homepage "http://www.pc-tools.net/unix/grepcidr/"
-  url "http://www.pc-tools.net/files/unix/grepcidr-2.0.tar.gz"
+  homepage "https://www.pc-tools.net/unix/grepcidr/"
+  url "https://www.pc-tools.net/files/unix/grepcidr-2.0.tar.gz"
   sha256 "61886a377dabf98797145c31f6ba95e6837b6786e70c932324b7d6176d50f7fb"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :homepage
@@ -11,6 +11,7 @@ class Grepcidr < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a5eaf72370f021e79e6cc7d25139a7789fad25fdef67ce5ceaa0f69dbd655b97"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "aa33ac07532a239621ac6bfd62414cfdb9bcb12ea26be37a0631f4762755fc38"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "61836780a0413a58d38b7cf1acd66ad5b1f96554889cde682b2db21df0c5f037"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e1e9fe9d6d9eeed951aa7bc502e9bea2e03f6196225d57826bf4882854c86980"

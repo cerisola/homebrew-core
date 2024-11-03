@@ -31,7 +31,7 @@ class Perkeep < Formula
   end
 
   # HEAD may support Go 1.19 but last release was on 2020-11-11.
-  deprecate! date: "2023-02-21", because: "has `gopherjs` resource that doesn't support Go 1.19 or later"
+  disable! date: "2024-02-12", because: "has `gopherjs` resource that doesn't support Go 1.19 or later"
 
   # This should match what gopherjs supports.
   depends_on "go@1.18" => :build
@@ -48,7 +48,7 @@ class Perkeep < Formula
 
       # Vendored version of gopherjs requires go 1.10, so use the newest available gopherjs, which
       # supports newer Go versions.
-      rm_rf buildpath/"src/perkeep.org/vendor/github.com/gopherjs/gopherjs"
+      rm_r(buildpath/"src/perkeep.org/vendor/github.com/gopherjs/gopherjs")
       resource("gopherjs").stage buildpath/"src/perkeep.org/vendor/github.com/gopherjs/gopherjs"
 
       cd "src/perkeep.org" do

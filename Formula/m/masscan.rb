@@ -1,7 +1,7 @@
 class Masscan < Formula
   desc "TCP port scanner, scans entire Internet in under 5 minutes"
   homepage "https://github.com/robertdavidgraham/masscan/"
-  url "https://github.com/robertdavidgraham/masscan/archive/1.3.2.tar.gz"
+  url "https://github.com/robertdavidgraham/masscan/archive/refs/tags/1.3.2.tar.gz"
   sha256 "0363e82c07e6ceee68a2da48acd0b2807391ead9a396cf9c70b53a2a901e3d5f"
   license "AGPL-3.0-only"
   head "https://github.com/robertdavidgraham/masscan.git", branch: "master"
@@ -12,6 +12,7 @@ class Masscan < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ba24e0d2c22cbe2291a6e872a1f5d79df7c69922b0cebdbe0864c1caaa664b72"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ed9e05609c9f31867e5da2a9d10eebf62ca405613ff9a11ea82307871b8954f3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d67db10c93bcd8154956c4165289fbc04edce1b1d63a65af983150d9fafbcf43"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ba6a70814b1e311a2b817fd79e7d9a70657ceb74be1691215802a4470ca3be87"

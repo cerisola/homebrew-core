@@ -2,12 +2,13 @@ class Cowsay < Formula
   desc "Configurable talking characters in ASCII art"
   # Historical homepage: https://web.archive.org/web/20120225123719/www.nog.net/~tony/warez/cowsay.shtml
   homepage "https://github.com/tnalpgge/rank-amateur-cowsay"
-  url "https://github.com/tnalpgge/rank-amateur-cowsay/archive/cowsay-3.04.tar.gz"
+  url "https://github.com/tnalpgge/rank-amateur-cowsay/archive/refs/tags/cowsay-3.04.tar.gz"
   sha256 "d8b871332cfc1f0b6c16832ecca413ca0ac14d58626491a6733829e3d655878b"
-  license "GPL-3.0"
+  license "GPL-3.0-only"
   revision 1
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "72e82e39c8e4323d209b71caaa253897347dba46a44881fc34c94d9ee36e93e6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "af3131f0ffe81fb5e0bdf5c512ad0dd90bed3c2ccbe581cd4b89e609cbed0893"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8d35c9dfb46eea22b2b53c9c0deb00d7d95b6fe3fcfeb8d9404fd269d5739790"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8d35c9dfb46eea22b2b53c9c0deb00d7d95b6fe3fcfeb8d9404fd269d5739790"
@@ -21,6 +22,8 @@ class Cowsay < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "4cdddb22ad76cf14527347e58317caf1495dc88fdf5d6c729ac72fa2fe19dd81"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8d35c9dfb46eea22b2b53c9c0deb00d7d95b6fe3fcfeb8d9404fd269d5739790"
   end
+
+  deprecate! date: "2023-11-22", because: :repo_archived
 
   def install
     # Remove offensive content

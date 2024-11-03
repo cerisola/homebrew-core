@@ -1,8 +1,8 @@
 class Exim < Formula
   desc "Complete replacement for sendmail"
   homepage "https://exim.org"
-  url "https://ftp.exim.org/pub/exim/exim4/exim-4.96.1.tar.xz"
-  sha256 "93ac0755c317e1fdbbea8ccb70a868876bdf3148692891c72ad0fe816767033d"
+  url "https://ftp.exim.org/pub/exim/exim4/exim-4.98.tar.xz"
+  sha256 "0ebc108a779f9293ba4b423c20818f9a3db79b60286d96abc6ba6b85a15852f7"
   license "GPL-2.0-or-later"
 
   # Maintenance releases are kept in a `fixes` subdirectory, so it's necessary
@@ -29,21 +29,50 @@ class Exim < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "bb4fd19b83734e9ed20cd9b479b9853823cd7e74cef49c6a741e256b5bdb0d64"
-    sha256 arm64_ventura:  "b9b8a165afcc21c7844a5ce5feae1b6d8d802c7548e226e7efe7d45eef418b88"
-    sha256 arm64_monterey: "5fc92bc76ef650c9c9022ffa9b27ac2fc16bdbe6cf8d2248561d5517c62b5069"
-    sha256 sonoma:         "b2ac411c39d12ac322df552feebcf83d3b753cef19c69aebe14f4b5c3cf0ce45"
-    sha256 ventura:        "b6c49c96d647233a615d77f65845c282fe48945627c6cbeadfd732ec76a253c6"
-    sha256 monterey:       "422f509f10bb5cfc57fb769deb44d27c93c6eb284b86f8c0bf998506a4ef1f61"
-    sha256 x86_64_linux:   "780b95d3bcddc2656b4f943a817e54a3284f35932a00222331cd7476bec6576a"
+    sha256 arm64_sequoia:  "71fa5f9d4baf4fd62b1d2dd50ab065e7e93c2aa514cf350c03de7b83ff3b767a"
+    sha256 arm64_sonoma:   "9d191df8db39460aa8840f0aa7cafcdbb010f73758a840e19e0907f4558eac38"
+    sha256 arm64_ventura:  "6b5c612e24799fb00727fe69b64988445a86d20cbcf83d71e3f5e8c84d28325b"
+    sha256 arm64_monterey: "5c5cd9bc15e186692a59ebd311bf8706c29438f2c98b92b7554a614246f08be6"
+    sha256 sonoma:         "70f63c3d07217f4acb1a357523e66f7973c8500b4ae26a8b1e86892d89aba87a"
+    sha256 ventura:        "ab8281ba1aff765df525f58297a8156fab046234a5dde1d971fa9598bcb496ad"
+    sha256 monterey:       "94128f45652f109b1297758b1b308a1890e862756029d9e7acc240cc4e33c93b"
+    sha256 x86_64_linux:   "5673d387c1b534b03a54ddf53ca0d93e1b7daa97e35ba1b34ef8049c7d44e896"
   end
 
   depends_on "berkeley-db@5"
   depends_on "openssl@3"
   depends_on "pcre2"
+
   uses_from_macos "libxcrypt"
+  uses_from_macos "perl"
+
+  resource "File::Next" do
+    url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/File-Next-1.18.tar.gz"
+    sha256 "f900cb39505eb6e168a9ca51a10b73f1bbde1914b923a09ecd72d9c02e6ec2ef"
+  end
+
+  resource "File::FcntlLock" do
+    url "https://cpan.metacpan.org/authors/id/J/JT/JTT/File-FcntlLock-0.22.tar.gz"
+    sha256 "9a9abb2efff93ab73741a128d3f700e525273546c15d04e7c51c704ab09dbcdf"
+  end
 
   def install
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+
+    # fix `Cannot read timezone file /usr/share/zoneinfo/UTC0` issue
+    ENV["TZ"] = "UTC"
+
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
+    inreplace "OS/Makefile-Default", "/usr/bin/perl", Formula["perl"].opt_bin/"perl" if OS.linux?
+
+    resources.each do |r|
+      r.stage do
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+        system "make", "install"
+      end
+    end
+
     cp "src/EDITME", "Local/Makefile"
     inreplace "Local/Makefile" do |s|
       s.change_make_var! "EXIM_USER", ENV["USER"]

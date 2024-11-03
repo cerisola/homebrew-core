@@ -1,9 +1,10 @@
 class Graphicsmagick < Formula
   desc "Image processing tools collection"
   homepage "http://www.graphicsmagick.org/"
-  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.42/GraphicsMagick-1.3.42.tar.xz"
-  sha256 "484fccfd2b2faf6c2ba9151469ece5072bcb91ba4ed73e75ed3d8e46c759d557"
+  url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.45/GraphicsMagick-1.3.45.tar.xz"
+  sha256 "dcea5167414f7c805557de2d7a47a9b3147bcbf617b91f5f0f4afe5e6543026b"
   license "MIT"
+  revision 1
   head "http://hg.code.sf.net/p/graphicsmagick/code", using: :hg
 
   livecheck do
@@ -11,27 +12,27 @@ class Graphicsmagick < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "20cfcce4373d2e2bfc32537b8bd347f323321df60dbf647c86903de5ffcf52f6"
-    sha256 arm64_ventura:  "1ec94cdffcbfd37a3a3eeb6866923057cc84bcec3bd58f941c113bdabb233e5b"
-    sha256 arm64_monterey: "b6b182bb4d7325d802322eeca0f42352b194c9edb23e295827957d67119460d1"
-    sha256 arm64_big_sur:  "6e7c652dad9bc24967f041d6437990a56b4e7b9741c9f11702fb4d67c22d6103"
-    sha256 sonoma:         "63e670f5859d21cef1e61e5118f94d31e8fdcb3e7beb9ff83f9e3eaf32c6b4c4"
-    sha256 ventura:        "d54d90d88dc4a69dd55c5e5ead34ec679cf5802fcb9346519c46142d36908169"
-    sha256 monterey:       "e4c6162c23798a781099a760f8feea4ca1cc94335caaaffce5bdf6171a317910"
-    sha256 big_sur:        "0d9a8cab31c155b1b5525508f610a3ccd5881ebd75a740ac7ba80ae84dfec7b6"
-    sha256 x86_64_linux:   "6a0e18561264f883a58f8ed373d979900a6d2c348436b1c8d112f2aa4eda405c"
+    sha256 arm64_sequoia: "ef8bf8d6a90c702a0dfb865e7812b9ba2e696db0c22ee3ca35b73e4e8683156e"
+    sha256 arm64_sonoma:  "c91a420ba370579b309a2b7ad7b40a2cc4b67f075517c384a092854124ef569f"
+    sha256 arm64_ventura: "72b50b7f99e67404855a0e158566d3e84959145a36318af47d5db7154f4a4f0a"
+    sha256 sonoma:        "5042f6619a45c4e79788a23472f9f1472b4494924212eb57ed64e983b87af980"
+    sha256 ventura:       "dd6d30c9b669b7a2ed16711fc71927a7a6673fa6ac5731a029e9074e8d2011f8"
+    sha256 x86_64_linux:  "4c1b2f71ef9382074f6a0afc3a6f4d989a8b455df750494faf0f300df77699b7"
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "freetype"
   depends_on "jasper"
   depends_on "jpeg-turbo"
   depends_on "jpeg-xl"
+  depends_on "libheif"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "libtool"
   depends_on "little-cms2"
   depends_on "webp"
+  depends_on "zstd"
 
   uses_from_macos "bzip2"
   uses_from_macos "libxml2"

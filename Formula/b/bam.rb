@@ -1,12 +1,13 @@
 class Bam < Formula
   desc "Build system that uses Lua to describe the build process"
   homepage "https://matricks.github.io/bam/"
-  url "https://github.com/matricks/bam/archive/v0.5.1.tar.gz"
+  url "https://github.com/matricks/bam/archive/refs/tags/v0.5.1.tar.gz"
   sha256 "cc8596af3325ecb18ebd6ec2baee550e82cb7b2da19588f3f843b02e943a15a9"
   license "Zlib"
   head "https://github.com/matricks/bam.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "adebb626ddcef7b484f65ffa378f7b8301106618b360871f442da91f2944a410"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3f96e777038d7de85e3cc3d52b30692f7980c1da78c82fa19447a1c0610c3e46"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "b8e89910d5b1ebfbf030acf7e764ed714826bf7920f0dd5fe755861cee969784"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ee7ac2a67e4d72ef0cea6c7c34afa9284bcba629991e8ec38ca185c2f470a472"
@@ -29,13 +30,13 @@ class Bam < Formula
   end
 
   test do
-    (testpath/"hello.c").write <<~EOS
+    (testpath/"hello.c").write <<~C
       #include <stdio.h>
       int main() {
         printf("hello\\n");
         return 0;
       }
-    EOS
+    C
 
     (testpath/"bam.lua").write <<~EOS
       settings = NewSettings()

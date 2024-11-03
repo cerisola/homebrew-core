@@ -5,11 +5,8 @@ class Jam < Formula
   sha256 "72ea48500ad3d61877f7212aa3d673eab2db28d77b874c5a0b9f88decf41cb73"
   license "Jam"
 
-  livecheck do
-    skip "No longer developed"
-  end
-
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2ecb702317e3639199260d2431cb4df895ba1e72ca13fbd18d74526926f67c5a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "750191fa0660e62dee16dca7e7105fa4cbc783fa3b5dd87bddb727bddcbaa5a3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ae7aceb6a763b9da9860724b7347f2449f4983c004d3b58bdb21580deeb45482"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c63b8dd9caebb84eed84bd05412e698106c41dae126fefe7b5c4e713edcf827a"
@@ -29,10 +26,7 @@ class Jam < Formula
   # The last Perforce release of Jam was version 2.6 in August of 2014. We will
   # keep the Perforce-controlled links and information posted here available
   # until further notice."
-  # Commented out while this formula still has dependents.
-  # deprecate! date: "2021-07-10", because: :unmaintained
-
-  conflicts_with "ftjam", because: "both install a `jam` binary"
+  deprecate! date: "2023-11-02", because: :unmaintained
 
   # * Ensure <unistd.h> is included on macOS, fixing the following error:
   #   `make1.c:392:8: error: call to undeclared function 'unlink'`.
@@ -44,6 +38,9 @@ class Jam < Formula
   end
 
   def install
+    # Workaround for newer Clang
+    ENV.append "CC", "-Wno-implicit-int" if DevelopmentTools.clang_build_version >= 1403
+
     system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LOCATE_TARGET=bin"
     bin.install "bin/jam", "bin/mkjambase"
   end
@@ -53,7 +50,7 @@ class Jam < Formula
       Main jamtest : jamtest.c ;
     EOS
 
-    (testpath/"jamtest.c").write <<~EOS
+    (testpath/"jamtest.c").write <<~C
       #include <stdio.h>
 
       int main(void)
@@ -61,7 +58,7 @@ class Jam < Formula
           printf("Jam Test\\n");
           return 0;
       }
-    EOS
+    C
 
     assert_match "Cc jamtest.o", shell_output(bin/"jam")
     assert_equal "Jam Test", shell_output("./jamtest").strip

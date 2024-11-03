@@ -1,10 +1,9 @@
 class V2ray < Formula
   desc "Platform for building proxies to bypass network restrictions"
   homepage "https://v2fly.org/"
-  url "https://github.com/v2fly/v2ray-core/archive/v5.7.0.tar.gz"
-  sha256 "599fcd264537e39178b6008a11af68816dfd1609e19a9cf8adc8b2a4240ee370"
+  url "https://github.com/v2fly/v2ray-core/archive/refs/tags/v5.21.0.tar.gz"
+  sha256 "880a929caff7b72ef9d3b9a3262cec0dff6566c2481989822a6b27fdaaeed975"
   license all_of: ["MIT", "CC-BY-SA-4.0"]
-  revision 1
   head "https://github.com/v2fly/v2ray-core.git", branch: "master"
 
   livecheck do
@@ -13,41 +12,34 @@ class V2ray < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ffbf514dbfc3d9a3a3803e1d278226454c76746f6a7a2941f2a88d8aab546bc4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "38e84f1f30b5835c66cf81834003afdce126f387b9281a4f93165a70863c8ebb"
-    sha256 cellar: :any_skip_relocation, sonoma:         "047e307951548ef501a41e251779125508d9c969f2c2206e0195a3213bb89f36"
-    sha256 cellar: :any_skip_relocation, ventura:        "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, monterey:       "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, big_sur:        "16cc7dca1bef1c45ee9989d57c9097fb1bce97f4f75ba854c39628fea6c20ad9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3c09457ba4832a2d44e7bf70be876b04d5de9a4f49bb7a2ac135d96fa86c8a9e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "558c6bccde42c4dcb7a6d7eb57dad73afa5734cc7a26ecf894490e59f241bf2d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "558c6bccde42c4dcb7a6d7eb57dad73afa5734cc7a26ecf894490e59f241bf2d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "558c6bccde42c4dcb7a6d7eb57dad73afa5734cc7a26ecf894490e59f241bf2d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7c78cf5df23f9e12ffd062388be3cc2854dfe086d30f3c8ef3237277e4b0e685"
+    sha256 cellar: :any_skip_relocation, ventura:       "7c78cf5df23f9e12ffd062388be3cc2854dfe086d30f3c8ef3237277e4b0e685"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f8d48ba94394072931a225c3099361411deb8123b2003fadd3fbf3677430b5f3"
   end
 
-  # This requires Go 1.20 until there is a `v2ray` release that supports Go
-  # 1.21 (or newer): https://github.com/v2fly/v2ray-core/issues/2644
-  # We may want to try to update this to depend on `go` on the next `v2ray`
-  # release.
-  depends_on "go@1.20" => :build
+  depends_on "go" => :build
 
   resource "geoip" do
-    url "https://github.com/v2fly/geoip/releases/download/202307060057/geoip.dat"
-    sha256 "a200767fcf152a4886c8bbfc8e9b8325cb405dd8076f911a7d49edb3ddf20024"
+    url "https://github.com/v2fly/geoip/releases/download/202410170052/geoip.dat"
+    sha256 "6f5b65aee82da0415bfbe87903673cd006183f8833659646fca6b531e8c155ea"
   end
 
   resource "geoip-only-cn-private" do
-    url "https://github.com/v2fly/geoip/releases/download/202307060057/geoip-only-cn-private.dat"
-    sha256 "6794c150eac1bb8727dc9c3ffb6cc576374ca2b6ec262f8d742007c96966ddc7"
+    url "https://github.com/v2fly/geoip/releases/download/202410170052/geoip-only-cn-private.dat"
+    sha256 "37541ed2186d7fe661580e680cc5ed89f554fb02fad1acf6951361696eee6e6f"
   end
 
   resource "geosite" do
-    url "https://github.com/v2fly/domain-list-community/releases/download/20230711133630/dlc.dat"
-    sha256 "bcbad43679badb8eb383f63ed753732d0378042c42199b17edcdfedba6d458b0"
+    url "https://github.com/v2fly/domain-list-community/releases/download/20241013063848/dlc.dat"
+    sha256 "f820556ed3aa02eb7eadba7a3743d7e6df8e9234785d0d82d2d1edce20fe4b3c"
   end
 
   def install
     ldflags = "-s -w -buildid="
-    system "go", "build", *std_go_args(ldflags: ldflags, output: libexec/"v2ray"), "./main"
+    system "go", "build", *std_go_args(ldflags:, output: libexec/"v2ray"), "./main"
 
     (bin/"v2ray").write_env_script libexec/"v2ray",
       V2RAY_LOCATION_ASSET: "${V2RAY_LOCATION_ASSET:-#{pkgshare}}"

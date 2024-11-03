@@ -1,11 +1,12 @@
 class Hoedown < Formula
   desc "Secure Markdown processing (a revived fork of Sundown)"
   homepage "https://github.com/hoedown/hoedown"
-  url "https://github.com/hoedown/hoedown/archive/3.0.7.tar.gz"
+  url "https://github.com/hoedown/hoedown/archive/refs/tags/3.0.7.tar.gz"
   sha256 "01b6021b1ec329b70687c0d240b12edcaf09c4aa28423ddf344d2bd9056ba920"
   license "ISC"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fb7b81c0d930df8830f4424d2737dfe94320153725066bf2669c24f9cbb9ef46"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9b1beec1ef5663b3a9f945403dbd5337e1c840faaa6662faf18e39c41c435963"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8ad1617812e2acc482387a1fed431b102a43cd3c641f4b639131a451c2608077"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c91387f585953da59a7587de33a6085642da3d55a416c6d1a99839340df531f0"

@@ -1,11 +1,12 @@
 class Noti < Formula
   desc "Trigger notifications when a process completes"
   homepage "https://github.com/variadico/noti"
-  url "https://github.com/variadico/noti/archive/3.7.0.tar.gz"
+  url "https://github.com/variadico/noti/archive/refs/tags/3.7.0.tar.gz"
   sha256 "f970a4dd242e6b58edf51320aa237bb20d689bbc8fd0f7d0db5aa1980a2dc269"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "556e4c93320b18b3b5ecd2c8a28ba3b70119c6eafeb18d589e382f0fd3f1618f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3c61bfcfc68cbce95932c5defef0f61f180acddb95a64b9c205dae59cb0e5a2e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fc237b7b1e28e0974312a7b154dd06b8bc5cdde57f7dd197e008b7e1450d9ffd"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e93a4812623537c4f636b81238d48049c2aa74920c4b34945d317b0001714e11"
@@ -24,7 +25,7 @@ class Noti < Formula
       -s -w
       -X github.com/variadico/noti/internal/command.Version=#{version}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "cmd/noti/main.go"
+    system "go", "build", *std_go_args(ldflags:), "cmd/noti/main.go"
     man1.install "docs/man/dist/noti.1"
     man5.install "docs/man/dist/noti.yaml.5"
   end

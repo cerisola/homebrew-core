@@ -1,12 +1,13 @@
 class Sk < Formula
   desc "Fuzzy Finder in rust!"
   homepage "https://github.com/lotabout/skim"
-  url "https://github.com/lotabout/skim/archive/v0.10.4.tar.gz"
+  url "https://github.com/lotabout/skim/archive/refs/tags/v0.10.4.tar.gz"
   sha256 "eb5609842ad7c19b1267e77682ee5ae11aa8e84e46c27d9d198cc22d00c5e924"
   license "MIT"
   head "https://github.com/lotabout/skim.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e8607c7f9e3c72059b5168aded78582bfe459e754381f669cce9a6169523832f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0aa120c7df0fb4a61903c952d5a64dad4030a0b1a48df8c2d0bac01dac458ec8"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e28dbbdb5930443d04b934d8966af2dec58f037f859432f7a412c52568990e1d"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "a96933375963dac24744a541d7835a9694bf9050481e8d302b9f22187a0e8184"

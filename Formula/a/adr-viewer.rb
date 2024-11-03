@@ -3,36 +3,36 @@ class AdrViewer < Formula
 
   desc "Generate easy-to-read web pages for your Architecture Decision Records"
   homepage "https://github.com/mrwilson/adr-viewer"
-  url "https://files.pythonhosted.org/packages/a7/9d/f9fa91d28be99a47bc30abe4eef18052f1745a85cafc6971e4c2855e00c7/adr-viewer-1.3.0.tar.gz"
-  sha256 "af936a6c3a3ff10d56a9e9fc970497e147ff56639f787bdf4ddc95d11f3e4ae4"
+  url "https://files.pythonhosted.org/packages/1b/72/0f787da38d0f9d69c06b31d8f412735ed4fad383edd7f7d2286f4fc7b5b0/adr_viewer-1.4.0.tar.gz"
+  sha256 "9a2f02a9feb3a6d03d055dd8599b20d34126f8e755b4b4ee1a353ecbbd590cef"
   license "MIT"
+  revision 1
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bd7c760f6b3d5720772fe6722f226927a6b5b1ca7d1f4a4b5f058efa24bb14d4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9e791ad8f2ad9ff0e9c586d97b4a3dbfb1c969315f454f3d63e900dc2665bb5f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "bdbe0e6aaba4a04d2798ebf39afdc3433c07302153d6fefe8fdc193ee69daf6b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4e28911a829f2eef391d4b319e8843a34119b91d5fefb97cd06548a774613d40"
-    sha256 cellar: :any_skip_relocation, ventura:        "20ac16155c9b2efc7fe126f8ffdcb13786effe5db0f75d74cf348b14c3a73f80"
-    sha256 cellar: :any_skip_relocation, monterey:       "0cc97504088ca3a89dace6f4875842b78bde01fcb2061c43479603294d3946d2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "673ee30b217f61c2f5b56f683fc382dc0c400f0629fa72f493369d6031f4e595"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "84be5edc730293d76c12cbf42eb8429e902aedf01114c1e69099ae111c335935"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5de9ec935b5bdff959017398a1384107fbf1bc7bfc9d30c2c51f6e269e156694"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "03ff6ef7bdd353affa19fcefc4ddde2fc3badb970e59636b9a894d917a0bd207"
+    sha256 cellar: :any_skip_relocation, sonoma:        "62e5bb46d40598b962ab2f74ebf414f40ab10964d347fd9d6e30a3440f5c141f"
+    sha256 cellar: :any_skip_relocation, ventura:       "7f6b9ed8bd14a15f29734739888534eb5573cea5f3d67336e4fe5e2327944ac4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eef10318762e64ec17d81d1f32ae925adf8c05a83adfd67c92f4678ba9103101"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "beautifulsoup4" do
-    url "https://files.pythonhosted.org/packages/af/0b/44c39cf3b18a9280950ad63a579ce395dda4c32193ee9da7ff0aed547094/beautifulsoup4-4.12.2.tar.gz"
-    sha256 "492bbc69dca35d12daac71c4db1bfff0c876c00ef4a2ffacce226d4638eb72da"
+    url "https://files.pythonhosted.org/packages/b3/ca/824b1195773ce6166d388573fc106ce56d4a805bd7427b624e063596ec58/beautifulsoup4-4.12.3.tar.gz"
+    sha256 "74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"
   end
 
   resource "bottle" do
-    url "https://files.pythonhosted.org/packages/fd/04/1c09ab851a52fe6bc063fd0df758504edede5cc741bd2e807bf434a09215/bottle-0.12.25.tar.gz"
-    sha256 "e1a9c94970ae6d710b3fb4526294dfeb86f2cb4a81eff3a4b98dc40fb0e5e021"
+    url "https://files.pythonhosted.org/packages/87/7e/eae463f832f64b3a1cb640384d155079e7dd2905116ab925e9bb04f66e75/bottle-0.13.1.tar.gz"
+    sha256 "a48852dc7a051353d3e4de3dd5590cd25de370bcfd94a72237561e314ceb0c88"
   end
 
   resource "bs4" do
-    url "https://files.pythonhosted.org/packages/10/ed/7e8b97591f6f456174139ec089c769f89a94a1a4025fe967691de971f314/bs4-0.0.1.tar.gz"
-    sha256 "36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"
+    url "https://files.pythonhosted.org/packages/c9/aa/4acaf814ff901145da37332e05bb510452ebed97bc9602695059dd46ef39/bs4-0.0.2.tar.gz"
+    sha256 "a48685c58f50fe127722417bae83fe6badf500d54b55f7e39ffe43b798653925"
   end
 
   resource "click" do
@@ -41,13 +41,13 @@ class AdrViewer < Formula
   end
 
   resource "jinja2" do
-    url "https://files.pythonhosted.org/packages/7a/ff/75c28576a1d900e87eb6335b063fab47a8ef3c8b4d88524c4bf78f670cce/Jinja2-3.1.2.tar.gz"
-    sha256 "31351a702a408a9e7595a8fc6150fc3f43bb6bf7e319770cbc0db9df9437e852"
+    url "https://files.pythonhosted.org/packages/ed/55/39036716d19cab0747a5020fc7e907f362fbf48c984b14e62127f7e68e5d/jinja2-3.1.4.tar.gz"
+    sha256 "4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/6d/7c/59a3248f411813f8ccba92a55feaac4bf360d29e2ff05ee7d8e1ef2d7dbf/MarkupSafe-2.1.3.tar.gz"
-    sha256 "af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"
+    url "https://files.pythonhosted.org/packages/b4/d2/38ff920762f2247c3af5cbbbbc40756f575d9692d381d7c520f45deb9b8f/markupsafe-3.0.1.tar.gz"
+    sha256 "3e683ee4f5d0fa2dde4db77ed8dd8a876686e3fc417655c2ece9a90576905344"
   end
 
   resource "mistune" do
@@ -56,8 +56,8 @@ class AdrViewer < Formula
   end
 
   resource "soupsieve" do
-    url "https://files.pythonhosted.org/packages/ce/21/952a240de1c196c7e3fbcd4e559681f0419b1280c617db21157a0390717b/soupsieve-2.5.tar.gz"
-    sha256 "5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"
+    url "https://files.pythonhosted.org/packages/d7/ce/fbaeed4f9fb8b2daa961f90591662df6a86c1abf25c548329a86920aedfb/soupsieve-2.6.tar.gz"
+    sha256 "e2e68417777af359ec65daac1057404a3c8a5455bb8abc36f1a9866ab1a51abb"
   end
 
   def install
@@ -75,11 +75,11 @@ class AdrViewer < Formula
       ## Context
       We need to record the architectural decisions made on this project.
       ## Decision
-      We will use Architecture Decision Records, as [described by Michael Nygard](http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions).
+      We will use Architecture Decision Records, as [described by Michael Nygard](https://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions).
       ## Consequences
       See Michael Nygard's article, linked above. For a lightweight ADR toolset, see Nat Pryce's [adr-tools](https://github.com/npryce/adr-tools).
     EOS
-    system "#{bin}/adr-viewer", "--adr-path", adr_dir, "--output", "index.html"
+    system bin/"adr-viewer", "--adr-path", adr_dir, "--output", "index.html"
     assert_predicate testpath/"index.html", :exist?
   end
 end

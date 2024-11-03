@@ -1,8 +1,8 @@
 class Kics < Formula
   desc "Detect vulnerabilities, compliance issues, and misconfigurations"
   homepage "https://kics.io/"
-  url "https://github.com/Checkmarx/kics/archive/refs/tags/v1.7.9.tar.gz"
-  sha256 "3ade6ca8ef202778ba756091acbd4522414beee86d7a832edc29d7e7b8462b19"
+  url "https://github.com/Checkmarx/kics/archive/refs/tags/v2.1.3.tar.gz"
+  sha256 "ccb3412d65938e1445d7ef225bd3275c6f9bf7e356b5ce3514f80c8ebac3ccc0"
   license "Apache-2.0"
   head "https://github.com/Checkmarx/kics.git", branch: "master"
 
@@ -12,23 +12,19 @@ class Kics < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "79cd976f9b14b357d6f99eafb1596aa068b87c2148284e09f2ef4ed2674be92b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "221372c904b44084bcf01446e80b013a7916c0bb08edc8eb46ed72704fd4e35c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "28a5ab832721d1e36e4e3535017cc24934078841d4e40d05aa9a56b2fca61d3a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "49a52f58cea56e63147b0831db41b72ff1b3c8e3e17e3d26089cbf703f95198b"
-    sha256 cellar: :any_skip_relocation, ventura:        "1fa4889c53a2337deeb473b9e2ad60037af25b26b30a4942cc55d70395bf05ce"
-    sha256 cellar: :any_skip_relocation, monterey:       "94280b2fc6fc4a0334ba93156c647a61706f12db99481a4223852d9768d13703"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8b75cee7080c66bd099a165ffb63c8ac730419041738ffbd40df39f62b10802"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6c5d418b593e494bb9d30ba971ee3f586060e8d443a72d836d54577876c88ddd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bd1e58c1111e248d62d9223cb4efa13d9ed025c98e3c06eca150bc7e04a19bd0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b5ad0e5eac5d387dde99bf18c030f4e73adc62b75f58a499b8dd16edcc9b8f3f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1095ac11f3246d95c3e11529c1fe4aa4610477486a27130d8b8af838b0a01237"
+    sha256 cellar: :any_skip_relocation, ventura:       "8b28ecc7321009145023eb10906e4360ddb2d99a75e0dc5560892297973a0b37"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11460fbf1e83ef1e419851359e241ac347abb6bdedc5f837bdf7b29165748afd"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = %W[
-      -s -w
-      -X github.com/Checkmarx/kics/internal/constants.Version=#{version}
-    ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/console"
+    ldflags = "-s -w -X github.com/Checkmarx/kics/v#{version.major}/internal/constants.Version=#{version}"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/console"
 
     pkgshare.install "assets"
   end
@@ -45,8 +41,18 @@ class Kics < Formula
   test do
     ENV["KICS_QUERIES_PATH"] = pkgshare/"assets/queries"
     ENV["DISABLE_CRASH_REPORT"] = "0"
+    ENV["NO_COLOR"] = "1"
 
-    assert_match "Files scanned: 0", shell_output("#{bin}/kics scan -p #{testpath}")
+    assert_match <<~EOS, shell_output("#{bin}/kics scan -p #{testpath}")
+      Results Summary:
+      CRITICAL: 0
+      HIGH: 0
+      MEDIUM: 0
+      LOW: 0
+      INFO: 0
+      TOTAL: 0
+    EOS
+
     assert_match version.to_s, shell_output("#{bin}/kics version")
   end
 end

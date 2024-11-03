@@ -3,12 +3,13 @@ class Lolcode < Formula
   homepage "http://www.lolcode.org/"
   # NOTE: 0.10.* releases are stable, 0.11.* is dev. We moved over to
   # 0.11.x accidentally, should move back to stable when possible.
-  url "https://github.com/justinmeza/lci/archive/v0.11.2.tar.gz"
+  url "https://github.com/justinmeza/lci/archive/refs/tags/v0.11.2.tar.gz"
   sha256 "cb1065936d3a7463928dcddfc345a8d7d8602678394efc0e54981f9dd98c27d2"
   license "GPL-3.0-or-later"
   head "https://github.com/justinmeza/lci.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8c4074b5d6a8c5412c5be4a9cfc5c2ee4ab4e5ac12338fdd05141d98fbcea538"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "41bf236e028b388c85213b0e45f10fa83aea6c4b283c96f86426313646424a52"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "f7bf8def14baaebde0558f5a5d7355d41dc46c1d62ad00fe36bf33b40735c3ed"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "65cf3b809d4ad69918a45976eb04f22f93c785638336e2ae1ba862ef8eeade4a"

@@ -1,8 +1,8 @@
 class Sonarqube < Formula
   desc "Manage code quality"
-  homepage "https://www.sonarqube.org/"
-  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.2.1.78527.zip"
-  sha256 "420784efc123e216d47094ce19a672a70f34822b592917b57412e077b80c3acf"
+  homepage "https://www.sonarsource.com/products/sonarqube/"
+  url "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.7.0.96327.zip"
+  sha256 "4a5e5f0d7581e287cff4f02f7588dae499e2aa81fce37b88612acadfb4ba4518"
   license "LGPL-3.0-or-later"
 
   livecheck do
@@ -11,15 +11,12 @@ class Sonarqube < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, sonoma:         "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, ventura:        "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, monterey:       "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, big_sur:        "44ebee1874941e877cd007f16595920826cd79c9367d1cac9714e30a221e6d74"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2710c4fffef828ec801770e20c9c236814f732b17234fd1fb81b8ff2157efa8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, ventura:       "de22b2e0479df6d4d431bbc24a17f19b944b1dda3874842ea3d4845b4a3926c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1d4892c75139995b6b73e1538d1493acd4cb91856286a0c0b9a57afe1300860"
   end
 
   depends_on "openjdk@17"

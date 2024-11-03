@@ -1,23 +1,30 @@
 class CloudformationGuard < Formula
   desc "Checks CloudFormation templates for compliance using a declarative syntax"
   homepage "https://github.com/aws-cloudformation/cloudformation-guard"
-  url "https://github.com/aws-cloudformation/cloudformation-guard/archive/3.0.1.tar.gz"
-  sha256 "4f58b104549f2c3ffbb98ca95481b062bf35fad96334a0a3310c37d0bc3fbe56"
+  url "https://github.com/aws-cloudformation/cloudformation-guard/archive/refs/tags/3.1.1.tar.gz"
+  sha256 "ee870572b4b5e943a42c452c755c7a8af49675794b738051b8a63aa284695276"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f58223bdb7a7fcecfcf30495978227236a0239e07a2d15c4949d762356b2aedd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "12eb2292ac8773a22570e0da138cc799fe3b044baae1588ccfd855bbe8b453b2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "13df5d690591561495cfd4d76c8124cf3bb8dcb8869f1347df8f442875fa8b3d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0635ed92f0df574cae34680e1ac8ce3405556c90a00661c70248a266402d861a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "86b2d434e53094e51259c9ed26be4a0ffa97b784a40091bb410e575d11751098"
-    sha256 cellar: :any_skip_relocation, ventura:        "6f35f39a241df3772ca9d4c8b05cf5c9138050238a42be26cdf5c029e09a9b10"
-    sha256 cellar: :any_skip_relocation, monterey:       "f914feeb425079153c88cb31bb1c56c2fc6a8d5cedb3d156fda37f3516130a84"
-    sha256 cellar: :any_skip_relocation, big_sur:        "69bd2b278a0736e06fdb14ddb2a3e03ca7d162ac03ff0e8ae9969cbe46b2161d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b0c698cf23e21a2105cde05ebb22a65a585ab8f92511ef21e9f50151f1516ab3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "08c62a7e48efab86f6b8a3cb5db91e9cdb7a8002ea7a4e2e0d10704ed58c1cb2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "69df0ef961736b2539d92dcdf69a9c99567d71f477f5b43c836ab7b150d96869"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b82ecbceaf9cf79e11b6c34e08019467a71c61804099c060bf4ec499a174c861"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "8dfca33d74c6078b054a611495e07c51b66c42d60c5a269f21e48877654e6afd"
+    sha256 cellar: :any_skip_relocation, sonoma:         "76ee3e3e239d94dc811b58625d691207efedd427630d2e386d861689c93bbddf"
+    sha256 cellar: :any_skip_relocation, ventura:        "af5a5b8c5ae48f77786f47b9cd142d0056912270f85e35670bb91d7b8100626b"
+    sha256 cellar: :any_skip_relocation, monterey:       "052eb9cdaa12167fb31fb4d276960b5eda60ff38aafeb9cd5e7c23080f60c4e5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51ad19d2266387ba1ba3d5c99b6ef1baf3f03606de7c46b2dc077cddc703bbfd"
   end
 
   depends_on "rust" => :build
+
+  # build patch for `unused return value of `must_use` that must be used`
+  # upstream pr ref, https://github.com/aws-cloudformation/cloudformation-guard/pull/528
+  patch do
+    url "https://github.com/aws-cloudformation/cloudformation-guard/commit/4fa3ffe30ea164ee9d508de71024ca4fd0366dad.patch?full_index=1"
+    sha256 "bb3cd7128801e3d41f410a39dd63d336570bb3060f61fa80e7d70067f1744f1f"
+  end
 
   def install
     cd "guard" do

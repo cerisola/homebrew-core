@@ -1,12 +1,13 @@
 class Ffsend < Formula
   desc "Fully featured Firefox Send client"
   homepage "https://gitlab.com/timvisee/ffsend"
-  url "https://github.com/timvisee/ffsend/archive/v0.2.76.tar.gz"
+  url "https://github.com/timvisee/ffsend/archive/refs/tags/v0.2.76.tar.gz"
   sha256 "7d91fc411b7363fd8842890c5ed25d6cc4481f76cd48dcac154cd6e99f8c4d7b"
   license "GPL-3.0-only"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d6333b8a0787af4c44f98c9e267bda566d0e2e871904d682106ccd1d690e8fac"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "412d5d744c821a9de67c0ba7367de46696b9f51dac5b1edc82654880fb47c1d4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "2dc95f39cd9bb2f8baeb56317a533574ca1131c7194d520de67f1db735de0cae"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9f63f21a83b7dc43a87be7967553bd47609f9312e757c6f7507794db5cd8bdc8"
@@ -35,7 +36,7 @@ class Ffsend < Formula
   end
 
   test do
-    system "#{bin}/ffsend", "help"
+    system bin/"ffsend", "help"
 
     (testpath/"file.txt").write("test")
     url = shell_output("#{bin}/ffsend upload -Iq #{testpath}/file.txt").strip

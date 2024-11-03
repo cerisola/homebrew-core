@@ -1,43 +1,49 @@
 class Yazi < Formula
-  desc "️Blazing fast terminal file manager written in Rust, based on async I/O"
+  desc "Blazing fast terminal file manager written in Rust, based on async I/O"
   homepage "https://github.com/sxyazi/yazi"
-  url "https://github.com/sxyazi/yazi/archive/refs/tags/v0.1.4.tar.gz"
-  sha256 "991f8621cf6f362d0c22cd598a434b6fb42fb7e9fde4c2f678297f9ac4959d36"
+  url "https://github.com/sxyazi/yazi/archive/refs/tags/v0.3.3.tar.gz"
+  sha256 "fe2a458808334fe20eff1ab0145c78d684d8736c9715e4c51bce54038607dc4e"
   license "MIT"
   head "https://github.com/sxyazi/yazi.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "47238030562f56a8b8c8d113c5c266d23d893ff85084a43a2c70f3053de945ae"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "301b1c8fcb96c2b952be3362878dee3ceb534e2d04126027348211e04abee9eb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7057f16963dcb9d11c2a24a99755460bf8e7098bffe16f5a96d58c075958a2c4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "280d30ce1cc37b618540bd93f60211847e81b3e6274c4083120d95c8be50b25b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "095b051f4f4a57c8c67ac8fcfff1c8c2714a31d33917f9fa99b52bbc6d3c43ed"
-    sha256 cellar: :any_skip_relocation, ventura:        "751a62e7215323685c5b66986da52d68556a6751b7d802cb81237fe9c6cd7b12"
-    sha256 cellar: :any_skip_relocation, monterey:       "fdca4277149409056ab9def139e5d87ddf11c4a6ee167978f4fc61e1f2a7eeca"
-    sha256 cellar: :any_skip_relocation, big_sur:        "07280d1a9341eed2646d316b340880c5965f948b318aaa872404584651e1cb35"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "406dc52a16ce8b2de137c1ab866dcbdb3e55133db21299535941df76384550de"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "01246c17c55a8e1a84628bf5449bd6688e475119f2fd05e4f79cb29111502ff4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e084de5f54b67158697799d3acd9cefea19e4ae9f4ffcaba799a81859abf7c7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c6a5c5c8a3e95943d5eb81317a0e49067f79b4f5456c07aea888a05ba79e3593"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "bf217fde03079cf5e098cccc87d9151e1f4cf682ea77d330a8ae76b57e387338"
+    sha256 cellar: :any_skip_relocation, sonoma:         "1d9b66561784d040c7642ae94d5251df9ea6b7d74ad6b26e4e462391751d9d71"
+    sha256 cellar: :any_skip_relocation, ventura:        "8ce84306248d65237e28ea71abef99b259c32a40787e2ed61d878665c1d1ea86"
+    sha256 cellar: :any_skip_relocation, monterey:       "769594d0ef084f3086066498968c98611b746660d6bc8d634d732e8509c07252"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b71c80ca7a280bc0594b803403217712b1b53a8f7ce2a98cbfd458342c555a19"
   end
 
   depends_on "rust" => :build
 
   def install
-    system "cargo", "install", *std_cargo_args(path: "app")
+    ENV["VERGEN_GIT_SHA"] = tap.user
+    ENV["YAZI_GEN_COMPLETIONS"] = "1"
+    system "cargo", "install", *std_cargo_args(path: "yazi-fm")
+    system "cargo", "install", *std_cargo_args(path: "yazi-cli")
+
+    bash_completion.install "yazi-boot/completions/yazi.bash" => "yazi"
+    zsh_completion.install "yazi-boot/completions/_yazi"
+    fish_completion.install "yazi-boot/completions/yazi.fish"
+
+    bash_completion.install "yazi-cli/completions/ya.bash" => "ya"
+    zsh_completion.install "yazi-cli/completions/_ya"
+    fish_completion.install "yazi-cli/completions/ya.fish"
   end
 
   test do
-    require "pty"
-
-    PTY.spawn(bin/"yazi") do |r, w, _pid|
-      r.winsize = [80, 60]
-      sleep 1
-      w.write "quit"
-      begin
-        r.read
-      rescue Errno::EIO
-        # GNU/Linux raises EIO when read is done on closed pty
-      end
-    end
-
-    assert_equal "yazi #{version}", shell_output("#{bin}/yazi --version").strip
+    # yazi is a GUI application
+    assert_match "Yazi #{version}", shell_output("#{bin}/yazi --version").strip
   end
 end

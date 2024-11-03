@@ -1,18 +1,19 @@
 class GithubMarkdownToc < Formula
   desc "Easy TOC creation for GitHub README.md (in go)"
   homepage "https://github.com/ekalinin/github-markdown-toc.go"
-  url "https://github.com/ekalinin/github-markdown-toc.go/archive/refs/tags/v1.3.0.tar.gz"
-  sha256 "6e226067f65614ca59bd2e52b163ec1c4b4a86d31b243a0b861cdc6bb8737175"
+  url "https://github.com/ekalinin/github-markdown-toc.go/archive/refs/tags/v1.4.0.tar.gz"
+  sha256 "44d42d08ce50ea446a4feb2737196223976d0153d5f652534b2d36d8847ebb08"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "07f7d49c3487d72b9b721fe7a8b6ed60ade2bae55a186b921fede1850e89a78c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef031cecc5c4833d4434d69b1bfa25601587e781c58f9c5f2c912796664ee33e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8f709a5f44c5a146a3aec9ee5b96c526c1f01684c7f07bcdd230dfd8e5d09418"
-    sha256 cellar: :any_skip_relocation, sonoma:         "d5147e6ec58ed9f7452d1ac21e253ad2ccd3a811d6b1ebc0c9b5b2dae2837f0c"
-    sha256 cellar: :any_skip_relocation, ventura:        "da05aa4967528595ea8b3b028ffbbe063dbec19d7b5d49d148fe179e415dfb0c"
-    sha256 cellar: :any_skip_relocation, monterey:       "94cb12926a3f636fdcc5af1ec7e8a2f3fe5a54a60becaff436c5922f915f4886"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45725902e7b92871f5e3af3f5cc6c74d3c7711cfe1b35d13f3fccf175b1cef67"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "712f57df05a58d25216bedb63eed16efadbd725747ee66a55b5ee1a6ca51de7a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e38cb5e3ffac605bac6538721c31fd1660f8bebb3f4f2df8b435acfb37f8d54f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b3e788122d4d3d7b03b3570af83c9df54b729d37d9b5066ab4a5a132f2b860c3"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "308d23001f56e2aad9784401b66d0c09946c2de10b7326d4f47ca89a046486f3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "d51f577d44c5441841cb66459a58aecf9df58352e5ee681501ddc5b9f1a1b47c"
+    sha256 cellar: :any_skip_relocation, ventura:        "7831462a6c8acd321e14a590858183c708b3bd427e1590ef7dce951524b9424f"
+    sha256 cellar: :any_skip_relocation, monterey:       "41aa966bf0d4337c90b1aee325b8c57f9063e1984745bc71665c605a6f4980e2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ebcf21550d444cfb51592fedfc523b5488d0300986bc299f2b800a90d7118eea"
   end
 
   depends_on "go" => :build

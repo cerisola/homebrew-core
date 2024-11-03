@@ -1,21 +1,20 @@
 class Blocky < Formula
   desc "Fast and lightweight DNS proxy as ad-blocker for local network"
   homepage "https://0xerr0r.github.io/blocky"
-  url "https://github.com/0xerr0r/blocky/archive/refs/tags/v0.22.tar.gz"
-  sha256 "c11a4532ad6636d120ceab844af1a846a8fc379acb03359870de1dc1f8cf7876"
+  url "https://github.com/0xerr0r/blocky/archive/refs/tags/v0.24.tar.gz"
+  sha256 "bacbe2877d03ee627c2dc2011c4dcccdb82d19637c995091cb7216295d020a4a"
   license "Apache-2.0"
   head "https://github.com/0xerr0r/blocky.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "db79f136e1a2332ae906891ffb54ddf9f713d57b3e12420030af347268a88261"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ceb87fda46e3057ae4eea081550af696261c26877a26b0b31c9836749ae41d84"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7b2df2b8076f1e6c80ea9faa1f16acc29d6a395d1c9afe768d90cbe6fbbe663b"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c207eff57a676cadbafa8d08305d6e7bfda175375902427860c7646a86572921"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5226504d012a1d53fc47789ab2f1cff4fd87d543c6f8851c883ccbd34ff779a7"
-    sha256 cellar: :any_skip_relocation, ventura:        "f5e713ef13914171c3739626f339ba37f07fb8ff1a6af851c79229d9fb6c4e3d"
-    sha256 cellar: :any_skip_relocation, monterey:       "8ca5fb2eb707fd6a5641bc8d91e5988efe113cd86ed11c903e32d7ed27fe7508"
-    sha256 cellar: :any_skip_relocation, big_sur:        "47a60e4f8236181e987b3463a1b581fd79fff883b63174a076115ce4f283b224"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fabe0b2da8814a014a9e228980afa2c6155c53f2189c05f4a4d0e98122f89e33"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "70d6d590e0d97e2e05c125d29e03ed4703e7c9cd9acd7e3a83122ab4abd90940"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "86a07a6f8c009cd3adec7d5a7639bb9393c48f90682c96e7f7cab1a5b7cd75c0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1964f32ec897e04308b142c2ea5cb9213abaf416ade72ad4e9870de42553f81e"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6c628f325ab4c0d263b01d5e8e3f3d806793ec36df038cbca816890c7a9d2df2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5339c7f6e695d4bd8d7a6de946cc3453c88071f4e2e4058fca5b32e0f685e9d1"
+    sha256 cellar: :any_skip_relocation, ventura:        "4944ffaeb01adf61da90e9c320f2a9f2a5412392e807cd006546edbae1c19c22"
+    sha256 cellar: :any_skip_relocation, monterey:       "bbb7643e16a15c1979649c5d42314a1a391661149568b1297192aa0b2d6450f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "703a2da467cd05ac8036c30611dce4add4c5c297d9285fefab1ee24efd1d56e3"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Blocky < Formula
       -X github.com/0xERR0R/blocky/util.Version=#{version}
       -X github.com/0xERR0R/blocky/util.BuildTime=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags, output: sbin/"blocky")
+    system "go", "build", *std_go_args(ldflags:, output: sbin/"blocky")
 
     pkgetc.install "docs/config.yml"
   end

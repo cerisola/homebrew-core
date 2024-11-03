@@ -3,34 +3,32 @@ class Parliament < Formula
 
   desc "AWS IAM linting library"
   homepage "https://github.com/duo-labs/parliament"
-  url "https://files.pythonhosted.org/packages/8e/9a/64e0e24972057276141403b5971e87d8f51c82ba3d027badc10f39e5524f/parliament-1.6.2.tar.gz"
-  sha256 "05f9db2bda8d85f039dbe27716538f025b7cb973d336568762a06217e3b7e3ae"
+  url "https://files.pythonhosted.org/packages/a6/3f/b7262b8a7c8d41c243950c5858cefc29652623599a6fafb2f753621b9702/parliament-1.6.3.tar.gz"
+  sha256 "13e0f21048c3f2f6dbc3e90035421a7f2e35eda55c829794ec3f410140ce6740"
   license "BSD-3-Clause"
-  revision 1
   head "https://github.com/duo-labs/parliament.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fe5c0b6d766a6b539043b5ebc43cad8aeebd2a0349434fe65bed49fd8e4eb242"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "326f9d7e4764cd679f76b55328f835097aff2fdbe42adfcdc2ec5577c888c2c7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c3ac49bb16f7641ca3b4e8de5f97df65f05e0cc8033d43355fa93c1af4a364f3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ee290a61e5174c9d65535276648c6bac78475e79ac8c69210b6f790e1b35898c"
-    sha256 cellar: :any_skip_relocation, ventura:        "3d83e90f69aa19f234c27488b5858158bb253d9a3ed6705d343051184052999a"
-    sha256 cellar: :any_skip_relocation, monterey:       "bcac289b8dcf56695891908a4bf3bbe31226db649e05a90cc7053d36b0a0f3d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "22a8c80dbde299ab9b4a82acf4af154ed0783d2e3645c5f5bdd5329e3879a400"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "186ff67ce35a90ffd8ba8e357407e2a149b3fed39165610e1e2ea70227db7238"
+    sha256 cellar: :any,                 arm64_sonoma:  "a00d63b7ae66b4cf8e6fec64037a4e3995cbf72261a7e3d43994a4b6be841f5d"
+    sha256 cellar: :any,                 arm64_ventura: "7fef5c670525ee1bf41c62d25d32ecb9833dc10c83e22a9e41fa82b671f67f3d"
+    sha256 cellar: :any,                 sonoma:        "87ddec7770842963e922491ba5061e81592f7e3e27c253c9affc1c6e2ac42ef9"
+    sha256 cellar: :any,                 ventura:       "be87b8374ddefb0101c57cd5b9d42a5bbe8b44251407c4831f841af542045bfb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b9a9a3d7108f60d2da162b28921418038928ecc17732bfa4052d672adb88c07"
   end
 
-  depends_on "python@3.11"
-  depends_on "pyyaml"
-  depends_on "six"
+  depends_on "libyaml"
+  depends_on "python@3.13"
 
   resource "boto3" do
-    url "https://files.pythonhosted.org/packages/42/56/633b5f5b930732282e8dfb05c02a3d19394d41f4e60abfe85d26497e8036/boto3-1.28.61.tar.gz"
-    sha256 "7a539aaf00eb45aea1ae857ef5d05e67def24fc07af4cb36c202fa45f8f30590"
+    url "https://files.pythonhosted.org/packages/b8/29/10988ceaa300ddc628cb899875d85d9998e3da4803226398e002d95b2741/boto3-1.35.39.tar.gz"
+    sha256 "670f811c65e3c5fe4ed8c8d69be0b44b1d649e992c0fc16de43816d1188f88f1"
   end
 
   resource "botocore" do
-    url "https://files.pythonhosted.org/packages/05/2e/9cb8adca433af2bb6240514448b35fa797c881975ea752242294d6e0b79f/botocore-1.31.61.tar.gz"
-    sha256 "39b059603f0e92a26599eecc7fe9b141f13eb412c964786ca3a7df5375928c87"
+    url "https://files.pythonhosted.org/packages/f7/28/d83dbd69d7015892b53ada4fded79a5bc1b7d77259361eb8302f88c2da81/botocore-1.35.39.tar.gz"
+    sha256 "cb7f851933b5ccc2fba4f0a8b846252410aa0efac5bfbe93b82d10801f5f8e90"
   end
 
   resource "jmespath" do
@@ -49,18 +47,33 @@ class Parliament < Formula
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
+  end
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
   end
 
   resource "s3transfer" do
-    url "https://files.pythonhosted.org/packages/3f/ff/5fd9375f3fe467263cff9cad9746fd4c4e1399440ea9563091c958ff90b5/s3transfer-0.7.0.tar.gz"
-    sha256 "fd3889a66f5fe17299fe75b82eae6cf722554edca744ca5d5fe308b104883d2e"
+    url "https://files.pythonhosted.org/packages/a0/a8/e0a98fd7bd874914f0608ef7c90ffde17e116aefad765021de0f012690a2/s3transfer-0.10.3.tar.gz"
+    sha256 "4f50ed74ab84d474ce614475e0b8d5047ff080810aac5d01ea25231cfc944b0c"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/dd/19/9e5c8b813a8bddbfb035fa2b0c29077836ae7c4def1a55ae4632167b3511/urllib3-1.26.17.tar.gz"
-    sha256 "24d6a242c28d29af46c3fae832c36db3bbebcc533dd1bb549172cd739c82df21"
+    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
+    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
   end
 
   def install

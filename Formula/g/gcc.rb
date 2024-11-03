@@ -2,23 +2,20 @@ class Gcc < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
+  revision 1
   head "https://gcc.gnu.org/git/gcc.git", branch: "master"
 
   stable do
-    url "https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz"
-    mirror "https://ftpmirror.gnu.org/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz"
-    sha256 "e275e76442a6067341a27f04c5c6b83d8613144004c0413528863dc6b5c743da"
+    url "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    mirror "https://ftpmirror.gnu.org/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+    sha256 "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
 
     # Branch from the Darwin maintainer of GCC, with a few generic fixes and
-    # Apple Silicon support, located at https://github.com/iains/gcc-13-branch
+    # Apple Silicon support, located at https://github.com/iains/gcc-14-branch
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/3c5cbc8e9cf444a1967786af48e430588e1eb481/gcc/gcc-13.2.0.diff"
-      sha256 "2df7ef067871a30b2531a2013b3db661ec9e61037341977bfc451e30bf2c1035"
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/f30c309442a60cfb926e780eae5d70571f8ab2cb/gcc/gcc-14.2.0-r2.diff"
+      sha256 "6c0a4708f35ccf2275e6401197a491e3ad77f9f0f9ef5761860768fa6da14d3d"
     end
-
-    # Upstream fix to deal with macOS 14 SDK <math.h> header
-    # https://gcc.gnu.org/git/?p=gcc.git;a=commitdiff;h=93f803d53b5ccaabded9d7b4512b54da81c1c616
-    patch :DATA
   end
 
   livecheck do
@@ -27,16 +24,13 @@ class Gcc < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sonoma:   "b252fb49b4ea41bff4730364335750bce323f597a8db568b1f0e13ec6017c238"
-    sha256                               arm64_ventura:  "4d567b8a5bbdc26f07441273352cf5866eaf9bb0f87543d7411ef0757474b832"
-    sha256                               arm64_monterey: "113dd4b429bada5a1af194587607a6560bde88be53426320d65485ef630e7b96"
-    sha256                               arm64_big_sur:  "5f7b0d8f4a122bc15355f1de5f8c4a4c85e64fb50ff3423d965fb8745f85af81"
-    sha256                               sonoma:         "e270347f863c587a2c03d7725921bdf1badca40455ba9c85765532fa84c90232"
-    sha256                               ventura:        "013593835e5f56f70fd6c89c76a649ecf51147733e5edb33cbce07db827eadfc"
-    sha256                               monterey:       "2c0515fc40a140f462c564c5a9dff0ae98b98c2b94222a49fcdd17210b1a1a99"
-    sha256                               big_sur:        "c2c28ba56818e95e61f2917d2362b0b355abd849e032ad83f8b5e9f0571bbcf0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "51d17af287f8c295c6a846175c64577c9aa75e523a6fe116c9a66e5b028b0f9c"
+    sha256                               arm64_sequoia: "96d8bf02f621cfa180cfe6c466fe0aff2cf3f48eab52ea5a5232cdd2a5cc30c4"
+    sha256                               arm64_sonoma:  "4d94c81d3aea48d77d6e7d7d359d05b48024bac44ade59e08dc3fe0f62539a17"
+    sha256                               arm64_ventura: "2869b13880fbe3d3d9d074e3b5f2dbf3bd0593f826d11b8b10165fd489b94deb"
+    sha256                               sequoia:       "548e5453b0cbf88fe86d63aeef2dacfa7eacc030ccdf037113add3040d64db50"
+    sha256                               sonoma:        "901263863f3f4e8b99f9ffb1cccdb00e5fe74fd1013ac79d37af7ce07f600123"
+    sha256                               ventura:       "7832d72cd4f578e244d5b920f2523e77b8f30328229440a569afa5a88df353fb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0902085b2185b224dd20c2ee5f12d83284cdbb68d0dab1e2edbd4c6603545de6"
   end
 
   # The bottles are built on systems with the CLT installed, and do not work
@@ -49,7 +43,14 @@ class Gcc < Formula
   depends_on "mpfr"
   depends_on "zstd"
 
+  uses_from_macos "flex" => :build
+  uses_from_macos "m4" => :build
   uses_from_macos "zlib"
+
+  on_macos do
+    # macOS make is too old, has intermittent parallel build issue
+    depends_on "make" => :build
+  end
 
   on_linux do
     depends_on "binutils"
@@ -74,7 +75,7 @@ class Gcc < Formula
     #  - Ada and D, which require a pre-existing GCC to bootstrap
     #  - Go, currently not supported on macOS
     #  - BRIG
-    languages = %w[c c++ objc obj-c++ fortran]
+    languages = %w[c c++ objc obj-c++ fortran m2]
 
     pkgversion = "Homebrew GCC #{pkg_version} #{build.used_options*" "}".strip
 
@@ -105,11 +106,7 @@ class Gcc < Formula
       sdk = MacOS.sdk_path_if_needed
       args << "--with-sysroot=#{sdk}" if sdk
 
-      # Work around a bug in Xcode 15's new linker (FB13038083)
-      if DevelopmentTools.clang_build_version >= 1500
-        toolchain_path = "/Library/Developer/CommandLineTools"
-        args << "--with-ld=#{toolchain_path}/usr/bin/ld-classic"
-      end
+      make_args = []
     else
       # Fix cc1: error while loading shared libraries: libisl.so.15
       args << "--with-boot-ldflags=-static-libstdc++ -static-libgcc #{ENV.ldflags}"
@@ -123,11 +120,17 @@ class Gcc < Formula
       # Change the default directory name for 64-bit libraries to `lib`
       # https://stackoverflow.com/a/54038769
       inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
+      inreplace "gcc/config/aarch64/t-aarch64-linux", "lp64=../lib64", "lp64="
+
+      make_args = %W[
+        BOOT_CFLAGS=-I#{Formula["zlib"].opt_include}
+        BOOT_LDFLAGS=-L#{Formula["zlib"].opt_lib}
+      ]
     end
 
     mkdir "build" do
       system "../configure", *args
-      system "make"
+      system "gmake", *make_args
 
       # Do not strip the binaries on macOS, it makes them unsuitable
       # for loading plugins
@@ -136,11 +139,12 @@ class Gcc < Formula
       # To make sure GCC does not record cellar paths, we configure it with
       # opt_prefix as the prefix. Then we use DESTDIR to install into a
       # temporary location, then move into the cellar path.
-      system "make", install_target, "DESTDIR=#{Pathname.pwd}/../instdir"
+      system "gmake", install_target, "DESTDIR=#{Pathname.pwd}/../instdir"
       mv Dir[Pathname.pwd/"../instdir/#{opt_prefix}/*"], prefix
     end
 
     bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
+    bin.install_symlink bin/"gm2-#{version_suffix}" => "gm2"
 
     # Provide a `lib/gcc/xy` directory to align with the versioned GCC formulae.
     # We need to create `lib/gcc/xy` as a directory and not a symlink to avoid `brew link` conflicts.
@@ -154,11 +158,11 @@ class Gcc < Formula
     # Rename man7.
     man7.glob("*.7") { |file| add_suffix file, version_suffix }
     # Even when we disable building info pages some are still installed.
-    info.rmtree
+    rm_r(info)
 
     # Work around GCC install bug
     # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105664
-    rm_rf bin.glob("*-gcc-tmp")
+    rm_r(bin.glob("*-gcc-tmp"))
   end
 
   def add_suffix(file, suffix)
@@ -192,7 +196,7 @@ class Gcc < Formula
       specs = libgcc/"specs"
       ohai "Creating the GCC specs file: #{specs}"
       specs_orig = Pathname.new("#{specs}.orig")
-      rm_f [specs_orig, specs]
+      rm([specs_orig, specs].select(&:exist?))
 
       system_header_dirs = ["#{HOMEBREW_PREFIX}/include"]
 
@@ -249,18 +253,18 @@ class Gcc < Formula
   end
 
   test do
-    (testpath/"hello-c.c").write <<~EOS
+    (testpath/"hello-c.c").write <<~C
       #include <stdio.h>
       int main()
       {
         puts("Hello, world!");
         return 0;
       }
-    EOS
-    system "#{bin}/gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
+    C
+    system bin/"gcc-#{version_suffix}", "-o", "hello-c", "hello-c.c"
     assert_equal "Hello, world!\n", shell_output("./hello-c")
 
-    (testpath/"hello-cc.cc").write <<~EOS
+    (testpath/"hello-cc.cc").write <<~CPP
       #include <iostream>
       struct exception { };
       int main()
@@ -271,11 +275,11 @@ class Gcc < Formula
           catch (...) { }
         return 0;
       }
-    EOS
-    system "#{bin}/g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
+    CPP
+    system bin/"g++-#{version_suffix}", "-o", "hello-cc", "hello-cc.cc"
     assert_equal "Hello, world!\n", shell_output("./hello-cc")
 
-    (testpath/"test.f90").write <<~EOS
+    (testpath/"test.f90").write <<~FORTRAN
       integer,parameter::m=10000
       real::a(m), b(m)
       real::fact=0.5
@@ -285,78 +289,19 @@ class Gcc < Formula
       end do
       write(*,"(A)") "Done"
       end
-    EOS
-    system "#{bin}/gfortran", "-o", "test", "test.f90"
+    FORTRAN
+    system bin/"gfortran", "-o", "test", "test.f90"
     assert_equal "Done\n", shell_output("./test")
+
+    (testpath/"hello.mod").write <<~EOS
+      MODULE hello;
+      FROM InOut IMPORT WriteString, WriteLn;
+      BEGIN
+           WriteString("Hello, world!");
+           WriteLn;
+      END hello.
+    EOS
+    system bin/"gm2", "-o", "hello-m2", "hello.mod"
+    assert_equal "Hello, world!\n", shell_output("./hello-m2")
   end
 end
-__END__
-diff --git a/fixincludes/fixincl.x b/fixincludes/fixincl.x
-index 416d2c2e3a4..e52f11d8460 100644
---- a/fixincludes/fixincl.x
-+++ b/fixincludes/fixincl.x
-@@ -2,11 +2,11 @@
-  *
-  * DO NOT EDIT THIS FILE   (fixincl.x)
-  *
-- * It has been AutoGen-ed  January 22, 2023 at 09:03:29 PM by AutoGen 5.18.12
-+ * It has been AutoGen-ed  August 17, 2023 at 10:16:38 AM by AutoGen 5.18.12
-  * From the definitions    inclhack.def
-  * and the template file   fixincl
-  */
--/* DO NOT SVN-MERGE THIS FILE, EITHER Sun Jan 22 21:03:29 CET 2023
-+/* DO NOT SVN-MERGE THIS FILE, EITHER Thu Aug 17 10:16:38 CEST 2023
-  *
-  * You must regenerate it.  Use the ./genfixes script.
-  *
-@@ -3674,7 +3674,7 @@ tSCC* apzDarwin_Flt_Eval_MethodMachs[] = {
-  *  content selection pattern - do fix if pattern found
-  */
- tSCC zDarwin_Flt_Eval_MethodSelect0[] =
--       "^#if __FLT_EVAL_METHOD__ == 0$";
-+       "^#if __FLT_EVAL_METHOD__ == 0( \\|\\| __FLT_EVAL_METHOD__ == -1)?$";
- 
- #define    DARWIN_FLT_EVAL_METHOD_TEST_CT  1
- static tTestDesc aDarwin_Flt_Eval_MethodTests[] = {
-@@ -3685,7 +3685,7 @@ static tTestDesc aDarwin_Flt_Eval_MethodTests[] = {
-  */
- static const char* apzDarwin_Flt_Eval_MethodPatch[] = {
-     "format",
--    "#if __FLT_EVAL_METHOD__ == 0 || __FLT_EVAL_METHOD__ == 16",
-+    "%0 || __FLT_EVAL_METHOD__ == 16",
-     (char*)NULL };
- 
- /* * * * * * * * * * * * * * * * * * * * * * * * * *
-diff --git a/fixincludes/inclhack.def b/fixincludes/inclhack.def
-index 45e0cbc0c10..19e0ea2df66 100644
---- a/fixincludes/inclhack.def
-+++ b/fixincludes/inclhack.def
-@@ -1819,10 +1819,11 @@ fix = {
-     hackname  = darwin_flt_eval_method;
-     mach      = "*-*-darwin*";
-     files     = math.h;
--    select    = "^#if __FLT_EVAL_METHOD__ == 0$";
-+    select    = "^#if __FLT_EVAL_METHOD__ == 0( \\|\\| __FLT_EVAL_METHOD__ == -1)?$";
-     c_fix     = format;
--    c_fix_arg = "#if __FLT_EVAL_METHOD__ == 0 || __FLT_EVAL_METHOD__ == 16";
--    test_text = "#if __FLT_EVAL_METHOD__ == 0";
-+    c_fix_arg = "%0 || __FLT_EVAL_METHOD__ == 16";
-+    test_text = "#if __FLT_EVAL_METHOD__ == 0\n"
-+		"#if __FLT_EVAL_METHOD__ == 0 || __FLT_EVAL_METHOD__ == -1";
- };
- 
- /*
-diff --git a/fixincludes/tests/base/math.h b/fixincludes/tests/base/math.h
-index 29b67579748..7b92f29a409 100644
---- a/fixincludes/tests/base/math.h
-+++ b/fixincludes/tests/base/math.h
-@@ -32,6 +32,7 @@
- 
- #if defined( DARWIN_FLT_EVAL_METHOD_CHECK )
- #if __FLT_EVAL_METHOD__ == 0 || __FLT_EVAL_METHOD__ == 16
-+#if __FLT_EVAL_METHOD__ == 0 || __FLT_EVAL_METHOD__ == -1 || __FLT_EVAL_METHOD__ == 16
- #endif  /* DARWIN_FLT_EVAL_METHOD_CHECK */
- 
- 
--- 
-2.39.3

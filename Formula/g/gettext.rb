@@ -1,32 +1,37 @@
 class Gettext < Formula
   desc "GNU internationalization (i18n) and localization (l10n) library"
   homepage "https://www.gnu.org/software/gettext/"
-  url "https://ftp.gnu.org/gnu/gettext/gettext-0.22.3.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gettext/gettext-0.22.3.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/gettext/gettext-0.22.3.tar.gz"
-  sha256 "839a260b2314ba66274dae7d245ec19fce190a3aa67869bf31354cb558df42c7"
+  url "https://ftp.gnu.org/gnu/gettext/gettext-0.22.5.tar.gz"
+  mirror "https://ftpmirror.gnu.org/gettext/gettext-0.22.5.tar.gz"
+  mirror "http://ftp.gnu.org/gnu/gettext/gettext-0.22.5.tar.gz"
+  sha256 "ec1705b1e969b83a9f073144ec806151db88127f5e40fe5a94cb6c8fa48996a0"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "287240f844318fe88193b706d6e07121b2cc7cfb3b5e2f47e21ee6970ffceb09"
-    sha256 arm64_ventura:  "9bf5b0ea5fb893fe294c2c5f9195026e082e84e4dce24c81b544f62d9d85dd02"
-    sha256 arm64_monterey: "29b5bf933d4cc986e2f7b580d11aee8b755f5fab5621bd955dd3ca6867922e10"
-    sha256 sonoma:         "1853891cc14ff16ab102dd75b8ee313975bfdb17c03737975ca61b5a05159e5a"
-    sha256 ventura:        "6971461fbd5d738e7f5609ced872ff87b88a4425c7ba42450871abe743178574"
-    sha256 monterey:       "3600ef54a17fc9782a367a70d60a3996eae4613075ba05e8943cb1e5190d35fc"
-    sha256 x86_64_linux:   "173e5e5fac30885db41e894d9b46798e3023b1543f2d855eaaf77e99e6ed3ddd"
+    rebuild 1
+    sha256 arm64_sequoia: "9ad2a8e2fff717a18460818d086c02b8ed9f4c42a853f41a88c6f9b601b36615"
+    sha256 arm64_sonoma:  "7cf6084ae306256b1df18c8d75ba63abeccd5c605cfc8406dab8c09d98815bc1"
+    sha256 arm64_ventura: "3ead4ac2832bf1fbf02a5d1e8cdac9f0b46957615215d42382a85c4cf0f32aa0"
+    sha256 sonoma:        "1bb442e6a65a0d7930a5cfcee44e8e3c4a41ff99351535cce6101b32ce723706"
+    sha256 ventura:       "668023b6002ad5f2aca0e78a0d33ec8a24a660f82149b95cd42d14008dd59d2a"
+    sha256 x86_64_linux:  "c1a3a97412d28be6552c4b4191c174ce145329b165599c280b550f9a54bed9b8"
   end
+
+  depends_on "libunistring"
 
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
 
+  on_linux do
+    depends_on "acl"
+  end
+
   def install
     args = [
+      "--with-libunistring-prefix=#{Formula["libunistring"].opt_prefix}",
       "--disable-silent-rules",
       "--with-included-glib",
       "--with-included-libcroco",
-      "--with-included-libunistring",
-      "--with-included-libxml",
       "--with-emacs",
       "--with-lispdir=#{elisp}",
       "--disable-java",

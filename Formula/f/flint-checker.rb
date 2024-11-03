@@ -1,11 +1,12 @@
 class FlintChecker < Formula
   desc "Check your project for common sources of contributor friction"
   homepage "https://github.com/pengwynn/flint"
-  url "https://github.com/pengwynn/flint/archive/v0.1.0.tar.gz"
+  url "https://github.com/pengwynn/flint/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "ec865ec5cad191c7fc9c7c6d5007754372696a708825627383913367f3ef8b7f"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1f101ecd31a4b9eca93ee5d2147e9179ce0e9a6f90919b00c7151859ec66fc14"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ed6f5260d4529072857dd5e87ae92324dbceda9c2de26ad7264900beab01d3be"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d5056c257e0cc996faf15565e602c5e5a8fc7655a864f1bbf4fb655bb3599908"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c7a3874abb22d4ba7d1641f6fe8f8bff8262150f5031c335430b20156062165d"

@@ -1,8 +1,8 @@
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info/"
-  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/5.4.9/gnuplot-5.4.9.tar.gz"
-  sha256 "a328a021f53dc05459be6066020e9a71e8eab6255d3381e22696120d465c6a97"
+  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/6.0.1/gnuplot-6.0.1.tar.gz"
+  sha256 "e85a660c1a2a1808ff24f7e69981ffcbac66a45c9dcf711b65610b26ea71379a"
   license "gnuplot"
 
   livecheck do
@@ -11,15 +11,13 @@ class Gnuplot < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "86cc3fb83691b2ae56ecb6800597824a1b218953d67919383afa49cedca8cbae"
-    sha256 arm64_ventura:  "a9969d9124b0a9ac3c3bc5a5f19e215bc3757a34e142beb888f76cd631441f66"
-    sha256 arm64_monterey: "23519be29392ea57db23622bd5ed5cfc413c7a653bd3fd8b87f31489db326d2a"
-    sha256 arm64_big_sur:  "895fe52a242f77ee6cb9e241980f803fe35d20318bb1fa6d4628a8c9e234d288"
-    sha256 sonoma:         "f72c06e6a10f614136f4a35709270c1f4c45c9b5c32479067a3798854797918e"
-    sha256 ventura:        "dce9d5e1c207f5742c204324b9a6cb97aff7f474ffa7725da510c7c82f7970e0"
-    sha256 monterey:       "70543600a2b405793486fa519819fc8872edad5a12f0a4886e3b1d3a97ef5f02"
-    sha256 big_sur:        "ae3a916cbce4f6b4fd55c694c147cba837be988ef9a1a4bb0f6d17683bceaa21"
-    sha256 x86_64_linux:   "90328aa900398f630f6ef936f94c4c2298c3140d3146573fbca25da28813b119"
+    sha256 arm64_sonoma:   "31e6f7110b730420b3ac2e7919bdf128fd909a4d9dbb9d1787a0f65ef474efe1"
+    sha256 arm64_ventura:  "5e05d74c6652c77fe6b8fd3f953b6b73e2caf9ee368239db1459711f1702ec51"
+    sha256 arm64_monterey: "6aada3a5ef6da20c8f69ddfa9d13e40d59100c5059e2c708a74eb415e4be42b7"
+    sha256 sonoma:         "7a91c6ee6dbf39500c8bf80a724455962adafc5b57ceb253b0027de6eace3b2b"
+    sha256 ventura:        "63406cc108fc87421ed64824e6e1669af19c3aa14124299067c309357216ad5a"
+    sha256 monterey:       "602ff0a1306589b94be8cc51973c2bf65eb7f7db0e59d37ac58e13aad6fcaeac"
+    sha256 x86_64_linux:   "f30caf00d7eaee69c2c32ced03b03ade4217bafc9e9ea06051c4adf619114633"
   end
 
   head do
@@ -30,20 +28,25 @@ class Gnuplot < Formula
     depends_on "libtool" => :build
   end
 
+  depends_on "gnu-sed" => :build # https://sourceforge.net/p/gnuplot/bugs/2676/
   depends_on "pkg-config" => :build
+
+  depends_on "cairo"
   depends_on "gd"
+  depends_on "glib"
   depends_on "libcerf"
   depends_on "lua"
   depends_on "pango"
   depends_on "qt"
   depends_on "readline"
+  depends_on "webp"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "harfbuzz"
+  end
 
   fails_with gcc: "5"
-
-  # Fixes `uic-qt6: No such file or directory`
-  # Fixes `lrelease-qt6: No such file or directory`
-  # https://sourceforge.net/p/gnuplot/bugs/2649/
-  patch :DATA
 
   def install
     args = %W[
@@ -58,6 +61,9 @@ class Gnuplot < Formula
       RCC=#{Formula["qt"].pkgshare}/libexec/rcc
       UIC=#{Formula["qt"].pkgshare}/libexec/uic
     ]
+
+    # https://sourceforge.net/p/gnuplot/bugs/2676/
+    ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
 
     if OS.mac?
       # pkg-config files are not shipped on macOS, making our job harder
@@ -79,15 +85,14 @@ class Gnuplot < Formula
 
     ENV.append "CXXFLAGS", "-std=c++17" # needed for Qt 6
     system "./prepare" if build.head?
-    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] },
-                          *args
+    system "./configure", *args, *std_configure_args.reject { |s| s["--disable-debug"] }
     ENV.deparallelize # or else emacs tries to edit the same file with two threads
     system "make"
     system "make", "install"
   end
 
   test do
-    system "#{bin}/gnuplot", "-e", <<~EOS
+    system bin/"gnuplot", "-e", <<~EOS
       set terminal dumb;
       set output "#{testpath}/graph.txt";
       plot sin(x);
@@ -95,28 +100,3 @@ class Gnuplot < Formula
     assert_predicate testpath/"graph.txt", :exist?
   end
 end
-__END__
-diff --git a/configure b/configure
-index c918ea8..019dcc0 100755
---- a/configure
-+++ b/configure
-@@ -16393,12 +16393,17 @@ fi
-           UIC=${QT6LOC}/uic
-           MOC=${QT6LOC}/moc
-           RCC=${QT6LOC}/rcc
--      else
-+      elif test "x${UIC}" = "x"; then
-           UIC=uic-qt6
-           MOC=moc-qt6
-           RCC=rcc-qt6
-       fi
--      LRELEASE=lrelease-qt6
-+      QT6BIN=`$PKG_CONFIG --variable=bindir Qt6Core`
-+      if test "x${QT6BIN}" != "x"; then
-+          LRELEASE=${QT6BIN}/lrelease
-+      elif test "x${LRELEASE}" = "x"; then
-+          LRELEASE=lrelease-qt6
-+      fi
-       CXXFLAGS="$CXXFLAGS -fPIC"
-       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: The Qt terminal will use Qt6." >&5
- printf "%s\n" "The Qt terminal will use Qt6." >&6; }

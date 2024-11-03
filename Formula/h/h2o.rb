@@ -1,12 +1,13 @@
 class H2o < Formula
   desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v2.2.6.tar.gz"
+  url "https://github.com/h2o/h2o/archive/refs/tags/v2.2.6.tar.gz"
   sha256 "f8cbc1b530d85ff098f6efc2c3fdbc5e29baffb30614caac59d5c710f7bda201"
   license "MIT"
   revision 3
 
   bottle do
+    sha256 arm64_sequoia:  "c54b0d937a91c61b234753347dd756cb2a26dcb3b7f1aa37252b55fb9ee065ae"
     sha256 arm64_sonoma:   "02473fe011f04525a6e4fd604baa839c43988ca3fc96396774d96200e79daf87"
     sha256 arm64_ventura:  "1227fcbf6a078a4448106c6e60af24e1bb271823a50590bf201e4887784b8edb"
     sha256 arm64_monterey: "df4235fa62ee97877317730f405c523eb091f32ec9bf3ad433b9a72596a60fe3"

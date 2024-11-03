@@ -1,7 +1,7 @@
 class SshPermitA38 < Formula
   desc "Central management and deployment for SSH keys"
   homepage "https://github.com/ierror/ssh-permit-a38"
-  url "https://github.com/ierror/ssh-permit-a38/archive/v0.2.0.tar.gz"
+  url "https://github.com/ierror/ssh-permit-a38/archive/refs/tags/v0.2.0.tar.gz"
   sha256 "cb8d94954c0e68eb86e3009d6f067b92464f9c095b6a7754459cfce329576bd9"
   license "MIT"
   revision 1
@@ -22,7 +22,7 @@ class SshPermitA38 < Formula
 
   # Match deprecation date of `openssl@1.1`. openssl-sys==0.9.27 doesn't support `openssl@3`
   # Last release on 2018-08-18
-  deprecate! date: "2023-09-11", because: :unmaintained
+  disable! date: "2024-08-01", because: :unmaintained
 
   depends_on "cmake" => :build
   depends_on "rust" => :build

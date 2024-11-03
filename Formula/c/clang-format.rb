@@ -2,27 +2,27 @@ class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "https://clang.llvm.org/docs/ClangFormat.html"
   # The LLVM Project is under the Apache License v2.0 with LLVM Exceptions
-  license "Apache-2.0"
+  license "Apache-2.0" => { with: "LLVM-exception" }
   version_scheme 1
   head "https://github.com/llvm/llvm-project.git", branch: "main"
 
   stable do
-    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/llvm-17.0.2.src.tar.xz"
-    sha256 "61dd9eaa1f874a10a51dc397b84998eaebdd3c55a5a5fa6c24b2081a435b47c6"
+    url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/llvm-19.1.3.src.tar.xz"
+    sha256 "11e166d0f291a53cfc6b9e58abd1d7954de32ebc37672987612d3b7075d88411"
 
     resource "clang" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/clang-17.0.2.src.tar.xz"
-      sha256 "ce1c16b766894b3281038e4b2c4280f1b8c42fd5cc95ba355bba0f5ff47e23fa"
+      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/clang-19.1.3.src.tar.xz"
+      sha256 "0a0dd316931f2cac7090d2aa434b5d0c332fe19b801c6c94f109053b52b35cc1"
     end
 
     resource "cmake" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/cmake-17.0.2.src.tar.xz"
-      sha256 "07093ef3b47bc30c24c8ab4996dea8c89eb6f3c8f55cd43158000c61c1fd5075"
+      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/cmake-19.1.3.src.tar.xz"
+      sha256 "4c55aa6e77fc0e8b759bca2c79ee4fd0ea8c7fab06eeea09310ae1e954a0af5e"
     end
 
     resource "third-party" do
-      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.2/third-party-17.0.2.src.tar.xz"
-      sha256 "058623c5859c99e6b6711e88c646e80778377ec8e596e1f0e24efb987e063aff"
+      url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/third-party-19.1.3.src.tar.xz"
+      sha256 "ec13c6c3466dc88e7b29b47347e2b88337d5b83c778d92e3c4c3acd17d3cc534"
     end
   end
 
@@ -33,13 +33,12 @@ class ClangFormat < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1efd2fee1635d34114bd9d6daa1390b66a8df8621feec3c6650d6ef9ba4ade8d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dd037c2099365c36fe7f98b7a88fd9b38e4e98f176c272ddf647999b52961e68"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2d6db6df5d9dc8dfe2261d92e24979a7ab95c03ab630696ce000a343f375e262"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fe42f4d3a1ae819f7da81d811b06cd3aca135d4169f5f7f0e6643e1ba82ad760"
-    sha256 cellar: :any_skip_relocation, ventura:        "dbca4323c6321af28c7c0e15ffc1c9d8d62fb0b8e74709c500d1724d23a292ba"
-    sha256 cellar: :any_skip_relocation, monterey:       "e00953e72bf88cd9ec6067d0d6939ec01fe92b555ea00561681ea71ff4556d03"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64a41e19b976c1725c0f47d7933c5ff34c153c60b68354a503410e41efbfc5e8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9df6e7a73647777ea7d721611ff214cb6dfb0035270f7c075706c10126127fe7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "51c70ed59125cdc84a9e69c71519e0389302fa79ec69237daad87d56f880fef7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "221b6502def9c8349e7b55503a925b7afad79e75edeaad2039d449156e31fe00"
+    sha256 cellar: :any_skip_relocation, sonoma:        "387d602bb80b80d5e46d091bb620080d5734022b0512b42be0a0368416e40ff5"
+    sha256 cellar: :any_skip_relocation, ventura:       "8609c73a51e4a27538fec7cf473da6a8808a273291c04df0f15959c134104048"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1f7cdba80030cd264f64d22fc3d5e0865c7167a0b2462a64bfe82d155e821c2"
   end
 
   depends_on "cmake" => :build
@@ -54,6 +53,10 @@ class ClangFormat < Formula
   end
 
   def install
+    odie "clang resource needs to be updated" if build.stable? && version != resource("clang").version
+    odie "cmake resource needs to be updated" if build.stable? && version != resource("cmake").version
+    odie "third-party resource needs to be updated" if build.stable? && version != resource("third-party").version
+
     llvmpath = if build.head?
       ln_s buildpath/"clang", buildpath/"llvm/tools/clang"
 
@@ -83,9 +86,9 @@ class ClangFormat < Formula
     system "git", "commit", "--allow-empty", "-m", "initial commit", "--quiet"
 
     # NB: below C code is messily formatted on purpose.
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       int         main(char *args) { \n   \t printf("hello"); }
-    EOS
+    C
     system "git", "add", "test.c"
 
     assert_equal "int main(char *args) { printf(\"hello\"); }\n",

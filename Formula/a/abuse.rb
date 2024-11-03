@@ -22,7 +22,7 @@ class Abuse < Formula
 
   # Uses deprecated `sdl_mixer`. HEAD does have support for SDL 2 but wasn't released.
   # Last release on 2011-05-09 and last SVN revision on 2014-07-21
-  deprecate! date: "2023-02-05", because: :unmaintained
+  disable! date: "2024-01-02", because: :unmaintained
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -99,6 +99,6 @@ class Abuse < Formula
     # Fails in Linux CI with "Unable to initialise SDL : No available video device"
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    system "#{bin}/abuse", "--help"
+    system bin/"abuse", "--help"
   end
 end

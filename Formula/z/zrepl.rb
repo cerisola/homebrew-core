@@ -1,12 +1,13 @@
 class Zrepl < Formula
   desc "One-stop ZFS backup & replication solution"
   homepage "https://zrepl.github.io"
-  url "https://github.com/zrepl/zrepl/archive/v0.6.1.tar.gz"
+  url "https://github.com/zrepl/zrepl/archive/refs/tags/v0.6.1.tar.gz"
   sha256 "263c82501b75a1413f8a298c1d67d7e940c1b0cb967979790773237e2a30adbd"
   license "MIT"
   head "https://github.com/zrepl/zrepl.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "467d9021d507942a4f74a1c64983a1a216e3215110b67ca591101a1350a93928"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "cb2b36b880afd2cf11fc4bbb7e2f544f40287e180bdd06c47da63be1c9bb2970"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "aedcf0ebb00175cef1e063bddb652c1d291c5c388a90878ec95719cd5ed93a04"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "3c301f823c74d52657a946000964f3b4a3089a0a914deb6cf68f69d150ee057c"

@@ -6,21 +6,15 @@ class SpoofMac < Formula
   url "https://files.pythonhosted.org/packages/9c/59/cc52a4c5d97b01fac7ff048353f8dc96f217eadc79022f78455e85144028/SpoofMAC-2.1.1.tar.gz"
   sha256 "48426efe033a148534e1d4dc224c4f1b1d22299c286df963c0b56ade4c7dc297"
   license "MIT"
-  revision 4
+  revision 5
   head "https://github.com/feross/SpoofMAC.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "92de0b0b0e692ab4cce0c11186764c0f958d60bab3c3f0d00bfd0826d5322207"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0490f26b9569a49e4539b30d188cce6f4f341072baaff3acf7319b9197991ce4"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cba43539b88bb2eab269c77811ef39ec51d15b429074f35aa1a9206e3fd9963d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ebbde2128796667f8b7b558e421734a1ed54fa44f516edfdd9dd9c763d6420e2"
-    sha256 cellar: :any_skip_relocation, ventura:        "de6a9198d8e6fb51b6eac74a402e9529531e7e6ffc4e6cc106b6305c8603a424"
-    sha256 cellar: :any_skip_relocation, monterey:       "7078d35e9559593b7727c9786acc7e9da7cd93b3d7f99e1e392d08f56f683356"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "24c5b8478bdda5fb00e10924a79d3544b26bd04271f553e8670255029c640538"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "48c3a037c2b55a1f7849998fbdfa575f4e04726c284eb2190e72e0dcd93b0305"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   on_linux do
     depends_on "net-tools"
@@ -58,6 +52,6 @@ class SpoofMac < Formula
   end
 
   test do
-    system "#{bin}/spoof-mac", "list", "--wifi"
+    system bin/"spoof-mac", "list", "--wifi"
   end
 end

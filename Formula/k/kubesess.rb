@@ -1,20 +1,17 @@
 class Kubesess < Formula
   desc "Manage multiple kubernetes cluster at the same time"
-  homepage "https://rentarami.se/posts/2022-08-05-kube-context-2/"
-  url "https://github.com/Ramilito/kubesess/archive/refs/tags/1.2.9.tar.gz"
-  sha256 "6166ef97bbe9603f0f5561cf478603a2fce4a1e9c9746ee95f8a786836370e7f"
+  homepage "https://blog.rentarami.se/posts/2022-08-05-kube-context-2/"
+  url "https://github.com/Ramilito/kubesess/archive/refs/tags/2.0.1.tar.gz"
+  sha256 "a013e1bfaf846ad769f149f19dde6b7656ec52c7d2b10c407c619e4c42c59057"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "01319db1fa6ccee0229534c4494efb3974b226713ffe6a2f0e11d30abccdec69"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5b58c917ad8fb92a41e2c83a686453197582922dda36fc333f93ed238e406699"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8fd61e9305b41abd121efb51dc9698fc2aee8f04256baa1f9cdc477f9c1f44bb"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8c78d796a83ec18fe4afeee69f662f121426d2391a7c4c3a9e6278c0f157e3ef"
-    sha256 cellar: :any_skip_relocation, sonoma:         "67ec0ddc37a8f1b031649596be790675a6c2f5a79ebd8ff2295550892786bf16"
-    sha256 cellar: :any_skip_relocation, ventura:        "84934e248c8474c0883541f5aa5364f1189d45c90a06c342e1791ec984b80a05"
-    sha256 cellar: :any_skip_relocation, monterey:       "4aace9938091021492aab7789636e359c665cd9dd89f4af8156f5472266cfb3e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f6d1196a7512ceee8700b9fca138bc80e3006f522b9954532c8b4d33016786bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "94d93a752f6abe5044b9a70c94d19ca8ff00d9e77f13be2a5c55ac8e47cf429a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3f159cc145e44a8d89ab483ff2dbd682fef9f012a65f410b6e297539b1a91e2b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4a47911eb466b293073e7d020db9574935b86723eb50b9be3a2f8593a7ad5cc0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cb56a0e5a3b701228da24558eea2a652b180a3a2b1e46da960c5c3e5ec37bf86"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5f15272e42dba00f32da68d8f2123196f6695883d2ebe66c3cb95aa30995bdb7"
+    sha256 cellar: :any_skip_relocation, ventura:       "828b19ce40e2fe4e81007fcd4975f6d881eb91bd49e6d30ec36a13e10126486a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8c5b83e3cc3ddcf5fc490a08b40d2d596f815281738661a461887e457863e763"
   end
 
   depends_on "rust" => :build

@@ -1,8 +1,8 @@
 class ArgyllCms < Formula
   desc "ICC compatible color management system"
   homepage "https://www.argyllcms.com/"
-  url "https://www.argyllcms.com/Argyll_V3.0.0_src.zip"
-  sha256 "f3f8932f311a8c0c1239baf475e069d645ed6aa991e1e8d822bae361e1764651"
+  url "https://www.argyllcms.com/Argyll_V3.3.0_src.zip"
+  sha256 "69db1c9ef66f8cacbbbab4ed9910147de6100c3afd17a0a8c12e6525b778e8ce"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,18 +11,15 @@ class ArgyllCms < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "2a9f886a28f26e622c249d020f6b66323644c0a1f8417106ac4566ef88a27caf"
-    sha256 cellar: :any,                 arm64_ventura:  "827b5e2c7bdaca3ab26ee0b74f9b882e39f5e66e1d0c70e7910ecda6364c453f"
-    sha256 cellar: :any,                 arm64_monterey: "5958c95a16b6ec72aa2fb0fd00db8af263e0c7d8b91b5e04ff129c7b762f4359"
-    sha256 cellar: :any,                 arm64_big_sur:  "c698e42238bb53c7c4ec588fc38c811e2af429000d0591eae2695e83024b8326"
-    sha256 cellar: :any,                 sonoma:         "21fb33f7b5b72f82f03e25d7d7a4f44e57a8f89f402b8b14fa0c19836f17e179"
-    sha256 cellar: :any,                 ventura:        "3f4b4781185a6d0d9b76c31ae4c73e2152a4b9e83bf14c0ace09b50fd62754ff"
-    sha256 cellar: :any,                 monterey:       "c089e95a8e92019a36fbcfefdb7f3d85fb52d36cf06093a3661af5da38e941ac"
-    sha256 cellar: :any,                 big_sur:        "3350cce941f9d255123027245133fe2a1b03c70f873d410022bc0fe2b0e6f415"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "adae7eb98ca3755a4089190063df36cdcb9413fde1a6f4685ecdc6574c2176fc"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "c6eaa8f9f20129203c4ad4f8e536c0f8046a8c1f8376ecc2eb3e5ac4cd230b21"
+    sha256 cellar: :any,                 arm64_sonoma:  "6144869b77d490945df7d2e207baa71dbb7034a3dc914f00a71733f00956e58d"
+    sha256 cellar: :any,                 arm64_ventura: "c2a6ef0092b8b2ace04571ded3efee5e4fd39bdef7aaa2762deb1651de3389c0"
+    sha256 cellar: :any,                 sonoma:        "6836561552f12daecbe3f808ac50e58588d402036c242d0b5b21ac7620773118"
+    sha256 cellar: :any,                 ventura:       "e85f428eeb690ac25daf20b991f3b9c3fbeb3f53cc276fb2b7a031cff835c5ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76bf52c81646502007e8bb73fb1d247c0789d2d2aad4ffff41023f060f000fb1"
   end
 
-  depends_on "jam" => :build
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "libtiff"
@@ -32,6 +29,7 @@ class ArgyllCms < Formula
 
   on_linux do
     depends_on "libx11"
+    depends_on "libxext"
     depends_on "libxinerama"
     depends_on "libxrandr"
     depends_on "libxscrnsaver"
@@ -41,29 +39,57 @@ class ArgyllCms < Formula
 
   conflicts_with "num-utils", because: "both install `average` binaries"
 
-  # Fixes a missing header, which is an error by default on arm64 but not x86_64
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/f6ede0dff06c2d9e3383416dc57c5157704b6f3a/argyll-cms/unistd_import.diff"
-    sha256 "5ce1e66daf86bcd43a0d2a14181b5e04574757bcbf21c5f27b1f1d22f82a8a6e"
+  resource "jam" do
+    # The "Jam Documentation" page has a banner stating:
+    # "Perforce is no longer actively contributing to the Jam Open Source project.
+    # The last Perforce release of Jam was version 2.6 in August of 2014. We will
+    # keep the Perforce-controlled links and information posted here available
+    # until further notice."
+
+    # The argyll-cms maintainer told us that they want to keep jam as a build system
+    # even if it is not maintained anymore
+    # https://www.freelists.org/post/argyllcms/Status-of-Jam-build,1
+    # Vendoring jam will allow to get rid of our jam formula
+    url "https://swarm.workshop.perforce.com/downloads/guest/perforce_software/jam/jam-2.6.1.zip"
+    sha256 "72ea48500ad3d61877f7212aa3d673eab2db28d77b874c5a0b9f88decf41cb73"
+
+    # * Ensure <unistd.h> is included on macOS, fixing the following error:
+    #   `make1.c:392:8: error: call to undeclared function 'unlink'`.
+    # * Fix a typo that leads to an undeclared function error:
+    #   `parse.c:102:20: error: call to undeclared function 'yylineno'`
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/formula-patches/cf70f015e7398796660da57212ff0ab90c609acf/jam/2.6.1.patch"
+      sha256 "1850cf53c4db0e05978d52b90763b519c00fa4f2fbd6fc2753200e49943821ec"
+    end
   end
 
   def install
+    resource("jam").stage do
+      system "make", "CC=#{ENV.cc}", "CFLAGS=#{ENV.cflags}", "LOCATE_TARGET=bin"
+      (buildpath/"bin").install "bin/jam"
+    end
+
     # Remove bundled libraries to prevent fallback
-    %w[jpeg png tiff zlib].each { |l| (buildpath/l).rmtree }
+    %w[jpeg png tiff zlib].each { |l| rm_r(buildpath/l) }
 
     inreplace "Jamtop" do |s|
       openssl = Formula["openssl@3"]
       libname = shared_library("lib$(lcase)")
+      usr = if OS.mac?
+        "#{MacOS.sdk_path_if_needed}/usr"
+      else
+        "/usr"
+      end
 
       # These two inreplaces make sure all Homebrew and SDK libraries can be found by the Jamfile
       s.gsub! "[ GLOB /usr/include$(subd) : $(lcase).h $(lcase)lib.h ]",
               "[ GLOB #{openssl.opt_include}$(subd) : $(lcase).h $(lcase)lib.h ] || " \
               "[ GLOB #{HOMEBREW_PREFIX}/include$(subd) : $(lcase).h $(lcase)lib.h ] || " \
-              "[ GLOB #{MacOS.sdk_path_if_needed}/usr/include$(subd) : $(lcase).h $(lcase)lib.h ]"
+              "[ GLOB #{usr}/include$(subd) : $(lcase).h $(lcase)lib.h ]"
       s.gsub! "[ GLOB /usr/lib : lib$(lcase).so ]",
               "[ GLOB #{openssl.opt_lib} : #{libname} ] || " \
               "[ GLOB #{HOMEBREW_PREFIX}/lib : #{libname} ] || " \
-              "[ GLOB #{MacOS.sdk_path_if_needed}/usr/lib : #{libname} lib$(lcase).tbd ]"
+              "[ GLOB #{usr}/lib : #{libname} lib$(lcase).tbd ]"
 
       # These two inreplaces make sure the X11 headers can be found on Linux.
       s.gsub! "/usr/X11R6/include", HOMEBREW_PREFIX/"include"
@@ -71,6 +97,9 @@ class ArgyllCms < Formula
     end
 
     ENV["NUMBER_OF_PROCESSORS"] = ENV.make_jobs.to_s
+
+    inreplace "makeall.sh", "jam", buildpath/"bin/jam"
+    inreplace "makeinstall.sh", "jam", buildpath/"bin/jam"
     system "sh", "makeall.sh"
     system "./makeinstall.sh"
     rm "bin/License.txt"
@@ -80,6 +109,7 @@ class ArgyllCms < Formula
   test do
     system bin/"targen", "-d", "0", "test.ti1"
     system bin/"printtarg", testpath/"test.ti1"
+
     %w[test.ti1.ps test.ti1.ti1 test.ti1.ti2].each do |f|
       assert_predicate testpath/f, :exist?
     end

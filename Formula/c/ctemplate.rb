@@ -1,7 +1,7 @@
 class Ctemplate < Formula
   desc "Template language for C++"
   homepage "https://github.com/olafvdspek/ctemplate"
-  url "https://github.com/OlafvdSpek/ctemplate/archive/ctemplate-2.4.tar.gz"
+  url "https://github.com/OlafvdSpek/ctemplate/archive/refs/tags/ctemplate-2.4.tar.gz"
   sha256 "ccc4105b3dc51c82b0f194499979be22d5a14504f741115be155bd991ee93cfa"
   license "BSD-3-Clause"
   revision 1
@@ -9,6 +9,7 @@ class Ctemplate < Formula
 
   bottle do
     rebuild 3
+    sha256 cellar: :any,                 arm64_sequoia:  "acd3dba90331797c66b476e02edfb172fc67566fa46866d4b6c72605bb331030"
     sha256 cellar: :any,                 arm64_sonoma:   "da3b3f971024e8235955c5e6c2c3b0ae8626e229f2e5e26d5edceaf5fe10e6c0"
     sha256 cellar: :any,                 arm64_ventura:  "ee9935e535f7fc5ad36e78a17cdfa370dd804442065fb9d71f42939042b9a239"
     sha256 cellar: :any,                 arm64_monterey: "60926618dc8939dee2953a3eed541ffbcda70ae70ea9e4811de4c635f351c3dc"
@@ -23,7 +24,7 @@ class Ctemplate < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "python@3.11" => :build
+  uses_from_macos "python" => :build
 
   fails_with gcc: "5"
 
@@ -34,7 +35,7 @@ class Ctemplate < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <string>
       #include <ctemplate/template.h>
@@ -43,7 +44,7 @@ class Ctemplate < Formula
         dict.SetValue("NAME", "Jane Doe");
         return 0;
       }
-    EOS
+    CPP
 
     system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-L#{lib}",
                     "-lctemplate_nothreads", "-o", "test"

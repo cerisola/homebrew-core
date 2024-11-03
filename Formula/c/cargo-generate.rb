@@ -1,40 +1,30 @@
 class CargoGenerate < Formula
   desc "Use pre-existing git repositories as templates"
   homepage "https://github.com/cargo-generate/cargo-generate"
-  # TODO: check if we can use unversioned `libgit2` at version bump.
-  # See comments below for details.
-  url "https://github.com/cargo-generate/cargo-generate/archive/refs/tags/v0.18.4.tar.gz"
-  sha256 "830c9a6bc6350f47e854260291d7303b8058659f8e03b85894f5636ec2d69b17"
+  url "https://github.com/cargo-generate/cargo-generate/archive/refs/tags/v0.22.0.tar.gz"
+  sha256 "cbea9b09fe0d9d577723007e1c7ef8329f7cb36268ad042bb870b63dbeaad323"
   license any_of: ["Apache-2.0", "MIT"]
-  revision 1
   head "https://github.com/cargo-generate/cargo-generate.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "21579bcb1c519918780f419cccf75c0a5bc43c1941c3820c27aa439e9be77c67"
-    sha256 cellar: :any,                 arm64_ventura:  "f8604cdaa3abbad85cebf35c31ea9094cd485846db6a1e7c1501c347a0c887a7"
-    sha256 cellar: :any,                 arm64_monterey: "5531f9d28f0987b8df1618c14756c3058249fdeaf875e9f062a5d5c2ed93e8c1"
-    sha256 cellar: :any,                 arm64_big_sur:  "bea38c9c69707163bdcfd676dc4fc6e0c0270b332ccaa108636e84053a8f3666"
-    sha256 cellar: :any,                 sonoma:         "827f03d0c299fcccd6c070ae1f16431fe9142149e3793accc5edcc0a89848546"
-    sha256 cellar: :any,                 ventura:        "74e5a5029a89b5b8473eac07d20af0419b7480b00d818137f3cc81cee26ebf1a"
-    sha256 cellar: :any,                 monterey:       "e0281cd735b23577defc2f3a4c152aac138de326682e6f7c72cfea90395af7f4"
-    sha256 cellar: :any,                 big_sur:        "a4a4c91e2797eccb3d4ea68090e15d10e97849275a62cd158293712780711bce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d19aecb6fd248226f867516b30c395efce81544550d7a343ba3dbd94213f51f2"
+    sha256 cellar: :any,                 arm64_sequoia:  "b9d75c2816fb85e86c7063c24eaee49e0312548102ecf5c76d07cd30cb5abb75"
+    sha256 cellar: :any,                 arm64_sonoma:   "b7c2aa1cf4d9399a92393095be0d0db98382c4134a5d23b2e690db38c3fa998d"
+    sha256 cellar: :any,                 arm64_ventura:  "ebacfd69ba9482f1bb85bbb216e43f04706e69156cb0199607bc4b86d6cc83dd"
+    sha256 cellar: :any,                 arm64_monterey: "3deb80088b59d79b13fefb9ac189af1220b8269e39857fbfa1df7610fe0a95a0"
+    sha256 cellar: :any,                 sonoma:         "e0d5693494cb6763204f33499965ce4954918751c0caae64f9de3a2427fccce2"
+    sha256 cellar: :any,                 ventura:        "caea467b6b29979e1d5d5040ef5839a5fe2ce1c1e94a87759a9b9838cfd5c30b"
+    sha256 cellar: :any,                 monterey:       "fdc8e442a0bd311e2dcc420ca98aa513d632e320edb7fb7cfa3cad32351c3b86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "515399398dbaba43f5fa4225df8334c28b620e1e0e486771010fb6aeef6fb0ee"
   end
 
   depends_on "pkg-config" => :build
   depends_on "rust" => :build
-  # To check for `libgit2` version:
-  # 1. Search for `libgit2-sys` version at https://github.com/cargo-generate/cargo-generate/blob/v#{version}/Cargo.lock
-  # 2. If the version suffix of `libgit2-sys` is newer than +1.6.*, then:
-  #    - Migrate to the corresponding `libgit2` formula.
-  #    - Change the `LIBGIT2_SYS_USE_PKG_CONFIG` env var below to `LIBGIT2_NO_VENDOR`.
-  #      See: https://github.com/rust-lang/git2-rs/commit/59a81cac9ada22b5ea6ca2841f5bd1229f1dd659.
-  depends_on "libgit2@1.6"
+  depends_on "libgit2"
   depends_on "libssh2"
   depends_on "openssl@3"
 
   def install
-    ENV["LIBGIT2_SYS_USE_PKG_CONFIG"] = "1"
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
     ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
     # Ensure the correct `openssl` will be picked up.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
@@ -60,7 +50,7 @@ class CargoGenerate < Formula
     assert_match "brewtest", (testpath/"brewtest/Cargo.toml").read
 
     linked_libraries = [
-      Formula["libgit2@1.6"].opt_lib/shared_library("libgit2"),
+      Formula["libgit2"].opt_lib/shared_library("libgit2"),
       Formula["libssh2"].opt_lib/shared_library("libssh2"),
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
     ]

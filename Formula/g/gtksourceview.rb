@@ -18,7 +18,7 @@ class Gtksourceview < Formula
   end
 
   # GTK 2 is EOL: https://blog.gtk.org/2020/12/16/gtk-4-0/
-  deprecate! date: "2023-01-18", because: :unmaintained
+  disable! date: "2024-01-21", because: :unmaintained
 
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
@@ -26,6 +26,10 @@ class Gtksourceview < Formula
   depends_on "gtk+"
 
   uses_from_macos "perl" => :build
+
+  on_linux do
+    depends_on "perl-xml-parser" => :build
+  end
 
   resource "gtk-mac-integration" do
     on_macos do
@@ -56,7 +60,7 @@ class Gtksourceview < Formula
       end
       ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
     else
-      ENV.prepend_path "PERL5LIB", Formula["intltool"].libexec/"lib/perl5"
+      ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5"
     end
 
     system "./configure", *std_configure_args, "--disable-silent-rules"
@@ -64,14 +68,14 @@ class Gtksourceview < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <gtksourceview/gtksourceview.h>
 
       int main(int argc, char *argv[]) {
         GtkWidget *widget = gtk_source_view_new();
         return 0;
       }
-    EOS
+    C
     ENV.libxml2
     atk = Formula["atk"]
     cairo = Formula["cairo"]

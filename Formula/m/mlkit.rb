@@ -1,8 +1,8 @@
 class Mlkit < Formula
   desc "Compiler for the Standard ML programming language"
   homepage "https://melsman.github.io/mlkit"
-  url "https://github.com/melsman/mlkit/archive/v4.7.4.tar.gz"
-  sha256 "8dfcbc6ca1c6209ef9d9d86abdebec5eba348030026ee21e6e37dc72cfcad72f"
+  url "https://github.com/melsman/mlkit/archive/refs/tags/v4.7.12.tar.gz"
+  sha256 "145b12a6c0b693a1cc85274f3d45273e5aef83e27c7fa716d5b14b3eccd7c931"
   license "GPL-2.0-or-later"
   head "https://github.com/melsman/mlkit.git", branch: "master"
 
@@ -12,10 +12,9 @@ class Mlkit < Formula
   end
 
   bottle do
-    sha256 sonoma:       "aae192c92489b5a82bacd77c0eab9155f00dfff064158cb6228a598d89ed862e"
-    sha256 ventura:      "9de9f263b05a3057bb455c18e4a85ee6d236f5e17d4ab3f40bb4ad346d2ed549"
-    sha256 monterey:     "736b1f436edf933ff18cdd053e2d27b5b3ed8b4bc99f5fe4820eb4a436b95ae6"
-    sha256 x86_64_linux: "c09d267023caaf70221d746a7613be32dfa69e01f3566b8cf7f8e429552a7667"
+    sha256 sonoma:       "ada9d2985247b47a787512f945b9aae3b3f283dca824ca9eaae20585231b41e3"
+    sha256 ventura:      "908f3f10957a5addb5117b4e443217a070e2b4e6a2edd0b8c8cf73ab61f94ff0"
+    sha256 x86_64_linux: "2bfe93f58143a29a8ea7b758bd2e0a3172aaea0b201ae10785ef0c0ccd0b64c4"
   end
 
   depends_on "autoconf" => :build
@@ -51,7 +50,7 @@ class Mlkit < Formula
       val res = if b = 24 then "OK" else "ERR"
       val () = print ("Result: " ^ res ^ "\\n")
     EOS
-    system "#{bin}/mlkit", "-o", "test", "test.sml"
+    system bin/"mlkit", "-o", "test", "test.sml"
     assert_equal "Result: OK\n", shell_output("./test")
   end
 end

@@ -1,7 +1,7 @@
 class Opensubdiv < Formula
   desc "Open-source subdivision surface library"
   homepage "https://graphics.pixar.com/opensubdiv/docs/intro.html"
-  url "https://github.com/PixarAnimationStudios/OpenSubdiv/archive/v3_6_0.tar.gz"
+  url "https://github.com/PixarAnimationStudios/OpenSubdiv/archive/refs/tags/v3_6_0.tar.gz"
   sha256 "bebfd61ab6657a4f4ff27845fb66a167d00395783bfbd253254d87447ed1d879"
   license "Apache-2.0"
 
@@ -11,6 +11,7 @@ class Opensubdiv < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "82514e22222203cd7f1311d3e327cade6c43276a8824f86438fafe8bc14b8b33"
     sha256 cellar: :any,                 arm64_sonoma:   "0eedbb0c9de3bac83f8a80d501d6dc419942e8f09c4eecc5a49ce5dbb2243d64"
     sha256 cellar: :any,                 arm64_ventura:  "50e2cc8bbc3be3c7f3b507f4a65e75888c932ea97bee2a8478d8a71ff6f8726a"
     sha256 cellar: :any,                 arm64_monterey: "7d1d66be2ebc32bcb9479e69f329bd228ae2542233792d19bb26c1163dd3ef4a"
@@ -43,7 +44,7 @@ class Opensubdiv < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install bin/"tutorials/hbr_tutorial_0"
-    rm_rf "#{bin}/tutorials"
+    rm_r("#{bin}/tutorials")
   end
 
   test do

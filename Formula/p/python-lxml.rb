@@ -1,27 +1,27 @@
 class PythonLxml < Formula
   desc "Pythonic binding for the libxml2 and libxslt libraries"
   homepage "https://github.com/lxml/lxml"
-  url "https://files.pythonhosted.org/packages/30/39/7305428d1c4f28282a4f5bdbef24e0f905d351f34cf351ceb131f5cddf78/lxml-4.9.3.tar.gz"
-  sha256 "48628bd53a426c9eb9bc066a923acaa0878d1e86129fd5359aee99285f4eed9c"
+  url "https://files.pythonhosted.org/packages/63/f7/ffbb6d2eb67b80a45b8a0834baa5557a14a5ffce0979439e7cd7f0c4055b/lxml-5.2.2.tar.gz"
+  sha256 "bb2dc4898180bea79863d5487e5f9c7c34297414bad54bcd0f0852aee9cfdb87"
   license "BSD-3-Clause"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "0053d3bb932417672f1208a39fe32cc004939eedf48d3b6260ba4ab7dd6e6a71"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "61817bea95e749a041fde129abfbfbf57e34f21965e0bcf75aec62915ef67d2f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "943fed91a4aa635aa6106d447b608faf7c8c193bdad0e787d6fc8eae225f5685"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9a393703230af1880064e2ad7d45cc854aaeca528cc13104ad157b6ec62f1a6c"
-    sha256 cellar: :any_skip_relocation, ventura:        "0be496dfe111ff388228ce27bb456c27b2332fcbe41c8e018acebbe5de380b04"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a0cc74e848d0094ebf7d6d55ffe3b556441d754358b55b0be24527a12312b23"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1656714ed0bb2b3c9c61807004fe6478651ef29ef909563b86ad29e60c4e77a7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "00da0d292782cc8f590a3f25255065b7c50468b653564cded6374f310f5cdbc8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0cb01e1f9efb6881f8b372c4afafa2a5beed53da457fd6b1773808737d17b138"
+    sha256 cellar: :any,                 arm64_monterey: "0aabaeae58992c0ce648e36b2b22e637e61e3c52150b048fd52ab0a839e77f72"
+    sha256 cellar: :any_skip_relocation, sonoma:         "8f8668f58af29d86aa4eea49574e4de7ecf56b1513cb2285dd50b6eb2aaf851a"
+    sha256 cellar: :any_skip_relocation, ventura:        "37914264da3b2e4efa00fb06ea69d22616b65210852442566ede657ab80207d3"
+    sha256 cellar: :any,                 monterey:       "ce1d7eea93c621928601d6d32a9f582cf6a65f72c248ce1c15a5e0c9b269f09e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b31cc2b8833b956f4c76074ecaf21e6beb505dc3913a4d9da57b8bb1cf9bc160"
   end
 
+  disable! date: "2024-08-15", because: "does not meet homebrew/core's requirements for Python library formulae"
+
   depends_on "python-setuptools" => :build
-  depends_on "python@3.10" => [:build, :test]
   depends_on "python@3.11" => [:build, :test]
   depends_on "python@3.12" => [:build, :test]
 
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
   def pythons
@@ -33,6 +33,15 @@ class PythonLxml < Formula
       python_exe = python.opt_libexec/"bin/python"
       system python_exe, "-m", "pip", "install", *std_pip_args, "."
     end
+  end
+
+  def caveats
+    <<~EOS
+      Additional details on upcoming formula removal are available at:
+      * https://github.com/Homebrew/homebrew-core/issues/157500
+      * https://docs.brew.sh/Python-for-Formula-Authors#libraries
+      * https://docs.brew.sh/Homebrew-and-Python#pep-668-python312-and-virtual-environments
+    EOS
   end
 
   test do

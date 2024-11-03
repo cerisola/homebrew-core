@@ -1,11 +1,12 @@
 class Multitime < Formula
   desc "Time command execution over multiple executions"
   homepage "https://tratt.net/laurie/src/multitime/"
-  url "https://github.com/ltratt/multitime/archive/multitime-1.4.tar.gz"
+  url "https://github.com/ltratt/multitime/archive/refs/tags/multitime-1.4.tar.gz"
   sha256 "31597066239896ee74a3aaaea3b22931a50a1ec1470090c5457ef35500c44249"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9f8212bee01aa77f3422303f6ff1d0e59bb2937be070934a857448e808adaa61"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a0439477342bced6548a46765025a9d860d571060b9319dfe480f977b8420e0c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "013f3d84765b886e4a877466669328c4ba0f8214ad2b9c97285fee79cfecaad4"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "5c38266c2518cac8687617b0d4b96171b56a179b8472ff4bd3145b2d6ddc9d0d"

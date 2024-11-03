@@ -2,19 +2,18 @@ class WakatimeCli < Formula
   desc "Command-line interface to the WakaTime api"
   homepage "https://wakatime.com/"
   url "https://github.com/wakatime/wakatime-cli.git",
-    tag:      "v1.85.1",
-    revision: "fe403165d14babf3938839d70b20efb8af3ec6ae"
+    tag:      "v1.102.5",
+    revision: "04fb85a6f8050a61d2c656c06ccb63069668c14c"
   license "BSD-3-Clause"
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "959b625aea51a8718eca2ada91d01670c6e686561dfba49998389563f186dd03"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d99701cadc50f81d3233844192a63af2b23b79dad1ce1382971fa01c0c4977bd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b26eba92580130b59d3e666f7b711543cb7aef823a9ef8c688dd2a449150a19c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "28126631632641e089ff886cfc1d39ebc7cd15499beae4ceb412ecbe549f4f5d"
-    sha256 cellar: :any_skip_relocation, ventura:        "3fc53836e9b5893428933be0e7c433275b65439f0732a1aa93f12f1fe5774891"
-    sha256 cellar: :any_skip_relocation, monterey:       "682f27fc43e8168f27e9f1161808030b15394c8e47649f8795509588ff73765c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0d87dec43f4dd05824b1013a96f487c01b18c3c19ac659c53241cfeb1c453093"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4ca6dcd6de39b898505d3fe169887c42187a023034022a253bd0ea77ec2d3f2d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4ca6dcd6de39b898505d3fe169887c42187a023034022a253bd0ea77ec2d3f2d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4ca6dcd6de39b898505d3fe169887c42187a023034022a253bd0ea77ec2d3f2d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0ba722baf5edc573c194923a967accc3f436ba9153f4ce75e63c90d566ff9adf"
+    sha256 cellar: :any_skip_relocation, ventura:       "0ba722baf5edc573c194923a967accc3f436ba9153f4ce75e63c90d566ff9adf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8fd3eba35d9f224436d759225f3fb855d281a0257603f462e4c5c57eb0373d40"
   end
 
   depends_on "go" => :build
@@ -29,7 +28,7 @@ class WakatimeCli < Formula
       -X github.com/wakatime/wakatime-cli/pkg/version.OS=#{OS.kernel_name.downcase}
       -X github.com/wakatime/wakatime-cli/pkg/version.Version=v#{version}
     ].join(" ")
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

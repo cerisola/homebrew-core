@@ -1,7 +1,7 @@
 class Wrk < Formula
   desc "HTTP benchmarking tool"
   homepage "https://github.com/wg/wrk"
-  url "https://github.com/wg/wrk/archive/4.2.0.tar.gz"
+  url "https://github.com/wg/wrk/archive/refs/tags/4.2.0.tar.gz"
   sha256 "e255f696bff6e329f5d19091da6b06164b8d59d62cb9e673625bdcd27fe7bdad"
   # License is modified Apache 2.0 with addition to Section 4 Redistribution:
   #
@@ -16,6 +16,7 @@ class Wrk < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "4c5610d7241ae72132fbeeebfea6b912c4f1c7d71a9cb55f523c07bef1d53ee5"
     sha256 cellar: :any,                 arm64_sonoma:   "89a17214695f28852b9be47589b1f8788b7209201c163b2bf39b608c1ba2bacd"
     sha256 cellar: :any,                 arm64_ventura:  "f1838e262aaea9a48cd54b0e33c25e39131a9732d5e9b9748498ef37cf468699"
     sha256 cellar: :any,                 arm64_monterey: "dff2f475aaebf54bf90ca442ed041fb857b43249e9c8c7f4503018bb3970a4e3"
@@ -34,7 +35,7 @@ class Wrk < Formula
 
   def install
     ENV.deparallelize
-    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s if OS.mac?
     ENV.append_to_cflags "-I#{Formula["luajit"].opt_include}/luajit-2.1"
     args = %W[
       WITH_LUAJIT=#{Formula["luajit"].opt_prefix}

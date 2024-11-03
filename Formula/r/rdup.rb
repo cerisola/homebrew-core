@@ -1,9 +1,9 @@
 class Rdup < Formula
   desc "Utility to create a file list suitable for making backups"
   homepage "https://github.com/miekg/rdup"
-  url "https://github.com/miekg/rdup/archive/1.1.15.tar.gz"
+  url "https://github.com/miekg/rdup/archive/refs/tags/1.1.15.tar.gz"
   sha256 "787b8c37e88be810a710210a9d9f6966b544b1389a738aadba3903c71e0c29cb"
-  license "GPL-3.0"
+  license "GPL-3.0-or-later"
   revision 2
   head "https://github.com/miekg/rdup.git", branch: "master"
 
@@ -18,7 +18,7 @@ class Rdup < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "6f3b71f0f9c4a1d1879274bf2eb6f0244b3b06612128991a6c91e4bd39b56cc9"
   end
 
-  deprecate! date: "2022-10-27", because: "uses deprecated mcrypt, has 0 downloads"
+  disable! date: "2023-11-12", because: "uses deprecated mcrypt, has 0 downloads"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

@@ -1,27 +1,26 @@
 class Ensmallen < Formula
   desc "Flexible C++ library for efficient mathematical optimization"
   homepage "https://ensmallen.org"
-  url "https://github.com/mlpack/ensmallen/archive/2.20.0.tar.gz"
-  sha256 "5c7cea756e544795b3861d171f7cc28ba0a0be6297f84026b0b17e1dfc583f24"
+  url "https://github.com/mlpack/ensmallen/archive/refs/tags/2.21.1.tar.gz"
+  sha256 "820eee4d8aa32662ff6a7d883a1bcaf4e9bf9ca0a3171d94c5398fe745008750"
   license "BSD-3-Clause"
   head "https://github.com/mlpack/ensmallen.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0068070cf8fd7ce0b31e1488b4ab225fe0870816f60af08e37eae3296219165e"
+    sha256 cellar: :any_skip_relocation, all: "9595ef3976ec48fdb6ecc4d2a2d04664a9c44ab17af0c275727374f6d2acc4ae"
   end
 
   depends_on "cmake" => :build
   depends_on "armadillo"
 
   def install
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <ensmallen.hpp>
       using namespace ens;
       int main()
@@ -32,7 +31,8 @@ class Ensmallen < Formula
         optimizer.Optimize(f, coordinates);
         return 0;
       }
-    EOS
+    CPP
+
     system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-L#{Formula["armadillo"].opt_lib}",
                     "-larmadillo", "-o", "test"
   end

@@ -1,9 +1,9 @@
 class ArmNoneEabiGcc < Formula
   desc "GNU compiler collection for arm-none-eabi"
   homepage "https://gcc.gnu.org"
-  url "https://ftp.gnu.org/gnu/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gcc/gcc-13.2.0/gcc-13.2.0.tar.xz"
-  sha256 "e275e76442a6067341a27f04c5c6b83d8613144004c0413528863dc6b5c743da"
+  url "https://ftp.gnu.org/gnu/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gcc/gcc-14.2.0/gcc-14.2.0.tar.xz"
+  sha256 "a7b39bc69cbf9e25826c5a60ab26477001f7c08d85cec04bc0e29cabed6f3cc9"
   license "GPL-3.0-or-later" => { with: "GCC-exception-3.1" }
 
   livecheck do
@@ -11,21 +11,24 @@ class ArmNoneEabiGcc < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "19bd8623e59de6c729f16d3fcac921be5fd876f89bba70f552e1d91cf477160a"
-    sha256 arm64_ventura:  "4f2f39fafa158e109e7ead969e9fab8d1ea14e4dcf9e78fe2e0f959195c6d906"
-    sha256 arm64_monterey: "9eaf4e0fa6ba13e7d7f355c7fef36b264c869194dde1be79a824c509c18489f3"
-    sha256 arm64_big_sur:  "9c7d8c3936e3ab6151fc0e5ccf2cf9ab740bb8c09e74c1d51deffc1e40966201"
-    sha256 sonoma:         "3b1a78f3874c9f1ea785f3adfdc707b4512c601520d20fdfb36d6de8871ab365"
-    sha256 ventura:        "605716f2172a781934637d78a772fa6b245f786d60d5fcecd8f7b1f9e8d54f36"
-    sha256 monterey:       "86438c6a8f263a5b0942bab2f7eb9b3259f70e3bea77bd5b7f9c1ea4accd1322"
-    sha256 big_sur:        "a156db223f16707396358727e4c178d427496e8174d7f133b51f5efa1643504d"
-    sha256 x86_64_linux:   "e8ae63c45c6b9fc368896e5fe83879d3e7f4682400dcb6cefea33fa684f441f3"
+    sha256 arm64_sequoia:  "7e99a55c38570d03ab85afd156bad3a40153405d8e8427ab4e75e8291a472acb"
+    sha256 arm64_sonoma:   "110e080cf05531cf7d97c9efc1c39b23b2bd2bec38cf536814d94ea6b0103c27"
+    sha256 arm64_ventura:  "7eb18a5b0768335ec37cd994e073e7c7bd8b3e32437c6c8fa8966f4014eecc42"
+    sha256 arm64_monterey: "7feb6f35385f0c35b2b74ef2b735ba1040e4fbf82a3386ffa6e97a92a07cc755"
+    sha256 sonoma:         "7ff497dd7128127e645c9994e914a4fd72feefa12a1010e6f99abaa758467c47"
+    sha256 ventura:        "7e3aa22bd54f564cd5c51a381b3822ceb6b0b3d19a04eceb2040691a26ab581e"
+    sha256 monterey:       "1d4d2b9c82111c5e906ae204ec2905a6e9ca2d06e5a0487e62451b9b65e10676"
+    sha256 x86_64_linux:   "b5bb4cee7a5e1d1a6eb896b40854911a4616e98a0b66b6a8590a9b481a8b308e"
   end
 
   depends_on "arm-none-eabi-binutils"
   depends_on "gmp"
+  depends_on "isl"
   depends_on "libmpc"
   depends_on "mpfr"
+  depends_on "zstd"
+
+  uses_from_macos "zlib"
 
   def install
     target = "arm-none-eabi"
@@ -34,31 +37,34 @@ class ArmNoneEabiGcc < Formula
                              "--prefix=#{prefix}",
                              "--infodir=#{info}/#{target}",
                              "--disable-nls",
-                             "--without-isl",
                              "--without-headers",
                              "--with-as=#{Formula["arm-none-eabi-binutils"].bin}/arm-none-eabi-as",
                              "--with-ld=#{Formula["arm-none-eabi-binutils"].bin}/arm-none-eabi-ld",
-                             "--enable-languages=c,c++"
+                             "--enable-languages=c,c++,objc,lto",
+                             "--enable-lto",
+                             "--with-system-zlib",
+                             "--with-zstd",
+                             *std_configure_args
       system "make", "all-gcc"
       system "make", "install-gcc"
       system "make", "all-target-libgcc"
       system "make", "install-target-libgcc"
 
       # FSF-related man pages may conflict with native gcc
-      (share/"man/man7").rmtree
+      rm_r(share/"man/man7")
     end
   end
 
   test do
-    (testpath/"test-c.c").write <<~EOS
+    (testpath/"test-c.c").write <<~C
       int main(void)
       {
         int i=0;
         while(i<10) i++;
         return i;
       }
-    EOS
-    system "#{bin}/arm-none-eabi-gcc", "-c", "-o", "test-c.o", "test-c.c"
+    C
+    system bin/"arm-none-eabi-gcc", "-c", "-o", "test-c.o", "test-c.c"
     assert_match "file format elf32-littlearm",
                  shell_output("#{Formula["arm-none-eabi-binutils"].bin}/arm-none-eabi-objdump -a test-c.o")
   end

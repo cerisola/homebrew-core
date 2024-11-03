@@ -1,10 +1,9 @@
 class Pidgin < Formula
   desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
-  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.14.12/pidgin-2.14.12.tar.bz2"
-  sha256 "2b05246be208605edbb93ae9edc079583d449e2a9710db6d348d17f59020a4b7"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.14.13/pidgin-2.14.13.tar.bz2"
+  sha256 "120049dc8e17e09a2a7d256aff2191ff8491abb840c8c7eb319a161e2df16ba8"
   license "GPL-2.0-or-later"
-  revision 1
 
   livecheck do
     url "https://sourceforge.net/projects/pidgin/files/Pidgin/"
@@ -13,13 +12,13 @@ class Pidgin < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "b2e5c0e2731a46e7979f8906ef13157590979ad6cb060c276f276ce1a6ebfb18"
-    sha256 arm64_ventura:  "f3a2601a1197c63c8e63cfed471019e1e5422511206848d6b37b6383431ce87d"
-    sha256 arm64_monterey: "945f3685930f41562f171b64f8714f80d52c52ab454b084201c493f4ab00d10b"
-    sha256 sonoma:         "d856de13e81f1e274b423f6c6a43aff86c7d4e9291cf288242beddc243bc65bd"
-    sha256 ventura:        "1cfa9ff27dab1b9d09e7ce7a14b0b4a28b9b69acf9167cdd2459bc2c23a5f4a3"
-    sha256 monterey:       "f88f5105b1d6b113c39e448455dc8069bdca68fb9d3a36a203218428a4ab76c6"
-    sha256 x86_64_linux:   "77505b9bb23f796cbaa6948e23a83e25e96ad88fc509a92f451456fcbeac6569"
+    sha256 arm64_sonoma:   "735ac9a85896636ac0121e6d33a877b6c9c4ea23686014376a50cbd43885b846"
+    sha256 arm64_ventura:  "35dcff54f09b5b91f5f8041424ef35b0cadbf1c24b346790273a87399ae588bb"
+    sha256 arm64_monterey: "370b87c26ae7266fb00216f0f770fdb59c397cf3143472cda027d5fa648182f9"
+    sha256 sonoma:         "9c7e35ec31ab8aad750dcf4ddccba0a3412abb9a8ad7a0b1863b383e2340ac83"
+    sha256 ventura:        "33eb3656e25813dd78f1e02e1817334c4b35b651987e8efb407bedad84097708"
+    sha256 monterey:       "f5de8a96f6f21ab3c29718c03601f5083e192bba706d600fe427f0e1d4da52a9"
+    sha256 x86_64_linux:   "d63a66dbc9278a3c5b32c21e249ceb140dde3098382bc88b18e7411c0224fd12"
   end
 
   depends_on "intltool" => :build
@@ -101,7 +100,7 @@ class Pidgin < Formula
       ]
     end
 
-    ENV["ac_cv_func_perl_run"] = "yes" if MacOS.version == :high_sierra
+    ENV["ac_cv_func_perl_run"] = "yes" if OS.mac? && MacOS.version == :high_sierra
 
     # patch pidgin to read plugins and allow them to live in separate formulae which can
     # all install their symlinks into these directories. See:
@@ -130,10 +129,10 @@ class Pidgin < Formula
   end
 
   test do
-    system "#{bin}/finch", "--version"
-    system "#{bin}/pidgin", "--version"
+    system bin/"finch", "--version"
+    system bin/"pidgin", "--version"
 
-    pid = fork { exec "#{bin}/pidgin", "--config=#{testpath}" }
+    pid = fork { exec bin/"pidgin", "--config=#{testpath}" }
     sleep 5
     Process.kill "SIGTERM", pid
   end

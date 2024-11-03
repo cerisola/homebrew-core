@@ -22,13 +22,13 @@ class Texapp < Formula
   end
 
   # website now shows "The last moments of App.net global, as witnessed from Texapp"
-  deprecate! date: "2023-03-13", because: :repo_archived
+  disable! date: "2024-02-15", because: :repo_archived
 
   def install
     bin.install "#{version}.txt" => "texapp"
   end
 
   test do
-    assert_match "trying to find cURL ...", pipe_output("#{bin}/texapp", "^C")
+    assert_match "trying to find cURL ...", pipe_output(bin/"texapp", "^C")
   end
 end

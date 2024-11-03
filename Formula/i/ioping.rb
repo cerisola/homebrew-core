@@ -1,12 +1,13 @@
 class Ioping < Formula
   desc "Tool to monitor I/O latency in real time"
   homepage "https://github.com/koct9i/ioping"
-  url "https://github.com/koct9i/ioping/archive/v1.3.tar.gz"
+  url "https://github.com/koct9i/ioping/archive/refs/tags/v1.3.tar.gz"
   sha256 "7aa48e70aaa766bc112dea57ebbe56700626871052380709df3a26f46766e8c8"
   license "GPL-3.0-or-later"
   head "https://github.com/koct9i/ioping.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "52741ce205f6edd2660c7848d815fbf708aeecf69439a47984dedd602c0aa783"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4f3bda1094884d84cd06efdfdbe955f9926c5e9f265abfcb5ae1169ca03ac73e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "251ce565377d1b3f09d3293c46459b9950b8345ae8e66c2af8e069541880548c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c80c269c2105571ae9ea183372a238c784553652783ea417365010422dd1b2cc"
@@ -25,6 +26,6 @@ class Ioping < Formula
   end
 
   test do
-    system "#{bin}/ioping", "-c", "1", testpath
+    system bin/"ioping", "-c", "1", testpath
   end
 end

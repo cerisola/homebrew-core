@@ -3,9 +3,17 @@ class Pyside < Formula
 
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.5.2-src/pyside-setup-everywhere-src-6.5.2.tar.xz"
-  sha256 "90dbf1d14fcd41c98a7cbea44b8a4951e10d0b798e154749756e4946654d1ba8"
-  license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
+  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.7.3-src/pyside-setup-everywhere-src-6.7.3.tar.xz"
+  sha256 "a4c414be013d5051a2d10a9a1151e686488a3172c08a57461ea04b0a0ab74e09"
+  # NOTE: We omit some licenses even though they are in SPDX-License-Identifier or LICENSES/ directory:
+  # 1. LicenseRef-Qt-Commercial is removed from "OR" options as non-free
+  # 2. GFDL-1.3-no-invariants-only is only used by not installed docs, e.g. sources/{pyside6,shiboken6}/doc
+  # 3. BSD-3-Clause is only used by not installed examples, tutorials and build scripts
+  # 4. Apache-2.0 is only used by not installed examples
+  license all_of: [
+    { "GPL-3.0-only" => { with: "Qt-GPL-exception-1.0" } },
+    { any_of: ["LGPL-3.0-only", "GPL-2.0-only", "GPL-3.0-only"] },
+  ]
 
   livecheck do
     url "https://download.qt.io/official_releases/QtForPython/pyside6/"
@@ -13,21 +21,18 @@ class Pyside < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "2d55e2cac6cdedc533be9f1c38d2236d7bce53988542f76d96b96f1e62e8c305"
-    sha256 cellar: :any, arm64_ventura:  "9aa2c6e8e92454251f4ef2ff53ba8badabc9a55381cfb7ebea44dfbbc9fd7966"
-    sha256 cellar: :any, arm64_monterey: "63221c34119789913be3d22d1ea3d3fe7631f60aa35880677910b56e8dfb72d6"
-    sha256 cellar: :any, arm64_big_sur:  "9ab03e7a12afefecd33ba2cd72e2228178d5a7de5866482d3c5a9f18a9f7543c"
-    sha256 cellar: :any, sonoma:         "5d4ea0048af8a56b70f1e4885ec0a5891aef311b858a075d3801d8a513aa7404"
-    sha256 cellar: :any, ventura:        "b76e848c2cac77f14cf96067002240b140f52b368ef74105f8584b5ec0b46a7e"
-    sha256 cellar: :any, monterey:       "e480b45aa70deb7ebf47996b9dd1c186079039f740b70a075e85403af85972ed"
-    sha256 cellar: :any, big_sur:        "46a22ccaa4b50f28e519e4b9c936bcbff00a4956f4165e96432b81dc5bc234d9"
+    sha256 cellar: :any, arm64_sonoma:  "c68e9ffe44861c52ec2190a21ca5d50e6122bb8d91087c950ba23132d44a6c42"
+    sha256 cellar: :any, arm64_ventura: "ef11438a72f6dc75f50951241eeb5ef95a6011078b73bb0c3389f28fe35c8bb1"
+    sha256 cellar: :any, sonoma:        "08290c31434dc6f115eb7f53f92540a347b693b5d125aa2f8935358bff04adb0"
+    sha256 cellar: :any, ventura:       "ed319e06e865311c2a788b94528034cb1e59023fef6e621a84638f28915c095c"
   end
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
+  depends_on "python-setuptools" => :build
   depends_on xcode: :build
   depends_on "llvm"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "qt"
 
   uses_from_macos "libxml2"
@@ -39,8 +44,12 @@ class Pyside < Formula
 
   fails_with gcc: "5"
 
+  # Fix .../sources/pyside6/qtexampleicons/module.c:4:10: fatal error: 'Python.h' file not found
+  # Upstream issue: https://bugreports.qt.io/browse/PYSIDE-2491
+  patch :DATA
+
   def python3
-    "python3.11"
+    "python3.12"
   end
 
   def install
@@ -125,3 +134,18 @@ class Pyside < Formula
     system "./test"
   end
 end
+
+__END__
+diff --git a/sources/pyside6/qtexampleicons/CMakeLists.txt b/sources/pyside6/qtexampleicons/CMakeLists.txt
+index 1562f7b..0611399 100644
+--- a/sources/pyside6/qtexampleicons/CMakeLists.txt
++++ b/sources/pyside6/qtexampleicons/CMakeLists.txt
+@@ -32,6 +32,8 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+     target_compile_definitions(QtExampleIcons PRIVATE "-DNDEBUG")
+ endif()
+
++get_property(SHIBOKEN_PYTHON_INCLUDE_DIRS GLOBAL PROPERTY shiboken_python_include_dirs)
++
+ target_include_directories(QtExampleIcons PRIVATE ${SHIBOKEN_PYTHON_INCLUDE_DIRS})
+
+ get_property(SHIBOKEN_PYTHON_LIBRARIES GLOBAL PROPERTY shiboken_python_libraries)

@@ -1,26 +1,23 @@
 class NodeSass < Formula
-  require "language/node"
-
   desc "JavaScript implementation of a Sass compiler"
   homepage "https://github.com/sass/dart-sass"
-  url "https://registry.npmjs.org/sass/-/sass-1.69.0.tgz"
-  sha256 "9f647eefdec83ccb446275dcf13481f12f9aad43d08c506176186801a47c0891"
+  url "https://registry.npmjs.org/sass/-/sass-1.80.6.tgz"
+  sha256 "e714ef3f595e3b1e1bcd81b5ae7b85e4d270b16ab8b485943942677b365fb931"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, sonoma:         "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, ventura:        "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, monterey:       "92640b97a1bde6ffa6a318356ea842812fdc247b7d242837d81ccdbe881d7f25"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0954d8da66a1efe568d96227be353c498be4e28ca02dade513875f850ff2d5ec"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3fadfc4b4332daa007b24acc7ddc8cc0b21847dd5a5fa810032ce9fc5c8354c5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3fadfc4b4332daa007b24acc7ddc8cc0b21847dd5a5fa810032ce9fc5c8354c5"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3fadfc4b4332daa007b24acc7ddc8cc0b21847dd5a5fa810032ce9fc5c8354c5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7b28a760140153e0b57a222ad4b7a313bfb37afab9ebd6ea9abca41cb7e0da19"
+    sha256 cellar: :any_skip_relocation, ventura:       "7b28a760140153e0b57a222ad4b7a313bfb37afab9ebd6ea9abca41cb7e0da19"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4a1f1ce67ee5f67dfe39a363ce73680bb165a094af0546d288879cff1a75d460"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

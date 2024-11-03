@@ -1,8 +1,8 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "https://www.lighttpd.net/"
-  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.72.tar.xz"
-  sha256 "f7cade4d69b754a0748c01463c33cd8b456ca9cc03bb09e85a71bcbcd54e55ec"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.76.tar.xz"
+  sha256 "8cbf4296e373cfd0cedfe9d978760b5b05c58fdc4048b4e2bcaf0a61ac8f5011"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,13 +11,14 @@ class Lighttpd < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "36dd8f56a599dad9c6dfe3c1034fb58f0356e61866d6201a6410df1b4832e512"
-    sha256 arm64_ventura:  "48874cc605911b3b9aefc9d0ceff622972641fc0af3482041ca40f3b563a0e6a"
-    sha256 arm64_monterey: "894260a4b658cab53d0197944169dc7efe295cc79a2a3bb200122d2b8767f18b"
-    sha256 sonoma:         "a85c1239d70506cdf7991195187b41c9f3573eb84c4719c7e35573ccd1d506bb"
-    sha256 ventura:        "af23c4efba2b9f4a86d356949434ab57805b5333d2c34aeb022accbeb1b5d2cf"
-    sha256 monterey:       "bf4b6107f691e193fac8fd7ca4593206b540e7364136ba360fdf3961befcedea"
-    sha256 x86_64_linux:   "a4a990801a919d6517c1e962760058e60e34c0cfe5b7c5a9f60f6cc608791b0c"
+    sha256 arm64_sequoia:  "19af568eb1e5ab74d431fdc07f2148d520c815742e1f0ecf9828d391e297ddd6"
+    sha256 arm64_sonoma:   "091059b0ac1e2356912caf2fe85f5bb0d88ebde56c43579d28c9a68b5eac1075"
+    sha256 arm64_ventura:  "00fb719b4328a1b7593452f8f6bae234a595ca089492f192bc309bdab055502f"
+    sha256 arm64_monterey: "aa6d7a5fe4662bdbbae1389091aec850c99d47f851dca621a55f9fcf7e5e7844"
+    sha256 sonoma:         "f5604bd4748f47f72e87a7e1192efc40748e1f1d7d271eb555e1bd6444776c75"
+    sha256 ventura:        "685d709d0d522aace4a102e2b28c3c04f2e6a6079de349d6148f999796571a8e"
+    sha256 monterey:       "596921b5fcabab2c21e6b75b54589016755e990cd86728810839b233cb4a830e"
+    sha256 x86_64_linux:   "8aa1c17b796dfc07c3e4d7543abc43af33469b5236aada5531baf3f98f8a66e2"
   end
 
   depends_on "autoconf" => :build
@@ -98,6 +99,6 @@ class Lighttpd < Formula
   end
 
   test do
-    system "#{bin}/lighttpd", "-t", "-f", etc/"lighttpd/lighttpd.conf"
+    system bin/"lighttpd", "-t", "-f", etc/"lighttpd/lighttpd.conf"
   end
 end

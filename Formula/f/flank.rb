@@ -1,8 +1,8 @@
 class Flank < Formula
   desc "Massively parallel Android and iOS test runner for Firebase Test Lab"
   homepage "https://github.com/Flank/flank"
-  url "https://github.com/Flank/flank/releases/download/v23.07.0/flank.jar"
-  sha256 "c62ec6109106206ecb263b915acd44d792ca141ab19867076b935bc4214cf3ea"
+  url "https://github.com/Flank/flank/releases/download/v23.10.1/flank.jar"
+  sha256 "719ba0ca5744f571aad01fc61392b18990833ee9dd36e6b600ccdff614350d58"
   license "Apache-2.0"
 
   livecheck do
@@ -11,15 +11,8 @@ class Flank < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6e12b1c3caea2a6e0a4283f86b486fe16286b505d2ef9020b8f9879907ad7793"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6e12b1c3caea2a6e0a4283f86b486fe16286b505d2ef9020b8f9879907ad7793"
-    sha256 cellar: :any_skip_relocation, ventura:        "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, monterey:       "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f61019aaf6202342f09854bf6213643aedab3b400ce0ab0349f5084f36d04446"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "64213bd9bbdad0729562540f8a41ddf691330ebdf343757734bb443a5ff7b575"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "f6c1c7a433156099db3565266cc19220b34233bd230df04b5845c952c8462100"
   end
 
   depends_on "openjdk"

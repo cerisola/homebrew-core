@@ -1,12 +1,13 @@
 class Oak < Formula
   desc "Expressive, simple, dynamic programming language"
   homepage "https://oaklang.org/"
-  url "https://github.com/thesephist/oak/archive/v0.3.tar.gz"
+  url "https://github.com/thesephist/oak/archive/refs/tags/v0.3.tar.gz"
   sha256 "05bc1c09da8f8d199d169e5a5c5ab2f2923bad6fac624f497f5ea365f378e38a"
   license "MIT"
   head "https://github.com/thesephist/oak.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b4add3db56fe8171421dc3fd528ee7d39b54936c03d75b89a42a24c8d8a3a151"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fb8d9531ce0034422a0233fb27c1e77c94910d91f544e18407b8420f67f7f3e3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e49abb41ea0758574abb99e97cfae07adeedb324060114815b4c0ead6cbbc674"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2c258ac6aacad5e27decb196cb329fc4cb8339950fa110ee1540712872a0ddc4"
@@ -20,6 +21,8 @@ class Oak < Formula
   end
 
   depends_on "go" => :build
+
+  conflicts_with "oakc", because: "both install `oak` binaries"
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")

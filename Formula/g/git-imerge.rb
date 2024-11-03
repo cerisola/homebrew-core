@@ -17,17 +17,11 @@ class GitImerge < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "57d13c6304821922437453f05db4e29aee883e527d51366dd09c85634548fd2a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "96f159fb005c4a9a62e72b680dee461062bb6018dc3ad5c77ea749361232ecfd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f15fe3edb896c278026a62790fa1687259f9028dab9b635934c36035f979b1b1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "070645bd00796c61515f6df8613aa898a25e9a13dd1d6b6a582295ff9599c4a6"
-    sha256 cellar: :any_skip_relocation, ventura:        "f3e23fabe8fc07b74356e46eb62312662b285fb32c3851056c0be6464ed38786"
-    sha256 cellar: :any_skip_relocation, monterey:       "08100556e7b53b2ad48f5f1f42faf06a72ed2ad16aaf240d5329fd610031268e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "588ed41906d89362973aeced4b9e04ec7f8b16e94eb316243b189522a2a4457a"
+    rebuild 5
+    sha256 cellar: :any_skip_relocation, all: "f889e12d851617cfc36b7af9f0994b42ca348d9bbd3b0ca6848b79d1bc51f55a"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
     virtualenv_install_with_resources

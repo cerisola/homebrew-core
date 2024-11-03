@@ -1,12 +1,13 @@
 class Dstask < Formula
   desc "Git-powered personal task tracker"
   homepage "https://github.com/naggie/dstask"
-  url "https://github.com/naggie/dstask/archive/v0.26.tar.gz"
+  url "https://github.com/naggie/dstask/archive/refs/tags/v0.26.tar.gz"
   sha256 "ccd7afcb825eb799bdaaaf6eaf8150bbb8ceda02fec6c97f042b7bbc913a46fc"
   license "MIT"
   head "https://github.com/naggie/dstask.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c703e91aca630e4709de9665547a7b5755628d1749d792900e4d11864d4e2e79"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f76c19c728c1c23782e87213061f06a97cce7e5924f02816e6d51d4893001b3d"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d79ae69accd7905d73e6f15fa3fb0a6f05ea23bfd7b7333ddd7839d522e285e0"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "cb785da84d172ec459b7322031e52d67df8611a701020218a03c91b90eb1a890"

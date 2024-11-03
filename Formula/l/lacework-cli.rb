@@ -2,8 +2,8 @@ class LaceworkCli < Formula
   desc "CLI for managing Lacework"
   homepage "https://docs.lacework.com/cli"
   url "https://github.com/lacework/go-sdk.git",
-      tag:      "v1.33.3",
-      revision: "b796fbc13651a9f3b22e7832562b661b74680470"
+      tag:      "v2.1.2",
+      revision: "15c6b21b6f22ac366e469f13ce690d5f2ccd628d"
   license "Apache-2.0"
   head "https://github.com/lacework/go-sdk.git", branch: "main"
 
@@ -16,13 +16,12 @@ class LaceworkCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d19d97acef3787d02dab5e9bd1ba47d18cbadc43bc5a841e1527f387771e1d50"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "3c1bd994b45d9d87011077b80148ff42975b748c0cfe075dfbe92a57b8d6d14d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "edc056e505f20680c82848650183a106c71b58fb96a2a22a9c6cf9b272e72c17"
-    sha256 cellar: :any_skip_relocation, sonoma:         "79409cdfa95812d0cfbf9648a35148f7ba8e64d37a5e47a81b58b59c40a581ed"
-    sha256 cellar: :any_skip_relocation, ventura:        "78f0ef60b48d2c9a2696efca907fa2fed3c9a3d792e0c86e0507839d29792f53"
-    sha256 cellar: :any_skip_relocation, monterey:       "249303c372909f67c40eaf62338051c3548c302849346320cc573c050c12dd36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3f991cd0f89395cc982c63ae005f9b041141dd226505800082a8c624f62f2d1f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f1342de716428365bf04c6552da8d921cf7e2fe61e2cd443a6a0e6af145f2fe8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f1342de716428365bf04c6552da8d921cf7e2fe61e2cd443a6a0e6af145f2fe8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f1342de716428365bf04c6552da8d921cf7e2fe61e2cd443a6a0e6af145f2fe8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "494fdc397745e6a6ce1d34b41e71a885637d3ba0eec9bd025ae03210edaac38d"
+    sha256 cellar: :any_skip_relocation, ventura:       "494fdc397745e6a6ce1d34b41e71a885637d3ba0eec9bd025ae03210edaac38d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5fce4f3c1066566298dab656e638b9c154e29dc36bb179666219f3d8ac148260"
   end
 
   depends_on "go" => :build
@@ -30,11 +29,12 @@ class LaceworkCli < Formula
   def install
     ldflags = %W[
       -s -w
-      -X github.com/lacework/go-sdk/cli/cmd.Version=#{version}
-      -X github.com/lacework/go-sdk/cli/cmd.GitSHA=#{Utils.git_head}
-      -X github.com/lacework/go-sdk/cli/cmd.BuildTime=#{time.iso8601}
+      -X github.com/lacework/go-sdk/v2/cli/cmd.Version=#{version}
+      -X github.com/lacework/go-sdk/v2/cli/cmd.GitSHA=#{Utils.git_head}
+      -X github.com/lacework/go-sdk/v2/cli/cmd.HoneyDataset=lacework-cli-prod
+      -X github.com/lacework/go-sdk/v2/cli/cmd.BuildTime=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(output: bin/"lacework", ldflags: ldflags), "./cli"
+    system "go", "build", *std_go_args(output: bin/"lacework", ldflags:), "./cli"
 
     generate_completions_from_executable(bin/"lacework", "completion", base_name: "lacework")
   end

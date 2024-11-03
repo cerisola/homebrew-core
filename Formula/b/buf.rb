@@ -1,19 +1,26 @@
 class Buf < Formula
   desc "New way of working with Protocol Buffers"
   homepage "https://github.com/bufbuild/buf"
-  url "https://github.com/bufbuild/buf/archive/refs/tags/v1.27.0.tar.gz"
-  sha256 "2a4ddbf3eeb914a88b732af6eefc80098febfa7537097fc2a507899361e37fc0"
+  url "https://github.com/bufbuild/buf/archive/refs/tags/v1.46.0.tar.gz"
+  sha256 "0a45975205fe8ac0eea6673dff6b86603eaadbc8ce6dd62bc95dd925ab6d2419"
   license "Apache-2.0"
   head "https://github.com/bufbuild/buf.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "eb38dfbe6467ff98d0148e2f6d10f9005553d1ecf779237336768cee99fd20b7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "52adb70403f85a9cc74f283ab751e2d09d478ee85b7ddaa86a1529c305d9cf0b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0bab5632feb8b4cece925192d7c83ed9fe7a617212fd5bb1bb4546d26a8959d0"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2f0972d44cc50c3a1bce99e31b301ba40f931f13299f7e069f5bd7c469d6de65"
-    sha256 cellar: :any_skip_relocation, ventura:        "2851853fa898b9d40b04476c83745933580e47be0562cab819f917afa74cc93c"
-    sha256 cellar: :any_skip_relocation, monterey:       "3145ede5ff159d9bf41a0a52782523b4df10feff506a110180afb28346e71824"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9de87c2559072169f975ef13cbfa7da71baf61ffe311488e19b89944b98f6a83"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "13cc3b194458218761f2066413960ea37dcda0f1b4a20942e2a63a7bf87dd1dd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "13cc3b194458218761f2066413960ea37dcda0f1b4a20942e2a63a7bf87dd1dd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "13cc3b194458218761f2066413960ea37dcda0f1b4a20942e2a63a7bf87dd1dd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d5eadecd9654542cd8de72f84c95a929e30532c36db849a9a956b59b6b5a7491"
+    sha256 cellar: :any_skip_relocation, ventura:       "d5eadecd9654542cd8de72f84c95a929e30532c36db849a9a956b59b6b5a7491"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8d3ec92d70208efe9628feb464df1fc68cdea5110f5ee796745cf90820d5eaac"
   end
 
   depends_on "go" => :build
@@ -39,7 +46,7 @@ class Buf < Formula
       name: buf.build/bufbuild/buf
       lint:
         use:
-          - DEFAULT
+          - STANDARD
           - UNARY_RPC
       breaking:
         use:

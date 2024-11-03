@@ -1,19 +1,18 @@
 class Syft < Formula
   desc "CLI for generating a Software Bill of Materials from container images"
   homepage "https://github.com/anchore/syft"
-  url "https://github.com/anchore/syft/archive/refs/tags/v0.92.0.tar.gz"
-  sha256 "15073d2a349ab2ebcba7e4f446016fdb6f9422b94bd59bcb8dd7839fab2e4807"
+  url "https://github.com/anchore/syft/archive/refs/tags/v1.15.0.tar.gz"
+  sha256 "0e98e7066725ac2aff9de522aef2ea46b40cc2a5dcaa076373701b4bd4eac2f8"
   license "Apache-2.0"
   head "https://github.com/anchore/syft.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e5ace7f5234269aaadded9fe95b639dd7df2575dd2def9b02af5ddd48ce5e6fe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a881abf8f3fa7505e7cbc68e6c9858cbf59c000976fc94d99e433601306ccec2"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "189794f4501a76908f5294269aac48a1318d82e45ada320006068063801fee43"
-    sha256 cellar: :any_skip_relocation, sonoma:         "116cfc5fd4d2a65d0a2773a1878f21d8b2244ad77708ce9f8fa659edb09d3873"
-    sha256 cellar: :any_skip_relocation, ventura:        "906c4835f0ca16c88076e6b38f083e7960cc654c45ffa0d6e6fee91a902f11ea"
-    sha256 cellar: :any_skip_relocation, monterey:       "b0cdf0d08fb5efef779247bed501559d7d928916535cc856154941e76a6214b9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "423825b67704e47605f87bc46e793ae6898c7d0d20ef3dfbd00a28b1792407fd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "27fa6313d03f127d7e7941aff95ea3b5d5e1ead8940a032111ec0ed75cec4ee4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7b343e741537b860486cb4c818ce4c258546e6cd03b7e1101b15c5d67564630a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a271ce0d3c026e38222e99bc6eb6c99811b14e959a6110c183d6c6c39eb198b7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "98c709ccf3bd395fce3875fdcd8913ca99b5a8e93779dff8a4d0cf1cf79b007e"
+    sha256 cellar: :any_skip_relocation, ventura:       "85ff8712b0a8be91e3f804a6123cc4a937187239354b5c8308bdad7ae65ecf1b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3109aaed33d10fcb78520769119f10a9889e8e349d87e7bb96233bc0ff9a278"
   end
 
   depends_on "go" => :build
@@ -26,12 +25,7 @@ class Syft < Formula
       -X main.buildDate=#{time.iso8601}
     ]
 
-    # Building for OSX with -extldflags "-static" results in the error:
-    # ld: library not found for -lcrt0.o
-    # This is because static builds are only possible if all libraries
-    ldflags << "-linkmode \"external\" -extldflags \"-static\"" if OS.linux?
-
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/syft"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/syft"
 
     generate_completions_from_executable(bin/"syft", "completion")
   end

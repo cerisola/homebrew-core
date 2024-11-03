@@ -1,12 +1,13 @@
 class Exodriver < Formula
   desc "Thin interface to LabJack devices"
   homepage "https://labjack.com/support/linux-and-mac-os-x-drivers"
-  url "https://github.com/labjack/exodriver/archive/v2.7.0.tar.gz"
+  url "https://github.com/labjack/exodriver/archive/refs/tags/v2.7.0.tar.gz"
   sha256 "ef11760322b31f16802ec202406e780339f54bde774689b97e926778417d6c79"
   license "MIT"
   head "https://github.com/labjack/exodriver.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "be1e521d58daacc6bcb480985b374bc9e17075ed0a843fca9145f0d9c5f56aa0"
     sha256 cellar: :any,                 arm64_sonoma:   "459ce6ca331aeac97187dda22c289353e521a130ca33f3db6db8810b64d9ad6c"
     sha256 cellar: :any,                 arm64_ventura:  "70b1afd209046f565518384c2c974346ca96324beb2dc51fced383463c6133bf"
     sha256 cellar: :any,                 arm64_monterey: "dfa84090b35d7105eb7e57d95a8aa1c29d82996b530ab185996d3ac9ab09e01a"

@@ -1,8 +1,8 @@
 class Geoserver < Formula
   desc "Java server to share and edit geospatial data"
   homepage "https://geoserver.org/"
-  url "https://downloads.sourceforge.net/project/geoserver/GeoServer/2.23.2/geoserver-2.23.2-bin.zip"
-  sha256 "e333ad71459e6ffcee6c4637c0d09805e4ad45281ad9b9b506705afaa732782c"
+  url "https://downloads.sourceforge.net/project/geoserver/GeoServer/2.26.0/geoserver-2.26.0-bin.zip"
+  sha256 "59e22d2f48f9d315985c81661f81058478f1bfd5ebeab1b460ef2b7b58d49cd3"
   license "GPL-2.0-or-later"
 
   # GeoServer releases contain a large number of files for each version, so the
@@ -15,15 +15,7 @@ class Geoserver < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "57d7d0ce44729edee6e232740b68eb822acc5e737dae6330db2edaa71becb2e7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, sonoma:         "57d7d0ce44729edee6e232740b68eb822acc5e737dae6330db2edaa71becb2e7"
-    sha256 cellar: :any_skip_relocation, ventura:        "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, monterey:       "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, big_sur:        "ef77db1edcb761685bcebe4e91c82eb5244bf78e1115a7c129529de2a78d25ea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a0e2b2f455ce008eb494844c5b46e97d86906ef753ac3130bc83f69760404a7d"
+    sha256 cellar: :any_skip_relocation, all: "ac76eb5e46240f47772594f634fd889fac707309d877a2e973e3d29f0f53fb47"
   end
 
   def install
@@ -46,6 +38,6 @@ class Geoserver < Formula
   end
 
   test do
-    assert_match "geoserver path", shell_output("#{bin}/geoserver")
+    assert_match "geoserver path", shell_output(bin/"geoserver")
   end
 end

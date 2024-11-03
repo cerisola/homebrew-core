@@ -4,17 +4,15 @@ class Rex < Formula
   url "https://cpan.metacpan.org/authors/id/F/FE/FERKI/Rex-1.14.3.tar.gz"
   sha256 "027d3042ef940b67590e5989e96f22ae1e67ba744895c5dd3db569c05137025c"
   license "Apache-2.0"
+  revision 2
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "29f47620abab14389f36ece49eee43887cce02901ccf6c3dd4e8cb83d802b49a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "29f47620abab14389f36ece49eee43887cce02901ccf6c3dd4e8cb83d802b49a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "29f47620abab14389f36ece49eee43887cce02901ccf6c3dd4e8cb83d802b49a"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "8cacde228c4b1ecbd7402f3a73bfbfc6b6118ed122adffc725e98ae6eb3f39fd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2e32a65bfd7263d2b04ba25fb23d16641bbf968c2f3395b42b3addde98945fe4"
-    sha256 cellar: :any_skip_relocation, ventura:        "2e32a65bfd7263d2b04ba25fb23d16641bbf968c2f3395b42b3addde98945fe4"
-    sha256 cellar: :any_skip_relocation, monterey:       "2e32a65bfd7263d2b04ba25fb23d16641bbf968c2f3395b42b3addde98945fe4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "e7372738a947267ec35110cf49f940f57c22c6d06c4cc0cf7f2810d5298d47c3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "404ffa6fffae8423757900e7451a1264426ee2a51256d93b2be1528f24b3ad01"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "49854aab380ff396dd1c568f7d1b7c07a20c45605d2bc4291547b78bcd7cbfa3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "49854aab380ff396dd1c568f7d1b7c07a20c45605d2bc4291547b78bcd7cbfa3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "28f9d5c2dccc713ef2932b7729b3f3db7d0fb531296baeafcb172f8edbd01cdb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6aa08eababab26f1f6289fa0b9b2972ace6dc5ee1490a7051359b012ae17a1c7"
+    sha256 cellar: :any_skip_relocation, ventura:       "9519ba8a26e671d3f9641dc9c6a9a8f4c2a92bfd706dacdbdd26cd65f5db4109"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe7bfc1cc381d522463acac9e58df8a317390982c2281087b5a7448daeafa478"
   end
 
   uses_from_macos "perl", since: :big_sur

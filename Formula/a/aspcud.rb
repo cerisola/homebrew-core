@@ -1,11 +1,12 @@
 class Aspcud < Formula
   desc "Package dependency solver"
   homepage "https://potassco.org/aspcud/"
-  url "https://github.com/potassco/aspcud/archive/v1.9.6.tar.gz"
+  url "https://github.com/potassco/aspcud/archive/refs/tags/v1.9.6.tar.gz"
   sha256 "4dddfd4a74e4324887a1ddd7f8ff36231774fc1aa78b383256546e83acdf516c"
   license "MIT"
 
   bottle do
+    sha256 arm64_sequoia:  "429008eb29edff4d08e840bd0eb373ea061c357d01ebab4e416f9d4681b95b0a"
     sha256 arm64_sonoma:   "f9754209fbab844fa1dc333dd669715fb973838a82f87c44580f9198a56b94ea"
     sha256 arm64_ventura:  "559e837a693b869dd122da250d57f222501b1f352bf57258eb4305530f8d30a0"
     sha256 arm64_monterey: "99122c4ae30f0760d00103191fb33b4fd793ac65e45f662a64d1386e0775d85f"
@@ -24,15 +25,14 @@ class Aspcud < Formula
   depends_on "clingo"
 
   def install
-    args = std_cmake_args
-    args << "-DASPCUD_GRINGO_PATH=#{Formula["clingo"].opt_bin}/gringo"
-    args << "-DASPCUD_CLASP_PATH=#{Formula["clingo"].opt_bin}/clasp"
+    args = %W[
+      -DASPCUD_GRINGO_PATH=#{Formula["clingo"].opt_bin}/gringo
+      -DASPCUD_CLASP_PATH=#{Formula["clingo"].opt_bin}/clasp
+    ]
 
-    mkdir "build" do
-      system "cmake", "..", *args
-      system "make"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -42,6 +42,6 @@ class Aspcud < Formula
 
       request: foo >= 1
     EOS
-    system "#{bin}/aspcud", "in.cudf", "out.cudf"
+    system bin/"aspcud", "in.cudf", "out.cudf"
   end
 end

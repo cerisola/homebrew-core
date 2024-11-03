@@ -1,7 +1,7 @@
 class Mrbayes < Formula
   desc "Bayesian inference of phylogenies and evolutionary models"
   homepage "https://nbisweden.github.io/MrBayes/"
-  url "https://github.com/NBISweden/MrBayes/archive/v3.2.7a.tar.gz"
+  url "https://github.com/NBISweden/MrBayes/archive/refs/tags/v3.2.7a.tar.gz"
   sha256 "3eed2e3b1d9e46f265b6067a502a89732b6f430585d258b886e008e846ecc5c6"
   license "GPL-3.0-or-later"
   revision 3
@@ -13,6 +13,7 @@ class Mrbayes < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "bc112b0be314f46b96f507ec3741b7f915b7b384e162ff88d98076a0370a728f"
     sha256 cellar: :any,                 arm64_sonoma:   "e671f59ccb6371a26c1ff58c6bbb800a2bf7472f625ac83d756eeb8b281fd6a9"
     sha256 cellar: :any,                 arm64_ventura:  "67537897e78b18147e0a793ee201b270940fad606d3143ced31782e3fee12ef4"
     sha256 cellar: :any,                 arm64_monterey: "56f6d18191f9e66a4cd485f3b1831b8037fccae239ccf6dab3289cf2bf4f22e6"
@@ -31,12 +32,17 @@ class Mrbayes < Formula
 
   def install
     args = ["--with-mpi=yes"]
-    if Hardware::CPU.intel? && build.bottle?
+    if Hardware::CPU.intel?
       args << "--disable-avx"
       # There is no argument to override AX_EXT SIMD auto-detection, which is done in
       # configure and adds -m<simd> to build flags and also defines HAVE_<simd> macros
-      args << "ax_cv_have_sse41_cpu_ext=no" unless MacOS.version.requires_sse41?
-      args << "ax_cv_have_sse42_cpu_ext=no" unless MacOS.version.requires_sse42?
+      if OS.mac?
+        args << "ax_cv_have_sse41_cpu_ext=no" unless MacOS.version.requires_sse41?
+        args << "ax_cv_have_sse42_cpu_ext=no" unless MacOS.version.requires_sse42?
+      else
+        args << "ax_cv_have_sse41_cpu_ext=no"
+        args << "ax_cv_have_sse42_cpu_ext=no"
+      end
       args << "ax_cv_have_sse4a_cpu_ext=no"
       args << "ax_cv_have_sha_cpu_ext=no"
       args << "ax_cv_have_aes_cpu_ext=no"

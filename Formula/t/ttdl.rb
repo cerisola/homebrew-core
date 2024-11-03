@@ -1,20 +1,19 @@
 class Ttdl < Formula
   desc "Terminal Todo List Manager"
   homepage "https://github.com/VladimirMarkelov/ttdl"
-  url "https://github.com/VladimirMarkelov/ttdl/archive/refs/tags/v4.1.0.tar.gz"
-  sha256 "2372e084a3245cdc5d33ca4862668be278e0ee0b25a1481ced94df803c1db669"
+  url "https://github.com/VladimirMarkelov/ttdl/archive/refs/tags/v4.4.1.tar.gz"
+  sha256 "443b8d0121577dd30603ff42247ca9a6bd04c455b7b095e980c63ea6286843c6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4dc874d2d132748fa5e5b7c7bf550af6213cb4bdf7618e1ff1fadea398ab8e76"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f2e744ab0ae37a082284d6d1ec67a38c325944c0cdc5d8d14542ff3af1c90268"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a5b057f58ddf918597a532d9dd43dc44b1f3662a8214f5454818c76a07ba29dd"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "2e28c275803c2e8b00b8e8bbd2295e41006753d270451f9af084e242ba86fbf5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "45811805a327e52006e64220630ec92c648c0766153c4cc17b4ae0dcb51bfaf8"
-    sha256 cellar: :any_skip_relocation, ventura:        "0a554e82a0bd43e71119423d72f9676888a0061e696e966f7135b20cc2b4ba16"
-    sha256 cellar: :any_skip_relocation, monterey:       "71075b21ab661ab7073e7a0378876d2ba2d89bd656d3ebfa64006a7215a94d55"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f81944414501f5de8b4f6a7d3df8513155500dbcdcfbf767ca99bf685fadee3b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cfa2f9172bcbbe449aa454f2b42947c50a221cd02cc0c5addb179efd8d7d3b0a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1899f9e7ebbfea3704d9fdae2f12970d305c19253421c69aa1a32ba19b45cc98"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fe56dec6d7b9b7114e80f4336fc9ca78ecfafc6a923bc7f3a62f292eac6a75d7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4d7cb342fbbb4fd51a3fa7a667c3e422690367d182fdcd94b40ace7c3b41bf77"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "9dd2fc8c781841d0c7f45a246ceae2cdf499fc2683ea3e6a786dd05f4824102e"
+    sha256 cellar: :any_skip_relocation, sonoma:         "2b6f8080b3c5f5e55414dd6c88061b7071ea7476d0f5c5f80459c7d0db39bba9"
+    sha256 cellar: :any_skip_relocation, ventura:        "fbd8e9ad36c3a2bb9c92323bd1767112fb118378522724da18e4fba09f196250"
+    sha256 cellar: :any_skip_relocation, monterey:       "e5f46ba7f13876c8a268bac03c0700ffc5d05fde0104d4a99c7ad80522e592bf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c73e13136a38420ab33b7219338dda9824ecbe9bf3bb7edd1be4999a57d6c39"
   end
 
   depends_on "rust" => :build

@@ -1,11 +1,12 @@
 class Yank < Formula
   desc "Copy terminal output to clipboard"
   homepage "https://github.com/mptre/yank"
-  url "https://github.com/mptre/yank/archive/v1.3.0.tar.gz"
+  url "https://github.com/mptre/yank/archive/refs/tags/v1.3.0.tar.gz"
   sha256 "40f5472df5f6356a4d6f48862a19091bd4de3f802b3444891b3bc4b710fb35ca"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fc56e61d9f57aebadb6a403f42c29e5b5a1d402567848152a55f776d12833dbd"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "6dfea88ab352e6702b771f5adf9236b41f43550be51be762a6e522558037edb2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "286acb35142223b6e0274221c5a2527f022c79f51a8f5d81ef5261f08b651b99"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e5fd3a08d92bfeb4da493930b49df96b38ad624f815b3c3f27a661f5e35274ac"

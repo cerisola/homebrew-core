@@ -1,19 +1,18 @@
 class Texlab < Formula
   desc "Implementation of the Language Server Protocol for LaTeX"
-  homepage "https://texlab.netlify.com/"
-  url "https://github.com/latex-lsp/texlab/archive/v5.10.0.tar.gz"
-  sha256 "af327ac35b1803d1b9831abf915b9bbd9f18d8659facfb72f820e006b60bfa41"
+  homepage "https://github.com/latex-lsp/texlab/"
+  url "https://github.com/latex-lsp/texlab/archive/refs/tags/v5.21.0.tar.gz"
+  sha256 "723099514ffb7a6537f486de951ae2cfd97d2ae6420aa1ff8eb6ed4068ecb160"
   license "GPL-3.0-only"
   head "https://github.com/latex-lsp/texlab.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dd88148a4dcc160688a22bf7bdbb793f228907f9c08490c4814ec53849ba76fc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "84957a14b1dd74ae644034d560ccc7168bd45eb7284dbd4dcb7de001c857b79e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c96754ebeb1150e0304c5cef06e6b7207583bd4c030bddb8389f367dd60070ef"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b23ce5c56e3aa726da082caa562bcd7b6dd176b50831181a32082fbc48ce6362"
-    sha256 cellar: :any_skip_relocation, ventura:        "da4250d0aab7bf26adb596edbb375718d2fc7de4da396d1e068c641dde86bc45"
-    sha256 cellar: :any_skip_relocation, monterey:       "8fbd61fd5c97d9b5e6ffa615f1b35ea6e123171b0f55f7734cdcb1cf6ad13ec7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb553ec0cd73cd070e24f2da02bc1871d1359eb2e26f929719978f8ba6328c2b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bf873b3f175710333eeda935ef15729298fb9f5f6b0cc820f8b36403d93df5b8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "72d5ce01584c6a3f0315d587daa80d53b74c3f9b38aaf3a892a347a963a3f4a8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "191c5af9e4694784b990ef33adabde30f33047c512aa3c83b5042c67579f8184"
+    sha256 cellar: :any_skip_relocation, sonoma:        "89d6073155dbc520d61a92f85c5a4e63a95b36c399ef1fb809506e75733449fc"
+    sha256 cellar: :any_skip_relocation, ventura:       "ba154dd6573a6e096e068f432e7d9f21cb2a3eea5d63fd9f2e96d95a967b5e54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5bf523fa4943677f4e8188501df87968ad3aefa863548c6b5dabc6229f020762"
   end
 
   depends_on "rust" => :build
@@ -66,6 +65,6 @@ class Texlab < Formula
 
     output = /Content-Length: \d+\r\n\r\n/
 
-    assert_match output, pipe_output("#{bin}/texlab", input, 0)
+    assert_match output, pipe_output(bin/"texlab", input, 0)
   end
 end

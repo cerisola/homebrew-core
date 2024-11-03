@@ -1,43 +1,40 @@
-require "language/node"
-
 class Renovate < Formula
   desc "Automated dependency updates. Flexible so you don't need to be"
   homepage "https://github.com/renovatebot/renovate"
-  url "https://registry.npmjs.org/renovate/-/renovate-37.6.0.tgz"
-  sha256 "9e43d89c72d09737022fa1dff361be7027c4b7f2fd117d5689ae080f3ffb3b73"
+  url "https://registry.npmjs.org/renovate/-/renovate-38.142.0.tgz"
+  sha256 "32bfa46f705ae23dbb6f287c5feaa4107c69d784c32e8d9d3cf2771ac9b0f757"
   license "AGPL-3.0-only"
 
-  # There are thousands of renovate releases on npm and page the `Npm` strategy
-  # checks is several MB in size and can time out before the request resolves.
-  # This checks the "latest" release, which doesn't have the same issues.
+  # There are thousands of renovate releases on npm and the page the `Npm`
+  # strategy checks is several MB in size and can time out before the request
+  # resolves. This checks the first page of tags on GitHub (to minimize data
+  # transfer).
   livecheck do
-    url "https://registry.npmjs.org/renovate/latest"
-    regex(/v?(\d+(?:\.\d+)+)/i)
-    strategy :json do |json, regex|
-      json["version"]&.scan(regex) { |match| match[0] }
-    end
+    url "https://github.com/renovatebot/renovate/tags"
+    regex(%r{href=["']?[^"' >]*?/tag/v?(\d+(?:\.\d+)+)["' >]}i)
+    strategy :page_match
+    throttle 10
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3f62fc710489e0bd7e6531b7cf8c251e3d3519c626f512dbb99234c6eefe5f48"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "06cd57168f2ec120e3015853f7611bb5913b31c9b5e529f4b9c5f483491260da"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e2fbdef896140cf8028aab14a5b3d2048631964b23f409e41a8de7595ee80c3e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6c49115293c3314d4c28b5d5ece7f4b209450ece8ba4e62036953012821789b4"
-    sha256 cellar: :any_skip_relocation, ventura:        "7f2ea7ec6da9e819fe2faf4889969e637f99849aaab7e47bbf06497548019118"
-    sha256 cellar: :any_skip_relocation, monterey:       "70475f2d72414a791ccc2682054127b4b952e4ad9371fdc6242d5bfbf4a6124a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "36fb96ac1bafd5fd482c71a6b8b4de89fd6894e40e168ca5e4f352b978c9ea4c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e70c9e1ba5c9f03745f07671d40c08966794044c59b9361f7fa8dd57bac0b846"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "04f340502469f8b655ce547296aa650aa5bde53ff41f9c4c462dc70c43041214"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a6840a14beabeca923c3e14dd029c4d6add1b4d69e3aed556986ac2fcf92ada3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "82dd87119c511ce0fb718740140cfcede2e6fa1fce47de224ea8aa77dc67b874"
+    sha256 cellar: :any_skip_relocation, ventura:       "8cef6fab650042faccecb7a22852196dfcf6bbb8b8b8936eb3199ef5344f1a87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e562e04a56bca3d3699ec609e990d3196d7c0f59b7e6de27a4810e3e4f3c95e"
   end
 
-  depends_on "node"
+  depends_on "node@20"
 
   uses_from_macos "git", since: :monterey
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
   test do
-    assert_match "FATAL: You must configure a GitHub token", shell_output("#{bin}/renovate 2>&1", 1)
+    system bin/"renovate", "--platform=local", "--enabled=false"
   end
 end

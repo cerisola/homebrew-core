@@ -1,22 +1,20 @@
 class Pylyzer < Formula
   desc "Fast static code analyzer & language server for Python"
   homepage "https://github.com/mtshiba/pylyzer"
-  url "https://github.com/mtshiba/pylyzer/archive/refs/tags/v0.0.48.tar.gz"
-  sha256 "82630523fac721ea5d2a428201dd95c518937ba67471db2638adf4c3f1b3d557"
+  url "https://github.com/mtshiba/pylyzer/archive/refs/tags/v0.0.68.tar.gz"
+  sha256 "4902770d90c170d7e680259affb799eeae81333274c37283e5056e94b8c5aafa"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9d2f3249d1e166b4d57ef5720787d6c492cb893c28e1da46bd13cf9e45178f02"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "40c1edc9134bc07574e109f5695c793e0f23cd6b64b8cd33fb46ca1a1ea019c7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4f7a5d52474456f02076d2735a3e663551d0eb3d116c694061f37353086f0a23"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9907573261f0715749ef8e6050070761a8d58cdb09606f60eec1293323071914"
-    sha256 cellar: :any_skip_relocation, ventura:        "a503d9867132026df8ab43d33e46dfa8a345c6e7d23eb0c911793c34162c83e2"
-    sha256 cellar: :any_skip_relocation, monterey:       "f9bf6dae44b5003551c3ce8320044c4af68090063989cdd80f028b2a97ddc401"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "83e971b5af3a860c44c9914058042f881a25bbf0c31fbf08c848fbb80aed3d25"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "21eaaa9aa7b12d2b8011e3f11d8b1073935545ea16ae0e01112d75f7302eb460"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1827f95f0e09b4630fbcceed4436323b5833e84373d842f0c9496aa418d58b78"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9e5715765ac42714e8e3abda929fce25285a6cbaa668424aab4c2e6187d671c5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d38ac015c602e1466d066714f623be2cf355a56f17509bcc98348f0a04b1ed1f"
+    sha256 cellar: :any_skip_relocation, ventura:       "a5e01ee925ddca5adaabb1d4d1405bf3aed0216313c86035727600cb0b1436e6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73f1cae489201a05d4c61a10c9bc2978111db0698e558e47461e8f1beb395088"
   end
 
   depends_on "rust" => :build
-  depends_on "python@3.11"
 
   def install
     ENV["HOME"] = buildpath # The build will write to HOME/.erg

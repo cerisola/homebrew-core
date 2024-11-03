@@ -1,20 +1,19 @@
-require "language/node"
-
 class Prettierd < Formula
   desc "Prettier daemon"
   homepage "https://github.com/fsouza/prettierd"
-  url "https://registry.npmjs.org/@fsouza/prettierd/-/prettierd-0.25.1.tgz"
-  sha256 "9b19f11c6b099c518fc8d4c0b6da697c8e15796fb2bb4ab689737f084d29ac3f"
+  url "https://registry.npmjs.org/@fsouza/prettierd/-/prettierd-0.25.3.tgz"
+  sha256 "39b761c81a6d1d65819ea2f30e96965e25e7ada6d14644e449116e9543b4619f"
   license "ISC"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0f2b9045f60539c715079e26b01313e78eac5e433f7c4e559b072c54ac91c578"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "09e3ec3d5b7a6e73ccd4dd9478f2c34be67b24dfb0ceb6384bd1831e325a209d"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

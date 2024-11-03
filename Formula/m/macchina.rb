@@ -1,29 +1,42 @@
 class Macchina < Formula
   desc "System information fetcher, with an emphasis on performance and minimalism"
   homepage "https://github.com/Macchina-CLI/macchina"
-  url "https://github.com/Macchina-CLI/macchina/archive/refs/tags/v6.1.8.tar.gz"
-  sha256 "e827f640b55fe47a6127dd0c276e76b597e3cb83916be37351cdd6a81d75311e"
+  url "https://github.com/Macchina-CLI/macchina/archive/refs/tags/v6.3.1.tar.gz"
+  sha256 "385bccc02f67c9ed6b9a483dbebdec901eb4beb82b15bb7969ee36028c19e475"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c2cdb7492380690aecf0e7cbbb5b25f0e0ae75ba97d8c8faafafafc7ce95b4ce"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a84ad65d11dd14e60ee2c8edaed0b2e72d361962282a2ab6d1cfde6a3262c2ab"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "209d70fda58e9b2610d0c8feb9e04c7359f28850e76050b53c179b4ea15c24ea"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "d9c48eb3d2043d04a82638cf91205e99dbcc197f3163640bbc0c03d93cd7cb65"
-    sha256 cellar: :any_skip_relocation, sonoma:         "35fcf41c949027cd34be5db929d944ed0a9c623fd79cc7d296e32eb2d0bbdc1b"
-    sha256 cellar: :any_skip_relocation, ventura:        "f381950c7974cfa9384ccb2800f883c73df3cb435c551d3b8469010c04d66c06"
-    sha256 cellar: :any_skip_relocation, monterey:       "f87bff4db1b3732b9603af15c560cb0e386e5f2ac02ece28e71d941fab7b08aa"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2551a0ae491d1d4f51d72ed804898faf5bacfd9e7db57cf6fd1452c1202275bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f8f175c9bcdeec3a3974cfb53c4324d1d9dd8dc6b0825182875773e2f6cea94d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6ecc57084ae105e0d8068e693cb2b8d8ad97fdf67333fc0b56cb247492bb89dd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "401d23f452588558b961d447ba3b55c299ca65748b5e91640868ee48437fd2d8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "668fd39b49bb00d25713ecbd78fa7d72b48cb6b4eaa7c90aecfb1598d586a7ae"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a77aaa3528f6318829f13cd4105bc61efcf56dab104500d9312c0ea57dd36197"
+    sha256 cellar: :any_skip_relocation, ventura:       "4835dc98c9415fdabbf407a14529b2d84cf4b2be4b1412cdbcc47d7e089a50b0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e4470df67ea312015e1c176847f29fba03c193af0441683a2cec0005313d3594"
   end
 
   depends_on "rust" => :build
 
+  # In order to update the dependent resources, check the link below
+  # https://github.com/Macchina-CLI/macchina/tree/main/vendor
+  # and find commit ids for the submodules, download tarball and update checksum.
+  resource "ansi-to-tui" do
+    url "https://github.com/Macchina-CLI/ansi-to-tui/archive/950d68067ed8c7f74469eb2fd996e04e1b931481.tar.gz"
+    sha256 "e5f7b361dbc8400355ae637c4b66bcc28964e31bf634d6aa38684c510b38460e"
+  end
+
+  resource "color-to-tui" do
+    url "https://github.com/Macchina-CLI/color-to-tui/archive/9a1b684d92cc64994889e100575e38316a68670b.tar.gz"
+    sha256 "c30ec8f9314afd401c86c7b920864a6974557e72ad21059d3420db2dcffd02cb"
+  end
+
   def install
+    (buildpath/"vendor/ansi-to-tui").install resource("ansi-to-tui")
+    (buildpath/"vendor/color-to-tui").install resource("color-to-tui")
+
     system "cargo", "install", *std_cargo_args
   end
 
   test do
-    assert_match "Let's check your system for errors...", shell_output("#{bin}/macchina --doctor")
+    assert_match "We've collected a total of 19 readouts", shell_output("#{bin}/macchina --doctor")
   end
 end

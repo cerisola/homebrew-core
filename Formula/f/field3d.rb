@@ -1,7 +1,7 @@
 class Field3d < Formula
   desc "Library for storing voxel data on disk and in memory"
   homepage "https://sites.google.com/site/field3d/"
-  url "https://github.com/imageworks/Field3D/archive/v1.7.3.tar.gz"
+  url "https://github.com/imageworks/Field3D/archive/refs/tags/v1.7.3.tar.gz"
   sha256 "b6168bc27abe0f5e9b8d01af7794b3268ae301ac72b753712df93125d51a0fd4"
   license "BSD-3-Clause"
   revision 10
@@ -21,7 +21,7 @@ class Field3d < Formula
   # Depends on deprecated `ilmbase` and upstream has been discussing
   # archiving repo in https://groups.google.com/g/field3d-dev/c/nBrVsNQ9SHo
   # Last release on 2020-03-11
-  deprecate! date: "2023-02-03", because: :unmaintained
+  disable! date: "2024-02-07", because: :unmaintained
 
   depends_on "cmake" => :build
   depends_on "boost"

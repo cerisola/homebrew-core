@@ -1,19 +1,25 @@
 class Embree < Formula
   desc "High-performance ray tracing kernels"
-  homepage "https://embree.github.io/"
-  url "https://github.com/embree/embree/archive/v4.3.0.tar.gz"
-  sha256 "baf0a57a45837fc055ba828a139467bce0bc0c6a9a5f2dccb05163d012c12308"
+  homepage "https://www.embree.org/"
+  url "https://github.com/RenderKit/embree/archive/refs/tags/v4.3.3.tar.gz"
+  sha256 "8a3bc3c3e21aa209d9861a28f8ba93b2f82ed0dc93341dddac09f1f03c36ef2d"
   license "Apache-2.0"
-  head "https://github.com/embree/embree.git", branch: "master"
+  head "https://github.com/RenderKit/embree.git", branch: "master"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "8c81da27b990edcb75559c5c3cc7a9a55aa3657dd2636ca468ba1bea7738d10d"
-    sha256 cellar: :any,                 arm64_ventura:  "26e35493e331c1fb6642eced1480be13f6df5972d0a54e0a5a023fa39bd15246"
-    sha256 cellar: :any,                 arm64_monterey: "898b8dc0b774034ca8efc9c28346d2db99e9981bc4845587f32753e1b4242e56"
-    sha256 cellar: :any,                 sonoma:         "382ba33536595a64cf4de63c63d2f36c5db72a8cabfb51806a35c045121c454c"
-    sha256 cellar: :any,                 ventura:        "bae17abc1ad0114e3c74ff3470bfeeb65e3e357ba20a8bd509c034517aca6cfc"
-    sha256 cellar: :any,                 monterey:       "34c18fc1abb110f62becd196f3c6dad1c67a64c781b6c3849fed4c5025ac78a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dbc182160dd2cf64ed03e45f3d9915545427903fd1ac271177eb9986934e1d1b"
+    sha256 cellar: :any,                 arm64_sequoia:  "2ce8bbb8db418a1db7568e8608497e5df8fad482df2c8daa1cd20ccf01fd1589"
+    sha256 cellar: :any,                 arm64_sonoma:   "719d672a8f015eb72d2227a1cf2c28345591976abcbd8a3d096f45318d7edca1"
+    sha256 cellar: :any,                 arm64_ventura:  "2968f35c23daf66b3e6afc07bee6cf68829b3285f1e29dc098b0ace335851711"
+    sha256 cellar: :any,                 arm64_monterey: "c39c1dd2e9dc0cf439a7df98dd74df9c0b86808300a1a44ccc45fefb4b2d88c4"
+    sha256 cellar: :any,                 sonoma:         "ad297f96354b4f7b33a061495b43637f266ad025305a9cccc64b3fbdbd062c56"
+    sha256 cellar: :any,                 ventura:        "61379810c6582eff76eb3b5d6c62008b1315326f8ab0c4b7a9bd893b55c006b5"
+    sha256 cellar: :any,                 monterey:       "2df23844ea00a109fa15abd46077164d6ff93c6d1fdfebe6632c16703085423d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "85eb36f2191fc119f3cb5c0811fdb50d59e045b148f67d5e6c6fc849a1519eaf"
   end
 
   depends_on "cmake" => :build
@@ -21,38 +27,40 @@ class Embree < Formula
   depends_on "tbb"
 
   def install
-    args = std_cmake_args + %w[
+    args = %w[
       -DBUILD_TESTING=OFF
       -DEMBREE_IGNORE_CMAKE_CXX_FLAGS=OFF
       -DEMBREE_ISPC_SUPPORT=ON
       -DEMBREE_TUTORIALS=OFF
     ]
-    args << "-DEMBREE_MAX_ISA=#{MacOS.version.requires_sse42? ? "SSE4.2" : "SSE2"}" if Hardware::CPU.intel?
-
-    mkdir "build" do
-      system "cmake", *args, ".."
-      system "make"
-      system "make", "install"
+    if Hardware::CPU.intel?
+      max_isa = if OS.mac? && MacOS.version.requires_sse4?
+        "SSE4.2"
+      else
+        "SSE2"
+      end
+      args << "-DEMBREE_MAX_ISA=#{max_isa}"
     end
 
-    # Remove bin/models directory and the resultant empty bin directory since
-    # tutorials are not enabled.
-    rm_rf bin
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <assert.h>
       #include <embree4/rtcore.h>
+
       int main() {
         RTCDevice device = rtcNewDevice("verbose=1");
         assert(device != 0);
         rtcReleaseDevice(device);
         return 0;
       }
-    EOS
+    C
 
     system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lembree4"
-    system "./a.out"
+    assert_match "Embree Ray Tracing Kernels #{version} ()", shell_output("./a.out")
   end
 end

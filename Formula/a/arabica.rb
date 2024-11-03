@@ -1,7 +1,7 @@
 class Arabica < Formula
   desc "XML toolkit written in C++"
   homepage "https://www.jezuk.co.uk/tags/arabica.html"
-  url "https://github.com/jezhiggins/arabica/archive/2020-April.tar.gz"
+  url "https://github.com/jezhiggins/arabica/archive/refs/tags/2020-April.tar.gz"
   version "20200425"
   sha256 "b00c7b8afd2c3f17b5a22171248136ecadf0223b598fd9631c23f875a5ce87fe"
   license "BSD-3-Clause"
@@ -18,6 +18,7 @@ class Arabica < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "5448f9dfdd462014fca6f549d3d8e42a8831e7af763ec90ec55d5f9de259a171"
     sha256 cellar: :any,                 arm64_sonoma:   "d066bb2e2067e8487d5e161c2c0d438ac331f377b4103833ee4859c6d680540a"
     sha256 cellar: :any,                 arm64_ventura:  "0a4fd034a7098d204a0b3c772023f6bc35f024e2f048216fdfe8e589f38cf2a8"
     sha256 cellar: :any,                 arm64_monterey: "3e92d822c2e0c5d314a92e5e26df14b3a84774494fb100f401c3a2d0c7e54768"

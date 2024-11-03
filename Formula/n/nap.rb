@@ -1,13 +1,14 @@
 class Nap < Formula
   desc "Code snippets in your terminal"
   homepage "https://github.com/maaslalani/nap"
-  url "https://github.com/maaslalani/nap/archive/v0.1.1.tar.gz"
+  url "https://github.com/maaslalani/nap/archive/refs/tags/v0.1.1.tar.gz"
   sha256 "2954577d2bd99c1114989d31e994d7bef0f1c934795fc559b7c90f6370d9f98b"
   license "MIT"
   head "https://github.com/maaslalani/nap.git", branch: "main"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "4f0de3f0692843a24c7130ca77e99d116432ae35d6c9282fe8fe578558c1fdc5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "840fb8373a2c069dc80e54d6bf831597eb781c595bcdc6ad0c564ff9d4bb9a44"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "5e5ac9b5da7d19b91650509c620c45620a57230df2d487f6c43cdc2e6dcabe9d"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "5e5ac9b5da7d19b91650509c620c45620a57230df2d487f6c43cdc2e6dcabe9d"

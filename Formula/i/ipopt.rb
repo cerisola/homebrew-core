@@ -1,21 +1,19 @@
 class Ipopt < Formula
   desc "Interior point optimizer"
   homepage "https://coin-or.github.io/Ipopt/"
-  url "https://github.com/coin-or/Ipopt/archive/releases/3.14.12.tar.gz"
-  sha256 "6b06cd6280d5ca52fc97ca95adaaddd43529e6e8637c274e21ee1072c3b4577f"
+  url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
+  sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
   license "EPL-2.0"
   head "https://github.com/coin-or/Ipopt.git", branch: "stable/3.14"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "227766b961865d6fddab3487d511648adcf3a1ccd33ff70a07d715aa968fa23a"
-    sha256 cellar: :any,                 arm64_ventura:  "2a4faa74c116c600b9cddcd14c3261ebd15bb22fcc225169b943734f0c8665f0"
-    sha256 cellar: :any,                 arm64_monterey: "eca3d43412eb195d3400dc43d5e1763c0788a6539fada79bfffc098b6f44006b"
-    sha256 cellar: :any,                 arm64_big_sur:  "b5a0e77969ed03a2677b398731bdb626022824f345fc449422b7f2acdaea840f"
-    sha256 cellar: :any,                 sonoma:         "50e1f8da29a79b44c39ed26744db76370b34e6672528aeec0f9371eb60d8cf20"
-    sha256 cellar: :any,                 ventura:        "d1ee49c596e2a87e69e62fdc90348886b6c6f1a2a749615011500697b96db19c"
-    sha256 cellar: :any,                 monterey:       "7ed9526e8b28640832c8131c4dba3d624a1557f4bce7f24c31306a37a0a52fd9"
-    sha256 cellar: :any,                 big_sur:        "464bc75765bd684fcfeb138881c34664a9eb944d299a892160309b9e8c55d0bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f20b121f0eb35819601c90c92afb09111a5fee07fb4b1b0355c311ab46cc2e01"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "f27c151e814d4c9a0caeb33bb0a584c5d885121ec6a70a0586b330b8485779fa"
+    sha256 cellar: :any,                 arm64_sonoma:  "9a7c783b3ccd11860b615afc874ead0f60700a7f97dde4d5752a4444778aa86d"
+    sha256 cellar: :any,                 arm64_ventura: "5e623167a75d4f3516f6e2b50c61578bd3222f18c63abb7d5483c95dd2a0c53b"
+    sha256 cellar: :any,                 sonoma:        "fb86b1e3c17ed6cfb6b44bf1fcaca4a989a62335b364baa36490b4f0003675b8"
+    sha256 cellar: :any,                 ventura:       "467af1d0edd4ee1beb1ef2496bf277992988c8599b3082467f5be3d6891cd85b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e2c7ebb501bd2b73e5c847f1f5e82dcedfd3a9528de22c6848e9393cedaede6"
   end
 
   depends_on "openjdk" => :build
@@ -26,9 +24,9 @@ class Ipopt < Formula
 
   resource "mumps" do
     # follow links provided in official repo: https://github.com/coin-or-tools/ThirdParty-Mumps/blob/stable/3.0/get.Mumps
-    url "http://coin-or-tools.github.io/ThirdParty-Mumps/MUMPS_5.5.1.tar.gz"
-    mirror "http://deb.debian.org/debian/pool/main/m/mumps/mumps_5.5.1.orig.tar.gz"
-    sha256 "1abff294fa47ee4cfd50dfd5c595942b72ebfcedce08142a75a99ab35014fa15"
+    url "https://coin-or-tools.github.io/ThirdParty-Mumps/MUMPS_5.6.2.tar.gz"
+    mirror "https://deb.debian.org/debian/pool/main/m/mumps/mumps_5.6.2.orig.tar.gz"
+    sha256 "13a2c1aff2bd1aa92fe84b7b35d88f43434019963ca09ef7e8c90821a8f1d59a"
 
     patch do
       # MUMPS does not provide a Makefile.inc customized for macOS.
@@ -45,8 +43,13 @@ class Ipopt < Formula
   end
 
   resource "test" do
-    url "https://github.com/coin-or/Ipopt/archive/releases/3.14.12.tar.gz"
-    sha256 "6b06cd6280d5ca52fc97ca95adaaddd43529e6e8637c274e21ee1072c3b4577f"
+    url "https://github.com/coin-or/Ipopt/archive/refs/tags/releases/3.14.16.tar.gz"
+    sha256 "cc8c217991240db7eb14189eee0dff88f20a89bac11958b48625fa512fe8d104"
+  end
+
+  resource "miniampl" do
+    url "https://github.com/dpo/miniampl/archive/refs/tags/v1.0.tar.gz"
+    sha256 "b836dbf1208426f4bd93d6d79d632c6f5619054279ac33453825e036a915c675"
   end
 
   def install
@@ -94,9 +97,12 @@ class Ipopt < Formula
 
   test do
     testpath.install resource("test")
-    pkg_config_flags = `pkg-config --cflags --libs ipopt`.chomp.split
+    pkg_config_flags = shell_output("pkg-config --cflags --libs ipopt").chomp.split
     system ENV.cxx, "examples/hs071_cpp/hs071_main.cpp", "examples/hs071_cpp/hs071_nlp.cpp", *pkg_config_flags
     system "./a.out"
-    system "#{bin}/ipopt", "#{Formula["ampl-mp"].opt_pkgshare}/example/wb"
+
+    resource("miniampl").stage do
+      system bin/"ipopt", "examples/wb"
+    end
   end
 end

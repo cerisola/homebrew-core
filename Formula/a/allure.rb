@@ -1,8 +1,8 @@
 class Allure < Formula
   desc "Flexible lightweight test report tool"
   homepage "https://github.com/allure-framework/allure2"
-  url "https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.24.1/allure-commandline-2.24.1.zip"
-  sha256 "6cf717ef3dc7a2d2333c494e793e9c41d0aaef9547e072961e690b1db6e4b858"
+  url "https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.32.0/allure-commandline-2.32.0.zip"
+  sha256 "d0670d85cda9677409b1e8615c2a26f5acfbf64658fbb0e05958d70626f99318"
   license "Apache-2.0"
 
   livecheck do
@@ -11,16 +11,15 @@ class Allure < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "2e63910eae4df9094b9caf04648a6011ba99a59d2fbde27c1d91df3ab4e2303f"
+    sha256 cellar: :any_skip_relocation, all: "b4600f1016bed8e21bff2cece4c62c40667c320313c5f4eefea3d4607fbbd9fa"
   end
 
   depends_on "openjdk"
 
   def install
     # Remove all windows files
-    rm_f Dir["bin/*.bat"]
+    rm(Dir["bin/*.bat"])
 
-    prefix.install_metafiles
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files libexec/"bin", JAVA_HOME: Formula["openjdk"].opt_prefix
@@ -52,6 +51,6 @@ class Allure < Formula
         ]
       }
     EOS
-    system "#{bin}/allure", "generate", "#{testpath}/allure-results", "-o", "#{testpath}/allure-report"
+    system bin/"allure", "generate", "#{testpath}/allure-results", "-o", "#{testpath}/allure-report"
   end
 end

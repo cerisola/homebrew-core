@@ -1,11 +1,12 @@
 class Req < Formula
   desc "Simple and opinionated HTTP scripting language"
   homepage "https://github.com/andrewpillar/req"
-  url "https://github.com/andrewpillar/req/archive/v1.1.0.tar.gz"
+  url "https://github.com/andrewpillar/req/archive/refs/tags/v1.1.0.tar.gz"
   sha256 "4b628556876a5d16e05bdcca8b9a0e9147d48d801e49b0acc624adf6cb4e5350"
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "80b342c2fd081a819943fe63fd72a9c3b2e53ffa78ca8d34b45b841f9120910e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "af8452502e589a8191f0c752198d5e9167188cee8314310ecaa24adcb12f7445"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "761e455eaec2c41951b0aef7e6ccea876443742d59c630ad922b0a0a6eac7204"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c2b469cb7417b2afa5e405cea18a5d0d2772b9e59cd986ed69b1e1ae1e1fb66f"

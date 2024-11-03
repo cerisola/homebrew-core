@@ -23,7 +23,7 @@ class Xml2 < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "51048810fc19ddd5955049fb8d358b0f4862e9333b056efd6d28a0e6c42c6e4e"
   end
 
-  deprecate! date: "2023-01-10", because: :repo_removed
+  disable! date: "2024-01-02", because: :repo_removed
 
   depends_on "pkg-config" => :build
 
@@ -35,6 +35,6 @@ class Xml2 < Formula
   end
 
   test do
-    assert_equal "/test", pipe_output("#{bin}/xml2", "<test/>", 0).chomp
+    assert_equal "/test", pipe_output(bin/"xml2", "<test/>", 0).chomp
   end
 end

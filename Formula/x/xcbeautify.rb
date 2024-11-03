@@ -1,36 +1,41 @@
 class Xcbeautify < Formula
   desc "Little beautifier tool for xcodebuild"
-  homepage "https://github.com/tuist/xcbeautify"
-  url "https://github.com/tuist/xcbeautify.git",
-      tag:      "1.0.0",
-      revision: "a996cc125e45afb9f2d77cacc5710f3595bcdd07"
+  homepage "https://github.com/cpisciotta/xcbeautify"
+  url "https://github.com/cpisciotta/xcbeautify/archive/refs/tags/2.14.1.tar.gz"
+  sha256 "ecd8843e7beafceafd4c4dd333532dcb835cd7a85de6df2b1bf2015143838cda"
   license "MIT"
-  head "https://github.com/tuist/xcbeautify.git", branch: "master"
+  revision 1
+  head "https://github.com/cpisciotta/xcbeautify.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c8f49160c9c1df0f01ebc1a4530289fb0b4d69093bf6a1a501f5647844c1437b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bacf88c0dd3a4132e5cf01dc9af94d69678e8adc9faadc0b55eca53dfeb4edd6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6a46df2ced30543c8ec0fb7ea53a1ffd45f69db7ed9b59a5ca5fbc6885606f9c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "400ad7359e6c260156e1982dc2d0227034c3294b95db899555c2c3375651417c"
-    sha256 cellar: :any_skip_relocation, ventura:        "2d7d8323275c3d5f808434c84808a59c4d8eabb128053f05630f298b592d5bfe"
-    sha256 cellar: :any_skip_relocation, monterey:       "4688cfc59364db9efa881f2cb4c99f2304149c0f69e2bc4164cbae5d525ca7ed"
-    sha256                               x86_64_linux:   "4f4ed4b6e2367b3ac361e4916186778de7aef1b6a2dd772e4609437f05ec3f3f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "477190763c3a3e09eb884c9cb03c5d70840a8ee83df251ac28f8f98f8ce9e9c1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e0502dab9300dad524076f18909dd85647be5ed760938978f8c79d63707b3774"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "81def6d63583a62be784b4a70a1f31d9169caa0f2ae304b91c484ed5929549ca"
+    sha256 cellar: :any_skip_relocation, sonoma:        "493db4880aaa4bcc6d56ef1fb4fba51f677b5d9f4404e79a1d60d2c8712d0972"
+    sha256 cellar: :any_skip_relocation, ventura:       "3f3d5fa32131a27417c862af19f50a841198a330860961f3a065e35bf3782ab5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "20f0b45bcfe4d4b4420a986f5e28ac7d3285f25854ff3be924dd49e30950cbe5"
   end
 
-  # needs Swift tools version 5.7.0
-  depends_on xcode: ["14.0", :build]
+  # needs Swift tools version 5.9.0
+  depends_on xcode: ["15.0", :build]
 
-  uses_from_macos "swift"
+  uses_from_macos "swift" => :build
+  uses_from_macos "libxml2"
 
   def install
-    system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    args = if OS.mac?
+      ["--disable-sandbox"]
+    else
+      ["--static-swift-stdlib"]
+    end
+    system "swift", "build", *args, "--configuration", "release"
     bin.install ".build/release/xcbeautify"
   end
 
   test do
     log = "CompileStoryboard /Users/admin/MyApp/MyApp/Main.storyboard (in target: MyApp)"
-    assert_match "[\u{1B}[36mMyApp\u{1B}[0m] \u{1B}[1mCompiling\u{1B}[0m Main.storyboard",
-      pipe_output("#{bin}/xcbeautify", log).chomp
+    assert_match "[MyApp] Compiling Main.storyboard",
+      pipe_output("#{bin}/xcbeautify --disable-colored-output", log).chomp
     assert_match version.to_s,
       shell_output("#{bin}/xcbeautify --version").chomp
   end

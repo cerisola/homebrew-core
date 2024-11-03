@@ -1,10 +1,10 @@
 class OrTools < Formula
   desc "Google's Operations Research tools"
   homepage "https://developers.google.com/optimization/"
-  url "https://github.com/google/or-tools/archive/v9.7.tar.gz"
-  sha256 "054d9517fc6c83f15150c93ef1c2c674ffd7d4a0d1fdc78f6ef8bc3e25c2e339"
+  url "https://github.com/google/or-tools/archive/refs/tags/v9.11.tar.gz"
+  sha256 "f6a0bd5b9f3058aa1a814b798db5d393c31ec9cbb6103486728997b49ab127bc"
   license "Apache-2.0"
-  revision 3
+  revision 2
   head "https://github.com/google/or-tools.git", branch: "stable"
 
   livecheck do
@@ -13,18 +13,15 @@ class OrTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a2854bfb612e48197d9b9a97df795b2b0c090cf005b67925c9c28c992bfad52a"
-    sha256 cellar: :any,                 arm64_ventura:  "20d80244fab7bc89025c0597a63356efd30cd140e5a9997ccdb6f8e1c3428111"
-    sha256 cellar: :any,                 arm64_monterey: "2aef42a9b14c6b502e6de7cdd47717f063dbb491733b07551819c6f8a1efcf7a"
-    sha256 cellar: :any,                 arm64_big_sur:  "814a1d0744c97fa4567948eb397f3d0d73fb0dd1b5069e86400fa6f885ca8ea7"
-    sha256 cellar: :any,                 sonoma:         "13afca6db17b69cf3505adb0e120c9c310d01babd3c35d8a027e0ab0a36be62f"
-    sha256 cellar: :any,                 ventura:        "53a1057bf1ac144ed781341b82bf46753fb53246179d2b4b92f448f4716aee4e"
-    sha256 cellar: :any,                 monterey:       "d03bc7801c4c266a6a9c225606fb906a39ef4e59925946cfaa91db3cf30d23fa"
-    sha256 cellar: :any,                 big_sur:        "5d9a84f593137bf444cace94c2d1689015b76e185a780ab731723970d91250d1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "77726d8df7c553b897b7e4f4f250529aae5b0528ab25d7a582c91dc374a90670"
+    sha256 cellar: :any,                 arm64_sequoia: "a90527ae83fd440d4e08b28842446125665f3659d7742e386f8477bde7e73276"
+    sha256 cellar: :any,                 arm64_sonoma:  "6b5b2c109d0e4bab54875c761ce5977211b65550dc5d951948a6156c82f78506"
+    sha256 cellar: :any,                 arm64_ventura: "3665217f9260117ba57236137c57219a7a6175c329de48ab1bbea6ac096e5f6d"
+    sha256 cellar: :any,                 sonoma:        "a885fc5170510f6ebc4be8a22e32e4a311d6b7d1c7befadcfa2550fa545f0623"
+    sha256 cellar: :any,                 ventura:       "769202bc7ac4624f24b15f968e00f53a231c6679972b5fd96f1a03ec12760308"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e5bef0928ad0ac0a1e128452ee43010cbe72d97d41039782e09e47880a198ec"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
   depends_on "pkg-config" => [:build, :test]
   depends_on "abseil"
   depends_on "cbc"
@@ -36,29 +33,23 @@ class OrTools < Formula
   depends_on "osi"
   depends_on "protobuf"
   depends_on "re2"
-
+  depends_on "scip"
   uses_from_macos "zlib"
 
   fails_with gcc: "5"
 
-  # Fix build with abseil 20230802. Remove when included in a stable release.
-  # (It suffices to look for commit 734df45, the last of the three below.)
+  # Add missing `#include`s to fix incompatibility with `abseil` 20240722.0.
+  # https://github.com/google/or-tools/pull/4339
   patch do
-    url "https://github.com/google/or-tools/commit/bb7c013bf8a4f1217ef3feb8f9670e6057b43aff.patch?full_index=1"
-    sha256 "ac2618ed0a4106ea0af37ea7fc91e34c2f93c2e17c264d9df31b5867ce302745"
-  end
-  patch do
-    url "https://github.com/google/or-tools/commit/aaf306ca38a4d634113d25a31ae7a558f824cab0.patch?full_index=1"
-    sha256 "e2f3cb11a9db4dc53e3452ae28dcd2160ca86886385acb0a9c3076b179a39e88"
-  end
-  patch do
-    url "https://github.com/google/or-tools/commit/734df45de4cf8c1a59b3fef972182dd0b48ef3e2.patch?full_index=1"
-    sha256 "9bffe6f80ef61da0591ec9970751a90cff5c023089d6bd6331686d8e5d3e87a1"
+    url "https://raw.githubusercontent.com/Homebrew/formula-patches/bb1af4bcb2ac8b2af4de4411d1ce8a6876ed9c15/or-tools/abseil-vlog-is-on.patch"
+    sha256 "0f8f28e7363a36c6bafb9b60dc6da880b39d5b56d8ead350f27c8cb1e275f6b6"
   end
 
   def install
+    # FIXME: Upstream enabled Highs support in their binary distribution, but our build fails with it.
     args = %w[
-      -DUSE_SCIP=OFF
+      -DUSE_HIGHS=OFF
+      -DBUILD_DEPS=OFF
       -DBUILD_SAMPLES=OFF
       -DBUILD_EXAMPLES=OFF
     ]
@@ -72,10 +63,25 @@ class OrTools < Formula
 
   test do
     # Linear Solver & Glop Solver
-    system ENV.cxx, "-std=c++17", pkgshare/"simple_lp_program.cc",
-                    "-I#{include}", "-L#{lib}", "-lortools",
-                    *shell_output("pkg-config --cflags --libs absl_check absl_log").chomp.split,
-                    "-o", "simple_lp_program"
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.14)
+      project(test LANGUAGES CXX)
+      find_package(ortools CONFIG REQUIRED)
+      add_executable(simple_lp_program #{pkgshare}/simple_lp_program.cc)
+      target_compile_features(simple_lp_program PUBLIC cxx_std_17)
+      target_link_libraries(simple_lp_program PRIVATE ortools::ortools)
+    CMAKE
+    cmake_args = []
+    build_env = {}
+    if OS.mac?
+      build_env["CPATH"] = nil
+    else
+      cmake_args << "-DCMAKE_BUILD_RPATH=#{lib};#{HOMEBREW_PREFIX}/lib"
+    end
+    with_env(build_env) do
+      system "cmake", "-S", ".", "-B", ".", *cmake_args, *std_cmake_args
+      system "cmake", "--build", "."
+    end
     system "./simple_lp_program"
 
     # Routing Solver

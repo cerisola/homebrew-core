@@ -1,12 +1,13 @@
 class Smu < Formula
   desc "Simple markup with markdown-like syntax"
   homepage "https://github.com/Gottox/smu"
-  url "https://github.com/Gottox/smu/archive/v1.5.tar.gz"
+  url "https://github.com/Gottox/smu/archive/refs/tags/v1.5.tar.gz"
   sha256 "f3bb18f958962679a7fb48d7f8dcab8b59154d66f23c9aba02e78103106093a4"
   license "MIT"
   head "https://github.com/Gottox/smu.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bda27a644876f6c81baefb5ef848d760a559208664d4460eba40c95c25cb06df"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9804e8317f1c9197f8cf08bd00561c1164e3d3f753820adcdca0df820caa7cae"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "928be47f1fe335ea6dd656be82e8d11147b7815a4aeb7a30cdefe9bfe3911732"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "15a809e130f63ff833b9abb6c920c62978412ae5828719963d46290fe2920365"

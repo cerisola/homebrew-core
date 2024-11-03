@@ -1,7 +1,7 @@
 class Bvm < Formula
   desc "Version manager for all binaries"
   homepage "https://github.com/bvm/bvm"
-  url "https://github.com/bvm/bvm/archive/0.4.2.tar.gz"
+  url "https://github.com/bvm/bvm/archive/refs/tags/0.4.2.tar.gz"
   sha256 "d60c2e49bdac1facd9c17e21e3dac52767ead2fd50b1a94f484fb6d180b0acbd"
   license "MIT"
   head "https://github.com/bvm/bvm.git", branch: "main"
@@ -21,7 +21,7 @@ class Bvm < Formula
   end
 
   # See: https://github.com/bvm/bvm/commit/44419a291f56aa483ea83d710a440e85dfeae91c
-  deprecate! date: "2023-02-16", because: :repo_archived
+  disable! date: "2024-02-01", because: :repo_archived
 
   depends_on "rust" => :build
 

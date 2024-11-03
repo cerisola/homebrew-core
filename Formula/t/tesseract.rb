@@ -1,10 +1,10 @@
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
-  url "https://github.com/tesseract-ocr/tesseract/archive/5.3.2.tar.gz"
-  sha256 "b99d30fed47360d7168c3e25d194a7416ceb1d9e4b232c7f121cc5f77084d3e7"
+  url "https://github.com/tesseract-ocr/tesseract/archive/refs/tags/5.4.1.tar.gz"
+  sha256 "c4bc2a81c12a472f445b7c2fb4705a08bd643ef467f51ec84f0e148bd368051b"
   license "Apache-2.0"
-  revision 1
+  revision 2
   head "https://github.com/tesseract-ocr/tesseract.git", branch: "main"
 
   livecheck do
@@ -13,15 +13,12 @@ class Tesseract < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "15ece02075645126c3c3631fd4d11b535ed5e29f54a29e85d756f414d9d8a040"
-    sha256 cellar: :any,                 arm64_ventura:  "d16c37b9e59fbe63d93ab0b3625d106be443d9adc03a0c2bba83460733b1974a"
-    sha256 cellar: :any,                 arm64_monterey: "322cf359943d012bcee4b5484f7b95372d8e072bf67698d37ce58ac4d721ffd2"
-    sha256 cellar: :any,                 arm64_big_sur:  "86dc7e056a65562b944be9f7efbaf1637a5a0958d0ac279d8bea782a77b602b2"
-    sha256 cellar: :any,                 sonoma:         "9326c639d59e7075170096e2ee8051a0db04744d818091a6d6ec8ed99fe62af7"
-    sha256 cellar: :any,                 ventura:        "59908aafca08a99af7a3285b1d94a1543c302dda64e09437a5492fbd569c0238"
-    sha256 cellar: :any,                 monterey:       "096a0f3e3041b4799fcbe9e1d0d80a50a84f005f89d516bdbb24a1cb7b9f491c"
-    sha256 cellar: :any,                 big_sur:        "724f075c0d95517ec3325a82e86abf8ee3a31658f0fc3e44a3eeba4acece04e4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "785fb6a9f3a58492bfb1b4e320891bb51507f3ad6beb71fbbe630e3351e6269a"
+    sha256 cellar: :any,                 arm64_sequoia: "8fcb98f3a22aa1d29cd5888a3e6ce2ac92668a5253fbfb65589e8a5cb9d1e46a"
+    sha256 cellar: :any,                 arm64_sonoma:  "319ea172e57a9527618aad9a1b6f3bcfe7b725441be143db829866c5065e8fbd"
+    sha256 cellar: :any,                 arm64_ventura: "8b22cdcd05bf1dd80d515a4719ee3aaaf7daaeb839766bccf3acd418cae4082d"
+    sha256 cellar: :any,                 sonoma:        "0ae82f77452cad60a0360c9f1d647d68b176656cf0d1fcb2a92b9058d56153ec"
+    sha256 cellar: :any,                 ventura:       "e03d3ecdbf5fe86664ffb7ad8aeee6490e74cfb8ab0c2f54e9908b2d5c07711d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f67d0cb6c0d8d980485597bfe38162dcfb9705b481c083af4799fd563a535eb"
   end
 
   depends_on "autoconf" => :build
@@ -29,10 +26,18 @@ class Tesseract < Formula
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "cairo"
-  depends_on "icu4c"
+  depends_on "fontconfig"
+  depends_on "glib"
+  depends_on "harfbuzz"
+  depends_on "icu4c@76"
   depends_on "leptonica"
   depends_on "libarchive"
   depends_on "pango"
+
+  on_macos do
+    depends_on "freetype"
+    depends_on "gettext"
+  end
 
   fails_with gcc: "5"
 
@@ -51,11 +56,6 @@ class Tesseract < Formula
     sha256 "36f772980ff17c66a767f584a0d80bf2302a1afa585c01a226c1863afcea1392"
   end
 
-  resource "test_resource" do
-    url "https://raw.githubusercontent.com/tesseract-ocr/test/6dd816cdaf3e76153271daf773e562e24c928bf5/testing/eurotext.tif"
-    sha256 "7b9bd14aba7d5e30df686fbb6f71782a97f48f81b32dc201a1b75afe6de747d6"
-  end
-
   def install
     # explicitly state leptonica header location, as the makefile defaults to /usr/local/include,
     # which doesn't work for non-default homebrew location
@@ -64,9 +64,9 @@ class Tesseract < Formula
     ENV.cxx11
 
     system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--datarootdir=#{HOMEBREW_PREFIX}/share"
+    system "./configure", "--datarootdir=#{HOMEBREW_PREFIX}/share",
+                          "--disable-silent-rules",
+                          *std_configure_args
 
     system "make", "training"
 
@@ -86,7 +86,12 @@ class Tesseract < Formula
   end
 
   test do
-    resource("test_resource").stage do
+    resource "homebrew-test_resource" do
+      url "https://raw.githubusercontent.com/tesseract-ocr/test/6dd816cdaf3e76153271daf773e562e24c928bf5/testing/eurotext.tif"
+      sha256 "7b9bd14aba7d5e30df686fbb6f71782a97f48f81b32dc201a1b75afe6de747d6"
+    end
+
+    resource("homebrew-test_resource").stage do
       system bin/"tesseract", "./eurotext.tif", "./output", "-l", "eng"
       assert_match "The (quick) [brown] {fox} jumps!\n", File.read("output.txt")
     end

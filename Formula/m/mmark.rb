@@ -1,20 +1,19 @@
 class Mmark < Formula
   desc "Powerful markdown processor in Go geared towards the IETF"
   homepage "https://mmark.miek.nl/"
-  url "https://github.com/mmarkdown/mmark/archive/v2.2.36.tar.gz"
-  sha256 "e4960500a7092767a9424fc8f2c04f9f2604f85570503002b527303e207f06f0"
+  url "https://github.com/mmarkdown/mmark/archive/refs/tags/v2.2.45.tar.gz"
+  sha256 "fb3e20117f11805de5459c78a56476a4b38877d03be49c1c1227598d80e01dfd"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "202bb55974eb8381942abfa8f9a66a998752e20dfddf810e966a31529043801d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "202bb55974eb8381942abfa8f9a66a998752e20dfddf810e966a31529043801d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "202bb55974eb8381942abfa8f9a66a998752e20dfddf810e966a31529043801d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "202bb55974eb8381942abfa8f9a66a998752e20dfddf810e966a31529043801d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1a1df3aabae071720eeff492dd495a52886130c10e05c7eda7a549e7a10f9db7"
-    sha256 cellar: :any_skip_relocation, ventura:        "1a1df3aabae071720eeff492dd495a52886130c10e05c7eda7a549e7a10f9db7"
-    sha256 cellar: :any_skip_relocation, monterey:       "1a1df3aabae071720eeff492dd495a52886130c10e05c7eda7a549e7a10f9db7"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1a1df3aabae071720eeff492dd495a52886130c10e05c7eda7a549e7a10f9db7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "093b6bc89bb9390e5982d0743eeb176876593b262e0a449b5e6115067526d2bc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a55606896295f39f74fde07fafeaf310b14a13523127260c33a465cf33152666"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f81aafdcf1415a6935341dd178be6e78571a93d64be0b12e7adaed3e9d01be7a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f81aafdcf1415a6935341dd178be6e78571a93d64be0b12e7adaed3e9d01be7a"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f81aafdcf1415a6935341dd178be6e78571a93d64be0b12e7adaed3e9d01be7a"
+    sha256 cellar: :any_skip_relocation, sonoma:         "078e9b2d78e98db52d99fecd58444ecbae75a4fd788660c225d41e3dfdae7a11"
+    sha256 cellar: :any_skip_relocation, ventura:        "078e9b2d78e98db52d99fecd58444ecbae75a4fd788660c225d41e3dfdae7a11"
+    sha256 cellar: :any_skip_relocation, monterey:       "078e9b2d78e98db52d99fecd58444ecbae75a4fd788660c225d41e3dfdae7a11"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3a452327a6728c523b8a944d737a10d7123e52a1735ed76990a05f7f6f5adff4"
   end
 
   depends_on "go" => :build

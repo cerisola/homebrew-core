@@ -1,11 +1,12 @@
 class Colfer < Formula
   desc "Schema compiler for binary data exchange"
   homepage "https://github.com/pascaldekloe/colfer"
-  url "https://github.com/pascaldekloe/colfer/archive/v1.8.1.tar.gz"
+  url "https://github.com/pascaldekloe/colfer/archive/refs/tags/v1.8.1.tar.gz"
   sha256 "5d184c8a311543f26c957fff6cad3908b9b0a4d31e454bb7f254b300d004dca7"
   license "CC0-1.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "46194d5083a34ae3e54cdd690610c1dd5fa385e2311cb1bd61e852029a53ec85"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a8310235bd0dec3a5cb4464aa1cd9c2ece726e5ef0100c9fb80f6443507e273c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ea5a224dfc033cc2a6e2bce8e9f55add8735770539d5db1e4787902594b92a7c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "bf8074276dffcfb264832e08687f3dcb0618ff7f51806bfe0b316983c08a186a"

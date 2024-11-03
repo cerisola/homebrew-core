@@ -4,8 +4,8 @@ class Dpkg < Formula
   # Please use a mirror as the primary URL as the
   # dpkg site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.22.0.tar.xz"
-  sha256 "cd1525aa169afa0e60044b23f31c23523a339023754878a4210d74abd98c72ed"
+  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.22.11.tar.xz"
+  sha256 "f318eb949b8e7ecd802b17b1a7e7cf4b17094c9577e1060653e9b838cdd31d80"
   license "GPL-2.0-only"
 
   livecheck do
@@ -14,15 +14,13 @@ class Dpkg < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d7aef8e7c76e99f8105de8778c07ac4445fedc506b7321ab514f58010f6c3b5a"
-    sha256 arm64_ventura:  "14008ccb1b1c4976ee3c39781918fa19caa0a7957929997578c221605cc02268"
-    sha256 arm64_monterey: "ca0ebecadc7bf30fe821e99de3636c32556b780af44377b38437d1b624962b5e"
-    sha256 arm64_big_sur:  "b5379920c154a7c6eabdbb1ee7e0e2e870d1b6cc86282c76d3f25b2f62dfca23"
-    sha256 sonoma:         "e63b77aa5d9bd6e6a85ee6f2a6b35c989a2d58216fd47ad8f85c4c7a32242009"
-    sha256 ventura:        "6dba5665679f0299d50234be46e1485395871db422280033f49a66314d4369e4"
-    sha256 monterey:       "a9afdac9cf96d81181e1219e877d2478fb5f52847be49f6a257ec06773f4060a"
-    sha256 big_sur:        "d0f8d123d0adb1849a1732d5181f8a2b4ba67e15b0e03d3af2aea8ec0d7c38c4"
-    sha256 x86_64_linux:   "171149f70dd6e2c3223eced613a74777db1b3c88c515ef984724ff348606bbcc"
+    rebuild 1
+    sha256 arm64_sequoia: "632c77820685109fab85a7a9005ea0ff31f9b233255ab4576a40dce0dc2d7e3b"
+    sha256 arm64_sonoma:  "c11f60eea8a970e8591cf8eef0d8e54271fd4d6aea50a32a38086de4c4b1c016"
+    sha256 arm64_ventura: "4e017baab049af69ae0b79ea18f06eb535d09ab37670b1742edec4379d8a1061"
+    sha256 sonoma:        "f6b46cbb8a54524252dd02ae1c887a81f872941fb29305c15e05d30076352324"
+    sha256 ventura:       "3e731ec82fe0a567a1737341d6800cd76786ba5c545b146a925f858f7c3db1c1"
+    sha256 x86_64_linux:  "919ea8d9f51c3016d23cd7885ed19b36de0cd9554d4b931b2fa4318969343170"
   end
 
   depends_on "pkg-config" => :build
@@ -55,7 +53,11 @@ class Dpkg < Formula
     # Since 1.18.24 dpkg mandates the use of GNU patch to prevent occurrences
     # of the CVE-2017-8283 vulnerability.
     # https://www.openwall.com/lists/oss-security/2017/04/20/2
-    ENV["PATCH"] = Formula["gpatch"].opt_bin/"patch"
+    ENV["PATCH"] = if OS.mac?
+      Formula["gpatch"].opt_bin/"gpatch"
+    else
+      Formula["gpatch"].opt_bin/"patch"
+    end
 
     # Theoretically, we could reinsert a patch here submitted upstream previously
     # but the check for PERL_LIB remains in place and incompatible with Homebrew.
@@ -111,7 +113,7 @@ class Dpkg < Formula
     system bin/"dpkg", "-b", testpath/"test", "test.deb"
     assert_predicate testpath/"test.deb", :exist?
 
-    rm_rf "test"
+    rm_r("test")
     system bin/"dpkg", "-x", "test.deb", testpath
     assert_predicate testpath/"data/homebrew.txt", :exist?
   end

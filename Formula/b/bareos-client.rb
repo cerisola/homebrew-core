@@ -1,8 +1,8 @@
 class BareosClient < Formula
   desc "Client for Bareos (Backup Archiving REcovery Open Sourced)"
   homepage "https://www.bareos.org/"
-  url "https://github.com/bareos/bareos/archive/Release/22.1.0.tar.gz"
-  sha256 "f1ee802751cdf89c46d1817e08a7caa937d02c6615940666c420cf17601b8b9c"
+  url "https://github.com/bareos/bareos/archive/refs/tags/Release/23.0.4.tar.gz"
+  sha256 "55fc4d2de3f4a5ca9d728da98acf348a9f6a0c29c719d526029bff50f65d2c55"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,14 @@ class BareosClient < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "e86d1ce16bc66fdf6dfe1970900f30caa047ae168010314e361c4f381992b6d0"
-    sha256 arm64_monterey: "41c162660184898882572268b91b7c5d7e1e4c212fae191dff57a742d1ac153d"
-    sha256 arm64_big_sur:  "844bdbffec650e13937bfe75d5320d82785f3934524fcc8467c11362814507e4"
-    sha256 ventura:        "14881605ad0493cd05cfaa77c1737290e6fbeb1771810d4b0694e64a8f92a202"
-    sha256 monterey:       "9e27718126d33afedb0b01634011c4a9edffcc2cb648f409699aa6484a688ffd"
-    sha256 big_sur:        "69c7bc9ce269bd759fdfb1846187e1e594b9e4652c621cc5fb99c49edb5ededf"
-    sha256 x86_64_linux:   "fcaf2fafe2c5e2fe23adf648ccf5c22c2a1b211c6addbd3ab6b87e2af2575676"
+    sha256 arm64_sequoia:  "14f1f91ca6e2ddc36d1e967850b06a6af6acbd6d706fb0fb6852eb18c48382b1"
+    sha256 arm64_sonoma:   "e7260d9b636ea8b344f824533cd1cc38e4ec5b69b36de9aa1a41283233fafe5a"
+    sha256 arm64_ventura:  "bf51da611653906758bd92f978ba8ca5dd8e74a9c730e7b1888fb71ef2392a19"
+    sha256 arm64_monterey: "9cc06db6fb7ca760ba16bf89d1ee71f94f86487132bf8cab3a9723b76db1d368"
+    sha256 sonoma:         "c0241c91796e79d616c1fbd486078beb77575515aaf1c9de34ffebdf2921540d"
+    sha256 ventura:        "a6db2e0b30c312785c1d173fc53bf8d597e6c244b5b496fc9df0faa82d38ba83"
+    sha256 monterey:       "a86fc0dc354205902e11a967ca70ad124a6d14455662cee9a5b4f33ac4cee686"
+    sha256 x86_64_linux:   "0972bd1a75de56ee7605f0ad5a7af94e57c4de2d83ec371f9ddf345a71414e91"
   end
 
   depends_on "cmake" => :build
@@ -48,23 +49,14 @@ class BareosClient < Formula
       ENV.append_to_cflags "-Wno-unused-parameter"
     end
 
-    # Work around hardcoded paths to /usr/local Homebrew installation,
-    # forced static linkage on macOS, and openssl formula alias usage.
-    inreplace "core/CMakeLists.txt" do |s|
-      s.gsub! "/usr/local/opt/gettext/lib/libintl.a", Formula["gettext"].opt_lib/shared_library("libintl")
-      s.gsub! "/usr/local/opt/openssl", Formula["openssl@3"].opt_prefix
-      s.gsub! "/usr/local/", "#{HOMEBREW_PREFIX}/"
-    end
-    inreplace "core/src/plugins/CMakeLists.txt" do |s|
-      s.gsub! "/usr/local/opt/gettext/include", Formula["gettext"].opt_include
-      s.gsub! "/usr/local/opt/openssl/include", Formula["openssl@3"].opt_include
-    end
+    # Work around hardcoded paths forced static linkage on macOS
     inreplace "core/cmake/BareosFindAllLibraries.cmake" do |s|
-      s.gsub! "/usr/local/opt/lzo/lib/liblzo2.a", Formula["lzo"].opt_lib/shared_library("liblzo2")
       s.gsub! "set(OPENSSL_USE_STATIC_LIBS 1)", ""
+      s.gsub! "${HOMEBREW_PREFIX}/opt/lzo/lib/liblzo2.a", Formula["lzo"].opt_lib/shared_library("liblzo2")
     end
+
     inreplace "core/cmake/FindReadline.cmake",
-              "/usr/local/opt/readline/lib/libreadline.a",
+              "${HOMEBREW_PREFIX}/opt/readline/lib/libreadline.a",
               Formula["readline"].opt_lib/shared_library("libreadline")
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
@@ -79,7 +71,8 @@ class BareosClient < Formula
                     "-Dmon-fd-password=XXX_REPLACE_WITH_CLIENT_MONITOR_PASSWORD_XXX",
                     "-Dbasename=XXX_REPLACE_WITH_LOCAL_HOSTNAME_XXX",
                     "-Dhostname=XXX_REPLACE_WITH_LOCAL_HOSTNAME_XXX",
-                    "-Dclient-only=ON"
+                    "-Dclient-only=ON",
+                    "-DENABLE_LZO=ON"
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

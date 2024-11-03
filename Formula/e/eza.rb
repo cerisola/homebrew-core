@@ -1,16 +1,17 @@
 class Eza < Formula
   desc "Modern, maintained replacement for ls"
   homepage "https://github.com/eza-community/eza"
-  url "https://github.com/eza-community/eza/archive/refs/tags/v0.14.0.tar.gz"
-  sha256 "00932e1c81e761490e45d16902356d8e6ae7efe4accc0a41e18c342424167f47"
-  license "MIT"
+  url "https://github.com/eza-community/eza/archive/refs/tags/v0.20.6.tar.gz"
+  sha256 "bf7c30789be7866a36fda9d2b1bb351f41675f4c8bb8c89e7ff85619cc894bfa"
+  license "EUPL-1.2"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "e43231e93cb3621855808cbbf6b0a0c0dc64b605f5ed55555ba0e3f3279b6358"
-    sha256 cellar: :any,                 arm64_monterey: "6cd4c2dae3e41629c4b2c698821d946c46cb045c4a868d3fa571df549a84fcaa"
-    sha256 cellar: :any,                 ventura:        "1f7e1792d0ac5fcb96ff700249dc7279076f6865f951d5c75fa319c1183f2cbb"
-    sha256 cellar: :any,                 monterey:       "1ce0c92dc58f6f44762f0edae209bd8d76182360bf1882a8c9af8b0f6588cba0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3a50fa886774a4e6104c0ab4821a28e79b3a2f47e52dd3400eb09ea359cf284"
+    sha256 cellar: :any,                 arm64_sequoia: "5515966252d29a1ea7c9109299fbedb9167ecff8e5221e9caf6fefd24b2a1ca7"
+    sha256 cellar: :any,                 arm64_sonoma:  "95403c38c4f46ce32ef785e826478f47ae548a5999c575ee7a6bac6ded09ad67"
+    sha256 cellar: :any,                 arm64_ventura: "0699782e4d15ce173695d1277c537a0d47f54459ac189342431fa72c73559f81"
+    sha256 cellar: :any,                 sonoma:        "2022a4e19cdfa6f30a7ea29026707e5b1322f2b9bca3679736e5524a3eabf6f2"
+    sha256 cellar: :any,                 ventura:       "63bfca0d718dad0cff2f8eba95f67d21e980ef34212db0d19e31312ac76d90db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d190ea3226e55285f4ab2e683cc191541a4726bce12bf91b086d2fd6c0239b16"
   end
 
   depends_on "pandoc" => :build
@@ -19,6 +20,8 @@ class Eza < Formula
   depends_on "libgit2"
 
   def install
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args
 
     bash_completion.install "completions/bash/eza"

@@ -1,8 +1,8 @@
 class Sdl2Image < Formula
   desc "Library for loading images as SDL surfaces and textures"
   homepage "https://github.com/libsdl-org/SDL_image"
-  url "https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.3/SDL2_image-2.6.3.tar.gz"
-  sha256 "931c9be5bf1d7c8fae9b7dc157828b7eee874e23c7f24b44ba7eff6b4836312c"
+  url "https://github.com/libsdl-org/SDL_image/releases/download/release-2.8.2/SDL2_image-2.8.2.tar.gz"
+  sha256 "8f486bbfbcf8464dd58c9e5d93394ab0255ce68b51c5a966a918244820a76ddc"
   license "Zlib"
   revision 2
 
@@ -15,16 +15,12 @@ class Sdl2Image < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "2b375592dc6ca6ab72a2b9dc14fd9cb37b2153df1c7cfc561ca93a4a5a7955fa"
-    sha256 cellar: :any,                 arm64_ventura:  "bb43982d9f926fb5be7983d2aa4c74c1b045c0ac81656e8326b8377d011bd6e7"
-    sha256 cellar: :any,                 arm64_monterey: "7865d5fc5d7f76abf3798b9b44bd03b92cb4ad0805eead866042effa37c7ee63"
-    sha256 cellar: :any,                 arm64_big_sur:  "4f8f838052625cfb3356e465785aaaf0f8d61e6394dcaedaf1bc44460ce462a5"
-    sha256 cellar: :any,                 sonoma:         "4945921304ae43a6f763acc111218f60625518d5fa4197de4c9113252d8ee1fc"
-    sha256 cellar: :any,                 ventura:        "d2207f59ca7a2dd0ecd2584b47220de9344b3d1b6d3069a15d67b24d6f0d8203"
-    sha256 cellar: :any,                 monterey:       "22da2defb584868e75af04623219ca07adf78d495c166c10deb56fdc485abf63"
-    sha256 cellar: :any,                 big_sur:        "eea32beea59b8a9ee9b3f9a064a82607e08a1c75ecde8f1aa8ea12ef647786b4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e2d26e8915542c685991d8da6b120792a7948b374491dcbe8bdedd75ceac5806"
+    sha256 cellar: :any,                 arm64_sequoia: "ea6594c3fe00a6b0a1169f68e78ef17c0d9cc35dab208d88e2b448cf96703547"
+    sha256 cellar: :any,                 arm64_sonoma:  "4520a781a18de69c48f4e45cdf0136facce70322d326200eac0568ea06d9b0de"
+    sha256 cellar: :any,                 arm64_ventura: "d6ba44f75c244195f45458679b1ffcbde7ba4041b0ac314608b1ca66719ce5c5"
+    sha256 cellar: :any,                 sonoma:        "b77136bb7cac65db0092fba3c4f06ac8af0d3eb273dc98e4a0dc36773f341fc9"
+    sha256 cellar: :any,                 ventura:       "6c47414b1e8b5c656e8aa1dd07529e6510df854f0ddb0d630a8e25b557244e48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "627c063738ce664e38f5eaec55821203a6388ce4559f4b3427468aaf9bed4a97"
   end
 
   head do
@@ -62,7 +58,7 @@ class Sdl2Image < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <SDL2/SDL_image.h>
 
       int main()
@@ -72,7 +68,7 @@ class Sdl2Image < Formula
           IMG_Quit();
           return result == INIT_FLAGS ? EXIT_SUCCESS : EXIT_FAILURE;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-I#{Formula["sdl2"].opt_include}/SDL2", "-L#{lib}", "-lSDL2_image", "-o", "test"
     system "./test"
   end

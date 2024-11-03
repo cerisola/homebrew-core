@@ -1,21 +1,18 @@
 class Railway < Formula
   desc "Develop and deploy code with zero configuration"
   homepage "https://railway.app/"
-  url "https://github.com/railwayapp/cli/archive/refs/tags/v3.4.0.tar.gz"
-  sha256 "7411b02c2353af459d9bbbd809cbdf13df333c84e60d383301e8ff2415bac0b0"
+  url "https://github.com/railwayapp/cli/archive/refs/tags/v3.17.10.tar.gz"
+  sha256 "96a0c9cbec38efab5501b1e8434c91c3822a53bbdcf8cb2c2ba50cda791f383b"
   license "MIT"
   head "https://github.com/railwayapp/cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7ae647d8b0735d8532a61ccc8545aa7aece0eca4af584fa99b090b1fe61fc80a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4ad4b9dfb47c983b27735a09f29f20bce118901cefab3a0402b59e7275cacf28"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6c8e60f6f335d525bfb0a833138b70cbc1658677e37550d92c4abe72b92326d4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c988b30313d1883df2dc72a257c8a60d75c74ce36f649b2c8350d5224f171c2c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b9945bb046b32d012481b1a20600c1c7bc2b7e32181c9c849576c82c6ec012a7"
-    sha256 cellar: :any_skip_relocation, ventura:        "569f78bb00f096556c4c11577faced802f9baad387a1e5b87bfdc014e8eb06dc"
-    sha256 cellar: :any_skip_relocation, monterey:       "6d6326443a2b23be759358ed3713af0f5576a308b49c792c3754d1f9f62375d6"
-    sha256 cellar: :any_skip_relocation, big_sur:        "959f1f52fb4a2b59586acc706255225051907cdccc81ee85cc51cae0518dabd4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "261716596235f9ca89b2edaedbfcd0ec2fce186cdff95ebd83bf487c78d47913"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "70cca2c85aa1a5aa29c835074af4b4891e2126e507246aaa7019bb9badd66582"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4779290698a65f13f2c18ec4e8fa2d54224f9d588c027b3578d5c43926ac7907"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "eee1cb837f49c6ed5b853f6de107475815a036da5fb914e39f411727df7c864f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f19235a683b11d53b338e2e389137c0fbefec28fbb3d7852b71e4a70633d2177"
+    sha256 cellar: :any_skip_relocation, ventura:       "ff43063bc3edecb3a605023108aadb231fe05eeb94db563c599caf5f9e255508"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "096fe613b3c6bbf5eac779e92b371e0c3c1001666325647c75bb900a7da7e5c6"
   end
 
   depends_on "rust" => :build
@@ -23,7 +20,6 @@ class Railway < Formula
   def install
     system "cargo", "install", *std_cargo_args
 
-    # Install shell completions
     generate_completions_from_executable(bin/"railway", "completion")
   end
 

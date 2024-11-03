@@ -1,12 +1,13 @@
 class Sqsmover < Formula
   desc "AWS SQS Message mover"
   homepage "https://github.com/mercury2269/sqsmover"
-  url "https://github.com/mercury2269/sqsmover/archive/v0.4.0.tar.gz"
+  url "https://github.com/mercury2269/sqsmover/archive/refs/tags/v0.4.0.tar.gz"
   sha256 "217203f626399c67649f99af52eff6d6cdd9280ec5e2631e1de057e1bd0cdd0d"
   license "Apache-2.0"
   head "https://github.com/mercury2269/sqsmover.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "71138465799d2eef41934e3c9af64946ba7568d99b33c26b4f139bcba0957342"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fc16a425c148319663c2ed049384633fb3402c86cb919f7274eeb01850416056"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed7f54467803a8b532f6980792beda2deed1943b905377386086b99b4343951a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "fa8e6b9cc7c8df5f3bd6221092a8b90337e70afb21418b1ac386cbe6c1846dea"
@@ -37,7 +38,7 @@ class Sqsmover < Formula
       -X main.builtBy=#{tap.user}
     ].join(" ")
 
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

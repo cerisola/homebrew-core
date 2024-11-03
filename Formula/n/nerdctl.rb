@@ -1,13 +1,13 @@
 class Nerdctl < Formula
   desc "ContaiNERD CTL - Docker-compatible CLI for containerd"
   homepage "https://github.com/containerd/nerdctl"
-  url "https://github.com/containerd/nerdctl/archive/refs/tags/v1.6.0.tar.gz"
-  sha256 "a369b1c517d9c3d53d00b29633a6176a05811214a44dd25d339c32cc6a901579"
+  url "https://github.com/containerd/nerdctl/archive/refs/tags/v1.7.7.tar.gz"
+  sha256 "bcddf2ee3ad2bc84adc5e207f97157998fe973912c7d1dd9540bd4bb4a07698d"
   license "Apache-2.0"
   head "https://github.com/containerd/nerdctl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1ed8bcc6006b479f3894099fa3c466d58f7ba5cba3956de6783a07694dd4a8a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "09d45663a7ae0661ddb4c4a28071d2da6ea00e3d8139c40dd771cc2a9816aed3"
   end
 
   depends_on "go" => :build
@@ -15,7 +15,7 @@ class Nerdctl < Formula
 
   def install
     ldflags = "-s -w -X github.com/containerd/nerdctl/pkg/version.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/nerdctl"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/nerdctl"
 
     generate_completions_from_executable(bin/"nerdctl", "completion")
   end

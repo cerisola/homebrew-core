@@ -1,21 +1,18 @@
 class Dune < Formula
   desc "Composable build system for OCaml"
   homepage "https://dune.build/"
-  url "https://github.com/ocaml/dune/releases/download/3.11.0/dune-3.11.0.tbz"
-  sha256 "1b9c7d7e134a8d3a9d715613f02910ecf31167df1ba226ede921a5fa7b0d6513"
+  url "https://github.com/ocaml/dune/releases/download/3.16.1/dune-3.16.1.tbz"
+  sha256 "b781ae20f87613c2a11bd0717809e00470c82d615e15264f9a64e033051ac3de"
   license "MIT"
   head "https://github.com/ocaml/dune.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f127466fcf5dfeaa4d48d5dbc4549f3abdad2e0af7ea3cc0a887653436d583b5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed3503c1e85e84fcb7eb77162efd6fe4419be96b324feae6f463cf9289c4e6df"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "da0dc85a7e68833b490657a2e3236347dc1e3a91462a616a42619cc0a8318636"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "6ce3c73860612f098191d35c03eb8bbfce35f4b73a63cb15987cc984d4b2c7ed"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a9dee7a78876904c65c5bc004d5ea490ecd1fa8379fa44330a0ecdb2bc38dc92"
-    sha256 cellar: :any_skip_relocation, ventura:        "f43ae902a34fccc196adb1154cd41f10fc4dcdd0c83ea7779cd4dbe965ab5783"
-    sha256 cellar: :any_skip_relocation, monterey:       "13675bacc0929fb53822bf7dbad7f2f32fc80096b01d65e037c5e5ebacd37913"
-    sha256 cellar: :any_skip_relocation, big_sur:        "08d74b89790b099005cc4bea040bd63e5206686de14efa11ea64664d15033a52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "139c74dceb99623cc93d69be0b5760b151e3f9a68e1b1c470cc9d0724368ae01"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "988ba6399a7f512df3b1b7ba9a8b268fa86205613e21ffe626333e0b7fc70c81"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "38dca2bb0cb2e80f79093345c858cb2ffa90daa9276e23562ecf749cca038954"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "db440744d7d549ccc16697bb3742d6995c4e79981e72abd09bec6ce57ca0aac6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "31131d9cce0b06cc62c44d9afae766e2ed847957b99ac79f022a4834bf4426f0"
+    sha256 cellar: :any_skip_relocation, ventura:       "bd7d4b100ea8479ca8d94edd09980cb92adeef8f1c0a1575151d0235c23bb17a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9396b7b3e9c99d94e76a7eeb0033b0cb069afee26502513267c1c4ae9688715c"
   end
 
   depends_on "ocaml" => [:build, :test]

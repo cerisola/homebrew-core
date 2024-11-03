@@ -1,13 +1,14 @@
 class Saldl < Formula
   desc "CLI downloader optimized for speed and early preview"
   homepage "https://saldl.github.io/"
-  url "https://github.com/saldl/saldl/archive/v41.tar.gz"
+  url "https://github.com/saldl/saldl/archive/refs/tags/v41.tar.gz"
   sha256 "fc9980922f1556fd54a8c04fd671933fdc5b1e6847c1493a5fec89e164722d8e"
   license "AGPL-3.0-or-later"
   head "https://github.com/saldl/saldl.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "f6ca14c2df72bbec447ff0fbcbfe0b1b76070808210ec18c6822fc0579bb9053"
     sha256 cellar: :any,                 arm64_sonoma:   "b5473268647d0fb55defbd170569644c7545fedc20487531717db503ec43e2ab"
     sha256 cellar: :any,                 arm64_ventura:  "45ec76ad15d5c9c04d96bb467fa4d06605afa85675c7f4979f15e8c10d2231e9"
     sha256 cellar: :any,                 arm64_monterey: "1251f81d7ec7ef2faf2368564aa094363b9f2b16bc9a2f14637a62b73b1bfe93"

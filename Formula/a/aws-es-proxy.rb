@@ -1,11 +1,12 @@
 class AwsEsProxy < Formula
   desc "Small proxy between HTTP client and AWS Elasticsearch"
   homepage "https://github.com/abutaha/aws-es-proxy"
-  url "https://github.com/abutaha/aws-es-proxy/archive/v1.5.tar.gz"
+  url "https://github.com/abutaha/aws-es-proxy/archive/refs/tags/v1.5.tar.gz"
   sha256 "ac6dca6cc271f57831ccf4a413e210d175641932e13dcd12c8d6036e8030e3a5"
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c0415a87ec2804d034902df0cd3ada2a5085706236e2b73f68c45dbf99fdd1e6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b120ad6ea167aba79f5bf38cb52a67efc6611adcb8fbae3b75207e1a04f9ea64"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "b2b1415650725652e3282217d2c09464410645b225f954101259df3827b4a135"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b2b1415650725652e3282217d2c09464410645b225f954101259df3827b4a135"
@@ -42,7 +43,7 @@ class AwsEsProxy < Formula
     address = "127.0.0.1:#{free_port}"
     endpoint = "https://dummy-host.eu-west-1.es.amazonaws.com"
 
-    fork { exec "#{bin}/aws-es-proxy", "-listen=#{address}", "-endpoint=#{endpoint}" }
+    fork { exec bin/"aws-es-proxy", "-listen=#{address}", "-endpoint=#{endpoint}" }
     sleep 2
 
     output = shell_output("curl --silent #{address}")

@@ -1,9 +1,8 @@
 class Halide < Formula
   desc "Language for fast, portable data-parallel computation"
   homepage "https://halide-lang.org"
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "https://github.com/halide/Halide/archive/v16.0.0.tar.gz"
-  sha256 "a0cccee762681ea697124b8172dd65595856d0fa5bd4d1af7933046b4a085b04"
+  url "https://github.com/halide/Halide/archive/refs/tags/v18.0.0.tar.gz"
+  sha256 "1176b42a3e2374ab38555d9316c78e39b157044b5a8e765c748bf3afd2edb351"
   license "MIT"
   revision 1
   head "https://github.com/halide/Halide.git", branch: "main"
@@ -14,41 +13,61 @@ class Halide < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "564ce04ffc10ea2dcf23de77a0dfb890253057dd614fb04dc2dac5f8f2a5718b"
-    sha256 cellar: :any,                 arm64_monterey: "8f61d981dab71e927088763f5427d28b4b9503310455c4ee92e1187a79d89559"
-    sha256 cellar: :any,                 arm64_big_sur:  "e706b543dc1d61cbff0b8286b6f0f22f1cbedb78204f13207c52a7eb6ff62dc9"
-    sha256 cellar: :any,                 sonoma:         "d4372304d18e7e6afa9a75fca0646f3ae6c0288c1e234cce6372781eb531016c"
-    sha256 cellar: :any,                 ventura:        "28f28c0c0e1b17a5e8c40408684640c0bd0abec51cd1edf440dc781648cf5615"
-    sha256 cellar: :any,                 monterey:       "8c548b1ee5e6ae66f608a6240464a2e4fd356b407a7c34b4dbe1f5d9debc708f"
-    sha256 cellar: :any,                 big_sur:        "0694de37e861f05d512be47de93f33d984d5c8e46af492677c24662f87f6c5b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c4f02a55949ce8dc4ffcb50ed588633e729bd66521c09f0634a3be0c538fbcab"
+    rebuild 3
+    sha256 cellar: :any,                 arm64_sequoia: "a47babd7741a825bbce356c14d356810c285ddbae7ee18dd0c3df827bf8347ba"
+    sha256 cellar: :any,                 arm64_sonoma:  "ca7b252871d4c067737db812d14b3467500e16158b2989086a9df041b5236390"
+    sha256 cellar: :any,                 arm64_ventura: "0d70fd91451260abc7c479759b93bee154123f1cdf5e0d8e725a6b6306bd8acb"
+    sha256 cellar: :any,                 sonoma:        "a2573bcd16dbb7de7025c788374881d8dfdaa313f67032eb9c97b065303b401a"
+    sha256 cellar: :any,                 ventura:       "73cb1225eecf3b0ef6d50e5599bec8f8592c256c3dcf4213df47582849ffcf7d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d53aacb6e8c1c2950cb98ff4dd9f634a9f1e0e95db56644816d8837776c79609"
   end
 
   depends_on "cmake" => :build
   depends_on "pybind11" => :build
+  depends_on "flatbuffers"
   depends_on "jpeg-turbo"
   depends_on "libpng"
-  depends_on "llvm@16"
-  depends_on "python@3.11"
+  depends_on "lld"
+  depends_on "llvm"
+  depends_on "python@3.13"
 
   fails_with :gcc do
     version "6"
     cause "Requires C++17"
   end
 
+  # Check wabt version in `dependencies/wasm/CMakeLists.txt`.
+  # TODO: Ask upstream to support usage of a system-provided wabt.
+  # TODO: Do we really need a git checkout here?
+  resource "wabt" do
+    url "https://github.com/WebAssembly/wabt.git",
+        tag:      "1.0.33",
+        revision: "963f973469b45969ce198e0c86d3af316790a780"
+  end
+
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
-                    "-DHalide_INSTALL_PYTHONDIR=#{prefix/Language::Python.site_packages(python3)}",
-                    "-DHalide_SHARED_LLVM=ON",
-                    "-DPYBIND11_USE_FETCHCONTENT=OFF",
-                    *std_cmake_args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
+    builddir = buildpath/"build"
+    (builddir/"_deps/wabt-src").install resource("wabt")
+
+    site_packages = prefix/Language::Python.site_packages(python3)
+    rpaths = [rpath, rpath(source: site_packages/"halide")]
+    args = [
+      "-DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}",
+      "-DHalide_INSTALL_PYTHONDIR=#{site_packages}",
+      "-DHalide_SHARED_LLVM=ON",
+      "-DPYBIND11_USE_FETCHCONTENT=OFF",
+      "-DFLATBUFFERS_USE_FETCHCONTENT=OFF",
+      "-DFETCHCONTENT_SOURCE_DIR_WABT=#{builddir}/_deps/wabt-src",
+      "-DCMAKE_SHARED_LINKER_FLAGS=-llldCommon",
+    ]
+    odie "CMAKE_SHARED_LINKER_FLAGS can be removed from `args`" if build.bottle? && version > "18.0.0"
+    system "cmake", "-S", ".", "-B", builddir, *args, *std_cmake_args
+    system "cmake", "--build", builddir
+    system "cmake", "--install", builddir
   end
 
   test do

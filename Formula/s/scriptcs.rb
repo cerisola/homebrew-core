@@ -1,7 +1,7 @@
 class Scriptcs < Formula
   desc "Tools to write and execute C#"
   homepage "https://github.com/scriptcs/scriptcs"
-  url "https://github.com/scriptcs/scriptcs/archive/v0.17.1.tar.gz"
+  url "https://github.com/scriptcs/scriptcs/archive/refs/tags/v0.17.1.tar.gz"
   sha256 "e876118d82f52cbdd9569783ec9278c4ac449055aa628cdcb2d785bf8098a434"
   license "Apache-2.0"
 
@@ -20,7 +20,7 @@ class Scriptcs < Formula
   end
 
   # https://github.com/scriptcs/scriptcs/issues/1323
-  deprecate! date: "2023-02-21", because: :unmaintained
+  disable! date: "2024-02-12", because: :unmaintained
 
   depends_on "mono"
 

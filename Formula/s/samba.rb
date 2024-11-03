@@ -4,9 +4,10 @@ class Samba < Formula
   # option. The shared folder appears in the guest as "\\10.0.2.4\qemu".
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://www.samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-4.19.0.tar.gz"
-  sha256 "28f98ceab75a6a59432912fa110fc8c716abcab1ed6d8bdd4393d178acff3d20"
+  url "https://download.samba.org/pub/samba/stable/samba-4.21.1.tar.gz"
+  sha256 "bd02f55da538358c929505b21fdd8aeba53027eab14c849432a53ed0bae1c7c2"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://www.samba.org/samba/download/"
@@ -14,38 +15,38 @@ class Samba < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "10befbe69d8589053f4347e5c1f0dc597c6485c05478f9b3c400a999226a9e28"
-    sha256 arm64_ventura:  "8d1adfe088f3b2a7487024d28dc4a5a030883445c43ca532445083995d942696"
-    sha256 arm64_monterey: "6a976454131e8459836d7147477ab72b240f5e6ad14e5b6531ebbd14aad724e5"
-    sha256 arm64_big_sur:  "7902f2cc8d05cbc9fb77202079d6fc7257e8e5eee5b097adb575d1f30907cc79"
-    sha256 sonoma:         "7c54c93a6df9b6f975fd12df52b6550ffa606df2c20af9fb685dbb592f4e5869"
-    sha256 ventura:        "41292e75b2df81bdfd40f18ddd736e82bbcb56041c6a71a6cbba0c3349696636"
-    sha256 monterey:       "069ff5f31af47dcfa9ce9eb1806847d7f56250ab509ed1c41da3f0b0cfea67f4"
-    sha256 big_sur:        "7332e3fc6a647d6a11b2ec50031f269005fde3d44d49c149681b5514efedfeb0"
-    sha256 x86_64_linux:   "a8cc76583f6eaee2e01bd8dd23fab76328daeb59095dc1b5a356261aee783a38"
+    sha256 arm64_sequoia: "1021749f660ecbc998b2b06cb0ad640028154b283c97e1fa3a013f11b8f638f8"
+    sha256 arm64_sonoma:  "4b4d7e94785fa300fe6dbd3b3e204c5b7983e33287e1a10bb647cb97fbea011d"
+    sha256 arm64_ventura: "f12753e6e2f29e358a1fe948548c8df5ee9d80d9a587d10301f1d5e2f33a465a"
+    sha256 sonoma:        "e9a36a1dac8c28277187f24335c41f4f21cbdb36507696c7a84b33c7aedd195a"
+    sha256 ventura:       "e634c9346a0a8dadf34054cdf8d49493a6c80f9fe3b135c99f328e3a48da57b5"
+    sha256 x86_64_linux:  "20441a7172a0268c230a62c927c50b20e3b677ccc8c83fb4dcf39dfb54362ed6"
   end
 
+  depends_on "bison" => :build
   depends_on "cmocka" => :build
   depends_on "pkg-config" => :build
-  # configure requires python3 binary to be present, even when --disable-python is set.
-  depends_on "python@3.11" => :build
   depends_on "gnutls"
   # icu4c can get linked if detected by pkg-config and there isn't a way to force disable
   # without disabling spotlight support. So we just enable the feature for all systems.
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "krb5"
   depends_on "libtasn1"
+  depends_on "lmdb"
   depends_on "popt"
   depends_on "readline"
   depends_on "talloc"
+  depends_on "tdb"
+  depends_on "tevent"
 
-  uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "perl" => :build
+  uses_from_macos "python" => :build # configure requires python3 binary
   uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gettext"
     depends_on "openssl@3"
   end
 
@@ -62,8 +63,11 @@ class Samba < Formula
   end
 
   def install
+    # Skip building test that fails on ARM with error: initializer element is not a compile-time constant
+    inreplace "lib/ldb/wscript", /\('test_ldb_comparison_fold',$/, "\\0 enabled=False," if Hardware::CPU.arm?
+
     # avoid `perl module "Parse::Yapp::Driver" not found` error on macOS 10.xx (not required on 11)
-    if MacOS.version < :big_sur
+    if !OS.mac? || MacOS.version < :big_sur
       ENV.prepend_create_path "PERL5LIB", buildpath/"lib/perl5"
       ENV.prepend_path "PATH", buildpath/"bin"
       resource("Parse::Yapp").stage do
@@ -74,7 +78,8 @@ class Samba < Formula
     end
     ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/private" if OS.linux?
     system "./configure",
-           "--bundled-libraries=NONE,ldb,tdb,tevent",
+           "--bundled-libraries=NONE",
+           "--private-libraries=!ldb",
            "--disable-cephfs",
            "--disable-cups",
            "--disable-iprint",
@@ -98,13 +103,13 @@ class Samba < Formula
            "--localstatedir=#{var}"
     system "make"
     system "make", "install"
-    if OS.mac?
-      # macOS has its own SMB daemon as /usr/sbin/smbd, so rename our smbd to samba-dot-org-smbd to avoid conflict.
-      # samba-dot-org-smbd is used by qemu.rb .
-      # Rename profiles as well to avoid conflicting with /usr/bin/profiles
-      mv sbin/"smbd", sbin/"samba-dot-org-smbd"
-      mv bin/"profiles", bin/"samba-dot-org-profiles"
-    end
+    return unless OS.mac?
+
+    # macOS has its own SMB daemon as /usr/sbin/smbd, so rename our smbd to samba-dot-org-smbd to avoid conflict.
+    # samba-dot-org-smbd is used by qemu.rb .
+    # Rename profiles as well to avoid conflicting with /usr/bin/profiles
+    mv sbin/"smbd", sbin/"samba-dot-org-smbd"
+    mv bin/"profiles", bin/"samba-dot-org-profiles"
   end
 
   def caveats

@@ -1,28 +1,25 @@
-require "language/node"
-
 class Json2ts < Formula
   desc "Compile JSONSchema to TypeScript type declarations"
   homepage "https://github.com/bcherny/json-schema-to-typescript"
-  url "https://registry.npmjs.org/json-schema-to-typescript/-/json-schema-to-typescript-13.1.1.tgz"
-  sha256 "8b70c473a916f88813ae182aa0c970edba2fb1eda031a46f72e0691631b72e0a"
+  url "https://registry.npmjs.org/json-schema-to-typescript/-/json-schema-to-typescript-15.0.2.tgz"
+  sha256 "ab9f2b800b3e6aaeef36d3ff4ce1548c6df2afe4b79fa074594a1143dc0b2670"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d441f2af6a99f5c954361cc7f68ab1b56423f6cafd8c9250443012e0a2555b67"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0941fe65ac8ce455223411a65f4362084f308c2c71ab24e1e16528d7b99ff711"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0941fe65ac8ce455223411a65f4362084f308c2c71ab24e1e16528d7b99ff711"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "0941fe65ac8ce455223411a65f4362084f308c2c71ab24e1e16528d7b99ff711"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8c7a7ac5c33c05a56c13131a4625b29e6662557580e83835e5b2ff19cf683fb8"
-    sha256 cellar: :any_skip_relocation, ventura:        "8560351905cb49e8bccc04af3edb1895f5fe491b006d9fb8dcfbd6c81ce16c3e"
-    sha256 cellar: :any_skip_relocation, monterey:       "8560351905cb49e8bccc04af3edb1895f5fe491b006d9fb8dcfbd6c81ce16c3e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8560351905cb49e8bccc04af3edb1895f5fe491b006d9fb8dcfbd6c81ce16c3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0941fe65ac8ce455223411a65f4362084f308c2c71ab24e1e16528d7b99ff711"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e85142e837bc9b2bf6a70cbe4dd728f30177c4e1e449f6c12df9b7e7a21771af"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "881d477ab9a862f5e8f570ac27f60c7384de7a9ab97b34fc7ea26c037426bb82"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "881d477ab9a862f5e8f570ac27f60c7384de7a9ab97b34fc7ea26c037426bb82"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "881d477ab9a862f5e8f570ac27f60c7384de7a9ab97b34fc7ea26c037426bb82"
+    sha256 cellar: :any_skip_relocation, sonoma:         "6b148f79eb8757492cbcfbbbda0ecb999a98ef70e484e3285897878571ab4342"
+    sha256 cellar: :any_skip_relocation, ventura:        "6b148f79eb8757492cbcfbbbda0ecb999a98ef70e484e3285897878571ab4342"
+    sha256 cellar: :any_skip_relocation, monterey:       "6b148f79eb8757492cbcfbbbda0ecb999a98ef70e484e3285897878571ab4342"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "881d477ab9a862f5e8f570ac27f60c7384de7a9ab97b34fc7ea26c037426bb82"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
@@ -72,7 +69,7 @@ class Json2ts < Formula
       }
     TS
 
-    output = pipe_output("#{bin}/json2ts", schema)
+    output = pipe_output(bin/"json2ts", schema)
     assert_equal output, typescript
   end
 end

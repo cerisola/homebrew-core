@@ -1,18 +1,12 @@
 class Checkstyle < Formula
   desc "Check Java source against a coding standard"
   homepage "https://checkstyle.sourceforge.io/"
-  url "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.12.4/checkstyle-10.12.4-all.jar"
-  sha256 "79c59307fe0b73bce091023a9cde55bca7d18b378c11dc865322f47f18801e19"
+  url "https://github.com/checkstyle/checkstyle/releases/download/checkstyle-10.20.0/checkstyle-10.20.0-all.jar"
+  sha256 "5af0b95322f15b558795546cd0b976906c1733ff59f7ca9d62d8ca686db0e62b"
   license "LGPL-2.1-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, ventura:        "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, monterey:       "8047609107fd905bf1eb6f36123e0e682f17108907deb77ce7cd59f8fa53f7a9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "68cdab140c071d1b639bf839e17bf211cb10e94428199c435fcf01bb248cfec0"
+    sha256 cellar: :any_skip_relocation, all: "96179719649894b005b66562cd280a2ca3ffe249093f8cb1c11e01be102f662c"
   end
 
   depends_on "openjdk"

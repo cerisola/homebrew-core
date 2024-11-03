@@ -1,30 +1,27 @@
-require "language/node"
-
 class Mailpit < Formula
   desc "Web and API based SMTP testing"
-  homepage "https://github.com/axllent/mailpit"
-  url "https://github.com/axllent/mailpit/archive/refs/tags/v1.9.6.tar.gz"
-  sha256 "66eb9cff9b5bfe7740fabf6304dfc4577746ce5b782e8868f5043440fc4a122f"
+  homepage "https://mailpit.axllent.org/"
+  url "https://github.com/axllent/mailpit/archive/refs/tags/v1.21.1.tar.gz"
+  sha256 "c03bea0de19620bcfc1316e8d28f79a7b1a57499494ba486851905ec550e1777"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "167beb0560995d15b1880e89fac5e6f13600395cb6bb35826434f4df271fcde0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cfdecbd77c37c1e20db956055180c8fa0141fc98b0416433ee76b3cb58a9e5ac"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7dfcd7977755ba86b77c00093e616220cbeeb21182c609a9765b8ddc55d0ce4f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4e145d02284ec4510901dcaded8a24026c42e666b534f521b2ce0c9c7a444efc"
-    sha256 cellar: :any_skip_relocation, ventura:        "cd53a141480d401dbe5955b620a195e0376335d29ec208c82d13d7058475e796"
-    sha256 cellar: :any_skip_relocation, monterey:       "b9d02e28f75142c242f15472df60327a9250b05675c87f8bf93dfb866760b0e3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a343a9ea1508463b3989ae69955dab8c4322535faf5f98a7ca2a52064699a6db"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81f3fa9751962ced90b37e635c328da5a8be35d8d0b5d978ec22009bc5a98bfb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7c5e5b47d27283e77d741abd91a84b14ad42feda4681739f924f69cc5656b525"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "41f3dda497106b91b6d3ccc984b36443ab2f81b22f3dce880905d04f684476dd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1020ff4fded74f7d5ad72bfa8451ac7053b53cfa922c2192b152117c411db34d"
+    sha256 cellar: :any_skip_relocation, ventura:       "3b22c512d681dcacfbfb0dbec54059599ecdee428ca92a567d2c94be9677dad9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "78d39eeec69fa524b8c560334366231647193cfb3ae49844a77d8cc23ce20758"
   end
 
   depends_on "go" => :build
   depends_on "node" => :build
 
   def install
-    system "npm", "install", *Language::Node.local_npm_install_args
+    system "npm", "install", *std_npm_args(prefix: false)
     system "npm", "run", "build"
-    ldflags = "-s -w -X github.com/axllent/mailpit/config.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    ldflags = "-s -w -X github.com/axllent/mailpit/config.Version=v#{version}"
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   service do
@@ -40,6 +37,6 @@ class Mailpit < Formula
     output = shell_output("#{bin}/mailpit sendmail < #{testpath}/test_email.txt 2>&1", 11)
     assert_match "error parsing message body: malformed header line", output
 
-    assert_match version.to_s, shell_output("#{bin}/mailpit version")
+    assert_match "mailpit v#{version}", shell_output("#{bin}/mailpit version")
   end
 end

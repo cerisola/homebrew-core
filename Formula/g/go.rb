@@ -1,9 +1,9 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
   homepage "https://go.dev/"
-  url "https://go.dev/dl/go1.21.2.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.21.2.src.tar.gz"
-  sha256 "45e59de173baec39481854490d665b726cec3e5b159f6b4172e5ec7780b2c201"
+  url "https://go.dev/dl/go1.23.2.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.23.2.src.tar.gz"
+  sha256 "36930162a93df417d90bd22c6e14daff4705baac2b02418edda671cdfa9cd07f"
   license "BSD-3-Clause"
   head "https://go.googlesource.com/go.git", branch: "master"
 
@@ -21,25 +21,24 @@ class Go < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "ed1c2cbb167906466229918d181af6452efb91813c9362656f26504a4cc65117"
-    sha256 arm64_ventura:  "84d9884d513adb0ca5208e788f10e386425d1820d111cd934a0429b7578ffc3a"
-    sha256 arm64_monterey: "d71c3276c50fd605a1bbeff7f51cdb777c2a04771c373fc0245c8c3b5be5adb8"
-    sha256 sonoma:         "7c1ad7b8a7e0a4392832f66da5e46089c5713b76966e0d83d2ba869833b936bf"
-    sha256 ventura:        "0cce8e0880b7f63aefd3c344f660a2f560aeea381fc615bb96f28c94f067e299"
-    sha256 monterey:       "d8f18ccf610dd4c45f4c32b94c172b9387b9e212b913eeca7a27a3cf8499e4a4"
-    sha256 x86_64_linux:   "a2e11f604ac9ae3dc31287ba336ffe40d576b989e8edfdcdbbffd66983bd2eb2"
+    sha256 arm64_sequoia: "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
+    sha256 arm64_sonoma:  "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
+    sha256 arm64_ventura: "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
+    sha256 sonoma:        "57c7e66ca7ea40cb376a54c278f763cba6a9f6cd737799c6f20ea025950293a9"
+    sha256 ventura:       "57c7e66ca7ea40cb376a54c278f763cba6a9f6cd737799c6f20ea025950293a9"
+    sha256 x86_64_linux:  "6de4daee05bd091a7c29aee73e93bde102c560392d5114e3e92b7d1fae0fbcf4"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.
   resource "gobootstrap" do
     checksums = {
-      "darwin-arm64" => "e4ccc9c082d91eaa0b866078b591fc97d24b91495f12deb3dd2d8eda4e55a6ea",
-      "darwin-amd64" => "c101beaa232e0f448fab692dc036cd6b4677091ff89c4889cc8754b1b29c6608",
-      "linux-arm64"  => "914daad3f011cc2014dea799bb7490442677e4ad6de0b2ac3ded6cee7e3f493d",
-      "linux-amd64"  => "4cdd2bc664724dc7db94ad51b503512c5ae7220951cac568120f64f8e94399fc",
+      "darwin-arm64" => "6da3f76164b215053daf730a9b8f1d673dbbaa4c61031374a6744b75cb728641",
+      "darwin-amd64" => "754363489e2244e72cb49b4ec6ddfd6a2c60b0700f8c4876e11befb1913b11c5",
+      "linux-arm64"  => "2096507509a98782850d1f0669786c09727053e9fe3c92b03c0d96f48700282b",
+      "linux-amd64"  => "ff445e48af27f93f66bd949ae060d97991c83e11289009d311f25426258f9c44",
     }
 
-    version "1.17.13"
+    version "1.20.14"
 
     on_arm do
       on_macos do
@@ -64,6 +63,8 @@ class Go < Formula
   end
 
   def install
+    inreplace "go.env", /^GOTOOLCHAIN=.*$/, "GOTOOLCHAIN=local"
+
     (buildpath/"gobootstrap").install resource("gobootstrap")
     ENV["GOROOT_BOOTSTRAP"] = buildpath/"gobootstrap"
 
@@ -73,7 +74,7 @@ class Go < Formula
       with_env(CC: "cc", CXX: "c++") { system "./make.bash" }
     end
 
-    rm_rf "gobootstrap" # Bootstrap not required beyond compile.
+    rm_r("gobootstrap") # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir[libexec/"bin/go*"]
 
@@ -81,12 +82,22 @@ class Go < Formula
 
     # Remove useless files.
     # Breaks patchelf because folder contains weird debug/test files
-    (libexec/"src/debug/elf/testdata").rmtree
+    rm_r(libexec/"src/debug/elf/testdata")
     # Binaries built for an incompatible architecture
-    (libexec/"src/runtime/pprof/testdata").rmtree
+    rm_r(libexec/"src/runtime/pprof/testdata")
+  end
+
+  def caveats
+    <<~EOS
+      Homebrew's Go toolchain is configured with
+        GOTOOLCHAIN=local
+      per Homebrew policy on tools that update themselves.
+    EOS
   end
 
   test do
+    assert_equal "local", shell_output("#{bin}/go env GOTOOLCHAIN").strip
+
     (testpath/"hello.go").write <<~EOS
       package main
 

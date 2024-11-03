@@ -1,7 +1,7 @@
 class FuzzyFind < Formula
   desc "Fuzzy filename finder matching across directories as well as files"
   homepage "https://github.com/silentbicycle/ff"
-  url "https://github.com/silentbicycle/ff/archive/v0.6-flag-features.tar.gz"
+  url "https://github.com/silentbicycle/ff/archive/refs/tags/v0.6-flag-features.tar.gz"
   version "0.6.0"
   sha256 "104300ba16af18d60ef3c11d70d2ec2a95ddf38632d08e4f99644050db6035cb"
   license "MIT"
@@ -18,6 +18,7 @@ class FuzzyFind < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9232687527d2937f2d743e0774e9073675887b2cac09cedddbf053a67db9e4b5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "187ec442ac4e7b4fa865dc8065ce6fc2a9d2e8e79c55fd3c3006b5e294b65619"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "81ff5be190dd0e8d539f7a0e3a366737db3fb72faae8c310f99ee462e4333f5b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "40e202174aca2e775cea7f47b1936ca0cc209e2e9a96a9f9e2b9b8bd6ac7d3cc"

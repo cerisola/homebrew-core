@@ -4,18 +4,15 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh/releases/download/mosh-1.4.0/mosh-1.4.0.tar.gz"
   sha256 "872e4b134e5df29c8933dff12350785054d2fd2839b5ae6b5587b14db1465ddd"
   license "GPL-3.0-or-later"
-  revision 7
+  revision 22
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a57a41674f05b4c46be3344975b328043f03ae2eb21d28bff3b282c78301c64a"
-    sha256 cellar: :any,                 arm64_ventura:  "5385b41abbc305384440b081b8faa976235c5ebe88d168b2fcfa7272c4b5e06d"
-    sha256 cellar: :any,                 arm64_monterey: "d256d62ac6e964b6379f33e548d047c47e163c9c41245c9122f620ff7d0eb1cd"
-    sha256 cellar: :any,                 arm64_big_sur:  "342b208be1ec535ae078d77b0877d37b013aa6d6047f3f45cc34a7d5a8d8f417"
-    sha256 cellar: :any,                 sonoma:         "7f0e73c9b7bf2a5615ea08c46f0f63897d1431a02d55cef2996212c2214119da"
-    sha256 cellar: :any,                 ventura:        "92d1339cd920ced8d784e34e8dc996b21b3d696388387e409512a49e9e09d975"
-    sha256 cellar: :any,                 monterey:       "fdf6330bdac536f37680c4132d5b2cad35b3267873c56b6a1008f02a14e08c3e"
-    sha256 cellar: :any,                 big_sur:        "5068cdd5a5de38d0829c9d5ccf02cc8dc38df1d05e295441d455e135800d4cb9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a9342b1b96373c81b1cba4d93149a2c4383078f2db735cdcbc100cea536589d8"
+    sha256 cellar: :any,                 arm64_sequoia: "33dc51bf37be8f249ba0004d5e647d689de56639bc8664a785390807c7be5164"
+    sha256 cellar: :any,                 arm64_sonoma:  "fb5f8f8cca6ae74b71ff12ed06fa0cd4676858341de6e96958e98fb07ed20c1e"
+    sha256 cellar: :any,                 arm64_ventura: "3287abf4aff9c41ee8e7f48a1c8f8af7e364379408893d7c8f925b680a326df4"
+    sha256 cellar: :any,                 sonoma:        "8f262559a1216d94d747d9f9c5dd247e4c5ae768dff7990d5e331c47c9126d2e"
+    sha256 cellar: :any,                 ventura:       "647a1fecda243e7b4ebd60b61a0097e8dfdd42b5a53c5a1a56172ca085f9e667"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9646daefdde7e41415c15e53aba506fa51eba1afec405a3e2ae3ad8e10b95d0"
   end
 
   head do
@@ -42,6 +39,8 @@ class Mosh < Formula
   def install
     # https://github.com/protocolbuffers/protobuf/issues/9947
     ENV.append_to_cflags "-DNDEBUG"
+    # Avoid over-linkage to `abseil`.
+    ENV.append "LDFLAGS", "-Wl,-dead_strip_dylibs" if OS.mac?
 
     # teach mosh to locate mosh-client without referring
     # PATH to support launching outside shell e.g. via launcher

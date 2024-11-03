@@ -6,20 +6,19 @@ class Keepassc < Formula
   url "https://files.pythonhosted.org/packages/c8/87/a7d40d4a884039e9c967fb2289aa2aefe7165110a425c4fb74ea758e9074/keepassc-1.8.2.tar.gz"
   sha256 "2e1fc6ccd5325c6f745f2d0a3bb2be26851b90d2095402dd1481a5c197a7b24e"
   license "ISC"
-  revision 4
+  revision 5
 
   bottle do
-    rebuild 3
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "69222e3bab742d39d0023351ae2aea560125253e13c2be5e619afae46538ac8a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c7d89c3f7b0ced2d6839ac5716c5f880dfae30aec7f4488867d33453a211129c"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "572b5e26bdd2ab7cf29267926e65a6055fae1ffd64afcf2a554edddb74e5643c"
-    sha256 cellar: :any_skip_relocation, sonoma:         "4c4136b04da453cba3bbfb041b2909674e078f076ca8fb563125ef253d2edf48"
-    sha256 cellar: :any_skip_relocation, ventura:        "6278e9826308306d6895bb631666c2da6004c3df69fdb89e53aa6084883b4c36"
-    sha256 cellar: :any_skip_relocation, monterey:       "52519bc7729f34f92a21c5cbd628ee58875e377f7df615938a64e749f33badea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "289914d6f6dcca2cf51670c0b7334ba148670cb1ca4db3a9dfc647ee3ebd8660"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2447d5f8a051b1d15efec850c60e58bd372e871270fe494c9a4882309783fc11"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "95ceec5e889bfc089f375a75b99b516efdf0bfc88a09a2d0ddbee81c53812e5d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "86f49118750ea97315199c2d5b3822e27886649707d35705f51fca775654916c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "57a9a7e5649c8cf0a95930e8ecc11db4f7348bf3de3c532e4c224d9347e67cf8"
+    sha256 cellar: :any_skip_relocation, ventura:       "653a4503ecbbc3d060c0ec6154e5fd564f5ee7496959578796416c057c1228c7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "46c34fbb29c6d70d3966fb5a4b0e8afa57fe9a58aa68f1a41f2c534dd94c7932"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "kppy" do
     url "https://files.pythonhosted.org/packages/c8/d9/6ced04177b4790ccb1ba44e466c5b67f3a1cfe4152fb05ef5f990678f94f/kppy-1.5.2.tar.gz"
@@ -27,8 +26,8 @@ class Keepassc < Formula
   end
 
   resource "pycryptodomex" do
-    url "https://files.pythonhosted.org/packages/14/c9/09d5df04c9f29ae1b49d0e34c9934646b53bb2131a55e8ed2a0d447c7c53/pycryptodomex-3.19.0.tar.gz"
-    sha256 "af83a554b3f077564229865c45af0791be008ac6469ef0098152139e6bd4b5b6"
+    url "https://files.pythonhosted.org/packages/11/dc/e66551683ade663b5f07d7b3bc46434bf703491dbd22ee12d1f979ca828f/pycryptodomex-3.21.0.tar.gz"
+    sha256 "222d0bd05381dd25c32dd6065c071ebf084212ab79bab4599ba9e6a3e0009e6c"
   end
 
   def install

@@ -1,22 +1,20 @@
-require "language/node"
-
 class GatsbyCli < Formula
   desc "Gatsby command-line interface"
   homepage "https://www.gatsbyjs.org/docs/gatsby-cli/"
-  url "https://registry.npmjs.org/gatsby-cli/-/gatsby-cli-5.12.1.tgz"
-  sha256 "06d2ef6efca4d0af2abb72cee244db7714d468f7249804c4ebb7abc8f0812c24"
+  url "https://registry.npmjs.org/gatsby-cli/-/gatsby-cli-5.13.3.tgz"
+  sha256 "22419fe3354ce4a4e373aaa54160294b8d5cc5ab95ad6b632b07a047c6287378"
   license "MIT"
 
   bottle do
-    sha256                               arm64_sonoma:   "8d37e25c2e8199e87433ce8d7c45f602beb97eb3a0d0abdda3133393605e05fa"
-    sha256                               arm64_ventura:  "97a8334bc0871883b779f908d4e50a128432f2288698881f50d4a33267ded1d1"
-    sha256                               arm64_monterey: "6538d29f74e28b91086c6fa452b67cee54d6bcbbe4b9aa5571164e03dbda0fd8"
-    sha256                               arm64_big_sur:  "b9e9ef64f6eb7c35ccd05b6db2f3ae802a5ecc1d318cae8dbeb77d98a1c0d1c8"
-    sha256                               sonoma:         "893f60e93df341b95637169f5c9f6abfba1119959a52f4134e5069ae3c3f82be"
-    sha256                               ventura:        "29bac5d299062af44548edb55e67c86dec6fc68ca74cfa7e3b4c804b9090968a"
-    sha256                               monterey:       "93734697b23031d3df7b9dbc4223aa5dc8cec1e3e74a41ae254e23b9f28b0777"
-    sha256                               big_sur:        "88f8f86428c7164427e9199b7a05ce485927ac0b56e6f96cbc45ccd36d330cca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cba73665fda0f63b1acef5fac6eb081c57489abbcb6be2450950f2f99e6a00a"
+    rebuild 1
+    sha256                               arm64_sequoia:  "f7db10ee18620b1843ff8cd40dab82efe76c49c28f9cb9be0fd4c09c5dd4f010"
+    sha256                               arm64_sonoma:   "b8fe2d5de1dd51bad67a53ebe805254ebd9e503a98c9812a16236eeef69c08e0"
+    sha256                               arm64_ventura:  "5d245f32ae46a4fa1592417d2cf745c4a7446c3546991ab494e3f27ff6416086"
+    sha256                               arm64_monterey: "25049c42733ca1a7df09263eccbcdf1be5545c41d81c33ca5b42979f1e34bc33"
+    sha256                               sonoma:         "20a2a322dc10ed9a59548605a0887b4f924c69fbf654bc1dc353b7d911b5d107"
+    sha256                               ventura:        "78b5062144fe068949bd4ee0bad05d93969f1b8cee88dc936411bfa95da06b9b"
+    sha256                               monterey:       "85597b5631817d7ee9f5d37b36f20666b756909dc0f9057a5c35a8019784a42c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "42e95da9728038e6b7a8a8916700f4853f1157703a90c3cc6e99c6a887e1f624"
   end
 
   depends_on "node"
@@ -26,7 +24,7 @@ class GatsbyCli < Formula
   end
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir[libexec/"bin/*"]
 
     # Remove incompatible pre-built binaries
@@ -41,7 +39,7 @@ class GatsbyCli < Formula
     end
 
     clipboardy_fallbacks_dir = node_modules/"clipboardy/fallbacks"
-    clipboardy_fallbacks_dir.rmtree # remove pre-built binaries
+    rm_r(clipboardy_fallbacks_dir) # remove pre-built binaries
     if OS.linux?
       linux_dir = clipboardy_fallbacks_dir/"linux"
       linux_dir.mkpath

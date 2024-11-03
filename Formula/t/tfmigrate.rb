@@ -1,31 +1,32 @@
 class Tfmigrate < Formula
-  desc "Terraform state migration tool for GitOps"
+  desc "Terraform/OpenTofu state migration tool for GitOps"
   homepage "https://github.com/minamijoyo/tfmigrate"
-  url "https://github.com/minamijoyo/tfmigrate/archive/v0.3.18.tar.gz"
-  sha256 "d85ae2601380d35a3d9bacea8dd000635fac18ddd16cd4607359d75dd3adbc7b"
+  url "https://github.com/minamijoyo/tfmigrate/archive/refs/tags/v0.3.24.tar.gz"
+  sha256 "6d84a7199f031dd795ebac899f5625375670708994a42dd71e4f3bc0f570f202"
   license "MIT"
   head "https://github.com/minamijoyo/tfmigrate.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a8bdcb65299f74428c65e7f2f3da96a4453d0f4728dc92f22fe02a7d0b2497aa"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a8bdcb65299f74428c65e7f2f3da96a4453d0f4728dc92f22fe02a7d0b2497aa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a8bdcb65299f74428c65e7f2f3da96a4453d0f4728dc92f22fe02a7d0b2497aa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5957f3426f5dba6c7129a8ef37e6b8c4bb73e2dcdcc3cda7e0c379480d6b9d93"
-    sha256 cellar: :any_skip_relocation, ventura:        "5957f3426f5dba6c7129a8ef37e6b8c4bb73e2dcdcc3cda7e0c379480d6b9d93"
-    sha256 cellar: :any_skip_relocation, monterey:       "5957f3426f5dba6c7129a8ef37e6b8c4bb73e2dcdcc3cda7e0c379480d6b9d93"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ec37c26b708b0b3bef8e758838e6ad01e099f9f7553b281acf482d08c7a18331"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "090d73c374ab8d96bf471ca71bdd015bab3eb39b59e452cbe15da3749995eed5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "73e8f7ee7c9869c2b07e4107ed867e83aa5f46036b9e66485a3c828b6bb847bd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b5b9cbc5bed9f99139694249d943606edff30de9437a16bf3a3f5d1f7a11f693"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f38c03df2717c63637a9fe9086a4d303b8b188d5da49206fa55d9cd84ec8801f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b6a29688276af8be54d7986a1a9349e2cf565bfd96256b0e33ad228e42a4716e"
+    sha256 cellar: :any_skip_relocation, ventura:        "3883fc61d9fc854d669d871cd9a14ecd875956d44ff185451d42dbd9ca034d76"
+    sha256 cellar: :any_skip_relocation, monterey:       "e1bd199738832d2f36373ef0f2e3c374ecdf91129288310a23ec141ab443243c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8c71ee6897542e4564f992e97cb7e6955fc010fe04d319cf0263cf013dd20b07"
   end
 
   depends_on "go" => :build
-  depends_on "terraform" => :test
+  depends_on "opentofu" => :test
 
   def install
-    ENV["CGO_ENABLED"] = "0"
-
     system "go", "build", *std_go_args(ldflags: "-s -w")
   end
 
   test do
+    ENV["TFMIGRATE_EXEC_PATH"] = "tofu"
+
     (testpath/"tfmigrate.hcl").write <<~EOS
       migration "state" "brew" {
         actions = [

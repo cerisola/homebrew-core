@@ -1,12 +1,13 @@
 class Proper < Formula
   desc "QuickCheck-inspired property-based testing tool for Erlang"
   homepage "https://proper-testing.github.io"
-  url "https://github.com/proper-testing/proper/archive/v1.4.tar.gz"
+  url "https://github.com/proper-testing/proper/archive/refs/tags/v1.4.tar.gz"
   sha256 "38b14926f974c849fad74b031c25e32bf581974103e7a30ec2b325990fc32334"
   license "GPL-3.0-or-later"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a566b9d8925d5912685ebcd4391e790d2ca05d24ac02dd5027fed6024749f632"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9e3f49c043a708e27699c534dc9c4ee5e7762f5c4ffa62a9b0ae464406f008df"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8ba16c265d878f2385d16020577833fc18f3f34ebfacebf9806ffae99caaed6f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1fb7580b8ec4be37ae5eb66f3d474f5cb7134d91968b6a3ffd57e946601c3e7c"

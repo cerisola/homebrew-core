@@ -1,14 +1,24 @@
 class Spotbugs < Formula
   desc "Tool for Java static analysis (FindBugs's successor)"
   homepage "https://spotbugs.github.io/"
-  # TODO: Check if we can use unversioned `openjdk` (or `openjdk@21`) at version bump.
-  url "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/4.7.3/spotbugs-4.7.3.tgz"
-  sha256 "f02e2f1135b23f3edfddb75f64be0491353cfeb567b5a584115aa4fd373d4431"
+  url "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/4.8.6/spotbugs-4.8.6.tgz"
+  sha256 "b9d4d25e53cd4202b2dc19c549c0ff54f8a72fc76a71a8c40dee94422c67ebea"
   license "LGPL-2.1-or-later"
 
+  livecheck do
+    url "https://repo.maven.apache.org/maven2/com/github/spotbugs/spotbugs/"
+    regex(%r{href=["']?v?(\d+(?:\.\d+)+)/?["' >]}i)
+  end
+
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "ff24323893d6f69f44710ef8af1e2563a1b109d9f0ea6cad719cb7012ee5492f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e44f0519c568b957cb32657ba6eca41c393e7983d0f61caf94eeaa03f00c6e5e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "27e6002a2ee2a2c2664291af654541a77bb6a925e66393eb783423f072a1c830"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "27e6002a2ee2a2c2664291af654541a77bb6a925e66393eb783423f072a1c830"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "27e6002a2ee2a2c2664291af654541a77bb6a925e66393eb783423f072a1c830"
+    sha256 cellar: :any_skip_relocation, sonoma:         "9a7b66466aff1f1bc50ecc52faa62044a42e736a09c5d9d296d0b8ee6605cead"
+    sha256 cellar: :any_skip_relocation, ventura:        "9a7b66466aff1f1bc50ecc52faa62044a42e736a09c5d9d296d0b8ee6605cead"
+    sha256 cellar: :any_skip_relocation, monterey:       "27e6002a2ee2a2c2664291af654541a77bb6a925e66393eb783423f072a1c830"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "83822f6a3a9e21032c8d4a4283161c6a8f8566828c7a14519d54bb39f90a7b18"
   end
 
   head do
@@ -17,13 +27,12 @@ class Spotbugs < Formula
     depends_on "gradle" => :build
   end
 
-  # `openjdk` 21 support issue: https://github.com/spotbugs/spotbugs/issues/2567
-  depends_on "openjdk@17"
+  depends_on "openjdk"
 
   conflicts_with "fb-client", because: "both install a `fb` binary"
 
   def install
-    ENV["JAVA_HOME"] = Formula["openjdk@17"].opt_prefix
+    ENV["JAVA_HOME"] = Formula["openjdk"].opt_prefix
     if build.head?
       system "gradle", "build"
       system "gradle", "installDist"
@@ -32,7 +41,7 @@ class Spotbugs < Formula
       libexec.install Dir["*"]
       chmod 0755, "#{libexec}/bin/spotbugs"
     end
-    (bin/"spotbugs").write_env_script "#{libexec}/bin/spotbugs", Language::Java.overridable_java_home_env("17")
+    (bin/"spotbugs").write_env_script "#{libexec}/bin/spotbugs", Language::Java.overridable_java_home_env
   end
 
   test do
@@ -47,8 +56,8 @@ class Spotbugs < Formula
         }
       }
     EOS
-    system Formula["openjdk@17"].bin/"javac", "HelloWorld.java"
-    system Formula["openjdk@17"].bin/"jar", "cvfe", "HelloWorld.jar", "HelloWorld", "HelloWorld.class"
+    system Formula["openjdk"].bin/"javac", "HelloWorld.java"
+    system Formula["openjdk"].bin/"jar", "cvfe", "HelloWorld.jar", "HelloWorld", "HelloWorld.class"
     output = shell_output("#{bin}/spotbugs -textui HelloWorld.jar")
     assert_match(/M V EI.*\nM C UwF.*\n/, output)
   end

@@ -1,8 +1,8 @@
 class Pdnsrec < Formula
   desc "Non-authoritative/recursing DNS server"
-  homepage "https://www.powerdns.com/recursor.html"
-  url "https://downloads.powerdns.com/releases/pdns-recursor-4.9.1.tar.bz2"
-  sha256 "0a1edc13e8f2bd661f39e316387d941e22de6a03b8a7a2fc662fdf8b942ea2be"
+  homepage "https://www.powerdns.com/powerdns-recursor"
+  url "https://downloads.powerdns.com/releases/pdns-recursor-5.1.2.tar.bz2"
+  sha256 "b3a37ebb20285ab9acbbb0e1370e623bb398ed3087f0e678f23ffa3b0063983d"
   license "GPL-2.0-only" => { with: "openvpn-openssl-exception" }
 
   livecheck do
@@ -11,21 +11,21 @@ class Pdnsrec < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "e01a88ba0308bb0b1a039bf07204e4b3684400e6afcde39b48dcd5e7507cbcbf"
-    sha256 arm64_ventura:  "ea27bb4982e910b0ef61008de12ba63830300545ea72d24706f70ef06cd4d5ed"
-    sha256 arm64_monterey: "25a7a9b9dd08d3492196a4c704ad68f6dfb429348d464b86247313623ea5ba51"
-    sha256 arm64_big_sur:  "95c8fc8a4c86e0c811b91f68018825f8ac0cd8cedff9a127af61a0f3c7c0f3d2"
-    sha256 sonoma:         "c91221f37d64800cff102d54b80eaa7c6155e13c012b3eef30403c60cc84cfc1"
-    sha256 ventura:        "db92f6d5fd727d7ef01442a99a94432509204d1fcd2990ec6ee85c76fcb297d6"
-    sha256 monterey:       "6c1d46010c229ce5a67d2692d0a040b4bc1638435f7ff30700991df67438f7a5"
-    sha256 big_sur:        "6f9cb98fc1556afab3bcba149b82d72c4117e3427c53ba08ae8bdb18a207daf6"
-    sha256 x86_64_linux:   "b9bc3d2c7819e4f8cfee7362c4303f823bbbe7edd3eeff8484f17c2d70af71bc"
+    sha256 arm64_sequoia: "a1af5a80bbcf3aa120b90ec0d375939a4b2f869def8ded6b5daec4ee55da434d"
+    sha256 arm64_sonoma:  "2bc68e0fa028d5b34c89df967fe7cbbe7f55d8a91b3a2f9160639c35046f8e40"
+    sha256 arm64_ventura: "5932d71b150cb46183bb20a081003fe44b68f6d5a70e42c20326212a883c9e3c"
+    sha256 sonoma:        "67e8cf1f617ddf19ec598b760e80c37f589438f05f30952a0c691b05eea5ed62"
+    sha256 ventura:       "76dca78bedf780a7bfe16ce53ba5418b2664d1ead1dee13663bc9a5012a17c85"
+    sha256 x86_64_linux:  "e5c9f7c571a9c47ab19c5b819d79fbcf7da8c8da57594ebf8d3e4d4f9e504f7a"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "rust" => :build
   depends_on "boost"
   depends_on "lua"
   depends_on "openssl@3"
+
+  uses_from_macos "curl"
 
   on_macos do
     depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1100

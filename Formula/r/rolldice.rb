@@ -1,11 +1,12 @@
 class Rolldice < Formula
   desc "Rolls an amount of virtual dice"
   homepage "https://github.com/sstrickl/rolldice"
-  url "https://github.com/sstrickl/rolldice/archive/v1.16.tar.gz"
+  url "https://github.com/sstrickl/rolldice/archive/refs/tags/v1.16.tar.gz"
   sha256 "8bc82b26c418453ef0fe79b43a094641e7a76dae406032423a2f0fb270930775"
   license "GPL-2.0-only"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f0b8ac560f934b0d4559fc18471a9fabba189ee9d41e050c03b88c6e56490054"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4d805d84d6f2e3083c040c4e3c650009d34516e949c351e1d85a5906faa2c017"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "adeb468985368ac97a5e5e16a8276ca39a7c87f9615dbab892298e74d3d0f018"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2fa79795244358b512e08fddb6cc86a27029ce8f14038130ab7fc33b84724f43"

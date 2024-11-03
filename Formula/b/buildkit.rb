@@ -1,27 +1,27 @@
 class Buildkit < Formula
-  desc "Сoncurrent, cache-efficient, and Dockerfile-agnostic builder toolkit"
+  desc "Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit"
   homepage "https://github.com/moby/buildkit"
   url "https://github.com/moby/buildkit.git",
-      tag:      "v0.12.2",
-      revision: "567a99433ca23402d5e9b9f9124005d2e59b8861"
+      tag:      "v0.17.0",
+      revision: "fd61877fa73693dcd4ef64c538f894ec216409a3"
   license "Apache-2.0"
   head "https://github.com/moby/buildkit.git", branch: "master"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "500fe40cdcce31cbf21535ab05e003761ba08f132a1c362dec54b0caceefcb15"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c4987f900592e7a1ec14d37ab4b9debccc8818d028b87bc31ab725df027ca785"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b687eda8fb6dea4f9188eeaef2c18b965f328c0f3019fd6be0d1361f74093069"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5ae58060e07743eaa242105e78b50680bc725d53283f0743b268dbd4e86c75fa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1bc83bf2bb6f98933c6619feaa38a81224b564197f2be8b266b3fd3594465564"
-    sha256 cellar: :any_skip_relocation, ventura:        "037ccce551a05152f4afd80eb7c45f16c1f240d514da71344eebd9fd2e10a803"
-    sha256 cellar: :any_skip_relocation, monterey:       "85da2048ffeeb2bbb91b89b3adcf3900ef7b86be5134e8e4bae058e5c534eb33"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f61e1c2ec33e7a6f9d766f58555ba6e65025750820b16075fb53ef7a139406cc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8f74eb225de3f4dcab3f18782bebdeaffd7d413abd80c179678b86568891287"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4560acf9159d68d8ca6fd5a4a7a160694e0ec02ce92a3a10fec319eb7a7fc701"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4560acf9159d68d8ca6fd5a4a7a160694e0ec02ce92a3a10fec319eb7a7fc701"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4560acf9159d68d8ca6fd5a4a7a160694e0ec02ce92a3a10fec319eb7a7fc701"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c7033adea446116748848df4d76c1e89987e24e5e07355e8b42bcb704d8226e6"
+    sha256 cellar: :any_skip_relocation, ventura:       "c7033adea446116748848df4d76c1e89987e24e5e07355e8b42bcb704d8226e6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "664b2e01ff8f248bd098479096a9fdfe1d65ff265d19881c98d1b5e02c4251a6"
   end
 
   depends_on "go" => :build
@@ -35,7 +35,7 @@ class Buildkit < Formula
       -X github.com/moby/buildkit/version.Package=github.com/moby/buildkit
     ]
 
-    system "go", "build", "-mod=vendor", *std_go_args(ldflags: ldflags, output: bin/"buildctl"), "./cmd/buildctl"
+    system "go", "build", "-mod=vendor", *std_go_args(ldflags:, output: bin/"buildctl"), "./cmd/buildctl"
 
     doc.install Dir["docs/*.md"]
   end

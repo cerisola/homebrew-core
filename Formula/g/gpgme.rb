@@ -1,9 +1,10 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.22.0.tar.bz2"
-  sha256 "9551e37081ad3bde81018a0d24f245c3f8206990549598fb31a97a68380a7b71"
+  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2"
+  sha256 "9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224"
   license "LGPL-2.1-or-later"
+  revision 2
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gpgme/"
@@ -11,25 +12,31 @@ class Gpgme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "05bd1c3d313e417b36f1aa6ee9fc84e94d8d0e5653219ee069057fb9053332f9"
-    sha256 cellar: :any,                 arm64_ventura:  "fc529dd5239bbf289d13f0f01c8e3b62c09ecf28b721d36573e5ec85dbdebd11"
-    sha256 cellar: :any,                 arm64_monterey: "28dd91b3a53218195b80764766578a2248f9bda4f867347c92771f404c68421c"
-    sha256 cellar: :any,                 arm64_big_sur:  "56c71d9cf05e3fc7cf24eb7578d8795e4535be402c24197019155454f92c2022"
-    sha256 cellar: :any,                 sonoma:         "fc6deaddb923fb0e24659f2ba29cde7d13ccc900f9ab09834f325929c31d35c9"
-    sha256 cellar: :any,                 ventura:        "278162f8fd37221612f935e297170a144a61f8b1bb9fe6529c0344f738c1bcc9"
-    sha256 cellar: :any,                 monterey:       "413658de4b53231ea36461d0acd434a1af3e18fbe01c15e0c03b5afc418eccca"
-    sha256 cellar: :any,                 big_sur:        "27ee36120bf7846c41982e613236765e23b1af0d05dc9e9813d46b5f3da2336f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db0bceef522dc84b3f29d1814e151a30b96d82438e093b1ad03f9372779e1196"
+    sha256 cellar: :any,                 arm64_sequoia:  "3be0ed36949874bc0c6b0b5936750b498cc6d74ff5949bef213c1bbc252ecc7c"
+    sha256 cellar: :any,                 arm64_sonoma:   "5990f0751f5bce504beaaa9379e0bb082cea842010a6f94f11cfe0c99baba01b"
+    sha256 cellar: :any,                 arm64_ventura:  "4cf824bf4138deda8878af6ad5ea2e6af519a8d7793c0a168f724799d5f97e42"
+    sha256 cellar: :any,                 arm64_monterey: "5b94224d8226e2e49d3ea30bf5bd3d76672a5fd1fb59cdfbf160c35e6d2a4fa3"
+    sha256 cellar: :any,                 sonoma:         "acb0a393ab4537dd314676d8dbbbf846fc14726cba00c32b027e18f11a603db3"
+    sha256 cellar: :any,                 ventura:        "3ffd9fce9f2862c9a35562462356530c4bc46d23e1b23e58e36aede36348fb74"
+    sha256 cellar: :any,                 monterey:       "05b1e5854b7a8eef9edb2a45208bfbdacd28bb243fabc60f350cabcd0b26080d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "691a6fb7cf753251e8feafa30229cbba63a976820b2d33522ef413774788e6c0"
   end
 
-  depends_on "python@3.11" => [:build, :test]
+  depends_on "python-setuptools" => :build
+  depends_on "python@3.12" => [:build, :test]
   depends_on "swig" => :build
   depends_on "gnupg"
   depends_on "libassuan"
   depends_on "libgpg-error"
 
   def python3
-    "python3.11"
+    "python3.12"
+  end
+
+  # Backport fix for newer setuptools
+  patch do
+    url "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gpgme.git;a=patch;h=ecd0c86d62351d267bdc9566286c532a394c711b"
+    sha256 "69202c576f5f9980bc88bf9e963fd6199093c89ab8dc3be02ab6c460d65fe1b4"
   end
 
   def install
@@ -42,25 +49,24 @@ class Gpgme < Formula
     # error: 'auto' not allowed in lambda parameter
     ENV.append "CXXFLAGS", "-std=c++14"
 
-    site_packages = prefix/Language::Python.site_packages(python3)
-    ENV.append_path "PYTHONPATH", site_packages
-    # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
-    # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.
+    # Use pip over executing setup.py, which installs a deprecated egg distribution
+    # https://dev.gnupg.org/T6784
     inreplace "lang/python/Makefile.in",
-              /^\s*install\s*\\\n\s*--prefix "\$\(DESTDIR\)\$\(prefix\)"/,
-              "\\0 --install-lib=#{site_packages}"
+              /^\s*\$\$PYTHON setup\.py\s*\\/,
+              "$$PYTHON -m pip install --use-pep517 #{std_pip_args.join(" ")} . && : \\"
 
-    system "./configure", *std_configure_args,
-                          "--disable-silent-rules",
-                          "--enable-static"
+    system "./configure", "--disable-silent-rules",
+                          "--enable-static",
+                          *std_configure_args
     system "make"
     system "make", "install"
 
-    # Rename the `easy-install.pth` file to avoid `brew link` conflicts.
-    site_packages.install site_packages/"easy-install.pth" => "homebrew-gpgme-#{version}.pth"
-
     # avoid triggering mandatory rebuilds of software that hard-codes this path
     inreplace bin/"gpgme-config", prefix, opt_prefix
+
+    # replace libassuan Cellar paths to avoid breakage on libassuan version/revision bumps
+    dep_cellar_path_files = [bin/"gpgme-config", lib/"cmake/Gpgmepp/GpgmeppConfig.cmake"]
+    inreplace dep_cellar_path_files, Formula["libassuan"].prefix.realpath, Formula["libassuan"].opt_prefix
   end
 
   test do

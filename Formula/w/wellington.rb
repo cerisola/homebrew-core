@@ -1,7 +1,7 @@
 class Wellington < Formula
   desc "Project-focused tool to manage Sass and spriting"
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v1.0.5.tar.gz"
+  url "https://github.com/wellington/wellington/archive/refs/tags/v1.0.5.tar.gz"
   sha256 "e2379722849cdd8e5f094849290aacba4b789d4d65c733dec859565c728e7205"
   license "Apache-2.0"
   head "https://github.com/wellington/wellington.git", branch: "master"
@@ -22,14 +22,14 @@ class Wellington < Formula
   end
 
   # upstream go1.20 support report, https://github.com/wellington/wellington/issues/223
-  deprecate! date: "2023-08-20", because: :unmaintained
+  disable! date: "2024-08-24", because: :unmaintained
 
   # Bump to 1.20 on the next release, if possible.
   depends_on "go@1.19" => :build
 
   def install
     ldflags = "-X github.com/wellington/wellington/version.Version=#{version}"
-    system "go", "build", *std_go_args(output: bin/"wt", ldflags: ldflags), "wt/main.go"
+    system "go", "build", *std_go_args(output: bin/"wt", ldflags:), "wt/main.go"
   end
 
   test do

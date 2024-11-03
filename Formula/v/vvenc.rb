@@ -1,21 +1,18 @@
 class Vvenc < Formula
   desc "Fraunhofer Versatile Video Encoder"
   homepage "https://github.com/fraunhoferhhi/vvenc"
-  url "https://github.com/fraunhoferhhi/vvenc/archive/refs/tags/v1.9.1.tar.gz"
-  sha256 "970c5512345e7246495f8e880aa79a5c3d086a5eacdc079bf77335a6f7dda65f"
+  url "https://github.com/fraunhoferhhi/vvenc/archive/refs/tags/v1.12.1.tar.gz"
+  sha256 "ba353363779e8f835200f319c801b052a97d592ebc817b52c41bdce093fa2fe2"
   license "BSD-3-Clause-Clear"
   head "https://github.com/fraunhoferhhi/vvenc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c0a48a4659d494e677dff8b888c81a538a50308514cd7a053e74b5ac816c4f0a"
-    sha256 cellar: :any,                 arm64_ventura:  "bebff1854fdfbc44083dd35f079a80924830680bc0ce82bfe04afa8796683e64"
-    sha256 cellar: :any,                 arm64_monterey: "0e050bde4ca41f13e6003eb226305cb7462922bec2a03424558d9bdac8a756c2"
-    sha256 cellar: :any,                 arm64_big_sur:  "2734830741c270793c3f8af775be81f254657f9b091bde2317b38b82f2925c19"
-    sha256 cellar: :any,                 sonoma:         "594f6198f800272aeb70b40b0276ad3aa7cb32a0d045b5b3420108a6e57dc93c"
-    sha256 cellar: :any,                 ventura:        "78f86364a1df51bdf8e47da46ba43e8b3093fb13b968a62d488bca139a4b006e"
-    sha256 cellar: :any,                 monterey:       "3ce9625e8cf55672627339cdb93b2310f978eb96f84fda09cb309ab4158d5308"
-    sha256 cellar: :any,                 big_sur:        "f7b7727843d03ab4b391668fb5e37cc29a8487beb58c981b5e986477888da095"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fc851a75c6b2fb4bde0dd9ea1502c6921772977a27b384633bff7afcc898f94f"
+    sha256 cellar: :any,                 arm64_sequoia: "e905b360064285e30c7eb8c2713888cac93b28a9388b9bd5a84b0d50c3c2321a"
+    sha256 cellar: :any,                 arm64_sonoma:  "ed236b0f8f357bc8273c8e213576d73177bebd535ad5b3eaa44307012baa9312"
+    sha256 cellar: :any,                 arm64_ventura: "2917e29604a86fc73bc1f4286ca5587dc7f6dcbadea365d8a3b16b8af1d75ef3"
+    sha256 cellar: :any,                 sonoma:        "145f0ed78517a567785ac249aca4dbdf0887a023fffab74c0704de89fd6cd59e"
+    sha256 cellar: :any,                 ventura:       "ec19b435a3fc60d9dfa136cbe797cd23cd0ef91ea2e66869027424b96931ae61"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a9d458061236400c33382ea051b66ef09c596f8a52ef5639a87fa3b7ff1610f8"
   end
 
   depends_on "cmake" => :build

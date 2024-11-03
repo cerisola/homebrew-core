@@ -3,45 +3,49 @@ class Ocrmypdf < Formula
 
   desc "Adds an OCR text layer to scanned PDF files"
   homepage "https://ocrmypdf.readthedocs.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/70/cd/84f3e47d290c0608c6435e7e917962edafb655b01ce43b3601bfd74b14aa/ocrmypdf-15.1.0.tar.gz"
-  sha256 "56a01b294a5535c69a3d8bd03a0e2e39fba891b897373abd1e4dc228c67829f0"
+  url "https://files.pythonhosted.org/packages/56/fb/26fafd13cc8c1139b31ebfafda0b82b95e7dd8d588d54b891ab54745071e/ocrmypdf-16.6.0.tar.gz"
+  sha256 "7b29eedf3c4859660b5ac78db8e7383ab1e7752194a7d99ce165e4365bba4232"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "084b082db8fafd809eecff24a5003a49e123e1ace59eab28751f1f971ea082fb"
-    sha256 cellar: :any,                 arm64_ventura:  "76980156cabeb1921062bbb9dacaebd8b3b1460d88c5e5d71052d2356e41474b"
-    sha256 cellar: :any,                 arm64_monterey: "698b43b0693cb225f0221a438723b7bb703a67079932a73245d33848d884c508"
-    sha256 cellar: :any,                 sonoma:         "7695d6df71422aa5b2d7c84f62ae20a72e021e85a87e74010b5b21fd4711fd78"
-    sha256 cellar: :any,                 ventura:        "22ed680e90be3304c6224307ceee4a244750de9972f77e50f6ed17e15049e242"
-    sha256 cellar: :any,                 monterey:       "be65747146ca5c96458d827913a74cfac99568862941993c22d251f8f5a838b9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "123458986c542aaf4b50790ac53921b832508e557b28b4d55d61538eb7f86577"
+    sha256 cellar: :any,                 arm64_sequoia: "c3ffd9f1006c96f968caa3c47bae45023dac7c149cd98d28b317d737f70cb6af"
+    sha256 cellar: :any,                 arm64_sonoma:  "45fbcb6af8e80c18af064a04a14ad89a81466e126f15661b2a5b203fea2bb285"
+    sha256 cellar: :any,                 arm64_ventura: "7051c4e47ea99977e900e2c29dcc035431e9902d896b78b7be592ad9767992e7"
+    sha256 cellar: :any,                 sonoma:        "7ff46e3e904b180cacbf8f1adbea61c04a767be95aa612ec7526a2af6f60cd4b"
+    sha256 cellar: :any,                 ventura:       "57c8baf8d36b21e57d8debdbc879ae6a503163668ec7b7e611b3a2c6ad35b215"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fff0fea75620cb0baab89255ea020c12d96b7218725af0fba84ba63f78bc3a6c"
   end
 
-  depends_on "cffi"
+  depends_on "pkg-config" => :build
+  depends_on "cryptography"
   depends_on "freetype"
   depends_on "ghostscript"
+  depends_on "img2pdf"
   depends_on "jbig2enc"
+  depends_on "libheif"
   depends_on "libpng"
   depends_on "pillow"
   depends_on "pngquant"
   depends_on "pybind11"
-  depends_on "pycparser"
-  depends_on "python-cryptography"
-  depends_on "python-packaging"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "qpdf"
   depends_on "tesseract"
   depends_on "unpaper"
 
   uses_from_macos "libffi", since: :catalina
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
   fails_with gcc: "5"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
+    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
+  end
+
+  resource "deprecated" do
+    url "https://files.pythonhosted.org/packages/92/14/1e41f504a246fc224d2ac264c227975427a85caf37c3979979edb9b1b232/Deprecated-1.2.14.tar.gz"
+    sha256 "e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
   end
 
   resource "deprecation" do
@@ -50,13 +54,13 @@ class Ocrmypdf < Formula
   end
 
   resource "img2pdf" do
-    url "https://files.pythonhosted.org/packages/95/b5/f933f482a811fb9a7b3707f60e28f2925fed84726e5a6283ba07fdd54f49/img2pdf-0.4.4.tar.gz"
-    sha256 "8ec898a9646523fd3862b154f3f47cd52609c24cc3e2dc1fb5f0168f0cbe793c"
+    url "https://files.pythonhosted.org/packages/36/92/6ac4d61951ba507b499f674c90dfa7b48fa776b56f6f068507f8751c03f1/img2pdf-0.5.1.tar.gz"
+    sha256 "73847e47242f4b5bd113c70049e03e03212936c2727cd2a8bf564229a67d0b95"
   end
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/30/39/7305428d1c4f28282a4f5bdbef24e0f905d351f34cf351ceb131f5cddf78/lxml-4.9.3.tar.gz"
-    sha256 "48628bd53a426c9eb9bc066a923acaa0878d1e86129fd5359aee99285f4eed9c"
+    url "https://files.pythonhosted.org/packages/e7/6b/20c3a4b24751377aaa6307eb230b66701024012c29dd374999cc92983269/lxml-5.3.0.tar.gz"
+    sha256 "4e109ca30d1edec1ac60cdbe341905dc3b8f55b16855e03a54aaf59e51ec8c6f"
   end
 
   resource "markdown-it-py" do
@@ -69,56 +73,56 @@ class Ocrmypdf < Formula
     sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
+  end
+
   resource "pdfminer-six" do
-    url "https://files.pythonhosted.org/packages/ac/6e/89c532d108e362cbaf76fdb972e7a5e85723c225f08e1646fb86878d4f7f/pdfminer.six-20221105.tar.gz"
-    sha256 "8448ab7b939d18b64820478ecac5394f482d7a79f5f7eaa7703c6c959c175e1d"
+    url "https://files.pythonhosted.org/packages/e3/37/63cb918ffa21412dd5d54e32e190e69bfc340f3d6aa072ad740bec9386bb/pdfminer.six-20240706.tar.gz"
+    sha256 "c631a46d5da957a9ffe4460c5dce21e8431dabb615fee5f9f4400603a58d95a6"
+  end
+
+  resource "pi-heif" do
+    url "https://files.pythonhosted.org/packages/5e/97/41dd02b235d3a761dcbf56993bca96f54e8e7e114d4c75761408d15ceb89/pi_heif-0.20.0.tar.gz"
+    sha256 "f63b5ab190697c91dec482112bfa90751e48070899f4888317e943075dccf0be"
   end
 
   resource "pikepdf" do
-    url "https://files.pythonhosted.org/packages/ec/48/a9b6acd89aa6fb4cc2203be6c91992d5008a3c2a261322e47a2456cc692c/pikepdf-8.5.0.tar.gz"
-    sha256 "827abbb105450ba59f9399344c0c5e09246b372366ec6e2a612d3e315f95bd8c"
+    url "https://files.pythonhosted.org/packages/4d/26/c74b0a08bdb743983e4ab65d7294a4e0e0d33fc03acb9802cd9a719414b8/pikepdf-9.4.0.tar.gz"
+    sha256 "1f1f53368c8a25f8c5e96dc19e57c0ad3d8bd7f259ca730ac5b0bd9d21747d5a"
   end
 
   resource "pluggy" do
-    url "https://files.pythonhosted.org/packages/36/51/04defc761583568cae5fd533abda3d40164cbdcf22dee5b7126ffef68a40/pluggy-1.3.0.tar.gz"
-    sha256 "cf61ae8f126ac6f7c451172cf30e3e43d3ca77615509771b3a984a0730651e12"
+    url "https://files.pythonhosted.org/packages/96/2d/02d4312c973c6050a18b314a5ad0b3210edb65a906f868e31c111dede4a6/pluggy-1.5.0.tar.gz"
+    sha256 "2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1"
   end
 
   resource "pygments" do
-    url "https://files.pythonhosted.org/packages/d6/f7/4d461ddf9c2bcd6a4d7b2b139267ca32a69439387cc1f02a924ff8883825/Pygments-2.16.1.tar.gz"
-    sha256 "1daff0494820c69bc8941e407aa20f577374ee88364ee10a98fdbe0aece96e29"
-  end
-
-  resource "reportlab" do
-    url "https://files.pythonhosted.org/packages/10/ec/4a423a97e53399c05889cd12f789ab9175f2498c77b47cc006b6482b71c1/reportlab-4.0.5.tar.gz"
-    sha256 "9c68f277736f585c5c9938755b826dd57c877fcaeb203e21cefea12b3b1db4f5"
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
   end
 
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/b1/0e/e5aa3ab6857a16dadac7a970b2e1af21ddf23f03c99248db2c01082090a3/rich-13.6.0.tar.gz"
-    sha256 "5c14d22737e6d5084ef4771b62d5d4363165b403455a30a1c8ca39dc7b644bef"
+    url "https://files.pythonhosted.org/packages/d9/e9/cf9ef5245d835065e6673781dbd4b8911d352fb770d56cf0879cf11b7ee1/rich-13.9.3.tar.gz"
+    sha256 "bc1e01b899537598cf02579d2b9f4a415104d3fc439313a7a2c165d76557a08e"
+  end
+
+  resource "wrapt" do
+    url "https://files.pythonhosted.org/packages/95/4c/063a912e20bcef7124e0df97282a8af3ff3e4b603ce84c481d6d7346be0a/wrapt-1.16.0.tar.gz"
+    sha256 "5f370f952971e7d17c7d1ead40e49f32345a7f7a5373571ef44d800d06b1899d"
   end
 
   def install
-    venv = virtualenv_create(libexec, "python3.11")
-    resource("reportlab").stage do
-      (Pathname.pwd/"local-setup.cfg").write <<~EOS
-        [FREETYPE_PATHS]
-        lib=#{Formula["freetype"].opt_lib}
-        inc=#{Formula["freetype"].opt_include}
-      EOS
-      venv.pip_install Pathname.pwd
-    end
-    venv.pip_install resources.reject { |r| r.name == "reportlab" }
-    venv.pip_install_and_link buildpath
+    virtualenv_install_with_resources
 
     bash_completion.install "misc/completion/ocrmypdf.bash" => "ocrmypdf"
     fish_completion.install "misc/completion/ocrmypdf.fish"
   end
 
   test do
-    system "#{bin}/ocrmypdf", "-f", "-q", "--deskew",
-                              test_fixtures("test.pdf"), "ocr.pdf"
+    system bin/"ocrmypdf", "-f", "-q", "--deskew",
+                           test_fixtures("test.pdf"), "ocr.pdf"
     assert_predicate testpath/"ocr.pdf", :exist?
   end
 end

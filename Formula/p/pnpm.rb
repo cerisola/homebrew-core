@@ -1,10 +1,8 @@
 class Pnpm < Formula
-  require "language/node"
-
   desc "Fast, disk space efficient package manager"
   homepage "https://pnpm.io/"
-  url "https://registry.npmjs.org/pnpm/-/pnpm-8.8.0.tgz"
-  sha256 "d713a5750e41c3660d1e090608c7f607ad00d1dd5ba9b6552b5f390bf37924e9"
+  url "https://registry.npmjs.org/pnpm/-/pnpm-9.12.3.tgz"
+  sha256 "24235772cc4ac82a62627cd47f834c72667a2ce87799a846ec4e8e555e2d4b8b"
   license "MIT"
 
   livecheck do
@@ -13,23 +11,28 @@ class Pnpm < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "9677d2dc4e1aef473ef6f4fd0a002707fdf4ca97084946f849a093cd2dfd54ac"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9677d2dc4e1aef473ef6f4fd0a002707fdf4ca97084946f849a093cd2dfd54ac"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9677d2dc4e1aef473ef6f4fd0a002707fdf4ca97084946f849a093cd2dfd54ac"
-    sha256 cellar: :any_skip_relocation, sonoma:         "da5585f04a37c153ce69ebb86ef0031b896036c968c4a1f09ae549b9ecca6fca"
-    sha256 cellar: :any_skip_relocation, ventura:        "da5585f04a37c153ce69ebb86ef0031b896036c968c4a1f09ae549b9ecca6fca"
-    sha256 cellar: :any_skip_relocation, monterey:       "da5585f04a37c153ce69ebb86ef0031b896036c968c4a1f09ae549b9ecca6fca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9677d2dc4e1aef473ef6f4fd0a002707fdf4ca97084946f849a093cd2dfd54ac"
+    sha256 cellar: :any,                 arm64_sequoia: "82b4df5b54dc3ed0625cb565a548bab9bf266fc32fb39594fca7f01d27d7e634"
+    sha256 cellar: :any,                 arm64_sonoma:  "82b4df5b54dc3ed0625cb565a548bab9bf266fc32fb39594fca7f01d27d7e634"
+    sha256 cellar: :any,                 arm64_ventura: "82b4df5b54dc3ed0625cb565a548bab9bf266fc32fb39594fca7f01d27d7e634"
+    sha256 cellar: :any,                 sonoma:        "165c2978f36342163a574bf7f8d662336064b52ef4b83e8e89d6ecc1897cfd7f"
+    sha256 cellar: :any,                 ventura:       "165c2978f36342163a574bf7f8d662336064b52ef4b83e8e89d6ecc1897cfd7f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4824e37648ae9fa38542a7a04e39f57d8bf9b0adb4443934ee29642156a13433"
   end
 
-  depends_on "node" => :test
-
-  conflicts_with "corepack", because: "both installs `pnpm` and `pnpx` binaries"
+  depends_on "node" => [:build, :test]
 
   def install
-    libexec.install buildpath.glob("*")
-    bin.install_symlink "#{libexec}/bin/pnpm.cjs" => "pnpm"
-    bin.install_symlink "#{libexec}/bin/pnpx.cjs" => "pnpx"
+    system "npm", "install", *std_npm_args
+    bin.install_symlink libexec.glob("bin/*")
+
+    generate_completions_from_executable(bin/"pnpm", "completion")
+
+    # remove non-native architecture pre-built binaries
+    (libexec/"lib/node_modules/pnpm/dist").glob("reflink.*.node").each do |f|
+      next if f.arch == Hardware::CPU.arch
+
+      rm f
+    end
   end
 
   def caveats
@@ -40,7 +43,7 @@ class Pnpm < Formula
   end
 
   test do
-    system "#{bin}/pnpm", "init"
+    system bin/"pnpm", "init"
     assert_predicate testpath/"package.json", :exist?, "package.json must exist"
   end
 end

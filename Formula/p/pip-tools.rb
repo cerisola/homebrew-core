@@ -3,45 +3,61 @@ class PipTools < Formula
 
   desc "Locking and sync for Pip requirements files"
   homepage "https://pip-tools.readthedocs.io"
-  url "https://files.pythonhosted.org/packages/fd/01/f0055058a86a888f32ac794fa68d5a25c2d2f7a3e8181474b711faaa2145/pip-tools-7.3.0.tar.gz"
-  sha256 "8e9c99127fe024c025b46a0b2d15c7bd47f18f33226cf7330d35493663fc1d1d"
+  url "https://files.pythonhosted.org/packages/1a/87/1ef453f10fb0772f43549686f924460cc0a2404b828b348f72c52cb2f5bf/pip-tools-7.4.1.tar.gz"
+  sha256 "864826f5073864450e24dbeeb85ce3920cdfb09848a3d69ebf537b521f14bcc9"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "07b13c198340250aba34486f574109926050bb1cb2a03d762bfa1ca67f6b34ba"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f2969e4646148a61f0f21a037faad122d75714810c384db7df05b801d32c1b14"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e70ac4e131358045306667122f6c2a9bdaef3a8cb56d5a86cae5ce89df793e22"
-    sha256 cellar: :any_skip_relocation, sonoma:         "35495278c98dd27e460f22c78472808c082145705213f84f6da8d38a93e32261"
-    sha256 cellar: :any_skip_relocation, ventura:        "b2fd59d9c1a4e8376e88a2e39ddf1bb661e5bae65a8176e4b29a13cd3659ab31"
-    sha256 cellar: :any_skip_relocation, monterey:       "0099470b82d3fda7585fbe789da6557369b115820bc56aaad32cc3880a92480c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "641b51626ea1908bdff7db13d9519cf6289aa5bfc20b64cdefa5a1917a864e2e"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aa9da34f416d318a7c3a9526cfe69b1683cbc52c61a768c7935c29b7da7492ac"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "aa9da34f416d318a7c3a9526cfe69b1683cbc52c61a768c7935c29b7da7492ac"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "aa9da34f416d318a7c3a9526cfe69b1683cbc52c61a768c7935c29b7da7492ac"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f52c7c1b06c27e8ca825371dc8ac46aa9ef4586e5196a2c876dc9c7170006cb0"
+    sha256 cellar: :any_skip_relocation, ventura:       "f52c7c1b06c27e8ca825371dc8ac46aa9ef4586e5196a2c876dc9c7170006cb0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f038065823c2098303d0c13de5bedc7de731721ed2588762def4ea1da0c4bd37"
   end
 
-  depends_on "python-build"
-  depends_on "python-packaging"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
+
+  resource "build" do
+    url "https://files.pythonhosted.org/packages/7d/46/aeab111f8e06793e4f0e421fcad593d547fb8313b50990f31681ee2fb1ad/build-1.2.2.post1.tar.gz"
+    sha256 "b36993e92ca9375a219c99e606a122ff365a760a2d4bba0caa09bd5278b608b7"
+  end
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/72/bd/fedc277e7351917b6c4e0ac751853a97af261278a4c7808babafa8ef2120/click-8.1.6.tar.gz"
-    sha256 "48ee849951919527a045bfe3bf7baa8a959c423134e1a5b98c05c20ba75a1cbd"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
+  end
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   resource "pyproject-hooks" do
-    url "https://files.pythonhosted.org/packages/25/c1/374304b8407d3818f7025457b7366c8e07768377ce12edfe2aa58aa0f64c/pyproject_hooks-1.0.0.tar.gz"
-    sha256 "f271b298b97f5955d53fb12b72c1fb1948c22c1a6b70b315c54cedaca0264ef5"
+    url "https://files.pythonhosted.org/packages/e7/82/28175b2414effca1cdac8dc99f76d660e7a4fb0ceefa4b4ab8f5f6742925/pyproject_hooks-1.2.0.tar.gz"
+    sha256 "1e859bd5c40fae9448642dd871adf459e5e2084186e8d2c2a79a824c970da1f8"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
+    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/c9/3d/02a14af2b413d7abf856083f327744d286f4468365cddace393a43d9d540/wheel-0.41.1.tar.gz"
-    sha256 "12b911f083e876e10c595779709f8a88a59f45aacc646492a67fe9ef796c1b47"
+    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
+    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
   end
 
   def install
     virtualenv_install_with_resources
 
     %w[pip-compile pip-sync].each do |script|
-      generate_completions_from_executable(bin/script, shells: [:fish, :zsh], shell_parameter_format: :click)
+      generate_completions_from_executable(bin/script,
+                                           base_name:              script,
+                                           shells:                 [:fish, :zsh],
+                                           shell_parameter_format: :click)
     end
   end
 

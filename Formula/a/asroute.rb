@@ -1,13 +1,14 @@
 class Asroute < Formula
   desc "CLI to interpret traceroute -a output to show AS names traversed"
   homepage "https://github.com/stevenpack/asroute"
-  url "https://github.com/stevenpack/asroute/archive/v0.1.0.tar.gz"
+  url "https://github.com/stevenpack/asroute/archive/refs/tags/v0.1.0.tar.gz"
   sha256 "dfbf910966cdfacf18ba200b83791628ebd1b5fa89fdfa69b989e0cb05b3ca37"
   license "MIT"
   head "https://github.com/stevenpack/asroute.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "46518f15ede2b92592176216ba3fbb3aa9bc582b20208ea475a8028745b621fc"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f928e074222b7b6f239cc6f6b8af05196287c48b2d252560d4b6a0f1e267c813"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "dd44c35000aae6f727e7014d50e6955d740d1dea628f127f7ab163566cef9ea9"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "5987e2552c04a0ebb4e10a3dbd990a756312e763d0f8dd5181094ad23597e34b"

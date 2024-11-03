@@ -3,9 +3,11 @@ class Analog < Formula
   homepage "https://www.c-amie.co.uk/software/analog/"
   url "https://github.com/c-amie/analog-ce/archive/refs/tags/6.0.17.tar.gz"
   sha256 "0e5794c2eaa5826dc014916e413e90eb2714a646ff8d6ec026437182d789b117"
+  license "GPL-2.0-only"
   head "https://github.com/c-amie/analog-ce.git", branch: "master"
 
   bottle do
+    sha256 arm64_sequoia:  "f97fdc8ec46989bcbb3d1804f04d3a7e63fce8f743dc2b2616b083ba1438907e"
     sha256 arm64_sonoma:   "224cffe764447dfce53e8ba3c36316f43fcc45c756ad8a26d7eac8e51207714d"
     sha256 arm64_ventura:  "b042b7f5fcfd04f54e5af93246fbb78b177cf451bffef7846d0dced79033d140"
     sha256 arm64_monterey: "a74246c3d600b97bda4fd849c0caf64411b31e16655556af926bb5d88f44cfe8"

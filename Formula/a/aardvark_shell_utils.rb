@@ -24,13 +24,15 @@ class AardvarkShellUtils < Formula
 
   # downloads.laffeycomputer.com is down and we use archive.org url
   # Last release on 2003-12-25
-  deprecate! date: "2023-02-10", because: :unmaintained
+  disable! date: "2024-01-02", because: :unmaintained
 
   on_macos do
     conflicts_with "uutils-coreutils", because: "both install `realpath` binaries"
   end
 
-  conflicts_with "coreutils", because: "both install `realpath` binaries"
+  on_monterey :or_older do
+    conflicts_with "coreutils", because: "both install `realpath` binaries"
+  end
 
   def install
     system "./configure", "--disable-debug",

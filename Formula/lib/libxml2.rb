@@ -1,9 +1,10 @@
 class Libxml2 < Formula
   desc "GNOME XML library"
   homepage "http://xmlsoft.org/"
-  url "https://download.gnome.org/sources/libxml2/2.11/libxml2-2.11.5.tar.xz"
-  sha256 "3727b078c360ec69fa869de14bd6f75d7ee8d36987b071e6928d4720a28df3a6"
+  url "https://download.gnome.org/sources/libxml2/2.13/libxml2-2.13.4.tar.xz"
+  sha256 "65d042e1c8010243e617efb02afda20b85c2160acdbfbcb5b26b80cec6515650"
   license "MIT"
+  revision 3
 
   # We use a common regex because libxml2 doesn't use GNOME's "even-numbered
   # minor is stable" version scheme.
@@ -13,15 +14,12 @@ class Libxml2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "d022fd63f93d9155d65bacdb6ae8322f0f77cd7a0dde5dff4dc58e2ce123b367"
-    sha256                               arm64_ventura:  "13369bc7d99cf8b2da61d00010daa496b0cc4827b7dea969e83ff56d701535f1"
-    sha256                               arm64_monterey: "a565a94492747550cac53e4a8988d5a5bdb235b42c78d41aa665e54c0af5a7ba"
-    sha256                               arm64_big_sur:  "53d0a8877fa30effdaa962aa4931a19e9248f602f8f5af7b6e04a86a31ce31d0"
-    sha256 cellar: :any,                 sonoma:         "6fb019b4a767c0ac26fd9a447c920f42d0e3583a0a8f77b4308f023a42e99649"
-    sha256                               ventura:        "e7d54df72be1a1f7839a13aa938fc70375d05bb1b86f700dd742f212bafd44c5"
-    sha256                               monterey:       "e3e9db1cf350fab27dacd482b85f99a99d6f86b5a071dd3531537d7cfeb954b7"
-    sha256                               big_sur:        "7d1cb8b9058159135350b8746a53beb867f8ea8176e621b250f0434b6e9ca749"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a2c54074766d2ed5d369c168362558c9405ba8874cf1c8337b4f454c6f562be7"
+    sha256                               arm64_sequoia: "016dc2a96950af0b748b4e98a46cfa8935e8d43d20a75ba23791c78c037f215a"
+    sha256                               arm64_sonoma:  "b954917a8437c8ff6cb6787736a13680e4185726dd5c45edb6d3b69391191883"
+    sha256                               arm64_ventura: "62e7f160283b1d43ba9117b9cd8d29ea30d93640ff42f3bfd2331476f1fab3f3"
+    sha256                               sonoma:        "39aaefbfe24737fe3399a26fd2248374d4dc1ec87644bf16fdba1b7b5545f5b3"
+    sha256                               ventura:       "b8287a71c78ff3dfa6b84b9ec72e7f95c516712a874fdd231dd449289dc49804"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7758c59760b0454356e2bc7aa6e2b46d530e6699196c99eaa047c1c8e26f95e"
   end
 
   head do
@@ -35,11 +33,11 @@ class Libxml2 < Formula
 
   keg_only :provided_by_macos
 
-  depends_on "python@3.10" => [:build, :test]
   depends_on "python@3.11" => [:build, :test]
-  depends_on "python@3.9" => [:build, :test]
+  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "pkg-config" => :test
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "readline"
 
   uses_from_macos "zlib"
@@ -51,10 +49,18 @@ class Libxml2 < Formula
   end
 
   def install
+    # Work around build failure due to icu4c 75+ adding -std=c11 to installed
+    # files when built without manually setting "-std=" in CFLAGS. This causes
+    # issues on Linux for `libxml2` as `addrinfo` needs GNU extensions.
+    # nanohttp.c:1019:42: error: invalid use of undefined type 'struct addrinfo'
+    ENV.append "CFLAGS", "-std=gnu11" if OS.linux?
+
     system "autoreconf", "--force", "--install", "--verbose" if build.head?
     system "./configure", *std_configure_args,
+                          "--sysconfdir=#{etc}",
                           "--disable-silent-rules",
                           "--with-history",
+                          "--with-http",
                           "--with-icu",
                           "--without-python",
                           "--without-lzma"
@@ -76,14 +82,19 @@ class Libxml2 < Formula
       inreplace "setup.py", "includes_dir = [",
                             "includes_dir = [#{includes}"
 
-      pythons.each do |python|
-        system python, *Language::Python.setup_install_args(prefix, python)
+      # Needed for Python 3.12+.
+      # https://github.com/Homebrew/homebrew-core/pull/154551#issuecomment-1820102786
+      with_env(PYTHONPATH: buildpath/"python") do
+        pythons.each do |python|
+          build_isolation = Language::Python.major_minor_version(python) >= "3.12"
+          system python, "-m", "pip", "install", *std_pip_args(build_isolation:), "."
+        end
       end
     end
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libxml/tree.h>
 
       int main()
@@ -94,7 +105,7 @@ class Libxml2 < Formula
         xmlFreeDoc(doc);
         return 0;
       }
-    EOS
+    C
 
     # Test build with xml2-config
     args = shell_output("#{bin}/xml2-config --cflags --libs").split

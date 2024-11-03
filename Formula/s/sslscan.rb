@@ -1,21 +1,18 @@
 class Sslscan < Formula
   desc "Test SSL/TLS enabled services to discover supported cipher suites"
   homepage "https://github.com/rbsec/sslscan"
-  url "https://github.com/rbsec/sslscan/archive/2.1.1.tar.gz"
-  sha256 "ccb1ffcc97cbde5c184542debe2ac3529e2c64b3690a402b592ed4ee374955e1"
+  url "https://github.com/rbsec/sslscan/archive/refs/tags/2.1.5.tar.gz"
+  sha256 "b36616b1d59f3276af6ff9495ab8178ec6812393582fb3c094c56cc873efe956"
   license "GPL-3.0-or-later" => { with: "openvpn-openssl-exception" }
   head "https://github.com/rbsec/sslscan.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6eba6cb5038b1e7791ae8ecf1102ee75c6306cc300ef90cef57485ee3c7d8c7c"
-    sha256 cellar: :any,                 arm64_ventura:  "609817a01a69046da06ac7a42ebdf99722d2dd148e4cdbabb0a3fca8e984b453"
-    sha256 cellar: :any,                 arm64_monterey: "66f53276cbf5d56d752471b38a13a746fca35cacdc46fad546b2b86906b48d53"
-    sha256 cellar: :any,                 arm64_big_sur:  "2f6c213950706cea1804b55ae9bd70e4dd9c8daab1347fcd8eb4edc1af011da7"
-    sha256 cellar: :any,                 sonoma:         "0703828d0cd1ff7a4337b5b3eaef5a436d3e817dfea6098ea8bbbc4e400402a8"
-    sha256 cellar: :any,                 ventura:        "9309f17b8fae569e45942b25327a4c022fbb1db8797c950e8872587fcdfc324d"
-    sha256 cellar: :any,                 monterey:       "dc39d6bd74d4db919ee8bde5d9cbab396c43464bd8eb648d2ebc6d237edc77f6"
-    sha256 cellar: :any,                 big_sur:        "22ebe049e3e896037414a0f994ec5a3c4be7266d5c8277c548992e8644d523c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7cc3a9aa2d9fb36734be81ad92983c9547332eb10780328051ad65abe9fa162"
+    sha256 cellar: :any,                 arm64_sequoia: "1797e78a14d60fbe5858b5a8da65295b83bc44f4bc90b3d79c3bb02491ff3f47"
+    sha256 cellar: :any,                 arm64_sonoma:  "3a1564d527b7be9ca7d2a19ed6fade0e8ec32d534206c89a2fcd5b483169b20f"
+    sha256 cellar: :any,                 arm64_ventura: "d5b864e56730b2934f0d72c701c575b160ed5551ccba349ce2e63673fb36e13a"
+    sha256 cellar: :any,                 sonoma:        "74c4decb73061fadbecfa0e3c118411fd986dde4c10b218aee1c161d9a42d9f9"
+    sha256 cellar: :any,                 ventura:       "2a381ac121ccd746a9d1f5df5f1716ab2c86ce67f10475a2f4b145d088870f96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e79b83ad91bc7a8a093b0a1df8aa09e86f975c213bfaa42a58aa0886c87e2f36"
   end
 
   depends_on "openssl@3"
@@ -27,6 +24,6 @@ class Sslscan < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/sslscan --version")
-    system "#{bin}/sslscan", "google.com"
+    system bin/"sslscan", "google.com"
   end
 end

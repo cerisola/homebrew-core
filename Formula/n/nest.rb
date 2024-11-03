@@ -1,18 +1,24 @@
 class Nest < Formula
   desc "Neural Simulation Tool (NEST) with Python3 bindings (PyNEST)"
   homepage "https://www.nest-simulator.org/"
-  url "https://github.com/nest/nest-simulator/archive/v3.6.tar.gz"
-  sha256 "68d6b11791e1284dc94fef35d84c08dd7a11322c0f1e1fc9b39c5e6882284922"
+  url "https://github.com/nest/nest-simulator/archive/refs/tags/v3.8.tar.gz"
+  sha256 "eb255f8828be001abea0cddad2f14d78b70857fc82bece724551f27c698318c8"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256                               arm64_sonoma:   "491d753a19d608828cfbcaa672bc223232f0f7550609a4c347331380cf547ef6"
-    sha256                               arm64_ventura:  "d0c7bb6698d3c42d5994ad305dfea425bddad209ac0d04718c38546f2ec99a82"
-    sha256                               arm64_monterey: "9af105814cf8c51fece1054f1a51c79c7751846491c193229a5c256f86652331"
-    sha256                               sonoma:         "f3405630f59949c8843b3d52f99f8645904c4ed854e8ecd09d220938843de98e"
-    sha256                               ventura:        "f6dbb779ce41bb0f6d41c52a3b6be58e3c9f6fff00693f84cfe294225298748c"
-    sha256                               monterey:       "c6f9123210f14941cb5d79bd6943c4bda91957173c5fb2c23af53a72c6d99647"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "db898f6801b9e9cf017fd81dcfd6c7090a89af2447976e8dcd20d8d2b99d182a"
+    sha256                               arm64_sequoia:  "f752b4a7174c66b710b60ebb340d32d411332e06ea18d7da09660618754788c6"
+    sha256                               arm64_sonoma:   "6653314027909fa7b2d3016afb0983cdd38ceb79d8103605287251419902e69a"
+    sha256                               arm64_ventura:  "f8c15f21fd28ec67bd1adc7f5265123096a4b3837a54c12b39db7f02c54945a3"
+    sha256                               arm64_monterey: "e29a15567400ebde27990ee78119903bca4fca61e69dbc2b63ff9791a0b6f03c"
+    sha256                               sonoma:         "0a606967e870f9d74f29a0646c7852bd521ba1c2f1e3beff080d81de12036589"
+    sha256                               ventura:        "1a324c3ad9977ca71a8fd89470414276394e7f2f56329516cc7bb372f4a5c343"
+    sha256                               monterey:       "538f6bd318806ce37bb426d0b5c5d5fcba4770da28b5bfdb94049135e2526e47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a66f6b2a3b6b67b20f3506bef7be6a0aaec05366eddde02f2137ccc96ff2cf29"
   end
 
   depends_on "cmake" => :build
@@ -20,7 +26,7 @@ class Nest < Formula
   depends_on "gsl"
   depends_on "libtool"
   depends_on "numpy"
-  depends_on "python@3.11"
+  depends_on "python@3.12"
   depends_on "readline"
 
   uses_from_macos "ncurses"
@@ -31,8 +37,12 @@ class Nest < Formula
 
   def install
     # Help FindReadline find macOS system ncurses library
-    sdk = MacOS.sdk_path_if_needed
-    args = sdk ? ["-DNCURSES_LIBRARY=#{sdk}/usr/lib/libncurses.tbd"] : []
+
+    args = if OS.mac? && (sdk = MacOS.sdk_path_if_needed)
+      ["-DNCURSES_LIBRARY=#{sdk}/usr/lib/libncurses.tbd"]
+    else
+      []
+    end
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
     system "cmake", "--build", "build"
@@ -45,10 +55,10 @@ class Nest < Formula
 
   def caveats
     <<~EOS
-      The PyNEST bindings and its dependencies are installed with the python@3.11 formula.
+      The PyNEST bindings and its dependencies are installed with the python@3.12 formula.
       If you want to use PyNEST, use the Python interpreter from this path:
 
-          #{Formula["python@3.11"].bin}
+          #{Formula["python@3.12"].bin}
 
       You may want to add this to your PATH.
     EOS
@@ -59,6 +69,6 @@ class Nest < Formula
     system bin/"nest", "--version"
 
     # check whether NEST is importable form python
-    system Formula["python@3.11"].bin/"python3.11", "-c", "'import nest'"
+    system Formula["python@3.12"].bin/"python3.12", "-c", "'import nest'"
   end
 end

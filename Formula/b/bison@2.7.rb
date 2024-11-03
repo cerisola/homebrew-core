@@ -4,9 +4,11 @@ class BisonAT27 < Formula
   url "https://ftp.gnu.org/gnu/bison/bison-2.7.1.tar.gz"
   mirror "https://ftpmirror.gnu.org/bison/bison-2.7.1.tar.gz"
   sha256 "08e2296b024bab8ea36f3bb3b91d071165b22afda39a17ffc8ff53ade2883431"
+  license "GPL-3.0-or-later"
   revision 1
 
   bottle do
+    sha256 arm64_sequoia:  "12eb0c1ab891b05dee98b3f748396e1efa2698ae63c40f84acbf73a3eb6959bf"
     sha256 arm64_sonoma:   "472d73bf7ba67981ae3246014105d2c150a5d62293b5c5e2e9726fea022c29f0"
     sha256 arm64_ventura:  "4c2881dcd188abeb431f4f53f1b01186b7dc588f12e890021ae77b3f3b547005"
     sha256 arm64_monterey: "52c4f32eb121a9442b25748e155a1d9d4ace7d433a07eafc13faed18272a2714"
@@ -24,6 +26,8 @@ class BisonAT27 < Formula
   end
 
   keg_only :versioned_formula
+
+  deprecate! date: "2023-12-14", because: :versioned_formula
 
   uses_from_macos "m4"
 
@@ -62,7 +66,8 @@ class BisonAT27 < Formula
       int yylex () { cin.get(c); return c; }
       int main() { yyparse(); }
     EOS
-    system "#{bin}/bison", "test.y"
+
+    system bin/"bison", "test.y"
     system ENV.cxx, "test.tab.c", "-o", "test"
     assert_equal "pass", shell_output("echo \"((()(())))()\" | ./test")
     assert_equal "fail", shell_output("echo \"())\" | ./test")

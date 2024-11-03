@@ -1,18 +1,17 @@
 class Rye < Formula
   desc "Experimental Package Management Solution for Python"
   homepage "https://rye-up.com/"
-  url "https://github.com/mitsuhiko/rye/archive/refs/tags/0.15.2.tar.gz"
-  sha256 "2ee835db0697645e1a902f47e1404173451dd5624c72c0917330acedef3c4aff"
+  url "https://github.com/astral-sh/rye/archive/refs/tags/0.42.0.tar.gz"
+  sha256 "71b61b8ef6b2aa1c9633b18e72d2f2b06fd3f47264cf276bc7f65e4ec0b1c7af"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2d26467492066915dce15b3d0cf8e9fdc54108efee6aef1d77faf6f551522a7c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2679e456689490fb3d7d2d2bef12cb12a004f0fb0b73f0f7c7892842fcf9225a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "819a338424559e3f5ed8cf5425e773f49d43ee914949eed6080969c919ee475a"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5bb71d1fdaa12184308f23fdc14a0d68751d0d50ade8bad60a7f19d1b363a9c4"
-    sha256 cellar: :any_skip_relocation, ventura:        "86c41769b42bc4d40978a779957028f0d896d84c764b617f3bbb863697402888"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a7e6a2967d55b194f18d060c5222f5142b0a3a858979706e04d3a0cdbd0e2d8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a361fcd76d019931ca3bcd54804b7767a0661d96ae639eef6756faa38b827ec"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2a2a41e057e4b94d62ac68b66a166db48b27cf62ea26dbbe8e3eb6b9e0d56121"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6ccbeec24953d010cb0871a4a38d3edd59459fc67ce8564ea16946af84e154f6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a6d2e9e9101a5e7c2012fab9839e89e2a13fe5cfebdcc163fd2209dd398911c4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b80c7bfd8057edd00512624295a85981998c3fca20dc979dfff9c0ac37c3ff69"
+    sha256 cellar: :any_skip_relocation, ventura:       "c38f22278fdb7573997f955a56f5d507f9d6d6b4e9959946bfbfa671346d3c08"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d9c176fb98283e386f377e1fa2e2a39bd0597572daecbd27098f2ff387aa9fc1"
   end
 
   depends_on "rust" => :build
@@ -31,14 +30,14 @@ class Rye < Formula
   end
 
   test do
-    (testpath/"pyproject.toml").write <<~EOS
+    (testpath/"pyproject.toml").write <<~TOML
       [project]
       name = "testproj"
       requires-python = ">=3.9"
       version = "1.0"
       license = {text = "MIT"}
 
-    EOS
+    TOML
     system bin/"rye", "add", "requests==2.24.0"
     system bin/"rye", "sync"
     assert_match "requests==2.24.0", (testpath/"pyproject.toml").read

@@ -1,19 +1,18 @@
 class FluidSynth < Formula
   desc "Real-time software synthesizer based on the SoundFont 2 specs"
   homepage "https://www.fluidsynth.org"
-  url "https://github.com/FluidSynth/fluidsynth/archive/v2.3.4.tar.gz"
-  sha256 "1529ef5bc3b9ef3adc2a7964505912f7305103e269e50cc0316f500b22053ac9"
+  url "https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v2.4.0.tar.gz"
+  sha256 "fd4d216a3030abc56a339985ab0506328660cd77b2d71dd98c240c58c03d8f7f"
   license "LGPL-2.1-or-later"
   head "https://github.com/FluidSynth/fluidsynth.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "a80c924499b6343ada666c6d93d0f3ad947d61919bace2219bc3bff05618f0a6"
-    sha256 cellar: :any,                 arm64_ventura:  "3ac1d1b35699efd38f3d43b3f2da6e4a411aca4fc5d30f045b76c5d72803f128"
-    sha256 cellar: :any,                 arm64_monterey: "7347ccc2946b6f196d992e3a70ff91be2e20e5774f8ebca43a342975d73fbe1e"
-    sha256 cellar: :any,                 sonoma:         "782f61271704cec16479e82873e9cafc209d9fd03974cc3772585e5fd6333757"
-    sha256 cellar: :any,                 ventura:        "4f08beba8c524daabee69fbf7d66491d3fda03e950da7edbad833ee1035b4d6d"
-    sha256 cellar: :any,                 monterey:       "c8b6db1f82fbe79764c7317890b06cdfa722b126bf40f5849b089c8bb5f53949"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eff062bfebf16739b60acbb1a6300841fc8657a0ccf26f51ebca5bb93af6542c"
+    sha256 cellar: :any,                 arm64_sequoia: "5872180e75e90bb83e4929c10f64639fddcc341a8e1f5516589c2b7803baba7c"
+    sha256 cellar: :any,                 arm64_sonoma:  "99d675800c64673ba3f77fe7c5ae89ed149e053d18ccd38f6facde7eaffb9cbc"
+    sha256 cellar: :any,                 arm64_ventura: "1b14f8eac778e1601baa6534df6aacc3db1e84c150c34c1542eedce9402afcf2"
+    sha256 cellar: :any,                 sonoma:        "421f8fea695b9891048becefa4036bb1c8ddda017c4187d91071890213bb82ee"
+    sha256 cellar: :any,                 ventura:       "2773618749ec8705a63a2f60d0ba35c2c4b448d5d32722a7b6704db2390c06d1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ae6257f67ab94ff5a3f830a55b0c0cc76623bad2c1130593df13c06e12f98aa3"
   end
 
   depends_on "cmake" => :build
@@ -39,44 +38,45 @@ class FluidSynth < Formula
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-Denable-alsa=#{OS.linux?}",
-                    "-Denable-aufile=ON",
-                    "-Denable-coverage=OFF",
-                    "-Denable-coreaudio=#{OS.mac?}",
-                    "-Denable-coremidi=#{OS.mac?}",
-                    "-Denable-dart=OFF",
-                    "-Denable-dbus=OFF",
-                    "-Denable-dsound=OFF",
-                    "-Denable-floats=OFF",
-                    "-Denable-fpe-check=OFF",
-                    "-Denable-framework=OFF",
-                    "-Denable-ipv6=ON",
-                    "-Denable-jack=#{OS.linux?}",
-                    "-Denable-ladspa=OFF",
-                    "-Denable-lash=OFF",
-                    "-Denable-libinstpatch=OFF",
-                    "-Denable-libsndfile=ON",
-                    "-Denable-midishare=OFF",
-                    "-Denable-network=ON",
-                    "-Denable-opensles=OFF",
-                    "-Denable-oboe=OFF",
-                    "-Denable-openmp=OFF",
-                    "-Denable-oss=OFF",
-                    "-Denable-pipewire=OFF",
-                    "-Denable-portaudio=ON",
-                    "-Denable-profiling=OFF",
-                    "-Denable-pulseaudio=OFF",
-                    "-Denable-readline=ON",
-                    "-Denable-sdl2=OFF",
-                    "-Denable-systemd=#{OS.linux?}",
-                    "-Denable-trap-on-fpe=OFF",
-                    "-Denable-threads=ON",
-                    "-Denable-ubsan=OFF",
-                    "-Denable-wasapi=OFF",
-                    "-Denable-waveout=OFF",
-                    "-Denable-winmidi=OFF",
-                    *std_cmake_args
+    args = %W[
+      -Denable-alsa=#{OS.linux?}
+      -Denable-aufile=ON
+      -Denable-coverage=OFF
+      -Denable-coreaudio=#{OS.mac?}
+      -Denable-coremidi=#{OS.mac?}
+      -Denable-dart=OFF
+      -Denable-dbus=OFF
+      -Denable-dsound=OFF
+      -Denable-floats=OFF
+      -Denable-fpe-check=OFF
+      -Denable-framework=OFF
+      -Denable-ipv6=ON
+      -Denable-jack=#{OS.linux?}
+      -Denable-ladspa=OFF
+      -Denable-lash=OFF
+      -Denable-libinstpatch=OFF
+      -Denable-libsndfile=ON
+      -Denable-midishare=OFF
+      -Denable-network=ON
+      -Denable-opensles=OFF
+      -Denable-oboe=OFF
+      -Denable-openmp=OFF
+      -Denable-oss=OFF
+      -Denable-pipewire=OFF
+      -Denable-portaudio=ON
+      -Denable-profiling=OFF
+      -Denable-pulseaudio=OFF
+      -Denable-readline=ON
+      -Denable-sdl2=OFF
+      -Denable-systemd=#{OS.linux?}
+      -Denable-trap-on-fpe=OFF
+      -Denable-threads=ON
+      -Denable-ubsan=OFF
+      -Denable-wasapi=OFF
+      -Denable-waveout=OFF
+      -Denable-winmidi=OFF
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
 
     # On macOS, readline is keg-only so use the absolute path to its pc file
     # uses_from_macos "readline" produces another error
@@ -89,8 +89,11 @@ class FluidSynth < Formula
 
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
     pkgshare.install "sf2"
+
+    system "cmake", "-S", ".", "-B", "static", *args, *std_cmake_args, "-DBUILD_SHARED_LIBS=OFF"
+    system "cmake", "--build", "static"
+    lib.install "static/src/libfluidsynth.a"
   end
 
   test do

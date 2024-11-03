@@ -1,55 +1,47 @@
 class SbomTool < Formula
   desc "Scalable and enterprise ready tool to create SBOMs for any variety of artifacts"
   homepage "https://github.com/microsoft/sbom-tool"
-  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v1.6.3.tar.gz"
-  sha256 "6f94eae4ee8584fed7ea1b006abdc4ecacdc1f6b496270fd81e710473184e27a"
+  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v3.0.1.tar.gz"
+  sha256 "90085ab1f134f83d43767e46d6952be42a62dbb0f5368e293437620a96458867"
   license "MIT"
   head "https://github.com/microsoft/sbom-tool.git", branch: "main"
 
-  # Upstream uses GitHub releases to indicate that a version is released
-  # (there's also sometimes a notable gap between when a version is tagged and
-  # and the release is created), so the `GithubLatest` strategy is necessary.
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
   livecheck do
     url :stable
     strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dd56e8c7ef8852d6fd3421ca8ff3195f8bd1967ed7fa64d19f6c53d0e7ba1874"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dd56e8c7ef8852d6fd3421ca8ff3195f8bd1967ed7fa64d19f6c53d0e7ba1874"
-    sha256 cellar: :any_skip_relocation, ventura:        "ab4f295a3ea516222629dd787a2a0be5297a414bea22a35ad7d6f336019857d3"
-    sha256 cellar: :any_skip_relocation, monterey:       "ab4f295a3ea516222629dd787a2a0be5297a414bea22a35ad7d6f336019857d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "75d1630c1f987e1053d542c0e8c66a0f5d4e1994c079277cde3dc318660711e8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd07cf8531b2d6120d052b498dd9e273b131e15f9cce5964996b083ec9b851ec"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "344c264ec814f20dead2e14aeb6888ed483d1003a8e91e4625b88ccc5e57b92d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fa834547524901e2f6d4f0e891e48547378da7c722fb93981a8c19004ae284d7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "27d9f132d895097aa7454d9e3bc43adca410cab2c7088cbc184cf21174141c7a"
+    sha256 cellar: :any_skip_relocation, ventura:       "db0dcb0a4e6b7bfd6c131c9cfbd201403709d20561a2223931e75830aa5d893d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f7350a825d6b0e31ff02f6145487765ed899d95d1243f9d91d914b63b3102c59"
   end
 
-  depends_on "dotnet" => :build
+  depends_on "dotnet"
 
-  uses_from_macos "icu4c" => :test
   uses_from_macos "zlib"
-
-  # patch to use mono.unix to support arm builds
-  # upstream PR ref, https://github.com/microsoft/sbom-tool/pull/409
-  patch do
-    url "https://github.com/microsoft/sbom-tool/commit/dd411c551220fbb579e58c4464b284d2a6781080.patch?full_index=1"
-    sha256 "d99878256a1ce470d0f424c86215ab07c5381cc29ee83c90129166899057a6fb"
-  end
 
   def install
     bin.mkdir
 
-    dotnet_version = Formula["dotnet"].version.to_s
-    inreplace "./global.json", "8.0.100-rc.1.23463.5", dotnet_version
-
     ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "true"
 
+    dotnet = Formula["dotnet"]
     os = OS.mac? ? "osx" : OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
 
     args = %W[
       --configuration Release
-      --output #{buildpath}
+      --framework net#{dotnet.version.major_minor}
+      --output #{libexec}
       --runtime #{os}-#{arch}
-      --self-contained=true
+      --no-self-contained
       -p:OFFICIAL_BUILD=true
       -p:MinVerVersionOverride=#{version}
       -p:PublishSingleFile=true
@@ -60,7 +52,8 @@ class SbomTool < Formula
     ]
 
     system "dotnet", "publish", "src/Microsoft.Sbom.Tool/Microsoft.Sbom.Tool.csproj", *args
-    bin.install "Microsoft.Sbom.Tool" => "sbom-tool"
+    (bin/"sbom-tool").write_env_script libexec/"Microsoft.Sbom.Tool",
+                                       DOTNET_ROOT: "${DOTNET_ROOT:-#{dotnet.opt_libexec}}"
   end
 
   test do
@@ -70,7 +63,7 @@ class SbomTool < Formula
       -pn TestProject
       -pv 1.2.3
       -ps Homebrew
-      -nsb http://formulae.brew.sh
+      -nsb https://formulae.brew.sh
     ]
 
     system bin/"sbom-tool", "generate", *args

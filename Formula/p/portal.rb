@@ -1,13 +1,14 @@
 class Portal < Formula
   desc "Quick and easy command-line file transfer utility from any computer to another"
   homepage "https://github.com/SpatiumPortae/portal"
-  url "https://github.com/SpatiumPortae/portal/archive/v1.2.3.tar.gz"
+  url "https://github.com/SpatiumPortae/portal/archive/refs/tags/v1.2.3.tar.gz"
   sha256 "7a457ab1efa559b89eb5d7edbebccb1342896a42e30dbd943ffb6eea14179b36"
   license "MIT"
   head "https://github.com/SpatiumPortae/portal.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "32a6e23984cd3413e58f9dbb10d38cfa2f0e32240106bd163b518df70e79d057"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e333a3b75d4b33b387c0bb6749b01e44992c5c886331f91d948dc4f59dc7b1f8"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "5582fc03d1182135f8c7e73cb4503a8cedcd5350264185551f07ce37e09986d4"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f858964534d5af5cef3195b4ad2fa818f07bf79deeea55f328b9db9d04c5616a"
@@ -23,7 +24,7 @@ class Portal < Formula
 
   def install
     ldflags = "-s -X main.version=v#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/portal/"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/portal/"
   end
 
   test do
@@ -33,7 +34,7 @@ class Portal < Formula
     # Start a local relay server on an open port.
     port=free_port
     fork do
-      exec "#{bin}/portal", "serve", "--port=#{port}"
+      exec bin/"portal", "serve", "--port=#{port}"
     end
     sleep 2
 
@@ -47,7 +48,7 @@ class Portal < Formula
     password_file=(testpath/"password.txt")
     fork do
       $stdout.reopen(password_file)
-      exec "#{bin}/portal", "send", "-s=raw", "--relay=:#{port}", test_file_sender
+      exec bin/"portal", "send", "-s=raw", "--relay=:#{port}", test_file_sender
     end
     sleep 2
 
@@ -56,7 +57,7 @@ class Portal < Formula
     fork do
       mkdir_p receiver_path
       cd receiver_path do
-        exec "#{bin}/portal", "receive", "-s=raw", "-y", "--relay=:#{port}", password_file.read.strip
+        exec bin/"portal", "receive", "-s=raw", "-y", "--relay=:#{port}", password_file.read.strip
       end
     end
     sleep 2

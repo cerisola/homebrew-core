@@ -1,8 +1,8 @@
 class Fend < Formula
   desc "Arbitrary-precision unit-aware calculator"
   homepage "https://printfn.github.io/fend"
-  url "https://github.com/printfn/fend/archive/refs/tags/v1.2.2.tar.gz"
-  sha256 "eb37d1dc6883ec7c181b913d8900d9592cc10ba501a904707500e3a3ae0dcec1"
+  url "https://github.com/printfn/fend/archive/refs/tags/v1.5.3.tar.gz"
+  sha256 "b31befe0df562c5626c52d1cef70d272115054fa707debe56ade9e4f2f28a956"
   license "MIT"
   head "https://github.com/printfn/fend.git", branch: "main"
 
@@ -12,19 +12,27 @@ class Fend < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "913a70c1f429d76d1e53fe4446302730e9b97d419400265e5c703d31c0dd945a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "44c832ceb3d530054b98059f4fc08545401b03f1011077547040aec18f4aa287"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "228834b97236a5811df63af4a76e8721b7109d0c0b0ad0a55fd1bd158ae4ba1f"
-    sha256 cellar: :any_skip_relocation, ventura:        "4c57eda5f8445639c9e7e497d49e9d52909e64b96de507572c9634d9781cb0e5"
-    sha256 cellar: :any_skip_relocation, monterey:       "3a76348497d5c9736dda12229657e40197f8c0bc3b5ee36926715aa0a46f5b3e"
-    sha256 cellar: :any_skip_relocation, big_sur:        "4db4c4a8714387b9d45b286f1ff4a21646a382bf6fbc5a4f551a166a33eac8c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "43a9c49421bb492d743224f7429762846912a789d33e0f9b1eae42d8825d0bea"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "48b3493b2ef8b41ae98b823b759ce8d282994899c8c3d9cac066c80b1bfc05d8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b9f40c7b2fd01a37f515018006ef7cba9f639eb5f5e55659318b5f17e8df19ca"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "527dfdf3b7769259c507b60e519779eb0818ceadbfe78cbd8e0abadefc92f0ff"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6842a139f8597c9f5520304ba372fae3f2a3aa2a18f5502d9544ccefb7b02d55"
+    sha256 cellar: :any_skip_relocation, ventura:       "273ed1e79298d9e0f02a07d86a9d756073ec7362728f4fb7e717b4aa6e32fe34"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bfa4748015813df022131377c59bb657f9ff66c327230e25a471031ed6ff6ea5"
   end
 
   depends_on "pandoc" => :build
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
 
+  on_linux do
+    depends_on "openssl@3"
+  end
+
   def install
+    # Ensure that the `openssl` crate picks up the intended library.
+    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
+    ENV["OPENSSL_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args(path: "cli")
     system "./documentation/build.sh"
     man1.install "documentation/fend.1"

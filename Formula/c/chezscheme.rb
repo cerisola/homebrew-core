@@ -1,26 +1,27 @@
 class Chezscheme < Formula
   desc "Implementation of the Chez Scheme language"
   homepage "https://cisco.github.io/ChezScheme/"
-  url "https://github.com/cisco/ChezScheme/releases/download/v9.6.2/csv9.6.2.tar.gz"
-  sha256 "714695789e1bad3518e6cd5fbc8ae8204f76103d5ad2ba05a3f1c063eb2d5d02"
+  url "https://github.com/cisco/ChezScheme/releases/download/v10.0.0/csv10.0.0.tar.gz"
+  sha256 "d37199012b5ed1985c4069d6a87ff18e5e1f5a2df27e402991faf45dc4f2232c"
   license "Apache-2.0"
 
   bottle do
-    sha256                               sonoma:       "ee2357c891bf0c0e65b0f5c65d8a6e421bd3dcd2436cb96d08df1103553bd034"
-    sha256                               ventura:      "de3207d1764457f734baf69cef36ff9a4d3512010a676050f814f5084297ab9a"
-    sha256                               monterey:     "78c14c05babdad4d67dc783d3f9642c2b7216ec6810825b00095b3086d507c2f"
-    sha256                               big_sur:      "54934c125ba9a227ad14f7900627e6358df60d603073a8f38da780a4b212fad2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "d5628b64b2c41f53dd15835b09342a1dcbdd6871f2e3d13451bcc3a9935cee4f"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "383ef05d3d088270e9621611a269d5865c3486e3b64972f944d73bf4ae9c8908"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ee1fd372ef45e033935538cfad0a6362790260ef7b5d2784b491756c16adccca"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "333374134b8b06bed7b86532b46a10ad15756254a6dcd345b3206b9535291b3b"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "12d715a0ca6280e1f526deaf4a0e8f74282280be3062763e64aa5bdbc360fc57"
+    sha256 cellar: :any_skip_relocation, sonoma:         "ad447774b81335d4b26e15fd4a9b1934cdfcf96b3d54359517396f98acf7a0db"
+    sha256 cellar: :any_skip_relocation, ventura:        "174810d0a11dc60f4137d336b71e2a633efd0fc36fb5271b3976b742568b4c97"
+    sha256 cellar: :any_skip_relocation, monterey:       "677d9122cb99611dea8e88fc116513d18e361e05433e8ed7171e87df37c873a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f33bc7596361090dcbc3cd7eec1e226e9f8934b2da43684efef7763fbba2125"
   end
 
   depends_on "libx11" => :build
-  depends_on arch: :x86_64 # https://github.com/cisco/ChezScheme/issues/544
-  depends_on "xterm"
+  depends_on "xterm" => :build
   uses_from_macos "ncurses"
 
   def install
-    inreplace "configure", "/opt/X11", Formula["libx11"].opt_prefix
-    inreplace Dir["c/Mf-*osx"], "/opt/X11", Formula["libx11"].opt_prefix
     inreplace "c/version.h", "/usr/X11R6", Formula["libx11"].opt_prefix
     inreplace "c/expeditor.c", "/usr/X11/bin/resize", Formula["xterm"].opt_bin/"resize"
 
@@ -28,6 +29,7 @@ class Chezscheme < Formula
               "--installprefix=#{prefix}",
               "--threads",
               "--installschemename=chez"
+    system "make"
     system "make", "install"
   end
 

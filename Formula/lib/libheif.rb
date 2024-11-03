@@ -1,38 +1,39 @@
 class Libheif < Formula
   desc "ISO/IEC 23008-12:2017 HEIF file format decoder and encoder"
   homepage "https://www.libde265.org/"
-  url "https://github.com/strukturag/libheif/releases/download/v1.16.2/libheif-1.16.2.tar.gz"
-  sha256 "7f97e4205c0bd9f9b8560536c8bd2e841d1c9a6d610401eb3eb87ed9cdfe78ea"
+  url "https://github.com/strukturag/libheif/releases/download/v1.18.2/libheif-1.18.2.tar.gz"
+  sha256 "c4002a622bec9f519f29d84bfdc6024e33fd67953a5fb4dc2c2f11f67d5e45bf"
   license "LGPL-3.0-only"
+  revision 1
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "47c8a6a12f7b3d00865b34978e1808d94e2f78609d098822978e8695d347d7bf"
-    sha256 cellar: :any,                 arm64_ventura:  "82f6e15c2c6bbd6aabc793a219b24ce16695113c7df6d5a8cf1b4ac82a42034f"
-    sha256 cellar: :any,                 arm64_monterey: "ee412a79e8f261e90bbc5fae5f2d6dd2f1e3ea615b5af2642146ac28121ac4df"
-    sha256 cellar: :any,                 arm64_big_sur:  "ebc16ed45c1641dd955a5abe4065239d813e75d7cc75c119e94766077c469e77"
-    sha256 cellar: :any,                 sonoma:         "badebc0a08d9ef568f000d1bea85718bb37ddf34ff83e466a6b1ad4f0cbb95d6"
-    sha256 cellar: :any,                 ventura:        "a8d94c2ee75e69789bf32a7c14f05812b08caa220d71640e0dab464be419387a"
-    sha256 cellar: :any,                 monterey:       "eefc53996197989013739ad8c2d7fd77de54abaf3817ff8da4c5b1fcadaf37fe"
-    sha256 cellar: :any,                 big_sur:        "ad7f86d5a3424f3b52985b36f7e1eb3fcc843bb4c9ebf97b2dc2107ba0880046"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "0afc0a90a360bd89f0cc382767c5efe724f7e8487b0212f60ab309f4ed42c1fc"
+    sha256 cellar: :any,                 arm64_sequoia: "ed325fb88684986ddb0e1ea928234cbcdf338532d617dd1772c942e6fb6fc523"
+    sha256 cellar: :any,                 arm64_sonoma:  "fb441a4c7b0af9d301f40febc15d7e47e5c36b3dd736fa5568f6f88d664b56a3"
+    sha256 cellar: :any,                 arm64_ventura: "f900c9eac6cdf2e134f9150fe61888ed279eb057efd18099245f9a326fe82a35"
+    sha256 cellar: :any,                 sonoma:        "729b267c46f64bf463a96aef0b866ec41e08ee802ced4eb4f45d5bc44e8e9dd1"
+    sha256 cellar: :any,                 ventura:       "3cb8608c18c3cea4cc34469c5d00a96d583980ad55e3bc2675df48754d15a0b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8dc7b284f1a2b082fc81a2a01e6ebb1ecaec10b2f29cb1b53607dc63e8d39234"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+
   depends_on "aom"
   depends_on "jpeg-turbo"
   depends_on "libde265"
   depends_on "libpng"
+  depends_on "libtiff"
   depends_on "shared-mime-info"
+  depends_on "webp"
   depends_on "x265"
 
   def install
     args = %W[
-      -DWITH_RAV1E=OFF
-      -DWITH_DAV1D=OFF
-      -DWITH_SvtEnc=OFF
       -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DWITH_DAV1D=OFF
+      -DWITH_GDK_PIXBUF=OFF
+      -DWITH_RAV1E=OFF
+      -DWITH_SvtEnc=OFF
     ]
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

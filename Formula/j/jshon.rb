@@ -1,11 +1,12 @@
 class Jshon < Formula
   desc "Parse, read, and create JSON from the shell"
   homepage "http://kmkeen.com/jshon/"
-  url "https://github.com/keenerd/jshon/archive/20131105.tar.gz"
+  url "https://github.com/keenerd/jshon/archive/refs/tags/20131105.tar.gz"
   sha256 "28420f6f02c6b762732898692cc0b0795cfe1a59fbfb24e67b80f332cf6d4fa2"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "c71de9488ca461a0438c85645c42ba5e5c8b81c9272c2639c258a5e6b80d5432"
     sha256 cellar: :any,                 arm64_sonoma:   "9f0b7bc5a2120f0ee203a1398bf9f35b45e3ba143adf38a6220c066db09e48f6"
     sha256 cellar: :any,                 arm64_ventura:  "143f521901ed3810e8b535bfe42acdb099026a2560c96a65095d977f5e1bb331"
     sha256 cellar: :any,                 arm64_monterey: "61a74bb42fb52712f535d63e3a7e3f9b0e06c372ce6d4b0c20e07af22d360620"

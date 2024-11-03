@@ -1,13 +1,14 @@
 class KertishDfs < Formula
   desc "Kertish FileSystem and Cluster Administration CLI"
   homepage "https://github.com/freakmaxi/kertish-dfs"
-  url "https://github.com/freakmaxi/kertish-dfs/archive/v22.2.0147.tar.gz"
+  url "https://github.com/freakmaxi/kertish-dfs/archive/refs/tags/v22.2.0147.tar.gz"
   version "22.2.0147-532592"
   sha256 "a13d55b3f48ed0e16b1add3a44587072b22d21a9f95c444893dbf92e19ee5cee"
   license "GPL-3.0-only"
   head "https://github.com/freakmaxi/kertish-dfs.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f43561e5caee7feb03b4acf86b568ede2d584dae9298c6dce30ea2aae0716c55"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d055665f0250d3853209ad1be451fed582c6c483fbbf4ad67feb56edbc2c3004"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "0dddc21a1847c5a75729b2eeafe55ae1916a12457cf727fb8b65c72ffc2c5f2f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "d3f56111dd712f97ff71450eb7f09577e5dc0108482de91064c57fc312609b4e"

@@ -1,18 +1,19 @@
 class Grpcui < Formula
   desc "Interactive web UI for gRPC, along the lines of postman"
   homepage "https://github.com/fullstorydev/grpcui"
-  url "https://github.com/fullstorydev/grpcui/archive/v1.3.2.tar.gz"
-  sha256 "81930a16c072c50182d7fc14a4030b2833c1a8472ee944352ed36189b5f4d260"
+  url "https://github.com/fullstorydev/grpcui/archive/refs/tags/v1.4.1.tar.gz"
+  sha256 "af7adbdfbf26d297056afdc95e5f9eed390a3c668c15a358fb135fc8b3188ac6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8279c4422bebd889140866c0f74ed3ef3e671a85432f96489853ca353e89cdc5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7c529e2a8c93230236eab974e44c36cf5d2d1b9cff7ec31469bf8352bee392ed"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ddcaadd479e8e52d49cb9c5b8b9ab9eb9d709dda46d7b5d4fa769c2aaf5367c2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "93459ce39d459bb9bbb5af8d40023f283949dfd7f4e97871c2c28283276eb94d"
-    sha256 cellar: :any_skip_relocation, ventura:        "e60adba072507d2003afa3fe4d8d979552a424eb0b05b026d0bc263ad8899862"
-    sha256 cellar: :any_skip_relocation, monterey:       "3d59dde31a65669bd2b085e652f4e41089e72d59ef5afae5191064f657856094"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9c026df3070b926da7ca7069951e5a57b736bca77336341f273110eda4d187c0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8218f707ed3b76afbbb444c2470c68a816a23da38ad2c5cfe338f27cff6a580a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "409cbd513224c978af314d09819f9b5127d210f5a183f30ecc75904c9d95527b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cec2bb7927963fdf92deb9a40696594a3a30089ef6face9ca74adf3941cbde52"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b629edca9f7ce2e5bb9e0945e52f801dd5ebed5a02254933f067ebb6348a50c"
+    sha256 cellar: :any_skip_relocation, sonoma:         "10c668cb2f977a231190ec9fd012caa1aa589ceb67265b2b3ffe9a8555f44497"
+    sha256 cellar: :any_skip_relocation, ventura:        "82608d661c1e52d77e890627953e3557da7058871d9aa95632ac8c78f09916b9"
+    sha256 cellar: :any_skip_relocation, monterey:       "3b6cd41a010cf893c281371cf5a6f22ad63cdd278b813d3d7b2c76feb01a5907"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2246a8ee7dceaaf95ec491588b4703cd79d051ef923334a7f17b27aca4982b88"
   end
 
   depends_on "go" => :build

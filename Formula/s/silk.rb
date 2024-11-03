@@ -1,8 +1,9 @@
 class Silk < Formula
   desc "Collection of traffic analysis tools"
   homepage "https://tools.netsa.cert.org/silk/"
-  url "https://tools.netsa.cert.org/releases/silk-3.22.0.tar.gz"
-  sha256 "15cff02484a75ba3c297067d57111f29751f1c94d6f66a5f4c27877268713e80"
+  url "https://tools.netsa.cert.org/releases/silk-3.23.1.tar.gz"
+  sha256 "c3277352764fa9167a6130739bd4b7cc8ebcb7b7d4f727b46facd7b135f26c23"
+  license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
 
   livecheck do
     url :homepage
@@ -10,34 +11,39 @@ class Silk < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "d55fd5a298a8f38b75c06499aae9479cef40fe4995c4f603a697a91445755e16"
-    sha256 arm64_ventura:  "aea222dd35e5aa14c1b47a2924b789d10061a6422971968acfac53e59d867857"
-    sha256 arm64_monterey: "9cc8828c814c44117937312cea93884aaa382e10b55868fc886de910729bc941"
-    sha256 arm64_big_sur:  "d7fa36cb46078656589b85fb74de2841f221322782a2f05e6cfd3e9111fad68a"
-    sha256 sonoma:         "201aa86a04505ab3fcb9e62779b9cd91181a6d790bf45feb0463658903da59a2"
-    sha256 ventura:        "9c039c8202ea8dd3a535df5f91d3968407b0e97a001163ff6f2c000ca963e3ce"
-    sha256 monterey:       "1744a21267addac3b26a9415cfd8e0968b1de7a10aeedbf785d6dba02c8888e2"
-    sha256 big_sur:        "e45decd58d32300f366721e3bdce32f89f8be24baa2c81b3c8e693eb6f5fdb48"
-    sha256 x86_64_linux:   "66c190c95dd8b764c4dbafeb8e8d5808cd0a867207b10ba3fff582b976aac1f4"
+    sha256 arm64_sequoia: "9174f223744ea5a48b59a4ab66269bb36e0033cbd9925a248120708b33522eb0"
+    sha256 arm64_sonoma:  "df1f4e0f33fcf049b18992fb1a84323c9891339dd66bc6f9ea0d18405e97c6da"
+    sha256 arm64_ventura: "676fbf5554b1e229f629728f296ea6fa5f99080bf27745ce7af7f95c24f0a441"
+    sha256 sonoma:        "37d538756d940202a4319f73ce6d67011091bebd12aabeeecd3900edf854d9ba"
+    sha256 ventura:       "e3200fa12fbbe0cad5b28db61d65e73269abb80ab21396e1607783d0caf432e1"
+    sha256 x86_64_linux:  "41438d609da5625f2a222397a1e8e5e85c82d2fe5aed69192e5b82394f52ebc0"
   end
 
   depends_on "pkg-config" => :build
+
   depends_on "glib"
   depends_on "libfixbuf"
   depends_on "yaf"
 
   uses_from_macos "libpcap"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "gettext"
+    depends_on "openssl@3"
+  end
 
   def install
     args = %W[
-      --prefix=#{prefix}
-      --disable-dependency-tracking
       --mandir=#{man}
       --enable-ipv6
       --enable-data-rootdir=#{var}/silk
     ]
+    # Work around macOS Sonoma having /usr/bin/podselect but Pod::Select was
+    # removed from Perl 5.34 resulting in `Can't locate Pod/Select.pm in @INC`
+    args << "ac_cv_prog_PODSELECT=" if OS.mac? && MacOS.version == :sonoma
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
 

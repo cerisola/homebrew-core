@@ -1,11 +1,12 @@
 class Hstr < Formula
   desc "Bash and zsh history suggest box"
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/archive/3.1.tar.gz"
+  url "https://github.com/dvorka/hstr/archive/refs/tags/3.1.tar.gz"
   sha256 "e5293d4fe2502662f19c793bef416e05ac020490218e71c75a5e92919c466071"
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "76e0d87760c6519a63d6cf0e7719b4683292572ac923e29b9f366d67deae37df"
     sha256 cellar: :any,                 arm64_sonoma:   "72781912003352405419c5a62748a8a19807b5ac77691013fb59fe54084617e7"
     sha256 cellar: :any,                 arm64_ventura:  "fc49b795a9a4182c314a299e959d3307a90e0dcd349f7a177f4990177fdbbd2d"
     sha256 cellar: :any,                 arm64_monterey: "db9cc4ec008f0de26ed8804a27497ab85e0ef5130cbaff99d36b7a9e290484ed"

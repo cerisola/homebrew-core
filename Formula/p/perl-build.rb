@@ -1,12 +1,13 @@
 class PerlBuild < Formula
   desc "Perl builder"
   homepage "https://github.com/tokuhirom/Perl-Build"
-  url "https://github.com/tokuhirom/Perl-Build/archive/1.34.tar.gz"
+  url "https://github.com/tokuhirom/Perl-Build/archive/refs/tags/1.34.tar.gz"
   sha256 "50e90b18f2541aca857b8743bd3c187b7844c608076c4f2aa13eadc0689b1644"
   license any_of: ["Artistic-1.0", "GPL-1.0-or-later"]
   head "https://github.com/tokuhirom/perl-build.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "65330f996da4878f2231c9302be2910c484c4f1c2a4f979a90a931b480bd8a54"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fab20ad3803975d872a837b0094e104a76b477b50358ebc858761609cd95b94a"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "88242c3173ebedeb662528ee8d076253fbe18c189cdef42768efc5e377bec466"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "88242c3173ebedeb662528ee8d076253fbe18c189cdef42768efc5e377bec466"

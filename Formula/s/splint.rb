@@ -1,13 +1,22 @@
 class Splint < Formula
   desc "Secure Programming Lint"
-  homepage "https://sourceforge.net/projects/splint/"
+  homepage "https://github.com/splintchecker/splint"
   url "https://mirrorservice.org/sites/distfiles.macports.org/splint/splint-3.1.2.src.tgz"
   mirror "https://src.fedoraproject.org/repo/pkgs/splint/splint-3.1.2.src.tgz/25f47d70bd9c8bdddf6b03de5949c4fd/splint-3.1.2.src.tgz"
   sha256 "c78db643df663313e3fa9d565118391825dd937617819c6efc7966cdf444fb0a"
   license "GPL-2.0-or-later"
 
+  livecheck do
+    url :homepage
+    regex(/^(?:splint[._-])?v?(\d+(?:[._]\d+)+)$/i)
+    strategy :git do |tags, regex|
+      tags.map { |tag| tag[regex, 1]&.tr("_", ".") }
+    end
+  end
+
   bottle do
     rebuild 1
+    sha256                               arm64_sequoia:  "71b5c97c68f8d10d646955b1111d8556dc2f0ab90136dafd78f5beb673533fb3"
     sha256                               arm64_sonoma:   "b7570a4d7dbb53a9da6cc06e69bb7fd2a850829fe93ea39ffc14f494c4b1c58b"
     sha256                               arm64_ventura:  "6aae55c464e14dde1a9aa9f49da8e30d8184fcf12fbe06a9e913e1fc313455fa"
     sha256                               arm64_monterey: "f47715d1e6f0f201c2486f0d788fd138e89b86cd0c11477b3e5576fa49cffc83"

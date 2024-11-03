@@ -1,13 +1,14 @@
 class Pulledpork < Formula
   desc "Snort rule management"
   homepage "https://github.com/shirkdog/pulledpork"
-  url "https://github.com/shirkdog/pulledpork/archive/v0.7.4.tar.gz"
+  url "https://github.com/shirkdog/pulledpork/archive/refs/tags/v0.7.4.tar.gz"
   sha256 "f0149eb6f723b622024295e0ee00e1acade93fae464b9fdc323fdf15e99c388c"
   license "GPL-2.0-or-later"
   head "https://github.com/shirkdog/pulledpork.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "521630afa230a7c06cec0e42ff50663ceb86232c24780d3f26b414a05ce539ea"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "73420470b3baa100fcd93013911028bf923cb110e9ef7a76d5aa3bce5700dd60"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "c426bbb74ebe2d71cdcc359b5b627d3cee771138be816e22aafcf9bacab773e2"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c426bbb74ebe2d71cdcc359b5b627d3cee771138be816e22aafcf9bacab773e2"

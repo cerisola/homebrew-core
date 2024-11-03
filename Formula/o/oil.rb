@@ -1,8 +1,8 @@
 class Oil < Formula
   desc "Bash-compatible Unix shell with more consistent syntax and semantics"
   homepage "https://www.oilshell.org/"
-  url "https://www.oilshell.org/download/oil-0.18.0.tar.gz"
-  sha256 "bc87ed40618267dae8a260f4ddb99e22e4badfe4e268062e0b9fc139d3588930"
+  url "https://www.oilshell.org/download/oil-0.23.0.tar.gz"
+  sha256 "9fcc3eabaacf1324c49aa583b9a6fcbf80dd9ea47088632722abc95de3629b6b"
   license "Apache-2.0"
 
   livecheck do
@@ -11,19 +11,19 @@ class Oil < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "772262721a4ab21cea956d9ff1c4a12a1dc7d362dbbd281014d4c40c52955cf4"
-    sha256 arm64_ventura:  "bc276b9884f67c70b7cdf53f8c5c4442dd9cc249946c26d2b8674bb00df56ee4"
-    sha256 arm64_monterey: "6779fdb9ef9ec13afacb4fdecc05c5196bad29e7ea7fff27fcf9c6b94172470a"
-    sha256 arm64_big_sur:  "d40895e0b9a2bfacd404dcfe14d0e3156d2c42106fd41566fa8b6f1f6f4cde2a"
-    sha256 sonoma:         "90495d896f0d099c52a5f351f269be25e5a98ec1b2cbbf00b40ae5c736f80ae7"
-    sha256 ventura:        "8f4746d059fe3242c2278db908f80ac6f3e5e1ee45fccb12dee2db63bc385f3c"
-    sha256 monterey:       "03750b00b2a1a886074df5e2104d327cccd1278bb0484b3b3b7397a6fb020820"
-    sha256 big_sur:        "e734ec95a432204f540d1c423c826d7dcfc19165feaca3242d652b54b7ae7de1"
+    sha256 arm64_sequoia:  "d9690ca442936dd7f511ea47b9f38dd8f1e912d750f2f973436484d9bbab5498"
+    sha256 arm64_sonoma:   "3bd17a6e3a21658e3ea556d2e83658a31ebacb4c44d2cf2a545d7fcc13d4be7b"
+    sha256 arm64_ventura:  "c6d90b4d1ed90b69341594a1c2cc5dad0b7589103117a8a56b1c35f67a3d1858"
+    sha256 arm64_monterey: "3a6ee4291d757da8bd9c7057b6b90e596717e8594968cbe822e656cedf7eab32"
+    sha256 sonoma:         "0f38753bfbf381e4a8095ffb66c1af9c0685c0f0c85fe3619e8385862a3fc030"
+    sha256 ventura:        "aa527672e7c1448cbcd46787f0e349431ffb0116a438593ddb451eae40fb441e"
+    sha256 monterey:       "cf0c11fb7b3a7a5826e9b25748060c298dee565bd16257b568a7c4bb0b9efd0c"
   end
 
   depends_on "readline"
 
-  conflicts_with "omake", because: "both install 'osh' binaries"
+  conflicts_with "oils-for-unix", because: "both install 'osh' and 'ysh' binaries"
+  conflicts_with "etsh", "omake", because: "both install 'osh' binaries"
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -34,10 +34,10 @@ class Oil < Formula
   end
 
   test do
-    system "#{bin}/osh", "-c", "shopt -q parse_backticks"
+    system bin/"osh", "-c", "shopt -q parse_backticks"
     assert_equal testpath.to_s, shell_output("#{bin}/osh -c 'echo `pwd -P`'").strip
 
-    system "#{bin}/oil", "-c", "shopt -u parse_equals"
+    system bin/"oil", "-c", "shopt -u parse_equals"
     assert_equal "bar", shell_output("#{bin}/oil -c 'var foo = \"bar\"; write $foo'").strip
   end
 end

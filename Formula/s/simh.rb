@@ -1,20 +1,13 @@
 class Simh < Formula
   desc "Portable, multi-system simulator"
   homepage "http://simh.trailing-edge.com/"
-  url "https://github.com/simh/simh/archive/v3.12-2.tar.gz"
+  url "https://github.com/simh/simh/archive/refs/tags/v3.12-2.tar.gz"
   version "3.12.2"
   sha256 "bd8b01c24e62d9ba930f41a7ae7c87bf0c1e5794e27ff689c1b058ed75ebc3e8"
   license "MIT"
-  head "https://github.com/simh/simh.git", branch: "master"
-
-  # At the time this check was added, the "latest" release on GitHub was several
-  # versions behind the actual latest version, so we check the Git tags instead.
-  livecheck do
-    url :stable
-    regex(/^v?(\d+(?:\.\d+)+(?:-\d+)?)$/i)
-  end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "1c035c21f19ee6b0418c5437901ae58c92f295db48755c0b17fed3e57359be4b"
     sha256 cellar: :any,                 arm64_sonoma:   "6a2f006ba70c8319a1eb4d8ece33be4a0a24e0f064d655bdf6f3d39209b586b8"
     sha256 cellar: :any,                 arm64_ventura:  "cc698568672a1c839e4bc5fe3005ab92d9369de3cf25f81be62c90084b2093a7"
     sha256 cellar: :any,                 arm64_monterey: "4bbbfacf19e812a3f551b11c3dc6222b30cba2ff789d10b7a0d3431c1c7816f8"
@@ -27,16 +20,23 @@ class Simh < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ff6b20047316c5efd516276d7029475379b026f43b446e1707e488cff52be10"
   end
 
-  depends_on "libpng"
-  depends_on "sdl2"
+  # https://github.com/simh/simh/issues/1163
+  # Use open-simh instead
+  disable! date: "2024-10-11", because: "changed to a non-free license in master branch"
 
+  depends_on "libpng"
   uses_from_macos "zlib"
 
   def install
     ENV.deparallelize unless build.head?
-    inreplace "makefile", "GCC = gcc", "GCC = #{ENV.cc}"
-    inreplace "makefile", "CFLAGS_O = -O2", "CFLAGS_O = #{ENV.cflags}"
+    ENV.append_to_cflags "-Os -fcommon"
+    inreplace "makefile" do |s|
+      s.gsub! "+= /usr/lib/", "+= /usr/lib/ #{HOMEBREW_PREFIX}/lib/" if OS.linux?
+      s.gsub! "GCC = gcc", "GCC = #{ENV.cc}"
+      s.gsub! "= -O2", "= #{ENV.cflags}"
+    end
     system "make", "all"
+
     bin.install Dir["BIN/*"]
     Dir["**/*.txt"].each do |f|
       (doc/File.dirname(f)).install f

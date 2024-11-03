@@ -1,8 +1,8 @@
 class Goaccess < Formula
   desc "Log analyzer and interactive viewer for the Apache Webserver"
   homepage "https://goaccess.io/"
-  url "https://tar.goaccess.io/goaccess-1.8.tar.gz"
-  sha256 "19c3ac8d131970abac16831495e9fa32bdb4846ff635e30455e04fbd0dc9653f"
+  url "https://tar.goaccess.io/goaccess-1.9.3.tar.gz"
+  sha256 "49f0ee49e3c4a95f5f75f6806b0406746fcbf2f9ad971cae23e2ea95d3ec7837"
   license "MIT"
   head "https://github.com/allinurl/goaccess.git", branch: "master"
 
@@ -12,13 +12,14 @@ class Goaccess < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "cd1fbdef4f20d39d4ebdc31b06f3d18133e7d78931d1565da9604178c531ea55"
-    sha256 arm64_ventura:  "0c1cca6a2e9208c594afd4e87a244932a426e3ebf605dde7141a35e55062e729"
-    sha256 arm64_monterey: "2dac0fd1b67905407084ef18225c3ec7a98fb141a87b8526b4d89714baa8145b"
-    sha256 sonoma:         "0fc804674b3752bb870d0b58a9b371feea947e51546769f44833966ff6802824"
-    sha256 ventura:        "640e2f27936ccbe2a35948543dab2a3a8f36c1624d84cb404fe5a02880930bca"
-    sha256 monterey:       "a34d28d86c913dafb07894d88b48d2374a9727f5988ebf1eb59ca849d0ed2aae"
-    sha256 x86_64_linux:   "c5a848c319171eff31f794f79e6e804faa9a7e6997ac5fd8a363e8d6f874d65c"
+    sha256 arm64_sequoia:  "5891b85cee0e98725ca30c235a738068a5162b47f85c868c503456fae8a5d8a5"
+    sha256 arm64_sonoma:   "87aa707dacbd55256870c04738ba57e253767e167c16bcd391f9fca89164931b"
+    sha256 arm64_ventura:  "fab59a784e6221780e73de49fb5b7b20b8be593a0fab28d07f031b5b1433a8e0"
+    sha256 arm64_monterey: "7cc09da579a2685826fec756cce8bf87fb868120ff09f680203fa172ad1d3af3"
+    sha256 sonoma:         "1b64c1206f019b712ed90724342e12ed9962e48e33d4f6ef0cb3dbebc184454f"
+    sha256 ventura:        "d0dde1b682b280570fcfe938d46c0ab44f8d79c30fbb0b167c203ecc0e93446a"
+    sha256 monterey:       "40999cea57bc1fca15720fc2d11304db6801b2ac1a89d9da74910fd049944d28"
+    sha256 x86_64_linux:   "a3ee515f40ffb70cf7db643c7150156a19558ec33a1426a792bad4b4434aa42a"
   end
 
   depends_on "autoconf" => :build
@@ -26,6 +27,8 @@ class Goaccess < Formula
   depends_on "gettext"
   depends_on "libmaxminddb"
   depends_on "tokyo-cabinet"
+
+  uses_from_macos "ncurses"
 
   def install
     ENV.append_path "PATH", Formula["gettext"].bin

@@ -1,8 +1,8 @@
 class Iptables < Formula
   desc "Linux kernel packet control tool"
   homepage "https://www.netfilter.org/projects/iptables/index.html"
-  url "https://www.netfilter.org/pub/iptables/iptables-1.8.9.tar.xz"
-  sha256 "ef6639a43be8325a4f8ea68123ffac236cb696e8c78501b64e8106afb008c87f"
+  url "https://www.netfilter.org/pub/iptables/iptables-1.8.10.tar.xz"
+  sha256 "5cc255c189356e317d070755ce9371eb63a1b783c34498fb8c30264f3cc59c9c"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,7 +11,8 @@ class Iptables < Formula
   end
 
   bottle do
-    sha256 x86_64_linux: "c51bb8a5dd82a11b2230095f7152092497e8d868d0a1ea76de6b48f81556de05"
+    rebuild 1
+    sha256 x86_64_linux: "7930259b2d467d1a20ef16973e68585075ba8734dc15bba09a203c1bfe6075ae"
   end
 
   depends_on "linux-headers@5.15" => :build
@@ -20,10 +21,9 @@ class Iptables < Formula
   depends_on "libnetfilter_conntrack"
   depends_on "libnfnetlink"
   depends_on "libnftnl"
+  depends_on "libpcap"
   depends_on :linux
   depends_on "nftables"
-
-  uses_from_macos "libpcap"
 
   def install
     ENV.append "CFLAGS", "-I#{Formula["linux-headers@5.15"].opt_include}"

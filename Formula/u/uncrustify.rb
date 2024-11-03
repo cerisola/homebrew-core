@@ -1,51 +1,47 @@
 class Uncrustify < Formula
   desc "Source code beautifier"
   homepage "https://uncrustify.sourceforge.net/"
-  url "https://github.com/uncrustify/uncrustify/archive/uncrustify-0.77.1.tar.gz"
-  sha256 "414bbc9f7860eb18a53074f9af14ed04638a633b2216a73f2629291300d37c1b"
+  url "https://github.com/uncrustify/uncrustify/archive/refs/tags/uncrustify-0.79.0.tar.gz"
+  sha256 "e7afaeabf636b7f0ce4e3e9747b95f7bd939613a8db49579755dddf44fedca5f"
   license "GPL-2.0-or-later"
   head "https://github.com/uncrustify/uncrustify.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d3bd6a61d021417a13253e241706de3c56d291c3456aa3f4be59dc0a8e3a4e56"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "a6a60728012c42571964e51a3cc4cb04a887e89368fcb8cf7e910cac81a3cfe6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "27a67f8a91b6281144ea19ba3da33d02c17d4ff901b0a20ec95f86a2d5076cdf"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "afd522877248c5ce7c20718aa662a45da10d1efce0c1c276e904cf83957216b0"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3b734376b7e21964d488916cf53aa2fd612bf847497cebedd66cbb6e25983a48"
-    sha256 cellar: :any_skip_relocation, ventura:        "dd3bb8e3ac1e6b9dccc027c92ba497896b28b1bbbe066bfbddc97aaed32bb307"
-    sha256 cellar: :any_skip_relocation, monterey:       "90581bb3e2dce969a539afc186f4130e104b892a902972eccbb2330e8f3d2d3d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f73c1607cc1c4cf15e28339dc36d9ed59338dfd34e1c910e9ebbd556de578eb9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "13707a10791840a3cf9b43c650caaf7265b3409dbc4bd56bbd8433f7c22fd4b0"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "bd6c01e2ea7eb4cb327cf01fe9dd248d60f37846545927453c333cda5554f67d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bffdfbf17b6eb0c781fa7141fb02e92b0a601cd4ceac35cc356d9cdd26dc2636"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4c16c1efe048bee421a9d20ca62ddcb1a133f6ae48d5461e714607f6b9280a2d"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b24f7b0cb08ca53782bc8882cac2272c8eb9609d2079c7d8ecc01babae05583f"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b3d5e126a00e64024c28b2ebe1f05a1b7e38da32912a0fa0834c268ea6edfbb3"
+    sha256 cellar: :any_skip_relocation, ventura:        "0203cc842a538476e70a96c0f566c604e6ff0aed05fc6f09e7f3fc1d3109b760"
+    sha256 cellar: :any_skip_relocation, monterey:       "4018e748acd7ed470ab1090d85307f63d5638b18fbfdf9ba3eff822c303b0c59"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c3a5450c682fb4a635b43c6b6479ef572029cc7933cc3b2dbb08c8f3a51c6c45"
   end
 
   depends_on "cmake" => :build
   uses_from_macos "python" => :build
 
-  fails_with gcc: "5"
-
   def install
-    ENV.cxx11
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "install"
-    end
     doc.install (buildpath/"documentation").children
   end
 
   test do
-    (testpath/"t.c").write <<~EOS
+    (testpath/"t.c").write <<~C
       #include <stdio.h>
       int main(void) {return 0;}
-    EOS
-    expected = <<~EOS
+    C
+
+    expected = <<~C
       #include <stdio.h>
       int main(void) {
       \treturn 0;
       }
-    EOS
+    C
 
-    system "#{bin}/uncrustify", "-c", "#{doc}/htdocs/default.cfg", "t.c"
-    assert_equal expected, File.read("#{testpath}/t.c.uncrustify")
+    system bin/"uncrustify", "-c", doc/"htdocs/default.cfg", "t.c"
+    assert_equal expected, (testpath/"t.c.uncrustify").read
   end
 end

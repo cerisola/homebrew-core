@@ -3,6 +3,7 @@ class Convmv < Formula
   homepage "https://www.j3e.de/linux/convmv/"
   url "https://www.j3e.de/linux/convmv/convmv-2.05.tar.gz"
   sha256 "53b6ac8ae4f9beaee5bc5628f6a5382bfd14f42a5bed3d881b829d7b52d81ca6"
+  license "GPL-2.0-or-later"
 
   livecheck do
     url :homepage
@@ -10,6 +11,7 @@ class Convmv < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "fc7f61c21d44dafb55176e87b23271b01d1b1af6d9e649578bedc34fa59957c2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1a94991b63ee19ac7757bf7f53eec5d3acd3032fba15d763416cc5b6bdb2de5a"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "a814874b65a3d67de4d5c4f0c1ae2dd94584e23cc8092b2df1cc95b35f7c260d"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f70af7ba1886110a7e4eef42e929480994cf73f6fa0511df4a84b17fc542720b"
@@ -31,6 +33,6 @@ class Convmv < Formula
   end
 
   test do
-    system "#{bin}/convmv", "--list"
+    system bin/"convmv", "--list"
   end
 end

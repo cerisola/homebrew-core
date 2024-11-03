@@ -8,19 +8,22 @@ class Dotbot < Formula
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ab75a119395c3b40369e577362a488d251758f07d78af33a143e8c1574d5e81d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "003084192d911a6e12b04602c1a46d1c3173b004af90904d6d0a14ede0a1ab21"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "603a0f873b8df8b86ceff4b95c645d5b34f366b5c6e136ef2be8703ec1133a69"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "62bbea915d56536fa5a451b49de231332c22f2b891dc3f96a9a623093d7784b1"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b9a05f40847ded1a2544f96ab519c6c57f6b35618494817117c980a8c05df9b5"
-    sha256 cellar: :any_skip_relocation, ventura:        "9aa4f0d66b27d5918557fefb8b5357240761ee96841d32a9b8c503a00e67ff7f"
-    sha256 cellar: :any_skip_relocation, monterey:       "45f6f9e0fcc859eab836d76505355259875aaae190b6225cd338eab4d401f706"
-    sha256 cellar: :any_skip_relocation, big_sur:        "df34a064a15982bf92c9539c61a94418211e648d19fce4c6cab656ca6214a680"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b1f2ccdcae669a30e68b3dfcb15a11c3c5dd5aae86920447d35af1df285f7f39"
+    rebuild 4
+    sha256 cellar: :any,                 arm64_sequoia: "6b5fd41ab24db6af662b8217218aa3bd7523063c70abd5650100a54eded95e79"
+    sha256 cellar: :any,                 arm64_sonoma:  "8cc72a4463c1afbc99c19b1b1964de99d61474a18fa8f1ffa9c4d6aa3ccacd8f"
+    sha256 cellar: :any,                 arm64_ventura: "deac30197e6a87753ae61dca9ae576130e23915f999748514995a8788a870091"
+    sha256 cellar: :any,                 sonoma:        "552e887f6394e9c256b59f7170c791547d37a515951da566ce2ebb48a9753cad"
+    sha256 cellar: :any,                 ventura:       "57fa5346b8a2e02360991b688a9d87357c9ddbaa0561529e6a272fc80e01539d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b76a7e7b29a4ad883e46ea2e5c87a00436397d43d27439ecc69704b45d7b1235"
   end
 
-  depends_on "python@3.11"
-  depends_on "pyyaml"
+  depends_on "libyaml"
+  depends_on "python@3.13"
+
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
+    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  end
 
   def install
     virtualenv_install_with_resources

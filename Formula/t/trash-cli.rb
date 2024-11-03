@@ -3,37 +3,38 @@ class TrashCli < Formula
 
   desc "Command-line interface to the freedesktop.org trashcan"
   homepage "https://github.com/andreafrancia/trash-cli"
-  url "https://files.pythonhosted.org/packages/22/d1/0901ab1d04b296ea5a93d970299b1735b6e2bff49ea3c41bf910919be821/trash-cli-0.23.9.23.tar.gz"
-  sha256 "d367f0a70b3b1c20d97bcb459c552eeefc42e7e8d00f2af334236708ec047584"
+  url "https://files.pythonhosted.org/packages/f7/6c/d51b36377c35e4f9e69af4d8b61a920f26251483cdc0165f5513da7aefeb/trash_cli-0.24.5.26.tar.gz"
+  sha256 "c721628e82c4be110b710d72b9d85c9595d8b524f4da241ad851a7479d0bdceb"
   license "GPL-2.0-or-later"
   head "https://github.com/andreafrancia/trash-cli.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "43401ed349e19afa6a651f0e76dd22447de8eee4b24047ee9f53eeca7cf1fa85"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f7d1ec026acbd79807e3b461c27e7226a595b6a17ffcc5d9baf1f9d1ebbf7964"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "fa37b58adc8ace3027b92219ad07fd99de428e0f9002c91b9403038f98c419f5"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bb481500d369930d7f1bb9f7f8e785c8865d06e7d0759ebfde1d00c0218fc346"
-    sha256 cellar: :any_skip_relocation, sonoma:         "8b9a694c7bef102fd3172bd1ca3778bb40ca79ce3de506638e6784b54490349d"
-    sha256 cellar: :any_skip_relocation, ventura:        "1254f1309c742387d0efe032cfd15350ee40916f25788f7c73a71a7f3fda7bd5"
-    sha256 cellar: :any_skip_relocation, monterey:       "e027eac6d5d625c2d9c27e1cf954bf86d648588c75fab3803a9dff84a7fdfccc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0365e789e4a0a454b81388bee217ff7ad72029bd37cbe76fb446db182d0c996c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "58d352281618d62a2c6d20ced795fe9012b294fa821b03ceaf2adc7ee75dc9fd"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3005369e1cfe7938d6c97d39614c2dd45bb87b06d2e7fb07e1616a201d8128b0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8ccc13a1742713858b3b63cc8feb9840596b901d2ffe5dc1fd9757ed2584d1ce"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c4ea7729d8301971fd3970a2c72b8ab6d4a08df8b82a79d9146ff95e2880db7e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d81d30387db79999d4ce0eb0b656d97ac782c6de9531f6cd052b83311a145c02"
+    sha256 cellar: :any_skip_relocation, ventura:       "31f699dac8d5ded90260901e92ccd1fd21c4319732b0efc258385bcd3c004411"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4712d02377f336fb88f4de3ebc3c03dbfcf1a17d8e3d8aac297570a2938f5dd5"
   end
 
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "python@3.13"
 
   conflicts_with "macos-trash", because: "both install a `trash` binary"
   conflicts_with "trash", because: "both install a `trash` binary"
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/d6/0f/96b7309212a926c1448366e9ce69b081ea79d63265bde33f11cc9cfc2c07/psutil-5.9.5.tar.gz"
-    sha256 "5410638e4df39c54d957fc51ce03048acd8e6d60abc0f5107af51e5fb566eb3c"
+    url "https://files.pythonhosted.org/packages/18/c7/8c6872f7372eb6a6b2e4708b88419fb46b857f7a2e1892966b851cc79fc9/psutil-6.0.0.tar.gz"
+    sha256 "8faae4f310b6d969fa26ca0545338b21f73c6b15db7c4a8d934a5482faa818f2"
+  end
+
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   def install
-    virtualenv_install_with_resources
-    man1.install_symlink libexec.glob("share/man/man1/trash*.1")
+    virtualenv_install_with_resources(link_manpages: true)
   end
 
   test do

@@ -1,8 +1,8 @@
 class Tlsx < Formula
   desc "Fast and configurable TLS grabber focused on TLS based data collection"
   homepage "https://github.com/projectdiscovery/tlsx"
-  url "https://github.com/projectdiscovery/tlsx/archive/refs/tags/v1.1.5.tar.gz"
-  sha256 "549cc5433183913ba3d568e115d7d36f8a734ac5befa02d85bc864fc1f5a09b8"
+  url "https://github.com/projectdiscovery/tlsx/archive/refs/tags/v1.1.8.tar.gz"
+  sha256 "272330eb814dc79d367b18c9aa5033a507f9214616d97ac4c1b2f75054767504"
   license "MIT"
   head "https://github.com/projectdiscovery/tlsx.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Tlsx < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "64318749930c221b706baa445f7f4458bdba349df1f32e85f7f2d54f5e40de55"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "55e0ee4e0b769078b60aff832b0ba8d75ef5cfb70e6de6513dd1b79728e53f83"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "41c749969c4a775f841c6e262b67edbbec820603b569b8323ec45ac3d3c09eeb"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f55303beee323866dcf2632f63839c92e7f029061ba317fa5bb29ab265642c89"
-    sha256 cellar: :any_skip_relocation, ventura:        "342dd15587972e76a924d308ef8e3ac7f8a024805bc93f14c869800702164a9b"
-    sha256 cellar: :any_skip_relocation, monterey:       "814ee87d679b880856628f3ab0baaee985332ffd6566f66b007bebfa25c8297e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a8b8021cd2250d60e2841a337ef49cae73e2d4496db26b8e71cd9cff892039d3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b40e84e207184b3d5ba8df0cfc15b9b0e38ac219131b10d32d59fb4231f710c5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "91424e94b9e80bcb352c39f8f45b9a9290fc97afc58c0bafa435ccee44ce9e8c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f023f11876cb65f7558142fd39c85c8309f43eed1eb00fddd4b1bf8cbc24a3c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4d308e255ba04418d6580cde651e766a55f4d75bf74af4bc25f9def4ded7e1a5"
+    sha256 cellar: :any_skip_relocation, ventura:       "5f71f4320d10ebfd2f0ff012ff35050cc9015dd4252498cfd412ac2d6d85d169"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "731a43d294f9ca51520d2e54991972bb3e2034bf6b28fccd90e4357d65341d67"
   end
 
   depends_on "go" => :build

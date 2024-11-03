@@ -1,7 +1,7 @@
 class Pumba < Formula
   desc "Chaos testing tool for Docker"
   homepage "https://github.com/alexei-led/pumba"
-  url "https://github.com/alexei-led/pumba/archive/0.10.1.tar.gz"
+  url "https://github.com/alexei-led/pumba/archive/refs/tags/0.10.1.tar.gz"
   sha256 "bcf3c97da8f61febcf6d239e57d156c8593e76fdd28bd39dd7f2efe19148b8b2"
   license "Apache-2.0"
   head "https://github.com/alexei-led/pumba.git", branch: "master"
@@ -12,6 +12,7 @@ class Pumba < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "39b29f3d525559adde5e8560bc3218de78900a1a0d7bc2db01a7759f631c4953"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b92a5355efbd2150e97340df0a8e51d18585bb33339a9d80d150985b8d28ee60"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "77f912f81252725e4fa18d6c7e7439192e17561b2f11990db1ef08ff1344f673"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "6289f50c1a0e902802f5bd62df73186722456b640593108c77f6e934a5143835"

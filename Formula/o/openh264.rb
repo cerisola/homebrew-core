@@ -1,22 +1,20 @@
 class Openh264 < Formula
   desc "H.264 codec from Cisco"
   homepage "https://www.openh264.org/"
-  url "https://github.com/cisco/openh264/archive/v2.3.1.tar.gz"
-  sha256 "453afa66dacb560bc5fd0468aabee90c483741571bca820a39a1c07f0362dc32"
+  url "https://github.com/cisco/openh264/archive/refs/tags/v2.4.1.tar.gz"
+  sha256 "8ffbe944e74043d0d3fb53d4a2a14c94de71f58dbea6a06d0dc92369542958ea"
   license "BSD-2-Clause"
   head "https://github.com/cisco/openh264.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5ce0c5d17c351c271c213e32da46d85d6d7e2189171a31a2bd152f758f848897"
-    sha256 cellar: :any,                 arm64_ventura:  "af4d886c8a4a3df4fe67657099cc2ff74e6327890c71f678f32d7e49a321fef4"
-    sha256 cellar: :any,                 arm64_monterey: "ae73e6d36f91ac47d93c4725356b6887ddd991d304af65015b958f4301fe61d8"
-    sha256 cellar: :any,                 arm64_big_sur:  "c79e4b81dccaa0901dd4b0df153375479c430253b9a5e7081e5e48ae7c834e2e"
-    sha256 cellar: :any,                 sonoma:         "6852b176398342c0f133259da32d88ad2fd0268bebd88c9ce50bc4b3c509a405"
-    sha256 cellar: :any,                 ventura:        "7c49620720886cb39b4a871783fa26fb194aa6b632b02ac15fe751baa98b1b64"
-    sha256 cellar: :any,                 monterey:       "8a7b21814fc08e259a6fe8a9da00cac96d953ce10011b741dbd4feca426824ec"
-    sha256 cellar: :any,                 big_sur:        "c0d6182c17eb670e2abe5ecc865b5c22119980f3940b00ffffabd78ff50e4d09"
-    sha256 cellar: :any,                 catalina:       "a62c228494b27a45cccd967b45b741b726ef790a778c9e94e397e0cfaf2c320e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9cf3262fd11179defe88b448756d0c98f5f3a6b2bb0e2285ea843bbb694c106"
+    sha256 cellar: :any,                 arm64_sequoia:  "f96c9079b9bbcd3e86c651511443bfd84caf406a0bb7714859b531c9f35a4729"
+    sha256 cellar: :any,                 arm64_sonoma:   "850e4e3d1c3a7344d860435f26801df7fabcc17885b7df73deef72d8d18157da"
+    sha256 cellar: :any,                 arm64_ventura:  "7fa8aae80d9c726609936a0ec4f8190380b7df1dbfa14ef4e1a977f9e7d2988a"
+    sha256 cellar: :any,                 arm64_monterey: "eb334aa3e31f6893a7692c467dfb9f69120c8bc768cb20a9dc804a87cbcfcab2"
+    sha256 cellar: :any,                 sonoma:         "8de2fac44ca95e30f15a038b3cb3c7a7ca02b235d52c2828fd734175941a6fd2"
+    sha256 cellar: :any,                 ventura:        "7f7f24eff4b74e2e5780d8c764b61b73b95b0db31b91a23051ba688e5f29f9d1"
+    sha256 cellar: :any,                 monterey:       "f7588904e9eebfe583412424cd436929a145f3887c551f3a491b119faca12e9f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "32a021d9e81e693117f22a3b246073fca005cd120bba948dad1cc18578c96b88"
   end
 
   depends_on "nasm" => :build
@@ -26,7 +24,7 @@ class Openh264 < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <wels/codec_api.h>
       int main() {
         ISVCDecoder *dec;
@@ -34,7 +32,7 @@ class Openh264 < Formula
         WelsDestroyDecoder (dec);
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{lib}", "-lopenh264", "-o", "test"
     system "./test"
   end

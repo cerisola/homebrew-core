@@ -1,36 +1,28 @@
 class Mpi4py < Formula
   desc "Python bindings for MPI"
   homepage "https://mpi4py.github.io/"
-  url "https://github.com/mpi4py/mpi4py/releases/download/3.1.5/mpi4py-3.1.5.tar.gz"
-  sha256 "a706e76db9255135c2fb5d1ef54cb4f7b0e4ad9e33cbada7de27626205f2a153"
-  license "BSD-2-Clause"
+  url "https://github.com/mpi4py/mpi4py/releases/download/4.0.1/mpi4py-4.0.1.tar.gz"
+  sha256 "f3174b245775d556f4fddb32519a2066ef0592edc810c5b5a59238f9a0a40c89"
+  license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "384f50c2948a0ee3394cf55923e3b1d16e5e43405bddd7232f93e8b5dec20c88"
-    sha256 cellar: :any, arm64_ventura:  "44951c7cfcdf29e3ab19a538a4b29eececfddc423e56f9691774b63a9ffc0283"
-    sha256 cellar: :any, arm64_monterey: "608da0b1163e29267168ab334d6578f1dffe76e1305a2eb9562ab2c46c6548cf"
-    sha256 cellar: :any, sonoma:         "b0d90ac0c85fb56bc7e6e6b9908237894c945cd01e6610f87cf9fcfd19e82cec"
-    sha256 cellar: :any, ventura:        "4112b2e41b4624794c801112728f033ce205e66d9a3436222d23143f885021be"
-    sha256 cellar: :any, monterey:       "2f4cfa512e19b5c261a13d3ff02270c05856717596a898e96f825716b9c7d308"
-    sha256               x86_64_linux:   "e953370f964d4fcaa04248469b34d5001a5c617aa7187e044f97c5338b0fb1bf"
+    sha256 cellar: :any, arm64_sequoia: "557a93e747f7b13041f6104ecb537616e6d6080bc485e6964d8b6ab7699e7af1"
+    sha256 cellar: :any, arm64_sonoma:  "2d6bba0738377bf1c10bf44a51de01c4fe125f25ff30277a85150f7c62f1932f"
+    sha256 cellar: :any, arm64_ventura: "6087645f1f222cd2a5efe80274895f5da76190f7fdae53c19a41442a4ea26372"
+    sha256 cellar: :any, sonoma:        "c6df8310a13fdf5f75d7d3dac7e5696d643fcdb487182185d77fcc3aaa897138"
+    sha256 cellar: :any, ventura:       "8a5f05db2cc8ddf8dd771a04001b324e1d148610f7cf18134cfb08dd9fc72a07"
+    sha256               x86_64_linux:  "d5850a6a3d6c4cc24c46f1d6054c71aaa1773f377b6887794761d2eca9467a96"
   end
 
-  depends_on "libcython" => :build
   depends_on "open-mpi"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
-    system python3, *Language::Python.setup_install_args(libexec, python3)
-
-    system python3, "setup.py",
-                    "build", "--mpicc=mpicc -shared", "--parallel=#{ENV.make_jobs}",
-                    "install", "--prefix=#{prefix}",
-                    "--single-version-externally-managed", "--record=installed.txt",
-                    "--install-lib=#{prefix/Language::Python.site_packages(python3)}"
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
   end
 
   test do

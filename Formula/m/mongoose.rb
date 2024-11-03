@@ -1,28 +1,27 @@
 class Mongoose < Formula
   desc "Web server build on top of Libmongoose embedded library"
-  homepage "https://github.com/cesanta/mongoose"
-  url "https://github.com/cesanta/mongoose/archive/7.11.tar.gz"
-  sha256 "cb2a746505827d3225abdb1c8d508950aa3d769abb0cda59065b1628608efb2e"
+  homepage "https://mongoose.ws/"
+  url "https://github.com/cesanta/mongoose/archive/refs/tags/7.15.tar.gz"
+  sha256 "efcb5aa89b85d40373dcff3241316ddc0f2f130ad7f05c9c964f8cc1e2078a0b"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "73a996f9b20ba5ea24a20a75810d46dcae7b088894386a44213557af43b24630"
-    sha256 cellar: :any,                 arm64_monterey: "5dd56927bfe50a43238e7e54eb3a980b3ab1ae7e0d9cd473e774257f7e8615cf"
-    sha256 cellar: :any,                 arm64_big_sur:  "be7a7cad622a1b3b960ac45d7cfa4730f91ddd93e4ad5f40946ad1cba6e48c91"
-    sha256 cellar: :any,                 ventura:        "903d0db68287d54419a469c695ea64f88a2ae9b30566f50d764e59e27038edc9"
-    sha256 cellar: :any,                 monterey:       "547a40c18e3f31195e701484b6e14940bf66c6d8cd4138aa0ff3b27a7953c24e"
-    sha256 cellar: :any,                 big_sur:        "52ef8103d6dd2e6cdeea622be473e6e7da4d503f7c4c1c0eabb9eb234cd878ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "28fd5533958bb66264a53cd9d9ebe4db3ddc944fc7847004518d0f7a5f040692"
+    sha256 cellar: :any,                 arm64_sequoia:  "22a4f3acc392f97710bbb2eb7b2a8652deb0e32c42a2372a273a97c780bd7654"
+    sha256 cellar: :any,                 arm64_sonoma:   "8fa426f24794e047d6b2ef627e70d7469dab6004b63a2da262273fabbf6fdd08"
+    sha256 cellar: :any,                 arm64_ventura:  "2f01277d6d1f691ad4dc55a26251a56fae6b85fdc4abac97fe19804b2cb700ae"
+    sha256 cellar: :any,                 arm64_monterey: "e796a72aa7601a0573f63e5d822fd24c018c4f2f49ba9c62fe9500f62a184e3e"
+    sha256 cellar: :any,                 sonoma:         "8b4feba3ce4d790de7cb53461a252769c86cac32c0ab676782856400ac73f9b4"
+    sha256 cellar: :any,                 ventura:        "2cc1fabb8af18a789cd2a90a64f31408306a02c65abc94b01c9682bd4c5fb54f"
+    sha256 cellar: :any,                 monterey:       "5ad700fcbe8d2be7f2ba8be80196cf47306d3c65d05d4293f8e756d2935eff2d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b3faf77782983cb1c0e662afb1321326c2742e656bb6e8af8ab678f9a417ae3a"
   end
 
   depends_on "openssl@3"
 
-  conflicts_with "suite-sparse", because: "suite-sparse vendors libmongoose.dylib"
-
   def install
     # No Makefile but is an expectation upstream of binary creation
     # https://github.com/cesanta/mongoose/issues/326
-    cd "examples/http-server" do
+    cd "tutorials/http/http-server" do
       system "make", "mongoose_mac", "PROG=mongoose_mac"
       bin.install "mongoose_mac" => "mongoose"
     end
@@ -52,7 +51,7 @@ class Mongoose < Formula
     EOS
 
     begin
-      pid = fork { exec "#{bin}/mongoose" }
+      pid = fork { exec bin/"mongoose" }
       sleep 2
       assert_match "Hi!", shell_output("curl http://localhost:8000/hello.html")
     ensure

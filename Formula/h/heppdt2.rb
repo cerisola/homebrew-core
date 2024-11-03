@@ -6,6 +6,7 @@ class Heppdt2 < Formula
   license "AFL-3.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a88323276e43919598c99db83cb8ad62864a6c3fa87045791ae7b65f5c8c1aeb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2114a3a999db405565067ff1590fec7434c1481f6ba57416d2a722baf19991e0"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "d5527abc757007282f1ff1d2eefb61d6febfb6343fc411d17ff0f79e1ee39c69"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e1edccaf839fb239d8d8b583b03537bb8789f939afa610df5b806f2ff15243d5"
@@ -18,6 +19,8 @@ class Heppdt2 < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "2c0ccad4374004249fc7431acaa358d0b04d096526e6447ec0c10cdc3b4759af"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a9fd6f6dc87942bb05ce6105a4038ce7c824c25636a0b110b33bdb9b25cb15a"
   end
+
+  deprecate! date: "2024-01-05", because: :unmaintained
 
   def install
     system "./configure", "--prefix=#{prefix}"

@@ -1,36 +1,33 @@
-require "language/node"
-
 class Vite < Formula
   desc "Next generation frontend tooling. It's fast!"
   homepage "https://vitejs.dev/"
-  url "https://registry.npmjs.org/vite/-/vite-4.4.11.tgz"
-  sha256 "3883f2015b9ab7c6ea2a20ffa5c7c5d44f3b2cfc4d0042434440adf13710177e"
+  url "https://registry.npmjs.org/vite/-/vite-5.4.10.tgz"
+  sha256 "2ef8583733cc62afbe9beb48e0a4cfe08518e02883b6120065ae0c81877dc7ec"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e26bd794d2103a5717910360cf75e939b6700d370f57ad3baf0aee139618210"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e26bd794d2103a5717910360cf75e939b6700d370f57ad3baf0aee139618210"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e26bd794d2103a5717910360cf75e939b6700d370f57ad3baf0aee139618210"
-    sha256 cellar: :any_skip_relocation, sonoma:         "08bcd01b0cdc26eb552f1a2831d2466b49a76175ba653b641e87f8a76c7330a5"
-    sha256 cellar: :any_skip_relocation, ventura:        "08bcd01b0cdc26eb552f1a2831d2466b49a76175ba653b641e87f8a76c7330a5"
-    sha256 cellar: :any_skip_relocation, monterey:       "08bcd01b0cdc26eb552f1a2831d2466b49a76175ba653b641e87f8a76c7330a5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5136eee85cffe78dbc0b861ca8aca88afa43595a0cca230c4a01a5efd832723c"
+    sha256 cellar: :any,                 arm64_sequoia: "927201548c39fee5fb3efcf3a1ad010904ce88ee94c6057cb92cd26b7b33b8b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "927201548c39fee5fb3efcf3a1ad010904ce88ee94c6057cb92cd26b7b33b8b8"
+    sha256 cellar: :any,                 arm64_ventura: "927201548c39fee5fb3efcf3a1ad010904ce88ee94c6057cb92cd26b7b33b8b8"
+    sha256 cellar: :any,                 sonoma:        "9f853cd75a498efcabe5b5f3592346791a702e5b5addcc5f363e8731652ae3ef"
+    sha256 cellar: :any,                 ventura:       "9f853cd75a498efcabe5b5f3592346791a702e5b5addcc5f363e8731652ae3ef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b36d562a338900f5c535146d91d49f24a9c54a0a75f5c539552fc40e970ab939"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
-    deuniversalize_machos
   end
 
   test do
-    port = free_port
-    fork do
-      system bin/"vite", "preview", "--port", port
-    end
-    sleep 2
-    assert_match "Cannot GET /", shell_output("curl -s localhost:#{port}")
+    output = shell_output("#{bin}/vite optimize --force")
+    assert_match "Forced re-optimization of dependencies", output
+
+    output = shell_output("#{bin}/vite optimize")
+    assert_match "Hash is consistent. Skipping.", output
+
+    assert_match version.to_s, shell_output("#{bin}/vite --version")
   end
 end

@@ -1,20 +1,19 @@
 class Ghex < Formula
   desc "GNOME hex editor"
   homepage "https://wiki.gnome.org/Apps/Ghex"
-  url "https://download.gnome.org/sources/ghex/44/ghex-44.2.tar.xz"
-  sha256 "ebecb4c68a37d33937b9ec263c8576df1d8c69ab1c1d3e12d5668fd2007e930b"
+  url "https://download.gnome.org/sources/ghex/46/ghex-46.0.tar.xz"
+  sha256 "a1c46f3020cb358b8323025db3a539c97d994a4c46f701f48edc6357f7fbcbd1"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_sonoma:   "030389f2ded957ab4658af0508cb54400afa0401cbdb409ef00c47751980cefb"
-    sha256 arm64_ventura:  "2ba3059bb8e360a311c2fc332023595a0b29e932eef11edca72122a5c39bc4f9"
-    sha256 arm64_monterey: "9ef887f322df3f5469cc2d1d359fb97aca431ce4d5392db47610b32ff903d4b2"
-    sha256 arm64_big_sur:  "ea02821441ef706d84065f4a884ccda5889f4900f109bc8a3f4b58aa1c619086"
-    sha256 sonoma:         "0c38d91138eee85bf224b92e45b782ca93e080bab38b0ceb1bb4f8b36ec3addb"
-    sha256 ventura:        "201ab7c7ab85be196448a55b63728c4ea0d7cd05dde598db6707f86e9824084c"
-    sha256 monterey:       "5863891c05fd85c599001f45b01f0f437cab003dc9293be9e0fc431939be0711"
-    sha256 big_sur:        "ec5e064d2afe4c09c99afd9066cc89773579f3ebcc768961210a56e8fa722082"
-    sha256 x86_64_linux:   "716fd35c6ea69bc66a28f6c52867f871ba5b00f1be05cdbf2ccc43a53ea62c0d"
+    sha256 arm64_sequoia:  "0b7bdd05fff50a48e6f55287c17557c428d11c8111995a4d16aee7fe2683f4aa"
+    sha256 arm64_sonoma:   "9f4e0ef2491956e6ab73d699d2eb62c8e1e99fd0ba8559670d1effa005c901c4"
+    sha256 arm64_ventura:  "377d24393d5492f132cef436b302b43d6ec8d88324934fe8da2e3f3bbf0fdefa"
+    sha256 arm64_monterey: "50861d574cbbfee6159eb9727fd85491c68220876d5fad8657838a2bc09e15ee"
+    sha256 sonoma:         "3f646f8e3d4c910ca0bfcf9378e4714b83305a0240cb5c94ee9042a970e986b9"
+    sha256 ventura:        "df165bcd79ab7c61eb9d9309d5ac1f4210defbeb9366a5446ccd8cd77b956f3a"
+    sha256 monterey:       "bd928e90b41850305eada276227355bd89257e9c401dbff564dcb865e587fecc"
+    sha256 x86_64_linux:   "7634934203285fc6da5e3c7f08957c9d7c7c6cee162178dcdca920de417ae2bd"
   end
 
   depends_on "desktop-file-utils" => :build
@@ -23,12 +22,20 @@ class Ghex < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
+  depends_on "cairo"
+  depends_on "glib"
   depends_on "gtk4"
   depends_on "hicolor-icon-theme"
   depends_on "libadwaita"
+  depends_on "pango"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
-    args = std_meson_args + %W[
+    args = %W[
       -Dmmap-buffer-backend=#{OS.linux?}
       -Ddirect-buffer-backend=#{OS.linux?}
     ]
@@ -36,7 +43,7 @@ class Ghex < Formula
     # ensure that we don't run the meson post install script
     ENV["DESTDIR"] = "/"
 
-    system "meson", *args, "build"
+    system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
   end

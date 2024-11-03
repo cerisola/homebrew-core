@@ -2,8 +2,8 @@ class Colima < Formula
   desc "Container runtimes on MacOS (and Linux) with minimal setup"
   homepage "https://github.com/abiosoft/colima/blob/main/README.md"
   url "https://github.com/abiosoft/colima.git",
-      tag:      "v0.5.6",
-      revision: "ceef812c32ab74a49df9f270e048e5dced85f932"
+      tag:      "v0.7.6",
+      revision: "3ab92f54210503770223a8c9bb61662725e23004"
   license "MIT"
   head "https://github.com/abiosoft/colima.git", branch: "main"
 
@@ -13,13 +13,12 @@ class Colima < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "27e5f5d33b611016192830a350327d0afee5e78ab427f61b5e875ed5190e5892"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fc8d4942c720c96f887f5f50fe94d83029bc3f88884a8e89c7a48b4d9a5b380d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c3d15b3d5c891366808a15603f2f09609b3f3c0544a50c77ff4c1da81a959625"
-    sha256 cellar: :any_skip_relocation, sonoma:         "896a76ef2dac37278bf049e0e9ff4367a6cc8984ffb8d1540b0abdbf3da6c99c"
-    sha256 cellar: :any_skip_relocation, ventura:        "11fabd88fc6133462ad4da1edc20d7f74d6a6bf1bfc0200e2eb0717be6740623"
-    sha256 cellar: :any_skip_relocation, monterey:       "18d6d77974ced4e6a69f9da156e7adfebaca3ba88a5a61652bde73959a4953fa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "74e40a893364cf8040f0bed8641ce1ab4db1d1823f46d6afe4ad181637b78b3e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b0949b56303e3cf78795c24baa9730e1ed1e802affb7ef21023d352c0ce5c3ea"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2fe4c1483a6a9616073ac7bc04172e4afe6aac9101750d434fd47a5d2a1022a7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "54cee2a5a6bb223d44048d037607e682c6c1098d95fe71940a0bd228b6cf5789"
+    sha256 cellar: :any_skip_relocation, sonoma:        "59bcfa7e5d8264740ea616db59b3baa1db41ac8de7ed044800b5a2417c9e56ba"
+    sha256 cellar: :any_skip_relocation, ventura:       "39ba772f61d31e529f377c404f7ae4c58b01358a3bef426daaf8229b1fb0844f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9b469b8b84c00f1f2c1d29ec54d0aeec93839d791ed70e1b4b337ec956acd2c6"
   end
 
   depends_on "go" => :build
@@ -32,9 +31,18 @@ class Colima < Formula
       -X #{project}/config.appVersion=#{version}
       -X #{project}/config.revision=#{Utils.git_head}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags), "./cmd/colima"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/colima"
 
     generate_completions_from_executable(bin/"colima", "completion")
+  end
+
+  service do
+    run [opt_bin/"colima", "start", "-f"]
+    keep_alive successful_exit: true
+    environment_variables PATH: std_service_path_env
+    error_log_path var/"log/colima.log"
+    log_path var/"log/colima.log"
+    working_dir Dir.home
   end
 
   test do

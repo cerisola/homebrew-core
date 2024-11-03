@@ -1,7 +1,7 @@
 class Grepip < Formula
   desc "Filters IPv4 & IPv6 addresses with a grep-compatible interface"
   homepage "https://ipinfo.io"
-  url "https://github.com/ipinfo/cli/archive/grepip-1.2.2.tar.gz"
+  url "https://github.com/ipinfo/cli/archive/refs/tags/grepip-1.2.2.tar.gz"
   sha256 "2ed9477bc5599a10348a7026968242fb4609e6b580c04aaae46d7c71b9fa3d55"
   license "Apache-2.0"
 
@@ -11,6 +11,7 @@ class Grepip < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "913b4365b80488cf7c4b488ea4853363122eaa9238cd01adb676c1afb5d528fb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2c7dab5d4e074a90602f8669e7d11be8b36ab9a43308aeae9e364b3f4f440281"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "127a16e5a544dfd437b203f471b8259cf247c655cbc1031689998280d5a4054c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "127a16e5a544dfd437b203f471b8259cf247c655cbc1031689998280d5a4054c"

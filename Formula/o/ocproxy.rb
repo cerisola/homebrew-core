@@ -1,7 +1,7 @@
 class Ocproxy < Formula
   desc "User-level SOCKS and port forwarding proxy"
   homepage "https://github.com/cernekee/ocproxy"
-  url "https://github.com/cernekee/ocproxy/archive/v1.60.tar.gz"
+  url "https://github.com/cernekee/ocproxy/archive/refs/tags/v1.60.tar.gz"
   sha256 "a7367647f07df33869e2f79da66b6f104f6495ae806b12a8b8d9ca82fb7899ac"
   license "BSD-3-Clause"
   revision 1
@@ -13,6 +13,7 @@ class Ocproxy < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "46d04d2d8fb1173d250c9a568512984ee10c67d0538224248858944a7c65dcf2"
     sha256 cellar: :any,                 arm64_sonoma:   "28eaf6815e07abd2aa324b3adb957523b49de41139079f3ab4480be043aa8a29"
     sha256 cellar: :any,                 arm64_ventura:  "a30cfaf7533957b5a7fab43d8123047d97ad5e989189556dfff3b539c6d771aa"
     sha256 cellar: :any,                 arm64_monterey: "e7ef216d7ca89c5c390833fd8272b5e114d45b9740d4b0a21b1c751363405b87"

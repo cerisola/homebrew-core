@@ -1,28 +1,23 @@
-require "language/node"
-
 class Gitmoji < Formula
   desc "Interactive command-line tool for using emoji in commit messages"
   homepage "https://gitmoji.dev"
-  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-8.5.0.tgz"
-  sha256 "fa82ec64096f8251f79e89e5a702892a6794df4fc4db70a4425b7cf096be464d"
+  url "https://registry.npmjs.org/gitmoji-cli/-/gitmoji-cli-9.5.0.tgz"
+  sha256 "b9c89644fac844f521afcdc2b31e57da7ac7e123df92d16c4fdf79190622a5b4"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7e112982c8f5acd0374f67757cc81c641d0335748284cb10743a540c7bb4b4d9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "dc86635f368e5959a671b3f45da64d8c2e2f86095eb6cc814137aa6b52af89aa"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dc86635f368e5959a671b3f45da64d8c2e2f86095eb6cc814137aa6b52af89aa"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "dc86635f368e5959a671b3f45da64d8c2e2f86095eb6cc814137aa6b52af89aa"
-    sha256 cellar: :any_skip_relocation, sonoma:         "b42f92f173ae0df68b9ae248c8c28141cc9a7d850154253d235018ef7eae1cff"
-    sha256 cellar: :any_skip_relocation, ventura:        "5fbb300743e5f6d4526629ffc678537a1ba0691a9c9eda0e095a1b243b3b2e2c"
-    sha256 cellar: :any_skip_relocation, monterey:       "5fbb300743e5f6d4526629ffc678537a1ba0691a9c9eda0e095a1b243b3b2e2c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5fbb300743e5f6d4526629ffc678537a1ba0691a9c9eda0e095a1b243b3b2e2c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dc86635f368e5959a671b3f45da64d8c2e2f86095eb6cc814137aa6b52af89aa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18d17cb63128d034310085647bce373ccf75c4649c7ab4ba07a396f10767d7de"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "18d17cb63128d034310085647bce373ccf75c4649c7ab4ba07a396f10767d7de"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "18d17cb63128d034310085647bce373ccf75c4649c7ab4ba07a396f10767d7de"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f37602e394aafe7488073a86ad39ea4bad7b61672b752980d8448dc05a7140bc"
+    sha256 cellar: :any_skip_relocation, ventura:       "f37602e394aafe7488073a86ad39ea4bad7b61672b752980d8448dc05a7140bc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "18d17cb63128d034310085647bce373ccf75c4649c7ab4ba07a396f10767d7de"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec)
+    system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

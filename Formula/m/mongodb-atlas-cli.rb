@@ -1,8 +1,8 @@
 class MongodbAtlasCli < Formula
   desc "Atlas CLI enables you to manage your MongoDB Atlas"
   homepage "https://www.mongodb.com/docs/atlas/cli/stable/"
-  url "https://github.com/mongodb/mongodb-atlas-cli/archive/refs/tags/atlascli/v1.12.1.tar.gz"
-  sha256 "98b1f25f918dbbb3cd99d76a842b2c5ba2f16cac4c3fcdaac1cc655aa207e119"
+  url "https://github.com/mongodb/mongodb-atlas-cli/archive/refs/tags/atlascli/v1.30.0.tar.gz"
+  sha256 "4fafbd50316b66922f794f5b2a0f2c490cd9613da2f35d27a002289bf6e78329"
   license "Apache-2.0"
   head "https://github.com/mongodb/mongodb-atlas-cli.git", branch: "master"
 
@@ -12,26 +12,24 @@ class MongodbAtlasCli < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "40d3fbc05fe974f27083007e1727c274b93cbbbe65f24088c1b522e634b9f860"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "96e26d041ae14a85399f2606b1914211511502eec314bb2494fb7dd24f192bff"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "90a68c017acb0989290e1a3ca48d9465a7e78d7199a138edae59f8d63f67ddab"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f5357359324f5e524151352a05e52565c46a138bdc3dfa587ab05f2a5d867f78"
-    sha256 cellar: :any_skip_relocation, ventura:        "2d461c1713135482c97d79e16d4973c21af9e332669387e71cb154015e5ba739"
-    sha256 cellar: :any_skip_relocation, monterey:       "5a0c8bd9763983422304e6c1ab2b3f37f416231655f3249f08bd99f216c06c6f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1438527a7866202b7d5b44505792fc19371297c5f99947023a2edada8cd962a2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2312f054234342400f2fd1993f45a04c7fda3d6f23ff3a02eb87a27aa194c141"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "08146fb15df60ae47759921997183887be7d709f6e9ed54e090f50d8618a3164"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "87e73d97eac51ed7468f66c1e01855054fe8226e06f35ef0c566e14a368e745d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8d40abde556dd85ff9e654266ea227e7c5668ac72081200fe5a02bb7fa2a5266"
+    sha256 cellar: :any_skip_relocation, ventura:       "a46e45855a3231fa73d948d206ac2a7e61f720fc041581e42d0466d2f8dd33a0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52286cbf75e8d02c39be86cdd114b97802edb955595d8f6ea5d6e6ee549f6436"
   end
 
   depends_on "go" => :build
   depends_on "mongosh"
-  depends_on "podman"
+
+  conflicts_with "atlas", "nim", because: "both install `atlas` executable"
 
   def install
-    with_env(
-      ATLAS_VERSION: version.to_s,
-      MCLI_GIT_SHA:  "homebrew-release",
-    ) do
-      system "make", "build-atlascli"
-    end
+    ENV["ATLAS_VERSION"] = version.to_s
+    ENV["MCLI_GIT_SHA"] = "homebrew-release"
+
+    system "make", "build"
     bin.install "bin/atlas"
 
     generate_completions_from_executable(bin/"atlas", "completion", base_name: "atlas")

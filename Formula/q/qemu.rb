@@ -1,21 +1,10 @@
 class Qemu < Formula
-  desc "Emulator for x86 and PowerPC"
+  desc "Generic machine emulator and virtualizer"
   homepage "https://www.qemu.org/"
+  url "https://download.qemu.org/qemu-9.1.1.tar.xz"
+  sha256 "7dc0f9da5491ff449500f3310063a36b619f236ee45706fd0846eb37d4bba889"
   license "GPL-2.0-only"
-  head "https://git.qemu.org/git/qemu.git", branch: "master"
-
-  stable do
-    url "https://download.qemu.org/qemu-8.1.1.tar.xz"
-    sha256 "37ce2ef5e500fb752f681117c68b45118303ea49a7e26bd54080ced54fab7def"
-
-    patch do
-      # "softmmu: Use async_run_on_cpu in tcg_commit"
-      # Needed for running x86_64 VM with TCG and SMP.
-      # https://gitlab.com/qemu-project/qemu/-/issues/1864#note_1543993006
-      url "https://gitlab.com/qemu-project/qemu/-/commit/0d58c660689f6da1e3feff8a997014003d928b3b.diff"
-      sha256 "b0f9f899f269074304d59dedf980fa83296c806f705b16a5164ba4d34aad1382"
-    end
-  end
+  head "https://gitlab.com/qemu-project/qemu.git", branch: "master"
 
   livecheck do
     url "https://www.qemu.org/download/"
@@ -23,15 +12,12 @@ class Qemu < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "aae6f81773760cd3c5dc742202802a2ac655291ccd519e32f4fe99f59268422e"
-    sha256 arm64_ventura:  "23814bfe0b39b2d8e27ce504a0e9e0d90131f89096e7916f752143d81b18875c"
-    sha256 arm64_monterey: "ce028b8eec01f7531662b57fcbebe201ebc17f20cb0688c1e8e0e4c17e1d80b2"
-    sha256 arm64_big_sur:  "9fb0405a0ed2edb5457f11bd7ff95ee95e1d0ae80f71abfcc5ebc48987eaadff"
-    sha256 sonoma:         "6b700e13cff50edd3bfaa11959c5fc90f3d220c75245852087a14e79e8a67989"
-    sha256 ventura:        "f3647d5197f7a14d7ceff873c31a17934982969fb80c1c68fbc69f7c774603f1"
-    sha256 monterey:       "5217ea26acf78a933e75f80e21e5ddcee0a3018cbd1200b180d285fce62fa5b7"
-    sha256 big_sur:        "37e9e3e2734c037975b785a2a8cdbedc771c16d6027352d5438afb8d86f71b3d"
-    sha256 x86_64_linux:   "701ef6e55ceaf746ea77d5eef31fbb2302ee8fb49739807fc2894dd4ba49131c"
+    sha256 arm64_sequoia: "4164411ddffba25e2640b896ee5c0c9d02dd17cd99b5488a992413f060dd6f26"
+    sha256 arm64_sonoma:  "0f3764292c3cf30b0f5b2c8636768feade7c733a8b61beea8109fa1ef7df86cd"
+    sha256 arm64_ventura: "ce0c8e9515e633976b053008d81d6bc00a2d414ce8b4db9f09a1334e292dd8e0"
+    sha256 sonoma:        "5a27f6e005e2628477cb4a3e6814d9af0f39acb7715c300a7d9e1e6b06fac255"
+    sha256 ventura:       "9a9dcb188db0e6706d5a200df9a76411f09fe4bf445da54512010d15de3527f1"
+    sha256 x86_64_linux:  "f123c277c416078a5373541fd1e1ead3fbf54e1dded03f32b27682da75821d3d"
   end
 
   depends_on "libtool" => :build
@@ -59,20 +45,24 @@ class Qemu < Formula
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   on_linux do
     depends_on "attr"
+    depends_on "cairo"
+    depends_on "elfutils"
+    depends_on "gdk-pixbuf"
     depends_on "gtk+3"
     depends_on "libcap-ng"
+    depends_on "libepoxy"
+    depends_on "libx11"
+    depends_on "libxkbcommon"
+    depends_on "mesa"
+    depends_on "systemd"
   end
 
   fails_with gcc: "5"
-
-  # 820KB floppy disk image file of FreeDOS 1.2, used to test QEMU
-  resource "homebrew-test-image" do
-    url "https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.2/official/FD12FLOPPY.zip"
-    sha256 "81237c7b42dc0ffc8b32a2f5734e3480a3f9a470c50c14a9c4576a2561a35807"
-  end
 
   def install
     ENV["LIBTOOL"] = "glibtool"
@@ -113,14 +103,19 @@ class Qemu < Formula
   end
 
   test do
-    expected = build.stable? ? version.to_s : "QEMU Project"
+    # 820KB floppy disk image file of FreeDOS 1.2, used to test QEMU
+    resource "homebrew-test-image" do
+      url "https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/distributions/1.2/official/FD12FLOPPY.zip"
+      sha256 "81237c7b42dc0ffc8b32a2f5734e3480a3f9a470c50c14a9c4576a2561a35807"
+    end
+
     archs = %w[
-      aarch64 alpha arm cris hppa i386 m68k microblaze microblazeel mips
-      mips64 mips64el mipsel nios2 or1k ppc ppc64 riscv32 riscv64 rx
+      aarch64 alpha arm avr cris hppa i386 loongarch64 m68k microblaze microblazeel mips
+      mips64 mips64el mipsel or1k ppc ppc64 riscv32 riscv64 rx
       s390x sh4 sh4eb sparc sparc64 tricore x86_64 xtensa xtensaeb
     ]
     archs.each do |guest_arch|
-      assert_match expected, shell_output("#{bin}/qemu-system-#{guest_arch} --version")
+      assert_match version.to_s, shell_output("#{bin}/qemu-system-#{guest_arch} --version")
     end
 
     resource("homebrew-test-image").stage testpath

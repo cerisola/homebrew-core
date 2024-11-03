@@ -1,11 +1,12 @@
 class LiquidDsp < Formula
   desc "Digital signal processing library for software-defined radios"
   homepage "https://liquidsdr.org/"
-  url "https://github.com/jgaeddert/liquid-dsp/archive/v1.6.0.tar.gz"
+  url "https://github.com/jgaeddert/liquid-dsp/archive/refs/tags/v1.6.0.tar.gz"
   sha256 "6ee6a5dfb48e047b118cf613c0b9f43e34356a5667a77a72a55371d2c8c53bf5"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "8399cfcbc22e0e179328bb4af7fdc62c0be4870859cf7177e3932529bb839cd4"
     sha256 cellar: :any,                 arm64_sonoma:   "779e71883f2c2dc3796dcbdb4a3e4666c4c47af8866571527a74965fec71ca50"
     sha256 cellar: :any,                 arm64_ventura:  "85cec9c7750eaad377d06d956da6dfdcb6534e2c5f9af1f21e361facbe4e4132"
     sha256 cellar: :any,                 arm64_monterey: "c86833a699c1b9d9959690b89487d5837efb089c4d15b5242f477380bb817406"
@@ -28,14 +29,14 @@ class LiquidDsp < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <liquid/liquid.h>
       int main() {
         if (!liquid_is_prime(3))
           return 1;
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-o", "test", "-L#{lib}", "-lliquid"
     system "./test"
   end

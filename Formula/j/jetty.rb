@@ -1,26 +1,25 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
-  homepage "https://eclipse.dev/jetty/"
-  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.52.v20230823/jetty-distribution-9.4.52.v20230823.tar.gz"
-  version "9.4.52.v20230823"
-  sha256 "bd0ca75c520cbf28b901449e1a10cb6cad8cbe1262d3948cec7e809a44a146a6"
+  homepage "https://jetty.org/"
+  url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/9.4.56.v20240826/jetty-distribution-9.4.56.v20240826.tar.gz"
+  version "9.4.56.v20240826"
+  sha256 "02f5f9c4f6b4be0e5b2640d4b5a21e2838d68143ef96c540c2ba39885b60cb62"
   license any_of: ["Apache-2.0", "EPL-1.0"]
 
   livecheck do
-    url "https://eclipse.dev/jetty/download.php"
-    regex(/href=.*?jetty-distribution[._-]v?(\d+(?:\.\d+)+(?:\.v\d+)?)\.t/i)
+    url "https://search.maven.org/remotecontent?filepath=org/eclipse/jetty/jetty-distribution/maven-metadata.xml"
+    regex(%r{<version>v?(\d+(?:\.\d+)+(?:[._-]v?\d+)?)</version>}i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "4803964b26ce2d8e37b51d6c7724b56cab16fec8b24c57894b999c6579a62ac0"
-    sha256 cellar: :any,                 arm64_ventura:  "f3b6f94fc5ca6bd5c8eeed03ba584ce31a4cf4ec02188fe4168d29bc530009dd"
-    sha256 cellar: :any,                 arm64_monterey: "37609fc201d7767a7325e61bd9a6131df4ecc06dc31b97ccec8fc8b568141947"
-    sha256 cellar: :any,                 arm64_big_sur:  "a269520bbf2ac1046184872de4388e72102b9d23a42958369f0f59fee7d38cd9"
-    sha256 cellar: :any,                 sonoma:         "991eda4ae9731fc9fa98ce0a28c23635f8570f612943bdc5eeef81b3a1e568b1"
-    sha256 cellar: :any,                 ventura:        "991eda4ae9731fc9fa98ce0a28c23635f8570f612943bdc5eeef81b3a1e568b1"
-    sha256 cellar: :any,                 monterey:       "991eda4ae9731fc9fa98ce0a28c23635f8570f612943bdc5eeef81b3a1e568b1"
-    sha256 cellar: :any,                 big_sur:        "991eda4ae9731fc9fa98ce0a28c23635f8570f612943bdc5eeef81b3a1e568b1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2f7dbe270adda111cfa5dcbec84a6987ea83d32fd03a5f9c1890e147e25a2621"
+    sha256 cellar: :any,                 arm64_sequoia:  "ee8fc6c28fc7bc7ac22aa43cedcab32819748f6310ed872f9f13fb10c2ca25ef"
+    sha256 cellar: :any,                 arm64_sonoma:   "5622e26be94cf6fbf2fa9aa661be7b61fb4f14b7155da56e4d2fe383b42a814c"
+    sha256 cellar: :any,                 arm64_ventura:  "ed58636aa91cdb805775655aed8774586501c8812bf3b1179168ede42d7a1daa"
+    sha256 cellar: :any,                 arm64_monterey: "d09f9bad8c3058f27ea082fe55c54b7fb10d1b1002736403196b2966257d683a"
+    sha256 cellar: :any,                 sonoma:         "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any,                 ventura:        "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any,                 monterey:       "dbe2190466ae89ba0a9f5941d97b0c55daac1f3e8d813b7058c95464d3a74608"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b083679cf60b33f9dfadb7aa8116413ea10660c726afaadaef3300269885d03b"
   end
 
   depends_on "openjdk"
@@ -35,7 +34,7 @@ class Jetty < Formula
     # probably match the jetty-setuid version that is included with jetty.
     resource "jetty.toolchain" do
       url "https://github.com/eclipse/jetty.toolchain/archive/ce0f110e0b95baf85775897aa90f5b6c0cc6cd4d.tar.gz"
-      sha256 "06a3ac033e5c4cc05716e7d362de7257e73aad1783b297bd57b6e0f7661555ab"
+      sha256 "9a19e7f3c947bbc1979cfef1f8dfc038fb0df4aa518396b9b84b44c69b79332f"
 
       # Fix header paths on macOS to follow modern JDKs rather than old system Java.
       # PR ref: https://github.com/eclipse/jetty.toolchain/pull/211

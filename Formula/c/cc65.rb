@@ -1,12 +1,13 @@
 class Cc65 < Formula
   desc "6502 C compiler"
   homepage "https://cc65.github.io/cc65/"
-  url "https://github.com/cc65/cc65/archive/V2.19.tar.gz"
+  url "https://github.com/cc65/cc65/archive/refs/tags/V2.19.tar.gz"
   sha256 "157b8051aed7f534e5093471e734e7a95e509c577324099c3c81324ed9d0de77"
   license "Zlib"
   head "https://github.com/cc65/cc65.git", branch: "master"
 
   bottle do
+    sha256 arm64_sequoia:  "55807c89176cd3d4570b3728a7fabf1ac2c7014d11f6aec4ca5ed7fdd58c364b"
     sha256 arm64_sonoma:   "41632cc243d34d069cc66bd938aaa297265ab1f5438c59bfef49d8c49965c0a2"
     sha256 arm64_ventura:  "753141cb314e207064134c09d9f31ce82f9d2ca720925f321cb81100ef3ee347"
     sha256 arm64_monterey: "9353c4052546b46967c63aabc48e64633164669129e6406f8afc2dcaac17fb89"

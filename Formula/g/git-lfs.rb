@@ -1,39 +1,43 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
   homepage "https://git-lfs.github.com/"
-  url "https://github.com/git-lfs/git-lfs/releases/download/v3.4.0/git-lfs-v3.4.0.tar.gz"
-  sha256 "d65795242550a9ed823979282cc3572a7b221f9be3440b9bf3a1d6d81c51a416"
+  url "https://github.com/git-lfs/git-lfs/releases/download/v3.5.1/git-lfs-v3.5.1.tar.gz"
+  sha256 "fc19c7316e80a6ef674aa4e1863561c1263cd4ce0588b9989e4be9461664d752"
   license "MIT"
 
+  # Upstream creates releases that are sometimes not the latest stable version,
+  # so we use the `github_latest` strategy to fetch the release tagged as "latest".
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "edfabd4cb7b327ace7e9fce0cc011e1cf3ea759d4b2c731a99618c809d99d2d4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "4fb45479f699c517bcc3dc2cc4f983edf6f29fdb4c2919774620033f9261d18f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "4fb45479f699c517bcc3dc2cc4f983edf6f29fdb4c2919774620033f9261d18f"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4fb45479f699c517bcc3dc2cc4f983edf6f29fdb4c2919774620033f9261d18f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "02e9090a355f72e466114221b0cd55d8c3a475a146d1d935145179d6a28de3c7"
-    sha256 cellar: :any_skip_relocation, ventura:        "c1a2458c826860845f30ab65505d679f8752fad0c920f3ae7401af5bfa8f5491"
-    sha256 cellar: :any_skip_relocation, monterey:       "c1a2458c826860845f30ab65505d679f8752fad0c920f3ae7401af5bfa8f5491"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c1a2458c826860845f30ab65505d679f8752fad0c920f3ae7401af5bfa8f5491"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4128774cc6771a7a768902f7520fc9e95445b1cf646f4236bd7affb1ecda98c9"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6ae42cee04c1e4c25cfe7c2cfbde067060b1b96ac1ec80da9d63c5a4b4e0c909"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6ae42cee04c1e4c25cfe7c2cfbde067060b1b96ac1ec80da9d63c5a4b4e0c909"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6ae42cee04c1e4c25cfe7c2cfbde067060b1b96ac1ec80da9d63c5a4b4e0c909"
+    sha256 cellar: :any_skip_relocation, sonoma:        "63e2c1dbdc3df326ddea622cd7d134935a9545ab14f5bc871b23739b82792c67"
+    sha256 cellar: :any_skip_relocation, ventura:       "63e2c1dbdc3df326ddea622cd7d134935a9545ab14f5bc871b23739b82792c67"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1f8525605ee1028c3a5e2dd762270b3a89da7e3b1355ee701bc791a5272ad843"
   end
 
   depends_on "asciidoctor" => :build
   depends_on "go" => :build
-  depends_on "ronn" => :build
-  depends_on "ruby" => :build
 
   def install
     ENV["GIT_LFS_SHA"] = ""
     ENV["VERSION"] = version
 
     system "make"
-    system "make", "man", "RONN=#{Formula["ronn"].bin}/ronn"
+    system "make", "man"
 
     bin.install "bin/git-lfs"
     man1.install Dir["man/man1/*.1"]
     man5.install Dir["man/man5/*.5"]
     man7.install Dir["man/man7/*.7"]
     doc.install Dir["man/html/*.html"]
+    generate_completions_from_executable(bin/"git-lfs", "completion")
   end
 
   def caveats

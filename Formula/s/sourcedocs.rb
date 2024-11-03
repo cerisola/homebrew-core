@@ -1,7 +1,7 @@
 class Sourcedocs < Formula
   desc "Generate Markdown files from inline source code documentation"
   homepage "https://github.com/SourceDocs/SourceDocs"
-  url "https://github.com/SourceDocs/SourceDocs/archive/2.0.1.tar.gz"
+  url "https://github.com/SourceDocs/SourceDocs/archive/refs/tags/2.0.1.tar.gz"
   sha256 "07547c929071124264ec9cc601331f21dc67a104ffc76fbc1801c1ecb4c35bbf"
   license "MIT"
 
@@ -32,11 +32,11 @@ class Sourcedocs < Formula
     # The following test has been disabled on Mojave until that issue is resolved
     # - https://github.com/Homebrew/homebrew/pull/50211
     # - https://github.com/Homebrew/homebrew-core/pull/32548
-    if MacOS.version < "10.14"
+    if OS.mac? && MacOS.version < "10.14"
       mkdir "foo" do
         system "swift", "package", "init"
         system "swift", "build", "--disable-sandbox"
-        system "#{bin}/sourcedocs", "generate",
+        system bin/"sourcedocs", "generate",
                "--spm-module", "foo",
                "--output-folder", testpath/"Documentation/Reference"
         assert_predicate testpath/"Documentation/Reference/README.md", :exist?

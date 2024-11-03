@@ -1,10 +1,13 @@
 class Cwb3 < Formula
   desc "Tools for managing and querying large text corpora with linguistic annotations"
   homepage "https://cwb.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/cwb/cwb/cwb-3.5/source/cwb-3.5.0-src.tar.gz"
-  sha256 "20bbd00b7c830389ce384fe70124bc0f55ea7f3d70afc3a159e6530d51b24059"
   license "GPL-2.0-or-later"
-  head "svn://svn.code.sf.net/p/cwb/code/cwb/trunk"
+
+  stable do
+    url "https://downloads.sourceforge.net/project/cwb/cwb/cwb-3.5/source/cwb-3.5.0-src.tar.gz"
+    sha256 "20bbd00b7c830389ce384fe70124bc0f55ea7f3d70afc3a159e6530d51b24059"
+    depends_on "pcre"
+  end
 
   livecheck do
     url "https://sourceforge.net/projects/cwb/rss?path=/cwb"
@@ -12,6 +15,7 @@ class Cwb3 < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "c5b9638ab57fd314a6ca3d6af0fe467535a2d3a2d10f567c5c479bda9f3ac36b"
     sha256 cellar: :any,                 arm64_sonoma:   "6e7f9c944d5b1222ea9b1001a4ed77c80ee60fd97418b1326e201def09c26ce9"
     sha256 cellar: :any,                 arm64_ventura:  "933ced8d74d9a2be889a4c0b65f19df7730c3ef071fd15e5b143183a929c0ce1"
     sha256 cellar: :any,                 arm64_monterey: "0095bcb1957680c0111d0350bb709ea9c5944eb0375654ef76b7d9f455fbc531"
@@ -24,15 +28,22 @@ class Cwb3 < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "36c736d9eee76fc6c3db520901f42677e8dfc1ea390b319264c4e0d75b612ccc"
   end
 
+  head do
+    url "svn://svn.code.sf.net/p/cwb/code/cwb/trunk"
+    depends_on "pcre2"
+  end
+
   depends_on "pkg-config" => :build
-  depends_on "gettext"
   depends_on "glib"
-  depends_on "pcre"
   depends_on "readline"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "ncurses"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   resource("tutorial_data") do
     url "https://cwb.sourceforge.io/files/encoding_tutorial_data.zip"
@@ -55,7 +66,8 @@ class Cwb3 < Formula
     # Avoid rebuilds when dependencies are bumped.
     inreplace bin/"cwb-config" do |s|
       s.gsub! Formula["glib"].prefix.realpath, Formula["glib"].opt_prefix
-      s.gsub! Formula["pcre"].prefix.realpath, Formula["pcre"].opt_prefix
+      pcre = build.head? ? "pcre2" : "pcre"
+      s.gsub! Formula[pcre].prefix.realpath, Formula[pcre].opt_prefix
     end
   end
 

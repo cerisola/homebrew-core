@@ -1,12 +1,13 @@
 class Page < Formula
   desc "Use Neovim as pager"
   homepage "https://github.com/I60R/page"
-  url "https://github.com/I60R/page/archive/v4.6.3.tar.gz"
+  url "https://github.com/I60R/page/archive/refs/tags/v4.6.3.tar.gz"
   sha256 "51cf01933180499b27027fcdbda067f0cf80cebaa06d62400b655419f1806d46"
   license "MIT"
   head "https://github.com/I60R/page.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "85f3c4b72af05b300edd783803e965114ee38bb7d8b6702812a9632d1386ec3a"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bf6833b56b397b904b8f9a30f219a768d399d178268c7bd90a5cdc30409719c0"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "115a1bee4a08a2e829bd9474e5896cc5f9ac415a509b29b26675bb14206465dc"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "7dff421473d67b5b753c57deb9221fbdc863ba341e72b41b1a90ce71286ced4c"

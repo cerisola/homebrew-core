@@ -1,11 +1,12 @@
 class Waon < Formula
   desc "Wave-to-notes transcriber"
   homepage "https://kichiki.github.io/WaoN/"
-  url "https://github.com/kichiki/WaoN/archive/v0.11.tar.gz"
+  url "https://github.com/kichiki/WaoN/archive/refs/tags/v0.11.tar.gz"
   sha256 "75d5c1721632afee55a54bcbba1a444e53b03f4224b03da29317e98aa223c30b"
   license "GPL-2.0-or-later"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "10296a60dfeda8e84d9d66f0bbce71ca7072f3a108936537aedabb4108f1e9bd"
     sha256 cellar: :any,                 arm64_sonoma:   "7b3a144f5378ada22f1510604e3c49057031d6003769d97ccb8deee748b874e5"
     sha256 cellar: :any,                 arm64_ventura:  "648dea99dcc66856eb8a50ae15b4f8b026be97accb83bdceaabe795933b63af1"
     sha256 cellar: :any,                 arm64_monterey: "42e529969e77de03e3dccc5c7e8ea1883bb860f22cc253b710a2d0125f0648df"

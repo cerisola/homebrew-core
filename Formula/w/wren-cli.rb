@@ -1,11 +1,12 @@
 class WrenCli < Formula
   desc "Simple REPL and CLI tool for running Wren scripts"
   homepage "https://github.com/wren-lang/wren-cli"
-  url "https://github.com/wren-lang/wren-cli/archive/0.4.0.tar.gz"
+  url "https://github.com/wren-lang/wren-cli/archive/refs/tags/0.4.0.tar.gz"
   sha256 "fafdc5d6615114d40de3956cd3a255e8737dadf8bd758b48bac00db61563cb4c"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "09debbe79f6af18ccbb0f2a4aabf117cfa7b3a33fb455fdd7b943ab8c8e399ce"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "228ccca95d81d073708b4b53278b5fa8a2d4a070c4a0c613cf3eb7181d26ba64"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8b957b7b11199a05f30c2b5fcaea97cdb2cc2ac212b3e6633e51e2f4b5820a53"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "72841b4f7f8562ee72899224e0c1d04c72047be6f86ae00df7aed6c3370320e4"

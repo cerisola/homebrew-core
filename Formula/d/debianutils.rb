@@ -1,25 +1,24 @@
 class Debianutils < Formula
   desc "Miscellaneous utilities specific to Debian"
-  homepage "https://packages.debian.org/sid/debianutils"
-  url "https://deb.debian.org/debian/pool/main/d/debianutils/debianutils_5.13.tar.xz"
-  sha256 "74c30d41c7eb46fed5c7bb6a9b3c10de47ea777220bf51ebc700d99296bdb153"
+  homepage "https://tracker.debian.org/pkg/debianutils"
+  url "https://deb.debian.org/debian/pool/main/d/debianutils/debianutils_5.20.tar.xz"
+  sha256 "dce8731adee52d1620d562c1d98b8f4177b4ae591b7a17091ffe09700dbd4be8"
   license "GPL-2.0-or-later"
 
   livecheck do
-    url "https://packages.qa.debian.org/d/debianutils.html"
+    url :homepage
     regex(/href=.*?debianutils[._-]v?(\d+(?:\.\d+)+).dsc/i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c1a9dbd59e8becc2044abde1d86a6d1e4f6a0ede4fb9d9db863b582f7ef5995e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "df97d7ff05eb39718695a6e41e37ef4f772e842de39855a4a6f35e2b4986585d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "aa15bfad54a42448c00b23cea5c1c3d20af4fe40e51c7d783a99b9ab206563b6"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "4e736217c519c0a5936b8688c6784157e27b1052b11d785247dab91752a2a3c4"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5ea0b621ec5467c177db2dfe3f44cecbab89b1ad87679e2f032e6ea537c7270f"
-    sha256 cellar: :any_skip_relocation, ventura:        "75c6c80a9cf65298ed7a5eb432917ce3f48b71ef9f4637552aadd12b0aacbb3f"
-    sha256 cellar: :any_skip_relocation, monterey:       "2708b24868d97c985bffaa6b1ec7ecaa25c812d28e3df76a8660a4a7fc358afc"
-    sha256 cellar: :any_skip_relocation, big_sur:        "1043f16c427b7563d436b44e1b5662c2d8c6cf3732207c8c6f20399cb0006e04"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f83933c2ae244d70371acfec86005649634af018845a5feb5b649017a0ffcb4d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "12a4a59b6bc17744ec2040d42ea66ed78379805958487b11736cfab8e2d7b27c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "265449156e8ae02d20e994717cb71f3b62292644638bff4456913931e0a8399b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b9a83e1b1730070bd6f656ed2b41d5329b808630c9ada3c705658befca9a4306"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "b6ef403303480663ad615b72af86671bd834facf8e92cd45502eb851b872a6b2"
+    sha256 cellar: :any_skip_relocation, sonoma:         "59383400f34140c70ac48a03829442c3e8b0cc727c4af6ccab204f303b77cb70"
+    sha256 cellar: :any_skip_relocation, ventura:        "8d368475eb11dd898006e67d77783c7f8c928df3830348456c50c963157a3123"
+    sha256 cellar: :any_skip_relocation, monterey:       "36b1bc882b496edcf81675a807d20b92ecc3a7fdb6b5aa8ecf9d9150f1becfce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9ad4cd0e4299a08ef893e6420a6dd9c9b30db187915cf49625c270640a73462"
   end
 
   depends_on "autoconf" => :build

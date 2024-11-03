@@ -1,7 +1,7 @@
 class PkgConfigWrapper < Formula
   desc "Easier way to include C code in your Go program"
   homepage "https://github.com/influxdata/pkg-config"
-  url "https://github.com/influxdata/pkg-config/archive/v0.2.13.tar.gz"
+  url "https://github.com/influxdata/pkg-config/archive/refs/tags/v0.2.13.tar.gz"
   sha256 "8a686074e30db54f26084ec0ab0cd3b04e32b856f680b153e75130d3a77a04ea"
   license "MIT"
   head "https://github.com/influxdata/pkg-config.git", branch: "master"
@@ -12,6 +12,7 @@ class PkgConfigWrapper < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "687f2708ea80449698c7e397224c31bdefed92a3fb62129789af9696c903855e"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ff84cf136641fa9e4600cad7363ba236b6e61754febd1e1535221295ec433398"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "9f890aaf1aca1ef6bf208306efdecb9d0014d94814b7b8bc4630a147d159b90b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "9f890aaf1aca1ef6bf208306efdecb9d0014d94814b7b8bc4630a147d159b90b"

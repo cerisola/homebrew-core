@@ -3,40 +3,33 @@ class EulerPy < Formula
 
   desc "Project Euler command-line tool written in Python"
   homepage "https://github.com/iKevinY/EulerPy"
-  url "https://github.com/iKevinY/EulerPy/archive/v1.4.0.tar.gz"
-  sha256 "0d2f633bc3985c8acfd62bc76ff3f19d0bfb2274f7873ec7e40c2caef315e46d"
+  url "https://files.pythonhosted.org/packages/a6/41/f074081bc036fbe2f066746e44020947ecf06ac53b6319a826023b8b5333/EulerPy-1.4.0.tar.gz"
+  sha256 "83b2175ee1d875e0f52b0d7bae1fb8500f5098ac6de5364a94bc540fb9408d23"
   license "MIT"
-  revision 2
+  revision 3
   head "https://github.com/iKevinY/EulerPy.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "03e91b3a2d807680b8b6ea95a4c0bfb0e4a2a2216c11d6bb8634e63dfaeb3122"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "72ce6df1e039ba85021f4dda879163bfcfa58c2f1e56f7b53aae229536eb308a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "6b20ae7a1e2689ba118d631709173d902d2c9d54bdb9e378ff3680e18f7e48ac"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5829b4ea6f41c0105fa3f72d1cb9723b39e6d4bd4d8fc08aad28fb78960a4ca2"
-    sha256 cellar: :any_skip_relocation, ventura:        "d0c60d886dbaa9d5c38ba0b29118120c2b4e08e596178d727c2b2bfe4b83deb6"
-    sha256 cellar: :any_skip_relocation, monterey:       "47a6c6476ba8ac0777cb35fca74f51521a2f6668a6ab7ff057b15c99b344a790"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ef6eb10c8e5225fda9b692d78202f1be8e5d0a1afc678a4bbc69e566360e34c"
+    rebuild 3
+    sha256 cellar: :any_skip_relocation, all: "0ca0212eae8487870cd46cc5b5252a77aa7d12ff42f11383fab23157d052f3a3"
   end
 
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "click" do
-    url "https://files.pythonhosted.org/packages/7b/61/80731d6bbf0dd05fe2fe9bac02cd7c5e3306f5ee19a9e6b9102b5784cf8c/click-4.0.tar.gz"
-    sha256 "f49e03611f5f2557788ceeb80710b1c67110f97c5e6740b97edf70245eea2409"
+    url "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz"
+    sha256 "ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de"
   end
 
   def install
+    # Unpin old click version: https://github.com/iKevinY/EulerPy/commit/9923d2ee026608e33026909bb95c444724b08ba2
+    inreplace "requirements.txt", "click==4.0", "click"
     virtualenv_install_with_resources
   end
 
   test do
-    require "open3"
-    output = Open3.capture2("#{bin}/euler", stdin_data: "\n")
-    # output[0] is the stdout text, output[1] is the exit code
-    assert_match 'Successfully created "001.py".', output[0]
-    assert_equal 0, output[1]
+    output = pipe_output("#{bin}/euler", "Y\n")
+    assert_match 'Successfully created "001.py".', output
     assert_predicate testpath/"001.py", :exist?
   end
 end

@@ -1,20 +1,17 @@
 class Nco < Formula
   desc "Command-line operators for netCDF and HDF files"
   homepage "https://nco.sourceforge.net/"
-  url "https://github.com/nco/nco/archive/5.1.8.tar.gz"
-  sha256 "f22c63a3cbe1947fbf06160a6ed7b6d1934aa242fbe3feeb8d1964eef266b7d5"
+  url "https://github.com/nco/nco/archive/refs/tags/5.2.9.tar.gz"
+  sha256 "6245886e2a18a4821b0fb768cf9906de09aeb47c303462c8e85f0d1a4f34956d"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "09c8395f84a161e8351fd20f1c9d54a229fe9931a06203ddf314c0453586ff76"
-    sha256 cellar: :any,                 arm64_ventura:  "b218dc0d44d0092e608743cbb72d8ea31edc247e65cf0406c6abc7bcb1f5fc39"
-    sha256 cellar: :any,                 arm64_monterey: "dc16d9013fdf30c97deb8a4c71b80be0da3a9f397b643b5e9eecec8595f770bd"
-    sha256 cellar: :any,                 arm64_big_sur:  "a28ee76bc4aedc0593d48f049c2871df9633f8c3c695fdcab5587b5d14e61a28"
-    sha256 cellar: :any,                 sonoma:         "712baad468d86466cec57c23fb8f3571c51a5e31b8c0d86342a4df6eb6cea603"
-    sha256 cellar: :any,                 ventura:        "134167d5a432d8ea96e40dc527c61c10f5cfcec65fa2feec929047898b3d9883"
-    sha256 cellar: :any,                 monterey:       "dc0c4201dffa9e8c403e3d065835d9368b875846a56f2b46998313807ad83f54"
-    sha256 cellar: :any,                 big_sur:        "7efeb383400726df89f010aecc11613cad04a2b80ffa0207edd344c2fccb02db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "af5fa88ca942456a711b9c9d5f45539fc6aa2b66570e41abba32af4b076879d3"
+    sha256 cellar: :any,                 arm64_sequoia: "36fee2dba418873c6b8f70ce3910b72f6233d46c7d694e7a6bef71f99cc640e9"
+    sha256 cellar: :any,                 arm64_sonoma:  "f8a925356271dd53ebba184d5eaf0d8d267842c03cdccfad97862285ff6487c3"
+    sha256 cellar: :any,                 arm64_ventura: "d9f36db0f341909aac90ae55611edfd1f5dd5315e8674d1d43df8af981263576"
+    sha256 cellar: :any,                 sonoma:        "433adbbea94d7eed23c146af84bb3e88b6026d131d4e2068f6d0cb941eb63f74"
+    sha256 cellar: :any,                 ventura:       "6fdafffb41b987c8f1bfb74b3f0073e9acb12cd7f356f26c6af978e00ba5ef7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8a60e8035abed7f02a875ab4b21cb55b2792c148a8462dce0b0cff94b8120c9d"
   end
 
   head do

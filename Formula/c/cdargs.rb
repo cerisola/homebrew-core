@@ -1,12 +1,13 @@
 class Cdargs < Formula
   desc "Directory bookmarking system - Enhanced cd utilities"
   homepage "https://github.com/cbxbiker61/cdargs"
-  url "https://github.com/cbxbiker61/cdargs/archive/2.1.tar.gz"
+  url "https://github.com/cbxbiker61/cdargs/archive/refs/tags/2.1.tar.gz"
   sha256 "062515c3fbd28c68f9fa54ff6a44b81cf647469592444af0872b5ecd7444df7d"
-  license "GPL-2.0"
+  license "GPL-2.0-or-later"
   head "https://github.com/cbxbiker61/cdargs.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5be93566bc13d241d79bfa4c097b9a460750d889864bab0ee4276bd021a10f90"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fed4d372bf68ed5208d3ea9a33934d90089839d309da6600377430af6682c2a3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "48b0cc0d5f0f06a74cb14d049f2cb4540be4e14d3e6a8e1b651ff64a34c249ed"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "cc63406b9216e6ae1ed24d3e7840776919dd1ad9a566610544fcf3c3520461b8"
@@ -35,11 +36,9 @@ class Cdargs < Formula
   end
 
   def install
-    mkdir "build" do
-      system "meson", *std_meson_args, ".."
-      system "ninja", "-v"
-      system "ninja", "install", "-v"
-    end
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
 
     rm Dir["contrib/Makefile*"]
     prefix.install "contrib"
@@ -54,6 +53,6 @@ class Cdargs < Formula
   end
 
   test do
-    system "#{bin}/cdargs", "--version"
+    system bin/"cdargs", "--version"
   end
 end

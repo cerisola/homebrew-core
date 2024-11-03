@@ -1,20 +1,18 @@
 class Marksman < Formula
   desc "Language Server Protocol for Markdown"
   homepage "https://github.com/artempyanykh/marksman"
-  url "https://github.com/artempyanykh/marksman/archive/refs/tags/2023-07-25.tar.gz"
-  version "2023-07-25"
-  sha256 "0b04ab2eeb185ab321f0ab0f7ab19c02d91b8c2ce377d6ea2af494cd1ef48a7b"
+  url "https://github.com/artempyanykh/marksman/archive/refs/tags/2024-10-07.tar.gz"
+  sha256 "4b3c107717344508c8de66efe4a847d31a8f77040908cccfef1f3deec4ffad96"
   license "MIT"
   head "https://github.com/artempyanykh/marksman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "bf3be1cdc036e59ecba83f07cc51ea06b8d7197b0ac531019bb6e264b08bb557"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a3f90276b1f17a84573149b4380188190a8cf62a66cf62644b0b5c38d2c4fa2c"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "daf54f16db3c68f0314ebb56c98287adbd147690049209fadfe2acbfe14eb548"
-    sha256 cellar: :any_skip_relocation, ventura:        "5534cb88d413b457cc92d37f506d3b373abb750cb5a0bf852ebf7cbeeb05fd53"
-    sha256 cellar: :any_skip_relocation, monterey:       "aee1de132cd15a34a513c8d8a3f7e80f88b77d88d82ecfcd69122e7c930f58a8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "fcde5660ad404c33f7e04a650ea42d7b459d99d4c3256374d3e23f5b8edae0b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bb8eb4232c1cc858efe61d63bbac0192ca11a9d5a5881bc5f05ee4a20a0ccf7a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d41cd9570edf1216e05c5b1b9c24e53245e5d8f62eff01af041ba9dc13e74130"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "45f594a715a7c80886deb22d7cd75de2abb8742667ece6cd77a6c93b272b4cb1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a9d3428560916765a1551be5e6c8b3fdb3a4141c686f876220aa06d3e2d3f9e8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "079b494392db99c537d82d5ac970289101ce6cc4522342957c8e001f06ddf4a2"
+    sha256 cellar: :any_skip_relocation, ventura:       "0c03ecf16e58b03c2917fea6285d0781b791948795b12b872a35a6b131cbeb53"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c076fc10cfc0eed8b3cb367ca3736b9483c3af515733ac8125309eead36c15bf"
   end
 
   depends_on "dotnet" => :build
@@ -53,7 +51,7 @@ class Marksman < Formula
 
     ENV["DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"] = "1"
 
-    Open3.popen3("#{bin}/marksman", "server") do |stdin, stdout|
+    Open3.popen3(bin/"marksman", "server") do |stdin, stdout|
       stdin.write "Content-Length: #{json.size}\r\n\r\n#{json}"
 
       sleep 3

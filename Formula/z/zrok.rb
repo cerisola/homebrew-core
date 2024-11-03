@@ -1,23 +1,19 @@
-require "language/node"
-
 class Zrok < Formula
   desc "Geo-scale, next-generation sharing platform built on top of OpenZiti"
   homepage "https://zrok.io"
-  url "https://github.com/openziti/zrok/archive/v0.4.6.tar.gz"
-  sha256 "fd673ef9e8709feb660f5fc15e75580f383989194c66b358bf5d4ae2b30a8a7b"
-  license "Apache-2.0"
+  url "https://github.com/openziti/zrok/archive/refs/tags/v0.4.42.tar.gz"
+  sha256 "2a6ad8562832a880586c0179e4fcca05625d990ae33f98cd42a1ddeed45c184d"
+  # The main license is Apache-2.0. ACKNOWLEDGEMENTS.md lists licenses for parts of code
+  license all_of: ["Apache-2.0", "BSD-3-Clause", "MIT"]
   head "https://github.com/openziti/zrok.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c9ce17f7dad44c28e30acd698a2b5907f8c88600095104d61ac628f6095de9ee"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "81139ce1a01089d21c6542df88e6928857436fe0c8ca57d214daf0782f0959ed"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "48810723c7297d5b000041bdefc988db8a7987250725d90346e3aac57abb2915"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "b75ef7bde83314de14176a81a26d791e18ffbf09c8e3c45d826b6288648aa8cd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "a96c3369bee4b79e7597d85d45cd036561597022a52d19524459c2618a8000dd"
-    sha256 cellar: :any_skip_relocation, ventura:        "3e2be753b4af73f7fa05e5cac258e39c9f2b3066f76f49027eef21f84c2cf742"
-    sha256 cellar: :any_skip_relocation, monterey:       "de9753ad13d7b96803c51703251219e7b5fc4004a251c350711f23ac7613ab25"
-    sha256 cellar: :any_skip_relocation, big_sur:        "2d906e07771921f787421c65ad81109ff14617cf127054e80e244655347e3f75"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "79107692887f4e67445b0810a33d70b394afd5467c04be04fd49c90629f33fc6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3aa399dec0d17aced2e5949c82207d19d72f720a243166620ab755146e71f7ea"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "df86a4a05c75dba79ea974ebcd6de8a015c2ea2f2a73f7f668118c99b46e3e4b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d310cef500e4b7684281d9e9a0041e84cd6ae84cd3e65e5a4adcb68f87858f50"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2873a375802211e4e3b8877637f5c5fcdbb30a8202b548a39baf48544387b6de"
+    sha256 cellar: :any_skip_relocation, ventura:       "a427202881381dc669b6bc5c0a1c10d424e043427760a2f14a5897a0b02f195c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5b31b98b5fc6d9a482252987c70dd6f21a22a655ee6612abbe4daa33256bed49"
   end
 
   depends_on "go" => :build
@@ -25,20 +21,30 @@ class Zrok < Formula
 
   def install
     cd buildpath/"ui" do
-      system "npm", "install", *Language::Node.local_npm_install_args
+      system "npm", "install", *std_npm_args(prefix: false)
       system "npm", "run", "build"
     end
-    ldflags = ["-X github.com/openziti/zrok/build.Version=#{version}",
-               "-X github.com/openziti/zrok/build.Hash=brew"]
-    system "go", "build", *std_go_args(ldflags: ldflags), "github.com/openziti/zrok/cmd/zrok"
+
+    ldflags = %W[
+      -s -w
+      -X github.com/openziti/zrok/build.Version=#{version}
+      -X github.com/openziti/zrok/build.Hash=#{tap.user}
+    ]
+    system "go", "build", *std_go_args(ldflags:), "./cmd/zrok"
   end
 
   test do
     (testpath/"ctrl.yml").write <<~EOS
-      v: 3
+      v: 4
       maintenance:
         registration:
-          expiration_timeout: 24h
+          expiration_timeout:           24h
+          check_frequency:              1h
+          batch_limit:                  500
+        reset_password:
+          expiration_timeout:           15m
+          check_frequency:              15m
+          batch_limit:                  500
     EOS
 
     version_output = shell_output("#{bin}/zrok version")

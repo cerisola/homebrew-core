@@ -1,12 +1,13 @@
 class Screenresolution < Formula
   desc "Get, set, and list display resolution"
   homepage "https://github.com/jhford/screenresolution"
-  url "https://github.com/jhford/screenresolution/archive/v1.6.tar.gz"
+  url "https://github.com/jhford/screenresolution/archive/refs/tags/v1.6.tar.gz"
   sha256 "d3761663eaf585b014391a30a77c9494a6404e78e8a4863383e12c59b0f539eb"
   license "GPL-2.0-only"
   head "https://github.com/jhford/screenresolution.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b35c70febc8d234c5a664507d682eeb80ff1541bde35128f42836559088e9290"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e80216f98204a4f06ad9cfdcfd8fbab00c6ddfbc26773aa0920dcaf4fd86d686"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "115831028fe4da37486b48aabc70fc13fde8a297aa2e3d5eee9ea822a2727053"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "305ef97e31c6a2cdafb1a9de02787e2861b3c9de0165d45dde1c56185b8e1e64"
@@ -30,6 +31,6 @@ class Screenresolution < Formula
   end
 
   test do
-    system "#{bin}/screenresolution", "get"
+    system bin/"screenresolution", "get"
   end
 end

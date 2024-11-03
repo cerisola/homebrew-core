@@ -3,29 +3,25 @@ class AllRepos < Formula
 
   desc "Clone all your repositories and apply sweeping changes"
   homepage "https://github.com/asottile/all-repos"
-  url "https://files.pythonhosted.org/packages/9a/ea/cdabb519e8afc76df7d70b900403d4f118404c90665d4468c88101265c47/all_repos-1.26.0.tar.gz"
-  sha256 "52fd543c17064af11c06cfe344bb43eda550f5a69de2be767d5c98661a0783b2"
+  url "https://files.pythonhosted.org/packages/a6/56/29006be2546b897a5c62a3d4a7e613abf5a3533554d948b0e0af27546f1b/all_repos-1.27.0.tar.gz"
+  sha256 "96fea3e34caa004b0770501e6efb93dc49cbca05fb56c2b8b2a85d06fb3a4573"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "002888f8886b59eb9ed0fd3cea61fbb801e465bf9cc37141517d9192abf9da2d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "318d4219f21145a182e2294b816d298b0419e0a2b0176159179c823ad678d163"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "27547640d5d301b30d26130881651cbeb9c5fe6c4c7342c5d2696abbc47226ce"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "08fac20bbc7fd16204d95ee32bbb336bcb5250909aca17c65b654e56df19725d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "868ce23afa5a49583491691e35c52452377b9acb76f75c8fee5f2d28b2877556"
-    sha256 cellar: :any_skip_relocation, ventura:        "438f205fd3e970a6870269d7c85afc70cd0bcf9a295bd1ed93179bcc0f179f44"
-    sha256 cellar: :any_skip_relocation, monterey:       "7059a579c9f46b781c24b9b4eb9b9fe28a32fb6e18b99b1af858369d0d545ce1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "3fefb9da82cc389c71b159ecfecab896ea95490c713794b0e7982b8239c7bd4e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f49ea61cb1733449a24d5518037c0d16d7b8f84d396e5d8f704722aad0b62c31"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "01ac796e20537a0c9eae3a55935cba36e2048b80fe3d93ced82759b3ac4aae34"
   end
 
-  depends_on "python-packaging"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "identify" do
-    url "https://files.pythonhosted.org/packages/c4/f8/498e13e408d25ee6ff04aa0acbf91ad8e9caae74be91720fc0e811e649b7/identify-2.5.24.tar.gz"
-    sha256 "0aac67d5b4812498056d28a9a512a483f5085cc28640b02b258a59dac34301d4"
+    url "https://files.pythonhosted.org/packages/29/bb/25024dbcc93516c492b75919e76f389bac754a3e4248682fba32b250c880/identify-2.6.1.tar.gz"
+    sha256 "91478c5fb7c3aac5ff7bf9b4344f803843dc586832d5f110d672b19aa1984c98"
+  end
+
+  resource "packaging" do
+    url "https://files.pythonhosted.org/packages/51/65/50db4dda066951078f0a96cf12f4b9ada6e4b811516bf0262c0f4f7064d4/packaging-24.1.tar.gz"
+    sha256 "026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"
   end
 
   def install

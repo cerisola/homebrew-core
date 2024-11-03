@@ -1,12 +1,13 @@
 class Authoscope < Formula
   desc "Scriptable network authentication cracker"
   homepage "https://github.com/kpcyrd/authoscope"
-  url "https://github.com/kpcyrd/authoscope/archive/v0.8.1.tar.gz"
+  url "https://github.com/kpcyrd/authoscope/archive/refs/tags/v0.8.1.tar.gz"
   sha256 "fd70d3d86421ac791362bf8d1063a1d5cd4f5410b0b8f5871c42cb48c8cc411a"
   license "GPL-3.0-or-later"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cd181040954b9cb22040c9bbd7ba32fa2a22814968046bedac1da48eede489a2"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f1c4c2802d4bf6e2d26ddea931e096a4ccc2bb3da7d8a43950853cd299bbb046"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "b6c02326d8bba708c177e946f59b3074609f27eb0250e74f52760a39360aff7c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "c51d402bcb2a79225d442a5d291c1eb15d6899c0088704bf2ee7c919c2ade0e7"

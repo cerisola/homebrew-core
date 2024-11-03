@@ -1,7 +1,7 @@
 class Tokei < Formula
   desc "Program that allows you to count code, quickly"
   homepage "https://github.com/XAMPPRocky/tokei"
-  url "https://github.com/XAMPPRocky/tokei/archive/v12.1.2.tar.gz"
+  url "https://github.com/XAMPPRocky/tokei/archive/refs/tags/v12.1.2.tar.gz"
   sha256 "81ef14ab8eaa70a68249a299f26f26eba22f342fb8e22fca463b08080f436e50"
   license any_of: ["Apache-2.0", "MIT"]
 
@@ -12,6 +12,7 @@ class Tokei < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "40b48918b40641291a8a9ad1d81bc1da4d4c5a87f9dd427b95716ae8c3d98dab"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c5cea8923b59fbf212777ab62587234ee3ac0899c959c9d2fad3eca5e5129709"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "58c651b034293b8dc4d2dc00c7b2a13d8c6c3c093683ab5e1ebe08a1dc6cf6f9"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "6ca867ee898e06ea98d3f3012e753ecb6e292160353e187fa62619f86447ca7c"
@@ -31,7 +32,7 @@ class Tokei < Formula
   end
 
   test do
-    (testpath/"lib.rs").write <<~EOS
+    (testpath/"lib.rs").write <<~RUST
       #[cfg(test)]
       mod tests {
           #[test]
@@ -39,7 +40,7 @@ class Tokei < Formula
               println!("It works!");
           }
       }
-    EOS
+    RUST
     system bin/"tokei", "lib.rs"
   end
 end

@@ -1,21 +1,18 @@
 class Httpx < Formula
   desc "Fast and multi-purpose HTTP toolkit"
   homepage "https://github.com/projectdiscovery/httpx"
-  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.3.5.tar.gz"
-  sha256 "f6b7d925337da55a6bf9e15144762887b0f2d6be8590381c90d911f8a91abea6"
+  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.6.9.tar.gz"
+  sha256 "cd50750e8a1c625ecb1548bf3d1fa7597732cc5e1ec15f2fbe7b8309a366461c"
   license "MIT"
   head "https://github.com/projectdiscovery/httpx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4f5e25f21fdaa78a31cc0344020f87fde8bc554c34c5f541a5a17caab54150e6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d495cfac46706d4c30287c88013d533e6013c131620be8db832402d2696cf872"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9a56d7ac53ec3ea98be90176bcc379526b4192394d5722fd9fedb4e96bd4993"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "c382d82937b6ae4caa0fec3d20eb477de61411557429b8e161929ba1d168842f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "3b10476f094e05cf031122fa524d6992eecd7bf4ab0210f9c99555055014cb24"
-    sha256 cellar: :any_skip_relocation, ventura:        "35a0a5e66907cb538ffefc1532257de5788cbecb330120244f617a8018547832"
-    sha256 cellar: :any_skip_relocation, monterey:       "9f82ee1c0fef77bbe4cedaa6c0e3b4b102b8ea04f4bd74058901848793bffc1a"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5d27b6fcf9d0b437446163f725a7aaac9d9db27b0b0daff8bcfd104c3e997fc5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "7e1c215aa6f1be3db4c5968b9ea2083591e386de12210806cdacaacc446fa977"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f593d71b0422ef10a5cd3313a0fa51255b14d4a71981757531481e6da9aea40"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e91b204a5f93adba022a3c691bd60bdf2500e7e0c748d446bb8b0014847c11a0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b97cf6f48475a0b9501fac18bafa5c1ebd7eddf09d6ded27389df16472f069c3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d59c63dbbf37041313f3bf29a6a8cced0b0bd70529e583691ef56dfaf36285df"
+    sha256 cellar: :any_skip_relocation, ventura:       "bfc9400cfdbf858b1c7028e19d46fad04d1105fd4a5cc6468abd489fcdae7a77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d19c3b97fc344ecc099e98181865f993a363429abe0597af80fbe2ed105c1d2"
   end
 
   depends_on "go" => :build

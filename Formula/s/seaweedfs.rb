@@ -2,21 +2,23 @@ class Seaweedfs < Formula
   desc "Fast distributed storage system"
   homepage "https://github.com/seaweedfs/seaweedfs"
   url "https://github.com/seaweedfs/seaweedfs.git",
-    tag:      "3.57",
-    revision: "0f8168c0c928bba3d2f48b0680d3bdce9c617559"
+      tag:      "3.79",
+      revision: "228946369cad29ee8edc07a42a2e0d218ba16d0b"
   license "Apache-2.0"
   head "https://github.com/seaweedfs/seaweedfs.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "08bea5cf9e25f7a0f1ae3664812bd9b3f384783b02421a6730f689f9ca3ef7a7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "32fbedd88f02f28d272a9f1d011ef29770f61522f81377ce1ecdb8e659c0d88f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "3098428951226f5b1217cc5352bc09dd483866d947149f2ceb5716069ef2e059"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "80d7ed26a580df11774be422257b5c37a7eeac07d93fb5f6d9d6f048e2360045"
-    sha256 cellar: :any_skip_relocation, sonoma:         "951b643dfc720b1d1a3102f9606337139e778f310d53167a066bbd6570b647b2"
-    sha256 cellar: :any_skip_relocation, ventura:        "493e8151c85b34ef55c3417a1dbf536f3c6d38fc5b4d9e2d306b475765419010"
-    sha256 cellar: :any_skip_relocation, monterey:       "be067f2b5e660ccc15d9940b1819c60001be6343ab25f4e88b8e08206697add8"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0c0e8a268587d82e78d28fb0b4e578987def95391aa966b9092e4859e5d221ab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "fadf925ebc5f4fc3a54ab96e82f6dc104ddc83acde1c6aebd44ce31963ca1f5a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4bac759457746a4a0ba88c9babb337dfbc7e81d9c0ca93cb724ad47bf489dba1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "01f7439e1f9e9ba794cc19cf9e5ff695328d6d438562dd259237c4ef35a74434"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "a745ce67f61d33f51124f6e246e8265d25f157469e05782a714ddc920fa16428"
+    sha256 cellar: :any_skip_relocation, sonoma:        "27a312442eeca85f90a97cb3b8beb407ef86006c342b6a5551aad49568a19d9b"
+    sha256 cellar: :any_skip_relocation, ventura:       "441d3d79a6c2973d714fb0c4f040724a0da0d04cf59d30db9bc83c7fe50426e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ef5a320cde875f94c319b192adb1f3b8d24132307e0e7f34806b5908be71468d"
   end
 
   depends_on "go" => :build
@@ -26,7 +28,19 @@ class Seaweedfs < Formula
       -s -w
       -X github.com/seaweedfs/seaweedfs/weed/util.COMMIT=#{Utils.git_head}
     ]
-    system "go", "build", *std_go_args(output: bin/"weed", ldflags: ldflags), "./weed"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"weed"), "./weed"
+  end
+
+  def post_install
+    (var/"seaweedfs").mkpath
+  end
+
+  service do
+    run [opt_bin/"weed", "server", "-dir=#{var}/seaweedfs", "-s3"]
+    keep_alive true
+    error_log_path var/"log/seaweedfs.log"
+    log_path var/"log/seaweedfs.log"
+    working_dir var
   end
 
   test do

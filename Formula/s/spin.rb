@@ -1,11 +1,12 @@
 class Spin < Formula
   desc "Efficient verification tool of multi-threaded software"
   homepage "https://spinroot.com/spin/whatispin.html"
-  url "https://github.com/nimble-code/Spin/archive/version-6.5.2.tar.gz"
+  url "https://github.com/nimble-code/Spin/archive/refs/tags/version-6.5.2.tar.gz"
   sha256 "e46a3bd308c4cd213cc466a8aaecfd5cedc02241190f3cb9a1d1b87e5f37080a"
   license "BSD-3-Clause"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8eae14c8c6dce13b7a40a21f94b481c5f0a589aacc993e21433ed498c6e44165"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "df76fb2fe8fb0027ea684c8c6ef026bf44a320d5739f629d088a316c6e75343c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ff5eeb131b28f8551564e91d24e55f5da594a84535162e51ceeb579a5e8b0010"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "67ce597f95a1d2ae0b428f11b95c962bdddace66cb2cc4127ad619ce5b9bea47"

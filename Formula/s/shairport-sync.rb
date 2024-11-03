@@ -1,8 +1,8 @@
 class ShairportSync < Formula
   desc "AirTunes emulator that adds multi-room capability"
   homepage "https://github.com/mikebrady/shairport-sync"
-  url "https://github.com/mikebrady/shairport-sync/archive/4.3.1.tar.gz"
-  sha256 "9a0044eb7c940dc8dba42de90439386929926b83f821b916db03bc308fdaf189"
+  url "https://github.com/mikebrady/shairport-sync/archive/refs/tags/4.3.4.tar.gz"
+  sha256 "3173cc54d06f6186a04509947697b56c7eac09c48153d7dea5f702042620a2df"
   license "MIT"
   head "https://github.com/mikebrady/shairport-sync.git", branch: "master"
 
@@ -12,15 +12,14 @@ class ShairportSync < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "9724172b5010252928b283857fc82b008aa09f9c3d0a0405ef4caef20c495d51"
-    sha256 arm64_ventura:  "395e548f70d74ce527521bf81f1c2c3c9c4218dc8418900144b6035020033654"
-    sha256 arm64_monterey: "356dc1fd2cbb0221498c78d1b7fc9571071b07e766420f21d06bb5f3d9c08270"
-    sha256 arm64_big_sur:  "26fc233ac20725b95a9a71363d24e7b33ae99fe5f65fff70ebc8f759ec205164"
-    sha256 sonoma:         "7478b102607850e628dda5cf50d9e91db3b682732374f172c689acfcf225a2a9"
-    sha256 ventura:        "b8157c97cc8a9e77b8e3a96a6382a9136d0fcb63dc8b80b7b1baf39f93ee59f2"
-    sha256 monterey:       "d60c8c7d19d6bb11bec2796413665a45b62a1dcb0476486b0b6ded5fdb08afbc"
-    sha256 big_sur:        "7f3f60c24cc19201f61664b6e8b02e409db6e6276f2b1fb09bf2194c20e83031"
-    sha256 x86_64_linux:   "d98553f2430fe8e4e7d7aac8d2df3b2cb115c174435fd178a5172c3c95289901"
+    sha256 arm64_sequoia:  "d9b6b11867be65a4177595aaf8583bf66c11d61f4c595a122546b324ea0f88d7"
+    sha256 arm64_sonoma:   "3ac27bf42aa216391c1f1b2c05a5e322b032e4f2f2cff51efe5447755c5027e3"
+    sha256 arm64_ventura:  "77c18154023144ff4789edbffa7d1e6e168ad1ffc40d00ee9937fbdced36aae9"
+    sha256 arm64_monterey: "7987d05e9b78cf528a84f37aa79c0d9853311510e8c172c66bd851e708642960"
+    sha256 sonoma:         "e9dbf27608fafad55da29029d02e4f7e214a81e1a4820555c41c4e2fae26e887"
+    sha256 ventura:        "5f3f0bb020de0b5c5f12ad9a6c979cdcb7ffbf742358d27c6961afcaac5aa6fe"
+    sha256 monterey:       "45fdb0ec804521006e50ec1682a20434cadb042842d53a41f07e9f9e7f88dd8b"
+    sha256 x86_64_linux:   "828edfc5d9301bfec852f6d387ef6080201643edb3c4b60d12d5202581cfbc87"
   end
 
   depends_on "autoconf" => :build

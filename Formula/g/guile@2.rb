@@ -22,7 +22,7 @@ class GuileAT2 < Formula
 
   # Original deprecation date: 2020-04-07
   # Temporarily undeprecated from 2022-07-29 to 2023-02-13
-  deprecate! date: "2023-02-13", because: :versioned_formula
+  disable! date: "2024-02-01", because: :versioned_formula
 
   depends_on "gnu-sed" => :build
   depends_on "bdw-gc"
@@ -56,7 +56,7 @@ class GuileAT2 < Formula
     # of opt_prefix usage everywhere.
     inreplace lib/"pkgconfig/guile-2.2.pc" do |s|
       s.gsub! Formula["bdw-gc"].prefix.realpath, Formula["bdw-gc"].opt_prefix
-      s.gsub! Formula["libffi"].prefix.realpath, Formula["libffi"].opt_prefix if MacOS.version < :catalina
+      s.gsub! Formula["libffi"].prefix.realpath, Formula["libffi"].opt_prefix if !OS.mac? || MacOS.version < :catalina
     end
 
     (share/"gdb/auto-load").install lib.glob("*-gdb.scm")

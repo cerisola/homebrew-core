@@ -1,12 +1,13 @@
 class Mstch < Formula
   desc "Complete implementation of {{mustache}} templates using modern C++"
   homepage "https://github.com/no1msd/mstch"
-  url "https://github.com/no1msd/mstch/archive/1.0.2.tar.gz"
+  url "https://github.com/no1msd/mstch/archive/refs/tags/1.0.2.tar.gz"
   sha256 "811ed61400d4e9d4f9ae0f7679a2ffd590f0b3c06b16f2798e1f89ab917cba6c"
   license "MIT"
   revision 1
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "437c22d289926bc83d04a407aacb2673331d7bb27165a6c17af2994febc67c02"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2f20877158629504b39573ded1a2dd06de78cd1de916eb10fdfadaddee5dca44"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "de4dc750e2737a8745de171858fc53741ee2625540f3ed64516f5afd9a8abc6f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "16e5ebc65aa83659f1ae24aedc277490f3423336de6081092a16c54d541d535d"

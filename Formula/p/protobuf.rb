@@ -1,8 +1,8 @@
 class Protobuf < Formula
   desc "Protocol buffers (Google's data interchange format)"
   homepage "https://protobuf.dev/"
-  url "https://github.com/protocolbuffers/protobuf/releases/download/v24.3/protobuf-24.3.tar.gz"
-  sha256 "07d69502e58248927b58c7d7e7424135272ba5b2852a753ab6b67e62d2d29355"
+  url "https://github.com/protocolbuffers/protobuf/releases/download/v28.3/protobuf-28.3.tar.gz"
+  sha256 "7c3ebd7aaedd86fa5dc479a0fda803f602caaf78d8aff7ce83b89e1b8ae7442a"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,40 +11,39 @@ class Protobuf < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "a94ddfce59d4a9d48a8246faf48dc59a79cfd2d8d1a042443373db4408b58e99"
-    sha256                               arm64_ventura:  "b74655262679e566c39e14d538f04ff5e536ed2cb5f9b0b4339aaaa479d48858"
-    sha256                               arm64_monterey: "c1c4c31e1a8379e00151b75a3de75bc314f23fc5260a5f39414dca6ec4106fa2"
-    sha256                               arm64_big_sur:  "ae1a7d779efdc90d4f739835e6f409b14ef8a49f2fdf371541f296a2e0af1fb7"
-    sha256                               sonoma:         "6540683f632be116e9f8161b98ac49a76b1fab527fe10ddd123557eede227176"
-    sha256                               ventura:        "38ef2ed336542514b1aa044c24dd35b8912f0fe51e8d8bd3a77e4dcfa2533214"
-    sha256                               monterey:       "e8b7f49a6dee6024aaf30a813537b694cc08be62e6b32bc8018ef17cc860ae88"
-    sha256                               big_sur:        "40d988730fd3a9cbbf00370f7292322600f7ecdcd67cd5b32336ded78cc1d5ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "440ba0363e77bd10573ead029ea50c2274b9cac0afc33ac68073100713597f15"
+    sha256 cellar: :any,                 arm64_sequoia: "cec9ebadfa0ff65482e3e195660a13ca43844792ed98822ad10b2bca4ef8e45c"
+    sha256 cellar: :any,                 arm64_sonoma:  "537ab66678b04aa2e770bc65aa710d63f37a1b5a1c65717c2e8954cdbb94d883"
+    sha256 cellar: :any,                 arm64_ventura: "4a0a0e6db20bd8444491b35c34d6c51e42b493bcb3a3e6b309bdbd06bd85eab9"
+    sha256 cellar: :any,                 sonoma:        "446d7adcff7604c570a50f2aca5484612a32481cbe677e1bccdbe62989062de4"
+    sha256 cellar: :any,                 ventura:       "e52757d69a1f986314de2dd508eae336a544fb96838038fb76d0915b017bcc32"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b62500bd2fcf54e820720441d969bca0204ce95bab6e16dcb247bb28398356bd"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.10" => [:build, :test]
-  depends_on "python@3.11" => [:build, :test]
   depends_on "abseil"
-  depends_on "jsoncpp"
-
   uses_from_macos "zlib"
 
-  def pythons
-    deps.map(&:to_formula)
-        .select { |f| f.name.match?(/^python@\d\.\d+$/) }
-        .map { |f| f.opt_libexec/"bin/python" }
+  on_macos do
+    # We currently only run tests on macOS.
+    # Running them on Linux requires rebuilding googletest with `-fPIC`.
+    depends_on "googletest" => :build
+  end
+
+  patch do
+    url "https://github.com/protocolbuffers/protobuf/commit/e490bff517916495ed3a900aa85791be01f674f5.patch?full_index=1"
+    sha256 "7e89d0c379d89b24cb6fe795cd9d68e72f0b83fcc95dd91af721d670ad466022"
   end
 
   def install
     # Keep `CMAKE_CXX_STANDARD` in sync with the same variable in `abseil.rb`.
     abseil_cxx_standard = 17
-    cmake_args = %w[
+    cmake_args = %W[
       -DBUILD_SHARED_LIBS=ON
       -Dprotobuf_BUILD_LIBPROTOC=ON
       -Dprotobuf_BUILD_SHARED_LIBS=ON
       -Dprotobuf_INSTALL_EXAMPLES=ON
-      -Dprotobuf_BUILD_TESTS=OFF
+      -Dprotobuf_BUILD_TESTS=#{OS.mac? ? "ON" : "OFF"}
+      -Dprotobuf_USE_EXTERNAL_GTEST=ON
       -Dprotobuf_ABSL_PROVIDER=package
       -Dprotobuf_JSONCPP_PROVIDER=package
     ]
@@ -52,26 +51,11 @@ class Protobuf < Formula
 
     system "cmake", "-S", ".", "-B", "build", *cmake_args, *std_cmake_args
     system "cmake", "--build", "build"
+    system "ctest", "--test-dir", "build", "--verbose" if OS.mac?
     system "cmake", "--install", "build"
 
     (share/"vim/vimfiles/syntax").install "editors/proto.vim"
     elisp.install "editors/protobuf-mode.el"
-
-    ENV.append_to_cflags "-I#{include}"
-    ENV.append_to_cflags "-L#{lib}"
-    ENV["PROTOC"] = bin/"protoc"
-
-    cd "python" do
-      # Keep C++ standard in sync with `abseil.rb`.
-      inreplace "setup.py", "extra_compile_args.append('-std=c++14')",
-                            "extra_compile_args.append('-std=c++#{abseil_cxx_standard}')"
-      pythons.each do |python|
-        pyext_dir = prefix/Language::Python.site_packages(python)/"google/protobuf/pyext"
-        with_env(LDFLAGS: "-Wl,-rpath,#{rpath(source: pyext_dir)} #{ENV.ldflags}".strip) do
-          system python, *Language::Python.setup_install_args(prefix, python), "--cpp_implementation"
-        end
-      end
-    end
   end
 
   test do
@@ -87,9 +71,5 @@ class Protobuf < Formula
     EOS
     (testpath/"test.proto").write testdata
     system bin/"protoc", "test.proto", "--cpp_out=."
-
-    pythons.each do |python|
-      system python, "-c", "from google.protobuf.pyext import _message"
-    end
   end
 end

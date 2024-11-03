@@ -1,13 +1,14 @@
 class DotenvLinter < Formula
   desc "Lightning-fast linter for .env files written in Rust"
   homepage "https://dotenv-linter.github.io"
-  url "https://github.com/dotenv-linter/dotenv-linter/archive/v3.3.0.tar.gz"
+  url "https://github.com/dotenv-linter/dotenv-linter/archive/refs/tags/v3.3.0.tar.gz"
   sha256 "ffcd2f0d5bb40a19ea747ad7786fea796a7454f51e6da8f37fec572da8ae3c5f"
   license "MIT"
   head "https://github.com/dotenv-linter/dotenv-linter.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e74128c4d30c2a6528fc6a02f79e6e33ccd6a742110726025f02b71ea19e46df"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "981a11e38772c78552307b2c72983ca365ca9f40778a7cfce3f313d202d9ccf3"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "061184afd4a55c9b9a1095ab0adc9306fea34473b79908e31d63b3322952b4fa"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2758e27ba06e8c9593de63f69e0de848137ce7d0f176a6ddc61e5cd3584d5aff"
@@ -40,7 +41,7 @@ class DotenvLinter < Formula
       1FOO=bar
       _FOO=bar
     EOS
-    output = shell_output("#{bin}/dotenv-linter", 1)
+    output = shell_output(bin/"dotenv-linter", 1)
     assert_match(/\.env:2\s+DuplicatedKey/, output)
     assert_match(/\.env:3\s+UnorderedKey/, output)
     assert_match(/\.env.test:1\s+LeadingCharacter/, output)

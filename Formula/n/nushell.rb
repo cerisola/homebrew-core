@@ -1,8 +1,8 @@
 class Nushell < Formula
   desc "Modern shell for the GitHub era"
   homepage "https://www.nushell.sh"
-  url "https://github.com/nushell/nushell/archive/0.85.0.tar.gz"
-  sha256 "19e327b23fc08b519f5077e33908afa7967d98139a516c180d029b3ca0618da3"
+  url "https://github.com/nushell/nushell/archive/refs/tags/0.99.1.tar.gz"
+  sha256 "2d7c779b90e6382516db74d2a4b902764ae4e739c4b1b0d615521c7d8082c0d5"
   license "MIT"
   head "https://github.com/nushell/nushell.git", branch: "main"
 
@@ -13,30 +13,29 @@ class Nushell < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "7d5f3ebfc9eb49e0c7655f0b4ccde9315483f22dbef80b3a524bb94258d8f8a6"
-    sha256 cellar: :any,                 arm64_ventura:  "b473a1f6e806247f01afe3c907c514ffef96db7a16a28d1f4870f4fd7dee42ee"
-    sha256 cellar: :any,                 arm64_monterey: "8e17bd501d26b77daa3dd1b4910f2a5759705b4f11326eb8f4f4bece7679c738"
-    sha256 cellar: :any,                 arm64_big_sur:  "343dcb2b288eefc9710f52562e36e5de740051c9898d5b5d61d62266a30f59d1"
-    sha256 cellar: :any,                 sonoma:         "16d21d5b1b93ebb330146f0ecef6876c1a44551cbc446e59b22dddcd39ca6877"
-    sha256 cellar: :any,                 ventura:        "b80decf0eb340e468f011943d2d4cc5bdaebc1786bb7f9e333fea73f98bdaeb6"
-    sha256 cellar: :any,                 monterey:       "fbe4773018c4458639cef9229f662f3182da100ce204ca4a4b48afdfe0fb732b"
-    sha256 cellar: :any,                 big_sur:        "5580df6b5e68efefded9eca82782f95e76d99b4d28f049f3360a5a26ebc53717"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "53c84f4908d38c90735b48508b11c2da535d401c16d61df7fcd70a978bca66f8"
+    sha256 cellar: :any,                 arm64_sequoia: "09e3a9ba7fb307221ac4d35682167bf4a183d6d9ca72a3e35298d5579440e0fc"
+    sha256 cellar: :any,                 arm64_sonoma:  "236e26d099fddd37abe65a25dfd88df3d60edef4856d71d2895b1e44870ca195"
+    sha256 cellar: :any,                 arm64_ventura: "c88745fd444f60976163c53d4a2678957388f5cb5f0c394b30d4ebbd84abb984"
+    sha256 cellar: :any,                 sonoma:        "1dcef691ed9099af09668c21d50234264f4b89383c4bf8fa447dfab45ef4985f"
+    sha256 cellar: :any,                 ventura:       "780b4e8f07a31f92816c4ea2d67eeeffd5e1a5f2dad1889a424b605329a6fccd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5547ca0016dd5d3f4dfb4b4474e58dcfd91bf7a089a2837d66b10c86ee79c211"
   end
 
   depends_on "rust" => :build
   depends_on "openssl@3"
 
+  uses_from_macos "curl"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "pkg-config" => :build
+    depends_on "libgit2" # for `nu_plugin_gstat`
     depends_on "libx11"
     depends_on "libxcb"
   end
 
   def install
-    system "cargo", "install", "--features", "dataframe", *std_cargo_args
+    system "cargo", "install", *std_cargo_args
 
     buildpath.glob("crates/nu_plugin_*").each do |plugindir|
       next unless (plugindir/"Cargo.toml").exist?

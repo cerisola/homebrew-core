@@ -1,20 +1,17 @@
 class Bandwhich < Formula
   desc "Terminal bandwidth utilization tool"
   homepage "https://github.com/imsnif/bandwhich"
-  url "https://github.com/imsnif/bandwhich/archive/refs/tags/v0.21.0.tar.gz"
-  sha256 "f9c50c340372593bf4c54fcf2608ef37c2c56a37367b2f430c27cce3ea947828"
+  url "https://github.com/imsnif/bandwhich/archive/refs/tags/v0.23.1.tar.gz"
+  sha256 "aafb96d059cf9734da915dca4f5940c319d2e6b54e2ffb884332e9f5e820e6d7"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4febc302b373bf2ba0d07550eb49628d3e0662d6f7985b443aefad0af4894213"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "120f28334b42d1f6e3c172f0ad38f4a48449748bf2cadfbf4ac014666309fb94"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "29e5dd8e4d10a9be06d05ceb3d283f9a497218f0810269c697eec30e2b24828d"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "46031f77a9dfea0b11325960aa8d217d7b186a18874fa75c2a8581a43312f854"
-    sha256 cellar: :any_skip_relocation, sonoma:         "353fb676a554c87b28ad5f66fdc455990f6ec89932e88fd112249f238a8e5a7f"
-    sha256 cellar: :any_skip_relocation, ventura:        "79fae453af66e4c2e1f1f53149a9f9b0dd00ed616b00a36dfbeb8c670116825c"
-    sha256 cellar: :any_skip_relocation, monterey:       "6a5c5263bc9321b0657bbb22cbb8327d710710be819acf08c3ceaaeaa035633d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "b5d76f7cf5e9746513f9a259e0b1d5e0746f07a93b833a220722c4336ba8bd57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "bd8633f1537b5be7d607abff1482e18c1c8cec3fe8f90c24bc89630d7b369658"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "79b7039407c45b9ae037ea6270d4ea7b4f20a7ec4ffb226ab6ad6f3dce5aa616"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ab4add3f83652c95f27848cda6d3f704736afb00a841f6a55d63ce899c439c8c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "59dd515d7febd74edd9b41df776eee76225757791f0caa85bbc0e382d8bcad49"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3e05307ae4dd2ac11be394a1f37c4fa6bcfb0d6bb12cccb528c8d011f3001f4b"
+    sha256 cellar: :any_skip_relocation, ventura:       "cc0bcdf58c071af9821ad11e331838c904385bf663bd560ae1f0f2db8939885d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eaf3323a093b191a9b281315882dac416fc849866214b99855f29534d27279d5"
   end
 
   depends_on "rust" => :build
@@ -24,7 +21,7 @@ class Bandwhich < Formula
   end
 
   test do
-    output = shell_output "#{bin}/bandwhich --interface bandwhich", 2
+    output = shell_output "#{bin}/bandwhich --interface bandwhich", 1
     assert_match output, "Error: Cannot find interface bandwhich"
   end
 end

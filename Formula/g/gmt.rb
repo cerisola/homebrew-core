@@ -1,30 +1,35 @@
 class Gmt < Formula
   desc "Tools for manipulating and plotting geographic and Cartesian data"
   homepage "https://www.generic-mapping-tools.org/"
-  url "https://github.com/GenericMappingTools/gmt/releases/download/6.4.0/gmt-6.4.0-src.tar.xz"
-  mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.4.0-src.tar.xz"
-  sha256 "b46effe59cf96f50c6ef6b031863310d819e63b2ed1aa873f94d70c619490672"
+  url "https://github.com/GenericMappingTools/gmt/releases/download/6.5.0/gmt-6.5.0-src.tar.xz"
+  mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.5.0-src.tar.xz"
+  sha256 "4022adb44033f9c1d5a4d275b69506449e4d486efe2218313f3ff7a6c6c3141e"
   license "LGPL-3.0-or-later"
-  revision 8
+  revision 2
   head "https://github.com/GenericMappingTools/gmt.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "940750a21ca2f619bec475428be560fc084e838d90a608bb36ce7e83913e2e42"
-    sha256 arm64_ventura:  "2c478f7eaad97757d8dec773ffd8abbf86e1a7c410e8f514703e866cb5998e4b"
-    sha256 arm64_monterey: "9c69a27b194966e39f0d25e14ac9fafc059caa27bff91a92455787fe6d493fa9"
-    sha256 arm64_big_sur:  "7699a26d303482d94f1220dac0c18dc6a6f3045975eaa048e70c5e5d0329ab1a"
-    sha256 sonoma:         "5a14b6abb50fa7a0ff1047b0612aab2e9728710de6e2f1ade195cfc1be74ed50"
-    sha256 ventura:        "93871a2ca6f312ef311195182fd54982f2a6edf47fd0fa6cb0335bde7207c7d8"
-    sha256 monterey:       "b6d654d94f1d3474a0d587781ee543faa77163cd25f9886b2402bfb6d0feb7f5"
-    sha256 big_sur:        "6701d695e81094b3bb188449b0c7df3bc8e9e845dccdb301b3b92d7bfa8c06be"
-    sha256 x86_64_linux:   "905d89efbaa1db34f900fee2532f48cca5c42d33375f0a837462033412e4a947"
+    sha256 arm64_sequoia:  "047e2493d8474d8fc0fce2c06a5750b3ffb86a91ce0ac70ed3686266c4390ad3"
+    sha256 arm64_sonoma:   "7a9e2b2d755984f837700e435ed9f7a178d97e731c9c035471216a2bc7229b6a"
+    sha256 arm64_ventura:  "d1417abc1165bddb1bf1a455daa6e9267a443cf45f80c0f0d18c004fb441a1ce"
+    sha256 arm64_monterey: "829748601cadad21494b220e3cbbd9fa73bac30e5653008badb806952d4b59c9"
+    sha256 sonoma:         "d208aa7a4f2583c23df3b997664c665f312246c93e6b5223cdc45e3cc2468e7e"
+    sha256 ventura:        "7fae084040a7434450bac91087439904765faa73e0243c4c5c22998d398a88e1"
+    sha256 monterey:       "9909ef3fdfc45c1e6832a32c32c92ca996b4cab44ea720af3001ea8afb4e0f49"
+    sha256 x86_64_linux:   "0be4e41f6fd938a58ccd09f4afc9d2b11df44c4f30120074e542ea96ac26cdc4"
   end
 
   depends_on "cmake" => :build
+
   depends_on "fftw"
   depends_on "gdal"
+  depends_on "geos"
   depends_on "netcdf"
+  depends_on "openblas"
   depends_on "pcre2"
+
+  uses_from_macos "curl"
+  uses_from_macos "zlib"
 
   resource "gshhg" do
     url "https://github.com/GenericMappingTools/gshhg-gmt/releases/download/2.3.7/gshhg-gmt-2.3.7.tar.gz"
@@ -33,9 +38,9 @@ class Gmt < Formula
   end
 
   resource "dcw" do
-    url "https://github.com/GenericMappingTools/dcw-gmt/releases/download/2.1.2/dcw-gmt-2.1.2.tar.gz"
-    mirror "https://mirrors.ustc.edu.cn/gmt/dcw-gmt-2.1.2.tar.gz"
-    sha256 "4bb840d075c8ba3e14aeb41cf17c24236bff787566314f9ff758ab9977745d99"
+    url "https://github.com/GenericMappingTools/dcw-gmt/releases/download/2.2.0/dcw-gmt-2.2.0.tar.gz"
+    mirror "https://mirrors.ustc.edu.cn/gmt/dcw-gmt-2.2.0.tar.gz"
+    sha256 "f2a8a7b7365bdd17269aa1d412966a871528eefa9b2a7409815832a702ff7dcb"
   end
 
   def install
@@ -81,7 +86,7 @@ class Gmt < Formula
   end
 
   test do
-    system "#{bin}/gmt pscoast -R0/360/-70/70 -Jm1.2e-2i -Ba60f30/a30f15 -Dc -G240 -W1/0 -P > test.ps"
-    assert_predicate testpath/"test.ps", :exist?
+    cmd = "#{bin}/gmt pscoast -R0/360/-70/70 -Jm1.2e-2i -Ba60f30/a30f15 -Dc -G240 -W1/0 -P"
+    refute_predicate shell_output(cmd), :empty?
   end
 end

@@ -2,8 +2,8 @@ class Onnxruntime < Formula
   desc "Cross-platform, high performance scoring engine for ML models"
   homepage "https://github.com/microsoft/onnxruntime"
   url "https://github.com/microsoft/onnxruntime.git",
-      tag:      "v1.16.0",
-      revision: "e7a0495a874251e9747b2ce0683e0580282c54df"
+      tag:      "v1.17.1",
+      revision: "8f5c79cb63f09ef1302e85081093a3fe4da1bc7d"
   license "MIT"
 
   livecheck do
@@ -12,19 +12,17 @@ class Onnxruntime < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "88f39807aa56ad40a61c0f8b216797554c51c9b393aa87bdd8c0b57fed435a73"
-    sha256 cellar: :any,                 arm64_ventura:  "3534474544df8e8e6d10f340d341d81f83ed8b492982a669c0516a73e7fd4137"
-    sha256 cellar: :any,                 arm64_monterey: "f9d45e3f7763567b953d358e8d3a24c9c82bdb9f06d09310ceb23dc9f8eab37c"
-    sha256 cellar: :any,                 arm64_big_sur:  "6093903661103fa77352b07e9a6932989695d2298e2ef488caab3d1c74194b7e"
-    sha256 cellar: :any,                 sonoma:         "2f5374af8403eb2a284601e5e571f09acfae49c433d4ffbf5fda3f03843152c6"
-    sha256 cellar: :any,                 ventura:        "66d48c55a268609aa8701bda90cfa74f77226cce38f385c1739682c16af442b2"
-    sha256 cellar: :any,                 monterey:       "661fc8fa556feacaf74bc5bf80a4b25949e35401042722eb9652a66c9c4732d0"
-    sha256 cellar: :any,                 big_sur:        "f3a34bf25e11b8bec74a90d50792b40bebca0e93c90ae951bb44cdc0a257b575"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3da7872f5719a30e713f6bf9cda8be8fca997f9b11d17bf7b35e90aac9c88edf"
+    sha256 cellar: :any,                 arm64_sonoma:   "d97103bb5f94fab8a364c031879f186079ec34ff3e3034d9f9a9d941cfa7ba99"
+    sha256 cellar: :any,                 arm64_ventura:  "7515067567fb810bd6a49b9b221458cd6a7c377e220279f199151808a9e1bfc1"
+    sha256 cellar: :any,                 arm64_monterey: "b9963245e88af5ef863bcf0e8d28c078c312ab31d330eae4e69c243837281ec4"
+    sha256 cellar: :any,                 sonoma:         "31bd37397424abc33c1981dede657ba0f1b7209262c70854b774841857809b88"
+    sha256 cellar: :any,                 ventura:        "eab070cc7924e3b5d38277f24b3313c4b181e6fd9a7f4f8e0f539a057ff1f544"
+    sha256 cellar: :any,                 monterey:       "aa8b359507d4b024ce46baadf0c75772fe1ba6ffb3e43551cf6e3d6b7a487fc9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "dde778dd1564940af7b2116cba7d4c8b45b4d6e335c78620cf97b1e1e6a688b1"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python@3.12" => :build
 
   fails_with gcc: "5" # GCC version < 7 is no longer supported
 
@@ -32,7 +30,7 @@ class Onnxruntime < Formula
     cmake_args = %W[
       -Donnxruntime_RUN_ONNX_TESTS=OFF
       -Donnxruntime_GENERATE_TEST_REPORTS=OFF
-      -DPYTHON_EXECUTABLE=#{which("python3.11")}
+      -DPYTHON_EXECUTABLE=#{which("python3.12")}
       -Donnxruntime_BUILD_SHARED_LIB=ON
       -Donnxruntime_BUILD_UNIT_TESTS=OFF
     ]
@@ -43,7 +41,7 @@ class Onnxruntime < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <onnxruntime/onnxruntime_c_api.h>
       #include <stdio.h>
       int main()
@@ -51,7 +49,7 @@ class Onnxruntime < Formula
         printf("%s\\n", OrtGetApiBase()->GetVersionString());
         return 0;
       }
-    EOS
+    C
     system ENV.cc, "-I#{include}", testpath/"test.c",
            "-L#{lib}", "-lonnxruntime", "-o", testpath/"test"
     assert_equal version, shell_output("./test").strip

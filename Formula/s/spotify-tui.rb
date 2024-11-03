@@ -5,7 +5,7 @@ class SpotifyTui < Formula
   head "https://github.com/Rigellute/spotify-tui.git", branch: "master"
 
   stable do
-    url "https://github.com/Rigellute/spotify-tui/archive/v0.25.0.tar.gz"
+    url "https://github.com/Rigellute/spotify-tui/archive/refs/tags/v0.25.0.tar.gz"
     sha256 "9d6fa998e625ceff958a5355b4379ab164ba76575143a7b6d5d8aeb6c36d70a7"
 
     # Update dirs in order to apply socket2 PR. Remove in the next release.
@@ -28,6 +28,8 @@ class SpotifyTui < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "f0cb2c9f0af0c31d1e49e5155a2028379fd00e3880407adbf68fa2fe390d7688"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5214a242010de3e25360daf3d1322f353b626e22ca784302032a12bf92a8616c"
   end
+
+  disable! date: "2024-02-12", because: "uses deprecated `openssl@1.1`"
 
   depends_on "rust" => :build
 

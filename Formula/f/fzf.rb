@@ -1,21 +1,18 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.42.0.tar.gz"
-  sha256 "743c1bfc7851b0796ab73c6da7db09d915c2b54c0dd3e8611308985af8ed3df2"
+  url "https://github.com/junegunn/fzf/archive/refs/tags/v0.56.0.tar.gz"
+  sha256 "45880ac4175535bf1b298598fbc404ae8ad455ebde804ed5336237759507dc76"
   license "MIT"
   head "https://github.com/junegunn/fzf.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1990643a6ff77e1933f4767b2412bcb472537a722c62bb3ae85aa6e1659b03f2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "007ac5ffcfa1cbf733393fe35d5daf3647e07865f04d31d6c442fb8de936d219"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "007ac5ffcfa1cbf733393fe35d5daf3647e07865f04d31d6c442fb8de936d219"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "007ac5ffcfa1cbf733393fe35d5daf3647e07865f04d31d6c442fb8de936d219"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1b14dff6cfd3c1577d37b4120cd567107958f16eca81f69cda073417c6850055"
-    sha256 cellar: :any_skip_relocation, ventura:        "5cd9be92ee93dd44fecaaec2528656d609ef968ca1529fbf01720afbff5dfdcd"
-    sha256 cellar: :any_skip_relocation, monterey:       "5cd9be92ee93dd44fecaaec2528656d609ef968ca1529fbf01720afbff5dfdcd"
-    sha256 cellar: :any_skip_relocation, big_sur:        "5cd9be92ee93dd44fecaaec2528656d609ef968ca1529fbf01720afbff5dfdcd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c7586893fbacc5e1755ecb44dae017b283bd45a6a28017409396ea950116dd3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ef9174a5fc4c017e4d0b8206512a80ac14718fd01b7bddcc2f0a7f75bf93534b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ef9174a5fc4c017e4d0b8206512a80ac14718fd01b7bddcc2f0a7f75bf93534b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ef9174a5fc4c017e4d0b8206512a80ac14718fd01b7bddcc2f0a7f75bf93534b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7d4f3a54d3cdc689255bec580befa0bd4a0700bfa4522ef20c3ac6f8e8208d9a"
+    sha256 cellar: :any_skip_relocation, ventura:       "7d4f3a54d3cdc689255bec580befa0bd4a0700bfa4522ef20c3ac6f8e8208d9a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "81cfbe8b2ed036b77ba3ee31541d83eaa37357e1db729bcab47f807cb1014f0e"
   end
 
   depends_on "go" => :build
@@ -39,8 +36,15 @@ class Fzf < Formula
 
   def caveats
     <<~EOS
-      To install useful keybindings and fuzzy completion:
-        #{opt_prefix}/install
+      To set up shell integration, add this to your shell configuration file:
+        # bash
+        eval "$(fzf --bash)"
+
+        # zsh
+        source <(fzf --zsh)
+
+        # fish
+        fzf --fish | source
 
       To use fzf in Vim, add the following line to your .vimrc:
         set rtp+=#{opt_prefix}

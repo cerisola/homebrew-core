@@ -1,8 +1,8 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.5.tar.bz2"
-  sha256 "a640986bc257389dd379886fdae6264c8cfa56bc98b71ce3ae3dfbd8ce61dbe3"
+  url "https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.5.tar.bz2"
+  sha256 "6588d57c0a4bd299a24103f4e196051b29e8b55fbda49e11d5b3d32030a32776"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,20 +11,17 @@ class OpenMpi < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "4f19a00c09adbcbefde645a06ebdccc7624e441757e2f06e6f0becd6e6844814"
-    sha256 arm64_ventura:  "ba0d2a31bdcf30e06dc2b8793c088e3ebb4921175e0557aa3a537d2bab595431"
-    sha256 arm64_monterey: "9d7da2a349c2adc8c134cd031e54c6a87ebbd7c8e97212f675bbfa57f747dc75"
-    sha256 arm64_big_sur:  "edb6c5b489554507387f3682b14c6a7f14df19d45b12cb784c58ae791906fbcd"
-    sha256 sonoma:         "a8172d75f4f3aa6bfcd183d956dd933fed21bfbc1fe4359e61af72e5cbb6e9f1"
-    sha256 ventura:        "2e009961c61e90e5fb94ed58a1ce6a5a60f73e69ae977d99a740ce8dc544a1ac"
-    sha256 monterey:       "fee37523af6d3fe9f32cf524d84be442d6e1e0fb18ff976f21e42780624a7e23"
-    sha256 big_sur:        "d71af07cbd0a8c8312ca8962d08eacf008ddac97f6ebf2c4c21989d2a118ad96"
-    sha256 x86_64_linux:   "64f71891f0c72bfa80399ccbae0960ed45698d3f5d82a2e870da17e86db425ca"
+    sha256 arm64_sequoia: "e0235a4d1d504248e8d736e9ad92b785789b06c26d5f6634168ba0bf31fd9bce"
+    sha256 arm64_sonoma:  "522592a0f5a23e7b719808ec3f61abcbb0c6f046356ab23c24de4ff948c616f2"
+    sha256 arm64_ventura: "42ef2bda5d4586176bdd9046d2cfb235b4cd8bf3fdab09c2f65d84af52977cfd"
+    sha256 sonoma:        "d38cae4c45c360f7d5e0b536ae0f792d3b7363c895acc2c60519b64685fed2f2"
+    sha256 ventura:       "624f0f7c7be4be5ad2d89b583d2b0294c70fedd89ed33552f5a7fe1061262638"
+    sha256 x86_64_linux:  "08d155c685dfe497ceecf98d4d703e19af6643bca8ce1981ddc38ae6dbb6a752"
   end
 
   head do
     url "https://github.com/open-mpi/ompi.git", branch: "main"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -33,36 +30,33 @@ class OpenMpi < Formula
   depends_on "gcc" # for gfortran
   depends_on "hwloc"
   depends_on "libevent"
+  depends_on "pmix"
 
   conflicts_with "mpich", because: "both install MPI compiler wrappers"
 
   def install
-    if OS.mac?
-      # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
-      ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version
-    end
+    # Backport https://github.com/open-mpi/ompi/commit/2d3ad2b2a777ffe70511426808a5c5ca5693c443
+    # TODO: Remove on the next release (inreplace will fail)
+    inreplace "configure", "$LDFLAGS_xcode_save", "$LDFLAGS_save_xcode" if build.stable?
 
-    # Work around asm incompatibility with new linker (FB13194320)
-    # https://github.com/open-mpi/ompi/issues/11935
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
+    ENV.runtime_cpu_detection
+    # Otherwise libmpi_usempi_ignore_tkr gets built as a static library
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version if OS.mac?
+
+    # Remove bundled copies of libraries that shouldn't be used
+    unbundled_packages = %w[hwloc libevent openpmix].join(",")
+    rm_r Dir["3rd-party/{#{unbundled_packages}}*"]
 
     # Avoid references to the Homebrew shims directory
     inreplace_files = %w[
       ompi/tools/ompi_info/param.c
       oshmem/tools/oshmem_info/param.c
     ]
-
     cxx = OS.linux? ? "g++" : ENV.cxx
-    inreplace inreplace_files, "OMPI_CXX_ABSOLUTE", "\"#{cxx}\""
-
-    inreplace_files << "orte/tools/orte-info/param.c" unless build.head?
-    inreplace_files << "opal/mca/pmix/pmix3x/pmix/src/tools/pmix_info/support.c" unless build.head?
-
     cc = OS.linux? ? "gcc" : ENV.cc
-    inreplace inreplace_files, /(OPAL|PMIX)_CC_ABSOLUTE/, "\"#{cc}\""
-
-    ENV.cxx11
-    ENV.runtime_cpu_detection
+    inreplace inreplace_files, "OMPI_CXX_ABSOLUTE", "\"#{cxx}\""
+    inreplace inreplace_files, "OPAL_CC_ABSOLUTE", "\"#{cc}\""
+    inreplace "3rd-party/prrte/src/tools/prte_info/param.c", "PRTE_CC_ABSOLUTE", "\"#{cc}\""
 
     args = %W[
       --disable-silent-rules
@@ -71,12 +65,16 @@ class OpenMpi < Formula
       --sysconfdir=#{etc}
       --with-hwloc=#{Formula["hwloc"].opt_prefix}
       --with-libevent=#{Formula["libevent"].opt_prefix}
+      --with-pmix=#{Formula["pmix"].opt_prefix}
       --with-sge
     ]
-    args << "--with-platform-optimized" if build.head?
 
-    system "./autogen.pl", "--force" if build.head?
-    system "./configure", *std_configure_args, *args
+    if build.head?
+      args << "--with-platform-optimized"
+      system "./autogen.pl", "--force", "--no-3rdparty=#{unbundled_packages}"
+    end
+
+    system "./configure", *args, *std_configure_args
     system "make", "all"
     system "make", "check"
     system "make", "install"
@@ -86,11 +84,11 @@ class OpenMpi < Formula
     include.install lib.glob("*.mod")
 
     # Avoid references to cellar paths.
-    inreplace (lib/"pkgconfig").glob("*.pc"), prefix, opt_prefix, false
+    inreplace (lib/"pkgconfig").glob("*.pc"), prefix, opt_prefix, audit_result: false
   end
 
   test do
-    (testpath/"hello.c").write <<~EOS
+    (testpath/"hello.c").write <<~C
       #include <mpi.h>
       #include <stdio.h>
 
@@ -106,11 +104,11 @@ class OpenMpi < Formula
         MPI_Finalize();
         return 0;
       }
-    EOS
+    C
     system bin/"mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system bin/"mpirun", "./hello"
-    (testpath/"hellof.f90").write <<~EOS
+    (testpath/"hellof.f90").write <<~FORTRAN
       program hello
       include 'mpif.h'
       integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
@@ -120,12 +118,12 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE(ierror)
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellof.f90", "-o", "hellof"
     system "./hellof"
     system bin/"mpirun", "./hellof"
 
-    (testpath/"hellousempi.f90").write <<~EOS
+    (testpath/"hellousempi.f90").write <<~FORTRAN
       program hello
       use mpi
       integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
@@ -135,12 +133,12 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE(ierror)
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellousempi.f90", "-o", "hellousempi"
     system "./hellousempi"
     system bin/"mpirun", "./hellousempi"
 
-    (testpath/"hellousempif08.f90").write <<~EOS
+    (testpath/"hellousempif08.f90").write <<~FORTRAN
       program hello
       use mpi_f08
       integer rank, size, tag, status(MPI_STATUS_SIZE)
@@ -150,7 +148,7 @@ class OpenMpi < Formula
       print*, 'node', rank, ': Hello Fortran world'
       call MPI_FINALIZE()
       end
-    EOS
+    FORTRAN
     system bin/"mpifort", "hellousempif08.f90", "-o", "hellousempif08"
     system "./hellousempif08"
     system bin/"mpirun", "./hellousempif08"

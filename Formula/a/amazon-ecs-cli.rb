@@ -1,13 +1,14 @@
 class AmazonEcsCli < Formula
   desc "CLI for Amazon ECS to manage clusters and tasks for development"
   homepage "https://aws.amazon.com/ecs"
-  url "https://github.com/aws/amazon-ecs-cli/archive/v1.21.0.tar.gz"
+  url "https://github.com/aws/amazon-ecs-cli/archive/refs/tags/v1.21.0.tar.gz"
   sha256 "27e93a5439090486a2f2f5a9b02cbbd1493e3c14affbbe2375ed57f8f903e677"
   license "Apache-2.0"
   head "https://github.com/aws/amazon-ecs-cli.git", branch: "mainline"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "946c2dea923a3f6ce1247becebbe353802a74bf44b5142d0ad0d5548e8fc1ea5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3d701174d94a2bf504a8f73efbeae65ba21319e8ec2f8c686341db46bed1015f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ef77e9ec799164485117cc7971285ef4cd0d9f7ce526eff3955c18270f215c0c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "997efae6c4c5bd40f018cf944093c3842d52c8ba09e6bbc68715b697438a1f77"
@@ -30,7 +31,6 @@ class AmazonEcsCli < Formula
     cd "src/github.com/aws/amazon-ecs-cli" do
       system "make", "build"
       bin.install "bin/local/ecs-cli"
-      prefix.install_metafiles
     end
   end
 

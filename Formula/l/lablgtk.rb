@@ -1,9 +1,9 @@
 class Lablgtk < Formula
   desc "Objective Caml interface to gtk+"
-  homepage "http://lablgtk.forge.ocamlcore.org"
-  url "https://github.com/garrigue/lablgtk/archive/2.18.12.tar.gz"
+  homepage "https://github.com/garrigue/lablgtk"
+  url "https://github.com/garrigue/lablgtk/archive/refs/tags/2.18.12.tar.gz"
   sha256 "43b2640b6b6d6ba352fa0c4265695d6e0b5acb8eb1da17290493e99ae6879b18"
-  license "LGPL-2.1"
+  license "LGPL-2.1-or-later" => { with: "OCaml-LGPL-linking-exception" }
   revision 1
 
   bottle do
@@ -21,7 +21,7 @@ class Lablgtk < Formula
 
   # GTK 2 is EOL: https://blog.gtk.org/2020/12/16/gtk-4-0/
   # GTK 3 supported package is named `lablgtk3` so may be better as separate formula
-  deprecate! date: "2023-01-18", because: :unmaintained
+  disable! date: "2024-01-21", because: :unmaintained
 
   depends_on "pkg-config" => :build
   depends_on "gtk+"

@@ -1,12 +1,13 @@
 class Nesc < Formula
   desc "Programming language for deeply networked systems"
   homepage "https://github.com/tinyos/nesc"
-  url "https://github.com/tinyos/nesc/archive/v1.4.0.tar.gz"
+  url "https://github.com/tinyos/nesc/archive/refs/tags/v1.4.0.tar.gz"
   sha256 "ea9a505d55e122bf413dff404bebfa869a8f0dd76a01a8efc7b4919c375ca000"
   license "GPL-2.0-only"
   revision 2
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "ec7337c2f3b0ce8274e7ccc367aa35ba8930972f946e3e6d30fbd2dcfb728a09"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "586795d905da2511be52a64d753b1085c73149ee3b5f720aa19416f148b8cd8e"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8a5476ebb9ff86e8aa35abe101f26893f3be3dc6cd709fd30d0012c778699a20"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "77716c3fa900dafb63734a8b40178b0fd8d263f1aa047869d6bf31d3941d03f8"

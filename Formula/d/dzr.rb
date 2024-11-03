@@ -1,13 +1,13 @@
 class Dzr < Formula
   desc "Command-line Deezer.com player"
   homepage "https://github.com/yne/dzr"
-  url "https://github.com/yne/dzr/archive/refs/tags/230919.tar.gz"
-  sha256 "f4589ea7c64cd421cf86289817da24e1ee19f856c88ff27874f4a9e5d1a14269"
+  url "https://github.com/yne/dzr/archive/refs/tags/240909.tar.gz"
+  sha256 "8f400de9b2cfc7de87b72354db264abd79beb66734c80ac2cc69b5d49d0e39bd"
   license "Unlicense"
   head "https://github.com/yne/dzr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "32fe8f656741f9e914c581d916e8b9560d1cd0d55ec435ed45da9cafe150d8d1"
+    sha256 cellar: :any_skip_relocation, all: "1b6b6c9d140c4c0b2f8c4df0f3cc2bcb35860e1504be83597ecdcb4374ea2d08"
   end
 
   depends_on "dialog"

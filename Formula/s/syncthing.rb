@@ -1,8 +1,8 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing/archive/refs/tags/v1.25.0.tar.gz"
-  sha256 "25948ff788d98b74672b8fdb67a414b96d7a28cf9c48a52b32213dbc34d6bb65"
+  url "https://github.com/syncthing/syncthing/archive/refs/tags/v1.28.0.tar.gz"
+  sha256 "ae0b96744a61d30e5fe7a6054d984c2a488c389e0e9baad8a868a71871ed1444"
   license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Syncthing < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a03e460a79aa72c696507baac91d137dc4a1013af0e206f9f6db92238a3f656b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d2361d97a5f0899d588737d85b8e4a22a225a65391a36bc59fb769a985a3ed4a"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "09141867079cfe16d678d1cb0ec980eae9d951851680e13f5392821bfd076abb"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7475998f1c2454f94f12cb2899e002fdb39ebb1b20109b1aa4248fc51a9d78cd"
-    sha256 cellar: :any_skip_relocation, ventura:        "320b6d7024086e394f6d787c96b8fddd1952dcec22ca777bf5f46a66a2aa91fb"
-    sha256 cellar: :any_skip_relocation, monterey:       "61d0bb4ad5c22bf0c6fa079534c6064eca12c31eddf7ce8e04fe0e5e18553848"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ef4910b8484742d41cf89cb2e31ea658abbe8ae6f50fd6cde58c00715b6bfcc8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a85f5656a01e94f2ac7eca1f8ead14a69d90548b27e0973eaefe2a60fd8843fa"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3065353b287cc4df7e4e88437486535b84f742b7363c0c347158e5b9afab0c2c"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "45cfa0e466ee6b3bf852935e9a1ba9cc472e3ab407e19aba8b8eea63f17abef4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "38549e5f62c84a341bf8a60851b2b18c41b579f6f1afe794523266ec74272b35"
+    sha256 cellar: :any_skip_relocation, ventura:       "d9c85dd85fcc2a291894a27a471ca2fc9526cdf1ff41396c48575af42c04e8c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2cff04d2d05c4f6fe4d8e79a8d93bf93aeb923ac5dc6b89e3a39de53dded54d7"
   end
 
   depends_on "go" => :build
@@ -41,8 +40,7 @@ class Syncthing < Formula
   end
 
   test do
-    build_version = build.head? ? "v0.0.0-#{version}" : "v#{version}"
-    assert_match "syncthing #{build_version} ", shell_output("#{bin}/syncthing --version")
+    assert_match "syncthing v#{version} ", shell_output("#{bin}/syncthing --version")
     system bin/"syncthing", "-generate", "./"
   end
 end

@@ -1,19 +1,20 @@
 class Pdftoipe < Formula
   desc "Reads arbitrary PDF files and generates an XML file readable by Ipe"
   homepage "https://github.com/otfried/ipe-tools"
-  url "https://github.com/otfried/ipe-tools/archive/v7.2.24.1.tar.gz"
+  url "https://github.com/otfried/ipe-tools/archive/refs/tags/v7.2.24.1.tar.gz"
   sha256 "561b18fc2a7ae45c37c5d0390443b37f4585549f09cd7765d856456be24e5dbc"
   license "GPL-2.0-or-later"
-  revision 16
+  revision 20
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "227d9c3807dd77e231d61636683f51b656b04966b5e36bc137c58df35d52230e"
-    sha256 cellar: :any,                 arm64_ventura:  "c1aeadaa563133053a09851b9423dd09a4d79eaa1e28f65ebdff21847f1d7f0e"
-    sha256 cellar: :any,                 arm64_monterey: "e63785c74d313bc1c4c8c92eb01bb9ec64f12914849d53b94f12f18a8b2e1c47"
-    sha256 cellar: :any,                 sonoma:         "cc075bf773ee919b496a3b6884c85c9ee21bb156ee5aae49ccdec2926884b531"
-    sha256 cellar: :any,                 ventura:        "e37f57b03832b091538d658e5e87bc2274f12bb80c4e834a7b108171372e34ca"
-    sha256 cellar: :any,                 monterey:       "8545109b7ddb2a27847df476137b24c66830d869fc869811b6b0934edd5dd2bc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5b66d17be67cc0dd12fd6f412664f4db59d891f4460890ba6fc7e8d08e36a6a0"
+    sha256 cellar: :any,                 arm64_sequoia:  "83ed62435778f3458488df273547f0b62affc8e0639f277f7b696ab65af7db42"
+    sha256 cellar: :any,                 arm64_sonoma:   "3ffc098642fb07f56fdf7123d1ed96e89c08e2a90138fe14b75fbaa5fb1a0baa"
+    sha256 cellar: :any,                 arm64_ventura:  "abaf4114b8f8e31cf552dedf510267915baea3cfac66eee9881c9ed357a0f1a5"
+    sha256 cellar: :any,                 arm64_monterey: "3d2e9878726033261d5d28a7cfe217f9eab8bc25ca87c62396043a4dd565a5f9"
+    sha256 cellar: :any,                 sonoma:         "da1ac14a407e12800983b7964d1e9c8568704cf1cda25c2537b1d33f730fc831"
+    sha256 cellar: :any,                 ventura:        "fcec35e3b168b6bd8c83a8dda6d9b1464d5bdb1e326b649463567f9b05b03937"
+    sha256 cellar: :any,                 monterey:       "cea74fc81e5544544e9e8534c97a3b7987f16b9ed7859e9a7c8fa7318649bc47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a3da5c3168fefc7e7899400b3a618b91072777ed35feed3b76a727a3d99964c"
   end
 
   depends_on "pkg-config" => :build

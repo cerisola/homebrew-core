@@ -1,12 +1,13 @@
 class Gx < Formula
   desc "Language-agnostic, universal package manager"
   homepage "https://github.com/whyrusleeping/gx"
-  url "https://github.com/whyrusleeping/gx/archive/v0.14.3.tar.gz"
+  url "https://github.com/whyrusleeping/gx/archive/refs/tags/v0.14.3.tar.gz"
   sha256 "2c0b90ddfd3152863f815c35b37e94d027216c6ba1c6653a94b722bf6e2b015d"
   license "MIT"
   head "https://github.com/whyrusleeping/gx.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2f163d19c275918bb2de9aed07722dda266c010469bcb562bfbd65666d32b64c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "54ee0e7162c46736a63a8587f315b69d2090386bac3c46b0da3a9fcbfda5258f"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "a49ac2040542b71f63e9c30592e102b07fc10561a79b99014773f7c88ffe7c47"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "f1323ff13674b582766dccca83ee63a63314eb3fbc0ccfd815dd9138e073b1f1"

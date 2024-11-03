@@ -1,12 +1,13 @@
 class Xclip < Formula
   desc "Access X11 clipboards from the command-line"
   homepage "https://github.com/astrand/xclip"
-  url "https://github.com/astrand/xclip/archive/0.13.tar.gz"
+  url "https://github.com/astrand/xclip/archive/refs/tags/0.13.tar.gz"
   sha256 "ca5b8804e3c910a66423a882d79bf3c9450b875ac8528791fb60ec9de667f758"
   license "GPL-2.0-or-later"
   revision 1
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "74cc7bc3e57ae35a2f0a1880ece87d5b3e10b25e11a898f7684defbfac3d4a37"
     sha256 cellar: :any,                 arm64_sonoma:   "c6bd5e4a94069253d31ed2ccbdb50ae870148ee2b48dc8d2d09e0ade83721c70"
     sha256 cellar: :any,                 arm64_ventura:  "e335771d3bb8f072b25c2cf6404f12540cfbd8692d97cd678a086a08b76f2771"
     sha256 cellar: :any,                 arm64_monterey: "ebf047556b2d594089b26ea72250eb9ea3c4a4c1f779642e08d1cfd0d131f631"
@@ -33,6 +34,6 @@ class Xclip < Formula
   end
 
   test do
-    system "#{bin}/xclip", "-version"
+    system bin/"xclip", "-version"
   end
 end

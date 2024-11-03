@@ -13,16 +13,13 @@ class Libsigrokdecode < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "71ad43ac6840f57396851d3990cd53bcdab34fea3a240ba342c8d4b9dfe975c2"
-    sha256 arm64_ventura:  "a29a790153bcfb9e63cf5a1cfa682ca90499167c05f5302775a473e479085a82"
-    sha256 arm64_monterey: "c085b5022bde6daaed50ed43e96e8da62b11f578a27b74a854d46c2e585b7021"
-    sha256 arm64_big_sur:  "71576cbfd8061aa68b6bfa821732c9bc488e62ea72814e3b3b2e5f3487c2c75f"
-    sha256 sonoma:         "095a2915d23d590c39faa4aff5d6f249633eea628f3c8134f959b8bdacc30c22"
-    sha256 ventura:        "b3ffb3e8c95e44b9071959acafb624c7b6c2906c4a51c1f399611549c57279d4"
-    sha256 monterey:       "08da53c93c00b6a93925bb05c7bab0e960d0d51ece414f9723938875e7776d22"
-    sha256 big_sur:        "88d2834ae3acf1c102f0afc6c3bd38d746681ce6aa15c24fb4ff1cf11624be99"
-    sha256 x86_64_linux:   "c9bb858f8aebd2c8f86a23732254e7394062ec56e44ac521403cfb0c8a24bdf0"
+    rebuild 3
+    sha256 arm64_sequoia: "a1731df4239983986370c4e136346205199c9d1999b4eeb0067c7fc567b02f7f"
+    sha256 arm64_sonoma:  "06ea701901cb284067dc6796141c3be85597eb1a6032653b99b9e9c78b9ae1f8"
+    sha256 arm64_ventura: "eb410224d2af9d9e6b3a40704afd84cd7a3f6df7598c79b470002a9f6ecdd3d1"
+    sha256 sonoma:        "f5e9ec9a38a4e83df28d62965b917dc0809f8c943111920af264847cd2513c28"
+    sha256 ventura:       "24e70691499a8ac340debfaead0053f63fd2e708b6e231929ee0644eecd17810"
+    sha256 x86_64_linux:  "355ac16e0c4e7e8d896a78e556e079ee9269753e1ecb996dee863593d7f32db1"
   end
 
   depends_on "autoconf" => :build
@@ -31,13 +28,18 @@ class Libsigrokdecode < Formula
   depends_on "graphviz" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => [:build, :test]
+
   depends_on "glib"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     # While this doesn't appear much better than hardcoding `3.10`, this allows
     # `brew audit` to catch mismatches between this line and the dependencies.
-    python = "python3.11"
+    python = "python3.13"
     py_version = Language::Python.major_minor_version(python)
 
     inreplace "configure.ac" do |s|
@@ -62,7 +64,7 @@ class Libsigrokdecode < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <libsigrokdecode/libsigrokdecode.h>
 
       int main() {
@@ -74,9 +76,7 @@ class Libsigrokdecode < Formula
         }
         return 0;
       }
-    EOS
-    # Needed since `python@3.11` is keg-only.
-    ENV.prepend_path "PKG_CONFIG_PATH", Formula["python@3.11"].opt_lib/"pkgconfig"
+    C
     flags = shell_output("#{Formula["pkg-config"].opt_bin}/pkg-config --cflags --libs libsigrokdecode").strip.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"

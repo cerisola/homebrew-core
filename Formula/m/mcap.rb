@@ -1,8 +1,8 @@
 class Mcap < Formula
   desc "Serialization-agnostic container file format for pub/sub messages"
   homepage "https://mcap.dev"
-  url "https://github.com/foxglove/mcap/archive/releases/mcap-cli/v0.0.35.tar.gz"
-  sha256 "cb1c9f0f6a36348259b979cb2f66b785273843e223a463b3ec082696b86e66ad"
+  url "https://github.com/foxglove/mcap/archive/refs/tags/releases/mcap-cli/v0.0.48.tar.gz"
+  sha256 "d899ce00bac6dbc3b5e16d4e965185a5313ed24f66b77fdf87e51d4b9b07d893"
   license "MIT"
   head "https://github.com/foxglove/mcap.git", branch: "main"
 
@@ -12,15 +12,12 @@ class Mcap < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fb82bdf3be6a2614f21a168a0a16d9ac3a1ee0520485ecf2e707574193ff1f7b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c5f9ef5041ee60689bd90ad4df2f48b574b7bad556c0afb5b5023f8a4fcf8eb8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ad6b9c7b5c70a1f1f8b1cb278b8ca9351bcc90e4cfe0288fbafd471fc3d8cf6e"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "f9240246e81fba3b31341f47d588473208b25fad0050ff2152c803e2d5f87f5f"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9dd6b092a516a2d5bd47692cdf1eb274b10d674bee137de4a24b69d406a21818"
-    sha256 cellar: :any_skip_relocation, ventura:        "0576eebbff22f92ea83ce45a1846a31b9f98aabad99b6b0e8a97fa4a38904ac4"
-    sha256 cellar: :any_skip_relocation, monterey:       "971887cd733f1c1255711fe706103cd47e67797f8fad62aad832c591c9fb144c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "c335e7322d6f30f6e80dd8949fbf4f83527e2be850dca57e4a19b87d1f206350"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "761a334dae68c3ed1ed8704c985ffc9bf940b796a4385bdc6dad1b4d8b480031"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fdd57a03f914a878839933c0e31e2dc96f4a8e513524f5ea84cf1218ecf41dea"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "82e97bb3e4343bf42832248de3138568fc8104867395c6d7923d23927c8b2407"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "93fc1d51ae83ad058181948c5b8e20db0c831dd251e275c0cadaf23a0e64d6f8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1da8ce8851ab3b7e561f957957ece0b7cbef0d85ebb6f66c7ec076b218a648b7"
+    sha256 cellar: :any_skip_relocation, ventura:       "d391829a4eb1958c81e4d7a076e187a029edd4c2a54f6a26c15cfa98b932d51d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3fb0c6d069128ef224b1dde3355246e87a37ccdec0a1ec2b404ff5a5b263833b"
   end
 
   depends_on "go" => :build

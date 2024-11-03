@@ -1,20 +1,19 @@
 class Grpcurl < Formula
   desc "Like cURL, but for gRPC"
   homepage "https://github.com/fullstorydev/grpcurl"
-  url "https://github.com/fullstorydev/grpcurl/archive/v1.8.8.tar.gz"
-  sha256 "b36990189922ee3ac07e91be83e6dafcb5e6fcfc0039378d42a1c76c87a7cbd8"
+  url "https://github.com/fullstorydev/grpcurl/archive/refs/tags/v1.9.1.tar.gz"
+  sha256 "4bc60a920635929bdf9fa9bb5d310fe3f82bccd441a1487680566694400e4304"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f39c9cbc93767fdc0d4582c393421f5d5a4355c4c1460c1ef902f1ebf4291717"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "73aa020887bbfd505d1d9cd74fb30d83f696b00dbbff462ce186f18e02017b2d"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c483a82109e8e90c88df75803ecd52aa816850085d7d87cad01fc88cac011538"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "33423e62a521007067f8a0cdd2ba3f6047dc5e77c251b3c90036911359b90e35"
-    sha256 cellar: :any_skip_relocation, sonoma:         "fc774ec6b2cd6a06fb7ec559264fd1da07465cfac30a80c1f8ba995d4d89beb2"
-    sha256 cellar: :any_skip_relocation, ventura:        "d07c310be5bdfd492647f696c7dd4f8816054c2d5f1bb90f185702be031d1b59"
-    sha256 cellar: :any_skip_relocation, monterey:       "e279d0a8384f3cc69b8b9605472e5d53e332181aab280ded64d722754b1eb0c4"
-    sha256 cellar: :any_skip_relocation, big_sur:        "6c09776cc6061c824cbe167adc3099ee3a6df1991d495f5c2060cc9ee1da47f7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ef38454054085afabced3c11c7c91bcbf7b391c7330c78d374087eb9d6fc3bc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "c5809c9dd0340f5a8a58850e2aedf505a26ddd3739fe719d00d6fc5a38f10875"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "efd68b0efcb47dad3279e83287d949c29a7006b30b6fd0f76703a1b493ea332d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa42f3862cb0797efa42180319ce25ea635cfa3a682d1e359da1879323d43a54"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "ace40839f0ecf9bedaeef3dc0ac75efcc872ab3c297f6f2cd3125d325a4fa5ac"
+    sha256 cellar: :any_skip_relocation, sonoma:         "b776c9fec3fc86a992c59ef7cdd5a0ce3c9fd2dc47fe93baef60463ac300cff6"
+    sha256 cellar: :any_skip_relocation, ventura:        "653f584dafa843f1f3b4306e905090f91a6d3d275eccf49d3931eabf8540bbd4"
+    sha256 cellar: :any_skip_relocation, monterey:       "e62d02e7c297595290140eca5fae2b725089338e41891bae1816581a44abccca"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "4d18d53a4e37806ac19e5e934f8798793d09595fdac978dda5b9581db675e0f2"
   end
 
   depends_on "go" => :build
@@ -31,6 +30,6 @@ class Grpcurl < Formula
         string hello_world = 1;
       }
     EOS
-    system "#{bin}/grpcurl", "-msg-template", "-proto", "test.proto", "describe", "test.HelloWorld"
+    system bin/"grpcurl", "-msg-template", "-proto", "test.proto", "describe", "test.HelloWorld"
   end
 end

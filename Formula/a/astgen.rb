@@ -1,21 +1,22 @@
-require "language/node"
-
 class Astgen < Formula
   desc "Generate AST in json format for JS/TS"
   homepage "https://github.com/joernio/astgen"
-  url "https://github.com/joernio/astgen/archive/refs/tags/v3.5.0.tar.gz"
-  sha256 "652bbd37404b24ca214f7816f34e30f37b217a7db4ce90a843dc61ca69c9077f"
+  url "https://github.com/joernio/astgen/archive/refs/tags/v3.16.0.tar.gz"
+  sha256 "3097f0db0d7dc223c851ed42e2692d2991f36f0e4446321f5f4ef22413af696c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "2c41ac07344ce02cd8ed67bb587191e299cf26bfaa00bb1f1e2468f043a80f07"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "cca01b477e6e5b6406f09290be047f05dfef76226d17e004a42d2fcfb33b1ec2"
   end
 
   depends_on "node"
 
+  uses_from_macos "zlib"
+
   def install
     # Disable custom postinstall script
-    system "npm", "install", *Language::Node.std_npm_install_args(libexec), "--ignore-scripts"
+    system "npm", "install", *std_npm_args, "--ignore-scripts"
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

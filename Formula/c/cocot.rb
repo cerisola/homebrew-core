@@ -1,12 +1,13 @@
 class Cocot < Formula
   desc "Code converter on tty"
   homepage "https://vmi.jp/software/cygwin/cocot.html"
-  url "https://github.com/vmi/cocot/archive/cocot-1.2-20171118.tar.gz"
+  url "https://github.com/vmi/cocot/archive/refs/tags/cocot-1.2-20171118.tar.gz"
   sha256 "b718630ce3ddf79624d7dcb625fc5a17944cbff0b76574d321fb80c61bb91e4c"
   license "BSD-3-Clause"
   head "https://github.com/vmi/cocot.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e50202bee861bf0692cb72d1228e2ad10fa93cc047d61480b3e0c558c81746f1"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2f9cbd95ef6d76b5354943e896cd03342392a266eeffe2784499ce138ad1fd22"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "efe840ebc69a0212b0563b64b05e44426624ee8ed3c0aa6ef8f8101d1ca7ea0c"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "8f91587cce3e6d8aee833b0eefcbc49b50d8851455e523390f9a8899f39cd50d"
@@ -24,7 +25,10 @@ class Cocot < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    # Workaround for newer Clang
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

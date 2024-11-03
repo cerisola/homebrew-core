@@ -3,28 +3,22 @@ class Recoverpy < Formula
 
   desc "TUI to recover overwritten or deleted data"
   homepage "https://github.com/PabloLec/recoverpy"
-  url "https://files.pythonhosted.org/packages/38/b1/e34bfe27ea88b786304d1ee96120e750008d86415111e8068a8885bd45dc/recoverpy-2.1.0.tar.gz"
-  sha256 "5bb2f2870b0aa6f368b631360ef019e3f2c97b24a7ccd0c45c89ae4f2093659f"
+  url "https://files.pythonhosted.org/packages/ea/55/9b4c247c0988b791e25431269acd13ba0b784d84d3b8d46f1775fbf8693b/recoverpy-2.1.9.tar.gz"
+  sha256 "e04933f67020de3ed9d732a0daf87ea82ea9d5d985042e5371c7c96046d7a075"
   license "GPL-3.0-or-later"
   head "https://github.com/PabloLec/recoverpy.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "7980c2dcd884fa754d918ea593d43076af674178e9c31f4edb0a2bceb475fe53"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "d852e58fb51a558d786aa6294ffe5db252d375fb7b687400ae702914f1ae15e8"
   end
 
   depends_on :linux
-  depends_on "pygments"
-  depends_on "python-typing-extensions"
-  depends_on "python@3.11"
-
-  resource "importlib-metadata" do
-    url "https://files.pythonhosted.org/packages/33/44/ae06b446b8d8263d712a211e959212083a5eda2bf36d57ca7415e03f6f36/importlib_metadata-6.8.0.tar.gz"
-    sha256 "dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743"
-  end
+  depends_on "python@3.13"
 
   resource "linkify-it-py" do
-    url "https://files.pythonhosted.org/packages/8d/fd/73bb30ec2b3cd952fe139a79a40ce5f5fd0280dd2cc1de94c93ea6a714d2/linkify-it-py-2.0.2.tar.gz"
-    sha256 "19f3060727842c254c808e99d465c80c49d2c7306788140987a1a7a29b0d6ad2"
+    url "https://files.pythonhosted.org/packages/2a/ae/bb56c6828e4797ba5a4821eec7c43b8bf40f69cda4d4f5f8c8a2810ec96a/linkify-it-py-2.0.3.tar.gz"
+    sha256 "68cda27e162e9215c17d786649d1da0021a451bdc436ef9e0fa0ba5234b9b048"
   end
 
   resource "markdown-it-py" do
@@ -33,8 +27,8 @@ class Recoverpy < Formula
   end
 
   resource "mdit-py-plugins" do
-    url "https://files.pythonhosted.org/packages/b4/db/61960d68d5c39ff0dd48cb799a39ae4e297f6e9b96bf2f8da29d897fba0c/mdit_py_plugins-0.4.0.tar.gz"
-    sha256 "d8ab27e9aed6c38aa716819fedfde15ca275715955f8a185a8e1cf90fb1d2c1b"
+    url "https://files.pythonhosted.org/packages/19/03/a2ecab526543b152300717cf232bb4bb8605b6edb946c845016fa9c9c9fd/mdit_py_plugins-0.4.2.tar.gz"
+    sha256 "5f2cd1fdb606ddf152d37ec30e46101a60512bc0e5fa1a7002c36647b09e26b5"
   end
 
   resource "mdurl" do
@@ -42,24 +36,29 @@ class Recoverpy < Formula
     sha256 "bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"
   end
 
+  resource "pygments" do
+    url "https://files.pythonhosted.org/packages/8e/62/8336eff65bcbc8e4cb5d05b55faf041285951b6e80f33e2bff2024788f31/pygments-2.18.0.tar.gz"
+    sha256 "786ff802f32e91311bff3889f6e9a86e81505fe99f2735bb6d60ae0c5004f199"
+  end
+
   resource "rich" do
-    url "https://files.pythonhosted.org/packages/ad/1a/94fe086875350afbd61795c3805e38ef085af466a695db605bcdd34b4c9c/rich-13.5.2.tar.gz"
-    sha256 "fb9d6c0a0f643c99eed3875b5377a184132ba9be4d61516a55273d3554d75a39"
+    url "https://files.pythonhosted.org/packages/aa/9e/1784d15b057b0075e5136445aaea92d23955aad2c93eaede673718a40d95/rich-13.9.2.tar.gz"
+    sha256 "51a2c62057461aaf7152b4d611168f93a9fc73068f8ded2790f29fe2b5366d0c"
   end
 
   resource "textual" do
-    url "https://files.pythonhosted.org/packages/73/80/18a9ab265078a1b5618e3cc0090c622b0bf6f5f7655b02f69fef16c4f957/textual-0.36.0.tar.gz"
-    sha256 "fbfc799a55938cfade6cfbf7c5ae3c3e5fc87ff9deaaed788a6dcefe72245451"
+    url "https://files.pythonhosted.org/packages/23/40/100a105ab455be14cc5b96e2ecb0196ba28c506dcfd0c497a796db3c90c5/textual-0.72.0.tar.gz"
+    sha256 "14174ce8d49016a85aa6c0669d0881b5419e98cf46d429f263314295409ed262"
+  end
+
+  resource "typing-extensions" do
+    url "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz"
+    sha256 "1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
   end
 
   resource "uc-micro-py" do
-    url "https://files.pythonhosted.org/packages/75/db/241444fe6df6970a4c18d227193cad77fab7cec55d98e296099147de017f/uc-micro-py-1.0.2.tar.gz"
-    sha256 "30ae2ac9c49f39ac6dce743bd187fcd2b574b16ca095fa74cd9396795c954c54"
-  end
-
-  resource "zipp" do
-    url "https://files.pythonhosted.org/packages/e2/45/f3b987ad5bf9e08095c1ebe6352238be36f25dd106fde424a160061dce6d/zipp-3.16.2.tar.gz"
-    sha256 "ebc15946aa78bd63458992fc81ec3b6f7b1e92d51c35e6de1c3804e73b799147"
+    url "https://files.pythonhosted.org/packages/91/7a/146a99696aee0609e3712f2b44c6274566bc368dfe8375191278045186b8/uc-micro-py-1.0.3.tar.gz"
+    sha256 "d321b92cff673ec58027c04015fcaa8bb1e005478643ff4a500882eaab88c48a"
   end
 
   def install
@@ -67,7 +66,8 @@ class Recoverpy < Formula
   end
 
   test do
-    pid = fork { exec "#{bin}/recoverpy" }
+    pid = fork { exec bin/"recoverpy" }
+    sleep 2
   ensure
     Process.kill("TERM", pid)
   end

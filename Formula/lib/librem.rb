@@ -17,7 +17,7 @@ class Librem < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "17184b4ef23c26a8786392aabc829373e154f51915961761fc57a13140d76206"
   end
 
-  deprecate! date: "2023-03-22", because: :repo_archived
+  disable! date: "2024-02-15", because: :repo_archived
 
   depends_on "cmake" => :build
   depends_on "libre"
@@ -34,14 +34,14 @@ class Librem < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdint.h>
       #include <re/re.h>
       #include <rem/rem.h>
       int main() {
         return (NULL != vidfmt_name(VID_FMT_YUV420P)) ? 0 : 1;
       }
-    EOS
+    C
     system ENV.cc, "test.c", "-L#{opt_lib}", "-lrem", "-o", "test"
     system "./test"
   end

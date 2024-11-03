@@ -2,10 +2,10 @@ class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
   # TODO: Check if we can use unversioned `protobuf` at version bump
-  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.33-25/source/tarball/percona-server-8.0.33-25.tar.gz"
-  sha256 "9871cac20c226bba7607f35c19ee23516a38c67573dd48618727c74eae22912e"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.36-28/source/tarball/percona-server-8.0.36-28.tar.gz"
+  sha256 "8a4b44bd9cf79a38e6275e8f5f9d4e8d2c308854b71fd5bf5d1728fff43a6844"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
 
   livecheck do
     url "https://docs.percona.com/percona-server/latest/"
@@ -20,20 +20,18 @@ class PerconaServer < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "598f4c74975b61f09220ed2c650bff47e6a4eb564b0338961e2ffe1ad0111c0e"
-    sha256 arm64_ventura:  "866b29e8fb5e9265f81f4b2102c2fd16671b0a118306f55b0c639959170e0574"
-    sha256 arm64_monterey: "00c71be1b3077e8a7dc4c23fbe91da0f3e58ed8a1b6ea46ca44d4f071006786a"
-    sha256 arm64_big_sur:  "b0004364879aa7b5b9b6eb2449551089e64abdbc2abe968fc86fc5a22b1d3a38"
-    sha256 sonoma:         "daea7a9d6f1ada1a007c8af3d7456a7310307b0e67c2ab910ebe59f553bff71a"
-    sha256 ventura:        "215a6aad27899458a2fba7cc1d771b831434494486b2c8189f681c1ea70c04b3"
-    sha256 monterey:       "3be17693d7b2d6cbd7aa8b3ae80f77e12af9bee25f7a1982889c7efcfc8c9dd7"
-    sha256 big_sur:        "4e735dd3aa75b3822de8fbac6782a788f7b0d4c95655277bcdc2228f2bc8762e"
-    sha256 x86_64_linux:   "ff5ac540d35bd831661ca43f8fb98b151556a31b636a767032f1b6d0d6256cab"
+    sha256 arm64_sequoia: "f33ab3853ad5d77d832172a84bc26d7caff044417c9f4eb6aace70a4ad962a41"
+    sha256 arm64_sonoma:  "d3a25c59d673eb187a0de78311a22327632966e4b55ea7a929288d28e5c1a6a0"
+    sha256 arm64_ventura: "326320bf4026b8a1e01a615e71521b336b6ce7467e9c6efcea6961f2504d0815"
+    sha256 sonoma:        "44a4869d90907cf599832f67d59ab2b2719fbdd3a2efc4a8e4c38c8a573b35b4"
+    sha256 ventura:       "5d482f723ab038acaf8a355db7d464bbe74d1a50d84795627091ae758213f216"
+    sha256 x86_64_linux:  "28712e5fe869747e2a045981475ddb7c35ca138f8588510d68c241e946fb5805"
   end
 
+  depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libevent"
   depends_on "libfido2"
   depends_on "lz4"
@@ -45,6 +43,7 @@ class PerconaServer < Formula
 
   uses_from_macos "curl"
   uses_from_macos "cyrus-sasl"
+  uses_from_macos "krb5"
   uses_from_macos "libedit"
 
   on_linux do
@@ -54,7 +53,6 @@ class PerconaServer < Formula
   end
 
   conflicts_with "mariadb", "mysql", because: "percona, mariadb, and mysql install the same binaries"
-  conflicts_with "percona-xtrabackup", because: "both install a `kmip.h`"
 
   # https://bugs.mysql.com/bug.php?id=86711
   # https://github.com/Homebrew/homebrew-core/pull/20538
@@ -82,14 +80,6 @@ class PerconaServer < Formula
     sha256 "af27e4b82c84f958f91404a9661e999ccd1742f57853978d8baec2f993b51153"
   end
 
-  # Fix for "Cannot find system zlib libraries" even though they are installed.
-  # https://bugs.mysql.com/bug.php?id=110745
-  # https://bugs.mysql.com/bug.php?id=111467
-  patch do
-    url "https://bugs.mysql.com/file.php?id=32361&bug_id=111467"
-    sha256 "3fe1ebb619583fc1778b249042184ef48a4f85555c573fb3618697cf024d19cc"
-  end
-
   def install
     # Find Homebrew OpenLDAP instead of the macOS framework
     inreplace "cmake/ldap.cmake", "NAMES ldap_r ldap", "NAMES ldap"
@@ -115,7 +105,6 @@ class PerconaServer < Formula
       -DINSTALL_PLUGINDIR=lib/percona-server/plugin
       -DMYSQL_DATADIR=#{var}/mysql
       -DSYSCONFDIR=#{etc}
-      -DENABLED_LOCAL_INFILE=1
       -DWITH_EMBEDDED_SERVER=ON
       -DWITH_INNODB_MEMCACHED=ON
       -DWITH_UNIT_TESTS=OFF
@@ -159,11 +148,7 @@ class PerconaServer < Formula
     end
 
     # Remove the tests directory
-    rm_rf prefix/"mysql-test"
-
-    # Don't create databases inside of the prefix!
-    # See: https://github.com/Homebrew/homebrew/issues/4975
-    rm_rf prefix/"data"
+    rm_r(prefix/"mysql-test")
 
     # Fix up the control script and link into bin.
     inreplace "#{prefix}/support-files/mysql.server",
@@ -225,12 +210,12 @@ class PerconaServer < Formula
       "--basedir=#{prefix}", "--datadir=#{testpath}/mysql", "--tmpdir=#{testpath}/tmp"
     port = free_port
     fork do
-      system "#{bin}/mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--no-defaults", "--user=#{ENV["USER"]}",
         "--datadir=#{testpath}/mysql", "--port=#{port}", "--tmpdir=#{testpath}/tmp"
     end
     sleep 5
     assert_match "information_schema",
       shell_output("#{bin}/mysql --port=#{port} --user=root --password= --execute='show databases;'")
-    system "#{bin}/mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
+    system bin/"mysqladmin", "--port=#{port}", "--user=root", "--password=", "shutdown"
   end
 end

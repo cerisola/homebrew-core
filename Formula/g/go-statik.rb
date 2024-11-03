@@ -1,12 +1,13 @@
 class GoStatik < Formula
   desc "Embed files into a Go executable"
   homepage "https://github.com/rakyll/statik"
-  url "https://github.com/rakyll/statik/archive/v0.1.7.tar.gz"
+  url "https://github.com/rakyll/statik/archive/refs/tags/v0.1.7.tar.gz"
   sha256 "cd05f409e63674f29cff0e496bd33eee70229985243cce486107085fab747082"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "95aa24d379a2bbd53eef6bcac8f69bb4813aef3d5957ccf022ba5f34ba7e5281"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "24547268f10325a191888ab87a8e35b17d4d653a9c6ff6e1bbe60e1ad3f7cdf4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "26f7b3d318ee90136abccb38d929251dd06a2b689191ad9c34a29acde10a4645"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1c5a13a7d21ea10888bdfb31153624ca587b2b3424ecf8c97f5bfa512aedf898"
@@ -22,15 +23,13 @@ class GoStatik < Formula
 
   depends_on "go" => :build
 
-  conflicts_with "statik", because: "both install `statik` binaries"
-
   def install
     system "go", "build", *std_go_args(output: bin/"statik", ldflags: "-s -w")
   end
 
   test do
-    font_name = (MacOS.version >= :catalina) ? "Arial Unicode.ttf" : "Arial.ttf"
     font_path = if OS.mac?
+      font_name = (MacOS.version >= :catalina) ? "Arial Unicode.ttf" : "Arial.ttf"
       "/Library/Fonts/#{font_name}"
     else
       "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"

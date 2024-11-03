@@ -1,7 +1,7 @@
 class Connect < Formula
   desc "Provides SOCKS and HTTPS proxy support to SSH"
   homepage "https://github.com/gotoh/ssh-connect"
-  url "https://github.com/gotoh/ssh-connect/archive/1.105.tar.gz"
+  url "https://github.com/gotoh/ssh-connect/archive/refs/tags/1.105.tar.gz"
   sha256 "96c50fefe7ecf015cf64ba6cec9e421ffd3b18fef809f59961ef9229df528f3e"
   license "GPL-2.0-or-later"
   head "https://github.com/gotoh/ssh-connect.git", branch: "master"
@@ -13,6 +13,7 @@ class Connect < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "576b1a89b5a70f0a4dc4545f97662550db8c16d6c4f064cd51ade4dcea550b6c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c7176837fc0b291396e82f4915fdea4b4255c0181faa541e6fe9f21f0b8fed74"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "25da554388b8d7ccd2dd52576434f92ab8628120d6ba7389959b5e71e9483b97"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "e45ad845a768453d0d0dc278dc9fb39f3a7601f33b79d8c1b5d8e404f1dc3377"

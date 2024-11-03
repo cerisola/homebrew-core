@@ -1,12 +1,13 @@
 class Ctail < Formula
   desc "Tool for operating tail across large clusters of machines"
   homepage "https://github.com/pquerna/ctail"
-  url "https://github.com/pquerna/ctail/archive/ctail-0.1.0.tar.gz"
+  url "https://github.com/pquerna/ctail/archive/refs/tags/ctail-0.1.0.tar.gz"
   sha256 "864efb235a5d076167277c9f7812ad5678b477ff9a2e927549ffc19ed95fa911"
   license "Apache-2.0"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "21800dfc7f1557473cc6fe1b4e0716d4fb100c86acbd6bbfe3751b36b02a37f6"
     sha256 cellar: :any,                 arm64_sonoma:   "4022c3a7de59341455b5be26f2ff72dfc10c4488b0268e18d30057bee351fc3e"
     sha256 cellar: :any,                 arm64_ventura:  "2b40393969bdf9a4676ee936099af2cfbe92c006e87ce6c62b44761d24328b10"
     sha256 cellar: :any,                 arm64_monterey: "0b339ed01671f93d78b97a473d2ab4710182097276def040447573b274003e59"
@@ -43,6 +44,6 @@ class Ctail < Formula
   end
 
   test do
-    system "#{bin}/ctail", "-h"
+    system bin/"ctail", "-h"
   end
 end

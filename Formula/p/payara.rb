@@ -1,8 +1,8 @@
 class Payara < Formula
   desc "Java EE application server forked from GlassFish"
   homepage "https://www.payara.fish"
-  url "https://search.maven.org/remotecontent?filepath=fish/payara/distributions/payara/6.2023.9/payara-6.2023.9.zip"
-  sha256 "d075ea5ed7c69b05827030bbed112358cae4a59edb608c9d608da3f2996526d8"
+  url "https://search.maven.org/remotecontent?filepath=fish/payara/distributions/payara/6.2024.10/payara-6.2024.10.zip"
+  sha256 "f215aae9da4674c2ce0d5d39501b09ca9848fd9e8e04df7c1fa8162b47c952a3"
   license any_of: [
     "CDDL-1.1",
     { "GPL-2.0-only" => { with: "Classpath-exception-2.0" } },
@@ -14,24 +14,24 @@ class Payara < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4b06d29ae34a4b184086e3d1fcda53208cff6428df853c64b6695f67103c7803"
+    sha256 cellar: :any_skip_relocation, all: "a6e53f5e981db55221fc539098858a8d77fc29999dd363a7d6391bfa08ae1ec3"
   end
 
   depends_on :macos # The test fails on Linux.
-  depends_on "openjdk@11"
+  depends_on "openjdk"
 
   conflicts_with "glassfish", because: "both install the same scripts"
 
   def install
     # Remove Windows scripts
-    rm_f Dir["**/*.{bat,exe}"]
+    rm(Dir["**/*.{bat,exe}"])
 
     inreplace "bin/asadmin", /AS_INSTALL=.*/,
                              "AS_INSTALL=#{libexec}/glassfish"
 
     libexec.install Dir["*"]
     bin.install Dir["#{libexec}/bin/*"]
-    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("11"))
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env)
   end
 
   def caveats

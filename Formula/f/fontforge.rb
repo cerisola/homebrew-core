@@ -5,27 +5,26 @@ class Fontforge < Formula
   sha256 "ca82ec4c060c4dda70ace5478a41b5e7b95eb035fe1c4cf85c48f996d35c60f8"
   license "GPL-3.0-or-later"
   revision 1
+  head "https://github.com/fontforge/fontforge.git", branch: "master"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "3a8746ad31bb550eacee6c68a26b5117892127d3bc1accea97232b522632a4a0"
-    sha256 arm64_ventura:  "864cdef006295be1c065314cc6caad3f9ebbdb3c0f6c6c832649d92af7327d44"
-    sha256 arm64_monterey: "941de4b89e7cedda2477e4c0024c8ab3e1e200117c516a5c76a6cf129d61bc9c"
-    sha256 arm64_big_sur:  "7d48ebc8e93c097808422cda06e15e580629afeb7e02475d916b635f93f1d581"
-    sha256 sonoma:         "f657225f4580a4ca44676736a3c3de7e2dbe48fea7e4dff49b16884dca9bc090"
-    sha256 ventura:        "1b7d154062de6f9134800d2c422288243a67f6e9c32921b173fb3dfe49a235b4"
-    sha256 monterey:       "a698046927fda5202622adf5c7f2c1f0d3b040fca05b82629f125156fa53ce62"
-    sha256 big_sur:        "2f92236bf0eb3b88a2d567767b3bf1da6e77442b570483b1f2ccefc98cbfdd5c"
-    sha256 x86_64_linux:   "02d40377c37e0af482f856c6a2c225e1c73a48109d8006b2b6fbe4d1a0de3a3c"
+    rebuild 4
+    sha256 arm64_sequoia: "f3efe932a2d7e72caf599601b82ee40144cb2ea3a1bef0afd5698b20ab11ff94"
+    sha256 arm64_sonoma:  "0d843c5837f6634f8f3c2c2c2862f427f651d24670383e1a470a3e933e6065b4"
+    sha256 arm64_ventura: "a6c3b3307443666523cc29b8bec912c6b1f933fe96580f061478b257ad0a992f"
+    sha256 sonoma:        "174995c9c06977e05958d535f7065c443ecbd9b1a64f97c232f83296852866b9"
+    sha256 ventura:       "ca33c447dc43b3f8d73bd42eb933b1fe1882794898cf387e4f22714d20ee6420"
+    sha256 x86_64_linux:  "91cc737d5d5ff50542c7737cfe8f8f693d64a103b07839d7047a21cb9149e1ee"
   end
 
   depends_on "cmake" => :build
+  depends_on "gettext" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
+
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
-  depends_on "gettext"
   depends_on "giflib"
   depends_on "glib"
   depends_on "jpeg-turbo"
@@ -35,11 +34,17 @@ class Fontforge < Formula
   depends_on "libtool"
   depends_on "libuninameslist"
   depends_on "pango"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "readline"
   depends_on "woff2"
 
   uses_from_macos "libxml2"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "brotli"
+    depends_on "gettext"
+  end
 
   # build patch for po translation files
   # upstream bug report, https://github.com/fontforge/fontforge/issues/5251
@@ -48,11 +53,18 @@ class Fontforge < Formula
     sha256 "e784c4c0fcf28e5e6c5b099d7540f53436d1be2969898ebacd25654d315c0072"
   end
 
+  def python3
+    "python3.13"
+  end
+
   def install
-    args = %w[
+    args = %W[
       -DENABLE_GUI=OFF
       -DENABLE_FONTFORGE_EXTRAS=ON
+      -DPython3_EXECUTABLE=#{which(python3)}
+      -DPYHOOK_INSTALL_DIR=#{Language::Python.site_packages(python3)}
     ]
+
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -60,7 +72,7 @@ class Fontforge < Formula
 
   def caveats
     on_macos do
-      <<~EOS
+      <<~TEXT
         This formula only installs the command line utilities.
 
         FontForge.app can be downloaded directly from the website:
@@ -68,7 +80,7 @@ class Fontforge < Formula
 
         Alternatively, install with Homebrew Cask:
           brew install --cask fontforge
-      EOS
+      TEXT
     end
   end
 
@@ -78,10 +90,9 @@ class Fontforge < Formula
       sha256 "6a22acf6be4ab9e5c5a3373dc878030b4b8dc4652323395388abe43679ceba81"
     end
 
-    python = Formula["python@3.11"].opt_bin/"python3.11"
     system bin/"fontforge", "-version"
     system bin/"fontforge", "-lang=py", "-c", "import fontforge; fontforge.font()"
-    system python, "-c", "import fontforge; fontforge.font()"
+    system python3, "-c", "import fontforge; fontforge.font()"
 
     resource("homebrew-testdata").stage do
       ffscript = "fontforge.open('Ambrosia.sfd').generate('#{testpath}/Ambrosia.woff2')"

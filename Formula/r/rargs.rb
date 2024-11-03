@@ -1,12 +1,13 @@
 class Rargs < Formula
   desc "Util like xargs + awk with pattern matching support"
   homepage "https://github.com/lotabout/rargs"
-  url "https://github.com/lotabout/rargs/archive/v0.3.0.tar.gz"
+  url "https://github.com/lotabout/rargs/archive/refs/tags/v0.3.0.tar.gz"
   sha256 "22d9aa4368a0f9d1fd82391439d3aabf4ddfb24ad674a680d6407c9e22969da3"
   license "MIT"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "07e463046394e64c0366a57c336e0a1e5cb5524f18f278e697d921ae923695c3"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8c1b5594ef8bdb6f4bf04393a93e8081804b8918b79d8218bddcdb4b3b4b38e0"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "db39ea8042e8c099c423325bf28e62fddcd985312dc39f2f9f7f4cee307b23f6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "63a38fdbffaba3ef942b5f7d29c093cf995f4ea1c3bef35f5194ad0a32b9d306"

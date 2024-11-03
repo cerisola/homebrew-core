@@ -1,12 +1,13 @@
 class Cmdshelf < Formula
   desc "Better scripting life with cmdshelf"
   homepage "https://github.com/toshi0383/cmdshelf"
-  url "https://github.com/toshi0383/cmdshelf/archive/2.0.2.tar.gz"
+  url "https://github.com/toshi0383/cmdshelf/archive/refs/tags/2.0.2.tar.gz"
   sha256 "dea2ea567cfa67196664629ceda5bc775040b472c25e96944c19c74892d69539"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
     rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "a9228f22f7205b82bdd0db4e1a6a6f8145b264eeeeac69de13c1d95b99e6c31c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "baf2c8593f5dde592d0023b6a10c809da3dd0ba83121a72a34c0a0939abdbe35"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "11ee71c650aa2e2910bba632afb1632e00eed0d4a34968dde9f43c2728ed958b"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "2129cc4f853a0328aae11613e798bfae886299523422ad84bceb33b076060db7"

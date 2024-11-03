@@ -1,12 +1,13 @@
 class Snag < Formula
   desc "Automatic build tool for all your needs"
   homepage "https://github.com/Tonkpils/snag"
-  url "https://github.com/Tonkpils/snag/archive/v1.2.0.tar.gz"
+  url "https://github.com/Tonkpils/snag/archive/refs/tags/v1.2.0.tar.gz"
   sha256 "37bf661436edf4526adf5428ac5ff948871c613ff4f9b61fbbdfe1fb95f58b37"
   license "MIT"
   head "https://github.com/Tonkpils/snag.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d78b5afc3692d32a42500fff33a42c68783140d27318051052fc0bba9cf8bd15"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e3047af31785c147bfb9cf1fb8d3621de36339c95e49393f0fed5c0d60b933c5"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fa9946a8925f1aa3881c48e93893a412938c9681f0bd2427a4d652e366c0aedc"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1714f0e948566336c34fcf45dce8f7a5d76cfdcad20545af460dd271daf8bdde"
@@ -22,6 +23,9 @@ class Snag < Formula
     sha256 cellar: :any_skip_relocation, el_capitan:     "18a6d589a0b416ee502a8dacd6f919959d25cc08d9bbaad152fdade4c72634dc"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7096008e3aab8b00c45a600edab938bd16918a92543423662f3a6015e5a14edb"
   end
+
+  # https://github.com/Tonkpils/snag/issues/66
+  deprecate! date: "2024-02-24", because: :unmaintained
 
   depends_on "go" => :build
 

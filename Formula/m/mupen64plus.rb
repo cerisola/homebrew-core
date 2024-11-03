@@ -4,7 +4,7 @@ class Mupen64plus < Formula
   url "https://github.com/mupen64plus/mupen64plus-core/releases/download/2.5/mupen64plus-bundle-src-2.5.tar.gz"
   sha256 "9c75b9d826f2d24666175f723a97369b3a6ee159b307f7cc876bbb4facdbba66"
   license "GPL-2.0-or-later"
-  revision 5
+  revision 9
 
   livecheck do
     url :stable
@@ -12,10 +12,10 @@ class Mupen64plus < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 ventura:      "01f78075888dd30e0afdbeddfd2f88c850ff9bb2b1d3b74a229be82983e1a8d0"
-    sha256 cellar: :any,                 monterey:     "a60342d95f8e8636dce8a13eb726c699794ca05e128c9fe851be589773bbe0bb"
-    sha256 cellar: :any,                 big_sur:      "688ec0ca8dbeb03395ce9d5059149acd26675274a58f881af48555a264cef8cf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "9c422712d19f6e8e3a366a9b02e192dda239fc895089184ab884683b3c228aae"
+    sha256 sonoma:       "c230208074feda97c361199781940d50f7918419802ec903eec833d3ff2c0af0"
+    sha256 ventura:      "2c6365b16dbb1c3e70acd5068dfeab479f0742d8c9ae8df40df40af5524b119d"
+    sha256 monterey:     "81ce3aecfc6b2f110322459cbdde89176590fe8e445d75ca7136dfec520c7f4d"
+    sha256 x86_64_linux: "e4140dea7a57faf9c5f5adcd2a5b8803f7e19ba989c7f375c73d84a2d3459010"
   end
 
   depends_on "pkg-config" => :build
@@ -25,9 +25,10 @@ class Mupen64plus < Formula
   depends_on "libpng"
   depends_on "sdl2"
 
+  uses_from_macos "zlib"
+
   on_linux do
     depends_on "mesa"
-    depends_on "mesa-glu"
   end
 
   resource "rom" do
@@ -36,10 +37,24 @@ class Mupen64plus < Formula
   end
 
   def install
+    # Work around build failure with `boost` 1.85.0
+    # Issue ref: https://github.com/mupen64plus/mupen64plus-video-glide64mk2/issues/128
+    wpath_files = %w[
+      source/mupen64plus-video-glide64mk2/src/GlideHQ/TxCache.cpp
+      source/mupen64plus-video-glide64mk2/src/GlideHQ/TxHiResCache.cpp
+      source/mupen64plus-video-glide64mk2/src/GlideHQ/TxHiResCache.h
+      source/mupen64plus-video-glide64mk2/src/GlideHQ/TxTexCache.cpp
+    ]
+    inreplace wpath_files, /\bboost::filesystem::wpath\b/, "boost::filesystem::path"
+    inreplace "source/mupen64plus-video-glide64mk2/src/GlideHQ/TxHiResCache.cpp",
+              "->path().leaf().", "->path().filename()."
+
     # Prevent different C++ standard library warning
-    inreplace Dir["source/mupen64plus-**/projects/unix/Makefile"],
-              /(-mmacosx-version-min)=\d+\.\d+/,
-              "\\1=#{MacOS.version}"
+    if OS.mac?
+      inreplace Dir["source/mupen64plus-**/projects/unix/Makefile"],
+                /(-mmacosx-version-min)=\d+\.\d+/,
+                "\\1=#{MacOS.version}"
+    end
 
     # Fix build with Xcode 9 using upstream commit:
     # https://github.com/mupen64plus/mupen64plus-video-glide64mk2/commit/5ac11270
@@ -52,7 +67,7 @@ class Mupen64plus < Formula
       ENV.append "CFLAGS", "-fpie"
     end
 
-    args = ["install", "PREFIX=#{prefix}"]
+    args = ["install", "PREFIX=#{prefix}", "COREDIR=#{lib}/"]
     args << if OS.mac?
       "INSTALL_STRIP_FLAG=-S"
     else

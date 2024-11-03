@@ -1,21 +1,20 @@
 class Wolfmqtt < Formula
   desc "Small, fast, portable MQTT client C implementation"
   homepage "https://github.com/wolfSSL/wolfMQTT"
-  url "https://github.com/wolfSSL/wolfMQTT/archive/refs/tags/v1.16.0.tar.gz"
-  sha256 "be806967ff4dfa80d88d2197cabd8a5bf0072d03759bf8506aaa4ee9c5c48ba6"
+  url "https://github.com/wolfSSL/wolfMQTT/archive/refs/tags/v1.19.0.tar.gz"
+  sha256 "f8ecac43bb584a9250468dafb95b7db0bfb8c29a11715c7965183a092f75c3bc"
   license "GPL-2.0-or-later"
   head "https://github.com/wolfSSL/wolfMQTT.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "7d17245aff11d36ae066d341fd4f0b72033049f8a849f9e2d4772371d241ac9d"
-    sha256 cellar: :any,                 arm64_ventura:  "49b23940a62dcbe6e66e5338c89faab6f4db51bd1126be29dace74b70348d411"
-    sha256 cellar: :any,                 arm64_monterey: "c4df8a877f40d52d69fa5d5016751db51be85bbfbcb79e927bf8a03fc42c3b20"
-    sha256 cellar: :any,                 arm64_big_sur:  "2999a1f462c8b195135d88258f36633b2c20792172927f70526b133cb93587ba"
-    sha256 cellar: :any,                 sonoma:         "d5cba8204bdffd9e8fa5d12c14f37c7374595717d23597c53a8068e1dd78efac"
-    sha256 cellar: :any,                 ventura:        "8773446a50beb3494efed336b307bdb03532c72eba3864397514874523e8a5f0"
-    sha256 cellar: :any,                 monterey:       "b5fe604ffafc2920cef29d3fbc5d010d2011375c18ca47798894bba837803719"
-    sha256 cellar: :any,                 big_sur:        "9c5336dfdc4c7c920c91a9b3138b77ff531985c82dca4d0ee6faab40ae393981"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a7418f88c7422585fd8078c1c06d7f77c4dcbb46e137d96cf7258eaa395d5902"
+    sha256 cellar: :any,                 arm64_sequoia:  "f46a2b7c5f6719697cbeab120a572664aec85d6ec23d578b2adf48850c624361"
+    sha256 cellar: :any,                 arm64_sonoma:   "dff16f2fbe2c26fe6722438d8ae234153b23898ae4a4933bbdec185d386c94d5"
+    sha256 cellar: :any,                 arm64_ventura:  "66855c22567818428aaf8aa9ee7dbabb30b3fd8deffc638aeb8c664204928634"
+    sha256 cellar: :any,                 arm64_monterey: "11f4ffd6c3f9427cbc6fc79ebeca21591ce3fe0eb2d9a71adfff61730e492d2e"
+    sha256 cellar: :any,                 sonoma:         "0bdff7f693a3c30c1d9ba2080d3218ceb860493d4fcb92832e03ebfe048a6a6b"
+    sha256 cellar: :any,                 ventura:        "12333823582936854312de0b5705953379289cfa18c844813909c816477422a8"
+    sha256 cellar: :any,                 monterey:       "d9b1b3ee602d988570c5260ea0c061653c626df78ed527c8c9e52e12d54ab684"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a203d97727e0c433e9ceacc1f72ed469a4c343a366b23bccee8110d5c7a6cb3b"
   end
 
   depends_on "autoconf" => :build

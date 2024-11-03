@@ -1,13 +1,14 @@
 class Pup < Formula
   desc "Parse HTML at the command-line"
   homepage "https://github.com/EricChiang/pup"
-  url "https://github.com/ericchiang/pup/archive/v0.4.0.tar.gz"
+  url "https://github.com/ericchiang/pup/archive/refs/tags/v0.4.0.tar.gz"
   sha256 "0d546ab78588e07e1601007772d83795495aa329b19bd1c3cde589ddb1c538b0"
   license "MIT"
   head "https://github.com/EricChiang/pup.git", branch: "master"
 
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "011465853c0a2aa9712231f8aa3cd4e40037c9050ffa90a56fadc32f8dfbb822"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c0a8a91d48aeea561d2a0f1cb092b9dfd0c0d4ab97ddaf86aefade8602af326c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "8023f82224007c85960698b96baa60a1749de8ecc9aeb24e56cda2fc2208433a"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "b6854a47afc836d12ed5447f9d285484e200f0d4350411f5aac7bf5e30f33a07"
@@ -20,6 +21,9 @@ class Pup < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "1801647618fe8e2367ce3d739513c1811259bf1db3fb9ddfbc9301e559102d9b"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "984ec42bb2a863b2afec7954b8b1c706a5474e0cbd278ed5e4f5439c13f02bb2"
   end
+
+  # https://github.com/ericchiang/pup/issues/189
+  deprecate! date: "2024-02-20", because: :unmaintained
 
   depends_on "go" => :build
   depends_on "gox" => :build

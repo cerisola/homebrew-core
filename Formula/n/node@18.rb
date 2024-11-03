@@ -1,9 +1,10 @@
 class NodeAT18 < Formula
   desc "Platform built on V8 to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v18.18.0/node-v18.18.0.tar.xz"
-  sha256 "e4d4dbac3634d99f892f00db47da78f98493c339582e8a95fb2dd59f5cfe0f90"
+  url "https://nodejs.org/dist/v18.20.4/node-v18.20.4.tar.xz"
+  sha256 "a76c7ea1b96aeb6963a158806260c8094b6244d64a696529d020547b9a95ca2a"
   license "MIT"
+  revision 2
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -11,28 +12,26 @@ class NodeAT18 < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "9bb2c47bb5f23c65da39685c4b7a24f7295fac3684f1682a12abd2b9c6162773"
-    sha256 arm64_ventura:  "ac6dadf19ea6e50d06ca132206c380d01a78b142979489c2aa7f658b98f81eeb"
-    sha256 arm64_monterey: "43098ad5cb44c079e9e7bd286f44228fe1175b68f5339292484b1c5f86f4050f"
-    sha256 arm64_big_sur:  "8cda899ab9d2fc77195161a7ea38bd5528408d8eb2ac53b803d9e31007ae5d6d"
-    sha256 sonoma:         "f1da2e36b5f8465f63cb20c36ff695c53ebada398ac6f3ae4c4b1c20229d17a8"
-    sha256 ventura:        "414a29831f37ab25f9c5336a4c4a46cb3a3a2f2ce48b337cb80f51954cdf2984"
-    sha256 monterey:       "c05bf23ba6ded8d8d46a796e54f92941a511f36928aaeb7ea02ce685746ba7c4"
-    sha256 big_sur:        "0d8b2a95fa6858574ca66f3c7a13d9ed1a5996d2bc236087f5e1477b36bd3127"
-    sha256 x86_64_linux:   "df22bef50f9f8831d8b04c5a1ee78f321eb991ed36b6f94bb34ac351f0108a9c"
+    sha256 arm64_sequoia: "1d2ce510cf574da66f4e5c5cf3a8a901b3a01e97698a14f8c01cec83023e0c5d"
+    sha256 arm64_sonoma:  "9aaf06ffb456a0771faee9b25b1c46a80480b0b477266bd5068ad884b857cee3"
+    sha256 arm64_ventura: "491354ee9860881f2a405278366ddd146509bddcd8962dd4424ccc0afd03c251"
+    sha256 sonoma:        "fde7c1f991598524bddeb6097f8ea88b589470fd20bdca34a464dd7f43f1f0f2"
+    sha256 ventura:       "1e1d2c42641ab1d6ccecc41d4022cec588edcdcba560ed211c41219ca2bce7a4"
+    sha256 x86_64_linux:  "5918442ca75b8961191a876348a16db2686e4668d457c8b7d9e5309d04d2fd02"
   end
 
   keg_only :versioned_formula
 
-  # https://nodejs.org/en/about/releases/
+  # https://github.com/nodejs/release#release-schedule
   # disable! date: "2025-04-30", because: :unsupported
-  deprecate! date: "2023-10-18", because: :unsupported
+  deprecate! date: "2024-10-29", because: :unsupported
 
   depends_on "pkg-config" => :build
-  depends_on "python@3.11" => :build
+  depends_on "python-setuptools" => :build
+  depends_on "python@3.13" => :build
   depends_on "brotli"
   depends_on "c-ares"
-  depends_on "icu4c"
+  depends_on "icu4c@76"
   depends_on "libnghttp2"
   depends_on "libuv"
   depends_on "openssl@3"
@@ -53,11 +52,20 @@ class NodeAT18 < Formula
 
   fails_with gcc: "5"
 
+  # Backport support for ICU 76+
+  patch do
+    url "https://github.com/nodejs/node/commit/81517faceac86497b3c8717837f491aa29a5e0f9.patch?full_index=1"
+    sha256 "79a5489617665c5c88651a7dc364b8967bebdea5bdf361b85572d041a4768662"
+  end
+
+  # py3.13 build patch
+  patch :DATA
+
   def install
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
     # make sure subprocesses spawned by make are using our Python 3
-    ENV["PYTHON"] = which("python3.11")
+    ENV["PYTHON"] = which("python3.13")
 
     args = %W[
       --prefix=#{prefix}
@@ -112,9 +120,32 @@ class NodeAT18 < Formula
     assert_predicate bin/"npm", :executable?, "npm must be executable"
     npm_args = ["-ddd", "--cache=#{HOMEBREW_CACHE}/npm_cache", "--build-from-source"]
     system bin/"npm", *npm_args, "install", "npm@latest"
-    system bin/"npm", *npm_args, "install", "ref-napi" unless head?
+    system bin/"npm", *npm_args, "install", "ref-napi"
     assert_predicate bin/"npx", :exist?, "npx must exist"
     assert_predicate bin/"npx", :executable?, "npx must be executable"
     assert_match "< hello >", shell_output("#{bin}/npx --yes cowsay hello")
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index 711a3014..29ebe882 100755
+--- a/configure
++++ b/configure
+@@ -4,6 +4,7 @@
+ # Note that the mix of single and double quotes is intentional,
+ # as is the fact that the ] goes on a new line.
+ _=[ 'exec' '/bin/sh' '-c' '''
++command -v python3.13 >/dev/null && exec python3.13 "$0" "$@"
+ command -v python3.12 >/dev/null && exec python3.12 "$0" "$@"
+ command -v python3.11 >/dev/null && exec python3.11 "$0" "$@"
+ command -v python3.10 >/dev/null && exec python3.10 "$0" "$@"
+@@ -24,7 +25,7 @@ except ImportError:
+   from distutils.spawn import find_executable as which
+ 
+ print('Node.js configure: Found Python {}.{}.{}...'.format(*sys.version_info))
+-acceptable_pythons = ((3, 12), (3, 11), (3, 10), (3, 9), (3, 8), (3, 7), (3, 6))
++acceptable_pythons = ((3, 13), (3, 12), (3, 11), (3, 10), (3, 9), (3, 8), (3, 7), (3, 6))
+ if sys.version_info[:2] in acceptable_pythons:
+   import configure
+ else:

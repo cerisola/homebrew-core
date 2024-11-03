@@ -1,8 +1,8 @@
 class Nagios < Formula
   desc "Network monitoring and management system"
   homepage "https://www.nagios.org/"
-  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.4.14/nagios-4.4.14.tar.gz"
-  sha256 "507caac1ae89974ffa8ea5b310aa048ba9ab00cd9711693ef36eb17eeea9f84f"
+  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.5.7/nagios-4.5.7.tar.gz"
+  sha256 "83da5f1e4fc4d864e18916ef3809df42fb2917a8629d311ae574b3fe2b841db5"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,23 +11,23 @@ class Nagios < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "a5e4d2b326149e5726cc37895231f89f778013b779dcdc59fe5b81d10b336697"
-    sha256 arm64_ventura:  "3e11c8d47ab27bfe9ae845d6a390dda158b2f3fc3f579fcabdb79a7cdbba4451"
-    sha256 arm64_monterey: "f71f5b21f4f04d8506eb3b16fcf3e6ab8953cef5c08588e4490a44cd5db1afa0"
-    sha256 arm64_big_sur:  "2fadc0c51d7b242433b17f35afd047da6816512bd8862307ad8c71cd15cef64c"
-    sha256 sonoma:         "6a73175ddfd71c08866a4df8261743a09ba8d82ab6e85c4d6e337eb73738e9c4"
-    sha256 ventura:        "508f7b24fd3b5112ce3f3e4efd5f370a4d50052baa98b972dcb98db369b00df5"
-    sha256 monterey:       "9fb3c90a139643ea2d17cd914476dbe8631d45f52a2b07b6952d9c96c376fecc"
-    sha256 big_sur:        "5b818ef03ef91ac3851c0d110018e1d2e767b4360ddb0bee3b5862aff7f88a7a"
-    sha256 x86_64_linux:   "d53805470dfaf177423fd5279ce71b8cbaef2eec739c676fde0790d48f1f7254"
+    sha256 arm64_sequoia: "54c32dc527dd7af04e3342067757564e2a65f82d2fe86d7a5e9ae6acf8ade110"
+    sha256 arm64_sonoma:  "9927fee4a339eeec23b3bdcf406482bd65bc853d2f82f0ac4709e9c06f786b1e"
+    sha256 arm64_ventura: "63336ee3e17ee07b143311ddd639af869d44206c0fb12386dd760fc5bc1ea3cf"
+    sha256 sonoma:        "508f4868f8290a86cd20b384ed884aebbef8fb791b7bf2cb8382095ee6c15180"
+    sha256 ventura:       "a543302c16e445538e5cc0d0068d41ace40e0c4713f11977a1fe4dff1b8587ae"
+    sha256 x86_64_linux:  "3175ce1df62fa7c15f8e1a65ac53635a5d2a39a8ca4fef39277dbb67b9ac7d88"
   end
 
   depends_on "gd"
   depends_on "libpng"
-  depends_on "nagios-plugins"
   depends_on "openssl@3"
 
   uses_from_macos "unzip"
+
+  on_macos do
+    depends_on "jpeg-turbo"
+  end
 
   def nagios_sbin
     prefix/"cgi-bin"

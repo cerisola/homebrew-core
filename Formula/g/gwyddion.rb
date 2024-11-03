@@ -1,8 +1,8 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "http://gwyddion.net/download/2.63/gwyddion-2.63.tar.gz"
-  sha256 "8067b5470f0319a3be3ec077f9ace59ce071d359382d6cd7ede82c01f01c8f38"
+  url "https://downloads.sourceforge.net/project/gwyddion/gwyddion/2.66/gwyddion-2.66.tar.xz"
+  sha256 "377bedcd2b0d8d133a329686da9f5f91807ff1d47937f9991195f1e863792d52"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,23 +11,29 @@ class Gwyddion < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "6407eb8054f88dc28f0e5594613d3f6829d5354e0c1503e068aa75aa281d1f2c"
-    sha256 arm64_ventura:  "d3c1514b6223703e6ee86bccd1b65ef1a069348f93bd85cf58d9172f1df989e1"
-    sha256 arm64_monterey: "9e222c291217ea8edb89a2a38db7f9134688ae17b241a7d6484a4203fe306c97"
-    sha256 arm64_big_sur:  "d584e56ce7ec0e6ce276291ccd4736c5789a74a66e86c67afce5cda13d16934b"
-    sha256 sonoma:         "410bff6f1c820d28b45a81996770f0b45ed8c9a508c2d6bfbea1180b6e772331"
-    sha256 ventura:        "6d7cb651783e738c339c0ebdc34a37d13d4d59aceabf14a05cae8d3638408530"
-    sha256 monterey:       "1c5c6b71147ae9f0aa759aeef371921b5f311d3749e7f439a99f3aab365b1ea2"
-    sha256 big_sur:        "ae68bb295a84085c97e725e406fc6f6680c22e82708b048c646f22c82c84ef1c"
-    sha256 x86_64_linux:   "63bf4dce8b7644885ba8951250a2fcbaf6e615c495e42fc79749dbaf237c9bf2"
+    sha256 arm64_sonoma:   "92520b5d7c96c979979e90d2c9262bfac04fcf01886ab88da9e1e5737243890f"
+    sha256 arm64_ventura:  "c6239179ab6f4d4870721daa70ac7f75dbe745bfe23abb5789c21973e4bc8038"
+    sha256 arm64_monterey: "e58cd64b5695c615cc628523572e3d9f7304570e062c814c91bdeb6459b61f2a"
+    sha256 sonoma:         "0b8831b14f01286a37851e0f8931040950ee65121ea1ace70beab457fc9cd1a3"
+    sha256 ventura:        "9758d09277d9b6e4d46c9524a296a2b27df41d6dcdd48537ee44ab90dff20dac"
+    sha256 monterey:       "8f4019049aad4c6a55e79c909b449263a58f6e80f79eaa92da6d7ad2d9219c83"
+    sha256 x86_64_linux:   "9af968081422a5b12d4c4bfb433e347e487c6373e67e2a1398e51630f96a72f5"
   end
 
   depends_on "pkg-config" => :build
+  depends_on "cairo"
   depends_on "fftw"
+  depends_on "gdk-pixbuf"
+  depends_on "glib"
   depends_on "gtk+"
   depends_on "gtkglext"
+  depends_on "libpng"
   depends_on "libxml2"
   depends_on "minizip"
+  depends_on "pango"
+
+  uses_from_macos "bzip2"
+  uses_from_macos "zlib"
 
   on_macos do
     # Regenerate autoconf files to avoid flat namespace in library
@@ -37,6 +43,9 @@ class Gwyddion < Formula
     depends_on "gtk-doc" => :build
     depends_on "libtool" => :build
     # TODO: depends_on "gtk-mac-integration"
+    depends_on "at-spi2-core"
+    depends_on "gettext"
+    depends_on "harfbuzz"
   end
 
   def install
@@ -51,15 +60,15 @@ class Gwyddion < Formula
   end
 
   test do
-    system "#{bin}/gwyddion", "--version"
-    (testpath/"test.c").write <<~EOS
+    system bin/"gwyddion", "--version"
+    (testpath/"test.c").write <<~C
       #include <libgwyddion/gwyddion.h>
 
       int main(int argc, char *argv[]) {
         const gchar *string = gwy_version_string();
         return 0;
       }
-    EOS
+    C
     atk = Formula["atk"]
     cairo = Formula["cairo"]
     fftw = Formula["fftw"]

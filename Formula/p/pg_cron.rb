@@ -1,52 +1,70 @@
 class PgCron < Formula
   desc "Run periodic jobs in PostgreSQL"
   homepage "https://github.com/citusdata/pg_cron"
-  url "https://github.com/citusdata/pg_cron/archive/refs/tags/v1.6.1.tar.gz"
-  sha256 "7e5ec9a519b8f7c5a2b350153093c7b87ff7d94aef2ed461a5844e4313aadf07"
+  url "https://github.com/citusdata/pg_cron/archive/refs/tags/v1.6.4.tar.gz"
+  sha256 "52d1850ee7beb85a4cb7185731ef4e5a90d1de216709d8988324b0d02e76af61"
   license "PostgreSQL"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "5571e9ac1e68d7499478fe6ed3e10bbab5f4fb0028347f287069643270fca2dc"
-    sha256 cellar: :any,                 arm64_ventura:  "773177d9e4572507103e317feddee472943fb8ab16ed9efc53d3858cf6d72ad7"
-    sha256 cellar: :any,                 arm64_monterey: "5c459350d01db22c58ddfa9028fa86e8fbf1ff1b5f3f231b4571cc8714b32667"
-    sha256 cellar: :any,                 sonoma:         "afe71323fdeb10ae760c0720ab9b3c0e071ca70fbe20cf28bab17cdd9b4615f9"
-    sha256 cellar: :any,                 ventura:        "9fd69e080d04d2c9556e8a8e11340267d04873481a4c62e06eaea2c4ee22a0ff"
-    sha256 cellar: :any,                 monterey:       "197f7fac1541f6e6e521e2a9c9bba3ff5a5a27d52c6b44a2b3c1224e3862a6c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e4ca4ded99eac1f0c194cd313806d66e0fe884e6e97f60ab95b813b6d73b2dc5"
+    sha256 cellar: :any,                 arm64_sequoia: "0e3405e81c0a9cd72737ace18b03c7bab3f628b2eecc90dfee060cb11fcc8f2e"
+    sha256 cellar: :any,                 arm64_sonoma:  "fcae9666effa620d2671ddac687d6278e9a4cb37377045db37c57b78b1bc05d1"
+    sha256 cellar: :any,                 arm64_ventura: "2e3e52857674d76f7597b01179bfcbffec3c3fc07c3d5d26e47225b5839c9c10"
+    sha256 cellar: :any,                 sonoma:        "bbc13204d53324ab935d664ebdf5d93cf0d7309a68ec00abf04311f9e8651b0a"
+    sha256 cellar: :any,                 ventura:       "09dd67e9dc4b56b8ba4288293c8c89ce686f774b5b41fba182f82f882b933272"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d1bcd0a3e67e633137b4a02e74998e5b1276961bac3c9aba6c8390022f4ca675"
   end
 
-  # upstream issue for running with pg@15, https://github.com/citusdata/pg_cron/issues/237
-  depends_on "postgresql@14"
+  depends_on "postgresql@14" => [:build, :test]
+  depends_on "postgresql@17" => [:build, :test]
+  depends_on "libpq"
 
-  def postgresql
-    Formula["postgresql@14"]
+  on_macos do
+    depends_on "gettext" # for libintl
+  end
+
+  def postgresqls
+    deps.filter_map { |f| f.to_formula if f.name.start_with?("postgresql@") }
+        .sort_by(&:version)
   end
 
   def install
-    ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
+    # Work around for ld: Undefined symbols: _libintl_ngettext
+    # Issue ref: https://github.com/citusdata/pg_cron/issues/269
+    ENV["PG_LDFLAGS"] = "-lintl" if OS.mac?
 
-    system "make"
-    (lib/postgresql.name).install "pg_cron.so"
-    (share/postgresql.name/"extension").install Dir["pg_cron--*.sql"]
-    (share/postgresql.name/"extension").install "pg_cron.control"
+    postgresqls.each do |postgresql|
+      ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
+      # We force linkage to `libpq` to allow building for multiple `postgresql@X` formulae.
+      # The major soversion is hardcoded to at least make sure compatibility version hasn't changed.
+      # If it does change, then need to confirm if API/ABI change impacts running on older PostgreSQL.
+      system "make", "install", "libpq=#{Formula["libpq"].opt_lib/shared_library("libpq", 5)}",
+                                "pkglibdir=#{lib/postgresql.name}",
+                                "datadir=#{share/postgresql.name}"
+      system "make", "clean"
+    end
   end
 
   test do
-    pg_ctl = postgresql.opt_bin/"pg_ctl"
-    psql = postgresql.opt_bin/"psql"
-    port = free_port
+    ENV["LC_ALL"] = "C"
+    postgresqls.each do |postgresql|
+      pg_ctl = postgresql.opt_bin/"pg_ctl"
+      psql = postgresql.opt_bin/"psql"
+      port = free_port
 
-    system pg_ctl, "initdb", "-D", testpath/"test"
-    (testpath/"test/postgresql.conf").write <<~EOS, mode: "a+"
+      datadir = testpath/postgresql.name
+      system pg_ctl, "initdb", "-D", datadir
+      (datadir/"postgresql.conf").write <<~EOS, mode: "a+"
 
-      shared_preload_libraries = 'pg_cron'
-      port = #{port}
-    EOS
-    system pg_ctl, "start", "-D", testpath/"test", "-l", testpath/"log"
-    begin
-      system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"pg_cron\";", "postgres"
-    ensure
-      system pg_ctl, "stop", "-D", testpath/"test"
+        shared_preload_libraries = 'pg_cron'
+        port = #{port}
+      EOS
+      system pg_ctl, "start", "-D", datadir, "-l", testpath/"log-#{postgresql.name}"
+      begin
+        system psql, "-p", port.to_s, "-c", "CREATE EXTENSION \"pg_cron\";", "postgres"
+      ensure
+        system pg_ctl, "stop", "-D", datadir
+      end
     end
   end
 end

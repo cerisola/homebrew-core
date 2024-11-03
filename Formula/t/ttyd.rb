@@ -1,19 +1,20 @@
 class Ttyd < Formula
   desc "Command-line tool for sharing terminal over the web"
   homepage "https://tsl0922.github.io/ttyd/"
-  url "https://github.com/tsl0922/ttyd/archive/refs/tags/1.7.4.tar.gz"
-  sha256 "300d8cef4b0b32b0ec30d7bf4d3721a5d180e22607f9467a95ab7b6d9652ca9b"
+  url "https://github.com/tsl0922/ttyd/archive/refs/tags/1.7.7.tar.gz"
+  sha256 "039dd995229377caee919898b7bd54484accec3bba49c118e2d5cd6ec51e3650"
   license "MIT"
   head "https://github.com/tsl0922/ttyd.git", branch: "main"
 
   bottle do
-    sha256 arm64_sonoma:   "c9adbdd1216b21fccbb48c99710476e3a775ae674fa7ab9917bcf460c87b4756"
-    sha256 arm64_ventura:  "14e4f30ed9d013899611d906d9763d9d69063789395d7cce1bbb51a11b643956"
-    sha256 arm64_monterey: "0223ca1acdd9631e08afdf6527b34b1cea5f16af32b96cea9e03d3035118e090"
-    sha256 sonoma:         "c757a2bf373d1734ec14eb11140df2ba9eff849af8f9c727b2385b4290eb6313"
-    sha256 ventura:        "c2ad72104df43b4988adcbe6eaaa74fb2ced88c96aa428c5fd3faff04d14a0ba"
-    sha256 monterey:       "959512318be4738c518d62f7113a111f3c49329e7e55b6e6aabc618a9c0e838c"
-    sha256 x86_64_linux:   "351b9e02f3a2083a20b29002d114a398e223d1581d30a7859e0846690060025c"
+    sha256 arm64_sequoia:  "546f6c28e74064f283eeab9770b1779544376272d25e83e9253feb9be9abed6b"
+    sha256 arm64_sonoma:   "e561aa5ac9af88c33e697043bf1480261b50dab24f124986fedae77acc76bcec"
+    sha256 arm64_ventura:  "eb7c74c84404c738198040209c88e13d594d422c647b19c57bfc16fee723f3dc"
+    sha256 arm64_monterey: "74a57b3f5474faea250634bf2b41c975d972f0dad594d94640e345390079b754"
+    sha256 sonoma:         "3d3854352a3efd90d29ba6aea68d0256f89650ea6e0981af782dc67afe7a64aa"
+    sha256 ventura:        "df6408397fbce04ff9835ba2b1d1aa0c55c1099c0c5e48d09945c250a1a7feb0"
+    sha256 monterey:       "4cffef10b8c4893c8d87967dc98221f7f12ff7955eff0970edfeca2ba007d58b"
+    sha256 x86_64_linux:   "da86d1bef2794255251367f1dbb944ff1b877756302540288247db81e79e82da"
   end
 
   depends_on "cmake" => :build
@@ -37,7 +38,7 @@ class Ttyd < Formula
   test do
     port = free_port
     fork do
-      system "#{bin}/ttyd", "--port", port.to_s, "bash"
+      system bin/"ttyd", "--port", port.to_s, "bash"
     end
     sleep 5
 

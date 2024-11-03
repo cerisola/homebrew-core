@@ -1,12 +1,15 @@
 class Afio < Formula
   desc "Creates cpio-format archives"
   homepage "https://github.com/kholtman/afio"
-  url "https://github.com/kholtman/afio/archive/v2.5.2.tar.gz"
+  url "https://github.com/kholtman/afio/archive/refs/tags/v2.5.2.tar.gz"
   sha256 "c64ca14109df547e25702c9f3a9ca877881cd4bf38dcbe90fbd09c8d294f42b9"
+  # See afio_license_issues_v5.txt
+  license :cannot_represent
   head "https://github.com/kholtman/afio.git", branch: "master"
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d2aff60d7ee0309043a8a16fcc08fa31e97f926e891e0cba31fe0f68968f2ae5"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f1827985d86c7da8918f35afafdd8cc7bf62fe20e8ebc627cdd77c7ac12b2ab0"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "181059011f90205cc99df3760661b795b59cda42e7bf18746403889e6305ac65"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "7b4f681e5f0c0d32afa17e1f68c74b510ad922996f0bea0ce8be409169047e20"
@@ -39,11 +42,11 @@ class Afio < Formula
     path.write "homebrew"
     pipe_output("#{bin}/afio -o archive", "test\n")
 
-    system "#{bin}/afio", "-r", "archive"
+    system bin/"afio", "-r", "archive"
     path.unlink
 
-    system "#{bin}/afio", "-t", "archive"
-    system "#{bin}/afio", "-i", "archive"
+    system bin/"afio", "-t", "archive"
+    system bin/"afio", "-i", "archive"
     assert_equal "homebrew", path.read.chomp
   end
 end

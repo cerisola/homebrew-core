@@ -6,13 +6,9 @@ class Oakc < Formula
   license "Apache-2.0"
   head "https://github.com/adam-mcdaniel/oakc.git", branch: "develop"
 
-  livecheck do
-    url "https://crates.io/api/v1/crates/oakc/versions"
-    regex(/"num":\s*"(\d+(?:\.\d+)+)"/i)
-  end
-
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "07e3a3b23965b457f71c6938c55dd7dfcccffc666746863345e301f4888a4f13"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b7dda2bb361b0d013dae148630eb1c19a884bec2f3cec498681777f1355a4963"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "2027a21cc9a6b104b4f5f28b0b75127116063abf32282890258db85b1f5c0fd6"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "3cdabb01c215dce0ca881f17a57c5426451fe6227f857bc9d935c23699ed31c3"
@@ -27,8 +23,9 @@ class Oakc < Formula
 
   depends_on "rust" => :build
 
+  conflicts_with "oak", because: "both install `oak` binaries"
+
   def install
-    system "tar", "--strip-components", "1", "-xzvf", "oakc-#{version}.crate"
     system "cargo", "install", *std_cargo_args
     pkgshare.install "examples"
   end

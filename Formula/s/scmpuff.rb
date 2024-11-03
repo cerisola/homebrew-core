@@ -1,11 +1,12 @@
 class Scmpuff < Formula
   desc "Adds numbered shortcuts for common git commands"
   homepage "https://mroth.github.io/scmpuff/"
-  url "https://github.com/mroth/scmpuff/archive/v0.5.0.tar.gz"
+  url "https://github.com/mroth/scmpuff/archive/refs/tags/v0.5.0.tar.gz"
   sha256 "e07634c7207dc51479d39895e546dd0107a50566faf5c2067f61a3b92c824fbf"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "151580cd03c9b01f87b20dfe4b52cd1fd9a03306463bcca646291418fc37f952"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "228b81ed5e3cb6117d1c3f2d9ece048b52d0b3be7294a50818c78a3e818761c2"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "6b5220f190ab21c65e308ccee28de4ed4811fdacde23a98654cbb39433c8fd34"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "37bdb546a920a6c1c1fd70d047a37e872de2058469f4782cda61d349a28e00e7"
@@ -22,7 +23,7 @@ class Scmpuff < Formula
 
   def install
     ldflags = "-s -w -X main.VERSION=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

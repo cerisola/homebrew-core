@@ -1,36 +1,46 @@
 class Trunk < Formula
   desc "Build, bundle & ship your Rust WASM application to the web"
-  homepage "https://github.com/thedodd/trunk"
-  url "https://github.com/thedodd/trunk/archive/v0.17.5.tar.gz"
-  sha256 "308b5b24af739e779d05dfbb35f9bbfa87063e8532f09e6cf0b268951db3f604"
-  license any_of: ["MIT", "Apache-2.0"]
-  head "https://github.com/thedodd/trunk.git", branch: "master"
+  homepage "https://trunkrs.dev/"
+  url "https://github.com/trunk-rs/trunk/archive/refs/tags/v0.21.2.tar.gz"
+  sha256 "de7180e8602bf43adfcee761c7c635d44aa5708876ec8f1c1c41d10f505d682d"
+  license any_of: ["Apache-2.0", "MIT"]
+  head "https://github.com/trunk-rs/trunk.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "bc397d95cdd959224397771ea39282df1ded8c8dda9f66797ed775e14a8a2e7a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "0b8bff9b18d37680cae3b330df07f0816245c6659fe9a7f8862d5512ccf4bbd1"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9ceeb7d47ea5e7c9bec2160f5d68681febcf10d296aee21c6a18f460cf3dcac9"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "e4e5027908ec6bba4d26697aa8044e1d02af138aa3f957442fc1e25df52d5169"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5574aa0accd8833df0cd3793ac64d35e65c76697798e9f8c496bc3c787d6afd5"
-    sha256 cellar: :any_skip_relocation, ventura:        "60937f656bb0138d3e109b72a130e4a9725a1a3500693814be7f055389fbc749"
-    sha256 cellar: :any_skip_relocation, monterey:       "69733721417dc26f65237894104efc04cf1dcaa4bae59b109842a89b15118f2c"
-    sha256 cellar: :any_skip_relocation, big_sur:        "de03a5fec3e832ab3c015bf1d4826cef4792cfc3fe458b98e3c5dfc88a96ecf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c6c9d144b8f442aa3c186be21974655679086cef8dfa0158e4314af31ee597e3"
+    sha256 cellar: :any,                 arm64_sequoia: "f7a93782623889cac425129d02746b2083f0df4c7fd75d063dfa0f92ffb468d7"
+    sha256 cellar: :any,                 arm64_sonoma:  "e6fee5cdd2a95b1c6e9ccd1ee103b28ff71093ecee54c40fa7a62cd21a9da332"
+    sha256 cellar: :any,                 arm64_ventura: "8579266ffae9ba6083057e1291f19d9e5d0baab49e963f1e63e9320561c6732b"
+    sha256 cellar: :any,                 sonoma:        "60c43f9f4f43c04b2e94761ab994c5ca52f837944c40ec3b3ecb870e22181d51"
+    sha256 cellar: :any,                 ventura:       "f04352ff28ec0a7160f93e0717e44c9f1a2335d1dec0e74ca9b1a575221fc358"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "701f17ca1d2aadcd8cf35736d42cb4293692e156051f14c4efdc37869b19110d"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "rust" => :build
+  depends_on "openssl@3"
 
-  uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
+  uses_from_macos "bzip2"
 
   def install
+    # Ensure that the `openssl` crate picks up the intended library.
+    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
+    ENV["OPENSSL_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args
   end
 
   test do
-    assert_match "ConfigOpts {\n", shell_output("#{bin}/trunk config show")
+    ENV["TRUNK_CONFIG"] = testpath/"Trunk.toml"
+    (testpath/"Trunk.toml").write <<~TOML
+      trunk-version = ">=0.19.0"
+
+      [build]
+      target = "index.html"
+      dist = "dist"
+    TOML
+
+    assert_match "Configuration {\n", shell_output("#{bin}/trunk config show")
+
+    assert_match version.to_s, shell_output("#{bin}/trunk --version")
   end
 end

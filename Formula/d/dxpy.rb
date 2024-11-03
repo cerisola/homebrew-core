@@ -3,26 +3,22 @@ class Dxpy < Formula
 
   desc "DNAnexus toolkit utilities and platform API bindings for Python"
   homepage "https://github.com/dnanexus/dx-toolkit"
-  url "https://files.pythonhosted.org/packages/a1/5a/8b049df51203ad2970d7c35bc4df7750149b0297fec719836cdda1f70302/dxpy-0.359.0.tar.gz"
-  sha256 "f26c520759358aaf32870ac690d20c770936a365aee8756a68d2ae33ed7f8496"
+  url "https://files.pythonhosted.org/packages/c9/b8/4b61ec5171f3a0cd807d01457bfc9dcc234e1cfb5a7db2de1267a84c7a19/dxpy-0.384.0.tar.gz"
+  sha256 "17e29e9f58843c2639d53ea02b0dfd5c9940ad4ff20ab9e4df895a664f07e392"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "3942fbbc35bbc38759e471ca7d95d571a51afe48bfeab735b5e38033c25a4180"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ae83f74b00c1d5bc06fe9dde6327e079fc85eeaf6471e6c1baa81d35cf489684"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b3d5885c5a5ac8d115bc83635f43c434b761325de27315875f7c3e3b90f5ce93"
-    sha256 cellar: :any_skip_relocation, sonoma:         "59059ad1fef609061d551b28ce4ec68546da985a192e4c06b205e64b663523a5"
-    sha256 cellar: :any_skip_relocation, ventura:        "662c70e74f3bf1cfa04f27ab60003970547e3ebf71c70729921dc40b853e528b"
-    sha256 cellar: :any_skip_relocation, monterey:       "c3b2756c8e3f6d866f39ecd2e71b5838a57e76188635554dc0686d82c558c58f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8add6816d22fd53a35778690d76f0557b91f287319804849141419590755b2e3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9e8e1f5e984e8cd3e0239295e6afb62d19f2defee2c00b6155fbec624607ff51"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4215e70b70fc2ede34c2962e7f74f2c3e695bab38320cab665d64aa9da725611"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f314188bff517342419165b78b877ce643c18c3448ff6a4ae6c31fbedeb5bbda"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6b5650eac0b403d040351c28836c42e0c20e2b7329b6469004b6674a52323ca4"
+    sha256 cellar: :any_skip_relocation, ventura:       "66a7688de3b70b194ccfe10eefb823be246a4caf9a691063385e8094cc5209fe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8600ae9e4424a7e4fc142dbea452dd1249f646fefc38fb9c86e9bca1a821532a"
   end
 
-  depends_on "cffi"
-  depends_on "python-certifi"
-  depends_on "python-cryptography"
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "certifi"
+  depends_on "cryptography"
+  depends_on "python@3.13"
 
   uses_from_macos "libffi"
 
@@ -31,44 +27,37 @@ class Dxpy < Formula
   end
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/1b/c5/fb934dda06057e182f8247b2b13a281552cf55ba2b8b4450f6e003d0469f/argcomplete-3.1.2.tar.gz"
-    sha256 "d5d1e5efd41435260b8f85673b74ea2e883affcbec9f4230c582689e8e78251b"
-  end
-
-  resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
-  end
-
-  resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
+    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
+    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/d6/0f/96b7309212a926c1448366e9ce69b081ea79d63265bde33f11cc9cfc2c07/psutil-5.9.5.tar.gz"
-    sha256 "5410638e4df39c54d957fc51ce03048acd8e6d60abc0f5107af51e5fb566eb3c"
+    url "https://files.pythonhosted.org/packages/26/10/2a30b13c61e7cf937f4adf90710776b7918ed0a9c434e2c38224732af310/psutil-6.1.0.tar.gz"
+    sha256 "353815f59a7f64cdaca1c0307ee13558a0512f6db064e92fe833784f08539c7a"
   end
 
   resource "python-dateutil" do
-    url "https://files.pythonhosted.org/packages/4c/c4/13b4776ea2d76c115c1d1b84579f3764ee6d57204f6be27119f13a61d0a9/python-dateutil-2.8.2.tar.gz"
-    sha256 "0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"
+    url "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz"
+    sha256 "37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"
   end
 
-  resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/ee/391076f5937f0a8cdf5e53b701ffc91753e87b07d66bae4a09aa671897bf/requests-2.28.2.tar.gz"
-    sha256 "98b1b2782e3c6c4904938b84c0eb932721069dfdb9134313beff7c83c2df24bf"
+  resource "six" do
+    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
+    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/dd/19/9e5c8b813a8bddbfb035fa2b0c29077836ae7c4def1a55ae4632167b3511/urllib3-1.26.17.tar.gz"
-    sha256 "24d6a242c28d29af46c3fae832c36db3bbebcc533dd1bb549172cd739c82df21"
+    url "https://files.pythonhosted.org/packages/36/dd/a6b232f449e1bc71802a5b7950dc3675d32c6dbc2a1bd6d71f065551adb6/urllib3-2.1.0.tar.gz"
+    sha256 "df7aa8afb0148fa78488e7899b2c59b5f4ffcfa82e6c54ccb9dd37c1d7b52d54"
   end
 
   resource "websocket-client" do
-    url "https://files.pythonhosted.org/packages/35/d4/14e446a82bc9172d088ebd81c0b02c5ca8481bfeecb13c9ef07998f9249b/websocket_client-0.54.0.tar.gz"
-    sha256 "e51562c91ddb8148e791f0155fdb01325d99bb52c4cdbb291aee7a3563fd0849"
+    url "https://files.pythonhosted.org/packages/20/07/2a94288afc0f6c9434d6709c5320ee21eaedb2f463ede25ed9cf6feff330/websocket-client-1.7.0.tar.gz"
+    sha256 "10e511ea3a8c744631d3bd77e61eb17ed09304c413ad42cf6ddfa4c7787e8fe6"
   end
+
+  # Replace `pipes` usage for python 3.13: https://github.com/dnanexus/dx-toolkit/pull/1410
+  patch :DATA
 
   def install
     virtualenv_install_with_resources
@@ -86,3 +75,108 @@ class Dxpy < Formula
     assert_match dxenv, shell_output("#{bin}/dx env")
   end
 end
+
+__END__
+diff --git a/dxpy/cli/exec_io.py b/dxpy/cli/exec_io.py
+index 982d60450..e1d927f01 100644
+--- a/dxpy/cli/exec_io.py
++++ b/dxpy/cli/exec_io.py
+@@ -22,7 +22,7 @@ from __future__ import print_function, unicode_literals, division, absolute_impo
+ 
+ # TODO: refactor all dx run helper functions here
+ 
+-import os, sys, json, collections, pipes
++import os, sys, json, collections, shlex
+ from ..bindings.dxworkflow import DXWorkflow
+ 
+ import dxpy
+@@ -327,7 +327,7 @@ def format_choices_or_suggestions(header, items, obj_class, initial_indent=' ' *
+         # TODO: in interactive prompts the quotes here may be a bit
+         # misleading. Perhaps it should be a separate mode to print
+         # "interactive-ready" suggestions.
+-        return fill(header + ' ' + ', '.join([pipes.quote(str(item)) for item in items]),
++        return fill(header + ' ' + ', '.join([shlex.quote(str(item)) for item in items]),
+                     initial_indent=initial_indent,
+                     subsequent_indent=subsequent_indent)
+ 
+diff --git a/dxpy/utils/exec_utils.py b/dxpy/utils/exec_utils.py
+index ce0b9f5b7..8d02293b5 100644
+--- a/dxpy/utils/exec_utils.py
++++ b/dxpy/utils/exec_utils.py
+@@ -23,7 +23,7 @@ from __future__ import print_function, unicode_literals, division, absolute_impo
+ import os, sys, json, re, collections, logging, argparse, string, itertools, subprocess, tempfile
+ from functools import wraps
+ from collections import namedtuple
+-import pipes
++import shlex
+ 
+ import dxpy
+ from ..compat import USING_PYTHON2, open, Mapping
+@@ -435,7 +435,7 @@ class DXExecDependencyInstaller(object):
+                 dxpy.download_dxfile(bundle["id"], bundle["name"], project=dxpy.WORKSPACE_ID)
+             except dxpy.exceptions.ResourceNotFound:
+                 dxpy.download_dxfile(bundle["id"], bundle["name"])
+-            self.run("dx-unpack {}".format(pipes.quote(bundle["name"])))
++            self.run("dx-unpack {}".format(shlex.quote(bundle["name"])))
+         else:
+             self.log('Skipping bundled dependency "{name}" because it does not refer to a file'.format(**bundle))
+ 
+diff --git a/dxpy/utils/file_load_utils.py b/dxpy/utils/file_load_utils.py
+index 89aed97cf..6f1566401 100644
+--- a/dxpy/utils/file_load_utils.py
++++ b/dxpy/utils/file_load_utils.py
+@@ -83,7 +83,7 @@ will download into the execution environment:
+ from __future__ import print_function, unicode_literals, division, absolute_import
+ 
+ import json
+-import pipes
++import shlex
+ import os
+ import fnmatch
+ import sys
+@@ -401,10 +401,6 @@ def analyze_bash_vars(job_input_file, job_homedir):
+     return file_key_descs, rest_hash
+ 
+ 
+-#
+-# Note: pipes.quote() to be replaced with shlex.quote() in Python 3
+-# (see http://docs.python.org/2/library/pipes.html#pipes.quote)
+-#
+ def gen_bash_vars(job_input_file, job_homedir=None, check_name_collision=True):
+     """
+     :param job_input_file: path to a JSON file describing the job inputs
+@@ -427,7 +423,7 @@ def gen_bash_vars(job_input_file, job_homedir=None, check_name_collision=True):
+             result = json.dumps(dxpy.dxlink(elem))
+         else:
+             result = json.dumps(elem)
+-        return pipes.quote(result)
++        return shlex.quote(result)
+ 
+     def string_of_value(val):
+         if isinstance(val, list):
+diff --git a/dxpy/utils/local_exec_utils.py b/dxpy/utils/local_exec_utils.py
+index 72d798136..6d1e6b0d9 100755
+--- a/dxpy/utils/local_exec_utils.py
++++ b/dxpy/utils/local_exec_utils.py
+@@ -16,7 +16,7 @@
+ 
+ from __future__ import print_function, unicode_literals, division, absolute_import
+ 
+-import os, sys, json, subprocess, pipes
++import os, sys, json, subprocess, shlex
+ import collections, datetime
+ 
+ import dxpy
+@@ -351,9 +351,9 @@ def run_one_entry_point(job_id, function, input_hash, run_spec, depends_on, name
+           if [[ $(type -t {function}) == "function" ]];
+           then {function};
+           else echo "$0: Global scope execution complete. Not invoking entry point function {function} because it was not found" 1>&2;
+-          fi'''.format(homedir=pipes.quote(job_homedir),
+-                       env_path=pipes.quote(os.path.join(job_env['HOME'], 'environment')),
+-                       code_path=pipes.quote(environ['DX_TEST_CODE_PATH']),
++          fi'''.format(homedir=shlex.quote(job_homedir),
++                       env_path=shlex.quote(os.path.join(job_env['HOME'], 'environment')),
++                       code_path=shlex.quote(environ['DX_TEST_CODE_PATH']),
+                        function=function)
+         invocation_args = ['bash', '-c', '-e'] + (['-x'] if environ.get('DX_TEST_X_FLAG') else []) + [script]
+     elif run_spec['interpreter'] == 'python2.7':

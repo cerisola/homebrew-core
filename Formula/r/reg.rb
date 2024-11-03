@@ -1,11 +1,12 @@
 class Reg < Formula
   desc "Docker registry v2 command-line client"
   homepage "https://r.j3ss.co"
-  url "https://github.com/genuinetools/reg/archive/v0.16.1.tar.gz"
+  url "https://github.com/genuinetools/reg/archive/refs/tags/v0.16.1.tar.gz"
   sha256 "b65787bff71bff21f21adc933799e70aa9b868d19b1e64f8fd24ebdc19058430"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3467572641a49a95d3337e16c68fe76dd65377026f02478d955512679303cf42"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "eb3907d256779b4df3e1c499bc389b56135e9cb22f7414bad350f74a0ff90a12"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "2c6f6d7cef992aec32bb6742dd36c85c0ad46fc3b2d47450e31f983964725681"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "cf9938a3488e5e4ceb2534f2a032c4d9427787a92e6550f90eea0ff70cdb77da"

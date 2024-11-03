@@ -1,16 +1,12 @@
 class Id3ed < Formula
   desc "ID3 tag editor for MP3 files"
-  homepage "http://code.fluffytapeworm.com/projects/id3ed"
-  url "http://code.fluffytapeworm.com/projects/id3ed/id3ed-1.10.4.tar.gz"
+  homepage "https://web.archive.org/web/20230604094705/http://code.fluffytapeworm.com/projects/id3ed"
+  url "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/id3ed-1.10.4.tar.gz"
   sha256 "56f26dfde7b6357c5ad22644c2a379f25fce82a200264b5d4ce62f2468d8431b"
-  license "GPL-2.0"
-
-  livecheck do
-    url :homepage
-    regex(/href=.*?id3ed[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  license "GPL-2.0-or-later"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f4fd74264459035f47365eaedfcd7eb24a140a9165e1f5d911229349c25d1557"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ee1364fbe79738671595a35b7050d96ce311d8653d317f0f3ac6a23f8e853c18"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "2b6b901c8500506fbec5ace1aad481fae193b52264a0c40f1911b94f1f4961d4"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "ec8b1d5f390522de640fa294bf2d3c45b2f8aba7ed9711cb7698ed0ce998e935"
@@ -27,6 +23,8 @@ class Id3ed < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0955550881e7f35fdf76fe198de7f2c1908d749978587c55cc9b5574ddafb2fd"
   end
 
+  deprecate! date: "2024-01-10", because: :repo_removed
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -40,6 +38,6 @@ class Id3ed < Formula
   end
 
   test do
-    system "#{bin}/id3ed", "-r", "-q", test_fixtures("test.mp3")
+    system bin/"id3ed", "-r", "-q", test_fixtures("test.mp3")
   end
 end

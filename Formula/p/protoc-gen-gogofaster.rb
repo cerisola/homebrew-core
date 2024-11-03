@@ -1,7 +1,7 @@
 class ProtocGenGogofaster < Formula
   desc "Protocol Buffers for Go with Gadgets"
   homepage "https://github.com/gogo/protobuf"
-  url "https://github.com/gogo/protobuf/archive/v1.3.2.tar.gz"
+  url "https://github.com/gogo/protobuf/archive/refs/tags/v1.3.2.tar.gz"
   sha256 "2bb4b13d6e56b3911f09b8e9ddd15708477fbff8823c057cc79dd99c9a452b34"
   license "BSD-3-Clause"
   revision 2
@@ -23,7 +23,7 @@ class ProtocGenGogofaster < Formula
 
   # gogoprotobuf is officially deprecated:
   # https://github.com/gogo/protobuf/commit/f67b8970b736e53dbd7d0a27146c8f1ac52f74e5
-  deprecate! date: "2023-03-02", because: :deprecated_upstream
+  disable! date: "2024-02-15", because: :deprecated_upstream
 
   depends_on "go" => :build
   depends_on "protobuf"

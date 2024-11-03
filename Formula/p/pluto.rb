@@ -1,28 +1,25 @@
 class Pluto < Formula
   desc "CLI tool to help discover deprecated apiVersions in Kubernetes"
   homepage "https://fairwinds.com"
-  url "https://github.com/FairwindsOps/pluto/archive/v5.18.4.tar.gz"
-  sha256 "680a475c85774db90de310a883bfb3d1ee374074ff74061315c1b50a006fa2f0"
+  url "https://github.com/FairwindsOps/pluto/archive/refs/tags/v5.20.3.tar.gz"
+  sha256 "0e3991a8fd5e655953b1330a852a450dc26107ff77d1ceb20bd7464b86bd9e12"
   license "Apache-2.0"
   head "https://github.com/FairwindsOps/pluto.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a949e3d7b1a52d1f68f905c0036f58426ec0767b9f78fcf7195dbb802afb80e6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "360bf714d3e82e8f38bcb129d44c8e1b3e395f8778557432d59327180b3f893f"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "7c0c004b727144b2a9ea42d707d5a5cb96c6e71c16d367a699edc1c6841afea7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "ad4a529d51cd09a5f5270a1274218134ce336c3cd0164bb4ef61578afbc9d183"
-    sha256 cellar: :any_skip_relocation, sonoma:         "539062b6cf41d66f1efdcc30d649f20c7a1f2d8653117095796d2efb2f0bb526"
-    sha256 cellar: :any_skip_relocation, ventura:        "a3a15d1e797e3fa9a3a9132891d87d5c12c14e2bd5a0076d687476042da7ce2f"
-    sha256 cellar: :any_skip_relocation, monterey:       "aa27bd984ab6987cc55f4531c8eaf6843e29f9ad88bf0da325a71c4e7a4d454b"
-    sha256 cellar: :any_skip_relocation, big_sur:        "f7d6ef474db1ed985f196116d691d2f2b1ee651208f32653805301de94aca3cc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e3c44410c7c46ca818609ad8e2b258bed02036965920720f941981ba05a4b8ed"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "44002232b5b5ca5fc361005304df7647dd7c544edf37e9edb4d30c9c0cd5aeda"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "44002232b5b5ca5fc361005304df7647dd7c544edf37e9edb4d30c9c0cd5aeda"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "44002232b5b5ca5fc361005304df7647dd7c544edf37e9edb4d30c9c0cd5aeda"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cddb8b1d62bf7cc33a7d789bc089ef31af24baf7fa7ba646587390197ef44736"
+    sha256 cellar: :any_skip_relocation, ventura:       "cddb8b1d62bf7cc33a7d789bc089ef31af24baf7fa7ba646587390197ef44736"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2e6b2b713e40011b1625f67e5abd4bf67c0ab2f878ea51d2289f8c5b7e8d8879"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = "-s -w -X main.version=#{version} -X main.commit=#{tap.user}"
-    system "go", "build", *std_go_args(ldflags: ldflags), "cmd/pluto/main.go"
+    system "go", "build", *std_go_args(ldflags:), "cmd/pluto/main.go"
     generate_completions_from_executable(bin/"pluto", "completion")
   end
 

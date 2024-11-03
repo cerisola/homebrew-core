@@ -1,19 +1,17 @@
 class Symengine < Formula
   desc "Fast symbolic manipulation library written in C++"
-  homepage "https://sympy.org"
-  # TODO: Check if we can use unversioned `llvm` at version bump.
-  url "https://github.com/symengine/symengine/releases/download/v0.11.1/symengine-0.11.1.tar.gz"
-  sha256 "217b39955dc19f920c6f54c057fdc89e8e155ddee8f0e3c3cacc67b3e3850b64"
+  homepage "https://www.sympy.org/en/index.html"
+  url "https://github.com/symengine/symengine/archive/refs/tags/v0.13.0.tar.gz"
+  sha256 "f46bcf037529cd1a422369327bf360ad4c7d2b02d0f607a62a5b09c74a55bb59"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "452da25ab2ac00b95aa885ae5e3f47169dc309f76afa0b662c2469032615b4af"
-    sha256 cellar: :any,                 arm64_ventura:  "dcfec817fb0b4ac1bb455d7e880c4eb09202b2396ce2a3c5ee668dfdf7afe6fa"
-    sha256 cellar: :any,                 arm64_monterey: "8726f63a9c1e49521d17b9b8ce0bf0a7b7522261ade102cc21b163ccb45b0533"
-    sha256 cellar: :any,                 sonoma:         "52b05a062669c7d8dcbafbeb4fe8290a7e9100c5a2f1405e3146a76fa12309f7"
-    sha256 cellar: :any,                 ventura:        "ae7957ea5a89e3b173380fde901a813221896ef5413fcdf7ca5634bcdf348de4"
-    sha256 cellar: :any,                 monterey:       "cf73ccf03218d5fef43a2746afddff296fac3b162ea8e71c9caf3dae5b4c43a0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1b87ca38ef53f35491afab8bb022f034681d2a5b5dacef31c692c8412abbdfdd"
+    sha256 cellar: :any,                 arm64_sequoia: "ab15943b07b49eef917b3b107764f52fd7f8952e428a7b2af8a10241c4e58194"
+    sha256 cellar: :any,                 arm64_sonoma:  "ced7720251ccbc29f375dd0f71133bfd1981c11ba3db7521536f3c0c6594db1f"
+    sha256 cellar: :any,                 arm64_ventura: "e15d6d50c5d13cd087bff7e030bc8f18ebcab6241790977b022f7d00d6a562d5"
+    sha256 cellar: :any,                 sonoma:        "ac919504afc4391b943682f3d582c133a9ff209a229cf7c2c92f0cf50809cb05"
+    sha256 cellar: :any,                 ventura:       "a98d934c888a9aca724d592b54c40f3522c3f757245cfa1f9417e3508ebf9c2b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4da25736de0ce6db3ae9ca178d5b0d421879dcc03bd83eaaa6d0920dd069e676"
   end
 
   depends_on "cereal" => :build
@@ -21,19 +19,18 @@ class Symengine < Formula
   depends_on "flint"
   depends_on "gmp"
   depends_on "libmpc"
-  depends_on "llvm@16"
+  depends_on "llvm"
   depends_on "mpfr"
+  depends_on "zstd"
+
+  uses_from_macos "ncurses"
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "z3"
+  end
 
   fails_with gcc: "5"
-
-  # Avoid static linkage with LLVM. The static libraries contain
-  # LTOed objects which causes errors with Apple's `ld`.
-  # An alternative workaround is to use `lld` with `-fuse-ld=lld`.
-  # TODO(carlocab): Upstream a version of this patch.
-  patch do
-    url "https://gitweb.gentoo.org/repo/gentoo.git/plain/sci-libs/symengine/files/symengine-0.8.1-fix_llvm.patch?id=83ab9587be9f89e667506b861208d613a2f016e5"
-    sha256 "c654ea7c4ee44c689433e87f71c7ae78e6c04968e7dfe89be5e4ba4c8c53713b"
-  end
 
   def install
     llvm = deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }

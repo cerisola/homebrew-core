@@ -2,17 +2,17 @@ class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "https://sysdig.com/"
   license "Apache-2.0"
-  revision 2
+  revision 8
 
   stable do
-    url "https://github.com/draios/sysdig/archive/refs/tags/0.32.1.tar.gz"
-    sha256 "463ea62f3bc870b4dfaa5143abd6b790efb2219f86e8799792768d06de4169f9"
+    url "https://github.com/draios/sysdig/archive/refs/tags/0.38.1.tar.gz"
+    sha256 "68085ea118a4209dbde8f1b75584f9f84610b5856e507ffb0703d8add6331132"
 
-    # Update to value of FALCOSECURITY_LIBS_VERSION found in
-    # https://github.com/draios/sysdig/blob/#{version}/cmake/modules/falcosecurity-libs.cmake
+    # Update to value of FALCOSECURITY_LIBS_VERSION with
+    # VERSION=#{version} && curl -fsSL https://raw.githubusercontent.com/draios/sysdig/$VERSION/cmake/modules/falcosecurity-libs.cmake | grep -o 'set(FALCOSECURITY_LIBS_VERSION "[0-9.]*")' | awk -F'"' '{print $2}'
     resource "falcosecurity-libs" do
-      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.11.3.tar.gz"
-      sha256 "b4f9dc8c1612f4b14207d107bce323a0684dce0dbf018e5b846177992569367b"
+      url "https://github.com/falcosecurity/libs/archive/refs/tags/0.17.2.tar.gz"
+      sha256 "5c4f0c987272b7d5236f6ab2bbe3906ffdaf76b59817b63cf90cc8c387ab5b15"
     end
   end
 
@@ -22,15 +22,12 @@ class Sysdig < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:   "123029f1b33c4a42afb7c158c7a5d6de620fd937f6b035998a4386a23d883bc1"
-    sha256                               arm64_ventura:  "a02f4c3b7ae008af08860f1c1445b70eca5b944291575603e765bb6a69a7ed9a"
-    sha256                               arm64_monterey: "7805c1f30943acb2699c7eeade2c76b64342858dfddcf74fd3e5d14853621003"
-    sha256                               arm64_big_sur:  "ff32761f9e5c29a3216e05768e8198e4b0ae9e7fbc930a5fd03bea750153a704"
-    sha256                               sonoma:         "b900277b0be94a48a4dcc775a2ed48138c88cb0dc5f02630c52922f900e48ba5"
-    sha256                               ventura:        "ec1c02c077c32543b6122ad09527323e9f3f42e38bcea724925bd496594342e2"
-    sha256                               monterey:       "c730c92285371e0bbccb1784f8c72555039d5191a84511dabf2e6e24a342c231"
-    sha256                               big_sur:        "13388282ec131d56d1bbd46be67e88368b022000df4f42135b62b34e0944a36f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "827fb0c8956e5e181821379bd6661cff349e60495800acfda464d59890af8480"
+    sha256                               arm64_sequoia: "73d8001f1501c3dbf721bb7cf6931c0b8c0ae03af9fdc8462ae38a50e3dbc139"
+    sha256                               arm64_sonoma:  "c495becf5ad90d218c6fe6ee520c7a64ee3b76a16c8c0fabd998f14ff18eab20"
+    sha256                               arm64_ventura: "9642fe14b6b62001688abaedeac9d81fb427e8b4f36695e65a94339c949484a4"
+    sha256                               sonoma:        "bb58356975a7a7adc3fa1a82a7fb1a02b0198919e7befcc4168f36c826916216"
+    sha256                               ventura:       "f2b7d2aff2a4dd129c6a47564ad7c606b2dc4bcc9b9dbc2f9f2e0a92799aaf64"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e8c690d5882a584d8dc76f5409eef1208a1dc74bea9391924cec7757f4bf6efe"
   end
 
   head do
@@ -44,25 +41,25 @@ class Sysdig < Formula
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
   depends_on "valijson" => :build
-  depends_on "c-ares"
   depends_on "jsoncpp"
   depends_on "luajit"
+  depends_on "ncurses" # for `newterm` function
   depends_on "re2"
   depends_on "tbb"
+  depends_on "uthash"
   depends_on "yaml-cpp"
 
   uses_from_macos "curl"
-  uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "libb64" => :build
     depends_on "abseil"
     depends_on "elfutils"
-    depends_on "grpc@1.54"
+    depends_on "grpc"
     depends_on "jq"
     depends_on "openssl@3"
-    depends_on "protobuf@21"
+    depends_on "protobuf"
     depends_on "zstd"
   end
 
@@ -89,7 +86,6 @@ class Sysdig < Formula
       -DBUILD_LIBSCAP_EXAMPLES=OFF
       -DDIR_ETC=#{etc}
       -DFALCOSECURITY_LIBS_SOURCE_DIR=#{buildpath}/falcosecurity-libs
-      -DCMAKE_CXX_FLAGS=-std=c++17
     ]
 
     # `USE_BUNDLED_*=OFF` flags are implied by `USE_BUNDLED_DEPS=OFF`, but let's be explicit.
@@ -97,7 +93,7 @@ class Sysdig < Formula
       args << "-DUSE_BUNDLED_#{dep}=OFF"
     end
 
-    args << "-DBUILD_DRIVER=OFF" if OS.linux?
+    args += ["-DBUILD_DRIVER=OFF", "-DBUILD_LIBSCAP_MODERN_BPF=OFF"] if OS.linux?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

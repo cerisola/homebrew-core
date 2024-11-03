@@ -1,12 +1,13 @@
 class Libhttpserver < Formula
   desc "C++ library of embedded Rest HTTP server"
   homepage "https://github.com/etr/libhttpserver"
-  url "https://github.com/etr/libhttpserver/archive/0.19.0.tar.gz"
+  url "https://github.com/etr/libhttpserver/archive/refs/tags/0.19.0.tar.gz"
   sha256 "b108769ed68d72c58961c517ab16c3a64e4efdc4c45687723bb45bb9e04c5193"
   license "LGPL-2.1-or-later"
   head "https://github.com/etr/libhttpserver.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "a52ab6c0ede296608a7aa71640485e6295b72ae13cfdbb14cbd91c032d9c0af7"
     sha256 cellar: :any,                 arm64_sonoma:   "8656daf385c457a28484c8bff0d6271a5271980ab97899b249c1890274617fb7"
     sha256 cellar: :any,                 arm64_ventura:  "b11af50845ce2a87984d6240d3d7db441be82f84fde6fc6447866cc0dd5e6236"
     sha256 cellar: :any,                 arm64_monterey: "ce9d31e81bfbc06990ae1b57b295278e341d5917e157688d999f48c102ec4fba"

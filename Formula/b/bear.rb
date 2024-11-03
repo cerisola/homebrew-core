@@ -1,27 +1,28 @@
 class Bear < Formula
   desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/refs/tags/3.1.3.tar.gz"
-  sha256 "8314438428069ffeca15e2644eaa51284f884b7a1b2ddfdafe12152581b13398"
+  url "https://github.com/rizsotto/Bear/archive/refs/tags/3.1.5.tar.gz"
+  sha256 "4ac7b041222dcfc7231c6570d5bd76c39eaeda7a075ee2385b84256e7d659733"
   license "GPL-3.0-or-later"
-  revision 6
+  revision 3
   head "https://github.com/rizsotto/Bear.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:   "2fc142070d7051a148db7c0a0f34f60b47c0d6d2cab89198860c57cc64e328e6"
-    sha256 arm64_ventura:  "65235e8ceea7020200047853e5cc1f54610b567020636f926fe05673bdb0d8dc"
-    sha256 arm64_monterey: "fd8bf12fdaf487cb3ed5a69e2689b9bf4badefcc8f18ac50984aa0139ebb6b14"
-    sha256 sonoma:         "e40a0e7e77f39301f97154a04afcda0bafcb5f3b6441df3faa33de9b054a7998"
-    sha256 ventura:        "5bf51ef586b069e524d6b886b5e740519aa3c38aeced1ce4e2b3f59dc216a90b"
-    sha256 monterey:       "71a203c10098ca5f6ed76dec0ce1ed09b925200238c3cc246f2ab6870343eb94"
-    sha256 x86_64_linux:   "7b6f94d16e30af92517e7cf63024563f8ba2d0d669cfc63ef5288c8d8d56687e"
+    sha256 arm64_sequoia: "c057ba2bd307d69afeb6ef8b0931fa93f67a6bf7fa60b7ac0eb64ea31c2e20da"
+    sha256 arm64_sonoma:  "40eb873ae7aee68443b02b643c5d18b1fe56d87e8d85c6d2e72618879fcc92c1"
+    sha256 arm64_ventura: "2e90f0eda00ec07b9d53ffc1557b0ac5bb8d79dd3aef0edcf0c84737a83b68b3"
+    sha256 sonoma:        "1351a56c8b15552957ba98fb0b7c3048d68980f7ef890eaeecffc62456a8e0de"
+    sha256 ventura:       "9b0559237fb47ae1f16469370c7d288c735d6e1bf344cbe74b4b3724b6dfb727"
+    sha256 x86_64_linux:  "53ce9f3e2d4019eb7f4e407b39c4900077fba3c2668b6cd3b6c43d561b6f74d1"
   end
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "abseil"
   depends_on "fmt"
   depends_on "grpc"
   depends_on "nlohmann-json"
+  depends_on "protobuf"
   depends_on "spdlog"
 
   uses_from_macos "llvm" => :test
@@ -54,13 +55,13 @@ class Bear < Formula
   end
 
   test do
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       int main() {
         printf("hello, world!\\n");
         return 0;
       }
-    EOS
+    C
     system bin/"bear", "--", "clang", "test.c"
     assert_predicate testpath/"compile_commands.json", :exist?
   end

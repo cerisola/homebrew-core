@@ -1,19 +1,20 @@
 class Zchunk < Formula
   desc "Compressed file format for efficient deltas"
   homepage "https://github.com/zchunk/zchunk"
-  url "https://github.com/zchunk/zchunk/archive/refs/tags/1.3.2.tar.gz"
-  sha256 "4d923d32af7db33f3c0a6655b258e857a2ca564912cf85ddce14e9b1b7d495bf"
+  url "https://github.com/zchunk/zchunk/archive/refs/tags/1.5.1.tar.gz"
+  sha256 "2c187055e2206e62cef4559845e7c2ec6ec5a07ce1e0a6044e4342e0c5d7771d"
   license "BSD-2-Clause"
   head "https://github.com/zchunk/zchunk.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:   "60cb58ec52cfe85e491151078212316420be58c7ace22bb63afc46594ed5d192"
-    sha256 cellar: :any, arm64_ventura:  "3a1e70c83423d0d4ede8afaebd5f86304973060616bdb8e26d2573d8c1e5cc68"
-    sha256 cellar: :any, arm64_monterey: "ba3dd413abe47ce61cee4d42cc2b7b097208499e033ade1d77f1c43ebc8c9d36"
-    sha256 cellar: :any, sonoma:         "ecb704bea46a2a94309a8166005c54fd13bf25860ddb50f9b022cdb978c4956f"
-    sha256 cellar: :any, ventura:        "fb88c5e25e7ea3362d4fa63d4779e4edbe2dd4b1974a4357092c78c6ee043bcb"
-    sha256 cellar: :any, monterey:       "b73bf740eb26ea3fa177a9368974ddf58a197d9a6989dafba20e2485ccacff8f"
-    sha256               x86_64_linux:   "5ec84154d0d544b011eb244e6f45a4bc74bf9f3e12eeb327287cfd91da1b140e"
+    sha256 cellar: :any, arm64_sequoia:  "550f804db96f40d3d97fd722bfd9dae58e97d1edc056ada722dbb94a6a4b6f67"
+    sha256 cellar: :any, arm64_sonoma:   "716e3b4a5e310ef2c2e28981287ad44c34ffb65d8017c266a94e2b2740158263"
+    sha256 cellar: :any, arm64_ventura:  "02c1e7311098a207e3c5acdaf951c1f0f79d732190bd26697384de3d297c7a17"
+    sha256 cellar: :any, arm64_monterey: "54b3a061081d1d37df726b7453e24a6e68d7916afc752fa3ef251a2233aa96ea"
+    sha256 cellar: :any, sonoma:         "07d03afa6c20b2f462ff04f2de17da192bd1be0970cee9606e40b6b735e11894"
+    sha256 cellar: :any, ventura:        "9573ef44975ddcd9cd08a67183a3e244303386fad0af7111467dd00f46d5ca5b"
+    sha256 cellar: :any, monterey:       "8cc7d00b71b7972981f2360d819c07e6e8da894c5995035ebd77073b911562c6"
+    sha256               x86_64_linux:   "65da8bdeab902d65867eda5a3fbda3b6a490827c111872589520e97349b810ee"
   end
 
   depends_on "meson" => :build

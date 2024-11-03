@@ -1,9 +1,10 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.3.tar.bz2"
-  sha256 "a271ae6d732f6f4d80c258ad9ee88dd9c94c8fdc33c3e45328c4d7c126bd219d"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.5.tar.bz2"
+  sha256 "f68f7d75d06cb1635c336d34d844af97436c3f64ea14bcb7c869782f96f44277"
   license "GPL-3.0-or-later"
+  revision 1
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gnupg/"
@@ -11,16 +12,14 @@ class Gnupg < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:   "b9640de5facabd205cfb8147444a3c08bf973f86ff0802461613b74fcf68457d"
-    sha256 arm64_ventura:  "b36cece245a9b2f401fb25f5a8889e03458b76aca9f7bdaf95bac90fa067fb50"
-    sha256 arm64_monterey: "8951a873559c55131f5cf620528039653b1656fb8f428f9df4755230b7b8737c"
-    sha256 arm64_big_sur:  "51178a0ebf5071ff97acfca894ff19d2563757b06db45cc639cf565dcfa28540"
-    sha256 sonoma:         "2b0b7b726fb7a4e98dcefb331d7bebaac035037d4d00aa2b037a316d91ea591d"
-    sha256 ventura:        "92c5de78a69010ffa7c30578f08b7443bde2906d553e6e225be131e34d983ad0"
-    sha256 monterey:       "d9a628e366f7373ef3aa576f03b6cbba0671c77e3a2606796d3e6b05d6c7f447"
-    sha256 big_sur:        "0f7278b21edfbcbc9d7350f8231eead52164283de936433ff85aea4eeff26831"
-    sha256 x86_64_linux:   "806bf7a22e94d2c83bd19278a23cf7988074e86b5fd4cd0e6d1e031b9fc96fc0"
+    sha256 arm64_sequoia:  "e83617dfd24a26f898c858886429a9cc22cdff98b65212821af9d6140113c99f"
+    sha256 arm64_sonoma:   "bcb60ed535c0e2e5ac97bc49977246d94455d5b6a74ed9366377249f78e782fb"
+    sha256 arm64_ventura:  "fc5d5508f278f822b57e1e05fc4a1cee1116fb3f6521fbc523669e6862d104fe"
+    sha256 arm64_monterey: "ada53b5a636355f354ff11584e2f488bf167ef7ba1d3e20ce742ee286b47cc6c"
+    sha256 sonoma:         "45ad3a0750e638402ecd6135219ba4592b847d2c5e5a27c3e05657d3433bf5ec"
+    sha256 ventura:        "acb0a737a9f5c10a50348b3aaa0f247ea578c7b84d86ccdaafb22c818d7b7426"
+    sha256 monterey:       "23a18b638018bb3ee5339dbb00d16b4ef58047a351903ebeef72335e9565e4b8"
+    sha256 x86_64_linux:   "9a7d57f7e335fd7b506848fa15ee1be52d8940b8c5dfc0c6a3c8d9f406fbeb93"
   end
 
   depends_on "pkg-config" => :build
@@ -31,11 +30,11 @@ class Gnupg < Formula
   depends_on "libksba"
   depends_on "libusb"
   depends_on "npth"
-  depends_on "openldap"
   depends_on "pinentry"
   depends_on "readline"
 
   uses_from_macos "bzip2"
+  uses_from_macos "openldap"
   uses_from_macos "sqlite", since: :catalina
   uses_from_macos "zlib"
 

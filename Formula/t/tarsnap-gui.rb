@@ -1,7 +1,7 @@
 class TarsnapGui < Formula
   desc "Cross-platform GUI for the Tarsnap command-line client"
   homepage "https://github.com/Tarsnap/tarsnap-gui/wiki"
-  url "https://github.com/Tarsnap/tarsnap-gui/archive/v1.0.2.tar.gz"
+  url "https://github.com/Tarsnap/tarsnap-gui/archive/refs/tags/v1.0.2.tar.gz"
   sha256 "3b271f474abc0bbeb3d5d62ee76b82785c7d64145e6e8b51fa7907b724c83eae"
   license "BSD-2-Clause"
   revision 1
@@ -9,6 +9,7 @@ class TarsnapGui < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia:  "c9cddf5f7eb1d96d77deabf95a9633bdc7fbc649f8349e6960db1f071346e34a"
     sha256 cellar: :any,                 arm64_sonoma:   "219f6ec9f2c36912eaca916110b5ddbb59b7da0285ecee28a73e31023347dad5"
     sha256 cellar: :any,                 arm64_ventura:  "4fd9934a3a064497bfcb361b154dccb74c1cf6343d1b0c40080f1b10f7c061ee"
     sha256 cellar: :any,                 arm64_monterey: "80bebc64d5dad7087f331f5c5e1ebecda9d0ca787903bdb9c233220b53400a5d"

@@ -1,17 +1,17 @@
 class Gwt < Formula
   desc "Google web toolkit"
   homepage "https://www.gwtproject.org/"
-  url "https://github.com/gwtproject/gwt/releases/download/2.10.0/gwt-2.10.0.zip"
-  sha256 "3be5fe11c27e8fd5a513eff8b14c2f26999faf4b991a8ad428f1916a36884427"
+  url "https://github.com/gwtproject/gwt/releases/download/2.12.0/gwt-2.12.0.zip"
+  sha256 "29e2b4fcbcf9807233aac786a0327b8467d34ef82d32021e1ac5388d30df447f"
   license "Apache-2.0"
 
   livecheck do
-    url "https://github.com/gwtproject/gwt.git"
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0ac6c7ae2e25587312f417cb5b0acfd8837a676ab63f70d77def1549cb280187"
+    sha256 cellar: :any_skip_relocation, all: "1af88bff38eeb53f994baf67b0b6831c24b7c9c73f4b8dcdb0227958eaf26de5"
   end
 
   depends_on "openjdk"

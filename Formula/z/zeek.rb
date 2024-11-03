@@ -2,10 +2,9 @@ class Zeek < Formula
   desc "Network security monitor"
   homepage "https://www.zeek.org"
   url "https://github.com/zeek/zeek.git",
-      tag:      "v5.2.2",
-      revision: "a6f825b81da389bb2deb1cf389dbd7e88efd4a1c"
+      tag:      "v7.0.3",
+      revision: "7a73f817929b72b8c7acf697bf52b7267606a207"
   license "BSD-3-Clause"
-  revision 1
   head "https://github.com/zeek/zeek.git", branch: "master"
 
   livecheck do
@@ -14,15 +13,13 @@ class Zeek < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "bdb01f2fe10973bc6cb47ff0098c4a5298ddd54ef59edeb4c1c3ccd03695cdde"
-    sha256 arm64_ventura:  "2147729674a13e36581811343ef3880380f6f1cbff54ac6f3d6df09ef894ca3d"
-    sha256 arm64_monterey: "5a5194f11c64daacbea20752a86627e61614bc51a3687d2e1a56418351bdef90"
-    sha256 arm64_big_sur:  "d35effe61620bda186fd6c39924e686dd3fa09460b49d45fe3aba0624525b979"
-    sha256 sonoma:         "c2dc0703b7f77ae45a481323a441671d57d1aac91fe26166da05a9403ef60f5a"
-    sha256 ventura:        "9f54a2848fd06cf4eecc86a29f695f42d6be011c8df62a0d14a377096444bcbc"
-    sha256 monterey:       "c2b90ef76a0603d18cf9bc34ddf890f2e1d931fb560895e200ec7fcdf92bee49"
-    sha256 big_sur:        "9ee867f78cac0ef8ab99774907ad934f02377fbb0472add072167c599908cfae"
-    sha256 x86_64_linux:   "17821b640c05caa7758779020d4cc896216a6ac3b40cfaa5fd979fe528e8d7e0"
+    rebuild 1
+    sha256 arm64_sequoia: "ce92ee784b8b302175a1f29e31fc292cf7fef775fa506ee78fadf3f45b759177"
+    sha256 arm64_sonoma:  "d5b8f011c59888ac864fe9b0c4be5a30d0d0b9817df178bb524e1062ddcd289c"
+    sha256 arm64_ventura: "21efb12b934dc15638b60052ef638c1ed1c1aaf9809bfab0c76177b4591076dd"
+    sha256 sonoma:        "99f4c4cbacb50db354127e5d9e46f17d7288b02d9ee6893060e49976a0353af5"
+    sha256 ventura:       "b4c634b6c6da782915437cbad88432169b83c5057275331101752de234be418e"
+    sha256 x86_64_linux:  "e96efe18a7ad36db69d738674573f55d177e61ef5883ac9d17851b32c7a2f83a"
   end
 
   depends_on "bison" => :build
@@ -33,8 +30,9 @@ class Zeek < Formula
   depends_on "libmaxminddb"
   depends_on macos: :mojave
   depends_on "openssl@3"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
+  uses_from_macos "krb5"
   uses_from_macos "libpcap"
   uses_from_macos "libxcrypt"
   uses_from_macos "zlib"
@@ -42,17 +40,15 @@ class Zeek < Formula
   fails_with gcc: "5"
 
   def install
-    (buildpath/"auxil/c-ares").rmtree
-
     # Remove SDK paths from zeek-config. This breaks usage with other SDKs.
     # https://github.com/Homebrew/homebrew-core/pull/74932
-    inreplace "zeek-config.in" do |s|
+    inreplace "cmake_templates/zeek-config.in" do |s|
       s.gsub! "@ZEEK_CONFIG_PCAP_INCLUDE_DIR@", ""
       s.gsub! "@ZEEK_CONFIG_ZLIB_INCLUDE_DIR@", ""
     end
 
     # Avoid references to the Homebrew shims directory
-    inreplace "auxil/spicy/spicy/hilti/toolchain/src/config.cc.in", "${CMAKE_CXX_COMPILER}", ENV.cxx
+    inreplace "auxil/spicy/hilti/toolchain/src/config.cc.in", "${CMAKE_CXX_COMPILER}", ENV.cxx
 
     system "cmake", "-S", ".", "-B", "build",
                     "-DBROKER_DISABLE_TESTS=on",
@@ -63,7 +59,7 @@ class Zeek < Formula
                     "-DCARES_LIBRARIES=#{Formula["c-ares"].opt_lib/shared_library("libcares")}",
                     "-DLibMMDB_LIBRARY=#{Formula["libmaxminddb"].opt_lib/shared_library("libmaxminddb")}",
                     "-DOPENSSL_ROOT_DIR=#{Formula["openssl@3"].opt_prefix}",
-                    "-DPYTHON_EXECUTABLE=#{which("python3.11")}",
+                    "-DPYTHON_EXECUTABLE=#{which("python3.13")}",
                     "-DZEEK_ETC_INSTALL_DIR=#{etc}",
                     "-DZEEK_LOCAL_STATE_DIR=#{var}",
                     *std_cmake_args

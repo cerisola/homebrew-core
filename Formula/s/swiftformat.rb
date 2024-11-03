@@ -1,27 +1,32 @@
 class Swiftformat < Formula
   desc "Formatting tool for reformatting Swift code"
   homepage "https://github.com/nicklockwood/SwiftFormat"
-  url "https://github.com/nicklockwood/SwiftFormat/archive/0.52.7.tar.gz"
-  sha256 "c0a84b7a2455b2949d191c696821beddbd0b657ed418a8b4c74e52ae799bf5d6"
+  url "https://github.com/nicklockwood/SwiftFormat/archive/refs/tags/0.54.6.tar.gz"
+  sha256 "6149936f669e672705fd0be87759548b57ed28da32c13d054a285dd08fc56ce3"
   license "MIT"
+  revision 1
   head "https://github.com/nicklockwood/SwiftFormat.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5ea12e1d44634889dff5940c9c20f775ea21a4e0e368bf0349200ff717d09764"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "75ec78be0712f8b61a3aa364c510cd7338548dba5c0684778f735a441693ece6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "674754621bdbdb298d54cfbb786a75ec2e497ebd0272278651e52c39925f9043"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e430901d81f742be9afcaae64ac3f56f2f95c8c738063492a808795247608078"
-    sha256 cellar: :any_skip_relocation, ventura:        "2cecfe76c6b8e250d94e6f75ff48d60a5cb6ef3cd991f659dc4a490e0e41fe3c"
-    sha256 cellar: :any_skip_relocation, monterey:       "95bfda22ba1cee55ca196a853b41194afc34138cca7d2d50014e1558ce85fca0"
-    sha256                               x86_64_linux:   "09aac5b6f75621820b5d76b6aa4efae8af5e5f5fd18bf051e98d2464376f57b3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "03eb08eb7de0e697e574b5d5c94104a88c9548ee880b942f1916536fe7ff897a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0ff9c3c154fea61303bd060da1aecebb025a3a33460b24910cf55e6ae366574e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "52200577da57cebd27e7d4b6a9ed84f6d3475b7f91e28ec4f5947fc2992cd943"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9f79e28a0a5c7172be8bfcf23fca47de08f8bc03a3ddcdfbf52704445b9d8b18"
+    sha256 cellar: :any_skip_relocation, ventura:       "416528899d45dc25edc2f14c857239a2c922b4be548345423857f140c6b90f0f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86c47e1a74da98ff5646c8d510ea5e6de45e9dc97bc59f151bd2a8848b5bc9f8"
   end
 
   depends_on xcode: ["10.1", :build]
 
-  uses_from_macos "swift"
+  uses_from_macos "swift" => :build
 
   def install
-    system "swift", "build", "--disable-sandbox", "--configuration", "release"
+    args = if OS.mac?
+      ["--disable-sandbox"]
+    else
+      ["--static-swift-stdlib"]
+    end
+    system "swift", "build", *args, "--configuration", "release"
     bin.install ".build/release/swiftformat"
   end
 
@@ -31,6 +36,6 @@ class Swiftformat < Formula
         let baked: Bool
       }
     EOS
-    system "#{bin}/swiftformat", "#{testpath}/potato.swift"
+    system bin/"swiftformat", "#{testpath}/potato.swift"
   end
 end

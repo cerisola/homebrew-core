@@ -1,7 +1,7 @@
 class IcarusVerilog < Formula
   desc "Verilog simulation and synthesis tool"
-  homepage "http://iverilog.icarus.com/"
-  url "https://github.com/steveicarus/iverilog/archive/v12_0.tar.gz"
+  homepage "https://steveicarus.github.io/iverilog/"
+  url "https://github.com/steveicarus/iverilog/archive/refs/tags/v12_0.tar.gz"
   mirror "https://deb.debian.org/debian/pool/main/i/iverilog/iverilog_12.0.orig.tar.gz"
   sha256 "a68cb1ef7c017ef090ebedb2bc3e39ef90ecc70a3400afb4aa94303bc3beaa7d"
   license all_of: ["GPL-2.0-or-later", "LGPL-2.1-or-later"]
@@ -14,6 +14,7 @@ class IcarusVerilog < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "71feafd9b968350f08ca504f95b7d0be4e048799c47c145e2d7757ce0d179a5c"
     sha256 arm64_sonoma:   "16e03356975ad058efbf99a12cb1ed1a6c078aea5d7b5bb6a0035442afb0f335"
     sha256 arm64_ventura:  "0c963a73d69e2c0ad3c6813dd9d03ac4b5a880052bf9ecb28a8918adc9384b4e"
     sha256 arm64_monterey: "968e2d0ca44b96920ad0806c19101a4dbd888ae8f5d3f6ede6395b13ee84c35b"

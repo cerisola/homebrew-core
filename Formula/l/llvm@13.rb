@@ -8,14 +8,14 @@ class LlvmAT13 < Formula
   revision 2
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sonoma:   "ec7069e2ef45c1c7b5088961aebbb4818c7a72cf7b031ab4b7c88bac208039b8"
-    sha256 cellar: :any,                 arm64_ventura:  "f4e2b7b3aa213e7d634f944cfacb9579a198224b82b111f410e536d3fc1ba9a3"
-    sha256 cellar: :any,                 arm64_monterey: "dc925c760eec7dc198f9fc0020f73dc0c7b6be988a3a44fb90a2e4481d578c54"
-    sha256 cellar: :any,                 sonoma:         "63d7c41c10ec196efe9344071e2255a662374e2971b959e043dad528c11bf4d7"
-    sha256 cellar: :any,                 ventura:        "623f775f7f68a4b99c7e9b7b4394cad6c3c5cd7dc3c82c2237124ee88e12389b"
-    sha256 cellar: :any,                 monterey:       "baa96ae03422c4b5326f3b94a822df388d07ac103ab6a3be0f04350b387b2b1e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "00e97b89acd17e0b9e331abccb015b41f1e5272c9c8a9d85063c78c34188facd"
+    rebuild 3
+    sha256 cellar: :any,                 arm64_sonoma:   "db9efb0df5d75d654e23e0699cc26c0ccd2b873e2f4b806c9009f499e2f451da"
+    sha256 cellar: :any,                 arm64_ventura:  "ef709ae700f432ef0276155a638829209fdcf962534a098a136104236b0f7a63"
+    sha256 cellar: :any,                 arm64_monterey: "aa340cdabef508ad825ff0536591509d358d0f415934ba60503d884a1394b1ae"
+    sha256 cellar: :any,                 sonoma:         "8ab60dd1c20eb7703ead39f4941341e7d05a79070bd4371c935f32754ee3e452"
+    sha256 cellar: :any,                 ventura:        "c35559d766684ab3bec45d5fb193889e5747559b881d8ce59b957143404a29c6"
+    sha256 cellar: :any,                 monterey:       "eac8512d5dcaf83f34d9c50b9a9a0d136eb01660081e429bc44f748f68663362"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a6a082798274468805b9a1c19e165a9dd78d2043b80a2c97d289010967316a77"
   end
 
   # Clang cannot find system headers if Xcode CLT is not installed
@@ -23,10 +23,15 @@ class LlvmAT13 < Formula
 
   keg_only :versioned_formula
 
+  disable! date: "2024-12-31", because: :versioned_formula
+
   # https://llvm.org/docs/GettingStarted.html#requirement
   # We intentionally use Make instead of Ninja.
   # See: Homebrew/homebrew-core/issues/35513
   depends_on "cmake" => :build
+  # sanitizer_mac.cpp:635:15: error: constexpr function never produces a constant expression [-Winvalid-constexpr]
+  # constexpr u16 GetOSMajorKernelOffset() {
+  depends_on maximum_macos: [:sonoma, :build]
   depends_on "python@3.11" => :build
 
   uses_from_macos "python" => :test
@@ -119,19 +124,16 @@ class LlvmAT13 < Formula
       -DCLANG_VENDOR_UTI=org.#{tap.user.downcase}.clang
     ]
 
-    macos_sdk = MacOS.sdk_path_if_needed
-    if MacOS.version >= :catalina
-      args << "-DFFI_INCLUDE_DIR=#{macos_sdk}/usr/include/ffi"
-      args << "-DFFI_LIBRARY_DIR=#{macos_sdk}/usr/lib"
-    else
-      args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_include}"
-      args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
-    end
-
     runtimes_cmake_args = []
     builtins_cmake_args = []
 
     if OS.mac?
+      macos_sdk = MacOS.sdk_path_if_needed
+      if MacOS.version >= :catalina
+        args << "-DFFI_INCLUDE_DIR=#{macos_sdk}/usr/include/ffi"
+        args << "-DFFI_LIBRARY_DIR=#{macos_sdk}/usr/lib"
+      end
+
       args << "-DLLVM_BUILD_LLVM_C_DYLIB=ON"
       args << "-DLLVM_ENABLE_LIBCXX=ON"
       args << "-DLIBCXX_INSTALL_LIBRARY_DIR=#{lib}/c++"
@@ -147,6 +149,9 @@ class LlvmAT13 < Formula
         arg_array << "-DCMAKE_LINKER=ld"
       end
     else
+      args << "-DFFI_INCLUDE_DIR=#{Formula["libffi"].opt_include}"
+      args << "-DFFI_LIBRARY_DIR=#{Formula["libffi"].opt_lib}"
+
       # Disable `libxml2` which isn't very useful.
       args << "-DLLVM_ENABLE_LIBXML2=OFF"
       args << "-DLLVM_ENABLE_LIBCXX=OFF"
@@ -264,7 +269,7 @@ class LlvmAT13 < Formula
     assert_equal (lib/shared_library("libLLVM-#{soversion}")).to_s,
                  shell_output("#{bin}/llvm-config --libfiles").chomp
 
-    (testpath/"omptest.c").write <<~EOS
+    (testpath/"omptest.c").write <<~C
       #include <stdlib.h>
       #include <stdio.h>
       #include <omp.h>
@@ -275,9 +280,9 @@ class LlvmAT13 < Formula
           }
           return EXIT_SUCCESS;
       }
-    EOS
+    C
 
-    system "#{bin}/clang", "-L#{lib}", "-fopenmp", "-nobuiltininc",
+    system bin/"clang", "-L#{lib}", "-fopenmp", "-nobuiltininc",
                            "-I#{lib}/clang/#{llvm_version.major_minor_patch}/include",
                            "omptest.c", "-o", "omptest"
     testresult = shell_output("./omptest")
@@ -291,39 +296,39 @@ class LlvmAT13 < Formula
     EOS
     assert_equal expected_result.strip, sorted_testresult.strip
 
-    (testpath/"test.c").write <<~EOS
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       int main()
       {
         printf("Hello World!\\n");
         return 0;
       }
-    EOS
+    C
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       int main()
       {
         std::cout << "Hello World!" << std::endl;
         return 0;
       }
-    EOS
+    CPP
 
     # Testing default toolchain and SDK location.
-    system "#{bin}/clang++", "-v",
+    system bin/"clang++", "-v",
            "-std=c++11", "test.cpp", "-o", "test++"
     assert_includes MachO::Tools.dylibs("test++"), "/usr/lib/libc++.1.dylib" if OS.mac?
     assert_equal "Hello World!", shell_output("./test++").chomp
-    system "#{bin}/clang", "-v", "test.c", "-o", "test"
+    system bin/"clang", "-v", "test.c", "-o", "test"
     assert_equal "Hello World!", shell_output("./test").chomp
 
     # These tests should ignore the usual SDK includes
     with_env(CPATH: nil) do
       # Testing Command Line Tools
-      if MacOS::CLT.installed?
+      if OS.mac? && MacOS::CLT.installed?
         toolchain_path = "/Library/Developer/CommandLineTools"
         cpp_base = (MacOS.version >= :big_sur) ? MacOS::CLT.sdk_path : toolchain_path
-        system "#{bin}/clang++", "-v",
+        system bin/"clang++", "-v",
                "-isysroot", MacOS::CLT.sdk_path,
                "-isystem", "#{cpp_base}/usr/include/c++/v1",
                "-isystem", "#{MacOS::CLT.sdk_path}/usr/include",
@@ -331,14 +336,14 @@ class LlvmAT13 < Formula
                "-std=c++11", "test.cpp", "-o", "testCLT++"
         assert_includes MachO::Tools.dylibs("testCLT++"), "/usr/lib/libc++.1.dylib"
         assert_equal "Hello World!", shell_output("./testCLT++").chomp
-        system "#{bin}/clang", "-v", "test.c", "-o", "testCLT"
+        system bin/"clang", "-v", "test.c", "-o", "testCLT"
         assert_equal "Hello World!", shell_output("./testCLT").chomp
       end
 
       # Testing Xcode
-      if MacOS::Xcode.installed?
+      if OS.mac? && MacOS::Xcode.installed?
         cpp_base = (MacOS::Xcode.version >= "12.5") ? MacOS::Xcode.sdk_path : MacOS::Xcode.toolchain_path
-        system "#{bin}/clang++", "-v",
+        system bin/"clang++", "-v",
                "-isysroot", MacOS::Xcode.sdk_path,
                "-isystem", "#{cpp_base}/usr/include/c++/v1",
                "-isystem", "#{MacOS::Xcode.sdk_path}/usr/include",
@@ -346,7 +351,7 @@ class LlvmAT13 < Formula
                "-std=c++11", "test.cpp", "-o", "testXC++"
         assert_includes MachO::Tools.dylibs("testXC++"), "/usr/lib/libc++.1.dylib"
         assert_equal "Hello World!", shell_output("./testXC++").chomp
-        system "#{bin}/clang", "-v",
+        system bin/"clang", "-v",
                "-isysroot", MacOS.sdk_path,
                "test.c", "-o", "testXC"
         assert_equal "Hello World!", shell_output("./testXC").chomp
@@ -356,7 +361,7 @@ class LlvmAT13 < Formula
       # related to https://github.com/Homebrew/legacy-homebrew/issues/47149
       cxx_libdir = opt_lib
       cxx_libdir /= "c++" if OS.mac?
-      system "#{bin}/clang++", "-v",
+      system bin/"clang++", "-v",
              "-isystem", "#{opt_include}/c++/v1",
              "-std=c++11", "-stdlib=libc++", "test.cpp", "-o", "testlibc++",
              "-rtlib=compiler-rt", "-L#{cxx_libdir}", "-Wl,-rpath,#{cxx_libdir}"
@@ -382,7 +387,7 @@ class LlvmAT13 < Formula
       # search paths or handle all of the libraries needed by `libc++` when
       # linking statically.
 
-      system "#{bin}/clang++", "-v", "-o", "test_pie_runtimes",
+      system bin/"clang++", "-v", "-o", "test_pie_runtimes",
                    "-pie", "-fPIC", "test.cpp", "-L#{opt_lib}",
                    "-stdlib=libc++", "-rtlib=compiler-rt",
                    "-static-libstdc++", "-lpthread", "-ldl"
@@ -394,24 +399,24 @@ class LlvmAT13 < Formula
         refute_match(/libunwind/, lib)
       end
 
-      (testpath/"test_plugin.cpp").write <<~EOS
+      (testpath/"test_plugin.cpp").write <<~CPP
         #include <iostream>
         __attribute__((visibility("default")))
         extern "C" void run_plugin() {
           std::cout << "Hello Plugin World!" << std::endl;
         }
-      EOS
-      (testpath/"test_plugin_main.c").write <<~EOS
+      CPP
+      (testpath/"test_plugin_main.c").write <<~C
         extern void run_plugin();
         int main() {
           run_plugin();
         }
-      EOS
-      system "#{bin}/clang++", "-v", "-o", "test_plugin.so",
+      C
+      system bin/"clang++", "-v", "-o", "test_plugin.so",
              "-shared", "-fPIC", "test_plugin.cpp", "-L#{opt_lib}",
              "-stdlib=libc++", "-rtlib=compiler-rt",
              "-static-libstdc++", "-lpthread", "-ldl"
-      system "#{bin}/clang", "-v",
+      system bin/"clang", "-v",
              "test_plugin_main.c", "-o", "test_plugin_libc++",
              "test_plugin.so", "-Wl,-rpath=#{testpath}", "-rtlib=compiler-rt"
       assert_equal "Hello Plugin World!", shell_output("./test_plugin_libc++").chomp
@@ -429,9 +434,9 @@ class LlvmAT13 < Formula
         br ^missing  // expected-error {{reference to an undefined block}}
       }
     EOS
-    system "#{bin}/mlir-opt", "--verify-diagnostics", "test.mlir"
+    system bin/"mlir-opt", "--verify-diagnostics", "test.mlir"
 
-    (testpath/"scanbuildtest.cpp").write <<~EOS
+    (testpath/"scanbuildtest.cpp").write <<~CPP
       #include <iostream>
       int main() {
         int *i = new int;
@@ -440,14 +445,14 @@ class LlvmAT13 < Formula
         std::cout << *i << std::endl;
         return 0;
       }
-    EOS
+    CPP
     assert_includes shell_output("#{bin}/scan-build make scanbuildtest 2>&1"),
                     "warning: Use of memory after it is freed"
 
-    (testpath/"clangformattest.c").write <<~EOS
+    (testpath/"clangformattest.c").write <<~C
       int    main() {
           printf("Hello world!"); }
-    EOS
+    C
     assert_equal "int main() { printf(\"Hello world!\"); }\n",
       shell_output("#{bin}/clang-format -style=google clangformattest.c")
 

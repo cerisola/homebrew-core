@@ -1,12 +1,13 @@
 class Gostatic < Formula
   desc "Fast static site generator"
   homepage "https://github.com/piranha/gostatic"
-  url "https://github.com/piranha/gostatic/archive/2.36.tar.gz"
+  url "https://github.com/piranha/gostatic/archive/refs/tags/2.36.tar.gz"
   sha256 "a66e306c0289bac541af10cb88acc9b9576153de5d4acec566c3f927acefd778"
   license "ISC"
   head "https://github.com/piranha/gostatic.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8c409dcbf4273866a153de5ca7f84d985eab10b4259c718ef4856206a6a49e50"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ac8f00d4c297bec6e0276e2a3a5a287a0aeb3407794d63b296e14de3f6cfd814"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "fee49b6f3e2a28ea13f71e318c63fdccfbfeea301290623c741602b4ba7efa42"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "fee49b6f3e2a28ea13f71e318c63fdccfbfeea301290623c741602b4ba7efa42"

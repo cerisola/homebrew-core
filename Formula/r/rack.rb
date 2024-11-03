@@ -24,7 +24,7 @@ class Rack < Formula
   end
 
   # https://github.com/rackspace/rack/pull/470
-  deprecate! date: "2023-08-13", because: :unmaintained
+  disable! date: "2024-02-24", because: :unmaintained
 
   depends_on "go" => :build
 
@@ -46,11 +46,10 @@ class Rack < Formula
       ln_s "internal", "vendor"
       system "script/build", "rack"
       bin.install "rack"
-      prefix.install_metafiles
     end
   end
 
   test do
-    system "#{bin}/rack"
+    system bin/"rack"
   end
 end

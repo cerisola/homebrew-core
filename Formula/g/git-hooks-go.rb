@@ -1,12 +1,13 @@
 class GitHooksGo < Formula
   desc "Git hooks manager"
   homepage "https://git-hooks.github.io/git-hooks"
-  url "https://github.com/git-hooks/git-hooks/archive/v1.3.1.tar.gz"
+  url "https://github.com/git-hooks/git-hooks/archive/refs/tags/v1.3.1.tar.gz"
   sha256 "c37cedf52b3ea267b7d3de67dde31adad4d2a22a7780950d6ca2da64a8b0341b"
   license "MIT"
   head "https://github.com/git-hooks/git-hooks.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "76b874212624080d528a0f1cb2d966ff7872ba2d2f7f3c04c7f7e98c30848f3c"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "8f8ba5517228a5d259c8ef7df2651c15f19a6e4b03308e536bbfdf41ed87cdb4"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "1d0e39f15e97b5304db3ffdc34c9d5425340adbfde20bbf1c7f42a3e9b60b223"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "0b44ba2ea899d62f65370ebbf36356d2534ccd3af038f72e06774252f8770546"

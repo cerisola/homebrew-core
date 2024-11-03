@@ -1,11 +1,12 @@
 class Um < Formula
   desc "Command-line utility for creating and maintaining personal man pages"
   homepage "https://github.com/sinclairtarget/um"
-  url "https://github.com/sinclairtarget/um/archive/4.2.0.tar.gz"
+  url "https://github.com/sinclairtarget/um/archive/refs/tags/4.2.0.tar.gz"
   sha256 "f8c3f4bc5933cb4ab9643dcef7b01b8e8edf2dcbcd8062ef3ef214d1673ae64e"
   license "MIT"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "46ec29ef67ab6cbf8cde6a9d5029f6224f2fcc77a58f40f5feb178cacab94822"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "b91d98a8fd437a600f933a582128c859b9cbf5f84ffd499275156db31c44f1b5"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "0e762de5b91a07098e4c24148a58d32e431ce4bbddce1980665137a60b1c5ca7"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "0e762de5b91a07098e4c24148a58d32e431ce4bbddce1980665137a60b1c5ca7"

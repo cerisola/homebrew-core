@@ -1,12 +1,9 @@
 class CargoC < Formula
   desc "Helper program to build and install c-like libraries"
   homepage "https://github.com/lu-zero/cargo-c"
-  # TODO: check if we can use unversioned `libgit2` at version bump.
-  # See comments below for details.
-  url "https://github.com/lu-zero/cargo-c/archive/refs/tags/v0.9.24.tar.gz"
-  sha256 "32f2f5c802c01c51cf93471fcf876d0cc68edbc31d22005b9f07e4549d5b98b1"
+  url "https://github.com/lu-zero/cargo-c/archive/refs/tags/v0.10.5.tar.gz"
+  sha256 "3f131a6a647851a617a87daaaf777a9e50817957be0af29806615613e98efc8a"
   license "MIT"
-  revision 1
 
   livecheck do
     url :stable
@@ -14,14 +11,12 @@ class CargoC < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sonoma:   "86d415e4a05c2a5f90814fbd0ac0777e5a1b8f238152f467ec402d2da920d195"
-    sha256 cellar: :any,                 arm64_ventura:  "589237815e98e8153e0f07756b3facda654709f41fdd965659b288e21f36debf"
-    sha256 cellar: :any,                 arm64_monterey: "49ffc9d696d22126a8693fd0c4ff17bbed02d5e7e6bbe053eec7b688e747da1e"
-    sha256 cellar: :any,                 sonoma:         "b0f5460081190e1437ed25c7da27e561ac9d8f178af36c2b92bf361f976d0f43"
-    sha256 cellar: :any,                 ventura:        "78e679ffb75f32018c0d8b336f0e2339eba35c9548a21ee644bc70f771e82d48"
-    sha256 cellar: :any,                 monterey:       "b53c7647b9e3ba696ffca03e707a4386a58a9187ea9c9e4a1e26228c635164e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e2197e9e20ac20ae234ece76446069613bc39ee9a2c41ef8c3adb58129a307d1"
+    sha256 cellar: :any,                 arm64_sequoia: "9c0c1b7844fe4712d74500fab1032405414930b4bba5abed3881a189701bed1a"
+    sha256 cellar: :any,                 arm64_sonoma:  "603a4e4b165a5eb5d7f4f52f7de4c0b583345eb6789a7c9a43aa358d486560b0"
+    sha256 cellar: :any,                 arm64_ventura: "ca357671b2b7d8df05e2e248eda1943ebc666e0ed1a36d8e500d729d6de64d68"
+    sha256 cellar: :any,                 sonoma:        "7a5eb6a052715f2bf19afce583456cfbf42747c8b1f1ca2f5c0cc1c0ae9ae888"
+    sha256 cellar: :any,                 ventura:       "2c4591df9bdfa9fa55d83d3cc4727a094e375c161bec9b7dbd4b7c137a01b68b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d1b17b13927c04926fc5a6e0acf59db403d80c57aff93f8b54243ab0da83c0c8"
   end
 
   depends_on "rust" => :build
@@ -29,14 +24,7 @@ class CargoC < Formula
   # be missing despite its presence.
   # Try switching to `uses_from_macos` when that's resolved.
   depends_on "curl"
-  # To check for `libgit2` version:
-  # 1. Check for `cargo` version at https://github.com/lu-zero/cargo-c/blob/v#{version}/Cargo.toml
-  # 2. Search for `libgit2-sys` version at https://github.com/rust-lang/cargo/blob/#{cargo_version}/Cargo.lock
-  # 3. If the version suffix of `libgit2-sys` is newer than +1.6.*, then:
-  #    - Use the corresponding `libgit2` formula.
-  #    - Change the `LIBGIT2_SYS_USE_PKG_CONFIG` env var below to `LIBGIT2_NO_VENDOR`.
-  #      See: https://github.com/rust-lang/git2-rs/commit/59a81cac9ada22b5ea6ca2841f5bd1229f1dd659.
-  depends_on "libgit2@1.6"
+  depends_on "libgit2"
   depends_on "libssh2"
   depends_on "openssl@3"
 
@@ -47,7 +35,7 @@ class CargoC < Formula
   end
 
   def install
-    ENV["LIBGIT2_SYS_USE_PKG_CONFIG"] = "1"
+    ENV["LIBGIT2_NO_VENDOR"] = "1"
     ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
     # Ensure the correct `openssl` will be picked up.
     ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
@@ -71,7 +59,7 @@ class CargoC < Formula
 
     [
       Formula["curl"].opt_lib/shared_library("libcurl"),
-      Formula["libgit2@1.6"].opt_lib/shared_library("libgit2"),
+      Formula["libgit2"].opt_lib/shared_library("libgit2"),
       Formula["libssh2"].opt_lib/shared_library("libssh2"),
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),

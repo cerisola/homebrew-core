@@ -1,11 +1,12 @@
 class Wskdeploy < Formula
   desc "Apache OpenWhisk project deployment utility"
   homepage "https://openwhisk.apache.org/"
-  url "https://github.com/apache/openwhisk-wskdeploy/archive/1.2.0.tar.gz"
+  url "https://github.com/apache/openwhisk-wskdeploy/archive/refs/tags/1.2.0.tar.gz"
   sha256 "bffe6f6ef2167189fc38893943a391aaf7327e9e6b8d27be1cc1c26535c06e86"
   license "Apache-2.0"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "0c0e4b40c6a0e7f4a5b07424402fcade78732f3c3c9b190ed6c603a3172044db"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "dee1aeb56b815b07c277e5e74954c803135b729586eaf82cc78365494a3909e5"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "08cf43fae8646a2da12684d40c5271ea647950788125e7e896d5641984ec98f4"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "4b42f8375e4d73e6fc92323e40b2c12f98227b4293e0e948cdfc514e698207fe"
@@ -23,7 +24,7 @@ class Wskdeploy < Formula
 
   def install
     ldflags = "-s -w -X main.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do

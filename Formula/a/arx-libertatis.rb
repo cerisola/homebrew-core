@@ -11,6 +11,7 @@ class ArxLibertatis < Formula
   end
 
   bottle do
+    sha256 arm64_sequoia:  "e60d7ed4b0a7ff3b132efb97907d8203a0e501f292866d17ab9b2773376b44cd"
     sha256 arm64_sonoma:   "2c520ea9e3ce0eb1066cd47fd192e73bda08a3e27b39b1efa6b5dcef7614dedf"
     sha256 arm64_ventura:  "1db7612e1dbbe5d1515b7578a2c20a3b62dd4f65c37257237d10bf7e48723448"
     sha256 arm64_monterey: "9fd235faef3f4cac1fa1bc33acace5545839c5bf9a4344793225f734dc0f4b7e"
@@ -42,13 +43,19 @@ class ArxLibertatis < Formula
   uses_from_macos "zlib"
 
   on_linux do
+    depends_on "mesa"
     depends_on "openal-soft"
   end
 
   conflicts_with "rnv", because: "both install `arx` binaries"
 
   def install
-    args = std_cmake_args
+    args = %w[
+      -DBUILD_CRASHREPORTER=OFF
+      -DSTRICT_USE=ON
+      -DWITH_OPENGL=glew
+      -DWITH_SDL=2
+    ]
 
     # Install prebuilt icons to avoid inkscape and imagemagick deps
     if build.head?
@@ -56,14 +63,9 @@ class ArxLibertatis < Formula
       args << "-DDATA_FILES=#{buildpath}/arx-libertatis-data"
     end
 
-    mkdir "build" do
-      system "cmake", "..", *args,
-                            "-DBUILD_CRASHREPORTER=OFF",
-                            "-DSTRICT_USE=ON",
-                            "-DWITH_OPENGL=glew",
-                            "-DWITH_SDL=2"
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   def caveats
@@ -77,6 +79,7 @@ class ArxLibertatis < Formula
   end
 
   test do
-    system "#{bin}/arx", "-h"
+    output = shell_output("#{bin}/arx --list-dirs")
+    assert_match "User directories (select first existing)", output
   end
 end

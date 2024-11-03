@@ -3,28 +3,25 @@ class Pythran < Formula
 
   desc "Ahead of Time compiler for numeric kernels"
   homepage "https://pythran.readthedocs.io/"
-  url "https://files.pythonhosted.org/packages/2c/ab/a647b8cc3ac1aa07cde06875157696e4522958fb8363474bce21c302d4d8/pythran-0.14.0.tar.gz"
-  sha256 "42f3473946205964844eff7f750e2541afb2006d53475d708f5ff2d048db89bd"
+  url "https://files.pythonhosted.org/packages/73/32/f892675c5009cd4c1895ded3d6153476bf00adb5ad1634d03635620881f5/pythran-0.16.1.tar.gz"
+  sha256 "861748c0f9c7d422b32724b114b3817d818ed4eab86c09781aa0a3f7ceabb7f9"
   license "BSD-3-Clause"
   head "https://github.com/serge-sans-paille/pythran.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "68c8e776ff4199736c205c5fde2c1f8355b1796473706435636161bfb7a72a3a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "5c37f9f8f4914d3e74a145f9598c9137fc2ee9f40dcdbd6cb5bd8a72ff93b2c6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "897a135c0f769cb7ffc7d8200c37b9b13fbfe22f4387c7008a10cb376c213e25"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "9f67527b131d933a6dd69510bd754537d96c14830da13bb2833004ab7362fb4e"
-    sha256 cellar: :any_skip_relocation, sonoma:         "f6a9dc5377d0c4bdb0dd8f7c1d0965a7e64c8e8dd48c87a0abcf4cd670ff7810"
-    sha256 cellar: :any_skip_relocation, ventura:        "cab648f53f29b83692f413ed2aa6f7719c1b75c40ff037659123a8ca2ff17be1"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4228900b2c9a4c1825764f50f6697f7b62c42c60b0fc2b26cf3effcffc418f1"
-    sha256 cellar: :any_skip_relocation, big_sur:        "711383b5b04bee04c1e31943fa9061c9551d129cdde9ba1d3bcc926acd331422"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "6030a5ab0a87948f949eb9e3cb9ad2a6ba6f55efd255ada8d9618545d325cb06"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c102e65b23490ba1aa5a454f78991b83a5df12b28dcfdc80ef8deee1d612ef81"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c102e65b23490ba1aa5a454f78991b83a5df12b28dcfdc80ef8deee1d612ef81"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "c102e65b23490ba1aa5a454f78991b83a5df12b28dcfdc80ef8deee1d612ef81"
+    sha256 cellar: :any_skip_relocation, sonoma:         "1836a0fed68f565d8031c1e15449f8d322f9c0076570a1482466fcbd88f9c74d"
+    sha256 cellar: :any_skip_relocation, ventura:        "1836a0fed68f565d8031c1e15449f8d322f9c0076570a1482466fcbd88f9c74d"
+    sha256 cellar: :any_skip_relocation, monterey:       "1836a0fed68f565d8031c1e15449f8d322f9c0076570a1482466fcbd88f9c74d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1a390654163b4ce2a13919606c598bd6f61b412400ce5c7f899b568eedbb4c51"
   end
 
   depends_on "gcc" # for OpenMP
   depends_on "numpy"
   depends_on "openblas"
-  depends_on "python@3.11"
-  depends_on "six"
+  depends_on "python@3.12"
 
   resource "beniget" do
     url "https://files.pythonhosted.org/packages/14/e7/50cbac38f77eca8efd39516be6651fdb9f3c4c0fab8cf2cf05f612578737/beniget-0.4.1.tar.gz"
@@ -39,6 +36,11 @@ class Pythran < Formula
   resource "ply" do
     url "https://files.pythonhosted.org/packages/e5/69/882ee5c9d017149285cab114ebeab373308ef0f874fcdac9beb90e0ac4da/ply-3.11.tar.gz"
     sha256 "00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3"
+  end
+
+  resource "setuptools" do
+    url "https://files.pythonhosted.org/packages/aa/60/5db2249526c9b453c5bb8b9f6965fcab0ddb7f40ad734420b3b421f7da44/setuptools-70.0.0.tar.gz"
+    sha256 "f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0"
   end
 
   def install
@@ -57,8 +59,8 @@ class Pythran < Formula
   end
 
   test do
+    python3 = which("python3.12")
     pythran = Formula["pythran"].opt_bin/"pythran"
-    python = Formula["python@3.11"].opt_libexec/"bin/python"
 
     (testpath/"dprod.py").write <<~EOS
       #pythran export dprod(int list, int list)
@@ -66,8 +68,9 @@ class Pythran < Formula
         return sum([x*y for x,y in zip(arr0, arr1)])
     EOS
     system pythran, testpath/"dprod.py"
-    rm_f testpath/"dprod.py"
-    assert_equal "11", shell_output("#{python} -c 'import dprod; print(dprod.dprod([1,2], [3,4]))'").chomp
+    rm(testpath/"dprod.py")
+
+    assert_equal "11", shell_output("#{python3} -c 'import dprod; print(dprod.dprod([1,2], [3,4]))'").chomp
 
     (testpath/"arc_distance.py").write <<~EOS
       #pythran export arc_distance(float[], float[], float[], float[])
@@ -84,9 +87,9 @@ class Pythran < Formula
     with_env(CC: nil, CXX: nil) do
       system pythran, "-DUSE_XSIMD", "-fopenmp", "-march=native", testpath/"arc_distance.py"
     end
-    rm_f testpath/"arc_distance.py"
+    rm(testpath/"arc_distance.py")
 
-    system python, "-c", <<~EOS
+    system python3, "-c", <<~EOS
       import numpy as np
       import arc_distance
       d = arc_distance.arc_distance(

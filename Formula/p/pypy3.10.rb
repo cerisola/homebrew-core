@@ -1,10 +1,10 @@
 class Pypy310 < Formula
   desc "Implementation of Python 3 in Python"
   homepage "https://pypy.org/"
-  url "https://downloads.python.org/pypy/pypy3.10-v7.3.12-src.tar.bz2"
-  sha256 "86e4e4eacc36046c6182f43018796537fe33a60e1d2a2cc6b8e7f91a5dcb3e42"
+  url "https://downloads.python.org/pypy/pypy3.10-v7.3.17-src.tar.bz2"
+  sha256 "6ad74bc578e9c6d3a8a1c51503313058e3c58c35df86f7485453c4be6ab24bf7"
   license "MIT"
-  head "https://foss.heptapod.net/pypy/pypy", using: :hg, branch: "py3.10"
+  head "https://github.com/pypy/pypy.git", branch: "main"
 
   livecheck do
     url "https://downloads.python.org/pypy/"
@@ -12,15 +12,14 @@ class Pypy310 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e2a5a01d342c073af6915fe7ae7ac7742f2c709eb44e52d28612d951d554d6ba"
-    sha256 cellar: :any,                 arm64_ventura:  "6c0c8c9f4a10e56f024f04dba2a2adfbfee156abd5812962943dc50be93bb3f1"
-    sha256 cellar: :any,                 arm64_monterey: "f6cbdc0abe6d342b658aa846c0b24d9bc6700d4b0e54800bb2e5189d10e15c42"
-    sha256 cellar: :any,                 arm64_big_sur:  "e1c4ed4b83906edc359307ffa5deac15d533a903deaa3122b4fa6d2e58d1b8e5"
-    sha256 cellar: :any,                 sonoma:         "1803d1627ead7ab01af09c8a7b87b1192f63458498c8318247461cca41c9b690"
-    sha256 cellar: :any,                 ventura:        "648a56bfcc84f42be4544b3a456f247053699e67c8dbddeebda8389f4f217386"
-    sha256 cellar: :any,                 monterey:       "33632824363bb9591fd35a3ff21426cdd80d9c790d5eb5c36ec2f9245e4d1f63"
-    sha256 cellar: :any,                 big_sur:        "57caf67c9b2fb8f5aa90760135e0ca75b0b8b8c45815cd700ae2ad23832fb14b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "03f719c28f00849ebc5cc511d9896c57df76a125ada2a3ba94f90cecad3ab600"
+    sha256 cellar: :any,                 arm64_sequoia:  "2b71143af68fed0d461de766331241bc08fafc1a000f240966d6001f00447b29"
+    sha256 cellar: :any,                 arm64_sonoma:   "ead38c7d6776e9c9916ad90918ae34f065689c9f1a0597e5373eb4a2d79dc1ea"
+    sha256 cellar: :any,                 arm64_ventura:  "183c46077da49d96f2a12248f662ae47277f74830c22d926ef20e0320e94e071"
+    sha256 cellar: :any,                 arm64_monterey: "a31cd246f9659570eca181aeb7b61f51e0ae5c177a95a36f74229a417fce599f"
+    sha256 cellar: :any,                 sonoma:         "5233e3dd7975518f8a761d648092a7812da80728d3deb471117469dd2bd9adae"
+    sha256 cellar: :any,                 ventura:        "f7a7df8744dc2dffb956ec782776151428fadf6eee0b948489fac64754a5b6da"
+    sha256 cellar: :any,                 monterey:       "4ab31d517486f9426eb7004caba11ad598e9c97f91182ec68fe9159ea3927f1a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d2c372b858fe7e493e7bb62aa3093b584b728901e0d9129bd2df78cdf52999a3"
   end
 
   depends_on "pkg-config" => :build
@@ -45,15 +44,16 @@ class Pypy310 < Formula
     sha256 "09980778aa734c3037a47997f28d6db5ab18bdf2af0e49f719bfc53967fd2e82"
   end
 
+  # always pull the latest pip, https://pypi.org/project/pip/#files
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/fa/ee/74ff76da0ab649eec7581233daeb43d8aa35383d8f75317b2ab3b80c922f/pip-23.1.2.tar.gz"
-    sha256 "0e7c86f486935893c708287b30bd050a36ac827ec7fe5e43fe7cb198dd835fba"
+    url "https://files.pythonhosted.org/packages/b7/06/6b1ad0ae8f97d7a0d6f6ad640db10780578999e647a9593512ceb6f06469/pip-23.3.2.tar.gz"
+    sha256 "7fd9972f96db22c8077a1ee2691b172c8089b17a5652a44494a9ecb0d78f9149"
   end
 
   # Build fixes:
   # - Disable Linux tcl-tk detection since the build script only searches system paths.
   #   When tcl-tk is not found, it uses unversioned `-ltcl -ltk`, which breaks build.
-  # Upstream issue ref: https://foss.heptapod.net/pypy/pypy/-/issues/3538
+  # Upstream issue ref: https://github.com/pypy/pypy/issues/3538
   patch :DATA
 
   def abi_version
@@ -71,6 +71,17 @@ class Pypy310 < Formula
       # We moved `tcl-tk` headers to `include/tcl-tk`.
       # TODO: upstream this.
       s.gsub! "/include'", "/include/tcl-tk'"
+    end
+
+    if OS.mac?
+      # Allow python modules to use ctypes.find_library to find homebrew's stuff
+      # even if homebrew is not a /usr/local/lib. Try this with:
+      # `brew install enchant && pip install pyenchant`
+      inreplace "lib-python/3/ctypes/macholib/dyld.py" do |f|
+        f.gsub! "DEFAULT_LIBRARY_FALLBACK = [",
+                "DEFAULT_LIBRARY_FALLBACK = [ '#{HOMEBREW_PREFIX}/lib', "
+        f.gsub! "DEFAULT_FRAMEWORK_FALLBACK = [", "DEFAULT_FRAMEWORK_FALLBACK = [ '#{HOMEBREW_PREFIX}/Frameworks',"
+      end
     end
 
     # Having PYTHONPATH set can cause the build to fail if another
@@ -114,7 +125,7 @@ class Pypy310 < Formula
 
     # Delete two files shipped which we do not want to deliver
     # These files make patchelf fail
-    rm_f [libexec/"bin/libpypy#{abi_version}-c.so.debug", libexec/"bin/pypy#{abi_version}.debug"]
+    rm([libexec/"bin/libpypy#{abi_version}-c.so.debug", libexec/"bin/pypy#{abi_version}.debug"])
   end
 
   def post_install
@@ -131,7 +142,7 @@ class Pypy310 < Formula
     # Create a site-packages in the prefix.
     site_packages(HOMEBREW_PREFIX).mkpath
     touch site_packages(HOMEBREW_PREFIX)/".keepme"
-    site_packages(libexec).rmtree
+    rm_r(site_packages(libexec))
 
     # Symlink the prefix site-packages into the cellar.
     site_packages(libexec).parent.install_symlink site_packages(HOMEBREW_PREFIX)

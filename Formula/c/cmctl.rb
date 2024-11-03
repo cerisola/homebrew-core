@@ -1,35 +1,35 @@
 class Cmctl < Formula
   desc "Command-line tool to manage cert-manager"
   homepage "https://cert-manager.io"
-  url "https://github.com/cert-manager/cert-manager/archive/refs/tags/v1.13.1.tar.gz"
-  sha256 "e4a6dc4f937742ea48b102118abd509b647bc96e82634d54db17a5d1126e169c"
+  url "https://github.com/cert-manager/cmctl/archive/refs/tags/v2.1.1.tar.gz"
+  sha256 "37516aca91af7c088e44ae2b64f409d1cb6a1060632eb47792937709f2f33344"
   license "Apache-2.0"
-  head "https://github.com/cert-manager/cert-manager.git", branch: "master"
+  head "https://github.com/cert-manager/cmctl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d410a585723974ddfebb09c289c826491402dfc02841f3955dcac6f3551563a2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "2f758501c1aba73c935d37b2947a64558b17152bc3327cc8cd7f84fb5ad41bf8"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "29d006383ea8bdbb29ea9d789ec4ea77ff2b4d84db88289dc49114c5411f7bbd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "2ed33eda76cbec2e3920a18e173f0984ececf7821d1858126d0c053105fb9acf"
-    sha256 cellar: :any_skip_relocation, ventura:        "87c0eaf1d9604c4ef91341dfbf4b13626edbb0304b30681d16f1259cc884da40"
-    sha256 cellar: :any_skip_relocation, monterey:       "96bbb0ffacbe1cb539c0948f73c732aad55a782d4f9fda26075a65f57c36dfc9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "40c63bee441ab705ef5255f45b7a006abd2d405ceb8a7e9bbadec7563ddae241"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e80d8aba3bd45760236eec4678d6ee256a54203b7b780c13c50b03d4b7c6c9ee"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e4d9de73913b6ce4a2d94830423bd1866abe8aa967a81ec14ef1acfe40598fbc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6b2a1dc6f6b2d64ff7f807c9ddacc31a376a31da23f20b0dd544a8d1db995a20"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "118d77299bc7bdb1f07832c2661b1ad56c938d51a10d4c783749ced6bdc653b3"
+    sha256 cellar: :any_skip_relocation, sonoma:         "5ae5e5e6dcf081f529817b9994611b592a39a1834a9be1017e56f183c50ed6a1"
+    sha256 cellar: :any_skip_relocation, ventura:        "3539ce77f46c4f731801249f371529bb117e383ea7e5681a1104cc1e1c9a790b"
+    sha256 cellar: :any_skip_relocation, monterey:       "98e2d75b18b7047f7baedefb5c77acc15c0de300b557fcbe503fbabe29b0ea86"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eb852ce6bae19d08789eb0ebaaded26e7ed1fd23aab3c51c35208e3d4745845a"
   end
 
   depends_on "go" => :build
 
   def install
+    project = "github.com/cert-manager/cmctl/v2"
     ldflags = %W[
       -s -w
-      -X github.com/cert-manager/cert-manager/cmd/ctl/pkg/build.name=cmctl
-      -X github.com/cert-manager/cert-manager/cmd/ctl/pkg/build/commands.registerCompletion=true
+      -X #{project}/pkg/build.name=cmctl
+      -X #{project}/pkg/build/commands.registerCompletion=true
       -X github.com/cert-manager/cert-manager/pkg/util.AppVersion=v#{version}
       -X github.com/cert-manager/cert-manager/pkg/util.AppGitCommit=#{tap.user}
     ]
 
-    cd "cmd/ctl" do
-      system "go", "build", *std_go_args(ldflags: ldflags)
-    end
+    system "go", "build", *std_go_args(ldflags:)
 
     generate_completions_from_executable(bin/"cmctl", "completion")
   end

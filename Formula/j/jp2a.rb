@@ -1,25 +1,27 @@
 class Jp2a < Formula
   desc "Convert JPG images to ASCII"
   homepage "https://github.com/Talinx/jp2a"
-  url "https://github.com/Talinx/jp2a/releases/download/v1.1.1/jp2a-1.1.1.tar.bz2"
-  sha256 "3b91f26f79eca4e963b1b1ae2473722a706bf642218f20bfe4ade5333aebb106"
+  url "https://github.com/Talinx/jp2a/releases/download/v1.3.1/jp2a-1.3.1.tar.bz2"
+  sha256 "a646f893508b111d922d5f726953d577089741b83fa299f351c98e7be7974c9f"
   license "GPL-2.0-or-later"
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "6b2a2f62a520bd6dd2a94ab6406ad30ce1a2156c7aa979b6f2e2135450171e08"
-    sha256 cellar: :any,                 arm64_ventura:  "4e250080a0acfad041dd4ab5246745289b412b70bde5e5faf5a5a7772c77ac5c"
-    sha256 cellar: :any,                 arm64_monterey: "6671f5e26d2f10f2babad8e13f87e554b774e033c7c990bff7f832084af26e80"
-    sha256 cellar: :any,                 arm64_big_sur:  "4f40ed84caf4c25b97d185bcfbf0ac9a02be69b92476568627c429faa4360e63"
-    sha256 cellar: :any,                 sonoma:         "b3ce7b5864a4b3995114ff08d829aa01dc4f3187b6d4420e850ca6f4341182b5"
-    sha256 cellar: :any,                 ventura:        "cda95f11e31d42ef0489ad9b7e3a42fcd1689214b97809ba8d4117c3797e38bf"
-    sha256 cellar: :any,                 monterey:       "c3cdaa3c306dd0b8ca5ea9af175748274f651778f01126ad2e31efc8c8edcff7"
-    sha256 cellar: :any,                 big_sur:        "145e3daceb2d06c33703e0897d40838cde1236a09ca84ca25b7c2fad5682dfed"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1f0de0b9e6c0216bd53dd2bb7a978f29caa841cc3bdddaad9ddd8a3d7b1797b8"
+    sha256 cellar: :any,                 arm64_sequoia: "48a62bab6e6137a966a84aa358bd89951a08f4804e68ed8ddb62dd1aaa440d03"
+    sha256 cellar: :any,                 arm64_sonoma:  "54e7f74dc31bc89460ad5990a4edfd48f84ebf8157b5db704108d65d4cf3fec6"
+    sha256 cellar: :any,                 arm64_ventura: "ad160d25da5c3d94096f8df247ed23b768decd6e09ef1e41eb10cc209dff70db"
+    sha256 cellar: :any,                 sonoma:        "35c9ffafbe8be311bbc70d882d6a3d947845d64c1de25bf27f16e064b8e44478"
+    sha256 cellar: :any,                 ventura:       "d10a7ed7431a73c496aef8611d8b6d4688944776b0717b2e8c53ae7e9dd67e41"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42afb7dedf59ee0ee8bc3ad0ff12fc6f3a3c844fcf1d654a36c1991e85bb6bdc"
   end
 
+  depends_on "pkg-config" => :build
   depends_on "jpeg-turbo"
+  depends_on "libexif"
   depends_on "libpng"
+  depends_on "webp"
+  uses_from_macos "curl"
+  uses_from_macos "ncurses"
 
   def install
     system "./configure", *std_configure_args, "--disable-silent-rules"

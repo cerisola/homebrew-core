@@ -1,8 +1,8 @@
 class Feh < Formula
   desc "X11 image viewer"
   homepage "https://feh.finalrewind.org/"
-  url "https://feh.finalrewind.org/feh-3.10.1.tar.bz2"
-  sha256 "ec5e44d3cfe6f50f1c64f28a6f0225d958f4f4621726d9c2a04b5a32e5106d23"
+  url "https://feh.finalrewind.org/feh-3.10.3.tar.bz2"
+  sha256 "5426e2799770217af1e01c2e8c182d9ca8687d84613321d8ab4a66fe4041e9c8"
   license "MIT-feh"
 
   livecheck do
@@ -11,17 +11,19 @@ class Feh < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "508a148f99cffa1debe9eb1dcde4a4214e8d70999e55ed671f46d3fac9685c5a"
-    sha256 arm64_ventura:  "08edcc8a994aa324b995e591137c5876efabec2cc6cedb1a16e580f606cd094f"
-    sha256 arm64_monterey: "53351bac6158e2ddb784f23c72e272ece2f1282e8d800483a430f44ed8856bd4"
-    sha256 sonoma:         "05d36e9ad10f17f9acd78d0495176079fe213f0a2352b624b07fd0e14c8dc8de"
-    sha256 ventura:        "b9e014a3b635d479cd0f31c9ab330770bd31dcebea1358f3c808baad654694b0"
-    sha256 monterey:       "70d56833e112620ffe7be807eee3b9b7b4d566613596e8cd793ceee4b1cab875"
-    sha256 x86_64_linux:   "79a43c19637de9ab8bc7f82ef394b0ffe519324830e452d23d7b47e51a249785"
+    sha256 arm64_sequoia:  "03b543a2d8877b5113e8e539ead4ac474cc752e73552eaa61112c7b76b426614"
+    sha256 arm64_sonoma:   "d03c242ca267dcb850ea99487d1aaebd074f8ec55b6243e2873cd37b408ba599"
+    sha256 arm64_ventura:  "a4633eff1f55706325a815ab32490c90c8292d47a823ff524e1cc75f246a7ed3"
+    sha256 arm64_monterey: "6d34e4281efec9c7b96452d199427705cee39583ebd2b4327c90287266296ba2"
+    sha256 sonoma:         "e654d6e73ff32e16743333fd0525b18697a95b326900caa552840a675cb8ff51"
+    sha256 ventura:        "8596aca255c4f0c59e074c29379f67bea2ae0bf60fb3c291f3daadca8c2dcfa9"
+    sha256 monterey:       "9f9352b3c8f466864d188f4ae685c49f0e134a5f8806b696e89fbcd8770ebd45"
+    sha256 x86_64_linux:   "ed7a6b2ac64f87b5a2fe8e77eeb4f4f787da91801f76ca5fbc4c27d251152329"
   end
 
   depends_on "imlib2"
   depends_on "libexif"
+  depends_on "libpng"
   depends_on "libx11"
   depends_on "libxinerama"
   depends_on "libxt"

@@ -1,7 +1,7 @@
 class Dbdeployer < Formula
   desc "Tool to deploy sandboxed MySQL database servers"
   homepage "https://github.com/datacharmer/dbdeployer"
-  url "https://github.com/datacharmer/dbdeployer/archive/v1.73.0.tar.gz"
+  url "https://github.com/datacharmer/dbdeployer/archive/refs/tags/v1.73.0.tar.gz"
   sha256 "c360b5118c3cfac724aebe107ed03b9af09b201dc189ae735589a7a3d75fcf7e"
   license "Apache-2.0"
   head "https://github.com/datacharmer/dbdeployer.git", branch: "master"
@@ -17,6 +17,8 @@ class Dbdeployer < Formula
     sha256 cellar: :any_skip_relocation, big_sur:        "4891e7e65214adfbbc5543737281be8bfda669964f8dd2bab40794adce9f4bfa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "920be82872a3ea62308092a58e929eef0bf95c54027e772acfe7c23425a971f0"
   end
+
+  disable! date: "2024-09-09", because: :repo_archived
 
   depends_on "go" => :build
 

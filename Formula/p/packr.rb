@@ -1,7 +1,7 @@
 class Packr < Formula
   desc "Easy way to embed static files into Go binaries"
   homepage "https://github.com/gobuffalo/packr"
-  url "https://github.com/gobuffalo/packr/archive/v2.8.3.tar.gz"
+  url "https://github.com/gobuffalo/packr/archive/refs/tags/v2.8.3.tar.gz"
   sha256 "67352bb3a73f6b183d94dd94f1b5be648db6311caa11dcfd8756193ebc0e2db9"
   license "MIT"
 
@@ -19,7 +19,7 @@ class Packr < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "71f763effa24fad2ae09028ea1d87f351cf0425ca40f1c25b5ef974839088f62"
   end
 
-  deprecate! date: "2022-11-27", because: :repo_archived
+  disable! date: "2023-11-29", because: :repo_archived
 
   depends_on "go" => [:build, :test]
 

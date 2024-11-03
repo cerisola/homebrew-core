@@ -1,21 +1,18 @@
 class Nfdump < Formula
   desc "Tools to collect and process netflow data on the command-line"
   homepage "https://github.com/phaag/nfdump"
-  url "https://github.com/phaag/nfdump/archive/v1.7.3.tar.gz"
-  sha256 "9ea7e1ded34a81839b73e66cb62c9bc11a8070210584f9a508798d7bd6058c89"
+  url "https://github.com/phaag/nfdump/archive/refs/tags/v1.7.5.tar.gz"
+  sha256 "f7d1df04fe66a173613a13d1b632062150cd63d08ed9299cc2560f519ed33e2e"
   license "BSD-3-Clause"
   head "https://github.com/phaag/nfdump.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "29e9ad6c311b8b90a3c58d9fab6b77ccf9c5ed20c79be3870ab6739012b2e07c"
-    sha256 cellar: :any,                 arm64_ventura:  "50eeb03bae9b62393985bd7879eb640422a75943df16e9f023bbb0eedbe0a8ba"
-    sha256 cellar: :any,                 arm64_monterey: "fe3792a8237227e5d1b26a9fb0a175053c953270e082844a31b178bd08c1119d"
-    sha256 cellar: :any,                 arm64_big_sur:  "a0f283180241934960029478fe9215ae5b0eb2160f8b1989e9ef9750024ec858"
-    sha256 cellar: :any,                 sonoma:         "a84273e2f05bebc14f648a1f29ebb68c32cf6b757b1d5ca5c76933eb4bd509b5"
-    sha256 cellar: :any,                 ventura:        "33c9d0b402c2b4f30d8bae3206323dc9ff7f1100950c0e9867736bd38daddfa0"
-    sha256 cellar: :any,                 monterey:       "cc5a415e262adc15e207645f11d265298c9a73a22c8d441b1ae11fdd9c9fe818"
-    sha256 cellar: :any,                 big_sur:        "0db91bfdde00f9eaf26f2ab5a23f4623f808ddca50ffef180f7bdd4537187f48"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "b970f64f2505ff3028cea23a1015664c490606fe8e9c52eb26284e7353aba299"
+    sha256 cellar: :any,                 arm64_sequoia: "2580a47d32b5db7291a9efa169555635a153a350bf6f71230bf3dca3f77dfa44"
+    sha256 cellar: :any,                 arm64_sonoma:  "102c5b2a3223fd8f117641e010393d65dc130d735935bd922f884935ca0200c0"
+    sha256 cellar: :any,                 arm64_ventura: "3f58eeb1890c44433bc6d9f5d2ae6149d61e7c096b314a5db085e1f016fe0fd8"
+    sha256 cellar: :any,                 sonoma:        "d2b137c45686e51add29a118e911cba1ccce6f5130bc3931bd1f18107388c573"
+    sha256 cellar: :any,                 ventura:       "16fae0c19979d8231228f7a89e522e6d3b26d85ad2b4b04bf7f8d87d795a0eb8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c02cc68a0eaba6773c36aa54c53ee077ee2f2279e628671a4dacb15c529e2a02"
   end
 
   depends_on "autoconf" => :build

@@ -1,8 +1,8 @@
 class Cryptominisat < Formula
   desc "Advanced SAT solver"
   homepage "https://www.msoos.org/cryptominisat5/"
-  url "https://github.com/msoos/cryptominisat/archive/5.11.14.tar.gz"
-  sha256 "c7c50083693abcc7da528baa16e328ac0f09b5a83092ebe38d426e918200d7f3"
+  url "https://github.com/msoos/cryptominisat/archive/refs/tags/5.11.21.tar.gz"
+  sha256 "288fd53d801909af797c72023361a75af3229d1806dbc87a0fcda18f5e03763b"
   # Everything that's needed to run/build/install/link the system is MIT licensed. This allows
   # easy distribution and running of the system everywhere.
   license "MIT"
@@ -13,24 +13,22 @@ class Cryptominisat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "87ce32d47a15b3ea4234706f04f803dd13d811185497c6811c6dad70b134f116"
-    sha256 cellar: :any,                 arm64_ventura:  "a5a95f3d7cea906853202955c4c4c9fcb84893f0be6fb15bf5e7859468245c7b"
-    sha256 cellar: :any,                 arm64_monterey: "4fb9e91aa63923ffc2006e3a0e85c86bc71e78b6595404c300d3e1b4fdf68b31"
-    sha256 cellar: :any,                 arm64_big_sur:  "4f859db8b42ca7439e1f3cad28bc55f67c4b12b4e309d54f66f1fd70e088a337"
-    sha256 cellar: :any,                 sonoma:         "597218d0d5fe683eb7138e75ca7c8e69f347f44f7893ee4f9e9ef18fce1dc54b"
-    sha256 cellar: :any,                 ventura:        "e3107d15e9c75b3e53361ce56343d8facb1b82714e18c638a133dc156150fc70"
-    sha256 cellar: :any,                 monterey:       "17e2fc35d04c4e9091f0034224f9a53a3c13e8499739f862afb5091dddca3302"
-    sha256 cellar: :any,                 big_sur:        "43629f3cee7a5035aeacfed05c0991dd3e5844ef8d6198c7c4527457138e9c0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "021e712dd189684887b40b2e2f1f9cca3127ec02f1310ca1d5131f8ffd5f5b3e"
+    rebuild 2
+    sha256 cellar: :any,                 arm64_sequoia: "48e71ad8b236eb736317e8b39f1a1fac2334e345b315aa9cd04bc843fe706580"
+    sha256 cellar: :any,                 arm64_sonoma:  "bbeb9f9fe45dd2c144870ffa0a77c3b332c694cc7fa4e4c17cf219f4f3ab16c2"
+    sha256 cellar: :any,                 arm64_ventura: "5ffbbf9b609d5a8e0e5dc2bce7237b0a6a7ed184bae66fa4a3a68c9f650b80c2"
+    sha256 cellar: :any,                 sonoma:        "15d86b66627d95536445093c9702b5fcf439e6a6ad67037cc192b5bdec5f5e8b"
+    sha256 cellar: :any,                 ventura:       "ed2723cfbf766a67cfea9a20aba7be51b4b05e0a6f723da3b1133e4260561828"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4291fd6c5691c5de3eeaadb1f6bee8dd83ec80e3ae9dd23baf2a48069b741ef8"
   end
 
   depends_on "cmake" => :build
-  depends_on "python-toml" => :build
-  depends_on "python@3.11" => [:build, :test]
-  depends_on "boost"
+  depends_on "python@3.13" => [:build, :test]
+
+  uses_from_macos "zlib"
 
   def python3
-    "python3.11"
+    "python3.13"
   end
 
   def install
@@ -42,7 +40,7 @@ class Cryptominisat < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    system python3, "-m", "pip", "install", *std_pip_args, "."
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
   end
 
   test do

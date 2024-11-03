@@ -1,20 +1,19 @@
 class Proteinortho < Formula
   desc "Detecting orthologous genes within different species"
   homepage "https://gitlab.com/paulklemm_PHD/proteinortho"
-  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.3.0/proteinortho-v6.3.0.tar.gz"
-  sha256 "9b0142d29d22a35732b17be2ce125ccbc7d711edc4bb8caf1ffc808eb16975f1"
+  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.3.2/proteinortho-v6.3.2.tar.gz"
+  sha256 "3b3c58e814ca10f77a25954b0bcddc479b9f61682f3dc5c93d85b07f109342a4"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "f1dafc52e7397e1414152672e903032d0c8b08e3378f9cfa0a643fcd86a20d76"
-    sha256 cellar: :any,                 arm64_ventura:  "03feb8fd8d22bd96bef31bebb693699e949cd49d5a7d0d76b43d557017e27f42"
-    sha256 cellar: :any,                 arm64_monterey: "79036ba9dda0e863405ecf1689590eb2ef1ae52869dd5def7e7df7336351d11c"
-    sha256 cellar: :any,                 arm64_big_sur:  "a883c0b0b2485ea09f0c3e0e2f0388ce11cb86badfe896b28bf1796174cf5ad0"
-    sha256 cellar: :any,                 sonoma:         "0a6eff2c3e8c5c9b2964f3c4e9743a855b6169816a937dded484d5b8e97a7e73"
-    sha256 cellar: :any,                 ventura:        "f069971d269a43ffeebb33ba8ea807c45e23957cd5fca4a54ec5e154191cd7ff"
-    sha256 cellar: :any,                 monterey:       "86386d0905b15018af54fa32324b92b0e948a6bdc7a69aa583726db6200d49af"
-    sha256 cellar: :any,                 big_sur:        "31e9ef8017aed1e10b1c10bcb5d9ec0fccab0bbce3d9c387a564b82504edff6d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8720b076cdd3c3cc4e00e48538f40e3437e64382df2a7aec6c02924a06099dc8"
+    sha256 cellar: :any,                 arm64_sequoia:  "6eb6089f3e60e2136f11ea8997536fd76ae83d94455c23ad88f439a0a47397c3"
+    sha256 cellar: :any,                 arm64_sonoma:   "a3966fa66db6edea9c7b12fb65213bec1e6641860b6d05ff28b74b7af9e13996"
+    sha256 cellar: :any,                 arm64_ventura:  "0edd33e29ad7d95644c83f9412329ce80356424ce61ee89c84004f6d746653d8"
+    sha256 cellar: :any,                 arm64_monterey: "b4b9d0a86d9e83e902f506ddd48633134727d9a0caacb03bb52751edf3e1084b"
+    sha256 cellar: :any,                 sonoma:         "b0adc4eba6090113da1c04f1ae1345e9527af6c9c7492b3eb567478aa12556d0"
+    sha256 cellar: :any,                 ventura:        "aa9c68bbc76c78b280c5c41df428f0113ee594f26201baaca97566c13fde2952"
+    sha256 cellar: :any,                 monterey:       "8f6e2d323da560d09c8a40938f497bf6f4059def847c16b53d3d87311a6c9ff6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e889a7d294a99c804f564e08afb6feef66c20098867405c063681c78fd50772"
   end
 
   depends_on "diamond"
@@ -29,7 +28,7 @@ class Proteinortho < Formula
   end
 
   test do
-    system "#{bin}/proteinortho", "-test"
-    system "#{bin}/proteinortho_clustering", "-test"
+    system bin/"proteinortho", "-test"
+    system bin/"proteinortho_clustering", "-test"
   end
 end

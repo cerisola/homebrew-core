@@ -8,6 +8,7 @@ class Stolon < Formula
   revision 1
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "5a9cff2775f8b7655d68bd8899ae8090a23c1d38add3f842fd850ea5fdd3b258"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5051a16e7d948aac0ba138307c7a1a3a5f53e1ca0683bef81823bdb752037002"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e2ff141e91b71942f67871741dabcd110310a06c72d68ce361391e2a1ce233ee"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "17af62bc7751903d4f85e447907825f3bf4df255263487c47b44e299a9b196be"
@@ -19,6 +20,8 @@ class Stolon < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "6f8469a79e442788d8a8c774c7097ee45d1deeebb17968c79e4efbd37965e69f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "30ca55abf39725e1760d6610e38ea05f089fd382724da55c170f2cf914ee1050"
   end
+
+  deprecate! date: "2024-02-04", because: "depends on soon to be deprecated consul"
 
   depends_on "go" => :build
   depends_on "consul" => :test
@@ -33,7 +36,7 @@ class Stolon < Formula
       stolon-sentinel ./cmd/sentinel
       stolon-proxy ./cmd/proxy
     ].each_slice(2) do |bin_name, src_path|
-      system "go", "build", *std_go_args(ldflags: ldflags, output: bin/bin_name), src_path
+      system "go", "build", *std_go_args(ldflags:, output: bin/bin_name), src_path
     end
   end
 

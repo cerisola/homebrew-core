@@ -1,21 +1,20 @@
 class Verovio < Formula
   desc "Command-line MEI music notation engraver"
   homepage "https://www.verovio.org"
-  url "https://github.com/rism-digital/verovio/archive/refs/tags/version-4.0.1.tar.gz"
-  sha256 "8d775ae451f53ba216c9f816923fa75d7c32dd47edb124124cd2964b5595d054"
+  url "https://github.com/rism-digital/verovio/archive/refs/tags/version-4.3.1.tar.gz"
+  sha256 "de488c6bfa0312412a746e3a59e2de21e81c0859372faa68f30a393b8c12de02"
   license "LGPL-3.0-only"
   head "https://github.com/rism-digital/verovio.git", branch: "develop"
 
   bottle do
-    sha256 arm64_sonoma:   "cb0996b2ba975dcc18f4ffe36b32a57b8322ed96a712c9743b35af51c5d708c4"
-    sha256 arm64_ventura:  "302a7600f979fdb9a7cf7203b2677f5a49c3531af33b381ee8e947c42d7089da"
-    sha256 arm64_monterey: "edf83dbd631a23a8ced3cb90298e6477e534924e30e61d1a3bfae3e752570a74"
-    sha256 arm64_big_sur:  "060af4153fe1fe282319d5cca5a664d58a1ace4c63e66721be3cfd5b3faefae6"
-    sha256 sonoma:         "c4db520e1934c52ad7b91d2becd397e7493ed0420274be709858df7b7cbfa399"
-    sha256 ventura:        "00250c80f7170bad00b019be46437120e08b6e97e8312379c12f9f3f34f8349b"
-    sha256 monterey:       "a445824ac01fe8c38676dc8dea3480ec6d0927048252eff3a70809588db9e642"
-    sha256 big_sur:        "d46de2759e6fb3184405484f9560948ff2b98b174c9be687913155ba38d09d9e"
-    sha256 x86_64_linux:   "f1abcada9a518045225c39934ec54ba3c2bd1855b905b6c98ca211d6af092686"
+    sha256 arm64_sequoia:  "2ff81de36045bc09bd06610f11bd977ac7ddbbcd99e5673b1558c45a84cc18db"
+    sha256 arm64_sonoma:   "8d62e9dd770ae6253e8b62e6071fd260a16f08629157aa9ab746b34f6a885890"
+    sha256 arm64_ventura:  "19865d303128dc729deb227669c1ca31c6083735faeb0ca78bfbfe26ebc7c087"
+    sha256 arm64_monterey: "1dc929d0d92e334942a582a1119ae23cd9cc8c77a4e7073fe82d3d018148be06"
+    sha256 sonoma:         "509d5bdd8a367008ecc4c46d83ff7dd7f86e22b932112c2b8773d59e23121a13"
+    sha256 ventura:        "4567d4c03fa42a832e87f8779e54c8416ce472002a47b3087900b62652c2d6e3"
+    sha256 monterey:       "5fcc95b371f6c45da66a8aa3fd3ca6c074e2fdb92bb620430006fe56c1494026"
+    sha256 x86_64_linux:   "d7020b43b3311e9a681aecb68f2aa3f8df53bab59dd99b31dcb708d2f613b4c0"
   end
 
   depends_on "cmake" => :build

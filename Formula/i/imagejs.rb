@@ -1,7 +1,7 @@
 class Imagejs < Formula
   desc "Tool to hide JavaScript inside valid image files"
   homepage "https://github.com/jklmnn/imagejs"
-  url "https://github.com/jklmnn/imagejs/archive/0.7.2.tar.gz"
+  url "https://github.com/jklmnn/imagejs/archive/refs/tags/0.7.2.tar.gz"
   sha256 "ba75c7ea549c4afbcb2a516565ba0b762b5fc38a03a48e5b94bec78bac7dab07"
   license "GPL-3.0-only"
   head "https://github.com/jklmnn/imagejs.git", branch: "master"
@@ -13,6 +13,7 @@ class Imagejs < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "e63b962d504ec008aa03bbbc391604e5ade5d25d0316d1b040cc053a56b2821f"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "99187a2855b722b5b1e50cce08e0c12c22ee803f6420ea15c96852b2be06dac1"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "e76ab06468439a91138e802c3da8aa8d422a659aebb2abc94fea8a8f576d0b71"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1297a2272e34c7bd91997cb8ec161fac1694089d5e4daeaa2a9377714e197d38"
@@ -33,6 +34,6 @@ class Imagejs < Formula
 
   test do
     (testpath/"test.js").write "alert('Hello World!')"
-    system "#{bin}/imagejs", "bmp", "test.js", "-l"
+    system bin/"imagejs", "bmp", "test.js", "-l"
   end
 end

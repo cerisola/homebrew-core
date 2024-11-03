@@ -1,8 +1,8 @@
 class PythonTkAT312 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz"
-  sha256 "51412956d24a1ef7c97f1cb5f70e185c13e3de1f50d131c0aac6338080687afb"
+  url "https://www.python.org/ftp/python/3.12.7/Python-3.12.7.tgz"
+  sha256 "73ac8fe780227bf371add8373c3079f42a0dc62deff8d612cd15a618082ab623"
   license "Python-2.0"
 
   livecheck do
@@ -10,33 +10,22 @@ class PythonTkAT312 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "c1e3f95ef0bbb7f7b985300063497c6daa4abf5131f93b711663565c4d240af9"
-    sha256 cellar: :any,                 arm64_ventura:  "d73fd18d8772759c5db612d25de99c6a9c5bb8d876b967267c72e493cff1c06d"
-    sha256 cellar: :any,                 arm64_monterey: "adb4224b81a9e32c9c66f1b055dae2325e8416768d4e96f36a883ba2a3ab16f9"
-    sha256 cellar: :any,                 sonoma:         "b3163730c16bf5ede90c961cdb3800a05180f37149c6d9a5d1ce011356bb94be"
-    sha256 cellar: :any,                 ventura:        "7da79232776f6e13ec59e23ac61ed74d1115697af7dcd7f6f71e7c2de8b44afb"
-    sha256 cellar: :any,                 monterey:       "b6ec1890f7aba762eeb685b1e7cde18ac054b60d96e58aee9e130883238c3b5b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "20baa46e683be2d9dda96a3b38550eee7290a0514e1bcf97ce9d7b529ee1c70a"
+    sha256 cellar: :any,                 arm64_sequoia: "b74d20895d8265b5d1b516b15f4635a08292dc9bba5320e3431175404d0eff55"
+    sha256 cellar: :any,                 arm64_sonoma:  "bb2896eee554c65ff8f090d1b735069f18c5173eacdf48f6ce611ac40830e158"
+    sha256 cellar: :any,                 arm64_ventura: "8d5187355e686dd00bc67d34eabea5de4322f895481b93b59cfbcd69e934acbb"
+    sha256 cellar: :any,                 sonoma:        "ea617358b902cd7dbb8d707ec2c8c8b64504e4477bd144c0d46eb4eef1e083b8"
+    sha256 cellar: :any,                 ventura:       "bdc83ffabea42a940aaf23c565d73769daa27661c297d925e40d10ff0d8d581a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1183fd08283e6b54d53ea9673dc38bd22a3546082b66be835d711bd46dc372f7"
   end
 
   depends_on "python@3.12"
   depends_on "tcl-tk"
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/ef/cc/93f7213b2ab5ed383f98ce8020e632ef256b406b8569606c3f160ed8e1c9/setuptools-68.2.2.tar.gz"
-    sha256 "4ac1475276d2f1c48684874089fefcd83bd7162ddaafb81fac866ba0db282a87"
-  end
 
   def python3
     "python3.12"
   end
 
   def install
-    ENV.append_path "PYTHONPATH", buildpath/Language::Python.site_packages(python3)
-    resource("setuptools").stage do
-      system python3, "-m", "pip", "install", *std_pip_args(prefix: buildpath), "."
-    end
-
     xy = Language::Python.major_minor_version python3
     python_include = if OS.mac?
       Formula["python@#{xy}"].opt_frameworks/"Python.framework/Versions/#{xy}/include/python#{xy}"
@@ -61,9 +50,9 @@ class PythonTkAT312 < Formula
               ]
         )
       EOS
-      system python3, *Language::Python.setup_install_args(libexec, python3),
-                      "--install-lib=#{libexec}"
-      rm_r libexec.glob("*.egg-info")
+      system python3, "-m", "pip", "install", *std_pip_args(prefix: false, build_isolation: true),
+                                              "--target=#{libexec}", "."
+      rm_r libexec.glob("*.dist-info")
     end
   end
 

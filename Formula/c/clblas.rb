@@ -1,12 +1,14 @@
 class Clblas < Formula
   desc "Library containing BLAS functions written in OpenCL"
   homepage "https://github.com/clMathLibraries/clBLAS"
-  url "https://github.com/clMathLibraries/clBLAS/archive/v2.12.tar.gz"
+  url "https://github.com/clMathLibraries/clBLAS/archive/refs/tags/v2.12.tar.gz"
   sha256 "7269c7cb06a43c5e96772010eba032e6d54e72a3abff41f16d765a5e524297a9"
   license "Apache-2.0"
   revision 1
 
   bottle do
+    sha256 cellar: :any,                 arm64_sequoia:  "e01b9a3b09dc996c6feb5b474e99f463b4079417aa0c24c69d5ace2cb896b036"
+    sha256 cellar: :any,                 arm64_sonoma:   "932e8b3b551e5d7e9bd274802aed00a7de5844a2fa3ead6b52647ffb7e2bdbed"
     sha256 cellar: :any,                 arm64_ventura:  "ddd0d6b3d160284e87fee5d6cbb6585632cd24842c1f26954205acb665e3c74a"
     sha256 cellar: :any,                 arm64_monterey: "ec2838495fac090d05c5eb2e2f5cb8fd3640bb238fc068459900e50cc7f28674"
     sha256 cellar: :any,                 arm64_big_sur:  "8ade8c33c4231863fb5ebda26cd90cd1e1b5f30193c9b7bb113939e2c588c9e9"
@@ -19,12 +21,20 @@ class Clblas < Formula
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
-  depends_on "python@3.11" => :build
+
+  uses_from_macos "python" => :build
 
   on_linux do
     depends_on "opencl-headers" => [:build, :test]
     depends_on "opencl-icd-loader"
     depends_on "pocl"
+  end
+
+  # Fix missing stdlib.h includes.
+  # PR ref: https://github.com/clMathLibraries/clBLAS/pull/360
+  patch do
+    url "https://github.com/clMathLibraries/clBLAS/commit/68ce5f0b824d7cf9d71b09bb235cf219defcc7b4.patch?full_index=1"
+    sha256 "df5dc87e9ae543a043608cf790d01b985627b5b6355356c860cfd45a47ba2c36"
   end
 
   def install
@@ -33,6 +43,7 @@ class Clblas < Formula
                     "-DBUILD_KTEST=OFF",
                     "-DBUILD_TEST=OFF",
                     "-DCMAKE_MACOSX_RPATH:BOOL=ON",
+                    "-DPYTHON_EXECUTABLE=#{which("python3") || which("python")}",
                     "-DSUFFIX_LIB:STRING="
     system "make", "install"
     pkgshare.install "src/samples/example_srot.c"

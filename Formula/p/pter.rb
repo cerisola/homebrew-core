@@ -3,21 +3,15 @@ class Pter < Formula
 
   desc "Your console and graphical UI to manage your todo.txt file(s)"
   homepage "https://vonshednob.cc/pter/"
-  url "https://files.pythonhosted.org/packages/cc/3d/6fc7f754cc7f76b4392a781dabc3029bff9cc43efbe59e7a1cd534f51fbb/pter-3.8.0.tar.gz"
-  sha256 "29672889f0a2fe77a327621a436f0a7a08735fea923966d905f9d1e615815334"
+  url "https://files.pythonhosted.org/packages/f3/8c/0ba867644dc8cf806de997207cfb284cf3cf9bd5960940fcadc146bd998c/pter-3.18.0.tar.gz"
+  sha256 "a0a9af10c2f54f37dcce686f8f93316cf7c114b3256c13fdc1aa74d61a86fcd4"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f9a9fb8fe3ce2a59e9e5fde58b927438fa53051fdef5ac3011527bbd4d3f0a7d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "67e60d35c745292727261f6f0948051b69ffc7cc3e55747e83b9bbb2f63da3dc"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "0be0b3addf7b0367c3fcd2e84ac5d30a7ae6210b3e96085b9c5d719de3e59e49"
-    sha256 cellar: :any_skip_relocation, sonoma:         "343b8dd67d1235a25c6322dec7efc1e8cbe87431b9b358fa22106cb81daed254"
-    sha256 cellar: :any_skip_relocation, ventura:        "6a033cc775af0d571f72cf1c2734cd51c765164ae6d118f9e1b75c250a1115b9"
-    sha256 cellar: :any_skip_relocation, monterey:       "3bb569c79fae91d5e0c5d48296759e1c8bce4651108b6cf9dbf19a978aa388b0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa36fd9f0bfb9508b1a1830ca8904200da3cdc464f3f7ea3f2c2ec2dcf49b7dd"
+    sha256 cellar: :any_skip_relocation, all: "2651344c0e659727997fd280b7a45726db387272a9490bf81ff50503341cd122"
   end
 
-  depends_on "python@3.11"
+  depends_on "python@3.13"
 
   resource "cursedspace" do
     url "https://files.pythonhosted.org/packages/cd/3b/72657c9e867dd5034814dcea21b1128a70a1b8427e48c7de8b3b9ea3dd93/cursedspace-1.5.2.tar.gz"
@@ -25,8 +19,8 @@ class Pter < Formula
   end
 
   resource "pytodotxt" do
-    url "https://files.pythonhosted.org/packages/51/18/a8f4d15eb31bcde441b0ec090c5d97c435beabc9620199e7f90d2f5ad1af/pytodotxt-1.5.0.tar.gz"
-    sha256 "99be359438c52e0c4fc007e11a89f5a03af00fc6851a6ba7070dfe0e00189009"
+    url "https://files.pythonhosted.org/packages/be/b7/dad26d5ec8ff4c0e6ed37414f5d5de53c3d9ceab67e077606e5a1ed44ea0/pytodotxt-2.0.0.post1.tar.gz"
+    sha256 "bdbdfc17840b18903d37784d1c58c49fdd8127323d9b6234e3992a74eea80310"
   end
 
   def install

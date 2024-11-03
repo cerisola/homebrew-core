@@ -6,75 +6,66 @@ class VirtManager < Formula
   url "https://releases.pagure.org/virt-manager/virt-manager-4.1.0.tar.gz"
   sha256 "950681d7b32dc61669278ad94ef31da33109bf6fcf0426ed82dfd7379aa590a2"
   license "GPL-2.0-or-later"
-  revision 4
+  revision 8
   head "https://github.com/virt-manager/virt-manager.git", branch: "main"
 
   bottle do
-    rebuild 6
-    sha256 cellar: :any, arm64_ventura:  "a75d570b617fb75b03f40b684fe319ce9c8aaf09d30bb3f320b47253c7cad572"
-    sha256 cellar: :any, arm64_monterey: "6b295f52f38a006101871fc80a36bffa007e18b163c761f9a4c8cccd5f54cafb"
-    sha256 cellar: :any, ventura:        "925399764789c23fdeadd145ef0ba625e150977f81527a069fa6be65c978f321"
-    sha256 cellar: :any, monterey:       "6710fe9edcfdf3a64d5dfca1055d00836d8aeeacd33e35b8dab687bbb458fb08"
+    sha256 cellar: :any_skip_relocation, all: "a1584e780e4ade6489534849abe65f7b65878b3109b7653f58688707de596807"
   end
 
   depends_on "docutils" => :build
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
-
+  depends_on "python-setuptools" => :build
   depends_on "adwaita-icon-theme"
+  depends_on "certifi"
   depends_on "cpio"
   depends_on "gtk-vnc"
   depends_on "gtksourceview4"
   depends_on "libosinfo"
   depends_on "libvirt-glib"
+  depends_on "libvirt-python"
   depends_on "libxml2" # can't use from macos, since we need python3 bindings
   depends_on :macos
   depends_on "osinfo-db"
   depends_on "py3cairo"
   depends_on "pygobject3"
-  depends_on "python-certifi"
-  depends_on "python@3.11"
+  depends_on "python@3.13"
   depends_on "spice-gtk"
   depends_on "vte3"
 
-  # Resources are for Python `libvirt-python` and `requests` packages
-
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/cf/ac/e89b2f2f75f51e9859979b56d2ec162f7f893221975d244d8d5277aa9489/charset-normalizer-3.3.0.tar.gz"
-    sha256 "63563193aec44bce707e0c5ca64ff69fa72ed7cf34ce6e11d5127555756fd2f6"
+    url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
+    sha256 "f30c3cb33b24454a82faecaf01b19c18562b1e89558fb6c56de4d9118a032fd5"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/8b/e1/43beb3d38dba6cb420cefa297822eac205a277ab43e5ba5d5c46faf96438/idna-3.4.tar.gz"
-    sha256 "814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"
-  end
-
-  resource "libvirt-python" do
-    url "https://files.pythonhosted.org/packages/90/63/722b08934531bf0842295b0532d2b2120d30774ed6b04ec44dff85a26db6/libvirt-python-9.8.0.tar.gz"
-    sha256 "4069ecb226eab1b810728ef62a9c993a592b2258b0ff489937addd560020a5f1"
+    url "https://files.pythonhosted.org/packages/21/ed/f86a79a07470cb07819390452f178b3bef1d375f2ec021ecfc709fc7cf07/idna-3.7.tar.gz"
+    sha256 "028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/9d/be/10918a2eac4ae9f02f6cfe6414b7a155ccd8f7f9d4380d62fd5b955065c3/requests-2.31.0.tar.gz"
-    sha256 "942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"
+    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
+    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
   end
 
-  # requests require "urllib3>=1.21.1,<1.27"
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/e2/7d/539e6f0cf9f0b95b71dd701a56dae89f768cd39fd8ce0096af3546aeb5a3/urllib3-1.26.16.tar.gz"
-    sha256 "8f135f6502756bde6b2a9b28989df5fbe87c9970cecaa69041edcce7f0589b14"
+    url "https://files.pythonhosted.org/packages/43/6d/fa469ae21497ddc8bc93e5877702dca7cb8f911e337aca7452b5724f1bb6/urllib3-2.2.2.tar.gz"
+    sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
   def install
-    python = "python3.11"
-    venv = virtualenv_create(libexec, python)
+    python3 = "python3.13"
+    venv = virtualenv_create(libexec, python3)
     venv.pip_install resources
 
-    args = Language::Python.setup_install_args(prefix, python)
-    args.insert((args.index "install"), "--no-update-icon-cache", "--no-compile-schemas")
-
+    # Restore disabled egg_info command
+    inreplace "setup.py", "'install_egg_info': my_egg_info,", ""
     system libexec/"bin/python", "setup.py", "configure", "--prefix=#{prefix}"
-    system libexec/"bin/python", *args
+    ENV["PIP_CONFIG_SETTINGS"] = "--global-option=--no-update-icon-cache --no-compile-schemas"
+    venv.pip_install_and_link buildpath
+
+    prefix.install libexec/"share"
   end
 
   def post_install

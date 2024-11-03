@@ -1,12 +1,13 @@
 class Dsvpn < Formula
   desc "Dead Simple VPN"
   homepage "https://github.com/jedisct1/dsvpn"
-  url "https://github.com/jedisct1/dsvpn/archive/0.1.4.tar.gz"
+  url "https://github.com/jedisct1/dsvpn/archive/refs/tags/0.1.4.tar.gz"
   sha256 "b98604e1ca2ffa7a909bf07ca7cf0597e3baa73c116fbd257f93a4249ac9c0c5"
   license "MIT"
   head "https://github.com/jedisct1/dsvpn.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "2798e3025b267d17e1aabee53f9340abd9f38327278913165a305a4749d87dae"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f0c26df1e9f03e517ac0db4f266b348cdd95104a250c4da9f7acbb6c73341d3c"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "889d8f51fbe721906b84001adfcced14178739901beead09b88977a8b194c97f"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "533ca096976136d7eeb0923c0164a0b3e8305d344036c1ad095a586f8768f5a2"

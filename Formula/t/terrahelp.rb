@@ -1,12 +1,13 @@
 class Terrahelp < Formula
   desc "Tool providing extra functionality for Terraform"
   homepage "https://github.com/opencredo/terrahelp"
-  url "https://github.com/opencredo/terrahelp/archive/v0.7.5.tar.gz"
+  url "https://github.com/opencredo/terrahelp/archive/refs/tags/v0.7.5.tar.gz"
   sha256 "bfcffdf06e1db075872a6283d1f1cc6858b8139bf10dd480969b419aa6fc01f7"
   license "Apache-2.0"
   head "https://github.com/opencredo/terrahelp.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b5fc796c20c29a328691b8499b2987a5249ea4be381ceb270d73200dfd310f85"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "c077330b4b023abcd41cc69010561ff2046b426a760ea6129ff496df69416b04"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "0637ab5db3f9423836bd621b67c01fcfbcf44fd86ac6033ff2b4ffab979a64b4"
     sha256 cellar: :any_skip_relocation, arm64_monterey: "1de2d581302493095a12fc646062b1ea074aa792a36e81d37827438e832599a3"
