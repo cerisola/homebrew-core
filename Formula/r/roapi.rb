@@ -1,19 +1,18 @@
 class Roapi < Formula
   desc "Full-fledged APIs for static datasets without writing a single line of code"
   homepage "https://roapi.github.io/docs"
-  url "https://github.com/roapi/roapi/archive/refs/tags/roapi-v0.12.0.tar.gz"
-  sha256 "09f9099f04f92e92598b16fe00402911fff6b77cc4d32268ad1fb4a0b5894c8c"
+  url "https://github.com/roapi/roapi/archive/refs/tags/roapi-v0.12.4.tar.gz"
+  sha256 "93eaccd70b7b21d0d8f349d6ad594761b8c4ecba884c7106cfefa37d86e3649c"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "12756f6b86bd189b2bcb444d200049b09264d096b5cf7fdbbe1536ea7e1f7ad1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "a16d694e11386fc0c3f51e85c09fef77700144bba892fb70fdc1eaecb746ce66"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cba231911f565dca0268339c8c426c45128b1bb088eb480d5b16b12e71a8d0cb"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f35f68070f49a803a0f529e558905d1a125dd01dfe01d358ffd9e765d2200f71"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ff6829464f03a64581c991b3acca0253528c0c19a8126ccfbe1fc1558818ab24"
-    sha256 cellar: :any_skip_relocation, ventura:        "aa2f896df54d34d3ef8d9ea636a1b1ae9b3f5d8ca8198ca9cb75c2c0fe5fa354"
-    sha256 cellar: :any_skip_relocation, monterey:       "21047cca3b02f907b1b9738d6a1fad4c8f90dc667eea82a58c6274f5c57660c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "3648ef60df4409b75d36fa6d7e87ca7c4849e5b054339e02d984e17bfe0cf390"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4b120ba55e3cae8c3b3979b6a4d899dc07fe831cbd1d81ea5bcd06f455e14e10"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1eaf36297f5273f3465dd39b7441e2d4b17048116d2034e2644d642c06c70da3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "3f27bf73c7209c9f00134bbf49a26a20fef0ae6a2e4c2902519117e6c15b9ff9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f4f39cfc03ef9f4bfe2bd2c3ab2669039927f3febd15ad78bb9c5fd782cd978b"
+    sha256 cellar: :any_skip_relocation, ventura:       "a09c14307b47d74173190e59281ec75b837c7331a7682e9990ad0f5398930f4d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ff9471f171c21d2db112488f7cd9656ab2ca1bcd6bb31c6c878cd18de3e8513b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "83c065cae70543fd020625fda6651e1a2dc3ab1e622db72ebf978d23b986fb57"
   end
 
   depends_on "rust" => :build

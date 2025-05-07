@@ -1,8 +1,10 @@
 class Notmuch < Formula
+  include Language::Python::Shebang
+
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org/"
-  url "https://notmuchmail.org/releases/notmuch-0.38.3.tar.xz"
-  sha256 "9af46cc80da58b4301ca2baefcc25a40d112d0315507e632c0f3f0f08328d054"
+  url "https://notmuchmail.org/releases/notmuch-0.39.tar.xz"
+  sha256 "b88bb02a76c46bad8d313fd2bb4f8e39298b51f66fcbeb304d9f80c3eef704e3"
   license "GPL-3.0-or-later"
   head "https://git.notmuchmail.org/git/notmuch", using: :git, branch: "master"
 
@@ -12,26 +14,26 @@ class Notmuch < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "26f075815a3971c6e6fd67895e1e9009f2828c08469b3ec2a32fe365db2f0343"
-    sha256 cellar: :any,                 arm64_sonoma:   "dc0c9e64e45666c7b504edd124623723793d558f9b92841318cfb57e1905a2bc"
-    sha256 cellar: :any,                 arm64_ventura:  "5866c39776242b60bdffeae0cd8a8e72f4b436fff63eb3fcf2b33d7be69c32a4"
-    sha256 cellar: :any,                 arm64_monterey: "8040db968c5da6d96e90ccd2c1044f1c8eb0dfd0a6c5edc864f33105d31f4894"
-    sha256 cellar: :any,                 sonoma:         "f1017f9efe6fc4487a494f9838dd6ff4177a351ee914fa9845cd3be72132898d"
-    sha256 cellar: :any,                 ventura:        "2f10a85b0c2155e200abc0a4592f6285aaa8b754b20fb3b4cc90ac25a94731ab"
-    sha256 cellar: :any,                 monterey:       "57d086ced8e109e947cdabbaeb81ef9a50b079630b2b73eda20c912d314bb90f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3db984b392cccc361c5ffe324b79ea2e49631c1a468b1ab088bd01162dbcb66"
+    sha256 cellar: :any,                 arm64_sequoia: "d82ad567f35dc86cfe9c3238f211849ec7ebd6a64d39728d1be7979885c19a2d"
+    sha256 cellar: :any,                 arm64_sonoma:  "ff9e440133a39ffb3a01054b5762e0d5ed7ed14b7aa66db9dc3d586540fc0918"
+    sha256 cellar: :any,                 arm64_ventura: "e384a4f762886b8d5e59f6e752574085d2af177c370caab601668eda1725549f"
+    sha256 cellar: :any,                 sonoma:        "f2234ee4ad5abe3603aafdd2a79f838c409b5385b4e57cfc9e9e4a794d87d4bc"
+    sha256 cellar: :any,                 ventura:       "66dc7a1087e43c91d4a4173a1e8f1f84ec30c9ce852be303440d5f8fc735179d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8ba411d8183c7e59331dc5bb6df073d8b2b2cbf17ca94c5d61a382a9a2400816"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66b8788cc35e7be17f259b58f807332e5a18bf444578a33e54b3e4f9162f058f"
   end
 
   depends_on "doxygen" => :build
   depends_on "emacs" => :build
   depends_on "libgpg-error" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
 
   depends_on "cffi"
   depends_on "glib"
   depends_on "gmime"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
+  depends_on "sfsexp"
   depends_on "talloc"
   depends_on "xapian"
 
@@ -42,7 +44,7 @@ class Notmuch < Formula
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -58,28 +60,26 @@ class Notmuch < Formula
                             "--without-ruby"
       system "make", "V=1", "install"
     end
+    bin.install "notmuch-git"
+    rewrite_shebang detected_python_shebang, bin/"notmuch-git"
 
     elisp.install Pathname.glob("emacs/*.el")
-    bash_completion.install "completion/notmuch-completion.bash"
+    bash_completion.install "completion/notmuch-completion.bash" => "notmuch"
 
     (prefix/"vim/plugin").install "vim/notmuch.vim"
     (prefix/"vim/doc").install "vim/notmuch.txt"
     (prefix/"vim").install "vim/syntax"
 
-    ["python", "python-cffi"].each do |subdir|
-      system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "./bindings/#{subdir}"
-    end
+    system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "./bindings/python-cffi"
   end
 
   test do
-    (testpath/".notmuch-config").write <<~EOS
+    (testpath/".notmuch-config").write <<~INI
       [database]
       path=#{testpath}/Mail
-    EOS
+    INI
     (testpath/"Mail").mkpath
     assert_match "0 total", shell_output("#{bin}/notmuch new")
-
-    system python3, "-c", "import notmuch"
 
     system python3, "-c", <<~PYTHON
       import notmuch2
@@ -87,5 +87,7 @@ class Notmuch < Formula
       assert str(db.path) == '#{testpath}/Mail', 'Wrong db.path!'
       db.close()
     PYTHON
+    system bin/"notmuch-git", "-C", "#{testpath}/git", "init"
+    assert_path_exists testpath/"git"
   end
 end

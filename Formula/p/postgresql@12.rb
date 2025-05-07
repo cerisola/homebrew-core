@@ -1,23 +1,19 @@
 class PostgresqlAT12 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v12.20/postgresql-12.20.tar.bz2"
-  sha256 "2d543af3009fec7fd5af35f7a70c95085d3eef6b508e517aa9493e99b15e9ea9"
+  url "https://ftp.postgresql.org/pub/source/v12.22/postgresql-12.22.tar.bz2"
+  sha256 "8df3c0474782589d3c6f374b5133b1bd14d168086edbc13c6e72e67dd4527a3b"
   license "PostgreSQL"
-  revision 3
-
-  livecheck do
-    url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(12(?:\.\d+)+)/?["' >]}i)
-  end
+  revision 1
 
   bottle do
-    sha256 arm64_sequoia: "20435b8833d4d52b8c428bb0c0b9e27faff7a5ec2e10667327c851cea3061762"
-    sha256 arm64_sonoma:  "263fb8d71f1b5025a98e804aa5bcaf958cf4d910957d1d48846a818bfafab114"
-    sha256 arm64_ventura: "6291e541d03eacfce26102c1a91e00f1a6be504ee258830be15529b1761f71d5"
-    sha256 sonoma:        "8ef4e6634b06b900d4d452ba44b78898ff0e3d37979e186099bc7507cf331a43"
-    sha256 ventura:       "0389abaafb8b776632f422500a3ee7d3c801b6f1e26f429d8171f13c874c0e3e"
-    sha256 x86_64_linux:  "1c643b63f4d150bd8742483f1821af18483bab9d58497c4683670ab84c358074"
+    sha256 arm64_sequoia: "770808f2893a90101c6043beb222509fdbaeb27d43231ce86a823c880167a869"
+    sha256 arm64_sonoma:  "5c7563d9142be7b9f6d9a196ac5962f0df9d2b280b89c3d4a854c88d9a4ddbef"
+    sha256 arm64_ventura: "b033000c5e7fbb428492181650dc33b07da3046da0e0f78daa7a26154db5c5ce"
+    sha256 sonoma:        "e0bbf74f24d63185fb22e85127c6ba5f02909a85b50f3df6a26420572f7148e4"
+    sha256 ventura:       "5bdb379616fc91d0bbca3f337a2f15360a3f417f323de32fef2171be4af4652e"
+    sha256 arm64_linux:   "2c9084a2fbc2dc1ce69a132d0d5e05ddfb21bef567e03bddb5ca940cd477cce8"
+    sha256 x86_64_linux:  "a75e2288530172594e6ec77b02a22a0aeda119feaaa21337b8d1922926472fdb"
   end
 
   keg_only :versioned_formula
@@ -25,8 +21,8 @@ class PostgresqlAT12 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2024-11-14", because: :unsupported
 
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -47,6 +43,7 @@ class PostgresqlAT12 < Formula
   end
 
   def install
+    ENV.runtime_cpu_detection
     ENV.delete "PKG_CONFIG_LIBDIR" if OS.mac? && MacOS.version == :catalina
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
@@ -121,42 +118,11 @@ class PostgresqlAT12 < Formula
     (postgresql_datadir/"PG_VERSION").exist?
   end
 
-  def old_postgres_data_dir
-    var/"postgres"
-  end
-
-  # Figure out what version of PostgreSQL the old data dir is
-  # using
-  def old_postgresql_datadir_version
-    pg_version = old_postgres_data_dir/"PG_VERSION"
-    pg_version.exist? && pg_version.read.chomp
-  end
-
   def caveats
-    caveats = ""
-
-    # Extract the version from the formula name
-    pg_formula_version = version.major.to_s
-    # ... and check it against the old data dir postgres version number
-    # to see if we need to print a warning re: data dir
-    if old_postgresql_datadir_version == pg_formula_version
-      caveats += <<~EOS
-        Previous versions of postgresql shared the same data directory.
-
-        You can migrate to a versioned data directory by running:
-          mv -v "#{old_postgres_data_dir}" "#{postgresql_datadir}"
-
-        (Make sure PostgreSQL is stopped before executing this command)
-
-      EOS
-    end
-
-    caveats += <<~EOS
+    <<~EOS
       This formula has created a default database cluster with:
         initdb --locale=C -E UTF-8 #{postgresql_datadir}
     EOS
-
-    caveats
   end
 
   service do

@@ -1,11 +1,24 @@
 class Koka < Formula
   desc "Compiler for the Koka language"
   homepage "http://koka-lang.org"
-  url "https://github.com/koka-lang/koka.git",
-      tag:      "v3.1.2",
-      revision: "3c4e721dd48d48b409a3740b42fc459bf6d7828e"
   license "Apache-2.0"
-  head "https://github.com/koka-lang/koka.git", branch: "master"
+  head "https://github.com/koka-lang/koka.git", branch: "dev"
+
+  stable do
+    url "https://github.com/koka-lang/koka.git",
+        tag:      "v3.1.2",
+        revision: "3c4e721dd48d48b409a3740b42fc459bf6d7828e"
+
+    # Backport fix to build with Cabal
+    patch do
+      url "https://github.com/koka-lang/koka/commit/86eb069440aa3e7da79b4f9b88867cfab4464354.patch?full_index=1"
+      sha256 "97229ae11d735963a29ded3c10adfa6d12672b7d07277190d1af3a898ee6045d"
+    end
+
+    # Backport part of commit to build arm64 linux
+    # https://github.com/koka-lang/koka/commit/cd1d644b73a9683554f97bcea2e0ca2469a7bb39
+    patch :DATA
+  end
 
   livecheck do
     url :stable
@@ -24,9 +37,12 @@ class Koka < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "40d8791bbc514bb4bee3c4177bcc16fc865de042a5a53627caabbe774c9daa43"
   end
 
-  depends_on "ghc@9.6" => :build
-  depends_on "haskell-stack" => :build
+  depends_on "cabal-install" => :build
+  depends_on "ghc" => :build
   depends_on "pcre2" => :build
+  depends_on "gmp"
+
+  uses_from_macos "libffi"
 
   def install
     inreplace "src/Compile/Options.hs" do |s|
@@ -34,13 +50,9 @@ class Koka < Formula
       s.gsub! '"-march=haswell"', "\"-march=#{ENV.effective_arch}\"" if Hardware::CPU.intel? && build.bottle?
     end
 
-    stack_args = %w[
-      --system-ghc
-      --no-install-ghc
-      --skip-ghc-check
-    ]
-    system "stack", "build", *stack_args
-    system "stack", "exec", "koka", *stack_args, "--",
+    system "cabal", "v2-update"
+    system "cabal", "v2-build", *std_cabal_v2_args.reject { |s| s["install"] }
+    system "cabal", "v2-run", "koka", "--",
            "-e", "util/bundle.kk", "--",
            "--prefix=#{prefix}", "--install", "--system-ghc"
   end
@@ -51,3 +63,18 @@ class Koka < Formula
     assert_match "420000", shell_output("#{bin}/koka -O2 -e samples/basic/rbtree")
   end
 end
+
+__END__
+diff --git a/kklib/include/kklib/bits.h b/kklib/include/kklib/bits.h
+index 670cf2eaf8fc779fd7792b09a5919480bfe2a3a6..d5ede971c858d18e7aca9336556d7b8562119fd8 100644
+--- a/kklib/include/kklib/bits.h
++++ b/kklib/include/kklib/bits.h
+@@ -933,7 +933,7 @@ static inline uint64_t kk_clmul64_wide(uint64_t x, uint64_t y, uint64_t* hi) {
+   return _mm_extract_epi64(res, 0);
+ }
+ 
+-#elif KK_ARCH_ARM64 && defined(__ARM_NEON) // (defined(__ARM_FEATURE_SME) || defined(__ARM_FEATURE_SVE))
++#elif KK_ARCH_ARM64 && defined(__ARM_NEON) && defined(__ARM_FEATURE_AES)
+ #define KK_BITS_HAS_FAST_CLMUL64  1
+ #include <arm_neon.h>
+ #include <arm_acle.h>

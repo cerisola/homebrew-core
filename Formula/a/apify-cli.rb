@@ -1,17 +1,18 @@
 class ApifyCli < Formula
   desc "Apify command-line interface"
-  homepage "https://docs.apify.com/cli"
-  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.20.11.tgz"
-  sha256 "bb3f81451435fa6bcc511c94e730b274059258f087999fb659c504ef97aecc62"
+  homepage "https://docs.apify.com/cli/"
+  url "https://registry.npmjs.org/apify-cli/-/apify-cli-0.21.6.tgz"
+  sha256 "202c880cde9b73cc068a7bc2173a27ad128f203ed14a2b5c57564710b7171ac4"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6938df875becc3fc1cfa2158ff848901ad1e91963aeb8494350fba002a6a3a0e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6938df875becc3fc1cfa2158ff848901ad1e91963aeb8494350fba002a6a3a0e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6938df875becc3fc1cfa2158ff848901ad1e91963aeb8494350fba002a6a3a0e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bbfc492ab2d5afb89cfb16c5ee75d78787f6868957177a6e3eb930304cb0eeef"
-    sha256 cellar: :any_skip_relocation, ventura:       "bbfc492ab2d5afb89cfb16c5ee75d78787f6868957177a6e3eb930304cb0eeef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d4d9ecb6cb18cb0694f392a9706927508642ed3971c5ccb58c20d9182a55689"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8ef35f170850049c3aa763b9da9a8f10e63ea7aeeb867c5aff64a97f8110e8bd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8ef35f170850049c3aa763b9da9a8f10e63ea7aeeb867c5aff64a97f8110e8bd"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "8ef35f170850049c3aa763b9da9a8f10e63ea7aeeb867c5aff64a97f8110e8bd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "45b2d62a7f91eb589fedb92019e83cfba8b94d4ebfd6a628d47f2b2d023ea7fa"
+    sha256 cellar: :any_skip_relocation, ventura:       "45b2d62a7f91eb589fedb92019e83cfba8b94d4ebfd6a628d47f2b2d023ea7fa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d870a7f4e292fb3a7e43a8a1781992fe79e70d47b34242eb706a40b1b89bb7c9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d870a7f4e292fb3a7e43a8a1781992fe79e70d47b34242eb706a40b1b89bb7c9"
   end
 
   depends_on "node"
@@ -24,7 +25,7 @@ class ApifyCli < Formula
   test do
     output = shell_output("#{bin}/apify init -y testing-actor 2>&1")
     assert_includes output, "Success: The Actor has been initialized in the current directory"
-    assert_predicate testpath/"storage/key_value_stores/default/INPUT.json", :exist?
+    assert_path_exists testpath/"storage/key_value_stores/default/INPUT.json"
 
     assert_includes shell_output("#{bin}/apify --version 2>&1"), version.to_s
   end

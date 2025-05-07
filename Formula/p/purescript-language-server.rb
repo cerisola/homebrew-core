@@ -1,12 +1,12 @@
 class PurescriptLanguageServer < Formula
   desc "Language Server Protocol server for PureScript"
   homepage "https://github.com/nwolverson/purescript-language-server"
-  url "https://registry.npmjs.org/purescript-language-server/-/purescript-language-server-0.18.2.tgz"
-  sha256 "a41076b1806f85daaf9aadcdc0d8e0db716bb929e8d4bbb0993aa889d503210a"
+  url "https://registry.npmjs.org/purescript-language-server/-/purescript-language-server-0.18.4.tgz"
+  sha256 "ff7523d15d2a8093a788a8cf22c8b82ad778315f667cff1086b747465ad11342"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "5524c9941890b58cd897c4df1025c749543a725f8632e9ea7b624b88c5b4daba"
+    sha256 cellar: :any_skip_relocation, all: "f168a0249dc45427169db1c78eadcc12c7519c957987caf2a7f7540265afcb2f"
   end
 
   depends_on "node"

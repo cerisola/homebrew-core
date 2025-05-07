@@ -17,6 +17,7 @@ class Stubby < Formula
     sha256 ventura:        "9b09af1e56899b9069fa5141af931ca86086891d3dc434ea217f1ae2418f07f3"
     sha256 monterey:       "a215b86f3bd4cfcf9684b056db2ead9d59b76de0b9cc4ab6d08a218e4ab69f07"
     sha256 big_sur:        "f68065895579d27cda75d2d5b1635749502205922ff260524e5e47e62c01bab2"
+    sha256 arm64_linux:    "74cff1a598c66d7b8bbe09bba4ac23617ae0d89d58d0c1179b8eb8fe1c5bc965"
     sha256 x86_64_linux:   "9be25773bc7f384a70943d6edf294174a59d901c17f497e3dc91c855cb00733e"
   end
 
@@ -36,9 +37,13 @@ class Stubby < Formula
   end
 
   def install
-    system "cmake", "-DCMAKE_INSTALL_RUNSTATEDIR=#{HOMEBREW_PREFIX}/var/run/", \
-                    "-DCMAKE_INSTALL_SYSCONFDIR=#{HOMEBREW_PREFIX}/etc", ".", *std_cmake_args
-    system "make", "install"
+    args = %W[
+      -DCMAKE_INSTALL_RUNSTATEDIR=#{var}/run/
+      -DCMAKE_INSTALL_SYSCONFDIR=#{etc}
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   service do
@@ -48,8 +53,8 @@ class Stubby < Formula
   end
 
   test do
-    assert_predicate etc/"stubby/stubby.yml", :exist?
-    (testpath/"stubby_test.yml").write <<~EOS
+    assert_path_exists etc/"stubby/stubby.yml"
+    (testpath/"stubby_test.yml").write <<~YAML
       resolution_type: GETDNS_RESOLUTION_STUB
       dns_transport_list:
         - GETDNS_TRANSPORT_TLS
@@ -62,7 +67,7 @@ class Stubby < Formula
         - address_data: 8.8.8.8
         - address_data: 8.8.4.4
         - address_data: 1.1.1.1
-    EOS
+    YAML
     output = shell_output("#{bin}/stubby -i -C stubby_test.yml")
     assert_match "bindata for 8.8.8.8", output
 

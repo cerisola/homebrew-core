@@ -21,7 +21,7 @@ class ElmFormat < Formula
   end
 
   # Has been using pre-built GHC due to needing specific patch version of GHC
-  deprecate! date: "2024-07-27", because: "does not build with any GHC formula"
+  deprecate! date: "2024-07-27", because: :does_not_build
 
   depends_on "cabal-install" => :build
   depends_on "haskell-stack" => :build
@@ -50,10 +50,10 @@ class ElmFormat < Formula
 
   test do
     src_path = testpath/"Hello.elm"
-    src_path.write <<~EOS
+    src_path.write <<~ELM
       import Html exposing (text)
       main = text "Hello, world!"
-    EOS
+    ELM
 
     system bin/"elm-format", "--elm-version=0.18", testpath/"Hello.elm", "--yes"
     system bin/"elm-format", "--elm-version=0.19", testpath/"Hello.elm", "--yes"

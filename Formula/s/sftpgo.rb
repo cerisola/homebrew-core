@@ -1,19 +1,18 @@
 class Sftpgo < Formula
   desc "Fully featured SFTP server with optional HTTP/S, FTP/S and WebDAV support"
-  homepage "https://github.com/drakkan/sftpgo"
-  url "https://github.com/drakkan/sftpgo/releases/download/v2.6.2/sftpgo_v2.6.2_src_with_deps.tar.xz"
-  sha256 "c90260b7b2901438bbd476eee9fd389af5af24113088a50284b2d170631b52ee"
+  homepage "https://sftpgo.com/"
+  url "https://github.com/drakkan/sftpgo/releases/download/v2.6.6/sftpgo_v2.6.6_src_with_deps.tar.xz"
+  sha256 "02d36a540e79ee877585c145cbe294bd48b03db98d2b577273cad4c8b6cf482c"
   license "AGPL-3.0-only"
 
   bottle do
-    sha256 arm64_sequoia:  "378ab577341c52eade15262dea2426ff3c848a29bf658ff115df5174e449b48d"
-    sha256 arm64_sonoma:   "ccf55eb1dc3f3fc0cff3eec784367dae7f43637c2afd8d93eb595fa3ceb37bd9"
-    sha256 arm64_ventura:  "348636fa1e3f7ccbb067c36bf8fc666b0c1dca2f78480a1fa6f4452d622abb26"
-    sha256 arm64_monterey: "daac16c36497a50b27b11a3f1051d460852a7e801349eca53770e6483c5f3f63"
-    sha256 sonoma:         "ac68526787858a734993736e7a7ec14ad1917e013fb91b6a09210a919628232e"
-    sha256 ventura:        "dd3d8bcc33b6137d0d3b8790da3bddbf03b5491808bcc0ca28b161c29881e9bf"
-    sha256 monterey:       "a5e96caf5cacd56399c15b2f331a77fdf6e7de263b676528eeb7df5b3b107057"
-    sha256 x86_64_linux:   "bf3f1ff033fa8807ccfd4cda40c4d5f1b726f84c3b5fad6f3ddc6786a6f43053"
+    sha256 arm64_sequoia: "618de2bf3a3e61caeb84a818715060a7793e35dea8309b529c42715e10382778"
+    sha256 arm64_sonoma:  "cf13ba2d5b0ef2cf8cc20ef3c6e7ba8719fcca93e88b545924ac0976dbc0d9bb"
+    sha256 arm64_ventura: "f5b1195ebb945df9faa935aff174de9305be4e66deb7d015271255c23df2293c"
+    sha256 sonoma:        "b0e1b0c942ab7489cae8fd45b1f8586ecccf2c9f95e08d3c21b762690e4af66e"
+    sha256 ventura:       "b8be7324b8fc6d0ba8c3d833043f042cf0a161d4c31242686ef0915773aad7cd"
+    sha256 arm64_linux:   "03ccf1abb305691c6d1c169fceaa36057810a6e2888baac8977ccb1ebfb6a90e"
+    sha256 x86_64_linux:  "e1b0617a0ea156c8d4a002fbfdeb8d3b1fa448e8bb8167dd9c5f5f0934af1efc"
   end
 
   depends_on "go" => :build
@@ -25,8 +24,12 @@ class Sftpgo < Formula
       -X github.com/drakkan/sftpgo/v2/internal/util.additionalSharedDataSearchPath=#{opt_pkgshare}
       -X github.com/drakkan/sftpgo/v2/internal/version.commit=#{git_sha}
       -X github.com/drakkan/sftpgo/v2/internal/version.date=#{time.iso8601}
-    ].join(" ")
-    system "go", "build", *std_go_args(ldflags:), "-tags", "nopgxregisterdefaulttypes"
+    ]
+    tags = %w[
+      nopgxregisterdefaulttypes
+      disable_grpc_modules
+    ]
+    system "go", "build", *std_go_args(ldflags:, tags:)
     system bin/"sftpgo", "gen", "man", "-d", man1
 
     generate_completions_from_executable(bin/"sftpgo", "gen", "completion")

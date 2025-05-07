@@ -19,12 +19,13 @@ class Klavaro < Formula
     sha256 sonoma:         "9a3e25bfb9566643a127ceccd4b646b90cfbbe733f0416fcd0f8ad46f9e6759b"
     sha256 ventura:        "756f253d5890c66e7ed6554ed23b6f16fb18f305afe73cbfd3e33f964e8b4d8b"
     sha256 monterey:       "609d595507d40c138aa3d3e565d6e92826f4b8ab570b5dbc389b917b3991b297"
+    sha256 arm64_linux:    "a42fad29e4aba488b46ffc11945cef3d1210d85efb853a3469b3b27e40f68a0f"
     sha256 x86_64_linux:   "847abc58af56c8af7a36c95f7ea4a239906b0078b2fe39393750397c8c03db53"
   end
 
   depends_on "gettext" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "adwaita-icon-theme"
   depends_on "glib"
@@ -48,9 +49,7 @@ class Klavaro < Formula
   end
 
   def install
-    ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5" unless OS.mac?
-
-    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

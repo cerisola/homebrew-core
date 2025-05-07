@@ -1,8 +1,8 @@
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
   homepage "https://ece.engr.uvic.ca/~frodo/jasper/"
-  url "https://github.com/jasper-software/jasper/releases/download/version-4.2.4/jasper-4.2.4.tar.gz"
-  sha256 "6a597613d8d84c500b5b83bf0eec06cd3707c23d19957f70354ac2394c9914e7"
+  url "https://github.com/jasper-software/jasper/releases/download/version-4.2.5/jasper-4.2.5.tar.gz"
+  sha256 "6e49075b47204a9879600f85628a248cdb19abc1bb74d0b7a2177bcdb87c95eb"
   license "JasPer-2.0"
 
   livecheck do
@@ -11,14 +11,13 @@ class Jasper < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "6d7a00cd2f4286a4d90f1674cdc5a152632211cabf335c65106d6e24a2ca2b89"
-    sha256 cellar: :any,                 arm64_sonoma:   "a9c32c908bdf797743a22d851efd4c28b6abf6ad132bcececfb83de354383f72"
-    sha256 cellar: :any,                 arm64_ventura:  "c3215fa4215361e882b4701ac82da30bf175d3f13e9e34ebc375c1406f6ab1b4"
-    sha256 cellar: :any,                 arm64_monterey: "180626f41ecce9cec96f869ac6efc0106cd7442eb887a00809f3fedf82db4a89"
-    sha256 cellar: :any,                 sonoma:         "ccc68dcf709d995ef9f91ab109a2dcabbc9aba82c475a9d32309545df18f155e"
-    sha256 cellar: :any,                 ventura:        "18d3d583cb960f8e4872ffc5b2181b6282f95d2c1ebd3a659d0e0b3edf55bc10"
-    sha256 cellar: :any,                 monterey:       "09c601a2f468798fe0746f56a47a9ba3d3642c9da9b08a3cc57a4b99ab7105bf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "e8a209bbc3755e5ae06cf4c7ab8040e079b0202635555ea4c75e8e36d8137c74"
+    sha256 cellar: :any,                 arm64_sequoia: "5bf7fb8303c35cca02e48faa33254cc9d65306985bd4186d8141dc61bf3b643f"
+    sha256 cellar: :any,                 arm64_sonoma:  "466fe76a53eec75539fd035ff2f360ce80c1996eab9a3e0fb5d376e27c8b2248"
+    sha256 cellar: :any,                 arm64_ventura: "237c33c5a1af11e1944a0a23ec034e00796abec9fb1abd95fca207028d17b2ba"
+    sha256 cellar: :any,                 sonoma:        "ba6b449339961161ac625af3590a931be960f4c2275d5cb37fbdef2b87ff37bc"
+    sha256 cellar: :any,                 ventura:       "708052ec8c1dbc2af569e6598cd15be3c3ee591883fd32ab83d81f454a220b06"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8f4941da41b0df9cb13644bcf1ae1743d8f322fa981909c4424e1671349513a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b6a0215c5f685c113b3920ff802d935d0a6a1853bb1f859e058421dcac0f4d2f"
   end
 
   depends_on "cmake" => :build
@@ -52,11 +51,14 @@ class Jasper < Formula
       system "make"
       lib.install "src/libjasper/libjasper.a"
     end
+
+    # Avoid rebuilding dependents that hard-code the prefix.
+    inreplace lib/"pkgconfig/jasper.pc", prefix, opt_prefix
   end
 
   test do
     system bin/"jasper", "--input", test_fixtures("test.jpg"),
                          "--output", "test.bmp"
-    assert_predicate testpath/"test.bmp", :exist?
+    assert_path_exists testpath/"test.bmp"
   end
 end

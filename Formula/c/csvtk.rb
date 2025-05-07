@@ -1,18 +1,18 @@
 class Csvtk < Formula
   desc "Cross-platform, efficient and practical CSV/TSV toolkit in Golang"
   homepage "https://bioinf.shenwei.me/csvtk"
-  url "https://github.com/shenwei356/csvtk/archive/refs/tags/v0.31.0.tar.gz"
-  sha256 "ac28ae180d58b0214521a2ba5881ac3daf676ee2c39157366fad6cb56a64ba86"
+  url "https://github.com/shenwei356/csvtk/archive/refs/tags/v0.33.0.tar.gz"
+  sha256 "f325933dd2e2c4f8b83fac59df1a06b4b5b914c23c23acfa5658b676936dde9f"
   license "MIT"
   head "https://github.com/shenwei356/csvtk.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b3bff7148c3fca85c1a5fa275eaf58df1e5353a2683b60102c23ee1e3a359b0e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b3bff7148c3fca85c1a5fa275eaf58df1e5353a2683b60102c23ee1e3a359b0e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b3bff7148c3fca85c1a5fa275eaf58df1e5353a2683b60102c23ee1e3a359b0e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "92edbcfbbb3e7d2b71353cdda8343a542f190b903bbb67e5bb4cbcd627a58c91"
-    sha256 cellar: :any_skip_relocation, ventura:       "92edbcfbbb3e7d2b71353cdda8343a542f190b903bbb67e5bb4cbcd627a58c91"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "25952e330b40f92c0a651badca0f76e6496ec3cf979b920e3a15a6fe192c1c2d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "de4fd6a17277f4e9a178cab48b5ca6135c304b27fa1617a1b9ea49a3f96260d0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de4fd6a17277f4e9a178cab48b5ca6135c304b27fa1617a1b9ea49a3f96260d0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "de4fd6a17277f4e9a178cab48b5ca6135c304b27fa1617a1b9ea49a3f96260d0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "20deb9324aeacaf068a1edcf988890e0a1f15ff3b735599513fd028b871fa7ac"
+    sha256 cellar: :any_skip_relocation, ventura:       "20deb9324aeacaf068a1edcf988890e0a1f15ff3b735599513fd028b871fa7ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d8ae2c10c57b6852b45ada75c178336f36b19e77f292ef25b65517baa8c52805"
   end
 
   depends_on "go" => :build

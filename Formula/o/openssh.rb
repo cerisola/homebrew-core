@@ -1,10 +1,10 @@
 class Openssh < Formula
   desc "OpenBSD freely-licensed SSH connectivity tools"
   homepage "https://www.openssh.com/"
-  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
-  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz"
-  version "9.9p1"
-  sha256 "b343fbcdbff87f15b1986e6e15d6d4fc9a7d36066be6b7fb507087ba8f966c02"
+  url "https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
+  mirror "https://cloudflare.cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p2.tar.gz"
+  version "9.9p2"
+  sha256 "91aadb603e08cc285eddf965e1199d02585fa94d994d6cae5b41e1721e215673"
   license "SSH-OpenSSH"
 
   livecheck do
@@ -13,18 +13,19 @@ class Openssh < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "2ba0e61df6c04f777659a421a6937411cd95ef2c035316d9295191d3bc68c244"
-    sha256 arm64_sonoma:  "699ae8ec8c7b253b48ffb936f7ecffc34a4a9d5bd776711f045c9f764f982ffd"
-    sha256 arm64_ventura: "66d29a2929b68f63cfd37238299a4fe6553ae0e49379aa75492b48da773e3958"
-    sha256 sonoma:        "57286063c3fc2873ff7ae968457632e064cf6c6616fd73b61c9302f5a414f455"
-    sha256 ventura:       "97383292a3b259beba9375cc7ffdf193f81c40c70299793aee6fd4bcac753ce0"
-    sha256 x86_64_linux:  "dcc2214edc8aff762f7ffa125767e4636c332c0c533b7bac0af13adc4bc8a9b5"
+    sha256 arm64_sequoia: "0f9bafc94fa471cbb2385c7d6c94555007562649922e994db8c0445a509f7309"
+    sha256 arm64_sonoma:  "3d29bd75979fa18a5ffedeb87e980935130badc1e66eb1b03fbe939395d69faa"
+    sha256 arm64_ventura: "f5ce25d2a671debd1114ce92ba6fc9ecefafce11d8e3fed5287fe29039cb547a"
+    sha256 sonoma:        "abfddd2952c084d370508dbc9f73d841b21a79086798e503f433973c0a96d8f2"
+    sha256 ventura:       "4b3a0a5eedf70dd18d80c2062d2fd3ac370e774b928d21c227dd09d0b18598de"
+    sha256 arm64_linux:   "3161bee35d5c534421e678ac88d5c9c5c4b9cc3027ef84de29158c21b4753853"
+    sha256 x86_64_linux:  "94e604bf4f8b0554621c22291d50063101c43bd4b99b48dbd0c7120a1f5178b5"
   end
 
   # Please don't resubmit the keychain patch option. It will never be accepted.
   # https://archive.is/hSB6d#10%25
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ldns"
   depends_on "libfido2"
   depends_on "openssl@3"
@@ -76,7 +77,7 @@ class Openssh < Formula
       end
     end
 
-    args = *std_configure_args + %W[
+    args = %W[
       --sysconfdir=#{etc}/ssh
       --with-ldns
       --with-libedit
@@ -88,7 +89,7 @@ class Openssh < Formula
 
     args << "--with-privsep-path=#{var}/lib/sshd" if OS.linux?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     ENV.deparallelize
     system "make", "install"
@@ -100,13 +101,22 @@ class Openssh < Formula
 
     buildpath.install resource("com.openssh.sshd.sb")
     (etc/"ssh").install "com.openssh.sshd.sb" => "org.openssh.sshd.sb"
+
+    # Don't hardcode Cellar paths in configuration files
+    inreplace etc/"ssh/sshd_config", prefix, opt_prefix
   end
 
   test do
+    (etc/"ssh").find do |pn|
+      next unless pn.file?
+
+      refute_match HOMEBREW_CELLAR.to_s, pn.read
+    end
+
     assert_match "OpenSSH_", shell_output("#{bin}/ssh -V 2>&1")
 
     port = free_port
-    fork { exec sbin/"sshd", "-D", "-p", port.to_s }
+    spawn sbin/"sshd", "-D", "-p", port.to_s
     sleep 2
     assert_match "sshd", shell_output("lsof -i :#{port}")
   end

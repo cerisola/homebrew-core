@@ -1,8 +1,8 @@
 class WhisperCpp < Formula
   desc "Port of OpenAI's Whisper model in C/C++"
   homepage "https://github.com/ggerganov/whisper.cpp"
-  url "https://github.com/ggerganov/whisper.cpp/archive/refs/tags/v1.5.4.tar.gz"
-  sha256 "06eed84de310fdf5408527e41e863ac3b80b8603576ba0521177464b1b341a3a"
+  url "https://github.com/ggerganov/whisper.cpp/archive/refs/tags/v1.7.5.tar.gz"
+  sha256 "2fda42b57b7b8427d724551bd041616d85401fb9382e42b0349132a28920a34f"
   license "MIT"
   head "https://github.com/ggerganov/whisper.cpp.git", branch: "master"
 
@@ -12,21 +12,45 @@ class WhisperCpp < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "216f8aff7ce3a5d3c505b7fe1169fe08a6b3d232f455ba0f6c03de71497b2474"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "f1214a35555c1e42894ccb74fa8aee5b8adf9492de5c7a869aafe25a526c3fc0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f1f235046a5792cfcd4e8e3abc4014ba1c6000e2c426d64d2553133b73242613"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ca9e9126e73f160ee4ca188464d20b5ef86275271d3060b05f5db6e7a571daba"
-    sha256 cellar: :any_skip_relocation, sonoma:         "50ba397b8f35223c1022c56bab606a3df1e893cebf32022bc845cf1ab9c99e92"
-    sha256 cellar: :any_skip_relocation, ventura:        "1d7ffc4a9c9add0919a69b16141d41495a98a9538053ea73cf08655a63e0f32f"
-    sha256 cellar: :any_skip_relocation, monterey:       "90f4d20efb428c9ca021eb7db8abd432640ca2fb68a5578b84154f53d337fbd5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f7187c90ab975f4558c1762a608e09bd16f897690b55308aa27bb6d21e86c2e2"
+    sha256 cellar: :any,                 arm64_sequoia: "60f2a5715f633cdb5a86adb6ccf8e4dc553c5b5e97839019d4edfb3151993da9"
+    sha256 cellar: :any,                 arm64_sonoma:  "1fa55cf16d944d91ddb145c592bb9327a262124ab9b93e9e32191e728a0d05c8"
+    sha256 cellar: :any,                 arm64_ventura: "6029b6487ab798002960ce9d37488a2dece0fa0706f87b773d30a8dc5fb61357"
+    sha256 cellar: :any,                 sonoma:        "8f43095a43f99de996b6c5d45319022cc27b9ac75774dd3b201e0a7fb3602dbc"
+    sha256 cellar: :any,                 ventura:       "3eedd879a4ae545461f70d1c2b7c4e318e5696fdaf7fde8d2dcfc56281d1fcf5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "806baa21a25b3ca1fe8b1a69e201bdf34fce95e9bfa0ddd6a118037099f31c30"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9e5f09c4f11f4b1507f4d726c208523b4a1f360d11e454ee3c273b427cad2fc7"
   end
 
-  def install
-    system "make"
-    bin.install "main" => "whisper-cpp"
+  depends_on "cmake" => :build
 
-    pkgshare.install ["samples/jfk.wav", "models/for-tests-ggml-tiny.bin", "ggml-metal.metal"]
+  def install
+    args = %W[
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath(target: prefix/"libinternal")}
+      -DGGML_METAL=#{(OS.mac? && !Hardware::CPU.intel?) ? "ON" : "OFF"}
+      -DGGML_METAL_EMBED_LIBRARY=#{OS.mac? ? "ON" : "OFF"}
+      -DGGML_NATIVE=#{build.bottle? ? "OFF" : "ON"}
+      -DWHISPER_BUILD_EXAMPLES=ON
+      -DWHISPER_BUILD_TESTS=OFF
+      -DWHISPER_BUILD_SERVER=OFF
+    ]
+
+    # avoid installing libggml libraries to "lib" since they would conflict with llama.cpp
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_libdir: "libinternal")
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+    # avoid publishing header files since they will conflict with llama.cpp
+    rm_r include
+
+    # for backward compatibility with existing installs
+    (bin/"whisper-cpp").write <<~SHELL
+      #!/bin/bash
+      here="${BASH_SOURCE[0]}"
+      echo "${BASH_SOURCE[0]}: warning: whisper-cpp is deprecated. Use whisper-cli instead." >&2
+      exec "$(dirname "$here")/whisper-cli" "$@"
+    SHELL
+
+    pkgshare.install "models/for-tests-ggml-tiny.bin", "samples/jfk.wav"
   end
 
   def caveats
@@ -40,9 +64,8 @@ class WhisperCpp < Formula
   end
 
   test do
-    cp [pkgshare/"jfk.wav", pkgshare/"for-tests-ggml-tiny.bin", pkgshare/"ggml-metal.metal"], testpath
-
-    system bin/"whisper-cpp", "samples", "-m", "for-tests-ggml-tiny.bin"
-    assert_equal 0, $CHILD_STATUS.exitstatus, "whisper-cpp failed with exit code #{$CHILD_STATUS.exitstatus}"
+    model = pkgshare/"for-tests-ggml-tiny.bin"
+    output = shell_output("#{bin}/whisper-cli --model #{model} #{pkgshare}/jfk.wav 2>&1")
+    assert_match "processing '#{pkgshare}/jfk.wav' (176000 samples, 11.0 sec)", output
   end
 end

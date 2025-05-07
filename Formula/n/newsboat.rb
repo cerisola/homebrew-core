@@ -1,22 +1,23 @@
 class Newsboat < Formula
   desc "RSS/Atom feed reader for text terminals"
   homepage "https://newsboat.org/"
-  url "https://newsboat.org/releases/2.37/newsboat-2.37.tar.xz"
-  sha256 "4f54dea385c25b95e8ce0df1107f0336db41b18c645368e6164ce1070efba77c"
+  url "https://newsboat.org/releases/2.39/newsboat-2.39.tar.xz"
+  sha256 "62551a7d574d7fb3af7a87f9dbd0795e4d9420ca7136abc2265b4b06663be503"
   license "MIT"
   head "https://github.com/newsboat/newsboat.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "300636df7d095784a08a1dc80c767a75f91c6b46428c341665f111763a2e325d"
-    sha256 arm64_sonoma:  "a5c275ca088b11096188d1c16892ad95e31a3c7dde78d1a44c3b3ebde2e25e3f"
-    sha256 arm64_ventura: "afa76014b9eb5526dd94e28258fdda1fc94ea795f3d0384054cd32ae911a2c07"
-    sha256 sonoma:        "c7e9b83443b8d3e92b9a3d87eec6f7175d8f13644286508688f0c0e435ae64f9"
-    sha256 ventura:       "c718942047b57a41b1c0610457603c85c8f74cd1027f4a22d3a21213e8a042ae"
-    sha256 x86_64_linux:  "9b4badabe9019a7b23f157d6548b1d9a52291b5d9a77865082f18c486448d2c3"
+    sha256 arm64_sequoia: "784097ba80326b979eb1911e3069703e74931f098b4b4b09e6860d55625436a9"
+    sha256 arm64_sonoma:  "cb4fb9c1e39faebed2936c9024596c5aae56a04d5383d114b2764fa231314e79"
+    sha256 arm64_ventura: "0f259c3cfdc92b561aba4dab533c737000591552ee2741f2e18dd8b575ca1df4"
+    sha256 sonoma:        "118530c4024a841179a291c9cb8cc510def37e0dadc51204423cc55d1d5ef12d"
+    sha256 ventura:       "64d63a00c216d589829b44c64d8cc1ff6c833d8fb0eff4bd8f699be39aca7998"
+    sha256 arm64_linux:   "c5fc2f3b3031c7959cd6aca3038143adc52f77525e92d9d2b043717f9985ac1a"
+    sha256 x86_64_linux:  "9594e4b2d0db3616517b295e687cc0832b149a68546dcdce2ab9309a622ea32d"
   end
 
   depends_on "asciidoctor" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "xz" => :build
   depends_on "gettext"
@@ -39,7 +40,7 @@ class Newsboat < Formula
   # https://github.com/newsboat/newsboat/issues/232
   resource("libstfl") do
     url "https://github.com/newsboat/stfl.git",
-        revision: "c2c10b8a50fef613c0aacdc5d06a0fa610bf79e9"
+        revision: "bbb2404580e845df2556560112c8aefa27494d66"
   end
 
   def install

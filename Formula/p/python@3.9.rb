@@ -1,8 +1,8 @@
 class PythonAT39 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.20/Python-3.9.20.tar.xz"
-  sha256 "6b281279efd85294d2d6993e173983a57464c0133956fbbb5536ec9646beaf0c"
+  url "https://www.python.org/ftp/python/3.9.22/Python-3.9.22.tar.xz"
+  sha256 "8c136d199d3637a1fce98a16adc809c1d83c922d02d41f3614b34f8b6e7d38ec"
   license "Python-2.0"
 
   livecheck do
@@ -11,21 +11,23 @@ class PythonAT39 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "0580cd1e46999a8beccb75f77e0b05f79cfade91fb402ae473d0aacc02be9951"
-    sha256 arm64_sonoma:   "498dedbc032adaf282c20fb5bd67570a05c740352bafde94b4988cd698d4f762"
-    sha256 arm64_ventura:  "3371da459d79669676fd975e730bf365eeb4658e59cdedfa0b22380bf4cc775c"
-    sha256 arm64_monterey: "9d64b062947225b6dc12543ae672c713823e1420220c5d5984a895a0aa47e214"
-    sha256 sonoma:         "44dcef0a5a81d317ed5fe320030d40e36aabb8416b17fefaa31f7c750b09ec21"
-    sha256 ventura:        "b83e9ef8729218438c3f937c4efc59603a8c100d2b0ef83bbcc0163fdc0075e4"
-    sha256 monterey:       "aa38dd87edf16ffde32390bd0e1bef2358a9c9beffd37f07cf5531eeb4c074f5"
-    sha256 x86_64_linux:   "364db16648d7890e150959da20466065c7a6822cff008e9760c1776f1fed6232"
+    sha256 arm64_sequoia: "87f9a866cba5103b6e2551f109781f413d6b69ef7d6bd0137222054dce965dc9"
+    sha256 arm64_sonoma:  "cd7e1f45d0a0f898cca96e61411f3a32360e7cc28276f784be7876a98f064500"
+    sha256 arm64_ventura: "c13bd1128b70283d76c86b38fd2029fd7ee6c2dbdbc7ce7de98f59b217977001"
+    sha256 sonoma:        "f9f06241188b3bc368b5533f3fa175b4deff12a882bdd2d58e1f6d7b72d93292"
+    sha256 ventura:       "16e029a7744e63c97c9e3339ccd664203af5c449eab55a6c2ad6e6e6fdd93e53"
+    sha256 arm64_linux:   "03a115cf797cfa15f8313e3ce113b45c9f99a4fdfe6ad98f4fe775c275a1747c"
+    sha256 x86_64_linux:  "ac113081bcc9fa8d2e4967ba47444aea8df3c07e017e3ef89d5bc6cad8171d4d"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
   # build packages later. Xcode-only systems need different flags.
   pour_bottle? only_if: :clt_installed
 
-  depends_on "pkg-config" => :build
+  # https://devguide.python.org/versions/#versions
+  deprecate! date: "2025-10-15", because: :deprecated_upstream
+
+  depends_on "pkgconf" => :build
   depends_on "gdbm"
   depends_on "mpdecimal"
   depends_on "openssl@3"
@@ -43,27 +45,28 @@ class PythonAT39 < Formula
 
   on_linux do
     depends_on "libnsl"
+    depends_on "libtirpc"
   end
 
   # Always update to latest release
   resource "flit-core" do
-    url "https://files.pythonhosted.org/packages/c4/e6/c1ac50fe3eebb38a155155711e6e864e254ce4b6e17fe2429b4c4d5b9e80/flit_core-3.9.0.tar.gz"
-    sha256 "72ad266176c4a3fcfab5f2930d76896059851240570ce9a98733b658cb786eba"
+    url "https://files.pythonhosted.org/packages/69/59/b6fc2188dfc7ea4f936cd12b49d707f66a1cb7a1d2c16172963534db741b/flit_core-3.12.0.tar.gz"
+    sha256 "18f63100d6f94385c6ed57a72073443e1a71a4acb4339491615d0f16d6ff01b2"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/4d/87/fb90046e096a03aeab235e139436b3fe804cdd447ed2093b0d70eba3f7f8/pip-24.2.tar.gz"
-    sha256 "5b5e490b5e9cb275c879595064adce9ebd31b854e3e803740b72f9ccf34a45b8"
+    url "https://files.pythonhosted.org/packages/70/53/b309b4a497b09655cb7e07088966881a57d082f48ac3cb54ea729fd2c6cf/pip-25.0.1.tar.gz"
+    sha256 "88f96547ea48b940a3a385494e181e29fb8637898f88d88737c5049780f196ea"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/3e/2c/f0a538a2f91ce633a78daaeb34cbfb93a54bd2132a6de1f6cec028eee6ef/setuptools-74.1.2.tar.gz"
-    sha256 "95b40ed940a1c67eb70fc099094bd6e99c6ee7c23aa2306f4d2697ba7916f9c6"
+    url "https://files.pythonhosted.org/packages/a9/5a/0db4da3bc908df06e5efae42b44e75c81dd52716e10192ff36d0c1c8e379/setuptools-78.1.0.tar.gz"
+    sha256 "18fd474d4a82a5f83dac888df697af65afa82dec7323d09c3e37d1f14288da54"
   end
 
   resource "wheel" do
-    url "https://files.pythonhosted.org/packages/b7/a0/95e9e962c5fd9da11c1e28aa4c0d8210ab277b1ada951d2aee336b505813/wheel-0.44.0.tar.gz"
-    sha256 "a29c3f2817e95ab89aa4660681ad547c0e9547f20e75b0562fe7723c9a2a9d49"
+    url "https://files.pythonhosted.org/packages/8a/98/2d9906746cdc6a6ef809ae6338005b3f21bb568bea3165cfc6a243fdc25c/wheel-0.45.1.tar.gz"
+    sha256 "661e1abd9198507b1409a20c02106d9670b2576e916d58f520316666abca6729"
   end
 
   # Link against libmpdec.so.3, update for mpdecimal.h symbol cleanup.
@@ -384,14 +387,13 @@ class PythonAT39 < Formula
                     Formula["sqlite"].opt_lib]
 
     cfg = lib_cellar/"distutils/distutils.cfg"
-
-    cfg.atomic_write <<~EOS
+    cfg.atomic_write <<~INI
       [install]
       prefix=#{HOMEBREW_PREFIX}
       [build_ext]
       include_dirs=#{include_dirs.join ":"}
       library_dirs=#{library_dirs.join ":"}
-    EOS
+    INI
 
     # setuptools 63.2.0+ breaks when used inside superenv.
     # https://github.com/pypa/distutils/pull/155
@@ -402,7 +404,7 @@ class PythonAT39 < Formula
   end
 
   def sitecustomize
-    <<~EOS
+    <<~PYTHON
       # This file is created by Homebrew and is executed on each python startup.
       # Don't print from here, or else python command line scripts may fail!
       # <https://docs.brew.sh/Homebrew-and-Python>
@@ -454,7 +456,7 @@ class PythonAT39 < Formula
       tkinter_prefix = "#{HOMEBREW_PREFIX}/opt/python-tk@#{version.major_minor}/libexec"
       if os.path.isdir(tkinter_prefix):
           sys.path.append(tkinter_prefix)
-    EOS
+    PYTHON
   end
 
   def caveats
@@ -501,7 +503,7 @@ class PythonAT39 < Formula
                  shell_output("#{python3} -Sc 'import tkinter' 2>&1", 1)
 
     # Verify that the selected DBM interface works
-    (testpath/"dbm_test.py").write <<~EOS
+    (testpath/"dbm_test.py").write <<~PYTHON
       import dbm
 
       with dbm.ndbm.open("test", "c") as db:
@@ -510,7 +512,7 @@ class PythonAT39 < Formula
           assert list(db.keys()) == [b"foo \\xbd"]
           assert b"foo \\xbd" in db
           assert db[b"foo \\xbd"] == b"bar \\xbd"
-    EOS
+    PYTHON
     system python3, "dbm_test.py"
 
     system bin/"pip#{version.major_minor}", "list", "--format=columns"

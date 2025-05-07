@@ -4,10 +4,10 @@ class Bubblewrap < Formula
   url "https://github.com/containers/bubblewrap/releases/download/v0.11.0/bubblewrap-0.11.0.tar.xz"
   sha256 "988fd6b232dafa04b8b8198723efeaccdb3c6aa9c1c7936219d5791a8b7a8646"
   license "LGPL-2.0-or-later"
-
   head "https://github.com/containers/bubblewrap.git", branch: "master"
 
   bottle do
+    sha256                               arm64_linux:  "0b9837b33f5d2858266ca6eea7c436a43115cbd2cc322f45601862d4d0f00051"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "c6694f22b5343dc2dbb81adf6ff9fcd5a37ee6fe1757e96b4966367e766dcfe4"
   end
 
@@ -15,7 +15,7 @@ class Bubblewrap < Formula
   depends_on "libxslt" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "strace" => :test
   depends_on "libcap"
   depends_on :linux

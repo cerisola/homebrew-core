@@ -2,9 +2,15 @@ class Libogg < Formula
   desc "Ogg Bitstream Library"
   homepage "https://www.xiph.org/ogg/"
   url "https://ftp.osuosl.org/pub/xiph/releases/ogg/libogg-1.3.5.tar.gz"
+  mirror "https://github.com/xiph/ogg/releases/download/v1.3.5/libogg-1.3.5.tar.gz"
   sha256 "0eb4b4b9420a0f51db142ba3f9c64b333f826532dc0f48c6410ae51f4799b664"
   license "BSD-3-Clause"
   head "https://gitlab.xiph.org/xiph/ogg.git", branch: "master"
+
+  livecheck do
+    url "https://ftp.osuosl.org/pub/xiph/releases/ogg/?C=M&O=D"
+    regex(%r{href=(?:["']?|.*?/)libogg[._-]v?(\d+(?:\.\d+)+)\.t}i)
+  end
 
   bottle do
     rebuild 2
@@ -17,6 +23,7 @@ class Libogg < Formula
     sha256 cellar: :any,                 ventura:        "517e16f78d047709c010bd3f31e6497c93c562db71f9b2022395f0a2fcb4c62d"
     sha256 cellar: :any,                 monterey:       "6e8d8540b1cd602e3ed6f6713fcb82c423a69ca1620f447f4c67b03fe04589c2"
     sha256 cellar: :any,                 big_sur:        "7871f4d805f54347ab3ac20a7dbd31d78a122bf0cd2da441a45a2b1cf732551c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "55cda1cf81fe5e216a440b1f3ab4effdfbb0732270727f1ebf5a2566c982765f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "be528587bb8d4c822dfbee4bb30705c9511908d86ae5f5859eb9c59eb7459ef3"
   end
 

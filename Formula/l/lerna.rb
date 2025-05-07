@@ -1,17 +1,18 @@
 class Lerna < Formula
   desc "Tool for managing JavaScript projects with multiple packages"
   homepage "https://lerna.js.org"
-  url "https://registry.npmjs.org/lerna/-/lerna-8.1.9.tgz"
-  sha256 "46ceaeb4be5db0bda1faba4ec236edc04c94e6945d6805877b17ce9b5f28e810"
+  url "https://registry.npmjs.org/lerna/-/lerna-8.2.2.tgz"
+  sha256 "92412a5122008cfa811d53b1a12d5c35445800ad9537c0227ed17fc6336caa8a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
-    sha256 cellar: :any,                 arm64_sonoma:  "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
-    sha256 cellar: :any,                 arm64_ventura: "5fa117222b25d1345ff99518fdfb31f7c9b650ebdc57597aa08d6a744cf4a617"
-    sha256 cellar: :any,                 sonoma:        "ae501da933f2f810b7556cf98fafc2bfb2207c19da116b07c29e978adb1f83d6"
-    sha256 cellar: :any,                 ventura:       "ae501da933f2f810b7556cf98fafc2bfb2207c19da116b07c29e978adb1f83d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce88ab2b08db367035ef6575dfc5a6e6a37f3423d6c79fe87fd755ed59b65bd2"
+    sha256 cellar: :any,                 arm64_sequoia: "ea39248d03d000d57165e3879a00ae1dcb6fc8617210fa44d9e177358027a4bc"
+    sha256 cellar: :any,                 arm64_sonoma:  "ea39248d03d000d57165e3879a00ae1dcb6fc8617210fa44d9e177358027a4bc"
+    sha256 cellar: :any,                 arm64_ventura: "ea39248d03d000d57165e3879a00ae1dcb6fc8617210fa44d9e177358027a4bc"
+    sha256 cellar: :any,                 sonoma:        "eabd4097f10cbb4ac97c2716d1e9ef044f4b31873685d3b5f12fbd2c1aeaed9e"
+    sha256 cellar: :any,                 ventura:       "eabd4097f10cbb4ac97c2716d1e9ef044f4b31873685d3b5f12fbd2c1aeaed9e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "59c69e98e03fbc56a220bda1e14ab2a20ba27e80d8c85418a7eead84005b709c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4848224c3a5fe8df2069b2e329fb0f76793ba3e100c01361bfb092ccff0a2e29"
   end
 
   depends_on "node"
@@ -19,9 +20,6 @@ class Lerna < Formula
   def install
     system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
-
-    # Replace universal binaries with native slices
-    deuniversalize_machos
   end
 
   test do

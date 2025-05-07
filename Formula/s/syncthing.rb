@@ -1,8 +1,8 @@
 class Syncthing < Formula
   desc "Open source continuous file synchronization application"
   homepage "https://syncthing.net/"
-  url "https://github.com/syncthing/syncthing/archive/refs/tags/v1.28.0.tar.gz"
-  sha256 "ae0b96744a61d30e5fe7a6054d984c2a488c389e0e9baad8a868a71871ed1444"
+  url "https://github.com/syncthing/syncthing/archive/refs/tags/v1.29.6.tar.gz"
+  sha256 "9731b302f3abcf08a29b0f404a46b26d1f3b89bec0e2bc40313471173da8358d"
   license "MPL-2.0"
   head "https://github.com/syncthing/syncthing.git", branch: "main"
 
@@ -12,12 +12,13 @@ class Syncthing < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a85f5656a01e94f2ac7eca1f8ead14a69d90548b27e0973eaefe2a60fd8843fa"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3065353b287cc4df7e4e88437486535b84f742b7363c0c347158e5b9afab0c2c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "45cfa0e466ee6b3bf852935e9a1ba9cc472e3ab407e19aba8b8eea63f17abef4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "38549e5f62c84a341bf8a60851b2b18c41b579f6f1afe794523266ec74272b35"
-    sha256 cellar: :any_skip_relocation, ventura:       "d9c85dd85fcc2a291894a27a471ca2fc9526cdf1ff41396c48575af42c04e8c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2cff04d2d05c4f6fe4d8e79a8d93bf93aeb923ac5dc6b89e3a39de53dded54d7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "30ebeebb7a79c75bab5773c8bd59f07e2907d0f8a8748d86dfb72e68aae7cf95"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "40d533e9300eff8b4d72598eb4a3f716754f1bca314443e3b4787b9eba6d08f0"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b9c30a65769c2e1d29690bb3ba0b5563e5dabb0f70cf905f35894d5af60d6c31"
+    sha256 cellar: :any_skip_relocation, sonoma:        "462b004baeb5698e3fe28e279e51e1191f86144ffe7a3a7ceac190b673c48c9c"
+    sha256 cellar: :any_skip_relocation, ventura:       "54d0eec94de14bb75213985ce2de98d9e5f002e39a25320294310e7e2e17e064"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0b04b48f1b0f190cba1dbfc37bf415c426213024481748851381f9378cd7af54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdb8aff18045b523bb414b22066e4dd187a3e4d4b096037bd36ef9bb3faa7ebc"
   end
 
   depends_on "go" => :build

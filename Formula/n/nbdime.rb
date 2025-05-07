@@ -6,21 +6,15 @@ class Nbdime < Formula
   url "https://files.pythonhosted.org/packages/a6/f1/4be57ecea4d55d322f05a0f89e0b73d7a8d90a16dbf01168eab3e7bf5939/nbdime-4.0.2.tar.gz"
   sha256 "d8279f8f4b236c0b253b20d60c4831bb67843ed8dbd6e09f234eb011d36f1bf2"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3f364b59cb493998682aad19b1fa6442a4a72742cd54513bd7d6f18cb71a96df"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, ventura:        "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, monterey:       "e50a4de40896b059482ae1a425e2a079e9582a4ac9524c9b471bd0168b708971"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2e70c710b757fc4cc96409ba82fe03c9b23f1be2c9ed2efa515874c4d138a55e"
+    sha256 cellar: :any_skip_relocation, all: "372c2579d50170bbd4f3bded9adeec40d9a29b82f7e5f982462aa0180912fb29"
   end
 
   depends_on "certifi"
   depends_on "jupyterlab" # only to provide jupyter-server and nbconvert
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   resource "charset-normalizer" do
     url "https://files.pythonhosted.org/packages/63/09/c1bc53dab74b1816a00d8d030de5bf98f724c52c1635e07681d312f20be8/charset-normalizer-3.3.2.tar.gz"
@@ -62,28 +56,22 @@ class Nbdime < Formula
     sha256 "dd505485549a7a552833da5e6063639d0d177c04f23bc3864e41e5dc5f612168"
   end
 
-  def python3
-    "python3.12"
-  end
-
   def install
     # We already have jupyterlab, but don't use --no-build-isolation since
     # hatchling adds additional build deps
-    inreplace "pyproject.toml",
-      'requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5"]',
-      'requires = ["hatchling>=1.5.0"]'
+    inreplace "pyproject.toml", 'requires = ["hatchling>=1.5.0", "jupyterlab>=4.0.0,<5"]',
+                                'requires = ["hatchling>=1.5.0"]'
 
-    virtualenv_install_with_resources
+    venv = virtualenv_install_with_resources
 
-    site_packages = Language::Python.site_packages(python3)
-    paths = %w[jupyterlab].map do |p|
-      "import site; site.addsitedir('#{Formula[p].opt_libexec/site_packages}')"
-    end
-    (libexec/site_packages/"homebrew-deps.pth").write paths.join("\n")
+    # Provide an exception to avoid dealing with `jupyterlab` dependency tree
+    site_packages = Language::Python.site_packages(venv.root/"bin/python3")
+    pth_contents = "import site; site.addsitedir('#{Formula["jupyterlab"].opt_libexec/site_packages}')\n"
+    (venv.site_packages/"homebrew-jupyterlab.pth").write pth_contents
   end
 
   test do
-    (testpath/"old.ipynb").write <<~EOS
+    (testpath/"old.ipynb").write <<~JSON
       {
        "cells": [
         {
@@ -118,8 +106,8 @@ class Nbdime < Formula
        "nbformat": 4,
        "nbformat_minor": 1
       }
-    EOS
-    (testpath/"new.ipynb").write <<~EOS
+    JSON
+    (testpath/"new.ipynb").write <<~JSON
       {
        "cells": [
         {
@@ -162,7 +150,7 @@ class Nbdime < Formula
        "nbformat": 4,
        "nbformat_minor": 1
       }
-    EOS
+    JSON
     # sadly no special exit code if files are the same
     diff_output = shell_output("#{bin}/nbdiff --no-color old.ipynb new.ipynb")
     assert_match "nbdiff old.ipynb new.ipynb", diff_output

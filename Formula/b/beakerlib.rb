@@ -1,19 +1,18 @@
 class Beakerlib < Formula
   desc "Shell-level integration testing library"
   homepage "https://github.com/beakerlib/beakerlib"
-  url "https://github.com/beakerlib/beakerlib/archive/refs/tags/1.31.2.tar.gz"
-  sha256 "2a171c5bf640758eb2c0f177f4f96bdd5badbb05e24b48ed8684dc88f80b6da5"
+  url "https://github.com/beakerlib/beakerlib/archive/refs/tags/1.31.4.tar.gz"
+  sha256 "1c1a5a376e71332e350c56f3ac0433d6b7570b4583400ee1e7a4c7d9cdc5f4cd"
   license "GPL-2.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cb52fedd6e9adb89f165f2c0ccae5c7b0d45ce6eb1a586e8ff9a85170736169f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "154c7a897d9ae0a67e8032f0edba8c79d134aa5e666c93d7e77be3b132d63159"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "00c70b79b1effdd9802cb23d852b45006014fdde6bf797febe8a0ae5f03b0d32"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "629e01c6983dd8b122c82e6aa6c78e2079e4dc3e3555a0c166bf64c583125edd"
-    sha256 cellar: :any_skip_relocation, sonoma:         "cd38c87e8dd9333398ba6722a0c5c66fd47bc669b148f5cd783a7e559e86144c"
-    sha256 cellar: :any_skip_relocation, ventura:        "6018de0a13981367deba8aa3961e20d303f61ffbcead72090f61df9f60b7344c"
-    sha256 cellar: :any_skip_relocation, monterey:       "dd51247f5c5a1d8b78742a738658538824ed2d1ed4cf26e8092db84e03643054"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "544a61047282be8469c696245cf6e7018b427676f3cbadf91697f26c0376681f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9623f5cfcf093eced2c4e1c3695812ecf0a7db6a3896cdbf255f8b6ba44c3fad"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "09decd75f0914c2e34fbe97963d238a74f079e8d1ef27e82ef2e7ba41da1f9fb"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b6fa04c4d94639a37919652667280c6eb8e85ce78defc76e2af94450fc7ec255"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7d3475bfc5406195fc15d3cf9a88f3324ad027efb50f4381799d9c36a86d872f"
+    sha256 cellar: :any_skip_relocation, ventura:       "8ed2d0956f6ac062e613ccb3914feff88f125b3dbd8e84caa5955dec414a965f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "35add5b650f5e9beee810810748f3721a2bbdeb5bb7b167b227b8dbbffd74a48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1e485dc5c3d91552a8fabf34c64dbde80caf20090009b789ded07851dfd6adc2"
   end
 
   on_macos do
@@ -32,7 +31,7 @@ class Beakerlib < Formula
   end
 
   test do
-    (testpath/"test.sh").write <<~EOS
+    (testpath/"test.sh").write <<~SHELL
       #!/usr/bin/env bash
       source #{share}/beakerlib/beakerlib.sh || exit 1
       rlJournalStart
@@ -40,7 +39,7 @@ class Beakerlib < Formula
           rlPass "All works"
         rlPhaseEnd
       rlJournalEnd
-    EOS
+    SHELL
     expected_journal = /\[\s*PASS\s*\]\s*::\s*All works/
     ENV["BEAKERLIB_DIR"] = testpath
     system "bash", "#{testpath}/test.sh"

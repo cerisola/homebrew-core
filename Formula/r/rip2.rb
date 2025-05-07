@@ -1,21 +1,24 @@
 class Rip2 < Formula
   desc "Safe and ergonomic alternative to rm"
   homepage "https://github.com/MilesCranmer/rip2"
-  url "https://github.com/MilesCranmer/rip2/archive/refs/tags/v0.9.0.tar.gz"
-  sha256 "e8519e21877c8883f9f2a700036c53bce62b5ee0afaef47a12780999457e2633"
+  url "https://github.com/MilesCranmer/rip2/archive/refs/tags/v0.9.4.tar.gz"
+  sha256 "e6d3143958b838ebbf421fb933d8e46ecc28c8298f435bdf09f647b4def452f6"
   license "GPL-3.0-or-later"
   head "https://github.com/MilesCranmer/rip2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0a4d759abfa23e78e1cd6afdd0028703fdc0ab458b236a4bae9a49efd6c0cc83"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "73f460615657d60899f49dc1213c930fa141966d10f127c3986cc15f01f930d5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2bdb15ca69ebc0004751ec3f2757fbd14ddef1f90dec9bb570277dbf45b3f777"
-    sha256 cellar: :any_skip_relocation, sonoma:        "68a7c61b77e9ee7fc0c1d1ee2749f743b0ffcee9dc733e6ad21888fc526914cc"
-    sha256 cellar: :any_skip_relocation, ventura:       "4558e844f0c8e1e59dc51830319e4b1844801cc9db0c49f57e9ce1182157fe39"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "19e49acfea663691ff2881a5f09ada40b93b83948f96c50466d74f2d1401549e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9ae3f478f94cdd1f8ee89a203e7512d8d3aa905ed3f3269d601c928043830386"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "45581b64a085df4f559d5042f855fb06aa75f8fe81e4dc44433aa6c850dc3337"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f09b242e19dd0070ad027b4cc0adade3f0686f55c5cf3e236df7c1017acaa9d9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "241fec9cb680a7f54f5de39370bff16932810c5dbbbadfdf6b582502ecf3eef9"
+    sha256 cellar: :any_skip_relocation, ventura:       "77367b4f04e6b99826787e7c780288eb7964958bef28e3769be6941555897773"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f0aadb2f2e01fc633c9514cd812e03165c6bc0b1be630c934b5582cbf9e28513"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "263a41b50d75bfaa94c739dec7fd55cac5ee1e73c154e4c483e1913a3fa0fadc"
   end
 
   depends_on "rust" => :build
+
+  conflicts_with "rm-improved", because: "both install `rip` binaries"
 
   def install
     system "cargo", "install", *std_cargo_args
@@ -31,7 +34,7 @@ class Rip2 < Formula
     test_file = testpath/"test.txt"
     touch test_file
     system bin/"rip", "--graveyard", testpath/"graveyard", test_file.to_s
-    assert_predicate testpath/"graveyard", :exist?
-    refute_predicate test_file, :exist?
+    assert_path_exists testpath/"graveyard"
+    refute_path_exists test_file
   end
 end

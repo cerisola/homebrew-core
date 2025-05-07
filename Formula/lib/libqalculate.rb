@@ -1,21 +1,22 @@
 class Libqalculate < Formula
   desc "Library for Qalculate! program"
   homepage "https://qalculate.github.io/"
-  url "https://github.com/Qalculate/libqalculate/releases/download/v5.3.0/libqalculate-5.3.0.tar.gz"
-  sha256 "61dd60b1d43ad3d2944cff9b2f45c9bc646c5a849c621133ef07231e8289e35b"
+  url "https://github.com/Qalculate/libqalculate/releases/download/v5.5.2/libqalculate-5.5.2.tar.gz"
+  sha256 "fc14d4527dccfc9189684b9fcd64d78aa67ae5383012c66e1596b2531f5daef1"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256                               arm64_sonoma:  "5e91f7eda5d004a1560a1123fc5ad5458e0f429dc1e308e8f1326ed84fbe5f0f"
-    sha256                               arm64_ventura: "2426676ec5818a5cac6aecb75d7a881b3d46248cd4ace86d2d9d47be7368625b"
-    sha256                               sonoma:        "928333f3a86483068b3452bfd94e3d4917da1a1ad4efda26a2ef8fe7c25a8a5c"
-    sha256                               ventura:       "fb7a6fa06d032729459057d66e1a8f208b48f0ab774f8d5602edbd3e9ec1f8ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2a4524258b85f3cfc277e7f1da310728e5ca837d18cd3ae649b04ad432e1103"
+    sha256                               arm64_sonoma:  "3eda9b1f7607de60bf38b405285ead9593f2c94eba85fa8b7fdb90919899c771"
+    sha256                               arm64_ventura: "880ef6188d9cea8c037ba39330c5bbf2e5fb784d69da9de1251f4c25810e308e"
+    sha256                               sonoma:        "cffd7934a442261cbec625311eeee167e3d5eb6d474a1d7ffa8b2cb48d73fe17"
+    sha256                               ventura:       "3ae202875fa805ce960397b3998dd82f53de64901638232cb47c2d11891f09d7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9276262afdc1f8f61d964d9527c27073f55c84f6696b3ee764a583eb27df8b81"
   end
 
+  depends_on "gettext" => :build
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
-  depends_on "gettext"
+  depends_on "pkgconf" => :build
+  depends_on "gmp"
   depends_on "gnuplot"
   depends_on "mpfr"
   depends_on "readline"
@@ -25,20 +26,18 @@ class Libqalculate < Formula
   uses_from_macos "libxml2"
 
   on_macos do
-    depends_on "gmp"
+    depends_on "gettext"
   end
 
   on_linux do
     depends_on "perl-xml-parser" => :build
-    depends_on "gmp"
   end
 
   def install
-    ENV.prepend_path "PERL5LIB", Formula["perl-xml-parser"].libexec/"lib/perl5" unless OS.mac?
     ENV.cxx11
     system "./configure", "--disable-silent-rules",
                           "--without-icu",
-                          *std_configure_args.reject { |s| s["--disable-debug"] }
+                          *std_configure_args
     system "make", "install"
   end
 

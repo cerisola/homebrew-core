@@ -1,9 +1,9 @@
 class OpensslAT3 < Formula
   desc "Cryptography and SSL/TLS Toolkit"
   homepage "https://openssl-library.org"
-  url "https://github.com/openssl/openssl/releases/download/openssl-3.4.0/openssl-3.4.0.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/openssl-3.4.0.tar.gz"
-  sha256 "e15dda82fe2fe8139dc2ac21a36d4ca01d5313c75f99f46c4e8a27709b7294bf"
+  url "https://github.com/openssl/openssl/releases/download/openssl-3.5.0/openssl-3.5.0.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/openssl-3.5.0.tar.gz"
+  sha256 "344d0a79f1a9b08029b0744e2cc401a43f9c90acd1044d09a530b4885a8e9fc0"
   license "Apache-2.0"
 
   livecheck do
@@ -12,12 +12,14 @@ class OpensslAT3 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "bf2e6c5cb39433b00fa2aaf4a6db681814149f62c01f04d381c3c64cd32c1bd3"
-    sha256 arm64_sonoma:  "706b2f224c9519816d987e28ecfae9cfb41d99b728e237ef98fa1c0698d1f626"
-    sha256 arm64_ventura: "4b27265cc378fad113f0ab2f8609098c3ac84f79a76ad68a03d6af96f4eb2380"
-    sha256 sonoma:        "28e2abc928e8afd0c58303de69dab5e4ec8663c5591fe3c425ad9177bf377ded"
-    sha256 ventura:       "9017cd4ac641f4a961b27328bf519cbed91d5e3be2ae8e7f833b866412697d2f"
-    sha256 x86_64_linux:  "424afb56cdd116602c373db5ff55fbaef0865775cfacdc18c5e6a71aa24845e9"
+    sha256 arm64_sequoia: "7bbac0e84510570ec550deee1dce185569917378411263a9d1329ae395f52d70"
+    sha256 arm64_sonoma:  "3bb3709fe0c67077cb54af5436442e81288804647ba513b34413c5163b43f9b8"
+    sha256 arm64_ventura: "e74364d568abea9347f89f356bf437e3146deaf5c4cf31c72b4ab4521700df50"
+    sha256 sequoia:       "15431f4b9cf582e4b9b5d638057c8ed1db23fd166e425d66bcca0d36aa2ab585"
+    sha256 sonoma:        "0c5f237b38048abfe7fe045f709d334f235e3dfe39853f7877dd248f5c7670fe"
+    sha256 ventura:       "75baf6311dd7c014d765a11805b49b890af1be7d98c0f29c9870bf1ada112547"
+    sha256 arm64_linux:   "9e4199643ddb0220c637e8830a6c34fab3b9a9a06abb9f44da516b4f26cdd681"
+    sha256 x86_64_linux:  "178ae44b213319b0aa9e6d7b41772705099f50bd6b5de4ba1e6ae526e25af37a"
   end
 
   depends_on "ca-certificates"
@@ -30,15 +32,15 @@ class OpensslAT3 < Formula
     end
 
     resource "Test::More" do
-      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302201.tar.gz"
-      sha256 "956185dc96c1f2942f310a549a2b206cc5dd1487558f4e36d87af7a8aacbc87c"
+      url "https://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302210.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/E/EX/EXODIST/Test-Simple-1.302210.tar.gz"
+      sha256 "acb9ca8d582b8c0bbe53c6d9b3264f1cf66eaa7135f41f979747104183aea509"
     end
 
     resource "ExtUtils::MakeMaker" do
-      url "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.70.tar.gz"
-      mirror "http://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.70.tar.gz"
-      sha256 "f108bd46420d2f00d242825f865b0f68851084924924f92261d684c49e3e7a74"
+      url "https://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.74.tar.gz"
+      mirror "http://cpan.metacpan.org/authors/id/B/BI/BINGOS/ExtUtils-MakeMaker-7.74.tar.gz"
+      sha256 "8ad2be00713b49dcfd386286e0a64ff9297b771a485f2425fbc144794f5a3e8c"
     end
   end
 
@@ -133,8 +135,8 @@ class OpensslAT3 < Formula
 
   test do
     # Make sure the necessary .cnf file exists, otherwise OpenSSL gets moody.
-    assert_predicate pkgetc/"openssl.cnf", :exist?, "OpenSSL requires the .cnf file for some functionality"
-    assert_predicate openssldir/"certs", :exist?, "OpenSSL throws confusing errors when this directory is missing"
+    assert_path_exists pkgetc/"openssl.cnf", "OpenSSL requires the .cnf file for some functionality"
+    assert_path_exists openssldir/"certs", "OpenSSL throws confusing errors when this directory is missing"
 
     # Check OpenSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")

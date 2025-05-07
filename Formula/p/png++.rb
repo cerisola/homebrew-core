@@ -24,6 +24,7 @@ class Pngxx < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "536f9c2dd05cfd2ae8a4f7f5d0c5c38575cf91609498f98bd6c3f97c4de2c520"
     sha256 cellar: :any_skip_relocation, high_sierra:    "536f9c2dd05cfd2ae8a4f7f5d0c5c38575cf91609498f98bd6c3f97c4de2c520"
     sha256 cellar: :any_skip_relocation, sierra:         "cee110f568bae723e8e5172e8bab36c8f4c5adb8bf339a444926a572bfa13f89"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8ad881818b116ae124ab2f34ded71329044961ce3bcc58ad722fca0fc293d1ae"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7ede8356bf0fad95a8d5e0ff94f9e586bcca7ca67ef24097d50bb69e3bc20173"
   end
 
@@ -34,7 +35,7 @@ class Pngxx < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <png++/png.hpp>
       int main() {
         png::image<png::rgb_pixel> image(200, 300);
@@ -42,7 +43,7 @@ class Pngxx < Formula
         if (image.get_height() != 300) return 2;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-o", "test"
     system "./test"
   end

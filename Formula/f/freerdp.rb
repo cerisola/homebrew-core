@@ -1,18 +1,19 @@
 class Freerdp < Formula
   desc "X11 implementation of the Remote Desktop Protocol (RDP)"
   homepage "https://www.freerdp.com/"
-  url "https://github.com/FreeRDP/FreeRDP/archive/refs/tags/3.9.0.tar.gz"
-  sha256 "a1d2946c67037bf6bb8aa2f0441c7cacd5e92c835d776cecffb4fcdbaa45ec4f"
+  url "https://github.com/FreeRDP/FreeRDP/releases/download/3.15.0/freerdp-3.15.0.tar.gz"
+  sha256 "e8cd58decef4c970faea2fbea675970eea60e440ebe8033c54889acb83787371"
   license "Apache-2.0"
   revision 1
 
   bottle do
-    sha256 arm64_sequoia: "d0389909074b092cba7ff7e0f2ea45353223bf7e2db21f155c1d3cdda432edc7"
-    sha256 arm64_sonoma:  "893d3f63e9d26d03b70a36432c8e226b79c5a451db1b80f6aeaff25b61f217c8"
-    sha256 arm64_ventura: "ab68bfe5dd9fbca26172f850a0b1ae0f4421fd75a2ced3aa111b2a5c6aa8b4fc"
-    sha256 sonoma:        "2f59a023351939d112131480db417e6d44501ab0026be78f4419b25b84ae5ee1"
-    sha256 ventura:       "7c79507c0f96dd4be1205a5e4cbb5043bb689bc5bec31532bdeac6975227231e"
-    sha256 x86_64_linux:  "3df042e5d31336ee9802d5b27d901f8c67993b83c3b85585103af86726243f47"
+    sha256 arm64_sequoia: "9fa9067784958730b7969cff5556d67afd9896775727fbbc47a184dfb1358429"
+    sha256 arm64_sonoma:  "f8b1cd554604318870bae2990799b23b4d410c906025a881758609559cf39291"
+    sha256 arm64_ventura: "39a2322e3061ecf45f0693703e81e14fc0094363a4cfb463b0cb850421ee781c"
+    sha256 sonoma:        "f608e8023020140d9bd19248c65973bd985574a5472804d1b45382b7d4491a0f"
+    sha256 ventura:       "49011d6448a6aba277069cba61a2ee87e14fc2d6edec26ad536449ddb0aa3be7"
+    sha256 arm64_linux:   "8a1fde5ef00593aefb2be888f2e1ef14b1f838232b170036496b835b21a44230"
+    sha256 x86_64_linux:  "56afe805b646f6c5de2283a84e0d636f05674fb5ac7acab49a494814d144eb64"
   end
 
   head do
@@ -21,7 +22,7 @@ class Freerdp < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cjson"
   depends_on "ffmpeg"
   depends_on "jpeg-turbo"
@@ -37,17 +38,16 @@ class Freerdp < Formula
   depends_on "libxv"
   depends_on "openssl@3"
   depends_on "pkcs11-helper"
-  depends_on "sdl2"
-  depends_on "sdl2_ttf"
+  depends_on "sdl3"
+  depends_on "sdl3_ttf"
 
   uses_from_macos "cups"
   uses_from_macos "zlib"
 
   on_linux do
     depends_on "alsa-lib"
-    depends_on "ffmpeg"
     depends_on "glib"
-    depends_on "icu4c@76"
+    depends_on "icu4c@77"
     depends_on "krb5"
     depends_on "libfuse"
     depends_on "systemd"
@@ -55,8 +55,6 @@ class Freerdp < Formula
   end
 
   def install
-    ENV.append_to_cflags "-I#{Formula["sdl2_ttf"].opt_include}/SDL2"
-
     args = %W[
       -DBUILD_SHARED_LIBS=ON
       -DCMAKE_INSTALL_NAME_DIR=#{lib}
@@ -65,6 +63,8 @@ class Freerdp < Formula
       -DWITH_MANPAGES=OFF
       -DWITH_WEBVIEW=OFF
       -DWITH_CLIENT_SDL=ON
+      -DWITH_CLIENT_SDL2=OFF
+      -DWITH_CLIENT_SDL3=ON
     ]
 
     # Native macOS client and server implementations are unmaintained and use APIs that are obsolete on Sequoia.

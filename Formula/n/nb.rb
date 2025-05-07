@@ -1,18 +1,19 @@
 class Nb < Formula
   desc "Command-line and local web note-taking, bookmarking, and archiving"
   homepage "https://xwmx.github.io/nb"
-  url "https://github.com/xwmx/nb/archive/refs/tags/7.14.5.tar.gz"
-  sha256 "1927cfbc6deb99ba0a4e26f2fd7d50f2e0f05dad41269ba12a6166b5b6976c77"
+  url "https://github.com/xwmx/nb/archive/refs/tags/7.17.0.tar.gz"
+  sha256 "4dc803d2247857f3c03497ea87921cc462e104b5f0780c598528d2247c4da5f8"
   license "AGPL-3.0-or-later"
   head "https://github.com/xwmx/nb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4636e8f586ca8f4aab67ac12636f5e9e45b5a8db06fb90a6b5272ea2ff1fe86a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4636e8f586ca8f4aab67ac12636f5e9e45b5a8db06fb90a6b5272ea2ff1fe86a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4636e8f586ca8f4aab67ac12636f5e9e45b5a8db06fb90a6b5272ea2ff1fe86a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1b7d07d393dc0c4092ae3b725304902edc56a67f3af6c9d04443a5f76456af1f"
-    sha256 cellar: :any_skip_relocation, ventura:       "1b7d07d393dc0c4092ae3b725304902edc56a67f3af6c9d04443a5f76456af1f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4636e8f586ca8f4aab67ac12636f5e9e45b5a8db06fb90a6b5272ea2ff1fe86a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6ccaac19205784fb7cb81fc7f03e4f77f65c8da6297d1fd8c93e63e0df8be472"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6ccaac19205784fb7cb81fc7f03e4f77f65c8da6297d1fd8c93e63e0df8be472"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "6ccaac19205784fb7cb81fc7f03e4f77f65c8da6297d1fd8c93e63e0df8be472"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bc4c8ee86526bccedc3a1a6f04416e1faa89166d3450f732a3a76c9a15a9b225"
+    sha256 cellar: :any_skip_relocation, ventura:       "bc4c8ee86526bccedc3a1a6f04416e1faa89166d3450f732a3a76c9a15a9b225"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6ccaac19205784fb7cb81fc7f03e4f77f65c8da6297d1fd8c93e63e0df8be472"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6ccaac19205784fb7cb81fc7f03e4f77f65c8da6297d1fd8c93e63e0df8be472"
   end
 
   depends_on "bat"
@@ -27,7 +28,7 @@ class Nb < Formula
   def install
     bin.install "nb", "bin/bookmark"
 
-    bash_completion.install "etc/nb-completion.bash" => "nb.bash"
+    bash_completion.install "etc/nb-completion.bash" => "nb"
     zsh_completion.install "etc/nb-completion.zsh" => "_nb"
     fish_completion.install "etc/nb-completion.fish" => "nb.fish"
   end

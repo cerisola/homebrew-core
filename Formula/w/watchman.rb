@@ -1,24 +1,28 @@
 class Watchman < Formula
+  include Language::Python::Shebang
+
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/refs/tags/v2024.10.28.00.tar.gz"
-  sha256 "a34c511ad9d2713328371f1aa663ba98ef5acdd934ce13ef6336da3548f855a5"
+  url "https://github.com/facebook/watchman/archive/refs/tags/v2025.04.28.00.tar.gz"
+  sha256 "22058559e8b68d953399a10d437cbcfc91787732e2980dd7298e1d6fb4cd2add"
   license "MIT"
   head "https://github.com/facebook/watchman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "26e26ba0f1ef66ee72c7bd4ed4969a0d72c907b000d14a769990c2a147f37e00"
-    sha256 cellar: :any,                 arm64_sonoma:  "5dcc1650ad14af2f02304ffb0823cf96f9bd32dc5d3aa39962b041c36eb4be43"
-    sha256 cellar: :any,                 arm64_ventura: "d418bdf6c0453fd2599cd92641107d4d8ca98cb75914f14f56d82fc202457fa6"
-    sha256 cellar: :any,                 sonoma:        "97bce127ce7dd9401e8f5226eb1c2464f9831a788af43dc1ded9cf327f6adfc2"
-    sha256 cellar: :any,                 ventura:       "c9a3f9bcdf91e4e609b8da5987f67a27169a260de6181bd1696206b79182c7aa"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "439a614bcbb6daff1b45fd92855ef114a0526e0d11864ca41c45222988d77752"
+    sha256 cellar: :any,                 arm64_sequoia: "0414669aec53dcc09e0023f10dca34591da8f1379af31b28fb527d32e9c572fc"
+    sha256 cellar: :any,                 arm64_sonoma:  "a68e3b0a210ba8045f78aabf026d46ab3f1b5ef625696a61eaa2941d96c53478"
+    sha256 cellar: :any,                 arm64_ventura: "ec0e1f689a0b9316486d30849b106cf0c7304eeb115eba30fe4cb9013ad7e410"
+    sha256 cellar: :any,                 sonoma:        "adcbfa6dbd420f2ec03b0488942269c8731e98b2787d5256b3a718f51e65c7af"
+    sha256 cellar: :any,                 ventura:       "d0df95b5446b30acef063bd8fb8156feeedb2b168becdd9bcc15a640d379b94e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "216d7bdde71408c7610f637e7ba51d26b6d56d75fa533f441a63cc8f558730ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "03f3d31e87e74134452004ecc7ac0960140422123cfd832b10e73f47a783a94e"
   end
 
   depends_on "cmake" => :build
   depends_on "cpptoml" => :build
   depends_on "googletest" => :build
-  depends_on "pkg-config" => :build
+  depends_on "mvfst" => :build
+  depends_on "pkgconf" => :build
   depends_on "python-setuptools" => :build
   depends_on "rust" => :build
   depends_on "edencommon"
@@ -37,8 +41,6 @@ class Watchman < Formula
     depends_on "boost"
     depends_on "libunwind"
   end
-
-  fails_with gcc: "5"
 
   def install
     # NOTE: Setting `BUILD_SHARED_LIBS=ON` will generate DSOs for Eden libraries.
@@ -66,6 +68,8 @@ class Watchman < Formula
     bin.install (path/"bin").children
     lib.install (path/"lib").children
     rm_r(path)
+
+    rewrite_shebang detected_python_shebang, *bin.children
   end
 
   test do

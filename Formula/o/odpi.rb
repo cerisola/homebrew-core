@@ -1,19 +1,18 @@
 class Odpi < Formula
   desc "Oracle Database Programming Interface for Drivers and Applications"
   homepage "https://oracle.github.io/odpi/"
-  url "https://github.com/oracle/odpi/archive/refs/tags/v5.3.0.tar.gz"
-  sha256 "6081c6492dc48dee558e0125e33e39fae32d4c9357941fccb6b49c6c232fb828"
+  url "https://github.com/oracle/odpi/archive/refs/tags/v5.5.1.tar.gz"
+  sha256 "8325384f9b332c4a3c91b5fa8189f26b07e8febba4310654d0b1b5d69687a0f6"
   license any_of: ["Apache-2.0", "UPL-1.0"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "cfa9baa5ff834db4e5ace6be5a40351ba7f3ed5592626cb63ae0110edb475d36"
-    sha256 cellar: :any,                 arm64_sonoma:   "f6f1abb468f3b3232cbeb86d7da47d80928e41689e1760ae580ad644b021ef09"
-    sha256 cellar: :any,                 arm64_ventura:  "7b44b00447d2c7a0b96088f4a2626f7246e4e3cb3d1545b04e1ef6609e6b6946"
-    sha256 cellar: :any,                 arm64_monterey: "d48085f8629d9e36c6a3ea80f327cdfa30e6998f926486b2b326a4463a83b96d"
-    sha256 cellar: :any,                 sonoma:         "95f24904d50d8a6661613009099ebc6450fe292144fcf50e38bcedfd76cc7a60"
-    sha256 cellar: :any,                 ventura:        "9e104eb738d2b202ae6a9513246a8078440501a0d63f7bd5542d16f6f55def4f"
-    sha256 cellar: :any,                 monterey:       "122b0123d42827384a83fc67c5ae0de5defa3d35f2438050764cffd350e86e4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "66a5771894b201742ab1a0c9469eaa8bfadcf1137eff5046370fa830fa827957"
+    sha256 cellar: :any,                 arm64_sequoia: "bc20e1e7c5dae5d19e845cde1c3d0497c71015ebdb13d36cff8f08741a4131b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "80b473d1a752d762306c4ddf263a5574050ed86d8cbaa89875e6a42361a08ceb"
+    sha256 cellar: :any,                 arm64_ventura: "01459cd115f60ee3c8a6ba124960b1b489801542152b1b6d203c01f0713fa433"
+    sha256 cellar: :any,                 sonoma:        "ec0f29e806f41a0ffa56b81f1c4352f46f2d7d82be5885a4a673372019c10047"
+    sha256 cellar: :any,                 ventura:       "7746fe52f85d8de435e00b0199009f6684d9deb224b4346cf8d68b67e7be14cb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "deaa4b1012c15bb7d9bcd07bfe50c308ac13c31599d4463505981eda31e71b5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2175bfc184bc703d0c92fda2a7c685b8b0079ebf71292d65633816f568047437"
   end
 
   def install

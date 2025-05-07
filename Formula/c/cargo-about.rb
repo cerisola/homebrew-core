@@ -1,20 +1,19 @@
 class CargoAbout < Formula
   desc "Cargo plugin to generate list of all licenses for a crate"
   homepage "https://github.com/EmbarkStudios/cargo-about"
-  url "https://github.com/EmbarkStudios/cargo-about/archive/refs/tags/0.6.4.tar.gz"
-  sha256 "94a3cd55e82fc8adf99d49e311011a5a9a0fb5e152a45fe42af42897c451484c"
+  url "https://github.com/EmbarkStudios/cargo-about/archive/refs/tags/0.7.1.tar.gz"
+  sha256 "5b090871bda2c2cf645de826c219b41486c36ffe0b474ad9f6ecba7e21d279a0"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/EmbarkStudios/cargo-about.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "f13afe3c7cba7829ffebdda2f6640a307919c08c8797d4cd1d1cae131b3689e5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "768555e743f08212e1094ff863df1647e1788d2e1bc7d18a2adbe924b0bafcf2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e1bbbef28b6a388ec303a695f9782fde0bff74e90231a68132653dccf1ff8853"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "45ecb6ad67efacf0ec6e9e443b7a63b5d236ab73c76e507081983edd6effcf17"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c1867cc5664efd5a3abbfcf1da38add4b542a6e78c55bbe3c7a8ba7dc07d5b1b"
-    sha256 cellar: :any_skip_relocation, ventura:        "dc6eaa1acb17c4463c60b9e23be9cb256ba33580b9c6f3afdab4498f672805b2"
-    sha256 cellar: :any_skip_relocation, monterey:       "678fd7116d6c971b79e82c1d67f256db2d8605f7f314f85ed8c3d65b783f6f5e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "39acd6c335c949d8e8ac4981ef0ccaff6f061f4a3ab1f03f013e96775a942af5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8755083c1b4ab12dd0334783541f0e9b7fff6e2b9edb2017a49dd4c6af18d7d0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7ee06157afe725b88b4795b809cb08abb926b8adc6bddee438d1514b771fc4c2"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "d64e4117ec95d2a2ddd8d511c63241b3950265229bdb991cc5e642f12497540c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ba17839b1dfea081458b2d89cd291f18cfaf2294b6500eab076158682fb82906"
+    sha256 cellar: :any_skip_relocation, ventura:       "3adc4e0a65a778755958727f8f1240d97be68bf9ffb64abcbba43aaa7ed9a49d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e4f8960efed03ccbbb12f52eb3cd13b57f47ee41507b7f5871899651c722c75a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fb409aaea449ed566e5c8bb9c0d6868375bb95761621dee4cea426a86cd3a394"
   end
 
   depends_on "rust" => :build
@@ -28,8 +27,8 @@ class CargoAbout < Formula
     # Show that we can use a different toolchain than the one provided by the `rust` formula.
     # https://github.com/Homebrew/homebrew-core/pull/134074#pullrequestreview-1484979359
     ENV.prepend_path "PATH", Formula["rustup"].bin
-    system "rustup", "default", "beta"
     system "rustup", "set", "profile", "minimal"
+    system "rustup", "default", "beta"
 
     crate = testpath/"demo-crate"
     mkdir crate do
@@ -50,7 +49,7 @@ class CargoAbout < Formula
       TOML
 
       system bin/"cargo-about", "init"
-      assert_predicate crate/"about.hbs", :exist?
+      assert_path_exists crate/"about.hbs"
 
       expected = <<~EOS
         accepted = [

@@ -21,6 +21,7 @@ class Taskell < Formula
   end
 
   deprecate! date: "2024-04-05", because: :repo_archived
+  disable! date: "2025-04-08", because: :repo_archived
 
   depends_on "cabal-install" => :build
   depends_on "ghc@9.2" => :build
@@ -43,12 +44,12 @@ class Taskell < Formula
   end
 
   test do
-    (testpath/"test.md").write <<~EOS
+    (testpath/"test.md").write <<~MARKDOWN
       ## To Do
 
       - A thing
       - Another thing
-    EOS
+    MARKDOWN
 
     expected = <<~EOS
       test.md

@@ -5,12 +5,9 @@ class Sdl2Net < Formula
   sha256 "4e4a891988316271974ff4e9585ed1ef729a123d22c08bd473129179dc857feb"
   license "Zlib"
 
-  # NOTE: This should be updated to use the `GithubLatest` strategy if/when the
-  # GitHub releases provide downloadable artifacts and the formula uses one as
-  # the `stable` URL (like `sdl2_image`, `sdl2_mixer`, etc.).
   livecheck do
-    url :head
-    regex(/^release[._-]v?(\d+(?:\.\d+)+)$/i)
+    url :stable
+    regex(/^(?:release[._-])?v?(2(?:\.\d+)+)$/i)
   end
 
   bottle do
@@ -24,6 +21,7 @@ class Sdl2Net < Formula
     sha256 cellar: :any,                 monterey:       "abc2a0c0a0098fbf6eff04d1a7ac5270de3f96762e0eb068d84bf8f9c484af7d"
     sha256 cellar: :any,                 big_sur:        "a08a23acdd6f6733e64f26bd796bc454d6c8bb8edd91657ffb4175957b5b8b56"
     sha256 cellar: :any,                 catalina:       "d653a5933d4df46a2a4cdf743499821e61e61305cc3eb45d7fa88a8452a0dae1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ecd7a11a898ae2a291af9042b510a7e73537e11bac88c0655513450d378e1d3c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "aa5783e335578a64d84051b2fc247b91585a8950f0406fc8b34ad06ea879872f"
   end
 
@@ -35,7 +33,7 @@ class Sdl2Net < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sdl2"
 
   def install
@@ -43,8 +41,7 @@ class Sdl2Net < Formula
 
     system "./autogen.sh" if build.head?
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--disable-sdltest"
+    system "./configure", "--disable-sdltest", *std_configure_args
     system "make", "install"
   end
 

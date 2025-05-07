@@ -6,22 +6,22 @@ class Uhdm < Formula
   url "https://github.com/chipsalliance/UHDM/archive/refs/tags/v1.84.tar.gz"
   sha256 "bb2acbdd294dd05660c78ba34704440032935b8bc77cae352c853533b5a7c583"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/chipsalliance/UHDM.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "0cc479f9f9c9d2b4e6fb196ab0baf48dbbccea8ea125ff7796507746b4387973"
-    sha256 cellar: :any,                 arm64_sonoma:   "b5658a0a15d3f14adcd0d110c7cbe6525428882c69d696704f1fa9aad1aca607"
-    sha256 cellar: :any,                 arm64_ventura:  "b4f50710bff48e2cac91711af294791839eaf95c754e99e7caf4f780f1eafbab"
-    sha256 cellar: :any,                 arm64_monterey: "251b2278f62ad38d87f27f61a673e7dff0424fd648fbad2906bf6135db5f42a6"
-    sha256 cellar: :any,                 sonoma:         "9be120ce9adcfa44e75420b6d0bdf5a7400279579463c5ef5f007ad5792c4699"
-    sha256 cellar: :any,                 ventura:        "480c5e193ddd04d5ffa9e6c26f62cfdc85ec1e467028af964651691717ad1e57"
-    sha256 cellar: :any,                 monterey:       "f3c38678bb2e4b58e80c25602f1f9d0b23dacd4315c5c83fadef545b73198303"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9d9ee21ce3cfd7826139998d9b89f5530bf2673b9c9bc54bf2b4562336e8674e"
+    sha256 cellar: :any,                 arm64_sequoia: "670acc688d73fba8ac6565fca378f022b5d1f6f37699df288ee5e9dc38b8b656"
+    sha256 cellar: :any,                 arm64_sonoma:  "255be8c70c052277b40458bbb152fd969c46ccf12ab9108e6f1dfad702d1ce37"
+    sha256 cellar: :any,                 arm64_ventura: "4b261cec78b1348d493ea3147509161746b1198fde4c6a5251fa346b0e3d13b5"
+    sha256 cellar: :any,                 sonoma:        "73ea9f87f818f189e140a0871d93a130f038d5c082465209c025ee4eb65517b6"
+    sha256 cellar: :any,                 ventura:       "5cbdabfcb3ea0e53e3b1682f544c1aff82613b71ce89d047fc393638ffd3a5d5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b9f3fc34c3cf05f8674c551793cdf1492f151f93496016eb7a2e6ee8fe76726d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "84b61a7b60b854c05302fcac7cf6a6fecdf54682a879f062ff31fc4bbdbad012"
   end
 
   depends_on "cmake" => :build
   depends_on "python@3.13" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
   depends_on "capnp"
 
   resource "orderedmultidict" do
@@ -56,7 +56,7 @@ class Uhdm < Formula
 
   test do
     # Create a minimal .uhdm file and ensure executables work
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <cassert>
       #include <stdlib.h>
       #include "uhdm/constant.h"
@@ -78,7 +78,7 @@ class Uhdm < Formula
         assert(vpi_get(vpiSize, vpi_handle) == 12345);
         assert(vpi_get_str(vpiDecompile, vpi_handle) == std::string("decompile"));
       }
-    EOS
+    CPP
 
     flags = shell_output("pkg-config --cflags --libs UHDM").chomp.split
     system ENV.cxx, "test.cpp", "-o", "test", "-fPIC", "-std=c++17", *flags

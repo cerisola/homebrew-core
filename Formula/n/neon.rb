@@ -1,9 +1,9 @@
 class Neon < Formula
   desc "HTTP and WebDAV client library with a C interface"
   homepage "https://notroj.github.io/neon/"
-  url "https://notroj.github.io/neon/neon-0.33.0.tar.gz"
-  mirror "https://fossies.org/linux/www/neon-0.33.0.tar.gz"
-  sha256 "659a5cc9cea05e6e7864094f1e13a77abbbdbab452f04d751a8c16a9447cf4b8"
+  url "https://notroj.github.io/neon/neon-0.34.2.tar.gz"
+  mirror "https://fossies.org/linux/www/neon-0.34.2.tar.gz"
+  sha256 "f98ce3c74300be05eddf05dccbdca498b14d40c289f773195dd1a559cffa5856"
   license "LGPL-2.0-or-later"
 
   livecheck do
@@ -12,17 +12,16 @@ class Neon < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "9345dbd1130b12eb313abbf4eed7847f7bb168c64d298724a581bf79a3072958"
-    sha256 cellar: :any,                 arm64_sonoma:   "be01606755aebe2d112fd9c80b0c97f6e38531cd1a4ff31d05d34b1782f753ef"
-    sha256 cellar: :any,                 arm64_ventura:  "2e2d1da206b150e739857c21e678cda43dad1ec15128855463b6ede037eceebc"
-    sha256 cellar: :any,                 arm64_monterey: "ef89b353ac8769c92b529d205ac989bc15ab7c30bf94ec210dd16f6234375bfd"
-    sha256 cellar: :any,                 sonoma:         "4b553d123301b00b5ab10dcc999918f6461bb2fa06e68b9aa4740e98cc86b981"
-    sha256 cellar: :any,                 ventura:        "d8f6c8e59aa1a93fb4b747d941943cbc9e94e69ca9ae44377568d98fdefe6c80"
-    sha256 cellar: :any,                 monterey:       "64c5600a5ff568b5d38c1eb8715473b48a0c62fd3ca5dfa625dbf51154029bf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "50173d7d57cdaf7b97212155ce200dda9d9a3ce22935d83cb2212404b9e6a29d"
+    sha256 cellar: :any,                 arm64_sequoia: "3f496943bca776d801cc69ed3030cbc674c2fbc0389eff638f695b254bd0c7f7"
+    sha256 cellar: :any,                 arm64_sonoma:  "cdeeaa3cea7d5264e40ab92a95390e69f3a03edcb98fc16bdbb6575e0a26668f"
+    sha256 cellar: :any,                 arm64_ventura: "6f9a4360b98d572185c32090f352e4ad3d3cbe454d0b91126ee6569946a2171d"
+    sha256 cellar: :any,                 sonoma:        "32590d82f754c66457a2d9b9881cd12802b714d80eabc71f792a340be3e08a86"
+    sha256 cellar: :any,                 ventura:       "09a70e28898fc6a10d5ec3e95b3ba90e9fe25d5115c90d5c18e68e2a71e794fa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "62017abdb6ff75cc096e9e953e8e663d5b8d2d2ba16bffedc0d3b88db7397b7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3316437aca39c321785644e5cfc62a627c4cf9b90e7b271b339ef89c15488611"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "xmlto" => :build
   depends_on "openssl@3"
 
@@ -35,13 +34,12 @@ class Neon < Formula
 
     ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
 
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--enable-shared",
+    system "./configure", "--enable-shared",
                           "--disable-static",
                           "--disable-nls",
                           "--with-ssl=openssl",
-                          "--with-libs=#{Formula["openssl@3"].opt_prefix}"
+                          "--with-libs=#{Formula["openssl@3"].opt_prefix}",
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -75,13 +73,16 @@ class Neon < Formula
       server = TCPServer.new port
       session = server.accept
       msg = session.gets
-      session.puts "HTTP/1.1 200\r\nContent-Type: text/html\r\n\r\n"
-      session.puts "Hello world! Message: #{msg}"
+      response_body = "Hello world! Message: #{msg.strip}"
+      content_length = response_body.bytesize
+
+      session.puts "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: #{content_length}\r\n\r\n"
+      session.puts response_body
       session.close
       server.close
     end
 
     sleep 1
-    assert_match "Hello world! Message: GET /foo/bar/baz HTTP/1.1\r\n", shell_output("./test")
+    assert_match "Hello world! Message: GET /foo/bar/baz HTTP/1.1", shell_output("./test")
   end
 end

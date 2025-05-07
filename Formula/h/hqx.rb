@@ -19,21 +19,21 @@ class Hqx < Formula
     sha256 cellar: :any,                 big_sur:        "8eccb719985ba896880e42efd7266c24ee920c3952441ac90f8fb327c875b1c0"
     sha256 cellar: :any,                 catalina:       "d59524a43357e8590e15fbb039891261b2d3c6c33bf073fece8bfa568c3b9710"
     sha256 cellar: :any,                 mojave:         "3714c62ed8c552ddf8242b87845c5d35d17341d44ffea5cc3feceaa2e4c7e960"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bb459e2d22d4afeebf2a798b5756a82bdb7658e33fd8c249fa99cac4594fc35f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "d10418410cbd8fb6be975c40e233a41031491a307ef05a021f5be55e379063cc"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "php" => :test
   depends_on "devil"
 
   def install
     ENV.deparallelize
-    system "autoreconf", "-iv"
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

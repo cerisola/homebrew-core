@@ -22,13 +22,14 @@ class Lrzip < Formula
     sha256 cellar: :any,                 big_sur:        "33d561fad2bba643625d358fc65cfa2d8f37ae51d3329887da76e884d43b1515"
     sha256 cellar: :any,                 catalina:       "701705808812d442dbd211235510a039a53cd4de9a4b28c014da5ad8a000014d"
     sha256 cellar: :any,                 mojave:         "a3230ecfa68e08deb5f1414cb67736cffcde179ba34748df8e0fcdcb0d2c1ef7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3f8dfe3dd08b7231d134922f66dca8c88575590259bc3646d6582f2b4c6fb011"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "5515b974789a0665b67ceb99c09d7c2b4edae560c5d7e4d7aee765fe95a563e0"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "lz4"
   depends_on "lzo"
 
@@ -50,15 +51,12 @@ class Lrzip < Formula
     # Set nasm format correctly on macOS. See https://github.com/ckolivas/lrzip/pull/211
     inreplace "configure.ac", "-f elf64", "-f macho64" if OS.mac?
 
-    system "autoreconf", "-ivf"
+    system "autoreconf", "--force", "--install", "--verbose"
 
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-    ]
+    args = []
     args << "--disable-asm" unless Hardware::CPU.intel?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "SHELL=bash"
     system "make", "install"
   end

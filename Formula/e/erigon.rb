@@ -21,6 +21,7 @@ class Erigon < Formula
   # https://github.com/ledgerwatch/erigon?tab=readme-ov-file#how-to-run-erigon-as-a-separate-user-eg-as-a-systemd-daemon
   # Trying to build library from source only works with `conan` which would use their pre-built libraries.
   deprecate! date: "2024-02-29", because: "needs a pre-built copy of libsilkworm_capi"
+  disable! date: "2025-03-04", because: "needs a pre-built copy of libsilkworm_capi"
 
   depends_on "gcc" => :build
   depends_on "go" => :build
@@ -39,7 +40,7 @@ class Erigon < Formula
   end
 
   test do
-    (testpath/"genesis.json").write <<~EOS
+    (testpath/"genesis.json").write <<~JSON
       {
         "config": {
           "homesteadBlock": 10
@@ -54,13 +55,13 @@ class Erigon < Formula
         "gasLimit": "0x2FEFD8",
         "alloc": {}
       }
-    EOS
+    JSON
     args = %W[
       --datadir testchain
       --log.dir.verbosity debug
       --log.dir.path #{testpath}
     ]
     system bin/"erigon", *args, "init", "genesis.json"
-    assert_predicate testpath/"erigon.log", :exist?
+    assert_path_exists testpath/"erigon.log"
   end
 end

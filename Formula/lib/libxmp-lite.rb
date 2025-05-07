@@ -1,40 +1,37 @@
 class LibxmpLite < Formula
   desc "Lite libxmp"
   homepage "https://xmp.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.6.0/libxmp-lite-4.6.0.tar.gz"
-  sha256 "71a93eb0119824bcc56eca95db154d1cdf30304b33d89a4732de6fef8a2c6f38"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.6.2/libxmp-lite-4.6.2.tar.gz"
+  sha256 "f4d03ea076c4beecd1c834d07cf7adadb6e680ae45dcc9cf8aff279c4748d003"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "c45fbdc96da10e952e39b5b1cb2893f4f3e466dcf09ff85e6c0c7b13697ffa34"
-    sha256 cellar: :any,                 arm64_sonoma:   "f26e1ba3917347f6a7a258c0dae899801b702c4dac38732b92bd7f0df92813fc"
-    sha256 cellar: :any,                 arm64_ventura:  "9500723abc3c75d1b85b4673344bf7ef874a6374883042fc8ec9cfe5f8064412"
-    sha256 cellar: :any,                 arm64_monterey: "fcfcc41e351cc97fc54a8c47fc958ac4c140fcfca85efbe4dc59d6c4768dc4e0"
-    sha256 cellar: :any,                 arm64_big_sur:  "6569f2687511dbc55c47854deda2bacac26e6e27b431da225b508814c720500e"
-    sha256 cellar: :any,                 sonoma:         "64a236751b18526082594d9cf8df3073b63f3e62476243a615aa802fee0fe0e5"
-    sha256 cellar: :any,                 ventura:        "7f9ac879b3cd5e9b67cac75a79c5f25b53165986444edcefaf8149f1c0f00c33"
-    sha256 cellar: :any,                 monterey:       "165bc02b01f381bd122b421490245ade0b277d4e0051dc4498b8354edb811488"
-    sha256 cellar: :any,                 big_sur:        "56c37651e4a234b8796895786eccc4aacc03eb22c8aa3d30e16598856c4462a6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1cf6c9f842c6d2c80e98c6731e0707ea6f9c8ac9b89dc8c3b5a1d396d81ce46c"
+    sha256 cellar: :any,                 arm64_sequoia: "2e2091326691e6f0279ca6338598108e450081a3a0aaab6156bd19fd59d4bd36"
+    sha256 cellar: :any,                 arm64_sonoma:  "beae63567964648910ba8d03b52884ce2b3acfd1617083459b33fad2a18738b7"
+    sha256 cellar: :any,                 arm64_ventura: "3adcb85150babc53ba6c3a78a109515fbde4e97891606c629e3f6de81b688c56"
+    sha256 cellar: :any,                 sonoma:        "83edec8369c8897c694717b3d7d6d24bf07757e6c1fb9337ec2671f770b8ec5e"
+    sha256 cellar: :any,                 ventura:       "befdc733f863ccf59f13a7735514c87e4cbbd68a8f33ac46d6cc0ea2c0a6c4c3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9c7649711ff0d41f54b9e91ccdc51a5b49b9d8c17d3d311e4abc0da5657a4e55"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b494f34f5a002db0090ed95c00445921d774b8d757e3b72caf26cf79abd5f7d4"
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.c").write <<~'EOS'
+    (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <libxmp-lite/xmp.h>
 
       int main(int argc, char* argv[]){
-        printf("libxmp-lite %s/%c%u\n", XMP_VERSION, *xmp_version, xmp_vercode);
+        printf("libxmp-lite %s/%c%u\\n", XMP_VERSION, *xmp_version, xmp_vercode);
         return 0;
       }
-    EOS
+    C
 
-    system ENV.cc, "test.c", "-I", include, "-L", lib, "-L#{lib}", "-lxmp-lite", "-o", "test"
-    system "#{testpath}/test"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lxmp-lite", "-o", "test"
+    system "./test"
   end
 end

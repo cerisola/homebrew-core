@@ -6,6 +6,11 @@ class Itstool < Formula
   license "GPL-3.0-or-later"
   revision 1
 
+  livecheck do
+    url "https://itstool.org/download.html"
+    regex(/href=.*?itstool[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  end
+
   bottle do
     rebuild 5
     sha256 cellar: :any_skip_relocation, all: "789a00622218d97cded8fbc0e82b043478c693b62f25a372769f4d0cd8eb7cb6"
@@ -42,9 +47,9 @@ class Itstool < Formula
   end
 
   test do
-    (testpath/"test.xml").write <<~EOS
+    (testpath/"test.xml").write <<~XML
       <tag>Homebrew</tag>
-    EOS
+    XML
     system bin/"itstool", "-o", "test.pot", "test.xml"
     assert_match "msgid \"Homebrew\"", File.read("test.pot")
   end

@@ -24,6 +24,7 @@ class GhcAT96 < Formula
     sha256 cellar: :any,                 sonoma:         "9499925d23e2142feba32048df46024832e41e3b29d5c45ad0c31ea5d1859a8e"
     sha256 cellar: :any,                 ventura:        "ac8fc3d208583198cdfe21939ab617c221894227ec969c447f955bfc58fa8708"
     sha256 cellar: :any,                 monterey:       "ef74cf6cd94cb600ae549d4cc9572ee47ec816e7e7f4dc27aa6e3ce1e9517bcb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "384d705bd320ac0a02bd5a68a5b04c734b8eae30faf8b5ff22fe5cba44007e5c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "37e9edf08c38f365c93923036428244f9aa8fb094e44fdb2bf683172a6c81b8b"
   end
 
@@ -31,7 +32,7 @@ class GhcAT96 < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "python@3.12" => :build
+  depends_on "python@3.13" => :build
   depends_on "sphinx-doc" => :build
 
   uses_from_macos "m4" => :build
@@ -119,7 +120,7 @@ class GhcAT96 < Formula
     ENV["CC"] = ENV["ac_cv_path_CC"] = OS.linux? ? "cc" : ENV.cc
     ENV["CXX"] = ENV["ac_cv_path_CXX"] = OS.linux? ? "c++" : ENV.cxx
     ENV["LD"] = "ld"
-    ENV["PYTHON"] = which("python3.12")
+    ENV["PYTHON"] = which("python3.13")
 
     binary = buildpath/"binary"
     resource("binary").stage do

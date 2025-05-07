@@ -5,6 +5,11 @@ class Soci < Formula
   sha256 "598abf573252caf71790af5ff15beca20af548440b610e70468edfd3c12d47b0"
   license "BSL-1.0"
 
+  livecheck do
+    url :stable
+    regex(%r{url=.*?/soci[._-]v?(\d+(?:\.\d+)+)\.zip}i)
+  end
+
   bottle do
     sha256 arm64_sequoia:  "6153858f4806accd079ba652dc3a1817a9ea95ba66b477ab15f548ec35e628f8"
     sha256 arm64_sonoma:   "b446260ca150f3d1451b8a44725d8532e4fe5157ac3e8040c008c07cff01b5e4"
@@ -16,6 +21,7 @@ class Soci < Formula
     sha256 monterey:       "09ea83bf0e12deff7e63da0f41f1c16573f6eb017336c907648bec515430e0f1"
     sha256 big_sur:        "6e2001b1bf50eb5c6d913f61abcfb9074ac4a8dba810cc7f80546ca1157b5311"
     sha256 catalina:       "0ce9776bb40a4b6d3dc6d1ea62885a952e32c868fff1305b8e7f33a1e09689f2"
+    sha256 arm64_linux:    "649b829aa0b5c30e5f6588ed7cd1a865f51ca70fe10bfd4a56917b9bc6b6520f"
     sha256 x86_64_linux:   "9a6461d6ec0bc9a1306f59a8a80c5c750f46b6bf13691f0e89b94c69399c0853"
   end
 

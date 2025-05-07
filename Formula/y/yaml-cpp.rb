@@ -15,26 +15,29 @@ class YamlCpp < Formula
     sha256 cellar: :any,                 ventura:        "6df59a455c4312b58a636ea26c0f7b07a98e2718b7702f9c9a6603a3d18db540"
     sha256 cellar: :any,                 monterey:       "ed2271a45db27da472a35762a95ec0e36ee8be8a193593637b289eaa40d34e68"
     sha256 cellar: :any,                 big_sur:        "34e2ea6e7e4c5db76bdbe1eb799025c0143c3cda82ad561bf6354ba79e014427"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "124cab38c648ba776e8ae2af5b978c3bb74bc0c938fd922f0bb24976781d79d6"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "eea8c23888c9026a8994e5b7b3b62e65b89da4d08db764c340900ecbe190f36d"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", *std_cmake_args, "-DYAML_BUILD_SHARED_LIBS=ON",
-                                          "-DYAML_CPP_BUILD_TESTS=OFF"
-    system "make", "install"
+    args = ["-DYAML_BUILD_SHARED_LIBS=ON", "-DYAML_CPP_BUILD_TESTS=OFF"]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <yaml-cpp/yaml.h>
       int main() {
         YAML::Node node  = YAML::Load("[0, 0, 0]");
         node[0] = 1;
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++11", "-L#{lib}", "-lyaml-cpp", "-o", "test"
     system "./test"
   end

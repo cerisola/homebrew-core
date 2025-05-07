@@ -1,37 +1,30 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
   homepage "https://rybczak.net/ncmpcpp/"
-  url "https://rybczak.net/ncmpcpp/stable/ncmpcpp-0.9.2.tar.bz2"
-  sha256 "faabf6157c8cb1b24a059af276e162fa9f9a3b9cd3810c43b9128860c9383a1b"
+  # note, homepage did not get updated to the latest release tag in github
+  url "https://github.com/ncmpcpp/ncmpcpp/archive/refs/tags/0.10.1.tar.gz"
+  sha256 "ddc89da86595d272282ae8726cc7913867b9517eec6e765e66e6da860b58e2f9"
   license "GPL-2.0-or-later"
-  revision 19
-
-  livecheck do
-    url "https://rybczak.net/ncmpcpp/installation/"
-    regex(/href=.*?ncmpcpp[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
+  revision 4
+  head "https://github.com/ncmpcpp/ncmpcpp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3e9fd5119dc58fef9d8d0fa4f5e26ad68d777df16c19fb47674b7e7f0e910b00"
-    sha256 cellar: :any,                 arm64_sonoma:  "6fd604cd6d2094ab0b6a8b904a6d5b9c2b409c52c24ca7ab090bcc3abfbad2e8"
-    sha256 cellar: :any,                 arm64_ventura: "05e9b88fb40c43f54fa994c3d953c4a85010f2ffe1fc3be63713af7c39934700"
-    sha256 cellar: :any,                 sonoma:        "495e51045de2902f8ac3d13845e4c210576328aae67c8dedecb81b09bd83377a"
-    sha256 cellar: :any,                 ventura:       "ab52d5fd05a6587ea18eb84ff0860df33cb66c30405fc70f683c28182bc6f78b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35f0ea3a8ebe207c8581f45a7cf18a407b7ab07e28e5dadc608d619c5ed8c505"
+    sha256 cellar: :any,                 arm64_sequoia: "85bce87b0b6063cdbf8be5b857c8a2d411a645d11f37f12d66dc99431bf7b034"
+    sha256 cellar: :any,                 arm64_sonoma:  "ac040b1f822500333c9193ebab20bd7910598c23a8e6aaada597ade970137a91"
+    sha256 cellar: :any,                 arm64_ventura: "317dbae909e32339ebf1134a8ae55bf0f609d04c5050a183cd644fcf2c301c10"
+    sha256 cellar: :any,                 sonoma:        "f6d94110dc3839f47f1011b489eb4aaf82d7afa2e8bd55484baeae6d178c41c3"
+    sha256 cellar: :any,                 ventura:       "0651a6f3101ce2af14a7e4af064bc6a765244966db3fe9afa6da2adf0fcc8c4b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "08416eed22effd6c038ac64dfa1a7955df0ed74633fc8bb105b64207c22047c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fad7efcda3ef45c061a14d4b0517d8b4eed7ba186085e7abc6ad559167bc4873"
   end
 
-  head do
-    url "https://github.com/ncmpcpp/ncmpcpp.git", branch: "master"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "fftw"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "libmpdclient"
   depends_on "ncurses"
   depends_on "readline"
@@ -40,28 +33,21 @@ class Ncmpcpp < Formula
   uses_from_macos "curl"
 
   def install
-    # Work around to build with icu4c 75 in stable release. Fixed in HEAD.
-    # Ref: https://github.com/ncmpcpp/ncmpcpp/commit/ba484cff1e4ac3225b6eb87dc94272daca88e613
-    inreplace "configure", /\$std_cpp14\b/, "-std=c++17" if build.stable?
-
     ENV.append "LDFLAGS", "-liconv" if OS.mac?
-
-    ENV.append "BOOST_LIB_SUFFIX", "-mt"
+    ENV.prepend "LDFLAGS", "-L#{Formula["readline"].opt_lib}"
+    ENV.prepend "CPPFLAGS", "-I#{Formula["readline"].opt_include}"
     ENV.append "CXXFLAGS", "-D_XOPEN_SOURCE_EXTENDED"
 
     args = %w[
       --disable-silent-rules
       --enable-clock
       --enable-outputs
-      --enable-unicode
       --enable-visualizer
-      --with-curl
       --with-taglib
     ]
 
-    system "./autogen.sh" if build.head?
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", *args, *std_configure_args
-    system "make"
     system "make", "install"
   end
 

@@ -18,6 +18,7 @@ class B2sum < Formula
     sha256 cellar: :any_skip_relocation, catalina:       "339b959eb5c2cbc8c26a39022937ea27b7911ff1c9f0611c3f2ac1595f5b0e50"
     sha256 cellar: :any_skip_relocation, mojave:         "905b975371fd88632649e08f732ff25277cd1fd4b584dbc3e4914bcb08f85cd8"
     sha256 cellar: :any_skip_relocation, high_sierra:    "129dbe4d91bf7843a40399b392b3ddc2448e56c249a45567bd9193e4fb722b37"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "045bcf83cd9918310902dcf419763b59bfa86c1cce653d2469a760e3cff05219"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3de701be2858013ed380a477ce9b911db189812984990cd420b9f6d5df7a82bd"
   end
 
@@ -32,11 +33,8 @@ class B2sum < Formula
   end
 
   test do
-    checksum = <<~EOS
-      ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d17d87c5392
-      aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923  -
-    EOS
-    assert_equal checksum.delete!("\n"),
-                 pipe_output("#{bin}/b2sum -", "abc").chomp
+    checksum = "ba80a53f981c4d0d6a2797b69f12f6e94c212f14685ac4b74b12bb6fdbffa2d1" \
+               "7d87c5392aab792dc252d5de4533cc9518d38aa8dbf1925ab92386edd4009923  -"
+    assert_equal checksum, pipe_output("#{bin}/b2sum -", "abc", 0).chomp
   end
 end

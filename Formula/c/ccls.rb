@@ -6,26 +6,35 @@ class Ccls < Formula
   #       https://github.com/Homebrew/homebrew-core/pull/106939
   #       https://github.com/MaskRay/ccls/issues/786
   #       https://github.com/MaskRay/ccls/issues/895
-  url "https://github.com/MaskRay/ccls/archive/refs/tags/0.20240505.tar.gz"
-  sha256 "4ea6d90a9f93d5503e59c3bd0e5568ab262ff3dcf1b7539b50a0ede4a0e32fea"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/MaskRay/ccls.git", branch: "master"
 
+  stable do
+    url "https://github.com/MaskRay/ccls/archive/refs/tags/0.20241108.tar.gz"
+    sha256 "76224663c3554eef9102dca66d804874d0252312d7c7d02941c615c87dcb68af"
+
+    # Backport support for LLVM 20
+    patch do
+      url "https://github.com/MaskRay/ccls/commit/4331c8958698d42933bf4e132f8a7d61f3cedb8c.patch?full_index=1"
+      sha256 "5420b53cf912268688953a2863e86f6b88334ed548852eaedb9f8ce4871ee034"
+    end
+  end
+
   bottle do
-    sha256                               arm64_sequoia: "dd72e908ed43995d6078af01f9f8021cc61799445271d3a040e63e056b230a7f"
-    sha256                               arm64_sonoma:  "d150928cd70c213296534660ec53275dd35434863c11546978b19be11ba8078e"
-    sha256                               arm64_ventura: "ceff1c27a290bce123dab0bdf9b15644b372f6f2d4c14a03104a01bd13eccd40"
-    sha256                               sonoma:        "74a2bbdcfd5fe6ed74bc05e17af99edd7ca22e0d264d71aa4624e2c64f60cc95"
-    sha256                               ventura:       "cdfec2cf7d5027ac4ebf5dc41ffac54b2a41c8a14fe55a02f8c7edffaa96a867"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "30f6d1754edadb51e6f534c6624b00af338e61fca00abfbf2b296522c356b14a"
+    sha256                               arm64_sequoia: "c27b908fad0df43a31ab3773116b623a5fbf118a6952fe107cf1b1ec74298fb9"
+    sha256                               arm64_sonoma:  "c3f51b9b966652326d52e4f70ac9f76679e0f26cdbc217970869017f2496c389"
+    sha256                               arm64_ventura: "d822534f47862b7b9bac59b251e365ff713bb236931a5a91f3d92f8e5a006d49"
+    sha256                               sonoma:        "c55e6b6a3cb802ebc90911280ecc01729aa347818d854e2c2bb7d6fc73e8b7cf"
+    sha256                               ventura:       "2821feb82b94d31af308fb656ac5354a720cf3faccc5aeae4efff119663932a2"
+    sha256                               arm64_linux:   "76bba92dad7dd21c8fb560f4f41f5215043ef1ef8610ed34626a9f7bcdd5521b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8aa50bc118e9e35d8840052839456fb362a603d5e04e210a6b8ae2df9da31423"
   end
 
   depends_on "cmake" => :build
   depends_on "rapidjson" => :build
   depends_on "llvm"
   depends_on macos: :high_sierra # C++ 17 is required
-
-  fails_with gcc: "5"
 
   def llvm
     deps.reject { |d| d.build? || d.test? }

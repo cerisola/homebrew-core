@@ -1,8 +1,8 @@
 class Postgrest < Formula
   desc "Serves a fully RESTful API from any existing PostgreSQL database"
   homepage "https://github.com/PostgREST/postgrest"
-  url "https://github.com/PostgREST/postgrest/archive/refs/tags/v12.2.3.tar.gz"
-  sha256 "52b814cb9255c43d7f59f3be50336ae761e103c7c9b083dc4833d2579dd2abcf"
+  url "https://github.com/PostgREST/postgrest/archive/refs/tags/v12.2.12.tar.gz"
+  sha256 "d748a81a3127691d46e7e2546a5eb0e77308b20190c2315267b6785e66dee0fc"
   license "MIT"
   head "https://github.com/PostgREST/postgrest.git", branch: "main"
 
@@ -12,18 +12,17 @@ class Postgrest < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "eba1e995f952f401c16c7ea727555c2cde35fb099639c3692de26fa6ca2b0ede"
-    sha256 cellar: :any,                 arm64_sonoma:   "68a1b201a0396ca4a9332f68f4a1a039c4239e984dbdd23558778809686237cf"
-    sha256 cellar: :any,                 arm64_ventura:  "73a1a4b53994141d9a64eac3fccc2d174dd899c5ce1c1140b11840929b9ddc25"
-    sha256 cellar: :any,                 arm64_monterey: "d4da709edbc6a334700db58c596495f19690486095c109d175d694346b1c3efc"
-    sha256 cellar: :any,                 sonoma:         "3f8f1332d9b871f608427b742e9d41384a829f21b34bdf1a71a05da6067f8c1e"
-    sha256 cellar: :any,                 ventura:        "24e0aa645cdb647163b94695315dd0cd93d172aed47159caf43e818dee8649a2"
-    sha256 cellar: :any,                 monterey:       "9bc1e3654ec2c4792ca13434f6551af3233d5121db50e1bdfe70c559a041cf5e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "859074efdeb538c72381300a6a9c9e0454fd0927ef4205dbde0ca6bc69cd60b8"
+    sha256 cellar: :any,                 arm64_sequoia: "c4c873681dd0d0ef13f0641ec9a5f4f52aadde9228527367c58cceae872908bb"
+    sha256 cellar: :any,                 arm64_sonoma:  "ebc0347179edf1dd6f5b8f9ac22725252357ac2cbb6cf00193c4955e44c84c2a"
+    sha256 cellar: :any,                 arm64_ventura: "da7f4e4822b47c42305be6ad6558da1678d7ad40be7cb763d56d2041699bbf0f"
+    sha256 cellar: :any,                 sonoma:        "e33dfc41bfafc29e1c242673f4a74e1e397e53c08514f0f420326a04c0d7b14f"
+    sha256 cellar: :any,                 ventura:       "f0abe5105f6f97ac61b842a59af4d6d0b5aa27c49b57dea99f01033ec9f39b25"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c17d0bfe395d15ea32a163265fa466410b305ef79cc75662c470d17869d641a9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c7917700b0d68fc45ce792899da3941ccd0253a75cb6314d5bb4fc00040116e1"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@9.8" => :build
+  depends_on "ghc@9.8" => :build # GHC 9.10 blocked by deps, e.g. https://github.com/protolude/protolude/issues/149
   depends_on "libpq"
 
   uses_from_macos "zlib"

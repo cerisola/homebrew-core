@@ -14,12 +14,13 @@ class CrispyDoom < Formula
     sha256 cellar: :any,                 sonoma:         "325da8f1b4334a227d9f54f65434a84973331bec480d46e4136be618c32636b9"
     sha256 cellar: :any,                 ventura:        "edf187b019afbc43e5326413f87c603b591c964a1792932e3883e2a565ac0682"
     sha256 cellar: :any,                 monterey:       "b52ae717094041400af36ecbe0f741c7f32e7ec10c93f054f0e6d3a48d7e5c08"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bf4db5216f98d6f2937a33de95e9f49345989bff07ab4873f13ef274dd0e801f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "32038b4fcd8556a79441e0f482ea6597e1ae6a8ec934a415c7fadc62ed21cf22"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fluid-synth"
   depends_on "libpng"
   depends_on "libsamplerate"
@@ -30,11 +31,10 @@ class CrispyDoom < Formula
   uses_from_macos "zlib"
 
   def install
-    system "autoreconf", "-fiv"
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--disable-sdltest"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules",
+                          "--disable-sdltest",
+                          *std_configure_args
     system "make", "install", "execgamesdir=#{bin}"
   end
 

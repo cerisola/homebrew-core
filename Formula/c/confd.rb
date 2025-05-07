@@ -41,7 +41,7 @@ class Confd < Formula
     EOS
 
     conffile = testpath/"conf.d/conf.toml"
-    conffile.write <<~EOS
+    conffile.write <<~TOML
       [template]
       prefix = "/"
       src = "test.tmpl"
@@ -49,15 +49,15 @@ class Confd < Formula
       keys = [
           "/version"
       ]
-    EOS
+    TOML
 
     keysfile = testpath/"keys.yaml"
-    keysfile.write <<~EOS
+    keysfile.write <<~YAML
       version: v1
-    EOS
+    YAML
 
     system bin/"confd", "-backend", "file", "-file", "keys.yaml", "-onetime", "-confdir=."
-    assert_predicate testpath/"test.conf", :exist?
+    assert_path_exists testpath/"test.conf"
     refute_predicate (testpath/"test.conf").size, :zero?
   end
 end

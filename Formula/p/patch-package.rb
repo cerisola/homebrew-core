@@ -14,6 +14,7 @@ class PatchPackage < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "c658029b2ce64459dc717ef566600b5cba4d4228c2c0790769782e4868d550b4"
     sha256 cellar: :any_skip_relocation, ventura:        "c658029b2ce64459dc717ef566600b5cba4d4228c2c0790769782e4868d550b4"
     sha256 cellar: :any_skip_relocation, monterey:       "c658029b2ce64459dc717ef566600b5cba4d4228c2c0790769782e4868d550b4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ed67febe2dce537c9d9ffe24c04d33bdba70d10f73308fa9c8cb9f1e2dbe9093"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1ac48440106abcb40eb35ade08df6ce7f0998ee7c6cf895905350ee23ead3944"
   end
 
@@ -28,12 +29,12 @@ class PatchPackage < Formula
     output = shell_output("#{bin}/patch-package 2>&1", 1)
     assert_match "no package.json found for this project", output
 
-    (testpath/"package.json").write <<~EOS
+    (testpath/"package.json").write <<~JSON
       {
         "name": "brewtest",
         "version": "1.0.0"
       }
-    EOS
+    JSON
 
     expected = <<~EOS
       patch-package #{version}

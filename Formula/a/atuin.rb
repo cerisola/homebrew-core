@@ -1,19 +1,18 @@
 class Atuin < Formula
   desc "Improved shell history for zsh, bash, fish and nushell"
-  homepage "https://github.com/atuinsh/atuin"
-  url "https://github.com/atuinsh/atuin/archive/refs/tags/v18.3.0.tar.gz"
-  sha256 "d05d978d1f1b6a633ac24a9ac9bde3b1dfb7416165b053ef54240fff898aded3"
+  homepage "https://atuin.sh/"
+  url "https://github.com/atuinsh/atuin/archive/refs/tags/v18.5.0.tar.gz"
+  sha256 "f3744e8dfee2c7089ac140cb8aafe01e5d77a2299097a2cc0a42db26d127340a"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "78bc9e2d0723c2db65ba54664a93a4ff156970f3f1980556c0929fb8681f5636"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "4db9097e63a1800f93144eb25353b8668ad5e475faefc61e72671ac02d549965"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "c42852037ee57dedd73470e899ed4359374a7912df3f564b58bccfecac3b84d6"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "2eacf66e3a212e014f9c1a086b2e032ce9de9f9d0d0fea7efc8c2b379f2c64f9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0b4a5c5898bab731cd6be2cbdcc34293978c89dccf96ec4b36cc4043169e0420"
-    sha256 cellar: :any_skip_relocation, ventura:        "8af145234fd6a0ce710c1edd85e41b535656bd9549825702d5a89af5c475fe78"
-    sha256 cellar: :any_skip_relocation, monterey:       "aca1f5a9972dc37d10a660e17f7c279fcd9251f8c8c884c861c9f35cb2e8abc6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "eec053b9e9bae3757a36e96164c77ef6084c3ef4882265d3d83571a9b44db99d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0a8c1e89b23c3300ea6319e8c6c41553a0b1f5387351b43ac3a64360ad05fc7a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "94caf9dd590adf5f35ecb4690e60b6ddee3fbf5eca62b963731d8299ad5c0986"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0bd749df3479f8ab72b0b306b746f04fd9574ef6850e250282e73f3f6f52b92d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bfbbbbaf4daf6423f5e79d8e0063eab95522b3531c3bc650a9872c40908e1425"
+    sha256 cellar: :any_skip_relocation, ventura:       "d3f64a0548bf35660cea247be7aa64aa878d3f434d0f50f8a6ca37d82978fa2f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a1ff3cf9ad4fd437c36e857003ea926436ee859b4ba8d3cf02ac8f0ef61c0934"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4314a07c3072b17a499c6cda962bd27bf74caac45bddadc07b57666d79b1eae4"
   end
 
   depends_on "protobuf" => :build
@@ -23,6 +22,13 @@ class Atuin < Formula
     system "cargo", "install", *std_cargo_args(path: "crates/atuin")
 
     generate_completions_from_executable(bin/"atuin", "gen-completion", "--shell")
+  end
+
+  service do
+    run [opt_bin/"atuin", "daemon"]
+    keep_alive true
+    log_path var/"log/atuin.log"
+    error_log_path var/"log/atuin.log"
   end
 
   test do

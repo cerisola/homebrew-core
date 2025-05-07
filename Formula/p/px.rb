@@ -4,18 +4,18 @@ class Px < Formula
   desc "Ps and top for human beings (px / ptop)"
   homepage "https://github.com/walles/px"
   url "https://github.com/walles/px.git",
-      tag:      "3.6.5",
-      revision: "837bd0e16a0abfd4a315f7d240d6227a6b861e07"
+      tag:      "3.6.9",
+      revision: "e4c9737b03ba8533cc3428524effe1028bd4a7ce"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f4350398d48afc4a81e5ab15545d9203c0213e5cbf7a78c2f5a9ebc5c37695c7"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f4350398d48afc4a81e5ab15545d9203c0213e5cbf7a78c2f5a9ebc5c37695c7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f4350398d48afc4a81e5ab15545d9203c0213e5cbf7a78c2f5a9ebc5c37695c7"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b792aaadadd03222ca09221ce9b5769ed0e1cf941455c2ec2cde90f11399ce27"
-    sha256 cellar: :any_skip_relocation, ventura:       "b792aaadadd03222ca09221ce9b5769ed0e1cf941455c2ec2cde90f11399ce27"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4350398d48afc4a81e5ab15545d9203c0213e5cbf7a78c2f5a9ebc5c37695c7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "93676a71991183f97c382f497977592ad790921ca2693e46dab05dd7ed47efc9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "93676a71991183f97c382f497977592ad790921ca2693e46dab05dd7ed47efc9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "93676a71991183f97c382f497977592ad790921ca2693e46dab05dd7ed47efc9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c4bb31761956dc9ef1e49a06ec566b39062453be62159b534ce7ec5c32ad014d"
+    sha256 cellar: :any_skip_relocation, ventura:       "c4bb31761956dc9ef1e49a06ec566b39062453be62159b534ce7ec5c32ad014d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f35ff630e8bbe3e8f7289e0f72845ca6ad81c95ae4ab500bbdb76578fce5c905"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "93676a71991183f97c382f497977592ad790921ca2693e46dab05dd7ed47efc9"
   end
 
   depends_on "python@3.13"

@@ -1,17 +1,18 @@
 class CodeServer < Formula
   desc "Access VS Code through the browser"
   homepage "https://github.com/coder/code-server"
-  url "https://registry.npmjs.org/code-server/-/code-server-4.93.1.tgz"
-  sha256 "c6204fbb323f2950a42c49b88a2fc2d02b45d4cf684e88b220d9fe1fda3f9a0a"
+  url "https://registry.npmjs.org/code-server/-/code-server-4.99.4.tgz"
+  sha256 "abbce6f8113b9cbde0178af40cb58381b16038c79cbca2c5bf1f244603204fc5"
   license "MIT"
 
   bottle do
-    sha256                               arm64_sequoia: "d60aa5731fcc2e9302b5b375269bf9064580e3b9d2c69a92e7f9a1169241e609"
-    sha256                               arm64_sonoma:  "051599c8f13b38e01b6e3b8dc397135913463d046bab2cd219977ef109eb5fc3"
-    sha256                               arm64_ventura: "0bfa49c4fcd3947473d3bd579fceae7f30dd2f155ec9097001f23d2c9c612b27"
-    sha256                               sonoma:        "7fc1f86fa5955cd58e79e021f59a38dd61a353275c9619cba48b952d573c198c"
-    sha256                               ventura:       "c5f1ed0fdd96c7c350af2ccfb0dd40796feb7867e9595330887ec67e370d7c43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "37a4e616197dce8aa9ef656796411b952d9ed3a723663f46ecc0f0723041a002"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3bdd0423fb95f932fe06de37802038f72d242f151d772ae86e00453b939dc03b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9e1458ceb0a0eb554469d7da84c0fa3ca42b76e0094071f7e2c98f014e20f4ad"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "757bbaf56a66e6a92d6ef1a36f8c4c07757a4d50daecb1ac9d615c21d092a6be"
+    sha256 cellar: :any_skip_relocation, sonoma:        "61770851ab3cc777ec2929f027d74707ec30288c90672f839926cf772f4dbcd9"
+    sha256 cellar: :any_skip_relocation, ventura:       "f90722f53235c60a22cc524a6770cfcab91f75ccaaed01ba77d28886a3175431"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f99205ea8737706d7bd4353359ea66999de0db36d766a743751c50c501e9ecd5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6222827901814a590f86e2fb7ff89ec01a2c062000a65722bfcaaadf956972b3"
   end
 
   depends_on "node@20"
@@ -19,7 +20,7 @@ class CodeServer < Formula
   uses_from_macos "python" => :build
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "krb5"
     depends_on "libsecret"
     depends_on "libx11"
@@ -30,17 +31,21 @@ class CodeServer < Formula
     # Fix broken node-addon-api: https://github.com/nodejs/node/issues/52229
     ENV.append "CXXFLAGS", "-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT"
 
-    system "npm", "install", *std_npm_args
-    bin.install_symlink libexec.glob("bin/*")
+    system "npm", "install", *std_npm_args(prefix: false), "--unsafe-perm", "--omit", "dev"
+
+    libexec.install Dir["*"]
+    bin.install_symlink libexec/"out/node/entry.js" => "code-server"
 
     # Remove incompatible pre-built binaries
     os = OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
-    vscode = libexec/"lib/node_modules/code-server/lib/vscode"
-    vscode.glob("{,extensions/}node_modules/@parcel/watcher/prebuilds/*")
-          .each { |dir| rm_r(dir) if dir.basename.to_s != "#{os}-#{arch}" }
-    vscode.glob("{,extensions/}node_modules/@parcel/watcher/prebuilds/linux-x64/*.musl.node")
-          .map(&:unlink)
+    vscode = libexec/"lib/vscode/node_modules/@parcel"
+    permitted_dir = OS.linux? ? "watcher-#{os}-#{arch}-glibc" : "watcher-#{os}-#{arch}"
+    vscode.glob("watcher-*").each do |dir|
+      next unless (Pathname.new(dir)/"watcher.node").exist?
+
+      rm_r(dir) if permitted_dir != dir.basename.to_s
+    end
   end
 
   def caveats
@@ -58,9 +63,23 @@ class CodeServer < Formula
   end
 
   test do
-    # See https://github.com/cdr/code-server/blob/main/ci/build/test-standalone-release.sh
-    system bin/"code-server", "--extensions-dir=.", "--install-extension", "wesbos.theme-cobalt2"
-    output = shell_output("#{bin}/code-server --extensions-dir=. --list-extensions")
-    assert_match "wesbos.theme-cobalt2", output
+    assert_match version.to_s, shell_output("#{bin}/code-server --version")
+
+    port = free_port
+    output = ""
+
+    PTY.spawn "#{bin}/code-server --auth none --port #{port}" do |r, _w, pid|
+      sleep 3
+      Process.kill("TERM", pid)
+      begin
+        r.each_line { |line| output += line }
+      rescue Errno::EIO
+        # GNU/Linux raises EIO when read is done on closed pty
+      end
+    ensure
+      Process.wait(pid)
+    end
+    assert_match "HTTP server listening on", output
+    assert_match "Session server listening on", output
   end
 end

@@ -1,9 +1,10 @@
 class Mydumper < Formula
-  desc "How MySQL DBA & support engineer would imagine 'mysqldump' ;-)"
-  homepage "https://launchpad.net/mydumper"
-  url "https://github.com/mydumper/mydumper/archive/refs/tags/v0.16.7-5.tar.gz"
-  sha256 "f554552fe96c40a47b82018eb067168bcb267a96fd288ddf8523c9e472340f2e"
+  desc "MySQL logical backup tool"
+  homepage "https://github.com/mydumper/mydumper"
+  url "https://github.com/mydumper/mydumper/archive/refs/tags/v0.19.1-3.tar.gz"
+  sha256 "e7feab21b8073a5a7809cf7cc56a08ae0f93313dfe3f6f1fe5c96eec12f09f9d"
   license "GPL-3.0-or-later"
+  head "https://github.com/mydumper/mydumper.git", branch: "master"
 
   livecheck do
     url :stable
@@ -12,43 +13,39 @@ class Mydumper < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ab01afafd344106da39e94a2fd3f5b40b0c8633b871c1ce171793e4ccf063251"
-    sha256 cellar: :any,                 arm64_sonoma:  "82524194bd826d59c86d251f4d62342d004a5320f019d63fd442eed4a33667b6"
-    sha256 cellar: :any,                 arm64_ventura: "0135cdab2a4deea3a7795e15f575debd61f2953b5821d9b0064e47a787342933"
-    sha256 cellar: :any,                 sonoma:        "230993daa59054939b8a41c35b5dd63541538bb3876c279fec1140073b87bf5a"
-    sha256 cellar: :any,                 ventura:       "033c91c9ddf737c909cf9ba19859bc651cc543ba0ed281d58039b913790749fe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21e3a53feac8b1a64daea3c5f82af72e06472402b95cfd930fdc4c35b2ec0a26"
+    sha256 cellar: :any,                 arm64_sequoia: "17b15d765a3b9dd55a58cd299e1b82b318a77872f015bace521bd4c5f9b4007d"
+    sha256 cellar: :any,                 arm64_sonoma:  "2e103237038c2913cf0ea2b36c1e3cd0420ed633020e07598755da52c25e4885"
+    sha256 cellar: :any,                 arm64_ventura: "2a8a9307520a9fdf50fa6ccfe233fdc1d488b5d218c4472742541b2a3dff4e06"
+    sha256 cellar: :any,                 sonoma:        "450d772960aad232b7b639c7c52a254a76c68e85c2bcfacaffc3ec7d80814931"
+    sha256 cellar: :any,                 ventura:       "6614ed61e8b36f9e7f02f48d985a2b46053652f92dade60bca559c1acb63f511"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7cdb629423cc0f18ddcf7ef7a0c2eab87970c00d7c4e42f822b9f567b73a4ccf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0318d32774a013eb348768d2a18ad8c6797d5dcfdc14fb0226a6676973176931"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "sphinx-doc" => :build
   depends_on "glib"
-  depends_on "mysql-client"
-  depends_on "pcre"
-  depends_on "zlib"
+  depends_on "mariadb-connector-c"
+  depends_on "pcre2"
 
-  fails_with gcc: "5"
+  on_macos do
+    depends_on "openssl@3"
+  end
 
   def install
     # Avoid installing config into /etc
     inreplace "CMakeLists.txt", "/etc", etc
 
     # Override location of mysql-client
-    args = std_cmake_args + %W[
-      -DMYSQL_CONFIG_PREFER_PATH=#{Formula["mysql-client"].opt_bin}
-      -DMYSQL_LIBRARIES=#{Formula["mysql-client"].opt_lib/shared_library("libmysqlclient")}
+    args = %W[
+      -DMYSQL_CONFIG_PREFER_PATH=#{Formula["mariadb-connector-c"].opt_bin}
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     ]
-    # find_package(ZLIB) has trouble on Big Sur since physical libz.dylib
-    # doesn't exist on the filesystem.  Instead provide details ourselves:
-    if OS.mac?
-      args << "-DCMAKE_DISABLE_FIND_PACKAGE_ZLIB=1"
-      args << "-DZLIB_INCLUDE_DIRS=/usr/include"
-      args << "-DZLIB_LIBRARIES=-lz"
-    end
 
-    system "cmake", ".", *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

@@ -1,17 +1,18 @@
 class Grizzly < Formula
   desc "Command-line tool for managing and automating Grafana dashboards"
   homepage "https://grafana.github.io/grizzly/"
-  url "https://github.com/grafana/grizzly/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "aa75c2fd7d52607e9d52a3531c496fc3ec84c6844a1aecaede7f04eeb2408737"
+  url "https://github.com/grafana/grizzly/archive/refs/tags/v0.7.1.tar.gz"
+  sha256 "81811b684ef1bddd3b7147c5095224552a0b35dc3ff210d10e6cbc5e12331160"
   license "Apache-2.0"
+  head "https://github.com/grafana/grizzly.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1a20f521bb3ae13405678789d52a07ee6f19354626683e68e1a8f62d8d56a831"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1a20f521bb3ae13405678789d52a07ee6f19354626683e68e1a8f62d8d56a831"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1a20f521bb3ae13405678789d52a07ee6f19354626683e68e1a8f62d8d56a831"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a94e90480ae8eadaf52343c7b83ee56204cffdc47093701a23e6a70b738a5df7"
-    sha256 cellar: :any_skip_relocation, ventura:       "a94e90480ae8eadaf52343c7b83ee56204cffdc47093701a23e6a70b738a5df7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2cb9ea3eda63a25f7f85872dc2a18c70b3950d958620c715922e2f910f3dd0ff"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9c00e5b79f192d86d855287c9abb183eede829f47d6892bfef011d0977fb45cc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9c00e5b79f192d86d855287c9abb183eede829f47d6892bfef011d0977fb45cc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9c00e5b79f192d86d855287c9abb183eede829f47d6892bfef011d0977fb45cc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "679f770b4eff802b8e9b6eb199fb9ae076f14093ea58342fcc1752d43985415f"
+    sha256 cellar: :any_skip_relocation, ventura:       "679f770b4eff802b8e9b6eb199fb9ae076f14093ea58342fcc1752d43985415f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1cd0d526f55b71f84e88c4bda49551c661b56f7dcace86fbbbb637a27fd4274"
   end
 
   depends_on "go" => :build
@@ -23,7 +24,7 @@ class Grizzly < Formula
 
   test do
     sample_dashboard = testpath/"dashboard_simple.yaml"
-    sample_dashboard.write <<~EOS
+    sample_dashboard.write <<~YAML
       apiVersion: grizzly.grafana.com/v1alpha1
       kind: Dashboard
       metadata:
@@ -36,7 +37,7 @@ class Grizzly < Formula
         timezone: browser
         title: Production Overview
         uid: prod-overview
-    EOS
+    YAML
 
     assert_match "prod-overview", shell_output("#{bin}/grr list #{sample_dashboard}")
 

@@ -2,26 +2,26 @@ class Odin < Formula
   desc "Programming language with focus on simplicity, performance and modern systems"
   homepage "https://odin-lang.org/"
   url "https://github.com/odin-lang/Odin.git",
-      tag:      "dev-2024-10",
-      revision: "af9ae4897ad9e526d74489ddd12cfae179639ff3"
-  version "2024-10"
+      tag:      "dev-2025-04",
+      revision: "d9f990d42e2a1bccf3e7be8ba02efa6504e9af9b"
+  version "2025-04"
   license "BSD-3-Clause"
   head "https://github.com/odin-lang/Odin.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "aca4aec0e727515e10a3c5c552eababb6f0a74805340307c06c8615091130d70"
-    sha256 cellar: :any,                 arm64_sonoma:  "513d0754a3c9953e1cd7f237889a27e0b56f0739ff5ae685f32c385399d836d6"
-    sha256 cellar: :any,                 arm64_ventura: "9875168b45d9a80a76c8f072ef1a959732f796cf8a6c1754a87e070af47452c0"
-    sha256 cellar: :any,                 sonoma:        "ce6be3726f1d2f0016ab6b02b069762b5dadea013a0a07d5dcd955bc2993122e"
-    sha256 cellar: :any,                 ventura:       "b94bf5def1e815e33345d3acc769a9d17897b0a6c16fdfba83c2c78b7e525796"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f0ed5c0aed4747f0f2001ebd47726da716259cd22ee8ff102be6330053528f83"
+    sha256                               arm64_sequoia: "7db718db30a1550b4a257bf38a8c4760444fe690e79823bec57ef72531e19453"
+    sha256                               arm64_sonoma:  "29b07670d0f84f2d3cbf5e44797246913f1408e25633c2842b18d13edc5aab2c"
+    sha256                               arm64_ventura: "a1c4e779f3e0f4eeef5c06c5190b576c451efbe7db4bf7e4048e05c4084d09eb"
+    sha256 cellar: :any,                 sonoma:        "a57b5002a4131c081be1d99ad99d319ac271406704b5e1a817c39da4bb6deb0d"
+    sha256 cellar: :any,                 ventura:       "9f92112d2995381ea558c36c2f93605c452d9cdba7d215a26ae648539c4a7c66"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "69c5405ef06d38cb1bd97a307fd108ba79b7bdb3cf2d31632726b6ad13bba14b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff99f77d215a0919e14ee0c7241979b07e8f36f372e4ea99cee3042b787251f0"
   end
 
   depends_on "glfw"
-  depends_on "llvm@18"
+  depends_on "lld"
+  depends_on "llvm"
   depends_on "raylib"
-
-  fails_with gcc: "5" # LLVM is built with GCC
 
   resource "raygui" do
     url "https://github.com/raysan5/raygui/archive/refs/tags/4.0.tar.gz"
@@ -31,6 +31,7 @@ class Odin < Formula
   def install
     llvm = deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+(\.\d+)*)?$/) }
     ENV["LLVM_CONFIG"] = (llvm.opt_bin/"llvm-config").to_s
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{llvm.opt_lib}" if OS.linux?
 
     # Delete pre-compiled binaries which brew does not allow.
     buildpath.glob("vendor/**/*.{lib,dll,a,dylib,so,so.*}").map(&:unlink)
@@ -49,6 +50,12 @@ class Odin < Formula
 
     raylib_installpath = if OS.linux?
       "vendor/raylib/linux"
+    else
+      "vendor/raylib/macos"
+    end
+
+    raygui_installpath = if OS.linux?
+      "vendor/raylib/linux"
     elsif Hardware::CPU.intel?
       "vendor/raylib/macos"
     else
@@ -64,9 +71,9 @@ class Odin < Formula
     ln_s Formula["glfw"].lib/"libglfw3.a", buildpath/glfw_installpath/"libglfw3.a"
 
     ln_s Formula["raylib"].lib/"libraylib.a", buildpath/raylib_installpath/"libraylib.a"
-    # This is actually raylib 5.0, but upstream had not incremented this number yet when it released.
-    ln_s Formula["raylib"].lib/shared_library("libraylib", "4.5.0"),
-      buildpath/raylib_installpath/shared_library("libraylib", "500")
+    # In order to match the version 500 used in odin
+    ln_s Formula["raylib"].lib/shared_library("libraylib", "5.5.0"),
+      buildpath/raylib_installpath/shared_library("libraylib", "550")
 
     resource("raygui").stage do
       cp "src/raygui.h", "src/raygui.c"
@@ -75,7 +82,7 @@ class Odin < Formula
       system ENV.cc, "-c", "-o", "raygui.o", "src/raygui.c",
         "-fpic", "-DRAYGUI_IMPLEMENTATION", "-I#{Formula["raylib"].include}"
       system "ar", "-rcs", "libraygui.a", "raygui.o"
-      cp "libraygui.a", buildpath/raylib_installpath
+      cp "libraygui.a", buildpath/raygui_installpath
 
       # build shared library
       args = [
@@ -92,7 +99,7 @@ class Odin < Formula
 
       args += ["-framework", "OpenGL"] if OS.mac?
       system ENV.cc, *args
-      cp shared_library("libraygui"), buildpath/raylib_installpath
+      cp shared_library("libraygui"), buildpath/raygui_installpath
     end
 
     # By default the build runs an example program, we don't want to run it during install.
@@ -105,16 +112,16 @@ class Odin < Formula
     args << "ODIN_VERSION=dev-#{version}" unless build.head?
     system "make", "release", *args
     libexec.install "odin", "core", "shared", "base", "vendor"
-    (bin/"odin").write <<~EOS
+    (bin/"odin").write <<~BASH
       #!/bin/bash
       export PATH="#{llvm.opt_bin}:$PATH"
       exec -a odin "#{libexec}/odin" "$@"
-    EOS
+    BASH
     pkgshare.install "examples"
   end
 
   test do
-    (testpath/"hellope.odin").write <<~EOS
+    (testpath/"hellope.odin").write <<~ODIN
       package main
 
       import "core:fmt"
@@ -122,11 +129,11 @@ class Odin < Formula
       main :: proc() {
         fmt.println("Hellope!");
       }
-    EOS
+    ODIN
     system bin/"odin", "build", "hellope.odin", "-file"
     assert_equal "Hellope!\n", shell_output("./hellope")
 
-    (testpath/"miniaudio.odin").write <<~EOS
+    (testpath/"miniaudio.odin").write <<~ODIN
       package main
 
       import "core:fmt"
@@ -137,10 +144,10 @@ class Odin < Formula
         assert(len(ver) > 0)
         fmt.println(ver)
       }
-    EOS
+    ODIN
     system bin/"odin", "run", "miniaudio.odin", "-file"
 
-    (testpath/"raylib.odin").write <<~EOS
+    (testpath/"raylib.odin").write <<~ODIN
       package main
 
       import rl "vendor:raylib"
@@ -153,7 +160,7 @@ class Odin < Formula
         num := rl.GetRandomValue(42, 1337)
         assert(42 <= num && num <= 1337)
       }
-    EOS
+    ODIN
     system bin/"odin", "run", "raylib.odin", "-file"
 
     if OS.mac?
@@ -161,7 +168,7 @@ class Odin < Formula
         "-define:RAYLIB_SHARED=true", "-define:RAYGUI_SHARED=true"
     end
 
-    (testpath/"glfw.odin").write <<~EOS
+    (testpath/"glfw.odin").write <<~ODIN
       package main
 
       import "core:fmt"
@@ -170,7 +177,7 @@ class Odin < Formula
       main :: proc() {
         fmt.println(glfw.GetVersion())
       }
-    EOS
+    ODIN
     ENV.prepend_path "LD_LIBRARY_PATH", Formula["glfw"].lib if OS.linux?
     system bin/"odin", "run", "glfw.odin", "-file", "-define:GLFW_SHARED=true",
       "-extra-linker-flags:\"-L#{Formula["glfw"].lib}\""

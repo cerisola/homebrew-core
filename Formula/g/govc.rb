@@ -1,9 +1,10 @@
 class Govc < Formula
   desc "Command-line tool for VMware vSphere"
-  homepage "https://github.com/vmware/govmomi/tree/master/govc"
-  url "https://github.com/vmware/govmomi/archive/refs/tags/v0.45.1.tar.gz"
-  sha256 "37077b5534f3ade75bc766a492d2c24901a0fd65cde6208d1a5e7b3cc6c02088"
+  homepage "https://github.com/vmware/govmomi/tree/main/govc"
+  url "https://github.com/vmware/govmomi/archive/refs/tags/v0.50.0.tar.gz"
+  sha256 "a7ac42eaf4d17ac200c41c9339c75ccde1d3c5f0a2612717d8aa9fb546e8f123"
   license "Apache-2.0"
+  head "https://github.com/vmware/govmomi.git", branch: "main"
 
   # Upstream appears to use GitHub releases to indicate that a version is
   # released (and some tagged versions don't end up as a release), so it's
@@ -14,21 +15,30 @@ class Govc < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ad3323262af1414df5d47be771ea57744fbf92f8c89f45ab59854e0d813ea4dd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b3bec9cfc5f56514729de68d69e69d24ce82edb042cb94cd3af97f87e0c0df4a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4108244f2de644e31186216b9c6740d33d1175c7fac9210b1e0f56992130b0c7"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f85d621d7314b711ce4705e4e2c73fbe8aff31459c144a094dd78e31964aa841"
-    sha256 cellar: :any_skip_relocation, ventura:       "edc2ea61c9b5c91f5eb2173e3a3200dadfbbfd4a9cc2b89cb404a1f6a6d21ea5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7a4062a1ac122ac843843313b651636ab81f4397bc513c55e7af1ce7ff3b65f9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "48372b131833283b67c2992acf00036af294053c74f21c75619916704bcb8496"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "48372b131833283b67c2992acf00036af294053c74f21c75619916704bcb8496"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "48372b131833283b67c2992acf00036af294053c74f21c75619916704bcb8496"
+    sha256 cellar: :any_skip_relocation, sonoma:        "492793680ecbd7d26540ee17c43951840775e6254f456c3bc44cb723e82bbfe1"
+    sha256 cellar: :any_skip_relocation, ventura:       "492793680ecbd7d26540ee17c43951840775e6254f456c3bc44cb723e82bbfe1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9cf0242bbc0c407679c85187b1c0c1ada1a2a5a4ffb55976a1f89180f6c46d06"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-o", "#{bin}/#{name}", "./#{name}"
+    ldflags = %W[
+      -s -w
+      -X github.com/vmware/govmomi/cli/flags.BuildVersion=#{version}
+      -X github.com/vmware/govmomi/cli/flags.BuildCommit=#{tap.user}
+      -X github.com/vmware/govmomi/cli/flags.BuildDate=#{time.iso8601}
+    ]
+    cd "govc" do
+      system "go", "build", *std_go_args(ldflags:)
+    end
   end
 
   test do
-    assert_match "GOVC_URL=foo", shell_output("#{bin}/#{name} env -u=foo")
+    assert_match version.to_s, shell_output("#{bin}/govc version")
+    assert_match "GOVC_URL=foo", shell_output("#{bin}/govc env -u=foo")
   end
 end

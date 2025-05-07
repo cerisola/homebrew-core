@@ -24,12 +24,12 @@ class Up < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args, "-ldflags", "-s -w", "up.go"
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "up.go"
   end
 
   test do
     assert_match "error", shell_output("#{bin}/up --debug 2>&1", 1)
-    assert_predicate testpath/"up.debug", :exist?, "up.debug not found"
+    assert_path_exists testpath/"up.debug", "up.debug not found"
     assert_includes File.read(testpath/"up.debug"), "checking $SHELL"
   end
 end

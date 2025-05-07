@@ -1,10 +1,9 @@
 class AmplMp < Formula
   desc "Open-source library for mathematical programming"
-  homepage "https://www.ampl.com/"
-  url "https://github.com/ampl/mp/archive/refs/tags/3.1.0.tar.gz"
-  sha256 "587c1a88f4c8f57bef95b58a8586956145417c8039f59b1758365ccc5a309ae9"
+  homepage "https://ampl.com/"
+  url "https://github.com/ampl/mp/archive/refs/tags/v4.0.3.tar.gz"
+  sha256 "229c2e82110a8a1c1a845b14e5faa960785c07e2df673bd366f755aca431c1a9"
   license "MIT"
-  revision 3
 
   livecheck do
     url :stable
@@ -12,60 +11,44 @@ class AmplMp < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "d02c9a51954b17ab0a6caa31093daa7be212239b957d2224b773aaaa19b89c59"
-    sha256 cellar: :any,                 arm64_sonoma:  "02f9efaecf470dffc6bff5b71530d0245b342f0e3805f73a5741b15a175e348a"
-    sha256 cellar: :any,                 arm64_ventura: "cf8589ed55bdfa5612fe9f4efc698eed1000e332446900798b1d4ebcd9f4e77e"
-    sha256 cellar: :any,                 sonoma:        "fdf52601bd4c9990a80d1a14600d7c8649f2597bf4af38c966f9f806835eff44"
-    sha256 cellar: :any,                 ventura:       "48756d110b0bac36eec0f33e181ad12f68632cb3087ccebb8451ef1d31798294"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "14117080e712ec6bcfd79084440b9264783a4567b9f31368bf8fa7109d718f58"
+    sha256 cellar: :any,                 arm64_sequoia: "72d3f332e77de2e5b258bf56fdaec683156df0ea50bd69183472ecd3406b2f8e"
+    sha256 cellar: :any,                 arm64_sonoma:  "2a002c99e2dd2fc455f9f020441173b578c990a6c2ed1cddb5ad6ba66e06c9aa"
+    sha256 cellar: :any,                 arm64_ventura: "ba31187ed3d38c63fa5ce3147a1585da4dfba58c3ffc963e96b9b62bec3a51eb"
+    sha256 cellar: :any,                 sonoma:        "688d982bcba62f0093d30a4a13a687bb82d2af614be4c13a38e9c5b30b9e01bd"
+    sha256 cellar: :any,                 ventura:       "d3b8e2cb8821b8c3d707b873397ebdc414113380feb8d0f3c96009234a8c9234"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "93c41c2792707a2fcc66dda70e71dfab73c2e719360b44b54dc2fe5930b4b8b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1589822e026ea8029f3b8d187c37979188a056aef87dde9c30f0414a0738e436"
   end
 
   depends_on "cmake" => :build
 
-  resource "miniampl" do
-    url "https://github.com/dpo/miniampl/archive/refs/tags/v1.0.tar.gz"
-    sha256 "b836dbf1208426f4bd93d6d79d632c6f5619054279ac33453825e036a915c675"
-  end
-
-  # Removes Google Benchmark - as already done so upstream
-  # All it did was conflict with the google-benchmark formula
-  patch do
-    url "https://github.com/ampl/mp/commit/96e332bb8cb7ba925e3ac947d6df515496027eed.patch?full_index=1"
-    sha256 "1a4ef4cd1f4e8b959c20518f8f00994ef577e74e05824b2d1b241b1c3c1f84eb"
-  end
-
-  # Install missing header files, remove in > 3.1.0
-  # https://github.com/ampl/mp/issues/110
-  patch do
-    url "https://github.com/ampl/mp/commit/8183be3e486d38d281e0c5a02a1ea4239695035e.patch?full_index=1"
-    sha256 "6b37201f1d0d6dba591e7e1b81fb16d2694d118605c92c422dcdaaedb463c367"
-  end
-
-  # Backport fmt header update. Remove in the next release
-  # https://github.com/ampl/mp/issues/108
-  patch do
-    url "https://github.com/ampl/mp/commit/1f39801af085656e4bf72250356a3a70d5d98e73.patch?full_index=1"
-    sha256 "b0e0185f24caba54cb38b65a638ebda6eb4db3e8c74d71ca79f072b8337e8e2c"
-  end
-
   def install
-    system "cmake", "-S", ".", "-B", "build",
-                    "-DAMPL_LIBRARY_DIR=#{libexec}/bin",
-                    "-DBUILD_SHARED_LIBS=ON",
-                    "-DCMAKE_INSTALL_RPATH=#{rpath};#{rpath(source: libexec/"bin")}",
-                    *std_cmake_args
+    args = %W[
+      -DAMPL_LIBRARY_DIR=#{libexec}/bin
+      -DBUILD_SHARED_LIBS=ON
+      -DBUILD_TESTS=OFF
+      -DCMAKE_INSTALL_RPATH=#{rpath};#{rpath(source: libexec/"bin")}
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    resource("miniampl").stage do
-      testpath.install "src/miniampl.c", Dir["examples/wb.*"]
-    end
+    (testpath/"test.c").write <<~C
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include "mp/ampls-c-api.h"
 
-    system ENV.cc, "miniampl.c", "-std=c99", "-I#{include}/asl", "-L#{lib}", "-lasl", "-lmp"
-    output = shell_output("./a.out wb showname=1 showgrad=1")
-    assert_match "Objective name: objective", output
+      int main() {
+          AMPLS_MP_Solver* solver = (AMPLS_MP_Solver*)malloc(sizeof(AMPLS_MP_Solver));
+          free(solver);
+          return 0;
+      }
+    C
+
+    system ENV.cc, "test.c", "-I#{include}/mp", "-L#{lib}", "-lmp", "-o", "test"
+    system "./test"
   end
 end

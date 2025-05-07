@@ -1,21 +1,22 @@
 class Lmod < Formula
   desc "Lua-based environment modules system to modify PATH variable"
   homepage "https://lmod.readthedocs.io"
-  url "https://github.com/TACC/Lmod/archive/refs/tags/8.7.53.tar.gz"
-  sha256 "5e7ed1a5acfee76abfd96f2ffa3af69d49052b9e88a04ab18d87d18a538c4834"
+  url "https://github.com/TACC/Lmod/archive/refs/tags/8.7.60.tar.gz"
+  sha256 "340bdafedc0d5cdad812ca7372667df95078fd068a09e4fdff23a3fb8a560572"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a7f89cc87742f2d1196bc0fad3dacc43be40d21136723189cbf23ece89f3a24d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a56018bcbee0602a805a6dc109b157ed8768dfd15d846d3102a29095c8e84e03"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "20d6dd789dd3ba4c8f0f24d170340c4348a524881caf0f5802dd128497db5b18"
-    sha256 cellar: :any_skip_relocation, sonoma:        "80620eaa145726e23265a8b7a6d77180f6b4235f5fbd0661aeeccaa32233e668"
-    sha256 cellar: :any_skip_relocation, ventura:       "6042f267182adca68fe69f98ee9e6bb56968912d815b480b95bae74b09a54abd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "343f599971e406ede650a5196da07f20c1b1f09ee597ab7a2ca9a89a64f31e56"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "056e1f1a964646ac14d49ea7463066a37c5ea71873a836c5802101f9a06e9bc2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0e69aa68c80897631eacfd5ed83c07182b82975a4d0fde7100755a4aa10c7938"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "20d42e35cc836b2204c75160076b8bfc0c0cfdc5fbb7293163ffd67e0597930a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "cb736a1c3863b7aa0246026ae92dacb5ec939a834ae7eaca361552db00c571ad"
+    sha256 cellar: :any_skip_relocation, ventura:       "59362099789a5b6df054b487fd8596dbb67b005373e5a335142352c28a53aff1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "571adc367cb5532a142d29f691cbdc2d786493830916326b7f25270cb07f2d94"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d3908106cdce8f914f9ba1add655afa9fc909812a047c3cfa3b83d72857412b"
   end
 
   depends_on "luarocks" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "lua"
 
   uses_from_macos "bc" => :build
@@ -26,14 +27,19 @@ class Lmod < Formula
     depends_on "gnu-sed" => :build
   end
 
+  resource "lua-term" do
+    url "https://github.com/hoelzro/lua-term/archive/refs/tags/0.8.tar.gz"
+    sha256 "0cb270be22dfc262beec2f4ffc66b878ccaf236f537d693fa36c8f578fc51aa6"
+  end
+
   resource "luafilesystem" do
     url "https://github.com/keplerproject/luafilesystem/archive/refs/tags/v1_8_0.tar.gz"
     sha256 "16d17c788b8093f2047325343f5e9b74cccb1ea96001e45914a58bbae8932495"
   end
 
   resource "luaposix" do
-    url "https://github.com/luaposix/luaposix/archive/refs/tags/v36.2.1.tar.gz"
-    sha256 "44e5087cd3c47058f9934b90c0017e4cf870b71619f99707dd433074622debb1"
+    url "https://github.com/luaposix/luaposix/archive/refs/tags/v36.3.tar.gz"
+    sha256 "82cd9a96c41a4a3205c050206f0564ff4456f773a8f9ffc9235ff8f1907ca5e6"
   end
 
   def install
@@ -50,10 +56,20 @@ class Lmod < Formula
       end
     end
 
-    # We install `tcl-tk` headers in a subdirectory to avoid conflicts with other formulae.
-    ENV.append_to_cflags "-I#{Formula["tcl-tk"].opt_include}/tcl-tk" if OS.linux?
+    # pkgconf cannot find tcl-tk on Linux correctly, so we manually set the include and libs
+    if OS.linux?
+      tcltk_version = Formula["tcl-tk"].version.major_minor
+      ENV["TCL_INCLUDE"] = "-I#{Formula["tcl-tk"].opt_include}/tcl-tk"
+      ENV["TCL_LIBS"] = "-L#{Formula["tcl-tk"].opt_lib} -ltcl#{tcltk_version} -ltclstub"
+      # Homebrew installed tcl-tk library has major_minor version suffix
+      inreplace "configure", "'' tcl tcl8.8 tcl8.7 tcl8.6 tcl8.5", "'' tcl#{tcltk_version}"
+    end
+
     system "./configure", "--with-siteControlPrefix=yes", "--prefix=#{prefix}"
     system "make", "install"
+
+    # Remove man page which conflicts with `modules` formula
+    rm man1/"module.1"
   end
 
   def caveats
@@ -71,11 +87,11 @@ class Lmod < Formula
   test do
     sh_init = "#{prefix}/init/sh"
 
-    (testpath/"lmodtest.sh").write <<~EOS
+    (testpath/"lmodtest.sh").write <<~SHELL
       #!/bin/sh
       . #{sh_init}
       module list
-    EOS
+    SHELL
 
     assert_match "No modules loaded", shell_output("sh #{testpath}/lmodtest.sh 2>&1")
 

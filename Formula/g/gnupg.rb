@@ -1,28 +1,28 @@
 class Gnupg < Formula
   desc "GNU Pretty Good Privacy (PGP) package"
   homepage "https://gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.5.tar.bz2"
-  sha256 "f68f7d75d06cb1635c336d34d844af97436c3f64ea14bcb7c869782f96f44277"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.7.tar.bz2"
+  sha256 "7b24706e4da7e0e3b06ca068231027401f238102c41c909631349dcc3b85eb46"
   license "GPL-3.0-or-later"
-  revision 1
 
+  # GnuPG appears to indicate stable releases with an even-numbered minor
+  # (https://gnupg.org/download/#end-of-life).
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gnupg/"
-    regex(/href=.*?gnupg[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?gnupg[._-]v?(\d+\.\d*[02468](?:\.\d+)*)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sequoia:  "e83617dfd24a26f898c858886429a9cc22cdff98b65212821af9d6140113c99f"
-    sha256 arm64_sonoma:   "bcb60ed535c0e2e5ac97bc49977246d94455d5b6a74ed9366377249f78e782fb"
-    sha256 arm64_ventura:  "fc5d5508f278f822b57e1e05fc4a1cee1116fb3f6521fbc523669e6862d104fe"
-    sha256 arm64_monterey: "ada53b5a636355f354ff11584e2f488bf167ef7ba1d3e20ce742ee286b47cc6c"
-    sha256 sonoma:         "45ad3a0750e638402ecd6135219ba4592b847d2c5e5a27c3e05657d3433bf5ec"
-    sha256 ventura:        "acb0a737a9f5c10a50348b3aaa0f247ea578c7b84d86ccdaafb22c818d7b7426"
-    sha256 monterey:       "23a18b638018bb3ee5339dbb00d16b4ef58047a351903ebeef72335e9565e4b8"
-    sha256 x86_64_linux:   "9a7d57f7e335fd7b506848fa15ee1be52d8940b8c5dfc0c6a3c8d9f406fbeb93"
+    sha256 arm64_sequoia: "47b40c87309680baa445bb8b9bb71c94f7c9020789a6ae5f45980febeb6d1e42"
+    sha256 arm64_sonoma:  "f2778e812043b14964316eaaa17bc8fde02331fea2746af82bd5694d93456710"
+    sha256 arm64_ventura: "7f2f1d42257dc87ee46240ae4ea8eff46455245fdf832b905d52d8364e08da2c"
+    sha256 sonoma:        "989a2348d01b160110ab4ba3bedda4e194bf02122d31e6029fc536baba261a37"
+    sha256 ventura:       "1b8bfec784f857856a2471ed8702259987fab15b101f9d948c81467b0fd5bc91"
+    sha256 arm64_linux:   "034b0c4e1ae9be164ee043455e873e37be5ff47d0d36b5289de8962095df9039"
+    sha256 x86_64_linux:  "a091d36b710f7fdd8db5cb20dc4af2f20254b04f3d17fd2df2155701e0da9d27"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gnutls"
   depends_on "libassuan"
   depends_on "libgcrypt"
@@ -42,16 +42,22 @@ class Gnupg < Formula
     depends_on "gettext"
   end
 
+  conflicts_with cask: "gpg-suite"
+  conflicts_with cask: "gpg-suite-no-mail"
+  conflicts_with cask: "gpg-suite-pinentry"
+  conflicts_with cask: "gpg-suite@nightly"
+
   def install
     libusb = Formula["libusb"]
     ENV.append "CPPFLAGS", "-I#{libusb.opt_include}/libusb-#{libusb.version.major_minor}"
 
     mkdir "build" do
-      system "../configure", *std_configure_args,
-                             "--disable-silent-rules",
-                             "--sysconfdir=#{etc}",
+      system "../configure", "--disable-silent-rules",
                              "--enable-all-tests",
-                             "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry"
+                             "--sysconfdir=#{etc}",
+                             "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
+                             "--with-readline=#{Formula["readline"].opt_prefix}",
+                             *std_configure_args
       system "make"
       system "make", "check"
       system "make", "install"
@@ -61,9 +67,9 @@ class Gnupg < Formula
     # https://dev.gnupg.org/T5415#145864
     if OS.mac?
       # write to buildpath then install to ensure existing files are not clobbered
-      (buildpath/"scdaemon.conf").write <<~EOS
+      (buildpath/"scdaemon.conf").write <<~CONF
         disable-ccid
-      EOS
+      CONF
       pkgetc.install "scdaemon.conf"
     end
   end
@@ -74,7 +80,7 @@ class Gnupg < Formula
   end
 
   test do
-    (testpath/"batch.gpg").write <<~EOS
+    (testpath/"batch.gpg").write <<~GPG
       Key-Type: RSA
       Key-Length: 2048
       Subkey-Type: RSA
@@ -84,7 +90,8 @@ class Gnupg < Formula
       Expire-Date: 1d
       %no-protection
       %commit
-    EOS
+    GPG
+
     begin
       system bin/"gpg", "--batch", "--gen-key", "batch.gpg"
       (testpath/"test.txt").write "Hello World!"

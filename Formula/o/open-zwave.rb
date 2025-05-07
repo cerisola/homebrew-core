@@ -20,7 +20,7 @@ class OpenZwave < Formula
   disable! date: "2024-08-24", because: :unmaintained
 
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   def install
     ENV["BUILD"] = "release"
@@ -36,7 +36,7 @@ class OpenZwave < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <functional>
       #include <openzwave/Manager.h>
@@ -44,7 +44,7 @@ class OpenZwave < Formula
       {
         return OpenZWave::Manager::getVersionAsString().empty();
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/openzwave",
                     "-L#{lib}", "-lopenzwave", "-lpthread", "-o", "test"
     system "./test"

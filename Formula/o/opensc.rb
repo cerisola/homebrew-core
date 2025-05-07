@@ -1,8 +1,8 @@
 class Opensc < Formula
   desc "Tools and libraries for smart cards"
   homepage "https://github.com/OpenSC/OpenSC/wiki"
-  url "https://github.com/OpenSC/OpenSC/releases/download/0.25.1/opensc-0.25.1.tar.gz"
-  sha256 "23cbaae8bd7c8eb589b68c0a961dfb0d02007bea3165a3fc5efe2621d549b37b"
+  url "https://github.com/OpenSC/OpenSC/releases/download/0.26.1/opensc-0.26.1.tar.gz"
+  sha256 "f16291a031d86e570394762e9f35eaf2fcbc2337a49910f3feae42d54e1688cb"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,13 +11,13 @@ class Opensc < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "fa9c58cdbe0076a73a0494b4273b094fc82ed3ccd59b981ed9349ba2e7caf2ad"
-    sha256 arm64_sonoma:  "617a60aa9c9b1c74eed3039bdb53b80e840dfb438961e9beddd2a35a1b2d4f18"
-    sha256 arm64_ventura: "796458b80c3b0db6ebd476e65bfce1390f17071af732eb92aec17bf0aeb0b9b8"
-    sha256 sonoma:        "a0557ac53fc3ec946b83608b41f34b409d9472f4819fa1b44c75f11c3e12e2e1"
-    sha256 ventura:       "79641f78c3042a850cb0b2a63d329f26a15e21c64cb2094bcd5422263511606d"
-    sha256 x86_64_linux:  "384bbb98200ae2b603cee378ce7723289fb4ac9d5ff62aca198392e1230dd8b2"
+    sha256 arm64_sequoia: "0ae0073b4ba388df854a2c1bb2a31ad83e4ff800eb392d25779403defdff1ab2"
+    sha256 arm64_sonoma:  "4e7694a574e648659e39287e6f79dd5b78c48f284cc186a9a5877a3dfbd0972f"
+    sha256 arm64_ventura: "b6920b3fcde75811501cea04279e70647e5abd1a437783a3cfce8fb56082e6c7"
+    sha256 sonoma:        "f6bdfbbcd8b3653f27d220af9f28794857e750ce919efded28f635869abc379c"
+    sha256 ventura:       "3b59686f5df7f25f6b7b03ca4945921f4fca3831c8ae433563ee80647b545ff9"
+    sha256 arm64_linux:   "d8a00ba58da4990a87c84d051092c088db6f904571f6b4e1db962ac9f5bb4e83"
+    sha256 x86_64_linux:  "d4c613660abb6981348a4b68e8108ec48dbd081b3651c5b847a32cfd03ad073e"
   end
 
   head do
@@ -29,7 +29,7 @@ class Opensc < Formula
   end
 
   depends_on "docbook-xsl" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
 
   uses_from_macos "libxslt" => :build # for xsltproc

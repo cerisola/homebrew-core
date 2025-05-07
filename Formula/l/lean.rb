@@ -6,19 +6,6 @@ class Lean < Formula
   license "Apache-2.0"
   head "https://github.com/leanprover-community/lean.git", branch: "master"
 
-  livecheck do
-    url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
-    strategy :git do |tags, regex|
-      tags.map do |tag|
-        version = tag[regex, 1]
-        next if version == "9.9.9" # Omit a problematic version tag
-
-        version
-      end
-    end
-  end
-
   bottle do
     rebuild 1
     sha256 cellar: :any,                 arm64_sonoma:   "a5568b994d186b0a5e50a10dcfaa7e7ada0106308a8f80412eea4e71662729cf"
@@ -44,8 +31,6 @@ class Lean < Formula
   depends_on macos: :mojave
 
   conflicts_with "elan-init", because: "`lean` and `elan-init` install the same binaries"
-
-  fails_with gcc: "5"
 
   def install
     args = std_cmake_args + %w[

@@ -1,6 +1,7 @@
 class GccAT11 < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
+  # TODO: Remove maximum_macos if Xcode 16 support is added to https://github.com/iains/gcc-11-branch
   url "https://ftp.gnu.org/gnu/gcc/gcc-11.5.0/gcc-11.5.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-11.5.0/gcc-11.5.0.tar.xz"
   sha256 "a6e21868ead545cf87f0c01f84276e4b5281d672098591c1c896241f09363478"
@@ -18,6 +19,7 @@ class GccAT11 < Formula
     sha256                               sonoma:         "9c0f839a23e3b7f12c72f3833823ca9cbd9d2b0e3a744e1d436daeeffc77cc82"
     sha256                               ventura:        "ceae737d0fe4ec0e8fc10356007d09c9250401443b5ccd632ee960a00004cba1"
     sha256                               monterey:       "af5d635ec43e4fc786abafe5f963ea26ac147ac10880d3ab4e2eea49948051cc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "9fa75aed2c4162b36bf22a2cfd19adf582f0e68e7f658bb4d02e07e0ee2d6b06"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c7f02fea0754abb9c33f142cfc8d30bdc16d5d80a27ad2ca72ba562540bb1a44"
   end
 
@@ -25,6 +27,7 @@ class GccAT11 < Formula
   # out of the box on Xcode-only systems due to an incorrect sysroot.
   pour_bottle? only_if: :clt_installed
 
+  depends_on maximum_macos: [:ventura, :build] # Xcode < 16
   depends_on "gmp"
   depends_on "isl"
   depends_on "libmpc"
@@ -103,6 +106,7 @@ class GccAT11 < Formula
       # Change the default directory name for 64-bit libraries to `lib`
       # https://stackoverflow.com/a/54038769
       inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
+      inreplace "gcc/config/aarch64/t-aarch64-linux", "lp64=../lib64", "lp64="
     end
 
     mkdir "build" do
@@ -262,14 +266,14 @@ class GccAT11 < Formula
 
     return unless Hardware::CPU.intel?
 
-    (testpath/"hello_d.d").write <<~EOS
+    (testpath/"hello_d.d").write <<~D
       import std.stdio;
       int main()
       {
         writeln("Hello, world!");
         return 0;
       }
-    EOS
+    D
     system bin/"gdc-#{version.major}", "-o", "hello-d", "hello_d.d"
     assert_equal "Hello, world!\n", shell_output("./hello-d")
   end

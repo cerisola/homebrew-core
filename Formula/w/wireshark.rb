@@ -1,9 +1,9 @@
 class Wireshark < Formula
   desc "Network analyzer and capture tool - without graphical user interface"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-4.4.1.tar.xz"
-  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-4.4.1.tar.xz"
-  sha256 "2b9e96572a7002c3e53b79683cf92f8172217e64c17ecaaf612eb68c2a7556ec"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-4.4.6.tar.xz"
+  mirror "https://1.eu.dl.wireshark.org/src/all-versions/wireshark-4.4.6.tar.xz"
+  sha256 "4fffcee3d18d1daac12f780c2e8da511824dffb3b0fd6446b53ab7516538edcd"
   license "GPL-2.0-or-later"
   head "https://gitlab.com/wireshark/wireshark.git", branch: "master"
 
@@ -15,12 +15,13 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia: "4492a409863cf5e48e787ef610ae85508343193b5aacdb230d0a3e4c522166b0"
-    sha256                               arm64_sonoma:  "027764b3957ac55d50ccdbf2b9d3f11ecff640675bf96eb9ab174484506f20dd"
-    sha256                               arm64_ventura: "8754cbc2945fd85daf9fd3180b52c704a0ab76951d0ebe23c9145467e1522ebd"
-    sha256                               sonoma:        "d460a287851a1a1d9f2bada6e8089fb38c0ef567394794b8290f4187278f952c"
-    sha256                               ventura:       "56c237a15f31fde4a159f224d8d9242ca2d87484a33e4747e4c2e15953734f01"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "97d9a8c25d008aedeaac0de889e7d5a3033cad836f69cca3c73dc5a540a15b16"
+    sha256                               arm64_sequoia: "ce24d43d2ed69bfd9d45f45f2a50457dea8edcc2e9fdafe178c777f6ecd5bff3"
+    sha256                               arm64_sonoma:  "01b3b8ba59c0b4f8551c6b7a07742ef87fd92154b719aca8b6f5d733295e2e15"
+    sha256                               arm64_ventura: "540be115101d05c8eef0972e99809881809a2bdbb1ba2f1d52c015713e79cfc2"
+    sha256                               sonoma:        "16724ac98c2cda34b390a55891e7f97e156e999dd24450fc87f595375de9766d"
+    sha256                               ventura:       "9e8ddf7a57a7029fbe6b1c966ae4b2f8d706cbe77cf9c2cd7d3f2a95f002a5a8"
+    sha256                               arm64_linux:   "22ba53c9cd8c2e86c23954cf070196aad7ca5a28095e678d1dc8ae71b73595ef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "89b145c71e72fb72e9467b0463f71fc041040ed89bdcf9f4f654f43ba68f65da"
   end
 
   depends_on "cmake" => :build
@@ -48,6 +49,8 @@ class Wireshark < Formula
   on_macos do
     depends_on "libgpg-error"
   end
+
+  conflicts_with cask: "wireshark"
 
   def install
     args = %W[
@@ -83,7 +86,7 @@ class Wireshark < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <stdio.h>
       #include <ws_version.h>
 
@@ -92,7 +95,7 @@ class Wireshark < Formula
                WIRESHARK_VERSION_MICRO);
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}/wireshark", "-o", "test"
     output = shell_output("./test")
     assert_equal version.to_s, output

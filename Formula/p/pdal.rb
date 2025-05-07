@@ -1,32 +1,28 @@
 class Pdal < Formula
   desc "Point data abstraction library"
   homepage "https://www.pdal.io/"
-  url "https://github.com/PDAL/PDAL/releases/download/2.8.1/PDAL-2.8.1-src.tar.bz2"
-  sha256 "0e8d7deabe721f806b275dda6cf5630a8e43dc7210299b57c91f46fadcc34b31"
+  url "https://github.com/PDAL/PDAL/releases/download/2.8.4/PDAL-2.8.4-src.tar.bz2"
+  sha256 "c27dc79af0b26f9cb3209b694703e9d576f1b0c8c05b36206fd5e310494e75b5"
   license "BSD-3-Clause"
   head "https://github.com/PDAL/PDAL.git", branch: "master"
 
-  # The upstream GitHub repository sometimes creates tags that only include a
-  # major/minor version (`1.2`) and then uses major/minor/patch (`1.2.0`) for
-  # the release tarball. This inconsistency can be a problem if we need to
-  # substitute the version from livecheck in the `stable` URL, so we check the
-  # first-party download page, which links to the tarballs on GitHub.
   livecheck do
-    url "https://pdal.io/en/latest/download.html"
-    regex(/href=.*?PDAL[._-]v?(\d+(?:\.\d+)+)[._-]src\.t/i)
+    url :stable
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ce5799eddec979fe2765b90fbd99a1136a78fe6f10333bdd480e9c07e4862af9"
-    sha256 cellar: :any,                 arm64_sonoma:  "04aa160e3d11fac4908f83ac146570d911ed9f9bbe2191101cb325df009ca3bd"
-    sha256 cellar: :any,                 arm64_ventura: "d0cab2aa3ed05dcc5094685680c4f5ce313bcd3edf9be2f0e36e07530127f7c1"
-    sha256 cellar: :any,                 sonoma:        "5c1281aeb4f1359ce3b9bb0f4badc759450fec87bb57616d3c931f0273769598"
-    sha256 cellar: :any,                 ventura:       "d93613d6a2b99a9dc10755f04527fda45c49060f55537141d8883992044316c1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1e256bb9ef10a9c945863e420130e6d0dd36e7e36973946e69034de723f49585"
+    sha256 cellar: :any,                 arm64_sequoia: "dd95047f6de4b38a442111118ce2919521f8f2a16e5ab10b852ba2393e8a7492"
+    sha256 cellar: :any,                 arm64_sonoma:  "8c728e287001a7ac379b008d61ab69a6cc386c400c76c1d4213081554a80928f"
+    sha256 cellar: :any,                 arm64_ventura: "b0c76a50476b61a65383d23a5eab04d0ef440dd13ec21897f9c4fa98a91a72e6"
+    sha256 cellar: :any,                 sonoma:        "211bab94d8693306e418561c117a4c782bd874d458d2de73b29803216f029207"
+    sha256 cellar: :any,                 ventura:       "e474576399ed86e49ec9eed7cb8e8f565fa1d18b678e75fcc38bae8992640c6b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9bb4aa5c9df6dec9ffcb65674eb1d402ed72802754c1be2f892072f5ee9ff238"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d4d4645ee0ea9b43b2694f9b6c8ea89481fa1bcaa62cc6269209fc04825bf748"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gdal"
   depends_on "hdf5"
   depends_on "laszip"
@@ -45,18 +41,7 @@ class Pdal < Formula
     depends_on "libunwind"
   end
 
-  fails_with gcc: "5" # gdal is compiled with GCC
-
   def install
-    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
-    # libunwind due to it being present in a library search path.
-    if DevelopmentTools.clang_build_version >= 1500
-      recursive_dependencies
-        .select { |d| d.name.match?(/^llvm(@\d+)?$/) }
-        .map { |llvm_dep| llvm_dep.to_formula.opt_lib }
-        .each { |llvm_lib| ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm_lib }
-    end
-
     args = %w[
       -DWITH_LASZIP=TRUE
       -DBUILD_PLUGIN_GREYHOUND=ON
@@ -73,7 +58,7 @@ class Pdal < Formula
         -DLIBUNWIND_LIBRARY=#{libunwind.opt_lib/shared_library("libunwind")}
       ]
     end
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 

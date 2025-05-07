@@ -15,6 +15,7 @@ class Aerleon < Formula
     sha256 cellar: :any,                 arm64_ventura: "6ab075ded353df9f5208e34509754c9859d5da633be8a3f81874394dfd690727"
     sha256 cellar: :any,                 sonoma:        "028b7db26b68aa61e4ec40bb436f57ee24f7b12e22d3ebd73dd36797052e2f48"
     sha256 cellar: :any,                 ventura:       "05c7771b35e78f9e4d9bfd64259ac0436499e8a625f7fafc17f57aa135139304"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "614d39a66e33e98f5cbf88981d40e3eb81530b39af63c15f5875c7aeafc7272d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "36eea78c33c7e127e0111415873ff23e282a1c25218a3ed4522901f67017de37"
   end
 
@@ -48,7 +49,7 @@ class Aerleon < Formula
   end
 
   test do
-    (testpath/"def/definitions.yaml").write <<~EOS
+    (testpath/"def/definitions.yaml").write <<~YAML
       networks:
         RFC1918:
           values:
@@ -86,9 +87,9 @@ class Aerleon < Formula
             protocol: tcp
           - port: 1024-65535
             protocol: udp
-    EOS
+    YAML
 
-    (testpath/"policies/pol/example.pol.yaml").write <<~EOS
+    (testpath/"policies/pol/example.pol.yaml").write <<~YAML
       filters:
       - header:
           comment: Example inbound
@@ -104,7 +105,7 @@ class Aerleon < Formula
           - name: default-deny
             comment: Deny anything else.
             action: deny#{"  "}
-    EOS
+    YAML
 
     assert_match "writing file: example.pol.acl", shell_output("#{bin}/aclgen 2>&1")
     assert_path_exists "example.pol.acl"

@@ -15,22 +15,21 @@ class XcbUtil < Formula
     sha256 cellar: :any,                 ventura:        "d075d423178430bc500bf16be08e20b20a06ae6a24ba581cd105a3b078af6d18"
     sha256 cellar: :any,                 monterey:       "57035a7c42a40246ea3d5ac12906e2832a4ea0aded7000b977a9d6b581e8b5b0"
     sha256 cellar: :any,                 big_sur:        "f42650c534ec07d5c17e612ae9f738c46ddf9fba07623eacbf28865a93eb65df"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e9f845b0c76c96c28ae201d82574694cd56ce41f3b4244a4ca6cb369b5c43d06"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2808f955e6ac8cb3d1262e4a01b589c5148b125eec6c57a6ccf02902cf01b182"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libxcb"
 
   def install
     args = %W[
-      --prefix=#{prefix}
       --sysconfdir=#{etc}
       --localstatedir=#{var}
-      --disable-dependency-tracking
       --disable-silent-rules
     ]
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
   end

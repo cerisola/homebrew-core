@@ -27,7 +27,7 @@ class Terrahash < Formula
   end
 
   test do
-    (testpath/"main.tf").write <<~EOS
+    (testpath/"main.tf").write <<~HCL
       module "example" {
         source = "terraform-aws-modules/ec2-instance/aws"
         version = "~> 5"
@@ -36,14 +36,14 @@ class Terrahash < Formula
         instance_type = "t2.micro"
         name          = "example"
       }
-    EOS
+    HCL
 
     system "tofu", "init"
-    assert_predicate testpath/".terraform.lock.hcl", :exist?
+    assert_path_exists testpath/".terraform.lock.hcl"
 
     output = shell_output("#{bin}/terrahash init -s #{testpath}")
     assert_match "Summary: 1 modules added to mod lock file", output
-    assert_predicate testpath/".terraform.module.lock.hcl", :exist?
+    assert_path_exists testpath/".terraform.module.lock.hcl"
 
     assert_match version.to_s, shell_output("#{bin}/terrahash version")
   end

@@ -1,8 +1,8 @@
 class Librsvg < Formula
   desc "Library to render SVG files using Cairo"
   homepage "https://wiki.gnome.org/Projects/LibRsvg"
-  url "https://download.gnome.org/sources/librsvg/2.58/librsvg-2.58.4.tar.xz"
-  sha256 "296e3760d2347d0767c3e291dec962ab36baecd25c4898c6e8150a731f967c7b"
+  url "https://download.gnome.org/sources/librsvg/2.60/librsvg-2.60.0.tar.xz"
+  sha256 "0b6ffccdf6e70afc9876882f5d2ce9ffcf2c713cbaaf1ad90170daa752e1eec3"
   license "LGPL-2.1-or-later"
 
   # librsvg doesn't use GNOME's "even-numbered minor is stable" version scheme.
@@ -14,18 +14,20 @@ class Librsvg < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia:  "62c2bd6cd94b22a8231b423b1a1fc9084c8496e2ffd08fda39df2a11af3b668f"
-    sha256                               arm64_sonoma:   "12c692788acb39a1b01ab52ec3a9042a590449dc4c1ca3a37f6dfb8de1ade404"
-    sha256                               arm64_ventura:  "42eeef26afba840075b5a42b644a2ee369c280dbd955eff559edad4c5e310edd"
-    sha256                               arm64_monterey: "fcb9205a1cf574f392c5188e85f90f3a96d36d9bd65cbde98b3481ad02c23887"
-    sha256                               sonoma:         "593325eefc9b94aeb1c1b3186add9d4b980e195c617a7e736ee9498b177fae85"
-    sha256                               ventura:        "67f803506a82f16b08461005382dbabfce218ec9dca90f2159fa467e6e5cdaeb"
-    sha256                               monterey:       "eb49065b7846d1f7fa4a1cab3baa0048f689288eb8512e09ea7a5d64fbe47290"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2c71dffd85fd7b3553766305adf685a59fc00b87d3120f0e96b199f079ac0fda"
+    sha256 cellar: :any, arm64_sequoia: "0963c3ac5eab8defa0d871e6f14f376ecb580f87a7369e2d8b6ed1ba5a97b009"
+    sha256 cellar: :any, arm64_sonoma:  "a98fcd2388cb75ba4afe95feb7955b0400c1cacb067101378a33bfe295ebe2da"
+    sha256 cellar: :any, arm64_ventura: "d6603d7add86e0cc825872bf044e7d9dc19693090ee93ef5248825299f7bef01"
+    sha256 cellar: :any, sonoma:        "634f5d94e39ccf7eff754510cd12db72ce3cbc797161227a1f7b8e3a910438df"
+    sha256 cellar: :any, ventura:       "5c3d74c400bf0cfc86010f98dba262c10c39f66f743509a3127b9246cb4e3111"
+    sha256               arm64_linux:   "97199cca04e0499e5084ce8ccf043d3d48a3dde4744b9273d7d9021e393f2b36"
+    sha256               x86_64_linux:  "c3fb7a85f3c84f3c3edd0740dd5c8fd2cc7371cebf1088be130423255eb8514f"
   end
 
+  depends_on "cargo-c" => :build
   depends_on "gobject-introspection" => :build
-  depends_on "pkg-config" => :build
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
+  depends_on "pkgconf" => [:build, :test]
   depends_on "rust" => :build
   depends_on "cairo"
   depends_on "gdk-pixbuf"
@@ -43,26 +45,27 @@ class Librsvg < Formula
   end
 
   def install
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
-      --disable-Bsymbolic
-      --enable-tools=yes
-      --enable-pixbuf-loader=yes
-      --enable-introspection=yes
-    ]
-
-    system "./configure", *args
+    # Set `RPATH` since `cargo-c` doesn't seem to.
+    ENV.append "RUSTFLAGS", "--codegen link-args=-Wl,-rpath,#{lib}" if OS.mac?
 
     # disable updating gdk-pixbuf cache, we will do this manually in post_install
     # https://github.com/Homebrew/homebrew/issues/40833
-    inreplace "gdk-pixbuf-loader/Makefile",
-              "$(GDK_PIXBUF_QUERYLOADERS) > $(DESTDIR)$(gdk_pixbuf_cache_file) ;",
-              ""
+    ENV["DESTDIR"] = "/"
 
-    system "make", "install",
-      "gdk_pixbuf_binarydir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders",
-      "gdk_pixbuf_moduledir=#{lib}/gdk-pixbuf-2.0/2.10.0/loaders"
+    system "meson", "setup", "build", "-Dintrospection=enabled",
+                                      "-Dpixbuf=enabled",
+                                      "-Dpixbuf-loader=enabled",
+                                      *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
+
+    # Workaround until https://gitlab.gnome.org/GNOME/librsvg/-/merge_requests/1049
+    if OS.mac?
+      gdk_pixbuf_moduledir = lib.glob("gdk-pixbuf-*/*/loaders").first
+      gdk_pixbuf_modules = gdk_pixbuf_moduledir.glob("*.dylib")
+      odie "Try removing .so symlink workaround!" if gdk_pixbuf_modules.empty?
+      gdk_pixbuf_moduledir.install_symlink gdk_pixbuf_modules.to_h { |m| [m, m.sub_ext(".so").basename] }
+    end
   end
 
   def post_install
@@ -81,40 +84,7 @@ class Librsvg < Formula
         return 0;
       }
     C
-    cairo = Formula["cairo"]
-    fontconfig = Formula["fontconfig"]
-    freetype = Formula["freetype"]
-    gdk_pixbuf = Formula["gdk-pixbuf"]
-    gettext = Formula["gettext"]
-    glib = Formula["glib"]
-    libpng = Formula["libpng"]
-    pixman = Formula["pixman"]
-    flags = %W[
-      -I#{cairo.opt_include}/cairo
-      -I#{fontconfig.opt_include}
-      -I#{freetype.opt_include}/freetype2
-      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
-      -I#{gettext.opt_include}
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -I#{include}/librsvg-2.0
-      -I#{libpng.opt_include}/libpng16
-      -I#{pixman.opt_include}/pixman-1
-      -D_REENTRANT
-      -L#{cairo.opt_lib}
-      -L#{gdk_pixbuf.opt_lib}
-      -L#{gettext.opt_lib}
-      -L#{glib.opt_lib}
-      -L#{lib}
-      -lcairo
-      -lgdk_pixbuf-2.0
-      -lgio-2.0
-      -lglib-2.0
-      -lgobject-2.0
-      -lm
-      -lrsvg-2
-    ]
-    flags << "-lintl" if OS.mac?
+    flags = shell_output("pkgconf --cflags --libs librsvg-2.0").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

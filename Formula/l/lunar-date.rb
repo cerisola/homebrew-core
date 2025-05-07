@@ -16,13 +16,18 @@ class LunarDate < Formula
     sha256 monterey:       "fab352d50cf04dbb5f4048a7b2af595070bc0b45d0cfd0b5b9a23f39a875e523"
     sha256 big_sur:        "70f91a1f90710f781fdb99875b6e35d7b54f6be0b9e084ebab3ad6bd5b3a41a9"
     sha256 catalina:       "d1b8c963d4e48947c6d10aa04e18bd3775d117da648193c04f8207e77a606c62"
+    sha256 arm64_linux:    "e80173e239b46806182a4ab44bc0d8996cf056e1bc28e0a582eace143cfc5c12"
     sha256 x86_64_linux:   "0fd076e291a5801cc977b8adc505e9cc279302bbedd4a62ba69166698c2166a6"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "glib"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   def install
     system "meson", "setup", "build", *std_meson_args
@@ -37,9 +42,8 @@ class LunarDate < Formula
   end
 
   test do
-    pkg_config_flags = Utils.safe_popen_read("pkg-config", "--cflags", "--libs", "lunar-date-3.0",
-"glib-2.0").chomp.split
-    system ENV.cc, pkgshare/"tests/testing.c", *pkg_config_flags,
+    pkgconf_flags = Utils.safe_popen_read("pkgconf", "--cflags", "--libs", "lunar-date-3.0", "glib-2.0").chomp.split
+    system ENV.cc, pkgshare/"tests/testing.c", *pkgconf_flags,
                    "-I#{include}/lunar-date-3.0/lunar-date",
                    "-L#{lib}", "-o", "testing"
     assert_match "End of date tests", shell_output("#{testpath}/testing")

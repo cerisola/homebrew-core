@@ -1,15 +1,10 @@
 class Libprelude < Formula
   desc "Universal Security Information & Event Management (SIEM) system"
   homepage "https://www.prelude-siem.org/"
-  url "https://www.prelude-siem.org/attachments/download/1395/libprelude-5.2.0.tar.gz"
+  url "https://deb.debian.org/debian/pool/main/libp/libprelude/libprelude_5.2.0.orig.tar.gz"
   sha256 "187e025a5d51219810123575b32aa0b40037709a073a775bc3e5a65aa6d6a66e"
   license "GPL-2.0-or-later"
   revision 2
-
-  livecheck do
-    url "https://www.prelude-siem.org/projects/prelude/files"
-    regex(/href=.*?libprelude[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
 
   bottle do
     rebuild 2
@@ -23,7 +18,12 @@ class Libprelude < Formula
     sha256 x86_64_linux:   "52bd631b4ad679cd32f6f8c46d6e3471d800af3e32d4672009bb05733935766d"
   end
 
-  depends_on "pkg-config" => :build
+  # As of the deprecation date, the upstream site is down and Repology
+  # shows libprelude has been dropped by Fedora, Gentoo and pkgsrc.
+  # Last release on 2020-09-11
+  deprecate! date: "2024-11-04", because: :unmaintained
+
+  depends_on "pkgconf" => :build
   depends_on "python@3.12" => [:build, :test]
   depends_on "gnutls"
   depends_on "libgpg-error"
@@ -85,12 +85,12 @@ class Libprelude < Formula
     system ENV.cc, "test.c", "-L#{lib}", "-lprelude", "-o", "test"
     system "./test"
 
-    (testpath/"test.py").write <<~C
+    (testpath/"test.py").write <<~PYTHON
       import prelude
       idmef = prelude.IDMEF()
       idmef.set("alert.classification.text", "Hello world!")
       print(idmef)
-    C
+    PYTHON
     assert_match(/classification:\s*text: Hello world!/, shell_output("#{python3} test.py"))
   end
 end

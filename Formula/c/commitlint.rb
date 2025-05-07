@@ -1,20 +1,19 @@
 class Commitlint < Formula
   desc "Lint commit messages according to a commit convention"
   homepage "https://commitlint.js.org/#/"
-  url "https://registry.npmjs.org/commitlint/-/commitlint-19.5.0.tgz"
-  sha256 "2d2705b457826f260f9d76671bb75080ce0ff5bfd44dcc4d15627fa21a8d56a2"
+  url "https://registry.npmjs.org/commitlint/-/commitlint-19.8.0.tgz"
+  sha256 "6c242cc853cda7748c850aafdb13df7ec05a4d64dd1badabc87b865fb25d9775"
   license "MIT"
   head "https://github.com/conventional-changelog/commitlint.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
-    sha256 cellar: :any_skip_relocation, ventura:        "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
-    sha256 cellar: :any_skip_relocation, monterey:       "5723621d0ec49d9e914b6a83bb2693bf407301fe3e8f6bac75fe9e8a0e44e004"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8b1f57ca8238fb8a9f3af7d5298c0b9380ab2f3f108242efa588e6f6bd39cf9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c9ad018a47784ad630908660e7d046667249aeabb44dc626c2cc7d7eba11627a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c9ad018a47784ad630908660e7d046667249aeabb44dc626c2cc7d7eba11627a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c9ad018a47784ad630908660e7d046667249aeabb44dc626c2cc7d7eba11627a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ca9b14e39291378f087640fc43df856cc1563902e1dcbcf0c7d58bda9f181c8a"
+    sha256 cellar: :any_skip_relocation, ventura:       "ca9b14e39291378f087640fc43df856cc1563902e1dcbcf0c7d58bda9f181c8a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5c612a2a32afd765251ecec05911ec06cc5e4944492c1a2a1432b68fc46ac0db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c9ad018a47784ad630908660e7d046667249aeabb44dc626c2cc7d7eba11627a"
   end
 
   depends_on "node"
@@ -25,14 +24,14 @@ class Commitlint < Formula
   end
 
   test do
-    (testpath/"commitlint.config.js").write <<~EOS
+    (testpath/"commitlint.config.js").write <<~JS
       module.exports = {
           rules: {
             'type-enum': [2, 'always', ['foo']],
           },
         };
-    EOS
+    JS
     assert_match version.to_s, shell_output("#{bin}/commitlint --version")
-    assert_equal "", pipe_output(bin/"commitlint", "foo: message")
+    assert_empty pipe_output(bin/"commitlint", "foo: message")
   end
 end

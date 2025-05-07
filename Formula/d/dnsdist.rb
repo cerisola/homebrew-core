@@ -1,8 +1,8 @@
 class Dnsdist < Formula
   desc "Highly DNS-, DoS- and abuse-aware loadbalancer"
   homepage "https://www.dnsdist.org/"
-  url "https://downloads.powerdns.com/releases/dnsdist-1.9.7.tar.bz2"
-  sha256 "285111c2b7dff6bc8a2407106a51c365cc5bf5e6287fe459a29b396c74620332"
+  url "https://downloads.powerdns.com/releases/dnsdist-1.9.9.tar.bz2"
+  sha256 "e86bc636d4d2dc8bac180ec8cdafbfe5f35229b6005ec15d7510fb6f58b49f5a"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,16 +11,17 @@ class Dnsdist < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "cab9add17f959e5a0c37cb16161a8276254a1ae95a9ee451fca72444783f58f8"
-    sha256 cellar: :any,                 arm64_sonoma:  "3613abc48b829688f50b7a417968efa9886c18307615a9145ab38b86a06f51fa"
-    sha256 cellar: :any,                 arm64_ventura: "3643541508b1a3edfc6fcef8eb257b95653081176452368f2d1da6a7b89e7623"
-    sha256 cellar: :any,                 sonoma:        "08e868d21ca368c82493927677fc4a563761b671bda573cc039ec4fddafb94d2"
-    sha256 cellar: :any,                 ventura:       "3763357c02a74c2bba45d5a1172dd6f93ab7ca16d53a90f96f804da2e2e8ef4f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6b3314eadd5faf6e1ced56b990ef519675a70cad7f6a625e1ae40c4b61654e52"
+    sha256 cellar: :any,                 arm64_sequoia: "a73dc1b7b52577e052279e557fa6518c49463939fc166cbd36cd8b4b9353e801"
+    sha256 cellar: :any,                 arm64_sonoma:  "61ecb524ae7eb13da09003ba59f303ac187c0f618863db1017d55afc2d2c9c04"
+    sha256 cellar: :any,                 arm64_ventura: "bb3a7bbbd5fbf16d754418dc368b029c407cbbc620d22af809747be807d314e1"
+    sha256 cellar: :any,                 sonoma:        "62c7166340f3fce2a10d11a85b82f08f61f6b9c59307790663b3d2ede21c8c8b"
+    sha256 cellar: :any,                 ventura:       "e0fd1cbde4a31acb149bbf155dcd7b832f61edae6a7da1dc69acf4c196bd3483"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "976fd9d3f2689b8988f52953343ffe9cb9c83e57b86ecf84c7b42a5955277e32"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42dbdf2e4312b61ace402dac35be28e93f7339e3a587fd0c866dddb73bd708b6"
   end
 
   depends_on "boost" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "abseil"
   depends_on "fstrm"
   depends_on "libnghttp2"
@@ -31,8 +32,6 @@ class Dnsdist < Formula
   depends_on "tinycdb"
 
   uses_from_macos "libedit"
-
-  fails_with gcc: "5"
 
   def install
     system "./configure", "--disable-silent-rules",

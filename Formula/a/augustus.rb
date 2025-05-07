@@ -4,18 +4,17 @@ class Augustus < Formula
   url "https://github.com/Gaius-Augustus/Augustus/archive/refs/tags/v3.5.0.tar.gz"
   sha256 "5ed6ce6106303b800c5e91d37a250baff43b20824657b853ae04d11ad8bdd686"
   license "Artistic-1.0"
-  revision 7
+  revision 9
   head "https://github.com/Gaius-Augustus/Augustus.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "d6f2416fdb1f857ab1627378d3263c432af0a3837087e7e1302cbd6eadc1a4d5"
-    sha256 cellar: :any,                 arm64_sonoma:   "350db797ec6d550192c11a390b781669758ed582191ced02ade110d07afe36f2"
-    sha256 cellar: :any,                 arm64_ventura:  "90566951647f04c9b72aa710b6d2881a4a97f4bb62094d5dfde352e592ae62c9"
-    sha256 cellar: :any,                 arm64_monterey: "1f1b4e4579694af0957874030fc20e2e50ceb1c7799a764334ef61d58e487c4a"
-    sha256 cellar: :any,                 sonoma:         "2090aaab7aab23a7e8d2b18f09ca6a0b12176b7ce1478e7daa7e2af78491efde"
-    sha256 cellar: :any,                 ventura:        "b5fefdb43565bd78a19034dcbb36805584f985d093bcbd124e84cb57230b6b94"
-    sha256 cellar: :any,                 monterey:       "7ab71f2bdceb617605d553b0ff19ae03e7b872e3583894939f37e680a63eb248"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a3d31169c172e25b1e6c1d0d0e577475de83af3af063d925d781dc5d6a6021b7"
+    sha256 cellar: :any,                 arm64_sequoia: "2ddf6c680cfc4d37f2f5f7b4b9b5faa71538d97ab71f44b2b97893bb8233cc4e"
+    sha256 cellar: :any,                 arm64_sonoma:  "53540ba4b764ca176dcc661c80a1a3e70c4bd5aad113c1cddaa9cc56d99edf41"
+    sha256 cellar: :any,                 arm64_ventura: "bb619314f3d0aeacc0e8f6ae9c733ecf3e02b72765113d7ea306567f1df069ba"
+    sha256 cellar: :any,                 sonoma:        "81e82f22d4d7e5de19ba30f8491d48e03f9d9a410773d07fdf40afd0252f9bbb"
+    sha256 cellar: :any,                 ventura:       "69aa5e235f2462f35c8c4da01acc565e0121ecd0b1c4bbba41943ff5f12f1a23"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "307e210b3938c6979d15dc96851ec826ce66a2f519d2ba397da4a914998cbd3d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a272bbb973215e5a8b4167bc31fe5c039664d118514370761b2a92cf7cdd6a2"
   end
 
   depends_on "bamtools"

@@ -4,22 +4,23 @@ class Nmap < Formula
   url "https://nmap.org/dist/nmap-7.95.tar.bz2"
   sha256 "e14ab530e47b5afd88f1c8a2bac7f89cd8fe6b478e22d255c5b9bddb7a1c5778"
   license :cannot_represent
+  revision 1
   head "https://svn.nmap.org/nmap/"
 
   livecheck do
-    url "https://nmap.org/dist/"
+    url "https://nmap.org/download"
     regex(/href=.*?nmap[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 arm64_sequoia:  "79e86674984301bb84449e67ca155af2009dba475e4609c6671dc73e7112961c"
-    sha256 arm64_sonoma:   "cdafb01815d04428742bca04ecd329522933c578bcac7c7210fc92bd7e36cedf"
-    sha256 arm64_ventura:  "948c11d0d852890c2d331674ceee73615fd645daee551b40351045eef48b4411"
-    sha256 arm64_monterey: "2b5079654dc3ab7d015d4eb8aa17a127acbf96a24fca651c7bcaeeb7e0f68d9e"
-    sha256 sonoma:         "773bf1c00d07c15f837efeffe68b2c0606fa0dae27aaa23e830d340b4cc09706"
-    sha256 ventura:        "3273343599a31092f05c677a803be118332eb39fa2c2f0defc4a68883d19be5e"
-    sha256 monterey:       "9ed369a7f81ba3c7c0396e0645ac77173dfb31ddba16cbcfa8faece61a29e2af"
-    sha256 x86_64_linux:   "6dd2f9435f92feb161180cca78a46c323c78e252f4107a709c5355e275516422"
+    rebuild 1
+    sha256 arm64_sequoia: "50ff67cd6a9106fd4813f23563e93afb1c010e72d2440210547ab1e85a9a2f8b"
+    sha256 arm64_sonoma:  "903b327e4d5670592fce8006045465c25f4906860124a6fadd09c8c6f075173d"
+    sha256 arm64_ventura: "ea8100a4be7170fc892f4b07ae93c6a783cdf4b73637f8bc6b77e70e1a3da9e2"
+    sha256 sonoma:        "29886e3599134f930e515d864133d5560ca4fa6688683d6d6651a3e74659bd1e"
+    sha256 ventura:       "7960ae55e221cd465ec9c81bab21c68e3deba12a42ba54a062b5a7357d8aedf2"
+    sha256 arm64_linux:   "ba802ad8db113e38cb97d0052043909b48fe830ba6ba4fd5ff17dedfd3a5b564"
+    sha256 x86_64_linux:  "6d61d459f9d25a07da0695b7c6be96392fcb8f662babb6bedb64b371575da6d5"
   end
 
   depends_on "liblinear"
@@ -35,6 +36,8 @@ class Nmap < Formula
   uses_from_macos "zlib"
 
   conflicts_with "cern-ndiff", "ndiff", because: "both install `ndiff` binaries"
+  conflicts_with "nping", because: "both install `nping` binaries"
+  conflicts_with cask: "zenmap", because: "both install `nmap` binaries"
 
   def install
     ENV.deparallelize

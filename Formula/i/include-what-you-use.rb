@@ -1,10 +1,9 @@
 class IncludeWhatYouUse < Formula
   desc "Tool to analyze #includes in C and C++ source files"
   homepage "https://include-what-you-use.org/"
-  url "https://include-what-you-use.org/downloads/include-what-you-use-0.22.src.tar.gz"
-  sha256 "859074b461ea4b8325a73418c207ca33b5e6566b08e6b587eb9164416569a6dd"
+  url "https://include-what-you-use.org/downloads/include-what-you-use-0.24.src.tar.gz"
+  sha256 "a23421ceff601d3ea215e8fa9292bfa8ca39eb1ac2098dbbedfc6cfe65541c10"
   license "NCSA"
-  revision 1
   head "https://github.com/include-what-you-use/include-what-you-use.git", branch: "master"
 
   # This omits the 3.3, 3.4, and 3.5 versions, which come from the older
@@ -17,20 +16,19 @@ class IncludeWhatYouUse < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4ed20fb4c62baae23a67013b1bb285f4cf0c778a852725e5ea4cce31139003c5"
-    sha256 cellar: :any,                 arm64_sonoma:  "efb3d600d636270fc665c6f3d64aa81caff7c5cc2ef94b2d84267a9dc4e94648"
-    sha256 cellar: :any,                 arm64_ventura: "933355061e43480f8722c0d8ab8d69f0fb9b6fe0c86a1b0722f6fe3e8bcfab5e"
-    sha256 cellar: :any,                 sonoma:        "15ea39d4a8af3fc9ffc9e77fb2850494464ce24188f6b0519badd941e65048cf"
-    sha256 cellar: :any,                 ventura:       "eb459172046d8b587994857fc8adc042d309f228e5bda5019eec35fbf77e526d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3a1e76cb95512dba345a66ddcd90d17ffc6aa855faa95350c335b5c867cd919"
+    sha256 arm64_sequoia: "30ac8c04e8b22d83d3840790810ad8d4e8fc42f2feef42a24da884e9ad0a33e8"
+    sha256 arm64_sonoma:  "e25d02bca2115e3249049bcfe411560870fa816ffc1a07f5fe18d5c8875367f1"
+    sha256 arm64_ventura: "79ef55188a1c7328c7f717a96661403093a724e3fd5031b5799315ff7247232b"
+    sha256 sonoma:        "b84eea76382134fcb83e0de05b86c7984d1743ca128fdb9967bd09e81699bf4b"
+    sha256 ventura:       "2cff619261a5c37db862623ac06cc058d83f171ee8b1298d4812a1e1106cbdc6"
+    sha256 arm64_linux:   "c098fa5be99719ee60989eba3970d9c242ba789a1bae7b105e8ed4adac757f68"
+    sha256 x86_64_linux:  "4a76b914ec9e0b003450f409db649fe518e16bce7d5e175158de6d345abb409c"
   end
 
   depends_on "cmake" => :build
-  depends_on "llvm@18"
+  depends_on "llvm"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
-
-  fails_with gcc: "5" # LLVM is built with GCC
 
   def llvm
     deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+(\.\d+)*)?$/) }
@@ -67,13 +65,13 @@ class IncludeWhatYouUse < Formula
   end
 
   test do
-    (testpath/"direct.h").write <<~EOS
+    (testpath/"direct.h").write <<~C
       #include <stddef.h>
       size_t function() { return (size_t)0; }
-    EOS
-    (testpath/"indirect.h").write <<~EOS
+    C
+    (testpath/"indirect.h").write <<~C
       #include "direct.h"
-    EOS
+    C
     (testpath/"main.c").write <<~C
       #include "indirect.h"
       int main() {
@@ -94,6 +92,7 @@ class IncludeWhatYouUse < Formula
     assert_match expected_output,
       shell_output("#{bin}/include-what-you-use main.c 2>&1")
 
+    mapping_file = "#{llvm.opt_include}/c++/v1/libcxx.imp"
     (testpath/"main.cc").write <<~CPP
       #include <iostream>
       int main() {
@@ -105,6 +104,6 @@ class IncludeWhatYouUse < Formula
       (main.cc has correct #includes/fwd-decls)
     EOS
     assert_match expected_output,
-      shell_output("#{bin}/include-what-you-use main.cc 2>&1")
+      shell_output("#{bin}/include-what-you-use main.cc -Xiwyu --mapping_file=#{mapping_file} 2>&1")
   end
 end

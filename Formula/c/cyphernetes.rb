@@ -1,32 +1,33 @@
 class Cyphernetes < Formula
   desc "Kubernetes Query Language"
   homepage "https://cyphernet.es"
-  url "https://github.com/AvitalTamir/cyphernetes/archive/refs/tags/v0.13.0.tar.gz"
-  sha256 "cad9220829ad61429478cc08b2632063588ea763af3cd4806fa2ef94b7e3c354"
+  url "https://github.com/AvitalTamir/cyphernetes/archive/refs/tags/v0.17.1.tar.gz"
+  sha256 "cb4d83c9db0aaaaef8caae502c0797148cc71b8a4a6223f9ae2712cd4ce97d7f"
   license "Apache-2.0"
+  head "https://github.com/AvitalTamir/cyphernetes.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cd1f56a19bf559202e80aec5d007b88c50edbb381e639ef94a41562a61484fdc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cd1f56a19bf559202e80aec5d007b88c50edbb381e639ef94a41562a61484fdc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cd1f56a19bf559202e80aec5d007b88c50edbb381e639ef94a41562a61484fdc"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6618b575be9a0114269a344f705f7ad17f414a35d8d99c5d67498bf37bca8c8e"
-    sha256 cellar: :any_skip_relocation, ventura:       "6618b575be9a0114269a344f705f7ad17f414a35d8d99c5d67498bf37bca8c8e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b05277c846c456b00ddc1a03361bb6e8cde5c5baaae405ad27a483106048646b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "64eca76d22d73e2ffd5b3d3658248683b77c20c8d9be0f2addb335444406c006"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "64eca76d22d73e2ffd5b3d3658248683b77c20c8d9be0f2addb335444406c006"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "64eca76d22d73e2ffd5b3d3658248683b77c20c8d9be0f2addb335444406c006"
+    sha256 cellar: :any_skip_relocation, sonoma:        "401165017fb820a352671efd89e263894ab0364e52cf9ac09928619b5020372e"
+    sha256 cellar: :any_skip_relocation, ventura:       "401165017fb820a352671efd89e263894ab0364e52cf9ac09928619b5020372e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a2da0e9d3966580d50c10c9954a060469294dbaff7f2d49f27d1fb33998efd6"
   end
 
   depends_on "go" => :build
-  depends_on "goyacc" => :build
 
   def install
-    system "make", "operator-manifests", "gen-parser"
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/cyphernetes"
+    system "make", "operator-manifests"
+    system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version}"), "./cmd/cyphernetes"
 
     generate_completions_from_executable(bin/"cyphernetes", "completion")
   end
 
   test do
-    output = shell_output("#{bin}/cyphernetes query 'MATCH (d:Deployment)->(s:Service) RETURN d'", 1)
+    output = shell_output("#{bin}/cyphernetes query 'MATCH (d:Deployment)->(s:Service) RETURN d' 2>&1", 1)
+    assert_match("Error creating provider:  failed to create config: invalid configuration", output)
 
-    assert_match("Error getting current context:  current context  does not exist in kubeconfig", output)
+    assert_match version.to_s, shell_output("#{bin}/cyphernetes version")
   end
 end

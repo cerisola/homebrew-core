@@ -1,9 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  # TODO: Build with `-DWITH_LIBFMT=system` when fmt >= 11
-  url "https://archive.mariadb.org/mariadb-11.5.2/source/mariadb-11.5.2.tar.gz"
-  sha256 "e25fac00aeb34610faf62182836a14e3310c0ca5d882e9109f63bd8dfdc3542d"
+  url "https://archive.mariadb.org/mariadb-11.7.2/source/mariadb-11.7.2.tar.gz"
+  sha256 "557a89f08e74015d1d6909595e003dca75d4df21ed1ef8180d63cdd74e5e71b3"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,20 +17,19 @@ class Mariadb < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "ed3cc36a98cceadab407cdd32e975cb61c7767e2b66287326da138088d9c4626"
-    sha256 arm64_sonoma:   "cda6f1a3253d69bc36dadff3cd9ed8e3c91795eb392c9f7b1a4ea0b63c19a8e3"
-    sha256 arm64_ventura:  "6b01259939dee3c888cb040265de4bdfe727d2dcfc154acfb0edfb44eef622b9"
-    sha256 arm64_monterey: "068f3c8199c47fe7b1ff2f15584884d5d61108378a4ec13289f850ff6a80b906"
-    sha256 sonoma:         "3d8d1e1dfcd957335e72f3f34ec2fd4e8fd22b918ed919bf8904e304f8e3c6bc"
-    sha256 ventura:        "9f525784840240948014eabcc7942a3753f7ad990e537a6109adc541c78c51eb"
-    sha256 monterey:       "9c1a9410159d97546186ac23f8d17d07186987200d923a2866eb884f3a61a657"
-    sha256 x86_64_linux:   "e25bd50056c5c14b3f851c20df8a809d5453d71fac929fddd590b26fa1f876b3"
+    sha256 arm64_sequoia: "f483e528ab5b816e2c20b88598d8a5bfe9134cecca4c0de9ac64d312e6b00969"
+    sha256 arm64_sonoma:  "fe4e4c88bbd489d87b7f36de38274249a9ac824d7b2903a4c5042301e539d6ce"
+    sha256 arm64_ventura: "93d5d35242544df13cd074a324ee5d93565ca75e1278efb7393f3e767eb343c3"
+    sha256 sonoma:        "a6274271328cb579529ec17ec0a5daca2a98c490ad9c2c726be4cc74a99e3ba8"
+    sha256 ventura:       "7d03aa1668de2cfb383369d4a84d86aa8445a0000950a152e6b92865489d4d7c"
+    sha256 arm64_linux:   "9e75ebe01b3ef57d95ea18bbaa32e8dab5c00a90596b2739dc0a95365be73250"
+    sha256 x86_64_linux:  "74ce4ec27335b9aec7c54cb57a76d1e686f31f4e24a5705e93fe3ff8affe8ade"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "fmt" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "groonga"
   depends_on "lz4"
   depends_on "lzo"
@@ -56,15 +54,28 @@ class Mariadb < Formula
     depends_on "linux-pam"
   end
 
-  conflicts_with "mysql", "percona-server",
-    because: "mariadb, mysql, and percona install the same binaries"
+  conflicts_with "mysql", "percona-server", because: "mariadb, mysql, and percona install the same binaries"
 
-  conflicts_with "mytop", because: "both install `mytop` binaries"
-  conflicts_with "mariadb-connector-c", because: "both install `mariadb_config`"
+  # system libfmt patch, upstream pr ref, https://github.com/MariaDB/server/pull/3786
+  patch do
+    url "https://github.com/MariaDB/server/commit/b6a924b8478d2fab5d51245ff6719b365d7db7f4.patch?full_index=1"
+    sha256 "77b65b35cf0166b8bb576254ac289845db5a8e64e03b41f1bf4b2045ac1cd2d1"
+  end
 
-  fails_with gcc: "5"
+  # Backport fix for CMake 4.0
+  patch do
+    url "https://github.com/codership/wsrep-lib/commit/324b01e4315623ce026688dd9da1a5f921ce7084.patch?full_index=1"
+    sha256 "eaa0c3b648b712b3dbab3d37dfca7fef8a072908dc28f2ed383fbe8d217be421"
+    directory "wsrep-lib"
+  end
 
   def install
+    ENV.runtime_cpu_detection
+
+    # Backport fix for CMake 4.0
+    # https://github.com/MariaDB/server/commit/cacaaebf01939d387645fb850ceeec5392496171
+    inreplace "storage/mroonga/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8.12)", ""
+
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
     # be overridden by calling --basedir= when calling.
@@ -86,6 +97,7 @@ class Mariadb < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_LIBFMT=system
       -DWITH_PCRE=system
       -DWITH_SSL=system
       -DWITH_ZLIB=system
@@ -126,6 +138,9 @@ class Mariadb < Formula
     inreplace "#{prefix}/support-files/mysql.server", /^(PATH=".*)(")/, "\\1:#{HOMEBREW_PREFIX}/bin\\2"
 
     bin.install_symlink prefix/"support-files/mysql.server"
+
+    # Fix user variable used by su_kill - Credit: https://stackoverflow.com/questions/59936589
+    inreplace "#{prefix}/support-files/mysql.server", /^user='mysql'/, "user=$(whoami)"
 
     # Move sourced non-executable out of bin into libexec
     libexec.install "#{bin}/wsrep_sst_common"

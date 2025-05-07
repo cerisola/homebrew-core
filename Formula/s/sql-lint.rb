@@ -14,6 +14,7 @@ class SqlLint < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "73b4fe6c09ec7143938b2c938dfebc764c86063ed2eaa593c028c69003ce7b84"
     sha256 cellar: :any_skip_relocation, ventura:        "73b4fe6c09ec7143938b2c938dfebc764c86063ed2eaa593c028c69003ce7b84"
     sha256 cellar: :any_skip_relocation, monterey:       "73b4fe6c09ec7143938b2c938dfebc764c86063ed2eaa593c028c69003ce7b84"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "64adacdf846ce16c5cca8c70774584882c78ce16625a685eda7802f56b415cc1"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7a8391c3cdbf4c3876e3c7a88978c03ae3fa8ef53fde71ce9e04faa59511af14"
   end
 
@@ -25,11 +26,14 @@ class SqlLint < Formula
   end
 
   test do
-    (testpath/"pg-enum.sql").write("CREATE TYPE status AS ENUM ('to-do', 'in-progress', 'done');")
-    output = shell_output("#{bin}/sql-lint -d postgres pg-enum.sql")
-    assert_equal "", output
-    (testpath/"invalid-delete.sql").write("DELETE FROM table-epbdlrsrkx;")
-    output = shell_output("#{bin}/sql-lint invalid-delete.sql", 1)
-    assert_match "missing-where", output
+    (testpath/"pg-enum.sql").write <<~SQL
+      CREATE TYPE status AS ENUM ('to-do', 'in-progress', 'done');
+    SQL
+    assert_empty shell_output("#{bin}/sql-lint -d postgres pg-enum.sql")
+
+    (testpath/"invalid-delete.sql").write <<~SQL
+      DELETE FROM table-epbdlrsrkx;
+    SQL
+    assert_match "missing-where", shell_output("#{bin}/sql-lint invalid-delete.sql", 1)
   end
 end

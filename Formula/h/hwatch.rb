@@ -1,20 +1,19 @@
 class Hwatch < Formula
   desc "Modern alternative to the watch command"
   homepage "https://github.com/blacknon/hwatch"
-  url "https://github.com/blacknon/hwatch/archive/refs/tags/0.3.15.tar.gz"
-  sha256 "0c6d60e837a9f94685581d815265a60a16331c0a3cb2d6fc5abfe1c97963160e"
+  url "https://github.com/blacknon/hwatch/archive/refs/tags/0.3.19.tar.gz"
+  sha256 "b0c7da2b8279e483a88019f07a058c978c324f37cd67c34b50de46fb5bd0db16"
   license "MIT"
   head "https://github.com/blacknon/hwatch.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "cdb1084ff9d0f39536e63c6e9899d4d9103afc3410499cbabf7d2c031629be20"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1144c287fedea8ba41a937b3637baa62b820215c82f1d781e11c59b8afbeaed6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "39066c4c706ebc634848418c2d07921759ef031092a0250c3eb9ceb71b088770"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "559394446325a340d1d026c9ed7d1f49aff91c4ccff62d73ff44eb01a51c65cf"
-    sha256 cellar: :any_skip_relocation, sonoma:         "96d3a1f00c5de835f4f70bd0db658bba4b4ee9dcea35669247d4fad87535b62b"
-    sha256 cellar: :any_skip_relocation, ventura:        "9def15db47e02c7323745b201e122cd7a728052d3518e0690734b5c28caf9664"
-    sha256 cellar: :any_skip_relocation, monterey:       "f074d1b2dd7f26e1dcdb93be668aa60761376878d0d7f8e1c8908ff812afc607"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9afa54192a1290ff2e58863748ac050ed7d6777711f609ad0bf280ecf3033be9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "28288a789480c819fde11788c0b35086e29c19691ce52075565fb46b2abc4f7b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "78cabd0217cac85bdd8d4b459cf2ff9eac0d5cc6fc865fd1287a2b7cceb07c4d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bd598066ec25a28c99b6af7d3cf2dd4f21568effda47fe2d337eccdb97f6acbd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ae0f06837309e0c232866023b8258b77825353eb931b6f0c8adabf789cb8b7eb"
+    sha256 cellar: :any_skip_relocation, ventura:       "c9fa547c1b2b927bde3a9ad76e3a2f730cd3338e1ccff8ad935633900271d7da"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e23c602171e0c2b3fef61c8efbaf763609dac8e410368c07798221acd54cd154"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e4fd00a8be3bb4833c96b76ca42e5ed029ff3da919deae9a199ed09273840038"
   end
 
   depends_on "rust" => :build

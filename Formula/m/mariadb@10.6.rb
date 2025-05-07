@@ -1,8 +1,8 @@
 class MariadbAT106 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://archive.mariadb.org/mariadb-10.6.19/source/mariadb-10.6.19.tar.gz"
-  sha256 "bcecb0ff7b79a41344736fa994710787c15516d51eb7715f278c3f0fcb7e8703"
+  url "https://archive.mariadb.org/mariadb-10.6.21/source/mariadb-10.6.21.tar.gz"
+  sha256 "8d7f97169b3ba2044858965b8cfc254364400df43e905042f92e24b8fa7b0d96"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,14 +18,13 @@ class MariadbAT106 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "8297f5c5fbdf540bee5dbfe2f50a1bf96899deb61b3f089cf11a031c0f5ab86e"
-    sha256 arm64_sonoma:   "45fe27bb1ed14d6a5a195bbca0f83916ac58b3962500b29878b46cfc4c829444"
-    sha256 arm64_ventura:  "98efec6af144006909bc233c6e9accb901c05b62a62fe3a0c2c6b6e1cd96e314"
-    sha256 arm64_monterey: "1b261390bce7bf4c19bc1b9b7638478aae036dd0eeefd3a5baa62d6a917faac3"
-    sha256 sonoma:         "c5e330c6d8c71ebfd80863b8abc9a65e5897e5526576476fa9ac1bf329019a30"
-    sha256 ventura:        "6201d8ba1778d8ec0a3774f90395fb60d9c28d240434e1f6aa632f2dd356bedc"
-    sha256 monterey:       "4e67f430e786846620cc3dd946837fb9996a5a5ebbb8b8d039cec9110dd8f79d"
-    sha256 x86_64_linux:   "eead2cba54726e8e2be3a366090bad853f2c897be9d3e6e438b4a3e2ab580f46"
+    sha256 arm64_sequoia: "f62b858d8c013e4458a536cabb429cbb9b4b4bfacbe2ab3cc88f813cb2ee780e"
+    sha256 arm64_sonoma:  "bb3025f391d669e9442d8df1eca9bd0dbcee97883dd4abc8118229fbbb30314c"
+    sha256 arm64_ventura: "58f3634df92e8b7c58f30f91295f88472d977577e2b2666342fd04f3f8eb16fd"
+    sha256 sonoma:        "81af7a0000ff278c3070ce3db9546af93eb06279def2f79f1087ded07d1123a3"
+    sha256 ventura:       "41569c954dd0c2961c84e8ec6fb02041a6fa82e38ac7be909d28cff8638e9bc8"
+    sha256 arm64_linux:   "cedd156e1c90e2d4644064c4c4d5f0fb9348526c114ede82ffc7a821c7c76551"
+    sha256 x86_64_linux:  "586cec21d3568a0528d1d222ebdeb5b3bc98503d93794e87b387e786ed4d14b9"
   end
 
   keg_only :versioned_formula
@@ -36,7 +35,7 @@ class MariadbAT106 < Formula
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "groonga"
   depends_on "lz4"
@@ -60,9 +59,27 @@ class MariadbAT106 < Formula
     depends_on "readline" # uses libedit on macOS
   end
 
-  fails_with gcc: "5"
+  # Backport fix for CMake 4.0
+  patch do
+    url "https://github.com/MariaDB/server/commit/2a5a12b227845e03575f1b1eb0f6366dccc3e026.patch?full_index=1"
+    sha256 "f3a4b5871141451edf3936bcad0861e3a38418c3a8c6a69dfeddb8d073ac3253"
+  end
+  patch do
+    url "https://github.com/codership/wsrep-lib/commit/324b01e4315623ce026688dd9da1a5f921ce7084.patch?full_index=1"
+    sha256 "eaa0c3b648b712b3dbab3d37dfca7fef8a072908dc28f2ed383fbe8d217be421"
+    directory "wsrep-lib"
+  end
 
   def install
+    ENV.runtime_cpu_detection
+
+    # Backport fix for CMake 4.0 in columnstore submodule
+    # https://github.com/mariadb-corporation/mariadb-columnstore-engine/commit/726cc3684b4de08934c2b14f347799fd8c3aac9a
+    # https://github.com/mariadb-corporation/mariadb-columnstore-engine/commit/7e17d8825409fb8cc0629bfd052ffac6e542b50e
+    inreplace "storage/columnstore/columnstore/CMakeLists.txt",
+              "CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)",
+              "CMAKE_MINIMUM_REQUIRED(VERSION 3.10)"
+
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
     # be overridden by calling --basedir= when calling.
@@ -99,10 +116,9 @@ class MariadbAT106 < Formula
     # Disable RocksDB on Apple Silicon (currently not supported)
     args << "-DPLUGIN_ROCKSDB=NO" if Hardware::CPU.arm?
 
-    system "cmake", ".", *std_cmake_args, *args
-
-    system "make"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "_build", *std_cmake_args, *args
+    system "cmake", "--build", "_build"
+    system "cmake", "--install", "_build"
 
     # Fix my.cnf to point to #{etc} instead of /etc
     (etc/"my.cnf.d").mkpath

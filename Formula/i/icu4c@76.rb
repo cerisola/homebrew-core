@@ -5,34 +5,24 @@ class Icu4cAT76 < Formula
   version "76.1"
   sha256 "dfacb46bfe4747410472ce3e1144bf28a102feeaa4e3875bac9b4c6cf30f4f3e"
   license "ICU"
-
-  # We allow the livecheck to detect new `icu4c` major versions in order to
-  # automate version bumps. To make sure PRs are created correctly, we output
-  # an error during installation to notify when a new formula is needed.
-  livecheck do
-    url :stable
-    regex(/^release[._-]v?(\d+(?:[.-]\d+)+)$/i)
-    strategy :git do |tags, regex|
-      tags.filter_map { |tag| tag[regex, 1]&.tr("-", ".") }
-    end
-  end
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "864ab79f49fd097e8537c281af64e3987d085c753086c60cde74fc84f55ee771"
-    sha256 cellar: :any,                 arm64_sonoma:  "2b28efee579ee1a87cb4264e4ea714dd4af6edf59fa2e29955ffe4408428d726"
-    sha256 cellar: :any,                 arm64_ventura: "7ca03c808b01c40b270146e476bfcb18367f830e9f1722c9effc4f1c5954b20f"
-    sha256 cellar: :any,                 sonoma:        "30d9e64dbac8658ab81012ccfe1e52f87cd1ec8cb247b562d4484665ef6b5247"
-    sha256 cellar: :any,                 ventura:       "6d57d5ff7ed6d83916f9c47aa82eb84d1555fc23f8c779491e42e71817d8b2ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0e8e698c09aee143fce7529fcdf776be98d15f3a000ed8c3e74dc387ce364ac"
+    sha256 cellar: :any,                 arm64_sequoia: "36740927f8bdb436e6a4fa4066ac13d32edaaf4125ba3f20ca12e18d7eecbd6f"
+    sha256 cellar: :any,                 arm64_sonoma:  "75dc3baf41567d78c356904dd11c66d4a052dc81fc8f06b574d169a10f373b94"
+    sha256 cellar: :any,                 arm64_ventura: "07be73f27660fabda108d0ac346f862763a871b6ac1b257b1e84ab234a6ca2b4"
+    sha256 cellar: :any,                 sonoma:        "15465a73773821af7d4b86219a496664b677b426794a43d1231ee57f86241ee8"
+    sha256 cellar: :any,                 ventura:       "d7186e6b5e4a11a0614ecc251633825ade3a548f8bdedce230dc0d2982c3ff78"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c4057b22ba207185f7afd794e22e6d69f587e3d4f94f6e51069632b66b507cc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96de6e1689d33123805108c40a8411dfa341b1cfc963af19ecd8f1ffe63b30b0"
   end
 
-  # TODO: Switch keg_only reason after renaming `icu4c` formula to `icu4c@75` and updating alias to `icu4c@76`
-  # keg_only :provided_by_macos, "macOS provides libicucore.dylib (but nothing else)"
   keg_only :versioned_formula
 
-  def install
-    odie "Major version bumps need a new formula!" if version.major.to_s != name[/@(\d+)$/, 1]
+  # Deprecated with ICU 77.1 release
+  deprecate! date: "2025-03-29", because: :versioned_formula
 
+  def install
     args = %w[
       --disable-samples
       --disable-tests

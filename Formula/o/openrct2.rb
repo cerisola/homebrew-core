@@ -2,34 +2,32 @@ class Openrct2 < Formula
   desc "Open source re-implementation of RollerCoaster Tycoon 2"
   homepage "https://openrct2.io/"
   url "https://github.com/OpenRCT2/OpenRCT2.git",
-      tag:      "v0.4.15",
-      revision: "c7c8fad822d10e7fbec26eeefbf2e552a02b8ea9"
+      tag:      "v0.4.22",
+      revision: "b7199e30991d52ca66e416c4604bbe31c0a826d5"
   license "GPL-3.0-only"
-  revision 2
   head "https://github.com/OpenRCT2/OpenRCT2.git", branch: "develop"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "3cca43057b9ae4952cef66529713990b55cb9ebc5662e515819e0ce2b76f6eee"
-    sha256 cellar: :any, arm64_sonoma:  "c727a789409d3e0e7a7a940a4db505242a57ead1dcbd797c958220456ca3d209"
-    sha256 cellar: :any, arm64_ventura: "ad217b38e23da7438abbcd3d1c8c79bf1b76b65312a78f9bc0b0e6be464f1442"
-    sha256 cellar: :any, sonoma:        "860dd18528eb5b9507bc0c67969e4f2cf7d995560351429ed5200a1ca93a9c1c"
-    sha256 cellar: :any, ventura:       "83550e0cccfa664b7ce804f61d0e172576819c6c3b3b00d1527984352aa8d972"
-    sha256               x86_64_linux:  "70319a648bd7b22958b4978fddbbd7600f948e05f53d8938652686952b4d28c2"
+    sha256 cellar: :any, arm64_sequoia: "c1f7ee4afbf3562352e459004395faafcf8a1766ca007c6351a7942b71b1c7e6"
+    sha256 cellar: :any, arm64_sonoma:  "223c776a2034bc006f21f8ddf54c96d8fda19f4090d8625bdd4cab8348c1b162"
+    sha256 cellar: :any, sonoma:        "69f288a413ba65d9df377d47ce87aa50c8d4d099c8aa70f00425c5df2679d31a"
+    sha256               arm64_linux:   "43f42a4cc57a1cc3edf61eeda95f825c61f0619fb8d01fec565927f160e162f1"
+    sha256               x86_64_linux:  "d0c938effee1cfaf81194bbb335b6e9f040605ca5886da83845ae507c74b43a8"
   end
 
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "duktape"
   depends_on "flac"
   depends_on "freetype"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "libogg"
   depends_on "libpng"
   depends_on "libvorbis"
   depends_on "libzip"
-  depends_on macos: :mojave # `error: call to unavailable member function 'value': introduced in macOS 10.14`
+  depends_on macos: :sonoma # Needs C++20 features not in Ventura
   depends_on "openssl@3"
   depends_on "sdl2"
   depends_on "speexdsp"
@@ -42,29 +40,47 @@ class Openrct2 < Formula
     depends_on "mesa"
   end
 
-  fails_with gcc: "5" # C++17
-
   resource "title-sequences" do
     url "https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip"
     sha256 "140df714e806fed411cc49763e7f16b0fcf2a487a57001d1e50fce8f9148a9f3"
   end
 
   resource "objects" do
-    url "https://github.com/OpenRCT2/objects/releases/download/v1.4.8/objects.zip"
-    sha256 "ea78872f9f777fb6b27019e4b880e4cb9766658ee8ae95f76985af0b9658eb4d"
+    url "https://github.com/OpenRCT2/objects/releases/download/v1.6.1/objects.zip"
+    sha256 "6829186630e52c332b6a4847ebb936c549a522fcadaf8f5e5e4579c4c91a4450"
+  end
+
+  resource "openmusic" do
+    url "https://github.com/OpenRCT2/OpenMusic/releases/download/v1.6/openmusic.zip"
+    sha256 "f097d3a4ccd39f7546f97db3ecb1b8be73648f53b7a7595b86cccbdc1a7557e4"
+  end
+
+  resource "opensound" do
+    url "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.5/opensound.zip"
+    sha256 "a952148be164c128e4fd3aea96822e5f051edd9a0b1f2c84de7f7628ce3b2e18"
   end
 
   def install
     # Avoid letting CMake download things during the build process.
-    (buildpath/"data/title").install resource("title-sequences")
+    (buildpath/"data/sequence").install resource("title-sequences")
     (buildpath/"data/object").install resource("objects")
+    resource("openmusic").stage do
+      (buildpath/"data/assetpack").install Dir["assetpack/*"]
+      (buildpath/"data/object/official").install "object/official/music"
+    end
+    resource("opensound").stage do
+      (buildpath/"data/assetpack").install Dir["assetpack/*"]
+      (buildpath/"data/object/official").install "object/official/audio"
+    end
 
-    args = [
-      "-DWITH_TESTS=OFF",
-      "-DDOWNLOAD_TITLE_SEQUENCES=OFF",
-      "-DDOWNLOAD_OBJECTS=OFF",
-      "-DMACOS_USE_DEPENDENCIES=OFF",
-      "-DDISABLE_DISCORD_RPC=ON",
+    args = %w[
+      -DWITH_TESTS=OFF
+      -DDOWNLOAD_TITLE_SEQUENCES=OFF
+      -DDOWNLOAD_OBJECTS=OFF
+      -DDOWNLOAD_OPENMSX=OFF
+      -DDOWNLOAD_OPENSFX=OFF
+      -DMACOS_USE_DEPENDENCIES=OFF
+      -DDISABLE_DISCORD_RPC=ON
     ]
     args << "-DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}" if OS.mac?
 
@@ -72,12 +88,12 @@ class Openrct2 < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
-    # By default macOS build only looks up data in app bundle Resources
+    # By default, the macOS build only looks for data in app bundle Resources.
     libexec.install bin/"openrct2"
-    (bin/"openrct2").write <<~EOS
+    (bin/"openrct2").write <<~BASH
       #!/bin/bash
       exec "#{libexec}/openrct2" "$@" "--openrct2-data-path=#{pkgshare}"
-    EOS
+    BASH
   end
 
   test do

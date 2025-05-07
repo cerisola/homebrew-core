@@ -1,8 +1,8 @@
 class Premake < Formula
   desc "Write once, build anywhere Lua-based build system"
   homepage "https://premake.github.io/"
-  url "https://github.com/premake/premake-core/releases/download/v5.0.0-beta2/premake-5.0.0-beta2-src.zip"
-  sha256 "4c1100f5170ae1c3bd1b4fd9458b3b02ae841aefbfc41514887b80996436dee2"
+  url "https://github.com/premake/premake-core/releases/download/v5.0.0-beta6/premake-5.0.0-beta6-src.zip"
+  sha256 "8832890451889c7ca9ab62c507d86fc9bfde45094274e5e4f46f82a258b5789b"
   license "BSD-3-Clause"
   version_scheme 1
   head "https://github.com/premake/premake-core.git", branch: "master"
@@ -13,16 +13,13 @@ class Premake < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "3bfc9dcaa66a02d7a66b6dfe7ea26c30051bced4c021f213f918defb1400daa8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "2c98ca72530e48dbdc33ccb631a81beee53314e93d6f5312684472ac9175306a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b7c0e198ec64df063c624729b362aeffcf03b6a7c3d369a289553830aa84e76e"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "c1a2d677314bd928dbbe53c160bd3d67477b485904f7df4afe1e7d92876380d7"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "bb6aded02913a669e7bb98a1556c1c1d069ca998e41c22fb77da2bafb82baa75"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ad3de1154f1003e538a26acb07434550db8b66d9050c14416cc33bde88e16185"
-    sha256 cellar: :any_skip_relocation, ventura:        "2e6089750d30a7173fd03d1c0397188f0bc81def52bd14d78c52b062d269a245"
-    sha256 cellar: :any_skip_relocation, monterey:       "1e2e64dcda1ad406434262658bca0830bd564a6c8fc9878bad0178e807fc140d"
-    sha256 cellar: :any_skip_relocation, big_sur:        "0468917acf8072ff58035d030cff0500de669c64445bf113740d65d5cc098bea"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "df19de0950ff6c2e808f5faf472ef74b52b68076c12ed4db4afe7ed9583c514b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "17a38d85ea292defa6e0f96af719c574203fe799a2bfcf3434f35ec4f4dbae4d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f5ca85506485fb7ba8ba9be1b0fde896f4e63487a7e2d144151c3820b0cf550a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1b3390965bb92d8be8b1e44fd5456d79e0bd016c7ce6bf5033a94d4be02f3773"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5969d0aa6e3c766096136df6ea1a6bbebdcac14648295efb6c974b35203cb84c"
+    sha256 cellar: :any_skip_relocation, ventura:       "9055d18a025e139f8327e74cb52602c70c179d6e4f9671b1fddfad947a9e8d6b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "97a3190152d567da4f60ef0037497d7b1569c3464811a9cfecf176b88da50bb6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "023e7461f6a4cdac85ec71db6bef3889d9d1b0bca9c8f29dc570d0a45c087de2"
   end
 
   on_linux do
@@ -34,16 +31,11 @@ class Premake < Formula
     # upstream issue, https://github.com/premake/premake-core/issues/2092
     ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
 
-    if build.head?
-      platform = OS.mac? ? "osx" : "linux"
-      system "make", "-f", "Bootstrap.mak", platform
-      system "./bin/release/premake5", "gmake2"
-      system "./bin/release/premake5", "embed"
-      system "make"
-    else
-      platform = OS.mac? ? "macosx" : "unix"
-      system "make", "-C", "build/gmake2.#{platform}", "config=release"
-    end
+    platform = OS.mac? ? "osx" : "linux"
+    system "make", "-f", "Bootstrap.mak", platform
+    system "./bin/release/premake5", "gmake2"
+    system "./bin/release/premake5", "embed"
+    system "make"
     bin.install "bin/release/premake5"
   end
 

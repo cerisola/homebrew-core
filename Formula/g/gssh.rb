@@ -1,6 +1,6 @@
 class Gssh < Formula
   desc "SSH automation tool based on Groovy DSL"
-  homepage "https://github.com/int128/groovy-ssh"
+  homepage "https://gradle-ssh-plugin.github.io/"
   url "https://github.com/int128/groovy-ssh/archive/refs/tags/2.11.2.tar.gz"
   sha256 "0e078b37fe1ba1a9ca7191e706818e3b423588cac55484dda82dbbd1cdfe0b24"
   license "Apache-2.0"
@@ -14,6 +14,7 @@ class Gssh < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "966fffd78fe61b7292a4141678a84e3a700a9388ecb2ab04ef2daba8220ccc5f"
     sha256 cellar: :any_skip_relocation, ventura:        "2b1130e6167fd512b87c843e1ebe20830b95bb21e98469cd681a944897300c61"
     sha256 cellar: :any_skip_relocation, monterey:       "1b51f981f8523077dbc4ac4269267ef57fc4c38d3c015bac0e14e1f612044f16"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "80e5fade9eca898a2d7d3179b753757926e102a9cc08ba3c9868132b816b72e9"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "db58030c9483c22ecde1258a00dd0bd3f1da7649e1114178e0495e0195296ef6"
   end
 

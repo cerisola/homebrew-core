@@ -1,8 +1,8 @@
 class Chezmoi < Formula
   desc "Manage your dotfiles across multiple diverse machines, securely"
   homepage "https://chezmoi.io/"
-  url "https://github.com/twpayne/chezmoi/archive/refs/tags/v2.53.1.tar.gz"
-  sha256 "b90d70d545c8591e4e3df73aa5d3092ecf04ecb8d8ff6f05493400bd3fceaacf"
+  url "https://github.com/twpayne/chezmoi/releases/download/v2.62.3/chezmoi-2.62.3.tar.gz"
+  sha256 "4d4b0b5348191971fcf82fc4d9aeca1ea2263d06b430f3bdb213bc7e19a4040e"
   license "MIT"
   head "https://github.com/twpayne/chezmoi.git", branch: "master"
 
@@ -14,12 +14,13 @@ class Chezmoi < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1916193bdfacf4c6ef51662c60774ddfba6386aa7141deb2906f7ce11ef422dc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "da75394e86a4d9758adf47e148a1617d02a31dab6136b277d68a7b81e2a55998"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "083acf304f9c84364f17bd157e5224347991e52c85d72db512b0d7588d8f24ca"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f07e0c8adfcde3c6c20ac9c9bf40fa395be8605fe53797a6f14a59aed665151d"
-    sha256 cellar: :any_skip_relocation, ventura:       "4c591b7351bdd54b428ee0cf03dca6bb204564d2ab2095c69e06b2c37d6801fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "16fd5ded9858e2abffc24f9960c06fd87be20f2e409f8707024c4d7f4b838352"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3b1bb0f75c688e743829b914e1b188c68f963bece78a64a0aaf7c0def6b2fd15"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e7705f741fd2981486afb259473efc960beb2bb6c7b922b34874caa731b76852"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0b865276f94f0f6a13547f719b46301b54b802893890ed623239c2eb96324193"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3cdc52b1250371424fdd5f6ee8f047a57ed1ed89364c0a8ff7ff2495e1d3e484"
+    sha256 cellar: :any_skip_relocation, ventura:       "b74289ef7c9b3ebc342f24ed7be7e044a0098eebab8f0d3b205b99769eda6804"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "212ff9aa643c01f35d71e4bbd34aea44e50adfafb0149a7c7c47dad0a103644f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe72758d274a82991ef5a0b872eb069afcaf2d90fa546e2b0fe9a411022dfffc"
   end
 
   depends_on "go" => :build
@@ -28,23 +29,24 @@ class Chezmoi < Formula
     ldflags = %W[
       -s -w
       -X main.version=#{version}
-      -X main.commit=#{tap.user}
+      -X main.commit=#{File.read("COMMIT")}
       -X main.date=#{time.iso8601}
       -X main.builtBy=#{tap.user}
     ]
     system "go", "build", *std_go_args(ldflags:)
 
-    bash_completion.install "completions/chezmoi-completion.bash"
+    bash_completion.install "completions/chezmoi-completion.bash" => "chezmoi"
     fish_completion.install "completions/chezmoi.fish"
     zsh_completion.install "completions/chezmoi.zsh" => "_chezmoi"
   end
 
   test do
     # test version to ensure that version number is embedded in binary
+    assert_match(/commit [0-9a-f]{40}/, shell_output("#{bin}/chezmoi --version"))
     assert_match "version v#{version}", shell_output("#{bin}/chezmoi --version")
     assert_match "built by #{tap.user}", shell_output("#{bin}/chezmoi --version")
 
     system bin/"chezmoi", "init"
-    assert_predicate testpath/".local/share/chezmoi", :exist?
+    assert_path_exists testpath/".local/share/chezmoi"
   end
 end

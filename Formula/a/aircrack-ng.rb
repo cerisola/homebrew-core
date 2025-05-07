@@ -1,6 +1,7 @@
 class AircrackNg < Formula
   desc "Next-generation aircrack with lots of new features"
   homepage "https://aircrack-ng.org/"
+  # TODO: Migrate to PCRE2 in the next release
   url "https://download.aircrack-ng.org/aircrack-ng-1.7.tar.gz"
   sha256 "05a704e3c8f7792a17315080a21214a4448fd2452c1b0dd5226a3a55f90b58c3"
   license all_of: [
@@ -26,18 +27,20 @@ class AircrackNg < Formula
     sha256                               monterey:       "32bab474db5a9602788ffd7d32f4bd25199732705cc4856b7335c96d6675a961"
     sha256                               big_sur:        "c7b4666859d336a5219c53d5b9310547495438e460d38c7f1b3175c274245b55"
     sha256                               catalina:       "09115822ebac9a6d9903635faa0a393dc1bcaaaf2fcbb344a5dee123fe1f02f1"
+    sha256                               arm64_linux:    "8a789a3419bcd0c237abc1f7e10743d97eac240bdd6d49ec1ed9656e0b42f64a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "72556b434c07c994c66ac4f37b9946884357af00a7543d6e961808ca78a6818c"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
   depends_on "pcre"
   depends_on "sqlite"
 
   uses_from_macos "libpcap"
+  uses_from_macos "zlib"
 
   # Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
@@ -45,10 +48,9 @@ class AircrackNg < Formula
 
   def install
     system "./autogen.sh", "--disable-silent-rules",
-                           "--disable-dependency-tracking",
-                           "--prefix=#{prefix}",
                            "--sysconfdir=#{etc}",
-                           "--with-experimental"
+                           "--with-experimental",
+                           *std_configure_args
     system "make", "install"
     inreplace sbin/"airodump-ng-oui-update", "/usr/local", HOMEBREW_PREFIX
   end
@@ -97,6 +99,6 @@ __END__
 -	echo Run it as root ; exit ;
 -fi
 -
- 
+
  if [ ! -d "${OUI_PATH}" ]; then
  	mkdir -p ${OUI_PATH}

@@ -14,11 +14,12 @@ class Stlink < Formula
     sha256 sonoma:         "123d84cd6f2bdeeabce247febb96aed963876789e3e23bec7312098b2590483c"
     sha256 ventura:        "96b6ee1f313c0b377a3882eb33191164b751f171dd1ba2c6c9e8ef525b663798"
     sha256 monterey:       "5c33e3d172d272295fa0d27e08d80fd86e0429156e44b72b934898c11d08ab11"
+    sha256 arm64_linux:    "4b0deecf90ccc793307fb68a4b72e13a7cd8eebf05012ad6d26fd4f2adfa80e7"
     sha256 x86_64_linux:   "7872c14d351e27c5953bc0565d4eb64312d3e54abc898b05197af8a631abab2c"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libusb"
 
   # upstream PR ref, https://github.com/stlink-org/stlink/pull/1373
@@ -32,18 +33,16 @@ class Stlink < Formula
   end
 
   def install
-    args = []
-
     libusb = Formula["libusb"]
-    args << "-DLIBUSB_INCLUDE_DIR=#{libusb.opt_include}/libusb-#{libusb.version.major_minor}"
-    args << "-DLIBUSB_LIBRARY=#{libusb.opt_lib/shared_library("libusb-#{libusb.version.major_minor}")}"
-
+    args = %W[
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DLIBUSB_INCLUDE_DIR=#{libusb.opt_include}/libusb-#{libusb.version.major_minor}
+      -DLIBUSB_LIBRARY=#{libusb.opt_lib/shared_library("libusb-#{libusb.version.major_minor}")}
+    ]
     if OS.linux?
       args << "-DSTLINK_MODPROBED_DIR=#{lib}/modprobe.d"
       args << "-DSTLINK_UDEV_RULES_DIR=#{lib}/udev/rules.d"
     end
-
-    args << "-DCMAKE_INSTALL_RPATH=#{rpath}"
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

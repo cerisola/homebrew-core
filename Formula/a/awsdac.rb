@@ -1,17 +1,17 @@
 class Awsdac < Formula
   desc "CLI tool for drawing AWS architecture"
   homepage "https://github.com/awslabs/diagram-as-code"
-  url "https://github.com/awslabs/diagram-as-code/archive/refs/tags/v0.21.6.tar.gz"
-  sha256 "1b3e955eb9df643246d3a9b88d2b951b0eb5cfb9b3d667ded2a4dbd5476551c3"
+  url "https://github.com/awslabs/diagram-as-code/archive/refs/tags/v0.21.11.tar.gz"
+  sha256 "7e95c3a28f2827c5a78764fad5c61934f94f1361e62ea52fb52a9e100107c6fc"
   license "Apache-2.0"
   head "https://github.com/awslabs/diagram-as-code.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "adcac8fef947c7328f92f04c88f6f6a03f7850ff6eda76e8c61641b801aa30e1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "adcac8fef947c7328f92f04c88f6f6a03f7850ff6eda76e8c61641b801aa30e1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "adcac8fef947c7328f92f04c88f6f6a03f7850ff6eda76e8c61641b801aa30e1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "341ad9e33312dde036869e78abdee6e39c13d4e48c5fd574031b0421e4386949"
-    sha256 cellar: :any_skip_relocation, ventura:       "341ad9e33312dde036869e78abdee6e39c13d4e48c5fd574031b0421e4386949"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "86e74ee27562f37c22ed2faf5d6acdc7a72a1f99785aa1892be3a3b1866568dc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "86e74ee27562f37c22ed2faf5d6acdc7a72a1f99785aa1892be3a3b1866568dc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "86e74ee27562f37c22ed2faf5d6acdc7a72a1f99785aa1892be3a3b1866568dc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8d1e613c9b52c4d6d55049e3744275e6925361ac300f587f3a52d5fe042c4b7f"
+    sha256 cellar: :any_skip_relocation, ventura:       "8d1e613c9b52c4d6d55049e3744275e6925361ac300f587f3a52d5fe042c4b7f"
   end
 
   depends_on "go" => :build
@@ -22,12 +22,12 @@ class Awsdac < Formula
   end
 
   test do
-    (testpath/"test.yaml").write <<~EOS
+    (testpath/"test.yaml").write <<~YAML
       Diagram:
         Resources:
           Canvas:
             Type: AWS::Diagram::Canvas
-    EOS
+    YAML
     assert_equal "[Completed] AWS infrastructure diagram generated: output.png",
       shell_output("#{bin}/awsdac test.yaml").strip
   end

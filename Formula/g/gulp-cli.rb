@@ -14,6 +14,7 @@ class GulpCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "97e82d635666e3f778dd12285f8881701110370eaefe6c22fb902b493ae2ba58"
     sha256 cellar: :any_skip_relocation, ventura:        "97e82d635666e3f778dd12285f8881701110370eaefe6c22fb902b493ae2ba58"
     sha256 cellar: :any_skip_relocation, monterey:       "97e82d635666e3f778dd12285f8881701110370eaefe6c22fb902b493ae2ba58"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "37ce0d118f641429fb3593e30aeb9d81dfebf95381855994b1d4e646f9d5cbd7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7ca11835e27a0ab600dc0ce1c92b06791fb15b3f7c75d71d97ca4984983deff8"
   end
 
@@ -32,12 +33,12 @@ class GulpCli < Formula
     assert_match "CLI version: #{version}", output
     assert_match "Local version: ", output
 
-    (testpath/"gulpfile.js").write <<~EOS
+    (testpath/"gulpfile.js").write <<~JS
       function defaultTask(cb) {
         cb();
       }
       exports.default = defaultTask
-    EOS
+    JS
     assert_match "Finished 'default' after ", shell_output("#{bin}/gulp")
   end
 end

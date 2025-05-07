@@ -1,28 +1,31 @@
 class Dprint < Formula
   desc "Pluggable and configurable code formatting platform written in Rust"
   homepage "https://dprint.dev/"
-  url "https://github.com/dprint/dprint/archive/refs/tags/0.47.5.tar.gz"
-  sha256 "bea9f14c5576ee5aaefea14839ae1f89005b4681fbf539b31460837bfa2bf92d"
+  url "https://github.com/dprint/dprint/archive/refs/tags/0.49.1.tar.gz"
+  sha256 "df019b295ff137ccaec3ad8c7a39282b485b6381ff5a3519ec18bd3d7c89ba72"
   license "MIT"
   head "https://github.com/dprint/dprint.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b003302224b4692aab0425bb7bed09123501ec1de139a19b31c42bcc9a0b8758"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c757138e6139c3dd8bff6e58aad8f775962e403ef2754c012eccc6fa582d21b2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8e4e38898a0571f7642c0978b390ff07b8546a47eadc4cd98e493c472c2cc65d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "78b64dc7c66f2c74880f8e6de322dc7db891458e1c9db817bc0f810acb763903"
-    sha256 cellar: :any_skip_relocation, ventura:       "ad520eb3d82e9ad951904a7d77d0619076cf726a32f00d421c440caa1371f145"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "81e7142153bb2cbc3217cc8f84663d8284f90e3f8a28a34dcce09c635e92ede7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9b0e4b377e98ad778793484a3dff59f74b29906ccde4b94f52acafb9917195a7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "10a11ad7af71def0ba4b5a24c8aabc87563cbe745aa4b9899308e22ecbdbf844"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4b317e6c03f9dbfb204b69c5600b46a480969b4754939d6790ba84ef504a5f21"
+    sha256 cellar: :any_skip_relocation, sonoma:        "76c79faf66dab060c0f8a12748640b27b4749751c52e61ec066120cc8e49e48b"
+    sha256 cellar: :any_skip_relocation, ventura:       "888304a28f1df47eb8dc5acbfe7c7ab7ea3ed82bf2dc01b8fa6e4cad48b3d526"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1bcd8dba5722c9dd55148118451136d91948d2d641058a7b923e2b9436af151c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7408ff0f353f0797570b56ba614081abe5fbc553f97d11c4ef7b2f0b175c581c"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args(path: "crates/dprint")
+
+    generate_completions_from_executable(bin/"dprint", "completions")
   end
 
   test do
-    (testpath/"dprint.json").write <<~EOS
+    (testpath/"dprint.json").write <<~JSON
       {
         "$schema": "https://dprint.dev/schemas/v0.json",
         "projectType": "openSource",
@@ -48,7 +51,7 @@ class Dprint < Formula
           "https://plugins.dprint.dev/rustfmt-0.3.0.wasm"
         ]
       }
-    EOS
+    JSON
 
     (testpath/"test.js").write("const arr = [1,2];")
     system bin/"dprint", "fmt", testpath/"test.js"

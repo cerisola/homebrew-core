@@ -1,8 +1,8 @@
 class Promtail < Formula
   desc "Log agent for Loki"
   homepage "https://grafana.com/loki"
-  url "https://github.com/grafana/loki/archive/refs/tags/v3.2.1.tar.gz"
-  sha256 "4d39632d6cb60a3252ca294558aa7eff2c9bb4b66b62920f4691389d293b6d7b"
+  url "https://github.com/grafana/loki/archive/refs/tags/v3.5.0.tar.gz"
+  sha256 "584d7f45cc85f884e8eb7e8ed8c35eacd2157c6edd0f2a2d0161ba39d22b86ae"
   license "AGPL-3.0-only"
   head "https://github.com/grafana/loki.git", branch: "main"
 
@@ -11,12 +11,12 @@ class Promtail < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ec12a7dfa896bc28d680174acb931f0a0608781c352128a84853a6623b0d6aa1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bf29b63fdb7090073793d47fb2609e641d162fbdc79a891ba18fdc4a7f00b273"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "137471b53132ed00460101b894e232e0cbf39e4a86b26fc947e779b2a7caf4e0"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4529ef1f5f1ab24cd6b16cddb797ab8892b7164a1d8f958f1a6b32b17fa2aaf7"
-    sha256 cellar: :any_skip_relocation, ventura:       "df46d75311db8fcad5135888adbb5c731b4de4b5c63f6d162b28b969e2b766ef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dd79c33036cdeaee20150bcc8c3ad233f94b6126ab47375c48c520c4eadd22f1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a18ca8d85e8eff9655dc09ba314f177301a053c60375411482e1d43471201f81"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "38540001bdb70e65b5b285332e7a2d0db6b903f583ab1329c123f657226bfd48"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "89e9e892ce8e374ce1cfeff3d75076a1fdc8c3bc5fee5fd8c15c5bab0c369917"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9674fba5c336a8b684856ccbf9d21fbc3d6acbd072f35611d929312e3d60543e"
+    sha256 cellar: :any_skip_relocation, ventura:       "ecbe3543e0d56f289e46f6c25edaf01591878d4cf4ff2f9428e0016a4195741c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0807b22381049e32bc05990e02c663abac6f3d48446d55ae736480232734a627"
   end
 
   depends_on "go" => :build
@@ -51,6 +51,7 @@ class Promtail < Formula
 
     fork { exec bin/"promtail", "-config.file=promtail-local-config.yaml" }
     sleep 3
+    sleep 3 if OS.mac? && Hardware::CPU.intel?
 
     output = shell_output("curl -s localhost:#{port}/metrics")
     assert_match "log_messages_total", output

@@ -14,6 +14,7 @@ class GruntCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
     sha256 cellar: :any_skip_relocation, ventura:        "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
     sha256 cellar: :any_skip_relocation, monterey:       "be6201a69eafbd7b9d93fa919cd410dc0c8e03eef63f686836690fdee13b9fe0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7cfb7579ba83a114818c2ef065a534f5d237cbd21b3be57d73063e5763addaa8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "b9383dff764eb6833c08ecf8ac67a869c40c5830ec27471577094357feabac56"
   end
 
@@ -25,7 +26,7 @@ class GruntCli < Formula
   end
 
   test do
-    (testpath/"package.json").write <<~EOS
+    (testpath/"package.json").write <<~JSON
       {
         "name": "grunt-homebrew-test",
         "version": "1.0.0",
@@ -33,18 +34,18 @@ class GruntCli < Formula
           "grunt": ">=0.4.0"
         }
       }
-    EOS
+    JSON
 
-    (testpath/"Gruntfile.js").write <<~EOS
+    (testpath/"Gruntfile.js").write <<~JAVASCRIPT
       module.exports = function(grunt) {
         grunt.registerTask("default", "Write output to file.", function() {
           grunt.file.write("output.txt", "Success!");
         })
       };
-    EOS
+    JAVASCRIPT
 
     system "npm", "install", *std_npm_args(prefix: false)
     system bin/"grunt"
-    assert_predicate testpath/"output.txt", :exist?, "output.txt was not generated"
+    assert_path_exists testpath/"output.txt", "output.txt was not generated"
   end
 end

@@ -3,31 +3,32 @@ class Gupnp < Formula
 
   desc "Framework for creating UPnP devices and control points"
   homepage "https://wiki.gnome.org/Projects/GUPnP"
-  url "https://download.gnome.org/sources/gupnp/1.6/gupnp-1.6.7.tar.xz"
-  sha256 "4a61d8a5a8a7270e60ce9cfe9661cc4fa326f045a65718d2eb8ff68afdbef805"
+  url "https://download.gnome.org/sources/gupnp/1.6/gupnp-1.6.8.tar.xz"
+  sha256 "70a003cebd68577293fb3e6af49ff902203bf8768b2fc5d651ddc1f0fa1e11e9"
   license "LGPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "29d88e4f5264b6fa7fb0ac8f639f430d8e0d9ff27ed5c55c55e35b273a60f77d"
-    sha256 cellar: :any, arm64_sonoma:  "8ad508ff6e4534e480751b8e7d13a779c315b86fa684c5c3e623fba2646c4ce4"
-    sha256 cellar: :any, arm64_ventura: "accd605b048a9f1da2563805ef1a1fccee2b3bfecc90f70d485cea7b3af872eb"
-    sha256 cellar: :any, sonoma:        "89f4e49877c5e9f0e60a149dd87d58badb46e6ede255eecca6e7437c9eb35e29"
-    sha256 cellar: :any, ventura:       "973f38fb49c3c9d03aa96aef88935d5295721ac34186e08f3a570cbfb5846863"
-    sha256               x86_64_linux:  "c3ee66eef6d62af9934ac331a4fdfd718129216a0ab7fd8a3b30730b7a87ed33"
+    sha256 cellar: :any, arm64_sequoia: "0d73be784e10b682d081fa15b4779f54cf372468c0ae538d9d1468a135ca460b"
+    sha256 cellar: :any, arm64_sonoma:  "c2e208114785c8a6891e62c0372c90a44879f1f03551cf7ea0948acf39aca197"
+    sha256 cellar: :any, arm64_ventura: "daf4ba3e00e3c0931a340c6dd4259840deeb0ca477d3f055a48ed517ddf14a25"
+    sha256 cellar: :any, sonoma:        "666d7700b2ad4fb6ef4811186eb2b82fce1029e990bb7fecfec1f680c72eb08e"
+    sha256 cellar: :any, ventura:       "d73e698c784354e7dcefedda8057a17d3fe4d5274ffc0ce96cce07b441639a12"
+    sha256               arm64_linux:   "5c354c24487b881facf052d72ca33238ed108d8e599ed53f57d5e3c75005c046"
+    sha256               x86_64_linux:  "6f3b4dbadddd74af18147095bf99055d590bfe0ffce1eca0a4cce2aaf261abb1"
   end
 
   depends_on "docbook-xsl" => :build
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "vala" => :build
   depends_on "gettext"
   depends_on "glib"
   depends_on "gssdp"
   depends_on "libsoup"
   depends_on "libxml2"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
 
   def install
     ENV.prepend_path "XDG_DATA_DIRS", HOMEBREW_PREFIX/"share"

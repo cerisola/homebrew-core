@@ -29,13 +29,14 @@ class Tmate < Formula
     sha256 cellar: :any,                 catalina:       "a278bcb401068bed2434ec48bfb059a86d793a6daa4877574ac0ed7168cb1ebc"
     sha256 cellar: :any,                 mojave:         "7e5158460b898422b4c6e84390d0e8446e2ad52789a30f9942288c5c32acc8a1"
     sha256 cellar: :any,                 high_sierra:    "0f4f06d0ab7715adc7f6d33cf7d3c08fd057e7f038a666b360ac4ad6a3449ad9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d32cec664457d6e17deecc2f05a9b8fae500e5621473679789e413a453f0032c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "6b3b3d87ea67d6ee52e3775578b7f37d46cca673aae9f412484439d10e9de620"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libevent"
   depends_on "libssh"
   depends_on "msgpack"
@@ -46,9 +47,7 @@ class Tmate < Formula
     system "sh", "autogen.sh"
 
     ENV.append "LDFLAGS", "-lresolv"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+    system "./configure", "--sysconfdir=#{etc}", *std_configure_args
     system "make", "install"
   end
 

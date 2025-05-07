@@ -6,7 +6,7 @@ class FfmpegAT5 < Formula
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 3
+  revision 6
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,17 +14,18 @@ class FfmpegAT5 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "60e187bca86a0511aaddd3bf0c961144bb7724ffe76b74bee81e1578d3efd472"
-    sha256 arm64_sonoma:  "2a0b4d257f3d5dd05ad5ea4d9b2b223c1c92d274fb18598fdfe5c0a8962f657f"
-    sha256 arm64_ventura: "f02da9244e184fc0822c2bc5d481cf75e1632bb45e7cac48a067854b132077cd"
-    sha256 sonoma:        "3dedfa0a10924e3fb09b3ac9a04aea5d1da278e9ebbdf1a7b8efe23896eed3f5"
-    sha256 ventura:       "c8b0cca141773d4dd3f725dd70d42db0f71a287f35e3b6bb4ae6e296a4af99ca"
-    sha256 x86_64_linux:  "ce1eaff90caf0c5cc64d1d80aa1becf8f2b3d664df5624e6717df6e6b7ca4364"
+    sha256 arm64_sequoia: "4f69f2f11062b027c5bf5b998032719d945248c92ec130a9e10ab72cdccf8d0d"
+    sha256 arm64_sonoma:  "9caf5a858c5ca8e120e755197e3de8bd093ce25dd3f10c7ac9c6ab0126ffa0ac"
+    sha256 arm64_ventura: "6b3f65de513282a348806746500c0529446eede583a47d129923a373fde4c327"
+    sha256 sonoma:        "80a9562d645f871203d4b11c390470aa7064c902d0a20a8034a9443cfdeef8f3"
+    sha256 ventura:       "718b1c39512d1b4991abed76b1a0c7a832dc1dfcd60235844cc9db932e0237df"
+    sha256 arm64_linux:   "3996bbe03d1af1c2bdfa27fd045e0c8de7df011c70e7020134498476ffec18f6"
+    sha256 x86_64_linux:  "0d9790c7644c060dd93383e436fd0ea789edf018a5110043468b6edaedfe6661"
   end
 
   keg_only :versioned_formula
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "aom"
   depends_on "aribb24"
   depends_on "dav1d"
@@ -84,7 +85,11 @@ class FfmpegAT5 < Formula
     depends_on "nasm" => :build
   end
 
-  fails_with gcc: "5"
+  # Backport support for recent svt-av1 (3.0.0)
+  patch do
+    url "https://github.com/FFmpeg/FFmpeg/commit/d1ed5c06e3edc5f2b5f3664c80121fa55b0baa95.patch?full_index=1"
+    sha256 "0eb23ab90c0e5904590731dd3b81c86a4127785bc2b367267d77723990fb94a2"
+  end
 
   def install
     # The new linker leads to duplicate symbol issue https://github.com/homebrew-ffmpeg/homebrew-ffmpeg/issues/140
@@ -160,6 +165,6 @@ class FfmpegAT5 < Formula
     # Create an example mp4 file
     mp4out = testpath/"video.mp4"
     system bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
-    assert_predicate mp4out, :exist?
+    assert_path_exists mp4out
   end
 end

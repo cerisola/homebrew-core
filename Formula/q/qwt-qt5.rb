@@ -24,8 +24,6 @@ class QwtQt5 < Formula
 
   depends_on "qt@5"
 
-  fails_with gcc: "5"
-
   # Update designer plugin linking back to qwt framework/lib after install
   # See: https://sourceforge.net/p/qwt/patches/45/
   patch :DATA
@@ -56,13 +54,13 @@ class QwtQt5 < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <qwt_plot_curve.h>
       int main() {
         QwtPlotCurve *curve1 = new QwtPlotCurve("Curve 1");
         return (curve1 == NULL);
       }
-    EOS
+    CPP
     if OS.mac?
       system ENV.cxx, "test.cpp", "-o", "out",
         "-std=c++11",

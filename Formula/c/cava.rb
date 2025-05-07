@@ -1,26 +1,25 @@
 class Cava < Formula
   desc "Console-based Audio Visualizer for ALSA"
   homepage "https://github.com/karlstav/cava"
-  url "https://github.com/karlstav/cava/archive/refs/tags/0.10.2.tar.gz"
-  sha256 "853ee78729ed3501d0cdf9c1947967ad3bfe6526d66a029b4ddf9adaa6334d4f"
+  url "https://github.com/karlstav/cava/archive/refs/tags/0.10.4.tar.gz"
+  sha256 "5a2efedf2d809d70770f49349f28a5c056f1ba9b3f5476e78744291a468e206a"
   license "MIT"
   head "https://github.com/karlstav/cava.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "6b7abdbd2b00942957380ca8770ebeb2eda39dda4ff6238afea4a46e47c45920"
-    sha256 cellar: :any, arm64_sonoma:   "aa62a4d58c42b5b95be8d6f996728308730bb70eaabc4d0bf26f2599fe23e2c7"
-    sha256 cellar: :any, arm64_ventura:  "480f4fb722f970d56afd1d626df91d276f0b6d8c762c53436f835dfbf8bb4df5"
-    sha256 cellar: :any, arm64_monterey: "498ee144ce314d844962eef7df12b139aa5fab106dc20b6437e2ca1346bfc4a3"
-    sha256 cellar: :any, sonoma:         "70e9e1476a708fe482f568f9b2f621b17eb76437e390c2ac2eaf7dc233f62edc"
-    sha256 cellar: :any, ventura:        "9fad2eb551ddb104fca1a0de695586bafdd598a0189dd00156955f704d1b6921"
-    sha256 cellar: :any, monterey:       "80f5dde55a22dc3e162f11f0131ed4829158f5f748c466dbed34adcf304ce8fc"
-    sha256               x86_64_linux:   "9d951035501e2b9a741d8b470119a9a3223e2a361161996a4f82322664002f8b"
+    sha256 cellar: :any, arm64_sequoia: "fc71ed1ee831644035fdce90d1a95ec22e6b628cf8272fe021a96c541915a5a3"
+    sha256 cellar: :any, arm64_sonoma:  "5dbaed52f9b4450cda2ee03f98538d49f9d8a071a637a4ec583a1f112d86e404"
+    sha256 cellar: :any, arm64_ventura: "9a28fd6da1772968860f7e90e7f4de6d3f733e9f8131d4cc35ea0d089207b681"
+    sha256 cellar: :any, sonoma:        "4195486bcc4c14f0c9dfa0f229ef4a2f17a577132b50e402af480df0263ed5bd"
+    sha256 cellar: :any, ventura:       "fc4e24b6e06d3c7b6839fe7c9ddf089cb874e2cf3b2b69ae98fa21ca21c9cf2e"
+    sha256               arm64_linux:   "a47b2f16fb7660eea601173a303838c4b7d56f317f152afef4369fa9b5d96c84"
+    sha256               x86_64_linux:  "e85e6e26804aff07eb2d748904dd810a1427d2cbd3e328e912356fcace9102e1"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool"  => :build
-  depends_on "pkg-config"  => :build
+  depends_on "pkgconf"  => :build
 
   depends_on "fftw"
   depends_on "iniparser"
@@ -68,7 +67,7 @@ class Cava < Formula
 
     pid = spawn(bin/"cava", "-p", cava_config, [:out, :err] => cava_stdout.to_s)
 
-    sleep 2
+    sleep 5
 
     assert_match "0;0;\n", cava_stdout.read
   ensure

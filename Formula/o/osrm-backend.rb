@@ -2,7 +2,7 @@ class OsrmBackend < Formula
   desc "High performance routing engine"
   homepage "https://project-osrm.org/"
   license "BSD-2-Clause"
-  revision 6
+  revision 8
   head "https://github.com/Project-OSRM/osrm-backend.git", branch: "master"
 
   # TODO: Remove `conflicts_with "mapnik"` in release that has following commit:
@@ -11,14 +11,27 @@ class OsrmBackend < Formula
     url "https://github.com/Project-OSRM/osrm-backend/archive/refs/tags/v5.27.1.tar.gz"
     sha256 "52391580e0f92663dd7b21cbcc7b9064d6704470e2601bf3ec5c5170b471629a"
 
+    # Backport commit to build with CMake 4. Remove in the next release
+    patch do
+      url "https://github.com/Project-OSRM/osrm-backend/commit/d691af4860350287041676178ceb511b240c336c.patch?full_index=1"
+      sha256 "216a143e58ee96abf4585b0f1d046469f7b42966e175b3b7b30350c232b48fff"
+    end
+
+    # Backport fix for Boost 1.85.0. Remove in the next release.
+    # PR ref: https://github.com/Project-OSRM/osrm-backend/pull/6856
+    patch do
+      url "https://github.com/Project-OSRM/osrm-backend/commit/10ec6fc33547e4b96a5929c18db57fb701152c68.patch?full_index=1"
+      sha256 "4f475ed8a08aa95a2b626ba23c9d8ac3dc55d54c3f163e3d505d4a45c2d4e504"
+    end
+
     # Backport fix for missing include. Remove in the next release.
     # Ref: https://github.com/Project-OSRM/osrm-backend/commit/565959b3896945a0eb437cc799b697be023121ef
     #
-    # Also add temporary build fix to 'include/util/lua_util.hpp' for Boost 1.85.0.
-    # Issue ref: https://github.com/Project-OSRM/osrm-backend/issues/6850
-    #
     # Also backport sol2.hpp workaround to avoid a Clang bug. Remove in the next release
     # Ref: https://github.com/Project-OSRM/osrm-backend/commit/523ee762f077908d03b66d0976c877b52adf22fa
+    #
+    # Also add diff from open PR to support Boost 1.87.0
+    # Ref: https://github.com/Project-OSRM/osrm-backend/pull/7073
     patch :DATA
   end
 
@@ -28,14 +41,13 @@ class OsrmBackend < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "ea5f99145c4fe841d95fba33e08a093f88b291e311e219b0b833fd9777caeb9e"
-    sha256 cellar: :any,                 arm64_sonoma:   "650d17a3915469c4bbd23eec83f8ceb27570b0d3207c1a3598f3d6747296c21e"
-    sha256 cellar: :any,                 arm64_ventura:  "ccd438e39cdec24fdff74bb2ed43cee49d00af2b3144ad90802fa3e3bb53eb79"
-    sha256 cellar: :any,                 arm64_monterey: "072bd2264dec2d9db23593505666eb8b67b5f993d5753a67decae862be2b5330"
-    sha256 cellar: :any,                 sonoma:         "2fd84b9de2a0e5f091371d7480b8cc2fa0296d71e5f910291e8e293b00e26523"
-    sha256 cellar: :any,                 ventura:        "c34da972144b065eb8bcd678359b298c63631052fce4dfd2565042d77a9e7fd7"
-    sha256 cellar: :any,                 monterey:       "0883df366fab00865ab4f9b83a0879d73006abbcd0856c0f27165d631f79269e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c8d9c984c196e0eba61bb632babccb693d2a5e1bb49864d6656a3bf64c6eef51"
+    sha256 cellar: :any,                 arm64_sequoia: "81bccb3ebd19507e9fd25afecce4ebef9226f4a2fdc7438c8cfd1f4e39d03932"
+    sha256 cellar: :any,                 arm64_sonoma:  "3d055a3ce881d4d191620dc35ea7d7fcc4c30578eb0ba9de126a6c53daeeed19"
+    sha256 cellar: :any,                 arm64_ventura: "22e157f68d7694ee9f4e3be99e571dbb782a4322df6b5126bafacc8c68c25bd7"
+    sha256 cellar: :any,                 sonoma:        "1bbde2078ad5bf2dc875f06e5ce07725962e3e47263ed5e35b649beb3d25b7f7"
+    sha256 cellar: :any,                 ventura:       "4e3d544640bbfefb638be3bf2e098463db14f12ede06285d1a284a8446335e92"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "448c8a5d909afa8bd305ee80e5cbdeda34f1bebdc4df34b869ec8a85ab12fffd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1b010082cf4787ceec009ed78886362aded2f95eb0605a543328e92a3d38e758"
   end
 
   depends_on "cmake" => :build
@@ -55,6 +67,12 @@ class OsrmBackend < Formula
   conflicts_with "mapnik", because: "both install Mapbox Variant headers"
 
   def install
+    # Workaround to build with CMake 4. Remove in the next release
+    if build.stable?
+      odie "Remove CMake 4 workaround!" if version >= 6
+      ENV["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
+    end
+
     # Work around build failure: duplicate symbol 'boost::phoenix::placeholders::uarg9'
     # Issue ref: https://github.com/boostorg/phoenix/issues/111
     ENV.append_to_cflags "-DBOOST_PHOENIX_STL_TUPLE_H_"
@@ -84,7 +102,7 @@ class OsrmBackend < Formula
     node2 = 'visible="true" version="1" changeset="323878" timestamp="2008-05-03T13:39:23Z"'
     node3 = 'visible="true" version="1" changeset="323878" timestamp="2008-05-03T13:39:23Z"'
 
-    (testpath/"test.osm").write <<~EOS
+    (testpath/"test.osm").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <osm version="0.6">
        <bounds minlat="54.0889580" minlon="12.2487570" maxlat="54.0913900" maxlon="12.2524800"/>
@@ -97,18 +115,18 @@ class OsrmBackend < Formula
         <tag k="highway" v="unclassified"/>
        </way>
       </osm>
-    EOS
+    XML
 
-    (testpath/"tiny-profile.lua").write <<~EOS
+    (testpath/"tiny-profile.lua").write <<~LUA
       function way_function (way, result)
         result.forward_mode = mode.driving
         result.forward_speed = 1
       end
-    EOS
+    LUA
 
     safe_system bin/"osrm-extract", "test.osm", "--profile", "tiny-profile.lua"
     safe_system bin/"osrm-contract", "test.osrm"
-    assert_predicate testpath/"test.osrm.names", :exist?, "osrm-extract generated no output!"
+    assert_path_exists testpath/"test.osrm.names", "osrm-extract generated no output!"
   end
 end
 
@@ -124,20 +142,6 @@ index 5d16fe6..2c378bf 100644
 +#include <vector>
 
  #include "util/string_view.hpp"
-
-diff --git a/include/util/lua_util.hpp b/include/util/lua_util.hpp
-index 36af5a1f3..cd2d1311c 100644
---- a/include/util/lua_util.hpp
-+++ b/include/util/lua_util.hpp
-@@ -8,7 +8,7 @@ extern "C"
- #include <lualib.h>
- }
-
--#include <boost/filesystem/convenience.hpp>
-+#include <boost/filesystem/operations.hpp>
-
- #include <iostream>
- #include <string>
 
 diff --git a/third_party/sol2-3.3.0/include/sol/sol.hpp b/third_party/sol2-3.3.0/include/sol/sol.hpp
 index 8b0b7d36ea4ef2a36133ce28476ae1620fcd72b5..d7da763f735434bf4a40b204ff735f4e464c1b13 100644
@@ -175,3 +179,17 @@ index 8b0b7d36ea4ef2a36133ce28476ae1620fcd72b5..d7da763f735434bf4a40b204ff735f4e
  			int nr;
  			if constexpr (no_trampoline) {
  				nr = real_call(L);
+diff --git a/include/server/server.hpp b/include/server/server.hpp
+index 34b8982e67..02b0dda050 100644
+--- a/include/server/server.hpp
++++ b/include/server/server.hpp
+@@ -53,8 +53,7 @@ class Server
+         const auto port_string = std::to_string(port);
+ 
+         boost::asio::ip::tcp::resolver resolver(io_context);
+-        boost::asio::ip::tcp::resolver::query query(address, port_string);
+-        boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(query);
++        boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(address, port_string).begin();
+ 
+         acceptor.open(endpoint.protocol());
+ #ifdef SO_REUSEPORT

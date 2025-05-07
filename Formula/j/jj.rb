@@ -1,53 +1,59 @@
 class Jj < Formula
   desc "Git-compatible distributed version control system"
-  homepage "https://github.com/martinvonz/jj"
-  url "https://github.com/martinvonz/jj/archive/refs/tags/v0.22.0.tar.gz"
-  sha256 "ed49b1c01ee6086bb782a465a4437e2f1b66f43bcf39c231df2b261091ab114b"
+  homepage "https://github.com/jj-vcs/jj"
+  url "https://github.com/jj-vcs/jj/archive/refs/tags/v0.28.2.tar.gz"
+  sha256 "dae80d2629a9f430a9ea795c8cd378ced6ce1c870ab9ffe3b61f64cdd636a2bc"
   license "Apache-2.0"
-  head "https://github.com/martinvonz/jj.git", branch: "main"
+  head "https://github.com/jj-vcs/jj.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ca729c593b4de7a68bf601cf4791f5f62283437e3e2c3ccbf1cc3b62c7492962"
-    sha256 cellar: :any,                 arm64_sonoma:  "b8bf2630482af0134bc6d54e6dd542da452aad6767031bc19e02d139df789c37"
-    sha256 cellar: :any,                 arm64_ventura: "3a3274b55153eee0a1afb592169814dac795f47aa18698c483a7acd211e9a123"
-    sha256 cellar: :any,                 sonoma:        "48d5223024f8212ab0d8fdd7b0298a9689c7b45ad598d7ee298ba569ac83be98"
-    sha256 cellar: :any,                 ventura:       "013f3f483794574d33c3f21d3f24149af3440585dc997cb7a6116cf46b87bf70"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ce97b379ce2939ab3f4125e7b4ef6efeca7890d1f84b11c329ed8c6c584611c"
+    sha256 cellar: :any,                 arm64_sequoia: "94cb7b6bd94ef185ad140d6697d5475b6577f192bf8a4e8a599acc504d61bbcb"
+    sha256 cellar: :any,                 arm64_sonoma:  "ac72b0219e7cc311b02b2e8837e54cb3c6df9963a063e20e37f7a2aabdc7eacb"
+    sha256 cellar: :any,                 arm64_ventura: "0a6ee059850461f8407e2065de7505e0b7971226cd715cadb44f2be992bd3185"
+    sha256 cellar: :any,                 sonoma:        "f31c88e39a0d30ed5efabd04a27e8d9ce8a7f9f87cf43122dd8bfee3620894cb"
+    sha256 cellar: :any,                 ventura:       "adcee265c948ff6f08a8b92578665ce2cdd1ebb2eadc4e8587fbade75250e0a8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "be843c4b26b533c13138f5f3d5f455cb58ac4c7fe7a5890fe5cf84764379fb1d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "805f70f61961c73de428e3d714fec32dbd1aef834081a70a2fef8a2b3689082c"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
+
   depends_on "libgit2"
+  depends_on "libssh2"
   depends_on "openssl@3"
+
   uses_from_macos "zlib"
 
   def install
     ENV["LIBGIT2_NO_VENDOR"] = "1"
+    ENV["LIBSSH2_SYS_USE_PKG_CONFIG"] = "1"
+    # Ensure the correct `openssl` will be picked up.
+    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix
+    ENV["OPENSSL_NO_VENDOR"] = "1"
 
     system "cargo", "install", *std_cargo_args(path: "cli")
 
-    generate_completions_from_executable(bin/"jj", "util", "completion", shell_parameter_format: :flag)
-    (man1/"jj.1").write Utils.safe_popen_read(bin/"jj", "util", "mangen")
-  end
-
-  def check_binary_linkage(binary, library)
-    binary.dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == File.realpath(library)
-    end
+    generate_completions_from_executable(bin/"jj", shell_parameter_format: :clap)
+    system bin/"jj", "util", "install-man-pages", man
   end
 
   test do
-    system bin/"jj", "init", "--git"
-    assert_predicate testpath/".jj", :exist?
+    require "utils/linkage"
+
+    touch testpath/"README.md"
+    system bin/"jj", "git", "init"
+    system bin/"jj", "describe", "-m", "initial commit"
+    assert_match "README.md", shell_output("#{bin}/jj file list")
+    assert_match "initial commit", shell_output("#{bin}/jj log")
 
     [
       Formula["libgit2"].opt_lib/shared_library("libgit2"),
+      Formula["libssh2"].opt_lib/shared_library("libssh2"),
       Formula["openssl@3"].opt_lib/shared_library("libcrypto"),
       Formula["openssl@3"].opt_lib/shared_library("libssl"),
     ].each do |library|
-      assert check_binary_linkage(bin/"jj", library),
+      assert Utils.binary_linked_to_library?(bin/"jj", library),
              "No linkage with #{library.basename}! Cargo is likely using a vendored version."
     end
   end

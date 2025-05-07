@@ -29,6 +29,7 @@ class Burp < Formula
     sha256 ventura:        "9a7d37e6cbe57a298cd83d7ab19960895329906bcf828113a98e159ac5baf8d0"
     sha256 monterey:       "a1aeb87a73af8ecf56631e3a3ac97732cc391afbe4d3651e05b390f0777f91de"
     sha256 big_sur:        "bde32d67b881d607349d196ecd79aac7cc92256e3ce94731bf27f90eb99ace53"
+    sha256 arm64_linux:    "2cf103f7f0a674d270df1ae3ffcb7b8aec575b6c4b4a86f06a16f77b2f4b1ca9"
     sha256 x86_64_linux:   "3e0b7b18c51c5e0bd4160c6c9feba24bae0a4a3b1dad8c91e5c9f5f77736a113"
   end
 
@@ -44,13 +45,17 @@ class Burp < Formula
     end
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librsync"
   depends_on "openssl@3"
 
   uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  on_linux do
+    depends_on "acl"
+  end
 
   def install
     resource("uthash").stage do
@@ -59,7 +64,7 @@ class Burp < Formula
 
     ENV.prepend "CPPFLAGS", "-I#{buildpath}/uthash/include"
 
-    system "autoreconf", "-fiv" if build.head?
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
 
     system "./configure", "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}/burp",

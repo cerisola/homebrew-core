@@ -23,23 +23,22 @@ class Libodfgen < Formula
     sha256 cellar: :any,                 big_sur:        "f53270e1f9060d1e2074a89444899e540e3307270fbd94c6a5186e9a05ecda45"
     sha256 cellar: :any,                 catalina:       "f019ef9174156093d5592556fac3fb5e87a38a90882572a3ff4a15b7d9227c8c"
     sha256 cellar: :any,                 mojave:         "b8bcc9b962fa97d431fb4a27a924a18b37b264e43bb5e881b67668aa18633edd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "bd214b5c11aff4b9a57155479ada4e47e8b0e75e4a523836682c6616719b6431"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "8466ec0a88ee4d205fb5bac977d257b7cea7c4dfcdcfc1028d97e4be5529c848"
   end
 
-  depends_on "boost" => :build
-  depends_on "libetonyek" => :build
-  depends_on "libwpg" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librevenge"
-  depends_on "libwpd"
+
+  uses_from_macos "libxml2"
 
   def install
-    system "./configure", "--without-docs",
-                          "--disable-dependency-tracking",
-                          "--enable-static=no",
-                          "--with-sharedptr=boost",
+    system "./configure", "--disable-silent-rules",
+                          "--disable-static",
+                          "--disable-test",
                           "--disable-werror",
-                          "--prefix=#{prefix}"
+                          "--without-docs",
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -51,12 +50,10 @@ class Libodfgen < Formula
       }
     CPP
     system ENV.cxx, "test.cpp", "-o", "test",
-      "-lrevenge-0.0",
-      "-I#{Formula["librevenge"].include}/librevenge-0.0",
-      "-L#{Formula["librevenge"].lib}",
-      "-lodfgen-0.1",
-      "-I#{include}/libodfgen-0.1",
-      "-L#{lib}"
+                    "-I#{include}/libodfgen-0.1",
+                    "-I#{Formula["librevenge"].include}/librevenge-0.0",
+                    "-L#{lib}", "-lodfgen-0.1",
+                    "-L#{Formula["librevenge"].lib}", "-lrevenge-0.0"
     system "./test"
   end
 end

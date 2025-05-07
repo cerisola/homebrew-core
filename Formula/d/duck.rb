@@ -1,30 +1,29 @@
 class Duck < Formula
   desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-9.0.2.42108.tar.gz"
-  sha256 "96038b199b1ec08c8a4aba5d46e7e091d128f8e7008e03a8ab78de3f6434caa5"
+  url "https://dist.duck.sh/duck-src-9.1.4.43177.tar.gz"
+  sha256 "96d5447320dd094d1c37d70a8631e321f966dc927179c8b01638c33baf502795"
   license "GPL-3.0-only"
   head "https://github.com/iterate-ch/cyberduck.git", branch: "master"
 
   livecheck do
     url "https://dist.duck.sh/"
-    regex(/href=.*?duck-src[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(/href=.*?duck(?:-src)?[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "6b003809f171b50636abbe736adcb19dc70554e934c353fc36f236fae30583af"
-    sha256 cellar: :any, arm64_sonoma:   "cc19cc3fb246ea0684c2bec6f6ddbec516619f520e404d011a6ee88a160020bc"
-    sha256 cellar: :any, arm64_ventura:  "eff6c15a43a4bb81bdb8254adab8551920eff0211cbdfab952b40f0bc6685c56"
-    sha256 cellar: :any, arm64_monterey: "b5a223bf6abd10e9b52c0232ae6a8ef9a2329aea3e9c278910ae9cdb97acded6"
-    sha256 cellar: :any, sonoma:         "6500e2108ab4c87ea83a0161e9f54ee5c5e791cc2739521ba45383e77ee3998b"
-    sha256 cellar: :any, ventura:        "6554d72cdd0174c8573d6f9ed1e8e82c7d27bb23b5f2824a75e8d45f998f6728"
-    sha256 cellar: :any, monterey:       "9f6ebe2feb12d55c3875385ac021e98b2669dcaf51c7e8a9b9c403782d2ce730"
-    sha256               x86_64_linux:   "5618ce49e48bdb8ff4fc7f744bfffdcb8a0383b48c0f74b2e9b06e188fc1216c"
+    sha256 cellar: :any, arm64_sequoia: "8452b267b2b6dc5b7f897bdd936630b4c20c74c98514089c3e7d1ea5424ad4f3"
+    sha256 cellar: :any, arm64_sonoma:  "4b22313f07172072e458c058e7f1038d7a4d58593bc8e0ac126ab62f5a51c304"
+    sha256 cellar: :any, arm64_ventura: "139577fa21c0828e6f5b8881455282a0771289300ea91310ee10bef1d3d9f356"
+    sha256 cellar: :any, sonoma:        "f942a951a01b823e6247b178b0da78bdab9094113cc858ddff68c1986c91def9"
+    sha256 cellar: :any, ventura:       "9ba954249bc79a8afc1a55cc475fbafd13485f405007dc964fb033526bba9ee3"
+    sha256               arm64_linux:   "95f1978f010a3009a79b9b381e59531b536b43f836e3acb3a1cf7a785165d3c9"
+    sha256               x86_64_linux:  "d55145d694a6e3094243cdc1e4df1826b49cf5e1834fafbc4693f3a5432ce0a5"
   end
 
   depends_on "ant" => :build
   depends_on "maven" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on xcode: ["13.1", :build]
   depends_on "openjdk"
 
@@ -49,13 +48,13 @@ class Duck < Formula
   conflicts_with "duckscript", because: "both install `duck` binaries"
 
   resource "jna" do
-    url "https://github.com/java-native-access/jna/archive/refs/tags/5.14.0.tar.gz"
-    sha256 "b8a51f4c97708171fc487304f98832ce954b6c02e85780de71d18888fddc69e3"
+    url "https://github.com/java-native-access/jna/archive/refs/tags/5.17.0.tar.gz"
+    sha256 "fe35d85e63ea998ec08f1beaa0162b1e7f233e9e82b8f43ba500a0a824874158"
   end
 
   resource "rococoa" do
-    url "https://github.com/iterate-ch/rococoa/archive/refs/tags/0.9.1.tar.gz"
-    sha256 "62c3c36331846384aeadd6014c33a30ad0aaff7d121b775204dc65cb3f00f97b"
+    url "https://github.com/iterate-ch/rococoa/archive/refs/tags/0.10.0.tar.gz"
+    sha256 "8ce789a7b27c37ed37dcb6517b76de8eee144bf7269c3c645d791f21c20a3046"
   end
 
   resource "JavaNativeFoundation" do

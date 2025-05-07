@@ -6,9 +6,13 @@ class Qsoas < Formula
   license "GPL-2.0-only"
   revision 1
 
+  # The upstream server has an incomplete certificate chain, producing a
+  # curl error on Linux (`(60) SSL certificate problem: unable to get local
+  # issuer certificate`). This check can still work on macOS but we can't add
+  # this formula to the autoump list until this is resolved.
   livecheck do
-    url "https://github.com/fourmond/QSoas.git"
-    regex(/(\d+(?:\.\d+)+)$/i)
+    url "https://bip.cnrs.fr/groups/bip06/software/downloads/"
+    regex(/href=.*?qsoas[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   bottle do
@@ -28,8 +32,6 @@ class Qsoas < Formula
   depends_on "qt@5"
 
   uses_from_macos "ruby"
-
-  fails_with gcc: "5"
 
   def install
     gsl = Formula["gsl"].opt_prefix

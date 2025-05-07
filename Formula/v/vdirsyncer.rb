@@ -6,16 +6,18 @@ class Vdirsyncer < Formula
   url "https://files.pythonhosted.org/packages/ee/c2/50eb6b430f447c062ae3cd07d1a354d768bdb1443580bd4ae16ec8c8296d/vdirsyncer-0.19.3.tar.gz"
   sha256 "e437851feb985dec3544654f8f9cf6dd109b0b03f7e19956086603092ffeb28f"
   license "BSD-3-Clause"
+  revision 1
   head "https://github.com/pimutils/vdirsyncer.git", branch: "main"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac7cf67f1fca4049d9060405b314da797bcbbf7d87121cd19ace58e59a9c6abc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fa1a2d00e1a2901b34166849e60ede0db11bc3bf596b967054b998290b93302d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1992e741e5ad6fcc62a8b9086e079db0d743ba6b56551d23e217474a62cbc801"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3a05074d6a9578023c3bdc5c897870c1a5dd3a034c49aa8fca47c535afb0b362"
-    sha256 cellar: :any_skip_relocation, ventura:       "ccd8fc5fc3ffef80b6cea7d15c6e3fb458248c8702052afa49b00079c910a9b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8d7c95c9f0d5619c648f5a97b9861bff5fdce1dca29883780fd52fda1f2aa0e9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8d5d8caff129d1bd04a3bc1053dea96b450abdb139ddf91c2e58f3eae1686455"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "044260626c367cb745a4bab4ac5c4713f974cd4bc9293e38ac80fe5676c35561"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "49769d8cac044ada8b15d1ed3db8c83cb2f00b154c46354c523673cfa70d745b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e8d51e71ec7cbdb9e21995cab9ee7e7f169973e7998c3a86747a60726060d347"
+    sha256 cellar: :any_skip_relocation, ventura:       "b1030cd302d1a1c11dd379a488bfcf0ac6a110e17e0b4eaa36afab08b186bfbf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "78371fdbfe06269074729f55fedda1344e2622485955ff811f45ab19d23568b4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52f1a9a9af3c8d86551fb7864e80af1b8fb9d26a8641e334d617430522363d3a"
   end
 
   depends_on "certifi"
@@ -27,8 +29,8 @@ class Vdirsyncer < Formula
   end
 
   resource "aiohttp" do
-    url "https://files.pythonhosted.org/packages/17/7e/16e57e6cf20eb62481a2f9ce8674328407187950ccc602ad07c685279141/aiohttp-3.10.10.tar.gz"
-    sha256 "0631dd7c9f0822cc61c88586ca76d5b5ada26538097d0f1df510b082bad3411a"
+    url "https://files.pythonhosted.org/packages/1d/cd/af0e573bdb77ae7df1148fe8e4ea854215a37db0b116aac6b5496335095e/aiohttp-3.11.4.tar.gz"
+    sha256 "9d95cce8bb010597b3f2217155befe4708e0538d3548aa08d640ebf54e3f57cb"
   end
 
   resource "aiohttp-oauthlib" do
@@ -72,8 +74,8 @@ class Vdirsyncer < Formula
   end
 
   resource "frozenlist" do
-    url "https://files.pythonhosted.org/packages/cf/3d/2102257e7acad73efc4a0c306ad3953f68c504c16982bbdfee3ad75d8085/frozenlist-1.4.1.tar.gz"
-    sha256 "c037a86e8513059a2613aaba4d817bb90b9d9b6b69aace3ce9c877e8c8ed402b"
+    url "https://files.pythonhosted.org/packages/8f/ed/0f4cec13a93c02c47ec32d81d11c0c1efbadf4a471e3f3ce7cad366cbbd3/frozenlist-1.5.0.tar.gz"
+    sha256 "81d5af29e61b9c8348e876d442253723928dce6433e0e76cd925cd83f1b4b817"
   end
 
   resource "idna" do
@@ -107,12 +109,14 @@ class Vdirsyncer < Formula
   end
 
   resource "yarl" do
-    url "https://files.pythonhosted.org/packages/ed/21/75ded903445bf9201f10c7c361b0776a67c7284ad5ef38af62fd38cc32c3/yarl-1.15.1.tar.gz"
-    sha256 "02e1c9e36528de270c22c06aac6a5a1de8cc870fafefb5e90e5b35cb8985d0b2"
+    url "https://files.pythonhosted.org/packages/4b/d5/0d0481857de42a44ba4911f8010d4b361dc26487f48d5503c66a797cff48/yarl-1.17.2.tar.gz"
+    sha256 "753eaaa0c7195244c84b5cc159dc8204b7fd99f716f11198f999f2332a86b178"
   end
 
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(bin/"vdirsyncer", shells: [:fish, :zsh], shell_parameter_format: :click)
   end
 
   service do
@@ -126,7 +130,7 @@ class Vdirsyncer < Formula
 
   test do
     ENV["LC_ALL"] = "en_US.UTF-8"
-    (testpath/".config/vdirsyncer/config").write <<~EOS
+    (testpath/".config/vdirsyncer/config").write <<~INI
       [general]
       status_path = "#{testpath}/.vdirsyncer/status/"
       [pair contacts]
@@ -141,7 +145,7 @@ class Vdirsyncer < Formula
       type = "filesystem"
       path = "~/.contacts/b/"
       fileext = ".vcf"
-    EOS
+    INI
     (testpath/".contacts/a/foo/092a1e3b55.vcf").write <<~EOS
       BEGIN:VCARD
       VERSION:3.0

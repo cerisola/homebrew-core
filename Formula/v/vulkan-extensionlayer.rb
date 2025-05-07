@@ -1,8 +1,8 @@
 class VulkanExtensionlayer < Formula
   desc "Layer providing Vulkan features when native support is unavailable"
   homepage "https://github.com/KhronosGroup/Vulkan-ExtensionLayer"
-  url "https://github.com/KhronosGroup/Vulkan-ExtensionLayer/archive/refs/tags/v1.3.300.tar.gz"
-  sha256 "aad0411da785194780bc5d3e2b7aa849edf96ff16353899becfab9cd589bf8c1"
+  url "https://github.com/KhronosGroup/Vulkan-ExtensionLayer/archive/refs/tags/v1.4.313.tar.gz"
+  sha256 "14fdaf5cbbc02ce7dbacbaadeb1e9d63dc49f07a32214c4995ea9909bb534dc1"
   license "Apache-2.0"
   head "https://github.com/KhronosGroup/Vulkan-ExtensionLayer.git", branch: "main"
 
@@ -12,12 +12,13 @@ class VulkanExtensionlayer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bde937257f7a2a1230109707cc535440d12f67f93824e5c6c896aeb737ed6f3a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "011860c2bbca618d0eed067e5e4adb0a82bf4484e3668225fee8678813b98ad4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "98bdf147200df79c373d37efadff50e5ca650fc211fc4fca51f45237e9c3945c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "21fd33ab03c72fdfdc04b38b579d04c6bfcb1bd8a0cbfdbb1f668f6693264b56"
-    sha256 cellar: :any_skip_relocation, ventura:       "d9f43aa1cbb25788d4fdaf8ab11e67c8290a36d9856c815e4e8da7c52667ac58"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb6cd0955cee53cc801b1a78e2b719f5e8a8b18578eedf96172a654db9f31dc3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "94de775374c14ed11217384b6254f6a5752dd7da4682146e6260dbfb67e647f5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ed2803c127bdf92346161d90b523eac3b9541ef0f1faa1731de91f1cdbd7084e"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ef1bf5af371ed8e0b45490ca766fcc5e70423547a34506d8ec0db4211e46940d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "48802535b932b6faac60aed5f4c6512c969c16658f2bd5a143ef46b6a9532a97"
+    sha256 cellar: :any_skip_relocation, ventura:       "c197d49fb984513cdc2a402aaf7483637c4b425b6c17297d9bca708734cea046"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "22b969ae8151ff0867f34ab860a927694d6026427d02f49a2e36d97a75268be2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8869b5eb81a56ca9d8f22b854949acd1081af27cbeb671ca58622fbf65256782"
   end
 
   depends_on "cmake" => :build
@@ -34,7 +35,7 @@ class VulkanExtensionlayer < Formula
     depends_on "libxcb" => :build
     depends_on "libxrandr" => :build
     depends_on "mesa" => :build
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
     depends_on "wayland" => :build
   end
 

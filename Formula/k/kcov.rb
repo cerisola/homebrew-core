@@ -21,11 +21,12 @@ class Kcov < Formula
     sha256 sonoma:         "2c1319f3032eed31ecd3c41452383a525a44b1a2aa4e7a0a2c0a9094d0e58f91"
     sha256 ventura:        "62dfd4348ff4fe56aeb5960c04c5e52f25dd3605964c6d9f4a7e460e3b34ff90"
     sha256 monterey:       "b7205b776c7509a7fa80a4788308604ec44b8bb37496716e547ee7fc0dad1ab4"
+    sha256 arm64_linux:    "d774a02f750227979778f9370a7d24fac97cba505d94fc314d7e73b2bee66042"
     sha256 x86_64_linux:   "e2854f13f8bf4b6ff6db16c274f95e558eaa9bd61e80f0074556c543b6a4ac5f"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "dwarfutils"
   depends_on "openssl@3"
@@ -39,7 +40,7 @@ class Kcov < Formula
   end
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DSPECIFY_RPATH=ON"
+    system "cmake", "-S", ".", "-B", "build", "-DSPECIFY_RPATH=ON", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -51,6 +52,6 @@ class Kcov < Formula
     EOS
 
     system bin/"kcov", testpath/"out", testpath/"hello.bash"
-    assert_predicate testpath/"out/hello.bash/coverage.json", :exist?
+    assert_path_exists testpath/"out/hello.bash/coverage.json"
   end
 end

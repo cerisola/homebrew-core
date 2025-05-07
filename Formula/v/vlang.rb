@@ -2,8 +2,8 @@ class Vlang < Formula
   desc "V programming language"
   homepage "https://vlang.io"
   # NOTE: Keep this in sync with V compiler below when updating
-  url "https://github.com/vlang/v/archive/refs/tags/0.4.8.tar.gz"
-  sha256 "2684d3326a11087746429bd4ad6366d2b696cffc883e3b76fe740a8deb1dc172"
+  url "https://github.com/vlang/v/archive/refs/tags/0.4.10.tar.gz"
+  sha256 "72541bab3a2f674dcc51f5147fead5a38b18c47a3705335d9c13aa75a0235849"
   license "MIT"
 
   livecheck do
@@ -12,15 +12,27 @@ class Vlang < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a0b3839542ee5796fb2c4a2aaa7f36fb99cf1d110776a258afcced1413b3ad47"
-    sha256 cellar: :any,                 arm64_sonoma:  "c8b1b55a3567ef762b8837e91386c45ce57e7c2e7876a718d88574285c4e5c59"
-    sha256 cellar: :any,                 arm64_ventura: "f40dcf7b5c9ca6c421cd0489a33706ea46169427d0758778c234a1069cd87d80"
-    sha256 cellar: :any,                 sonoma:        "835738f0a1d8b175c10cac76b83fd8380e3e9b87908ef2e93076076b85394c45"
-    sha256 cellar: :any,                 ventura:       "1ba59bee75301a9bf360781a9101ae6bd310ef165c973556e7e1922495d92fa3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b672d9650fea75445704773fd620501bd3ecbd696a1efa295c6a3e2a3f9972f"
+    rebuild 1
+    sha256                               arm64_sequoia: "61e324a5cb4f1e5fe36e22feece35f101900884c4ee2e184ed2b560861751a6c"
+    sha256                               arm64_sonoma:  "a781eaf96128ae65326af2541ff60e35ec8cd28d1ec6fdb2ed22484102af95d0"
+    sha256                               arm64_ventura: "14224fb4505f57200c0bd125552913b83fcd1274ca3bfb435fc586036b9d77d3"
+    sha256 cellar: :any,                 sonoma:        "ac31a04a8e221306fad1f9fd4e32bdb11f6788d7d6fbf1bdafc994ae4c79be91"
+    sha256 cellar: :any,                 ventura:       "9d1829750ac5e28f8820dc46b9f9b025ef7a804613026e0b7848b0c153a89e4c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9decc51a9efe05ef0c3b4026a191328afb77379ea318bdc3b2115c6738543c94"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57484b27ff2dde605916de66bb00e53badeec8f683aa49e81f976b0ceccfee1b"
   end
 
   depends_on "bdw-gc"
+
+  on_linux do
+    on_arm do
+      depends_on "llvm" => :build
+
+      fails_with :gcc do
+        cause "compilation failed with errors in vlib/v/ast/scope.v"
+      end
+    end
+  end
 
   conflicts_with "v", because: "both install `v` binaries"
 
@@ -28,8 +40,8 @@ class Vlang < Formula
     # For every vlang release there is a matching commit of the V compiler in the format
     # "[v:master] {short SHA of the vlang release commit} - {vlang version number}".
     # The sources of this V compiler commit need to be used here
-    url "https://github.com/vlang/vc.git",
-        revision: "54beb1f416b404a06b894e6883a0e2368d80bc3e"
+    url "https://github.com/vlang/vc/archive/66ea39be2275ac723225b9ca99d51ec1212c640d.tar.gz"
+    sha256 "c3b57600ad8081a525045d9877e245db834655fefdc79d05dcbed385e0ed0a68"
 
     on_big_sur :or_older do
       patch do

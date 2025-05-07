@@ -1,31 +1,36 @@
 class GitAbsorb < Formula
   desc "Automatic git commit --fixup"
   homepage "https://github.com/tummychow/git-absorb"
-  url "https://github.com/tummychow/git-absorb/archive/refs/tags/0.6.15.tar.gz"
-  sha256 "630e61a6edf1e244c38145bda98a522217c34d3ab70a3399af1f29f19e7ced26"
+  url "https://github.com/tummychow/git-absorb/archive/refs/tags/0.8.0.tar.gz"
+  sha256 "9ed6fef801fbfeb7110744cac38ae5b3387d8832749ae20077b9139d032211f1"
   license "BSD-3-Clause"
+  head "https://github.com/tummychow/git-absorb.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "aca945b8aef34abbac4f2c98a725a55bc61963c5b2f05c6ec6036d02deb19a08"
-    sha256 cellar: :any,                 arm64_sonoma:   "4ba2cc5db7997e70fe3126dcb72ce6b90ecc448522f84ecf256dbf83aa5b0f03"
-    sha256 cellar: :any,                 arm64_ventura:  "3b0d0c694199a5737537e350d1f94a3c5578ad01f37fa606426961d815597a90"
-    sha256 cellar: :any,                 arm64_monterey: "58047813577676e3087030dec2bcefa9092585097d206befda82b16d3a01cf65"
-    sha256 cellar: :any,                 sonoma:         "646e551cecba255be82b580462b9065fd74fb01cf2c889d2a62306fcd79e523d"
-    sha256 cellar: :any,                 ventura:        "518701a348b6de56793560858a17266daf8edd0fca2d87890170e5244109ba67"
-    sha256 cellar: :any,                 monterey:       "d9322e1a225a00b72517d640d4afe1998179343908bdbc8f256418049b703b1b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "94fa2414eb3c9ed63e09ab896610c45810e68d430e236696c6edd10990926008"
+    sha256 cellar: :any,                 arm64_sequoia: "bbfc1e3dfbfcda686df0aea15468eec4549ea36fd82454397e5b549e8f867b42"
+    sha256 cellar: :any,                 arm64_sonoma:  "341871005558c9ee562ce65d7937664279a6a87b8ed4fec08706a4a75b8ebf00"
+    sha256 cellar: :any,                 arm64_ventura: "775f14a76615d9432e16ceb484d8c2dc28e5f019fe054563118df025caee269e"
+    sha256 cellar: :any,                 sonoma:        "b8dbc17ae633c630a3ce42743a56d74d5a60b92f6374f7dc9c44f173d07e8ff3"
+    sha256 cellar: :any,                 ventura:       "41d7ac555ada72c4c06ba94112bd306a61a81a267d441b1eabb04907a61c5f22"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "25ad1bee716eea6cc6b0dc91a5cbd1caf3fe8c7bfdaee87b56e1656b5811ccaf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21f8b05c5d835e0582690c4dc7d5b6fc8cbfe231022ae594c03bcd9d592fcb73"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "asciidoctor" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "libgit2"
 
   def install
     ENV["LIBGIT2_NO_VENDOR"] = "1"
+
     system "cargo", "install", *std_cargo_args
-    man1.install "Documentation/git-absorb.1"
 
     generate_completions_from_executable(bin/"git-absorb", "--gen-completions")
+    cd "Documentation" do
+      system "asciidoctor", "-b", "manpage", "git-absorb.adoc"
+      man1.install "git-absorb.1"
+    end
   end
 
   test do

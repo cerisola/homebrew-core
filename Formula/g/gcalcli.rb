@@ -6,20 +6,22 @@ class Gcalcli < Formula
   url "https://files.pythonhosted.org/packages/68/b8/c3f3b8c73c9740eeb592e31f3f1092485ce8809fd7137d7c776a0b0d3567/gcalcli-4.5.1.tar.gz"
   sha256 "bbc8d6b9ce40d0be0535ffec3bb3384761400c7fbf1d67716e7d0e5fe9c6f2d5"
   license "MIT"
+  revision 1
   head "https://github.com/insanum/gcalcli.git", branch: "master"
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "1a34e31d3e619ea2abca59154ebef1b96e055b9f373ac4dbf7df0587582165eb"
-    sha256 cellar: :any,                 arm64_sonoma:  "38a12b7df40726cdf7c855cfd294c70f9b6592be08db2c5766f63b8e31ec59ad"
-    sha256 cellar: :any,                 arm64_ventura: "52e6c49b7dcc911daf93c861c27ff58eb9a3d4ad1e15569f4868b4c498270669"
-    sha256 cellar: :any,                 sonoma:        "c9e416f3d32377103b503d38e4a8ce102ebd8add3e7655eaca77b69526779b7a"
-    sha256 cellar: :any,                 ventura:       "f4787a05eda5fa3316e3f2be28d08dc1714adb77df9a76cd904383b1ab276752"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "30031a989d334bc9e3ab41f57e02f3416cfa8ea0fc92af2727a9f64906d3f757"
+    sha256 cellar: :any,                 arm64_sequoia: "a9b4aaae553f5be5ec0cc5af3c7519f3b7d298913c6f0649c48fbd92fcc16654"
+    sha256 cellar: :any,                 arm64_sonoma:  "423c0a19d39ee2c150ff4ca06b23d0235b533c65f4e9e492d1b0f52d7724a64e"
+    sha256 cellar: :any,                 arm64_ventura: "019ebf9752730a4818cc47a072bf9eb197303e94f34408d484ba67771eafff52"
+    sha256 cellar: :any,                 sonoma:        "88a5b3bc24b3e109adc5c590dd929dc73e37467137d284184e8bdce96f3d2cbf"
+    sha256 cellar: :any,                 ventura:       "3fd0acd74f7571dba6252bc14cf9ab6bf13d35173f283921bbb0b87c12e97beb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e3e90c7cee520c7bed36634b2ca86cb801aa22cae99b53f2d0a096f7d9ab7e3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "67493eea6e03a91fa02e1284995f03ae5b0d48ef1ae2bdc8fb30148ee34190b0"
   end
 
   depends_on "cmake" => :build # for google_api_python_client_stubs
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build # for google_api_python_client_stubs
   depends_on "certifi"
   depends_on "python@3.13"
@@ -30,8 +32,8 @@ class Gcalcli < Formula
   end
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
-    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
+    url "https://files.pythonhosted.org/packages/7f/03/581b1c29d88fffaa08abbced2e628c34dd92d32f1adaed7e42fc416938b0/argcomplete-3.5.2.tar.gz"
+    sha256 "23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb"
   end
 
   resource "babel" do
@@ -186,6 +188,9 @@ class Gcalcli < Formula
 
   def install
     virtualenv_install_with_resources
+
+    generate_completions_from_executable(libexec/"bin/register-python-argcomplete", "gcalcli",
+                                         shell_parameter_format: :arg)
   end
 
   test do

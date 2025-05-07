@@ -22,6 +22,7 @@ class Ttfautohint < Formula
     sha256 cellar: :any,                 big_sur:        "0fceaf938c626642f90f505ca041b14c82696a8b9897504a92415296d635a292"
     sha256 cellar: :any,                 catalina:       "e5ad45157f4260f5cdfc68595ca2af5bd8524a342b47e3e39c78afa88da3b0d9"
     sha256 cellar: :any,                 mojave:         "dc0fb9212fe1535397bb7c42468bd80902810895d05ebb70fb5da557a38b39f3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "6e396a76f14968d0778b51a5093552d6e63e643ebc0b5d7f5b06719d8c8932f5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "68214f0cc124de6b895152c8b780ea5aae067ce0ac571074a472d1723260c94b"
   end
 
@@ -31,21 +32,19 @@ class Ttfautohint < Formula
     depends_on "automake" => :build
     depends_on "bison" => :build
     depends_on "libtool" => :build
-    depends_on "pkg-config" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "harfbuzz"
   depends_on "libpng"
 
   def install
     system "./bootstrap" if build.head?
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
+    system "./configure", "--disable-silent-rules",
                           "--without-doc",
-                          "--without-qt"
+                          "--without-qt",
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -59,6 +58,6 @@ class Ttfautohint < Formula
     end
     cp "#{font_dir}/#{font_name}", testpath
     system bin/"ttfautohint", font_name, "output.ttf"
-    assert_predicate testpath/"output.ttf", :exist?
+    assert_path_exists testpath/"output.ttf"
   end
 end

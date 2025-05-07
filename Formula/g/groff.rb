@@ -15,10 +15,11 @@ class Groff < Formula
     sha256 sonoma:         "9574ff7b3847c05c48197519ad4ce3a9084311f166b579801d58b892e336641a"
     sha256 ventura:        "6843e8adc54c9f26440aa7772111e5865f206b911199811a2874a48a5bcc197b"
     sha256 monterey:       "ad660d68652c600a83c0e2ab13c2cf083a3af3e85a0c7dfd0251b527f7094a93"
+    sha256 arm64_linux:    "d97896a245ea632bd21f88cbc8cb1ce9022e219dcb11a3eb5ec119436c21f547"
     sha256 x86_64_linux:   "4fed3742a3cf824d5753a3ae998097d1a36d8c2c97ae459d6a813bd766b7c2ae"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ghostscript"
   depends_on "netpbm"
   depends_on "psutils"
@@ -41,14 +42,15 @@ class Groff < Formula
       s.change_make_var! "localfontdir", "@sysconfdir@/groff/site-font"
       s.change_make_var! "localtmacdir", "@sysconfdir@/groff/site-tmac"
     end
-    system "./configure", "--sysconfdir=#{etc}", "--without-x",
-           "--with-uchardet", *std_configure_args
+    system "./configure", "--sysconfdir=#{etc}",
+                          "--without-x",
+                          "--with-uchardet",
+                          *std_configure_args
     system "make" # Separate steps required
     system "make", "install"
   end
 
   test do
-    assert_match "homebrew\n",
-      pipe_output("#{bin}/groff -a", "homebrew\n")
+    assert_match "homebrew\n", pipe_output("#{bin}/groff -a", "homebrew\n")
   end
 end

@@ -14,13 +14,14 @@ class IosWebkitDebugProxy < Formula
     sha256 cellar: :any,                 sonoma:         "f62dc78d90d3d02d3d0ea7f4d4d3d82b13affcdc403955113ec0d73d56c74fc3"
     sha256 cellar: :any,                 ventura:        "22cb1b17edbddfc17bf64112a60d32fd659dfadce8cf1521018b994f89194f0d"
     sha256 cellar: :any,                 monterey:       "a2ec7d1750d1c8d4370679e255f75957f6365bb55259b21967216ea5549ee88f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5838f6c52b74b403ec6ec7bc002bbda9336cfb033144fa2a48aa87d644fc2c74"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "44137a86b9210566d60a3b8b8e09f5cca01340f2db9441c6a29375df8e8e6db9"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libimobiledevice"
   depends_on "libplist"
   depends_on "libusbmuxd"
@@ -38,15 +39,12 @@ class IosWebkitDebugProxy < Formula
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     base_port = free_port
-    (testpath/"config.csv").write <<~EOS
+    (testpath/"config.csv").write <<~CSV
       null:#{base_port},:#{base_port + 1}-#{base_port + 101}
-    EOS
+    CSV
 
-    fork do
-      exec "#{bin}/ios_webkit_debug_proxy", "-c", testpath/"config.csv"
-    end
-
-    sleep(2)
+    spawn "#{bin}/ios_webkit_debug_proxy", "-c", testpath/"config.csv"
+    sleep 2
     assert_match "iOS Devices:", shell_output("curl localhost:#{base_port}")
   end
 end

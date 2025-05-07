@@ -21,18 +21,19 @@ class Libdivecomputer < Formula
     sha256 cellar: :any,                 ventura:        "5a831d39e6851ac0f0aa879321f2da7734f40b6f0b66f9824c59766547ed4857"
     sha256 cellar: :any,                 monterey:       "03dd6bece702dbd9128822bc7e58bffaa7ddbab2e1c154416c8843068ddc9512"
     sha256 cellar: :any,                 big_sur:        "0daa371bb5f9f96bd3c2c02f02181f77004e5326d4975e04fd441d01593c6f20"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "333344a78a1b09b9c81e369dead55c584f39ec02c7f24d31c7993f0c81a5c78d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "a564c1072cacd56aacdeddb41032cce203e2d59cf375448e160007c619204245"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libusb"
 
   def install
-    system "autoreconf", "--install" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose" if build.head?
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

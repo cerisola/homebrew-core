@@ -1,18 +1,18 @@
 class Gobackup < Formula
   desc "CLI tool for backup your databases, files to cloud storages"
   homepage "https://gobackup.github.io"
-  url "https://github.com/gobackup/gobackup/archive/refs/tags/v2.12.0.tar.gz"
-  sha256 "82b2d07792010a8cdf7b5bcfaf10094de549a442c451d768d71fc8485aadb0e1"
+  url "https://github.com/gobackup/gobackup/archive/refs/tags/v2.14.0.tar.gz"
+  sha256 "87ad4c89cf1cee047d9c1e68559322653dda62c830408066c954d07c40ebcc90"
   license "MIT"
   head "https://github.com/gobackup/gobackup.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "75c6dfeb6652be15621362c1aceae1535df5b6e6f80f129c08ddf2e904468a7d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "75c6dfeb6652be15621362c1aceae1535df5b6e6f80f129c08ddf2e904468a7d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "75c6dfeb6652be15621362c1aceae1535df5b6e6f80f129c08ddf2e904468a7d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cadbe18079d12d159b79e3a4683fd46e7535f65d584275c22215aa2d71a4fbd5"
-    sha256 cellar: :any_skip_relocation, ventura:       "cadbe18079d12d159b79e3a4683fd46e7535f65d584275c22215aa2d71a4fbd5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "beec32e1efe83561898c7cf47ff9e19cd022f8cb7600b89458397cb1720a7200"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b4c4cd8178fd7b42c5efe4cdb0a8af8eae612c3dc2cccb3d396c759979f87033"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b4c4cd8178fd7b42c5efe4cdb0a8af8eae612c3dc2cccb3d396c759979f87033"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b4c4cd8178fd7b42c5efe4cdb0a8af8eae612c3dc2cccb3d396c759979f87033"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4793fc54b645330b80fc5a8df570c495372322b40d9107bfa2c2630cddd6543b"
+    sha256 cellar: :any_skip_relocation, ventura:       "4793fc54b645330b80fc5a8df570c495372322b40d9107bfa2c2630cddd6543b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d8f9c4843e273d3f385b9ce369864b2ac568d9ad2ff7da1ba920063bae4fa2fe"
   end
 
   depends_on "go" => :build
@@ -33,8 +33,7 @@ class Gobackup < Formula
     assert_match version.to_s, shell_output("#{bin}/gobackup -v")
 
     config_file = testpath/"gobackup.yml"
-
-    config_file.write <<~EOS
+    config_file.write <<~YAML
       models:
         test:
           storages:
@@ -44,7 +43,7 @@ class Gobackup < Formula
           archive:
             includes:
               - #{config_file}
-    EOS
+    YAML
 
     out = shell_output("#{bin}/gobackup perform -c #{config_file}").chomp
     assert_match "succeeded", out

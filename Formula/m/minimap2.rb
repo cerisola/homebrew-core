@@ -1,8 +1,8 @@
 class Minimap2 < Formula
   desc "Versatile pairwise aligner for genomic and spliced nucleotide sequences"
   homepage "https://lh3.github.io/minimap2"
-  url "https://github.com/lh3/minimap2/archive/refs/tags/v2.28.tar.gz"
-  sha256 "5ea6683b4184b5c49f6dbaef2bc5b66155e405888a0790d1b21fd3c93e474278"
+  url "https://github.com/lh3/minimap2/archive/refs/tags/v2.29.tar.gz"
+  sha256 "008d5e9848b918e4eb09d054aa3d6c272d50e92b8fc8537abf5081a507019718"
   license "MIT"
 
   livecheck do
@@ -11,25 +11,24 @@ class Minimap2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "460b065b3c5d2574c09b7b6f2e20692574d77153b150e8161b0ec5cdd8450987"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "5bfd4d2c1731ffbc45839fda3a405dfa930208b497c08de8f53770d4b942e690"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "47cef6f5132e485823d26e03caba808de26301d29dff56a59d51006d00f5e4cd"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b0a6571f41113568817ec781db7b4c9a31ac15fbe1aff96691dd04a6db12148d"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7948260fe80260ff50ae0541174e6b404f8699f4b3ad1dfcaef7619fee42cd75"
-    sha256 cellar: :any_skip_relocation, ventura:        "27681877ccc90d85eb51cfb7126d8b242998eb145eb985331f110cfaf8b81383"
-    sha256 cellar: :any_skip_relocation, monterey:       "fcefb72704e3e02c7ce06c694cb6ff12d9d8d84983025e0e3e61a48358410e43"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ca4b9be1d24ab45476ef3008a956aee3b4f62ebb5bf0172745928d04cce44e66"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a17ef19c327d33af21ce663a5c00e731b427ce5539a4fd444c69d08ed13ac031"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "02c4899b062bf0c3bd592ffdc4ebfcab5061468533230c6c1fea0c7cd1fc04bf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f8dbbb0a2e1de72ee94b40027b7efcc23a49e8ec71fea90737e71e3df0d78c92"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1451d3de7af2dd6f59cb1612f218c78c89be826afb339f36223d15454de33eda"
+    sha256 cellar: :any_skip_relocation, ventura:       "820288efa0f55a08807d60affff35dd8853caba901878b4db15e1597d8d20284"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0796c7908c2694f083f9159dc476820ad29fed7caff4a4a5c471bfb6357f7a77"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3543ef1808df306f48f1677511c6eb81109ca635f5873f521480f61eaef56a7c"
   end
 
   uses_from_macos "zlib"
 
   def install
     if Hardware::CPU.arm?
-      system "make", "arm_neon=1", "aarch64=1"
+      system "make", "arm_neon=1", "aarch64=1", "extra"
     else
-      system "make"
+      system "make", "extra"
     end
-    bin.install "minimap2"
+    bin.install "minimap2", "sdust"
     pkgshare.install "test"
   end
 

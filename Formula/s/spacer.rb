@@ -1,21 +1,18 @@
 class Spacer < Formula
   desc "Small command-line utility for adding spacers to command output"
   homepage "https://github.com/samwho/spacer"
-  url "https://github.com/samwho/spacer/archive/refs/tags/v0.3.0.tar.gz"
-  sha256 "b8cebdebd3845843f15f0040f36b7e06398de45c721679672e7107f8b735ab54"
+  url "https://github.com/samwho/spacer/archive/refs/tags/v0.3.8.tar.gz"
+  sha256 "56e10af707cb060d6974559d3464e2ba0cb60db70d4e9d81e961ba88058b2925"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "782b9a6bc9ccba574bd08ceaf62308b2f6b636ca53aaf2a27755c2a9ed0c322e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "135e5e3b8a8fa19953a8ade6bcf8a3fd37c51a7c17bde18c72f0a88d863f825f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9b1c69ccaf545a788876a44f8d1b67e163959d414fee5555df7cee75b876f206"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "84175f6eff81f8f45338eef73a0c3a5aa68e14f864a5095a755a58dc3f396106"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "5ec5e4afca0634e64d9eba69de1395ed4a693ce635b0d75ec8cb1940efc259d3"
-    sha256 cellar: :any_skip_relocation, sonoma:         "0af7ad4cf2970f6aa2ba356316aded697df3808595ad2fd5edc0f1578a02a1c2"
-    sha256 cellar: :any_skip_relocation, ventura:        "0aceb036232509b10de0121cc182f8368fff07beed2fa7a97de4c0e938883847"
-    sha256 cellar: :any_skip_relocation, monterey:       "8ccbc3a40bc093c907bcbd350fe9cde5d611d8f2503d5870256cbac0c913b396"
-    sha256 cellar: :any_skip_relocation, big_sur:        "60bd7a232c459e1ef79aa25e07fa0e4ea515d04a7b26d3bf7e516b66ab45b80a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2ef00822b7507b52f3ba709087d474fb6c017528cfea87f314271dac59e6b2b7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ef7c78d2acc3602cdb46a27796ac03606fc237761f6390866a8d47eb2973dff1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7e1b47b321f4163d43c930df2f0a8826f627a6976296e90097d6cc7d66168f23"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "47cfb84321dbf61d82f44bd6a184861380297d3f692950f7224d9689386d103e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bf34987b91b26af106233a25fbaaebf94a872e62794f686d227a1e6979659307"
+    sha256 cellar: :any_skip_relocation, ventura:       "5c9f8b395088c5c2635f9f39d2efa4b517365e1469e823c9e75c23d77ada6802"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2f3d35829b4c3ce86cb06c462b193d5c153d27408151578435abcc53b7c5d0ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce5f27c262e2a2d6dd9c9bb69d59244b02088303de9080d275db287741c24182"
   end
 
   depends_on "rust" => :build

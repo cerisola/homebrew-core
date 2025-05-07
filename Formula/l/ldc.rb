@@ -1,11 +1,26 @@
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "https://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc-1.39.0-src.tar.gz"
-  sha256 "839bac36f6073318e36f0b163767e03bdbd3f57d99256b97494ac439b59a4562"
   license "BSD-3-Clause"
   revision 1
   head "https://github.com/ldc-developers/ldc.git", branch: "master"
+
+  stable do
+    url "https://github.com/ldc-developers/ldc/releases/download/v1.40.1/ldc-1.40.1-src.tar.gz"
+    sha256 "b643bee2ee6f9819084ef7468cf739257974a99f3980364d20201bc806a4a454"
+
+    # Backport fix for CMake 4
+    patch do
+      url "https://github.com/ldc-developers/ldc/commit/06b2e42a1b8436faae2b7976a1d41a635df116d5.patch?full_index=1"
+      sha256 "80fd42d77217b16866e262008f283406bb597fee16cb6ade250d6d27f870ce5c"
+    end
+
+    # Backport fix for segmentation fault on macOS 15.4
+    patch do
+      url "https://github.com/ldc-developers/ldc/commit/60079c3b596053b1a70f9f2e0cf38a287089df56.patch?full_index=1"
+      sha256 "44d281573a42e82ecdd48a6381fec4dde7aa6196f314e9eee7b1111ae6c54844"
+    end
+  end
 
   livecheck do
     url :stable
@@ -13,41 +28,46 @@ class Ldc < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia: "16de7a20bf322c043232d9e452e948a76e39222c4302dd473f56ac54e9f124b3"
-    sha256                               arm64_sonoma:  "a5b5090830d2809662e9eb7fd4ed3264e82720f6845f35cb594cc934603ed84d"
-    sha256                               arm64_ventura: "c41c88fb61a60ec842c81e2c4ca64c065b2c368c83f09365207f7da959dc8cda"
-    sha256                               sonoma:        "83747bfe0e1c14fd8f29c4c3b15f12919057694a1be31b5a66325e9bf74c6aea"
-    sha256                               ventura:       "c48b3f215c92ca8907fd2938adbd987a6c9738607f7adf8c5bcf74401795e07b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0351b9c88bf73003a30db5dec85e71c9e67358a3190563e5fa7b532d28ee8aba"
+    rebuild 2
+    sha256                               arm64_sequoia: "9384ccb16954cc0bd4cdc10cbff3b88f7c4198376adca1180d96f7f7ebd2ba43"
+    sha256                               arm64_sonoma:  "97f6afa4dab17754196e9b29885721d61ce6244cdc2c627ac2d2e4a2ab9f62bc"
+    sha256                               arm64_ventura: "284c606878e28375d5a6bd4dcba1ab090be8022d5fee5e974942c29a383a8e2b"
+    sha256                               sonoma:        "46bb2adaf6f60942728c169eb3ab1c3951133ecdd6816c5ac3ba4aa32b7c7f02"
+    sha256                               ventura:       "212beef9d9dd8f73794f2ca9a6c1786a1920d4f5c21f5800d2b17b09297e8417"
+    sha256                               arm64_linux:   "eccf24bbebc2f4960b38f37612e16316b5cc1941d97930d27418eda01ae38240"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e9d640a656f11e1f2e421a1d093a7d8bb183e0052aeca6101176b7b7c14adbed"
   end
 
   depends_on "cmake" => :build
   depends_on "libconfig" => :build
-  depends_on "pkg-config" => :build
-  depends_on "llvm@18"
+  depends_on "pkgconf" => :build
+  depends_on "lld@19" => :test
+  depends_on "llvm@19" # LLVM 20 PR: https://github.com/ldc-developers/ldc/pull/4843
   depends_on "zstd"
 
   uses_from_macos "libxml2" => :build
 
   resource "ldc-bootstrap" do
     on_macos do
+      # Do not use 1.29 - 1.40 to bootstrap as it segfaults on macOS 15.4.
+      # Ref: https://github.com/dlang/dmd/issues/21126#issuecomment-2775948553
       on_arm do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-osx-arm64.tar.xz"
-        sha256 "4f0285d6ab0f335f97a8cae1ebc951eb5e68face0645f2b791b8d5399689ad95"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-arm64.tar.xz"
+        sha256 "9bddeb1b2c277019cf116b2572b5ee1819d9f99fe63602c869ebe42ffb813aed"
       end
       on_intel do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-osx-x86_64.tar.xz"
-        sha256 "751ebe8c744fa3375a08dfb67d80569e985944f3fb7f551affa5d5052117beb6"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.28.1/ldc2-1.28.1-osx-x86_64.tar.xz"
+        sha256 "9aa43e84d94378f3865f69b08041331c688e031dd2c5f340eb1f3e30bdea626c"
       end
     end
     on_linux do
       on_arm do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-linux-aarch64.tar.xz"
-        sha256 "bafba183432dc8c277d07880d6dd17b4b1b3050808bef0be07875a41cda6dfcf"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.40.0/ldc2-1.40.0-linux-aarch64.tar.xz"
+        sha256 "28d183a99ab9f0790f5597c5c125f41338390f8bed5ed3164138958c18479c82"
       end
       on_intel do
-        url "https://github.com/ldc-developers/ldc/releases/download/v1.39.0/ldc2-1.39.0-linux-x86_64.tar.xz"
-        sha256 "f50cdacd11c923b96e57edab15cacff6a30c7ebff4b7e495fc684eed0a27ae17"
+        url "https://github.com/ldc-developers/ldc/releases/download/v1.40.0/ldc2-1.40.0-linux-x86_64.tar.xz"
+        sha256 "0da61ed2ea96583aa0ccbeb00f8d78983b23d1e87b84a6f2098eb12059475b27"
       end
     end
   end
@@ -85,15 +105,16 @@ class Ldc < Formula
     # nor should it be used for the test.
     ENV.method(DevelopmentTools.default_compiler).call
 
-    (testpath/"test.d").write <<~EOS
+    (testpath/"test.d").write <<~D
       import std.stdio;
       void main() {
         writeln("Hello, world!");
       }
-    EOS
+    D
     system bin/"ldc2", "test.d"
     assert_match "Hello, world!", shell_output("./test")
-    with_env(PATH: "#{llvm.opt_bin}:#{ENV["PATH"]}") do
+    lld = deps.map(&:to_formula).find { |f| f.name.match?(/^lld(@\d+(\.\d+)*)?$/) }
+    with_env(PATH: "#{lld.opt_bin}:#{ENV["PATH"]}") do
       system bin/"ldc2", "-flto=thin", "--linker=lld", "test.d"
       assert_match "Hello, world!", shell_output("./test")
       system bin/"ldc2", "-flto=full", "--linker=lld", "test.d"

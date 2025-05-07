@@ -1,21 +1,22 @@
 class Bandicoot < Formula
   desc "C++ library for GPU accelerated linear algebra"
   homepage "https://coot.sourceforge.io/"
-  url "https://gitlab.com/bandicoot-lib/bandicoot-code/-/archive/1.15.1/bandicoot-code-1.15.1.tar.bz2"
-  sha256 "4b4eab071b967360866f57eab0caa8f953b8cda6144bd94be466a6a44cf3008f"
+  url "https://gitlab.com/bandicoot-lib/bandicoot-code/-/archive/2.1.1/bandicoot-code-2.1.1.tar.bz2"
+  sha256 "128a02062426fbb88aaf6a00af227ee9d40e083e4c78fa560498ff06ae381544"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "de3f1efae202a944edc10f3810c2393c861b571c7dd13470573ab586b92fb108"
-    sha256 cellar: :any,                 arm64_sonoma:  "841556b64eb10367d60d3ebd403228c1e5966aff66ce9bedf334d57d150be0cf"
-    sha256 cellar: :any,                 arm64_ventura: "7cc00981886492d1649ddc3de0269b3c96e122eae09041e56e318dd86e8f3739"
-    sha256 cellar: :any,                 sonoma:        "a3058e28c6640c4502c73b734fe7e3bc942614961c01fc1736737951a74fce58"
-    sha256 cellar: :any,                 ventura:       "22ede33afe93487568160554dc13c5e7c68dcdb90e9e8b89c27e868111913b79"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ba91bcb49aa7baec00742255aeb895731dae3677f6606cf4cb82dc22ac1325e6"
+    sha256 cellar: :any,                 arm64_sequoia: "9eca2fb6a06c29cebd5fd25ddf5878ae34d88d5b923fa1fed5aed1a9e0773c98"
+    sha256 cellar: :any,                 arm64_sonoma:  "b55ec22827391201012634b5ae8e634c8e78cd254c15230b697ea3374cf46bb5"
+    sha256 cellar: :any,                 arm64_ventura: "9831c4eea08c9dc12470f68591f42f310998b6ee4ab5d362be142cb3e7514c7e"
+    sha256 cellar: :any,                 sonoma:        "2ab39c81ba1c29f3cbc6ece50efecba6235c8f6d1f8c888e2aad80f25e3890b7"
+    sha256 cellar: :any,                 ventura:       "b2c5cf47375d80f86139639924fa492acdcb7768f1e7f8b33b0f8cdce219834f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "757d99751200c72d5b79d7f90be7e0faed3a23501f62af28156c9c66512d94d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "252019c9e01386f84034a00808cd5c9cd7c03c24d26818b855ee1ad85452c10e"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "clblas"
   depends_on "openblas"
 
@@ -27,17 +28,11 @@ class Bandicoot < Formula
   end
 
   def install
-    if OS.mac?
-      # Enable the detection of OpenBLAS on macOS
-      system "cmake", "-S", ".", "-B", "build",
-                      "-DALLOW_OPENBLAS_MACOS=ON",
-                      "-DALLOW_BLAS_LAPACK_MACOS=ON",
-                      *std_cmake_args
-    else
-      # Avoid specifying detection for linux
-      system "cmake", "-S", ".", "-B", "build",
-                      *std_cmake_args
-    end
+    args = []
+    # Enable the detection of OpenBLAS on macOS. Avoid specifying detection for linux
+    args += ["-DALLOW_OPENBLAS_MACOS=ON", "-DALLOW_BLAS_LAPACK_MACOS=ON"] if OS.mac?
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -55,6 +50,6 @@ class Bandicoot < Formula
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}", "-L#{lib}", "-lbandicoot", "-o", "test"
 
     # Check that the coot version matches with the formula version
-    assert_equal shell_output("./test").to_i, version.to_s.to_i
+    assert_equal version.to_s.to_i, shell_output("./test").to_i
   end
 end

@@ -1,8 +1,8 @@
 class OpenapiGenerator < Formula
   desc "Generate clients, server & docs from an OpenAPI spec (v2, v3)"
   homepage "https://openapi-generator.tech/"
-  url "https://search.maven.org/remotecontent?filepath=org/openapitools/openapi-generator-cli/7.9.0/openapi-generator-cli-7.9.0.jar"
-  sha256 "f0cb7839a2ead9040b204519b03f1473b39c7725fd1f43134bb550515cb3dbee"
+  url "https://search.maven.org/remotecontent?filepath=org/openapitools/openapi-generator-cli/7.13.0/openapi-generator-cli-7.13.0.jar"
+  sha256 "d06da46809b62fde9ca7a8ac9bd399bfba2651661b17e24caa530342d0681fe2"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class OpenapiGenerator < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "423dd6369073e4f7653940bbdbb3cc6e2eed814bc7b7caa94f4a59494757295b"
+    sha256 cellar: :any_skip_relocation, all: "ebd105ba0aa8f5caebe47027b68bb0e3cc754a96238ae2001876dba676cb681b"
   end
 
   head do
@@ -20,7 +20,7 @@ class OpenapiGenerator < Formula
     depends_on "maven" => :build
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk"
 
   def install
     if build.head?
@@ -30,13 +30,13 @@ class OpenapiGenerator < Formula
       libexec.install "openapi-generator-cli-#{version}.jar" => "openapi-generator-cli.jar"
     end
 
-    bin.write_jar_script libexec/"openapi-generator-cli.jar", "openapi-generator", java_version: "11"
+    bin.write_jar_script libexec/"openapi-generator-cli.jar", "openapi-generator"
   end
 
   test do
     # From the OpenAPI Spec website
     # https://web.archive.org/web/20230505222426/https://swagger.io/docs/specification/basic-structure/
-    (testpath/"minimal.yaml").write <<~EOS
+    (testpath/"minimal.yaml").write <<~YAML
       ---
       openapi: 3.0.3
       info:
@@ -60,7 +60,7 @@ class OpenapiGenerator < Formula
                       type: array
                       items:
                         type: string
-    EOS
+    YAML
     system bin/"openapi-generator", "generate", "-i", "minimal.yaml", "-g", "openapi", "-o", "./"
     # Python is broken for (at least) Java 20
     system bin/"openapi-generator", "generate", "-i", "minimal.yaml", "-g", "python", "-o", "./"

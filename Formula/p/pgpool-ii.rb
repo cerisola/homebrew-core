@@ -1,8 +1,8 @@
 class PgpoolIi < Formula
   desc "PostgreSQL connection pool server"
   homepage "https://www.pgpool.net/mediawiki/index.php/Main_Page"
-  url "https://www.pgpool.net/mediawiki/images/pgpool-II-4.5.4.tar.gz"
-  sha256 "d1392e74ce2807f8ae628872cb1ab7914249921180dc99df40a1d602647a10fd"
+  url "https://www.pgpool.net/mediawiki/images/pgpool-II-4.6.0.tar.gz"
+  sha256 "f68a6571442d7ea53b69f39d749ad457790b00180e19b019fc82e235bab07321"
   license all_of: ["HPND", "ISC"] # ISC is only for src/utils/strlcpy.c
 
   livecheck do
@@ -11,14 +11,13 @@ class PgpoolIi < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "c5cadac99e760730866866a92b9876016432aeb6c3daca16852054fd3bf8a948"
-    sha256 arm64_sonoma:   "e94257f4d550e65a06e4eeeda0d058fc5a13c0af6810d459cb2e258d8889c95a"
-    sha256 arm64_ventura:  "e6c6ef25b196c05f2b838206e52e55667f8e46a274dd8e957bacb970435e6613"
-    sha256 arm64_monterey: "9eccb085af5582d16e3263973604fe30e48d94ecd440aab8013235016a8aae86"
-    sha256 sonoma:         "81c69f26dbdb46ab89c873fc6afc99c37ca847ced2559e514ece31a1f1aa01f8"
-    sha256 ventura:        "515495e829260efcf080d89548fdd3efda95f92ee6244edc0dcbd54353314646"
-    sha256 monterey:       "9ec67ed16c9a3b036c86bd33eddd1d15ee2cdbe8444732325acd562f981981d1"
-    sha256 x86_64_linux:   "5e795abe5b903b131e37e956395f5a9af9a6e8ab5d8cb584210c92d7cb28eba2"
+    sha256 arm64_sequoia: "396147e553be666e5a9b226783bed6973e5999b5612005d42b0857e08d241e45"
+    sha256 arm64_sonoma:  "ae6e3224bf147703048a4627b23dddc909d1056745caeb09de4b0e5fc240cbcf"
+    sha256 arm64_ventura: "b47f99e2db215776015b534ffd81e7f26cba5f0c1f3b38733ddf9cca27268577"
+    sha256 sonoma:        "921c4c4ec0b784b821869eb335cc79fe258749209b8e2834a03433f6d965a344"
+    sha256 ventura:       "c09d9871883f08c7221371ca809e0fe34253a1bd47bb490bdc812c4276118ff9"
+    sha256 arm64_linux:   "c69bae12f5e7ae2b8ad7a68c3e4f342dd2183965d67a75887c155fa5d3cc941c"
+    sha256 x86_64_linux:  "b538d5fe57290bf9bd84e418a44d46dff2d0543703e17a0acd32e2903fbbaab6"
   end
 
   depends_on "libmemcached"

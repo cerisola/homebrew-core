@@ -1,10 +1,10 @@
 class TransmissionCli < Formula
   desc "Lightweight BitTorrent client"
-  homepage "https://www.transmissionbt.com/"
+  homepage "https://transmissionbt.com/"
   url "https://github.com/transmission/transmission/releases/download/4.0.6/transmission-4.0.6.tar.xz"
   sha256 "2a38fe6d8a23991680b691c277a335f8875bdeca2b97c6b26b598bc9c7b0c45f"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only"]
-  revision 1
+  revision 3
 
   livecheck do
     url :stable
@@ -12,19 +12,18 @@ class TransmissionCli < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "94d02b7c2b45b7450c52829a5ab321326233bfbed68dbfd893c8baff83fd0a0b"
-    sha256 arm64_sonoma:   "0f0903287fe52ce1b88eed158aae216a75bdf0ab494d5e99f295b65c411820cc"
-    sha256 arm64_ventura:  "4805411462de5ffd0816e57000adb672d111babf25e7e0776724e28063bbad1c"
-    sha256 arm64_monterey: "b1337b3c899974f389a87b82fdc534bfa3bfbdc084287bfb922424345d2cf870"
-    sha256 sonoma:         "e21900a4d0aca80c877027429c58988a95a57c690bee3b82e8d851b0d2b6b7d6"
-    sha256 ventura:        "2d3bfe4e50fa99d891cfd8271e41a4be8382833046e17a500e1ddc835c5a8059"
-    sha256 monterey:       "9a05cac7b4b68b0d327e78a8904ead9ca46221fadb7cd340cdf9b3315d85e98b"
-    sha256 x86_64_linux:   "2385b33a24c9f11c58274d956f42dee8e2ad66ef1cc849934f36e433250f90f3"
+    sha256 arm64_sequoia: "b9e4113a3030e91fd27c5bbced1e21c7c67261050ff8f11c1a4e173a4f747a04"
+    sha256 arm64_sonoma:  "ca4dbdf34346c6bc37192dc9ee53971b265cf9c3fbba6e38339f5766c11fbb15"
+    sha256 arm64_ventura: "8176400e94d9c4f5a33034b353021ccc35f55663f8d31f11bbf23ce78123527c"
+    sha256 sonoma:        "0237d99f85751e50e87c31577c7903680c5f16051c1541a0b84865bb22e237ec"
+    sha256 ventura:       "3268040e7f67f734934bdaa0e7c439bc120c4ba12ac06f345e74b2b633298ae1"
+    sha256 arm64_linux:   "6c0d31567892d665e133f24ce529e7dde3fceeaeadcadb776c7d7a18cf77b971"
+    sha256 x86_64_linux:  "ef83d1cad5d89e26eea96e4ed7fe42769c94947735ca013fe7b8a8bdc0e007e2"
   end
 
   depends_on "cmake" => :build
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libevent"
   depends_on "miniupnpc"
 
@@ -51,7 +50,7 @@ class TransmissionCli < Formula
       -DENABLE_WEB=OFF
     ]
 
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 

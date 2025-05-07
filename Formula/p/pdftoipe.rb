@@ -1,38 +1,23 @@
 class Pdftoipe < Formula
   desc "Reads arbitrary PDF files and generates an XML file readable by Ipe"
   homepage "https://github.com/otfried/ipe-tools"
-  url "https://github.com/otfried/ipe-tools/archive/refs/tags/v7.2.24.1.tar.gz"
-  sha256 "561b18fc2a7ae45c37c5d0390443b37f4585549f09cd7765d856456be24e5dbc"
+  url "https://github.com/otfried/ipe-tools/archive/refs/tags/v7.2.29.1.tar.gz"
+  sha256 "604ef6e83ad8648fa09c41a788549db28193bb3638033d69cac2b0b3f33bd69b"
   license "GPL-2.0-or-later"
-  revision 20
+  revision 6
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "83ed62435778f3458488df273547f0b62affc8e0639f277f7b696ab65af7db42"
-    sha256 cellar: :any,                 arm64_sonoma:   "3ffc098642fb07f56fdf7123d1ed96e89c08e2a90138fe14b75fbaa5fb1a0baa"
-    sha256 cellar: :any,                 arm64_ventura:  "abaf4114b8f8e31cf552dedf510267915baea3cfac66eee9881c9ed357a0f1a5"
-    sha256 cellar: :any,                 arm64_monterey: "3d2e9878726033261d5d28a7cfe217f9eab8bc25ca87c62396043a4dd565a5f9"
-    sha256 cellar: :any,                 sonoma:         "da1ac14a407e12800983b7964d1e9c8568704cf1cda25c2537b1d33f730fc831"
-    sha256 cellar: :any,                 ventura:        "fcec35e3b168b6bd8c83a8dda6d9b1464d5bdb1e326b649463567f9b05b03937"
-    sha256 cellar: :any,                 monterey:       "cea74fc81e5544544e9e8534c97a3b7987f16b9ed7859e9a7c8fa7318649bc47"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "8a3da5c3168fefc7e7899400b3a618b91072777ed35feed3b76a727a3d99964c"
+    sha256 cellar: :any,                 arm64_sequoia: "9e93f97375ae15498043bc1cfe9733bd2939f2a000817f4c497a055407e13349"
+    sha256 cellar: :any,                 arm64_sonoma:  "dcd657a43dbc49efb2f2de2bf4a78c6ed1e93576365e97947e2f78e006851e0c"
+    sha256 cellar: :any,                 arm64_ventura: "ce7e36a7df776d6955d39cae2ac448785c1f0e791a623448bc6b4e3faf6198d0"
+    sha256 cellar: :any,                 sonoma:        "7668361aa148108d8d71cee8242525543fdd6228a3ea4bb94e3d216a84f919ff"
+    sha256 cellar: :any,                 ventura:       "a1d8e7abc1851aff252b5ee0925843a8cd3f32587730a5da3145d970c1905bb3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "24d9edff97cc36b7050ed98a75baeba2184f941710ca7257b10d7cad82b48fb0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "13364e0ade978267567a9687c4a783c7761b6cb9b8bab6f2c77b147d91414711"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "poppler"
-
-  fails_with gcc: "5"
-
-  # https://github.com/otfried/ipe-tools/pull/48
-  patch do
-    url "https://github.com/otfried/ipe-tools/commit/14335180432152ad094300d0afd00d8e390469b2.patch?full_index=1"
-    sha256 "544d891bfab2c297f659895761cb296d6ed2b4aa76a888e9ca2c215d497a48e5"
-  end
-
-  # https://github.com/otfried/ipe-tools/pull/55
-  patch do
-    url "https://github.com/otfried/ipe-tools/commit/65586fcd9cc39e482ae5a9abdb6f4932d9bb88c4.patch?full_index=1"
-    sha256 "61f507fcaa843c00e5aa06bc1c8ab1cbc2798214c5f794d2c9bd376f78b49a11"
-  end
 
   def install
     cd "pdftoipe" do

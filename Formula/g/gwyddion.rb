@@ -1,8 +1,8 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "https://downloads.sourceforge.net/project/gwyddion/gwyddion/2.66/gwyddion-2.66.tar.xz"
-  sha256 "377bedcd2b0d8d133a329686da9f5f91807ff1d47937f9991195f1e863792d52"
+  url "https://downloads.sourceforge.net/project/gwyddion/gwyddion/2.68/gwyddion-2.68.tar.xz"
+  sha256 "725c3f71738362b10b1e2cf76d391684cf2f15a71a2b34ef1caddabd6d5a9bfa"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,16 +11,15 @@ class Gwyddion < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "92520b5d7c96c979979e90d2c9262bfac04fcf01886ab88da9e1e5737243890f"
-    sha256 arm64_ventura:  "c6239179ab6f4d4870721daa70ac7f75dbe745bfe23abb5789c21973e4bc8038"
-    sha256 arm64_monterey: "e58cd64b5695c615cc628523572e3d9f7304570e062c814c91bdeb6459b61f2a"
-    sha256 sonoma:         "0b8831b14f01286a37851e0f8931040950ee65121ea1ace70beab457fc9cd1a3"
-    sha256 ventura:        "9758d09277d9b6e4d46c9524a296a2b27df41d6dcdd48537ee44ab90dff20dac"
-    sha256 monterey:       "8f4019049aad4c6a55e79c909b449263a58f6e80f79eaa92da6d7ad2d9219c83"
-    sha256 x86_64_linux:   "9af968081422a5b12d4c4bfb433e347e487c6373e67e2a1398e51630f96a72f5"
+    sha256 arm64_sonoma:  "b43e730eff6442bc243f8ac823d66f9662ddb19d3b45ba2fd4839539633ceec1"
+    sha256 arm64_ventura: "102134d0cc82e99b16f10beca65fbff50cf90fc20e8dfb9109947f38397c6e27"
+    sha256 sonoma:        "2a46d8ac980a10cff9a5dd4e6ad6676732f36f3683e3f15527e73cbd2fbc00fe"
+    sha256 ventura:       "98f80d6914545e03d705f8b36386f25c40c24b28790c68b3cd960f57736777e0"
+    sha256 arm64_linux:   "50c3c92bfa90b717cd0363f1848160dd2f09460cf7c9bc2bac377dc773c976cc"
+    sha256 x86_64_linux:  "ddb58bb61054c7d019aa1db4b8da4378829026a723bcd40d3181382e2809f562"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => [:build, :test]
   depends_on "cairo"
   depends_on "fftw"
   depends_on "gdk-pixbuf"
@@ -50,12 +49,12 @@ class Gwyddion < Formula
 
   def install
     system "autoreconf", "--force", "--install", "--verbose" if OS.mac?
-    system "./configure", *std_configure_args,
+    system "./configure", "--disable-desktop-file-update",
+                          "--disable-pygwy",
                           "--disable-silent-rules",
-                          "--disable-desktop-file-update",
                           "--with-html-dir=#{doc}",
                           "--without-gtksourceview",
-                          "--disable-pygwy"
+                          *std_configure_args
     system "make", "install"
   end
 
@@ -69,86 +68,8 @@ class Gwyddion < Formula
         return 0;
       }
     C
-    atk = Formula["atk"]
-    cairo = Formula["cairo"]
-    fftw = Formula["fftw"]
-    fontconfig = Formula["fontconfig"]
-    freetype = Formula["freetype"]
-    gdk_pixbuf = Formula["gdk-pixbuf"]
-    gettext = Formula["gettext"]
-    glib = Formula["glib"]
-    gtkx = Formula["gtk+"]
-    gtkglext = Formula["gtkglext"]
-    harfbuzz = Formula["harfbuzz"]
-    libpng = Formula["libpng"]
-    pango = Formula["pango"]
-    pixman = Formula["pixman"]
-    flags = %W[
-      -I#{atk.opt_include}/atk-1.0
-      -I#{cairo.opt_include}/cairo
-      -I#{fftw.opt_include}
-      -I#{fontconfig.opt_include}
-      -I#{freetype.opt_include}/freetype2
-      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
-      -I#{gettext.opt_include}
-      -I#{glib.opt_include}/glib-2.0
-      -I#{glib.opt_lib}/glib-2.0/include
-      -I#{gtkglext.opt_include}/gtkglext-1.0
-      -I#{gtkglext.opt_lib}/gtkglext-1.0/include
-      -I#{gtkx.opt_include}/gtk-2.0
-      -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
-      -I#{include}/gwyddion
-      -I#{libpng.opt_include}/libpng16
-      -I#{lib}/gwyddion/include
-      -I#{pango.opt_include}/pango-1.0
-      -I#{pixman.opt_include}/pixman-1
-      -D_REENTRANT
-      -L#{atk.opt_lib}
-      -L#{cairo.opt_lib}
-      -L#{fftw.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
-      -L#{gdk_pixbuf.opt_lib}
-      -L#{gettext.opt_lib}
-      -L#{glib.opt_lib}
-      -L#{gtkglext.opt_lib}
-      -L#{gtkx.opt_lib}
-      -L#{lib}
-      -L#{pango.opt_lib}
-      -latk-1.0
-      -lcairo
-      -lfftw3
-      -lfontconfig
-      -lfreetype
-      -lgdk_pixbuf-2.0
-      -lgio-2.0
-      -lglib-2.0
-      -lgmodule-2.0
-      -lgobject-2.0
-      -lgwyapp2
-      -lgwyddion2
-      -lgwydgets2
-      -lgwydraw2
-      -lgwymodule2
-      -lgwyprocess2
-      -lpango-1.0
-      -lpangocairo-1.0
-      -lpangoft2-1.0
-    ]
 
-    if OS.mac?
-      flags += %w[
-        -lintl
-        -lgdk-quartz-2.0
-        -lgdkglext-quartz-1.0
-        -lgtk-quartz-2.0
-        -lgtkglext-quartz-1.0
-        -framework AppKit
-        -framework OpenGL
-      ]
-    end
-
+    flags = shell_output("pkgconf --cflags --libs gwyddion").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

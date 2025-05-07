@@ -19,13 +19,14 @@ class Jack < Formula
     sha256 sonoma:         "15b133b0d5b27e9a1e054fec07cd8c0c3e4972ace51ca2d6ec9b57b8ee4c5c85"
     sha256 ventura:        "6d6e8934386e7609ad4ab4af7ba321ffc0bf8673f93b2d2deca7fb3bc3207688"
     sha256 monterey:       "5079ca572c21ee6acc9574a0db44938e2c6099242d38a3cbd39bc4e4bc643c08"
+    sha256 arm64_linux:    "13cdb9547db6f443c750059b2f230085bac7465964ff22d88aeb4b2eb5e08873"
     sha256 x86_64_linux:   "1632a4f4ebdf3e82dd5186dd71dd498a83bf47f4ef610b319d22bb201727e463"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "berkeley-db@5" # keep berkeley-db < 6 to avoid AGPL-3.0 restrictions
   depends_on "libsamplerate"
 
@@ -66,13 +67,9 @@ class Jack < Formula
   end
 
   test do
-    fork do
-      if OS.mac?
-        exec bin/"jackd", "-X", "coremidi", "-d", "dummy"
-      else
-        exec bin/"jackd", "-d", "dummy"
-      end
-    end
+    args = ["-d", "dummy"]
+    args += ["-X", "coremidi"] if OS.mac?
+    spawn bin/"jackd", *args
 
     assert_match "jackdmp version #{version}", shell_output("#{bin}/jackd --version")
   end

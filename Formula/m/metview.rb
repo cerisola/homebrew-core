@@ -1,10 +1,11 @@
 class Metview < Formula
   desc "Meteorological workstation software"
   homepage "https://metview.readthedocs.io/en/latest/"
-  url "https://confluence.ecmwf.int/download/attachments/51731119/MetviewBundle-2024.9.0-Source.tar.gz"
-  version "5.23.0"
-  sha256 "b59e1804a55c16ab623bc3fa6b71cb956b4c383ce7d067a27c7c5140b9acf909"
+  url "https://confluence.ecmwf.int/download/attachments/51731119/MetviewBundle-2024.11.0-Source.tar.gz"
+  version "5.23.1"
+  sha256 "4af1333431664bdbf0a11a6ff20bac847f83647358319864d1b1ad421d33970a"
   license "Apache-2.0"
+  revision 1
 
   livecheck do
     url "https://confluence.ecmwf.int/display/METV/The+Metview+Source+Bundle"
@@ -12,15 +13,15 @@ class Metview < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:  "71f69e736adf1818e28f077b4cf59da1be7c92e7df927f73e5f5c713a6254785"
-    sha256 arm64_ventura: "9ef4c41437fdb20a4d5114cec99b1390a71a2b11069890b36ea61f194a7a87a1"
-    sha256 sonoma:        "f0b17046ec81d82a92180699ab840585d7bb1692f2e4bded376587ef48f3b65b"
-    sha256 ventura:       "86fb26e306b0c42d56f9b003e3dda7f833368851998d1b624eae27b9712e4404"
-    sha256 x86_64_linux:  "3c443f625d1f690aed1f12eef3e9411938f17e775ef9be8a0771ce307b18c10f"
+    sha256 arm64_sonoma:  "a91ea407bda805391d017241b93713a0fe588145e2b168a2af751bc48d208436"
+    sha256 arm64_ventura: "26ba6b9c9d04acb75b2c67462666e19224c2c94fa14a38c7a094fc52f329c73b"
+    sha256 sonoma:        "28d3218151c12dc2b05e4adc0d0eabd10db58d692bd8e30030e5bf91ee54c853"
+    sha256 ventura:       "d2a661c173d35c61c5ce87f74af750f723b8c389189db1ff7617434acaea37fa"
+    sha256 x86_64_linux:  "7cd42b0b3cd17c91bc5121d3e43c29d4d10ab44413507f26e3bb6eec10c9a50c"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "eccodes"
   depends_on "eigen"
@@ -106,6 +107,6 @@ class Metview < Formula
       plot(grib, grid_shading)
     EOS
     system bin/"metview", "-nocreatehome", "-b", "test_binary_run_grib_plot.mv"
-    assert_predicate testpath/"test.1.png", :exist?
+    assert_path_exists testpath/"test.1.png"
   end
 end

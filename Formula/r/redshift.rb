@@ -19,6 +19,7 @@ class Redshift < Formula
     sha256 big_sur:        "8be47c6b6015ca4ccd2c706dd58541c49c4177a1d69144452a7aa483c977f805"
     sha256 catalina:       "344ea69571839ab32210854f990474239fde828b10a019ec5e88695eb4c7ffcb"
     sha256 mojave:         "71ec07212f543d7a4152f04627f2fe9cabcbc121caae584b24070f05101ae4dd"
+    sha256 arm64_linux:    "c21e3b0726216ea136e4f022da78243fd5572e69f9a3fc7507c07831d95551d4"
     sha256 x86_64_linux:   "12372cb33e04989848070b332096420b45539cd69e31026545543207d7d0cc9a"
   end
 
@@ -31,15 +32,13 @@ class Redshift < Formula
   end
 
   depends_on "intltool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gettext"
   depends_on "glib"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
+    args = %w[
       --disable-silent-rules
-      --disable-dependency-tracking
       --disable-geoclue
       --disable-geoclue2
       --with-systemduserunitdir=no
@@ -52,7 +51,7 @@ class Redshift < Formula
     end
 
     system "./bootstrap" if build.head?
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
     pkgshare.install "redshift.conf.sample"
   end
@@ -69,8 +68,8 @@ class Redshift < Formula
   service do
     run opt_bin/"redshift"
     keep_alive true
-    log_path "/dev/null"
-    error_log_path "/dev/null"
+    log_path File::NULL
+    error_log_path File::NULL
   end
 
   test do

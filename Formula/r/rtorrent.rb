@@ -1,36 +1,31 @@
 class Rtorrent < Formula
   desc "Ncurses BitTorrent client based on libtorrent-rakshasa"
   homepage "https://github.com/rakshasa/rtorrent"
-  url "https://github.com/rakshasa/rtorrent/releases/download/v0.10.0/rtorrent-0.10.0.tar.gz"
-  sha256 "cc65bba7abead24151f10af116eca2342b0c320fdff3cb8d604c0af09215d3aa"
+  url "https://github.com/rakshasa/rtorrent/releases/download/v0.15.3/rtorrent-0.15.3.tar.gz"
+  sha256 "6dfd42c19e6ff2f5ee8b99855314cef4f10bd669663c2670cc85fd6a4e2c4e40"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4ff4cdfea0262578387a2bd2104e7f0caab74ad85853b9558b62c2bc5e7fbb64"
-    sha256 cellar: :any,                 arm64_sonoma:  "7817e20a46918a4013d357c5d7d73a28f0173ebb1cb5b7c8672b7c92b05c0b7d"
-    sha256 cellar: :any,                 arm64_ventura: "653b6b2302dff61a612e18f8d48fbe79ac8d9d3797b0025b31097964c648a91b"
-    sha256 cellar: :any,                 sonoma:        "9f3eca223df05e8dd831e6ba42bd6bc900e5289d7f76fca37b491dc1cf3dd1b3"
-    sha256 cellar: :any,                 ventura:       "c74da101ca3e057601ff89d00cfe1d5dcb9e95cae0487483d5c1e6cb1f274b9b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1f59d9720aa571fe2d1b44637fa114cca245154452bb7fd52a50c972b1572093"
+    sha256 cellar: :any,                 arm64_sequoia: "7abb3f0ac2b614f55c1f55cf4f624137b6532c45e900fa534da392fadac5846f"
+    sha256 cellar: :any,                 arm64_sonoma:  "7d2c15dd128af1b7403126bbeaf63d0628f579a8eddee6688b51a91b18e4a5b9"
+    sha256 cellar: :any,                 arm64_ventura: "e7d9c5a9ba6291a6043aba2a146f37a361afc3382e6a65a8948ee2fa366ae1f3"
+    sha256 cellar: :any,                 sonoma:        "791e577e539051b785bf7fcd8f02acf6ebaabceec911227204abf027a7ce9620"
+    sha256 cellar: :any,                 ventura:       "789d7e46ad1019063b7bd7ba94011bc4c56e17ae8fb15c0dc862765dec2bc955"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "af91d9a66c6d6fcdcbfa44d6489ecd98a2342a7756bdfa8e7334c33e6ede2a6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "acfc175eccfc821a19f64f05a13d92f31311dbb35691f490af727178ad8f0461"
   end
 
   depends_on "autoconf" => :build
   depends_on "autoconf-archive" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libtorrent-rakshasa"
   depends_on "xmlrpc-c"
 
   uses_from_macos "curl"
   uses_from_macos "ncurses"
-
-  # patch to use fsync for osx builds, upstream pr ref, https://github.com/rakshasa/rtorrent/pull/1297
-  patch do
-    url "https://github.com/rakshasa/rtorrent/commit/ad491b46ede1593dc28120231b87051530f5b391.patch?full_index=1"
-    sha256 "5242ccb5e85a40860d3928f3264d5579976717d071bdb228960eab8926396a69"
-  end
 
   def install
     system "autoreconf", "--force", "--install", "--verbose"
@@ -40,11 +35,9 @@ class Rtorrent < Formula
   end
 
   test do
-    pid = fork do
-      exec bin/"rtorrent", "-n", "-s", testpath
-    end
-    sleep 3
-    assert_predicate testpath/"rtorrent.lock", :exist?
+    pid = spawn bin/"rtorrent", "-n", "-s", testpath
+    sleep 10
+    assert_path_exists testpath/"rtorrent.lock"
   ensure
     Process.kill("HUP", pid)
   end

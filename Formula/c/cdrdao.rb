@@ -15,12 +15,13 @@ class Cdrdao < Formula
     sha256 ventura:        "ba6051c32784b80330a170abb8eb259fc277fb30aeaeb2fa8c0327f15bc3ee7b"
     sha256 monterey:       "4f53224ac3e0a2f4b7a88664f38258dfcbd82b1cc1e87330b5598a962b570a03"
     sha256 big_sur:        "8646d1973bae91ad66f3b3318a7fb1e91f321eef9be18db2cc533a7833af292e"
+    sha256 arm64_linux:    "db49fc2472974c0e6f5ed25432f5b8612deb979f98bf77f72912767cc30bd473"
     sha256 x86_64_linux:   "4bfec99cba6093c485d981592128baa27150a47cf28e4f6bf80d887aeda6352b"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "lame"
   depends_on "libao"
   depends_on "libvorbis"
@@ -35,7 +36,7 @@ class Cdrdao < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure", *std_configure_args, "--mandir=#{man}"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 

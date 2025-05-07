@@ -1,17 +1,19 @@
 class Esbuild < Formula
   desc "Extremely fast JavaScript bundler and minifier"
   homepage "https://esbuild.github.io/"
-  url "https://github.com/evanw/esbuild/archive/refs/tags/v0.24.0.tar.gz"
-  sha256 "db289a2d668e42f81b93d7489c27ef665e86ef4e5c4974997526d46982f2b68a"
+  url "https://github.com/evanw/esbuild/archive/refs/tags/v0.25.4.tar.gz"
+  sha256 "4661a2b1d2b1db035a19eca5e771a40b6c16b23279aae02022def9fa45ed5ad9"
   license "MIT"
+  head "https://github.com/evanw/esbuild.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fe0a47b1f1a4573fa5bc5955418a778e4255f869d6b9de95c207533e4e24b515"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fe0a47b1f1a4573fa5bc5955418a778e4255f869d6b9de95c207533e4e24b515"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fe0a47b1f1a4573fa5bc5955418a778e4255f869d6b9de95c207533e4e24b515"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c84a7d059a4001db54eb4c45d3f955cf86167657192ac45d67110e20ff5f0e96"
-    sha256 cellar: :any_skip_relocation, ventura:       "c84a7d059a4001db54eb4c45d3f955cf86167657192ac45d67110e20ff5f0e96"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c11fa0f62044d1a166acd2f5c393463ea5e557d5c12a5937b685e0785656056"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bdd37229ff118962d2d8092b36c18af0e72a5cb8ab824dfe90fdecbb8b8ce5e7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bdd37229ff118962d2d8092b36c18af0e72a5cb8ab824dfe90fdecbb8b8ce5e7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bdd37229ff118962d2d8092b36c18af0e72a5cb8ab824dfe90fdecbb8b8ce5e7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7a322a64d412c13933430679569cfb5d623d05c19ab266d13205cb975fe0ebbc"
+    sha256 cellar: :any_skip_relocation, ventura:       "7a322a64d412c13933430679569cfb5d623d05c19ab266d13205cb975fe0ebbc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "42bc8c07e1ed3ec052f691012c14c8fc13bc4a5c2439d5fbbe09de7bc1da9e93"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1fd9dfe035aa0dad5f65db9f9509d32d42dece05dabaef7deb639b9f5bee247"
   end
 
   depends_on "go" => :build
@@ -23,13 +25,14 @@ class Esbuild < Formula
   end
 
   test do
-    (testpath/"app.jsx").write <<~EOS
+    (testpath/"app.jsx").write <<~JS
       import * as React from 'react'
       import * as Server from 'react-dom/server'
 
       let Greet = () => <h1>Hello, world!</h1>
       console.log(Server.renderToString(<Greet />))
-    EOS
+      process.exit()
+    JS
 
     system Formula["node"].libexec/"bin/npm", "install", "react", "react-dom"
     system bin/"esbuild", "app.jsx", "--bundle", "--outfile=out.js"

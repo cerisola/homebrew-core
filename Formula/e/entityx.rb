@@ -19,18 +19,25 @@ class Entityx < Formula
     sha256 cellar: :any_skip_relocation, mojave:         "5d2b3d80d9be39b08b61003fe0f8c30bf8aec792636b78e475fbbbb55d3e01a7"
     sha256 cellar: :any_skip_relocation, high_sierra:    "b015609cd7e4ad7154e846a34e91627a605983ab3e3f1767df5ccf7e46cc9d10"
     sha256 cellar: :any_skip_relocation, sierra:         "d0ecde656ac88f1f312d69894a32330827cd52ac64a7e20d1357a0a9bbe8d596"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d74139c6a3a5340831984319a46e10d0276b604a675d38c1cace40cd0329966a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ad5714ba0a1eb7c6929c02e05359f7b2f81a0389c867a1c1a98b07d1a0a14af"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", "-DENTITYX_BUILD_SHARED=off", "-DENTITYX_BUILD_TESTING=off", *std_cmake_args
-    system "make", "install"
+    args = %w[
+      -DENTITYX_BUILD_SHARED=off
+      -DENTITYX_BUILD_TESTING=off
+    ]
+
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<-EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <entityx/entityx.h>
 
       int main(int argc, char *argv[]) {
@@ -41,7 +48,7 @@ class Entityx < Formula
 
         return 0;
       }
-    EOS
+    CPP
     system ENV.cxx, "test.cpp", "-std=c++11", "-L#{lib}", "-lentityx", "-o", "test"
     system "./test"
   end

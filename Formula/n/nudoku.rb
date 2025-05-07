@@ -14,12 +14,13 @@ class Nudoku < Formula
     sha256 sonoma:         "d4f87f815b143cddae90e6bcf12bb8609a53e7f112cb19580585613e92a2fd49"
     sha256 ventura:        "a58e28aa1ffac9ef8d792ef34190e7bd1605828aa2ae29550042e28740863023"
     sha256 monterey:       "c208d8a2b1a5bbe9179a4969f284e2412ad354ee00da078f423552adc67698fa"
+    sha256 arm64_linux:    "b91300e0ac30944be3a94ba767f3ee11aff11ed7fd41f7987b0d9195989a2fef"
     sha256 x86_64_linux:   "6050f8f3ab9a15cafee9cf73e62cfc236bd98f445015cbed8f2a48fb82de0efc"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "gettext"
 
@@ -27,10 +28,9 @@ class Nudoku < Formula
 
   def install
     system "autoreconf", "--force", "--install", "--verbose"
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+    system "./configure", "--disable-silent-rules",
                           "--enable-cairo",
-                          "--prefix=#{prefix}"
+                          *std_configure_args
     system "make", "install"
   end
 

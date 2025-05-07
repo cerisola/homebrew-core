@@ -1,8 +1,9 @@
 class Pkgconf < Formula
   desc "Package compiler and linker metadata toolkit"
   homepage "https://github.com/pkgconf/pkgconf"
-  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.3.0.tar.xz"
-  sha256 "3a9080ac51d03615e7c1910a0a2a8df08424892b5f13b0628a204d3fcce0ea8b"
+  url "https://distfiles.ariadne.space/pkgconf/pkgconf-2.4.3.tar.xz"
+  mirror "http://distfiles.ariadne.space/pkgconf/pkgconf-2.4.3.tar.xz"
+  sha256 "51203d99ed573fa7344bf07ca626f10c7cc094e0846ac4aa0023bd0c83c25a41"
   license "ISC"
 
   livecheck do
@@ -11,15 +12,15 @@ class Pkgconf < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "18c4da47fd2032c4edfac853b772e1a16a745a0c67335b86931fb2bec8c10933"
-    sha256 arm64_sonoma:   "4d7c5803943bf2dcc8cb9ff8c838ea4283eeab24f49982df044cbc3031856fd8"
-    sha256 arm64_ventura:  "e0b2a95c807578a166fab8467305f1d54db32fe0656a4d6cb746c2356146b074"
-    sha256 arm64_monterey: "ac13529811ba6f3e57f7f4048711720d073e10a8797768073626f5d6daabbf76"
-    sha256 sequoia:        "9b44fe313d296fa10617d6b58ea1eab78bf217b6f00478ad98b01e0375475472"
-    sha256 sonoma:         "1db60da1d512bb109dd455f03856e790a156137f9d77f1f507ac72d538a1c1e2"
-    sha256 ventura:        "5f272a6b79920f7c236eaa01d94fc8da99ebc79947a56d1808a19d436571c9c8"
-    sha256 monterey:       "802a81f3ca1ea1a14699d6e2359e0ccd30ef310142c6c305b17d881cbd6d2ed0"
-    sha256 x86_64_linux:   "67710376078e1191ece25d69214d9ced135195b07c24a386db0d9aee590c8ead"
+    rebuild 1
+    sha256 arm64_sequoia: "3feba2e952500e4ab9261ac59a19e07c310d1147e31496f62b591e4b21b68683"
+    sha256 arm64_sonoma:  "24e921aaf87bc253adf250761cb4bf717d14dec995d2f6302cf966f30f28fe59"
+    sha256 arm64_ventura: "2df66bd11baf8300451fb850f365c93e0a9cc47677887d1d0f2f575c148e4b52"
+    sha256 sequoia:       "60803149fa486b8da14591ce5c016e37c9388c1ded2a88d9167a84926cc74957"
+    sha256 sonoma:        "9f5e12ea8ab25db6afc5c09543d6840d72f6556b894d167ac79007e8f187feb0"
+    sha256 ventura:       "3d7bbea2ca2d4d611c55dcd2d890628b2c4f45451fef6e39755f30acf1c4aeea"
+    sha256 arm64_linux:   "6d8ad2faadd3f05fabbc70b12cf2cda9a4543fe7cb6d62bf6288db842461c57d"
+    sha256 x86_64_linux:  "9177b7f842d88798bfd86929360ac3a412d3d7e0133f0e9b0dca0d5306c46dc1"
   end
 
   head do
@@ -29,8 +30,6 @@ class Pkgconf < Formula
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
-
-  conflicts_with "pkg-config", because: "both install `pkg.m4` file"
 
   def install
     if build.head?
@@ -42,27 +41,38 @@ class Pkgconf < Formula
       #{HOMEBREW_PREFIX}/lib/pkgconfig
       #{HOMEBREW_PREFIX}/share/pkgconfig
     ]
-    pc_path << if OS.mac?
-      pc_path << "/usr/local/lib/pkgconfig"
-      pc_path << "/usr/lib/pkgconfig"
-      "#{HOMEBREW_LIBRARY}/Homebrew/os/mac/pkgconfig/#{MacOS.version}"
+    pc_path += if OS.mac?
+      %W[
+        /usr/local/lib/pkgconfig
+        /usr/lib/pkgconfig
+        #{HOMEBREW_LIBRARY}/Homebrew/os/mac/pkgconfig/#{MacOS.version}
+      ]
     else
-      "#{HOMEBREW_LIBRARY}/Homebrew/os/linux/pkgconfig"
+      ["#{HOMEBREW_LIBRARY}/Homebrew/os/linux/pkgconfig"]
     end
 
-    pc_path = pc_path.uniq.join(File::PATH_SEPARATOR)
-
-    configure_args = std_configure_args + %W[
-      --with-pkg-config-dir=#{pc_path}
+    args = %W[
+      --disable-silent-rules
+      --with-pkg-config-dir=#{pc_path.uniq.join(File::PATH_SEPARATOR)}
+      --with-system-includedir=#{MacOS.sdk_path_if_needed if OS.mac?}/usr/include
+      --with-system-libdir=/usr/lib
     ]
 
-    system "./configure", *configure_args
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
+
+    # Make `pkgconf` a drop-in replacement for `pkg-config` by adding symlink[^1].
+    # Similar to Debian[^2], Fedora, ArchLinux and MacPorts.
+    #
+    # [^1]: https://github.com/pkgconf/pkgconf/#pkg-config-symlink
+    # [^2]: https://salsa.debian.org/debian/pkgconf/-/blob/debian/unstable/debian/pkgconf.links?ref_type=heads
+    bin.install_symlink "pkgconf" => "pkg-config"
+    man1.install_symlink "pkgconf.1" => "pkg-config.1"
   end
 
   test do
-    (testpath/"foo.pc").write <<~EOS
+    (testpath/"foo.pc").write <<~PC
       prefix=/usr
       exec_prefix=${prefix}
       includedir=${prefix}/include
@@ -73,7 +83,7 @@ class Pkgconf < Formula
       Version: 1.0.0
       Cflags: -I${includedir}/foo
       Libs: -L${libdir} -lfoo
-    EOS
+    PC
 
     ENV["PKG_CONFIG_LIBDIR"] = testpath
     system bin/"pkgconf", "--validate", "foo"
@@ -93,5 +103,11 @@ class Pkgconf < Formula
 
     system ENV.cc, "test.c", "-I#{include}/pkgconf", "-L#{lib}", "-lpkgconf"
     system "./a.out"
+
+    # Make sure system-libdir is removed as it can cause problems in superenv
+    if OS.mac?
+      ENV.delete "PKG_CONFIG_LIBDIR"
+      refute_match "-L/usr/lib", shell_output("#{bin}/pkgconf --libs libcurl")
+    end
   end
 end

@@ -1,8 +1,8 @@
 class Armadillo < Formula
   desc "C++ linear algebra library"
   homepage "https://arma.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/arma/armadillo-14.0.3.tar.xz"
-  sha256 "ebd6215eeb01ee412fed078c8a9f7f87d4e1f6187ebcdc1bc09f46095a4f4003"
+  url "https://downloads.sourceforge.net/project/arma/armadillo-14.4.2.tar.xz"
+  sha256 "6dfddcfbd91e70679d7c11e94a5963a7efda002fec351e6f4875ac8e245c5117"
   license "Apache-2.0"
 
   livecheck do
@@ -11,27 +11,24 @@ class Armadillo < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "cd8f2a9238f2ed1342f90bcaccfa16be257195b00afcfe00ad163c5db96af4f2"
-    sha256 cellar: :any,                 arm64_sonoma:  "5494509545562e10b3f4b73968e4c6558957111fabcec58311976d97c8e8534a"
-    sha256 cellar: :any,                 arm64_ventura: "b18f008d3e59c702a17b9850d7e129413646815b2f23cab69663ac86d87b07dc"
-    sha256 cellar: :any,                 sonoma:        "a5d309d87feb8a4516be371207087695d4049f640fd06e8255f759d6ac24af99"
-    sha256 cellar: :any,                 ventura:       "5fd2bbac3110aa5f68f6bc12a5b70f5762bfd58b70fd4db1844c42957b67fff5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3cc65a1a732d92d576baa12ac1267cc08df1a93f78eb6cb23683c68d6c450f59"
+    sha256 cellar: :any,                 arm64_sequoia: "5a4c62a61f6c9ebf9d6df1aed9299c9ac496f67d22fa801021580a98f18a757f"
+    sha256 cellar: :any,                 arm64_sonoma:  "12abd91318b767e5b3f06a086a7fa5bd0ebb8627382b6783cd750be987239175"
+    sha256 cellar: :any,                 arm64_ventura: "ee00d2190e28f52f572645cd698bff73690f44a05d124610f53c3b4c0fe9a201"
+    sha256 cellar: :any,                 sonoma:        "fce7394c80252b4026300a498090df74c31c166907fcfa0d99ac6e36f90ee991"
+    sha256 cellar: :any,                 ventura:       "79a8e27963c3123e2fde50be489263b6222eff42b930e68238857b824d8116a1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9253e78f3ac7ef9e5a21c33857cfd1ba3ec1e6c18826da5a12947eec3074da63"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "635b61051983a0c1dfb3e4463c4ba34f511ee5ca35638531c5845f0514c55cec"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "arpack"
-  depends_on "hdf5"
-  depends_on "libaec"
   depends_on "openblas"
-  depends_on "superlu"
 
   def install
-    ENV.prepend "CXXFLAGS", "-DH5_USE_110_API -DH5Ovisit_vers=1"
-
-    system "cmake", ".", "-DDETECT_HDF5=ON", "-DALLOW_OPENBLAS_MACOS=ON", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DALLOW_OPENBLAS_MACOS=ON", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -44,6 +41,6 @@ class Armadillo < Formula
       }
     CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-I#{include}", "-L#{lib}", "-larmadillo", "-o", "test"
-    assert_equal shell_output("./test").to_i, version.to_s.to_i
+    assert_equal version.to_s.to_i, shell_output("./test").to_i
   end
 end

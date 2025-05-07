@@ -16,6 +16,7 @@ class XcbUtilImage < Formula
     sha256 cellar: :any,                 monterey:       "f92b6aa70eb06235ba8288bad7b15ad7f02bc718904b84500b6b3372872c6603"
     sha256 cellar: :any,                 big_sur:        "bb01ed34a0c656065eeebf407b5e014f5ecd8a23b0caf231dfeb79e733aa1136"
     sha256 cellar: :any,                 catalina:       "814b9a0c7d70118ee2da43f32311121b9da52f995c790fe4b4143e701a443c8b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "3a97fcf25d84f03c1114e588464768ef38160faf0beadbbd816c92a25a914bb5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "edac92f05202f6a66955b860ff1a3cf65e851568f6ad6ffce0237af6833c5087"
   end
 
@@ -27,17 +28,16 @@ class XcbUtilImage < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "libxcb"
   depends_on "xcb-util"
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}",
+    system "./configure", "--disable-silent-rules",
                           "--localstatedir=#{var}",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules"
+                          "--sysconfdir=#{etc}",
+                          *std_configure_args
     system "make"
     system "make", "install"
   end

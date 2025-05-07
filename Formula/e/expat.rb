@@ -1,8 +1,8 @@
 class Expat < Formula
   desc "XML 1.0 parser"
   homepage "https://libexpat.github.io/"
-  url "https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.lz"
-  sha256 "b8713f2d3cb3a3eee9ab763f66aa68f93cf6820bccf1272a682cf79b99ae6fbc"
+  url "https://github.com/libexpat/libexpat/releases/download/R_2_7_1/expat-2.7.1.tar.lz"
+  sha256 "baacdd8d98d5d3b753f2a2780d84b0bc7731be11cacdc1b98cb8ad73f0504e68"
   license "MIT"
 
   livecheck do
@@ -14,14 +14,13 @@ class Expat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "d9cb8096d735b92ac15824e9d81626c51dbf93408367bd0d3024a2110f4fc382"
-    sha256 cellar: :any,                 arm64_sonoma:   "1c7329cb4ca4f452ffd67a6f34e4527285470d889e4d4102c1f7c6388f15dd31"
-    sha256 cellar: :any,                 arm64_ventura:  "3246047b6928bea9723f58599202fe1293ba1c54e9bbc5510b9fc3578fedd7dd"
-    sha256 cellar: :any,                 arm64_monterey: "ec01bea86d59d1dcecad66e21cb3ac1534ef46371a97ebf33de26b4da1a618eb"
-    sha256 cellar: :any,                 sonoma:         "7b53ec1a15c1ae7b117329e6e30554239c411609181d4f31583145f2d9b15a3b"
-    sha256 cellar: :any,                 ventura:        "ad4ce3976e2a11dda91210ae4e451dd0363a3bbe339113728685f2795b56386b"
-    sha256 cellar: :any,                 monterey:       "cbc2eda6e09156b4d70cec60890c9a06528d56564abfa027d2b6c5d1b2e5767e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f2977263cdc1c6c153a5459eaee29016739f9cb727c243e55d48a4fe7e01a8d3"
+    sha256 cellar: :any,                 arm64_sequoia: "3e5392724170f8a1314c0db2077a1f30277e4941d1825554f1230092a483ef7c"
+    sha256 cellar: :any,                 arm64_sonoma:  "4e9eb804bd04ea10e82d38e1080670b61f067d79e36c6f854f77a8773bb8c41c"
+    sha256 cellar: :any,                 arm64_ventura: "55d44623dacceded1a48dd16b9107cab1a13036a7b251365fcf10a48f990d2d2"
+    sha256 cellar: :any,                 sonoma:        "ef5fdbf19ba77546257b3222d96c50fb12b560ef55278310f2924ccc783a384b"
+    sha256 cellar: :any,                 ventura:       "e6630e308b908b0cf9591223d03fd407356ea650ef4a68cb64c454a46397ebd2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d5d72c420ea82f5915e2ccf0f1ff569bb4501faca4ebe44901926cc78420fad6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "58ff2ade2b1d0b3de72558f92507b8bfc9bdcdc2fce5c5e33e080dfffff9b83c"
   end
 
   head do

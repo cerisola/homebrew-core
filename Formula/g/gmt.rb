@@ -1,22 +1,28 @@
 class Gmt < Formula
   desc "Tools for manipulating and plotting geographic and Cartesian data"
   homepage "https://www.generic-mapping-tools.org/"
-  url "https://github.com/GenericMappingTools/gmt/releases/download/6.5.0/gmt-6.5.0-src.tar.xz"
-  mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.5.0-src.tar.xz"
-  sha256 "4022adb44033f9c1d5a4d275b69506449e4d486efe2218313f3ff7a6c6c3141e"
   license "LGPL-3.0-or-later"
-  revision 2
+  revision 4
   head "https://github.com/GenericMappingTools/gmt.git", branch: "master"
 
+  stable do
+    url "https://github.com/GenericMappingTools/gmt/releases/download/6.5.0/gmt-6.5.0-src.tar.xz"
+    mirror "https://mirrors.ustc.edu.cn/gmt/gmt-6.5.0-src.tar.xz"
+    sha256 "4022adb44033f9c1d5a4d275b69506449e4d486efe2218313f3ff7a6c6c3141e"
+
+    # Backport update to minimum CMake version
+    # https://github.com/GenericMappingTools/gmt/commit/e8d68a575c0427f66b82f28a63ba87cdbd91aca7
+    patch :DATA
+  end
+
   bottle do
-    sha256 arm64_sequoia:  "047e2493d8474d8fc0fce2c06a5750b3ffb86a91ce0ac70ed3686266c4390ad3"
-    sha256 arm64_sonoma:   "7a9e2b2d755984f837700e435ed9f7a178d97e731c9c035471216a2bc7229b6a"
-    sha256 arm64_ventura:  "d1417abc1165bddb1bf1a455daa6e9267a443cf45f80c0f0d18c004fb441a1ce"
-    sha256 arm64_monterey: "829748601cadad21494b220e3cbbd9fa73bac30e5653008badb806952d4b59c9"
-    sha256 sonoma:         "d208aa7a4f2583c23df3b997664c665f312246c93e6b5223cdc45e3cc2468e7e"
-    sha256 ventura:        "7fae084040a7434450bac91087439904765faa73e0243c4c5c22998d398a88e1"
-    sha256 monterey:       "9909ef3fdfc45c1e6832a32c32c92ca996b4cab44ea720af3001ea8afb4e0f49"
-    sha256 x86_64_linux:   "0be4e41f6fd938a58ccd09f4afc9d2b11df44c4f30120074e542ea96ac26cdc4"
+    sha256 arm64_sequoia: "1b462c2bcbc6e95ce082b68729b36d2b8949045918256d7031c49908e1a7c75f"
+    sha256 arm64_sonoma:  "1d3a2dafaff73abfd68a892b3ca938682e4e4dfbdc80084d47541cdb7207f122"
+    sha256 arm64_ventura: "3c6954e97839d63256dcb0247a83a9dbe2521a7860e1a32c7bff7418a917872a"
+    sha256 sonoma:        "83fcc1c4401e4c9577a1b776fca7bec6fd22835bc5d41e4190d18872b9961bfe"
+    sha256 ventura:       "adcb429977f1fcc83e2296cd1d2aea653c718025114e99fde2108848b844fd64"
+    sha256 arm64_linux:   "d8d9ae98c3def5ba170544c7197b90c199447dabd2002f1010f9a43e1dd9b39d"
+    sha256 x86_64_linux:  "780e03a2e26081390f07a272817bc4bad9a398ad0ee982734144ac81569e9574"
   end
 
   depends_on "cmake" => :build
@@ -90,3 +96,16 @@ class Gmt < Formula
     refute_predicate shell_output(cmd), :empty?
   end
 end
+
+__END__
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -46,7 +46,7 @@ if (${srcdir} STREQUAL ${bindir})
+ endif (${srcdir} STREQUAL ${bindir})
+ 
+ # Define minimum CMake version required
+-cmake_minimum_required (VERSION 2.8.12)
++cmake_minimum_required (VERSION 3.16)
+ message ("CMake version: ${CMAKE_VERSION}")
+ 
+ # Use NEW behavior with newer CMake releases

@@ -2,38 +2,40 @@ class Heartbeat < Formula
   desc "Lightweight Shipper for Uptime Monitoring"
   homepage "https://www.elastic.co/beats/heartbeat"
   url "https://github.com/elastic/beats.git",
-      tag:      "v8.15.3",
-      revision: "bbed3ae55602e83f57c62de85b57a3593aa49efa"
+      tag:      "v9.0.1",
+      revision: "bce373f7dcd56a5575ad2c0ec40159722607e801"
   license "Apache-2.0"
   head "https://github.com/elastic/beats.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d6113519f910332309fb639e2b7b03bc99b1b9b6a3f3a76040d879249449c568"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ad1a4dad8aad9407f5cfc54b03d72c7d65abc3652047d141e81f2c23545c7c8b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "eb9e0bc1f034c0c7f1a4914747892bba65d20edf7059ef4be28fe41f1a004687"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bddf58fac8536bed40493d19fe6b783fc1a8b94a7f07d781d9f2100f2ba506cb"
-    sha256 cellar: :any_skip_relocation, ventura:       "343dc7dd42afc4577e924a5cfeafe76b9f67cf8fd034da3a4f819c75a30f30d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ad795c28f00b925ecd571b2da11050d1a6ae9418efa39f27457c96ce1ba5620a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "11a71a842f6c6c232fce58666e7f60a65a3c1a94c554d88c58e69f4a71712b6d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "82a41c69c964ced6f85dd9179f39791df9dc508f96a039890b744cbbeaca1d9f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cc0fc78f06e58e46c1306c258494b78f2bb27448f3e541165cccc6d5a4940880"
+    sha256 cellar: :any_skip_relocation, sonoma:        "90a5383ae88b797afc1afbacbd7855d375315afce5ea58da2c76b7b47b3b697a"
+    sha256 cellar: :any_skip_relocation, ventura:       "dd3779455d1c2a849e94c0bae6ab58d55d028cd7ffec80700c9579ee387f7d42"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "09d6943af7afa16a989ffce37a59279730124802055cfd8ab7c4e05fb73f9b66"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7cd3c7bf64e558701b30353437d7d0ea7e611c90e286ed85e0e36a56681075e0"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "python@3.12" => :build
-
-  uses_from_macos "netcat" => :test
 
   def install
     # remove non open source files
     rm_r("x-pack")
 
+    # remove requirements.txt files so that build fails if venv is used.
+    # currently only needed by docs/tests
+    rm buildpath.glob("**/requirements.txt")
+
     cd "heartbeat" do
-      # prevent downloading binary wheels during python setup
-      system "make", "PIP_INSTALL_PARAMS=--no-binary :all", "python-env"
+      # don't build docs because we aren't installing them and allows avoiding venv
+      inreplace "magefile.go", "(Fields, FieldDocs,", "(Fields,"
+
       system "mage", "-v", "build"
-      ENV.deparallelize
       system "mage", "-v", "update"
 
-      (etc/"heartbeat").install Dir["heartbeat.*", "fields.yml"]
+      pkgetc.install Dir["heartbeat.*"], "fields.yml"
       (libexec/"bin").install "heartbeat"
     end
 
@@ -65,35 +67,41 @@ class Heartbeat < Formula
     # https://github.com/Homebrew/homebrew-core/pull/91712
     return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"].present?
 
-    port = free_port
+    begin
+      port = free_port
 
-    (testpath/"config/heartbeat.yml").write <<~EOS
-      heartbeat.monitors:
-      - type: tcp
-        schedule: '@every 5s'
-        hosts: ["localhost:#{port}"]
-        check.send: "hello\\n"
-        check.receive: "goodbye\\n"
-      output.file:
-        path: "#{testpath}/heartbeat"
-        filename: heartbeat
-        codec.format:
-          string: '%{[monitor]}'
-    EOS
-    fork do
-      exec bin/"heartbeat", "-path.config", testpath/"config", "-path.data",
-                            testpath/"data"
-    end
-    sleep 5
-    assert_match "hello", pipe_output("nc -l #{port}", "goodbye\n", 0)
+      (testpath/"config/heartbeat.yml").write <<~YAML
+        heartbeat.monitors:
+        - type: tcp
+          schedule: '@every 5s'
+          hosts: ["localhost:#{port}"]
+          check.send: "hello\\n"
+          check.receive: "goodbye\\n"
+        output.file:
+          path: "#{testpath}/heartbeat"
+          filename: heartbeat
+          codec.format:
+            string: '%{[monitor]}'
+      YAML
 
-    sleep 5
-    output = JSON.parse((testpath/"data/meta.json").read)
-    assert_includes output, "first_start"
+      pid = spawn bin/"heartbeat", "--path.config", testpath/"config", "--path.data", testpath/"data"
+      TCPServer.open(port) do |server|
+        session = server.accept
+        assert_equal "hello", session.gets.chomp
+        session.puts "goodbye"
+        session.close
+      end
 
-    (testpath/"data").glob("heartbeat-*.ndjson") do |file|
-      s = JSON.parse(file.read)
-      assert_match "up", s["status"]
+      output = JSON.parse((testpath/"data/meta.json").read)
+      assert_includes output, "first_start"
+
+      (testpath/"data").glob("heartbeat-*.ndjson") do |file|
+        s = JSON.parse(file.read)
+        assert_match "up", s["status"]
+      end
+    ensure
+      Process.kill("TERM", pid)
+      Process.wait(pid)
     end
   end
 end

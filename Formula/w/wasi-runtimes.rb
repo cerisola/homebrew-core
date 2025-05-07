@@ -1,8 +1,8 @@
 class WasiRuntimes < Formula
   desc "Compiler-RT and libc++ runtimes for WASI"
   homepage "https://wasi.dev"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.3/llvm-project-19.1.3.src.tar.xz"
-  sha256 "324d483ff0b714c8ce7819a1b679dd9e4706cf91c6caf7336dc4ac0c1d3bf636"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.4/llvm-project-20.1.4.src.tar.xz"
+  sha256 "a95365b02536ed4aef29b325c205dd89c268cba41503ab2fc05f81418613ab63"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/llvm/llvm-project.git", branch: "main"
 
@@ -11,19 +11,19 @@ class WasiRuntimes < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6a416ceb547e428f6fa7ba55c1f955889504dc92ad62ad0c23d3e52c0aca4dff"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "827a14dab71af9ca068ebe22e3e5a8cefb87f3f69f93011d9e9c4feb36d054b2"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "10a1a47517183e7b2e92f45dffae7142b261332a2a187c37677690684d69c30a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ada587bb34d56e564ad457584c1e100ae5b505dc16d79e9e22840353106234ff"
-    sha256 cellar: :any_skip_relocation, ventura:       "17bb1834271dbed6588418961a23891cd2682b3f717bb1d82157dbaf87fc4519"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cf2e167df3de25498aca9b287f2880d99a0b20de5e2710166063a8dd4ad5912f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "391ae3eb79a769f9e513a3c6a57031dd25414cfeec9bafd51df86e4aea18f4ca"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dc9fe8b45f777019d37052127d84992e99b38d5dff60261b8191f8417cbd7e9d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4d88865762b1e19ad0c1daa2102c1ff3ee9db2e3e987b75d0d249e7029f2b718"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1307e3f9f706b9191fc48c65cc29e1497a82c0de1e28c247f4a3efe0b3c10e71"
+    sha256 cellar: :any_skip_relocation, ventura:       "7462f7df0b2066fe27cbb15a08b156fec402a2524af96b3c18a9ce4f5a637c1d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "efa0d6d2be7f59aa7ad4ce63ddfe8c56dc8c6d96580b368bfb55d5dd0c310faf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4d64efc2b42fc46a63a994e1e3bd2dfa04916312f2693dbc29074c052ab04cc"
   end
 
   depends_on "cmake" => :build
-  depends_on "lld" => [:build, :test]
   depends_on "wasi-libc" => [:build, :test]
-  depends_on "wasm-component-ld" => [:build, :test]
+  depends_on "lld" => :test
+  depends_on "wasm-component-ld" => :test
   depends_on "wasmtime" => :test
   depends_on "llvm"
 
@@ -55,20 +55,28 @@ class WasiRuntimes < Formula
       -DCMAKE_C_COMPILER_WORKS=ON
       -DCMAKE_CXX_COMPILER_WORKS=ON
       -DCMAKE_SYSROOT=#{wasi_libc.opt_share}/wasi-sysroot
+      -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
       -DCMAKE_FIND_FRAMEWORK=NEVER
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=#{HOMEBREW_LIBRARY_PATH}/cmake/trap_fetchcontent_provider.cmake
     ]
     # Compiler flags taken from:
-    # https://github.com/WebAssembly/wasi-sdk/blob/5e04cd81eb749edb5642537d150ab1ab7aedabe9/cmake/wasi-sdk-sysroot.cmake#L65-L75
+    # https://github.com/WebAssembly/wasi-sdk/blob/53551e59438641b25e63bf304869ab4da6d512d9/cmake/wasi-sdk-sysroot.cmake#L71-L88
     compiler_rt_args = %W[
       -DCMAKE_INSTALL_PREFIX=#{pkgshare}
       -DCOMPILER_RT_BAREMETAL_BUILD=ON
       -DCOMPILER_RT_BUILD_XRAY=OFF
       -DCOMPILER_RT_INCLUDE_TESTS=OFF
       -DCOMPILER_RT_HAS_FPIC_FLAG=OFF
-      -DCOMPILER_RT_ENABLE_IOS=OFF
       -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON
+      -DCOMPILER_RT_BUILD_SANITIZERS=OFF
+      -DCOMPILER_RT_BUILD_XRAY=OFF
+      -DCOMPILER_RT_BUILD_LIBFUZZER=OFF
+      -DCOMPILER_RT_BUILD_PROFILE=OFF
+      -DCOMPILER_RT_BUILD_CTX_PROFILE=OFF
+      -DCOMPILER_RT_BUILD_MEMPROF=OFF
+      -DCOMPILER_RT_BUILD_ORC=OFF
+      -DCOMPILER_RT_BUILD_GWP_ASAN=OFF
       -DCMAKE_C_COMPILER_TARGET=wasm32-wasi
       -DCOMPILER_RT_OS_DIR=wasi
     ]
@@ -208,7 +216,8 @@ class WasiRuntimes < Formula
       system clang, "--target=#{target}", "-v", "test.c", "-o", "test-#{target}"
       assert_equal "the answer is 42", shell_output("wasmtime #{testpath}/test-#{target}")
 
-      system "#{clang}++", "--target=#{target}", "-v", "test.cc", "-o", "test-cxx-#{target}"
+      pthread_flags = target.end_with?("-threads") ? ["-pthread"] : []
+      system "#{clang}++", "--target=#{target}", "-v", "test.cc", "-o", "test-cxx-#{target}", *pthread_flags
       assert_equal "hello from C++ main with cout!", shell_output("wasmtime #{testpath}/test-cxx-#{target}").chomp
     end
   end

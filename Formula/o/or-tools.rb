@@ -4,7 +4,7 @@ class OrTools < Formula
   url "https://github.com/google/or-tools/archive/refs/tags/v9.11.tar.gz"
   sha256 "f6a0bd5b9f3058aa1a814b798db5d393c31ec9cbb6103486728997b49ab127bc"
   license "Apache-2.0"
-  revision 2
+  revision 7
   head "https://github.com/google/or-tools.git", branch: "stable"
 
   livecheck do
@@ -13,16 +13,17 @@ class OrTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a90527ae83fd440d4e08b28842446125665f3659d7742e386f8477bde7e73276"
-    sha256 cellar: :any,                 arm64_sonoma:  "6b5b2c109d0e4bab54875c761ce5977211b65550dc5d951948a6156c82f78506"
-    sha256 cellar: :any,                 arm64_ventura: "3665217f9260117ba57236137c57219a7a6175c329de48ab1bbea6ac096e5f6d"
-    sha256 cellar: :any,                 sonoma:        "a885fc5170510f6ebc4be8a22e32e4a311d6b7d1c7befadcfa2550fa545f0623"
-    sha256 cellar: :any,                 ventura:       "769202bc7ac4624f24b15f968e00f53a231c6679972b5fd96f1a03ec12760308"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e5bef0928ad0ac0a1e128452ee43010cbe72d97d41039782e09e47880a198ec"
+    sha256 cellar: :any,                 arm64_sequoia: "8bc0f154bd8ff5f8b52a8ce5e7464c1d53cdcf6a5418d633502645c3fd66b4dd"
+    sha256 cellar: :any,                 arm64_sonoma:  "3dcbf65d964704779f14c14b20f86014fced57438d169a50c3bbba0bcae00022"
+    sha256 cellar: :any,                 arm64_ventura: "8bc94a0ec0b40991e4044d3361e88380c9be48f3a8eb5b9bb2c915dfd2c5891b"
+    sha256 cellar: :any,                 sonoma:        "d62f64f14cab6e8fecc648a8891cce343c8185ae3d1165be7666a88aeedd1e0c"
+    sha256 cellar: :any,                 ventura:       "3deca1cee3cf7498faed2c5c0dd968fa6544c4c6fd7bfb218f0e88a4be701d41"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2163e77817e35fafb0b95d956d7eb14286004689c4b9fc1656bf767e0f05b442"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "64e9589608bbe0fd1ebd91e3e94a62502d48a880437d695d377b6671c223dc24"
   end
 
   depends_on "cmake" => [:build, :test]
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "abseil"
   depends_on "cbc"
   depends_on "cgl"
@@ -35,8 +36,6 @@ class OrTools < Formula
   depends_on "re2"
   depends_on "scip"
   uses_from_macos "zlib"
-
-  fails_with gcc: "5"
 
   # Add missing `#include`s to fix incompatibility with `abseil` 20240722.0.
   # https://github.com/google/or-tools/pull/4339
@@ -94,7 +93,7 @@ class OrTools < Formula
     # Sat Solver
     system ENV.cxx, "-std=c++17", pkgshare/"simple_sat_program.cc",
                     "-I#{include}", "-L#{lib}", "-lortools",
-                    *shell_output("pkg-config --cflags --libs absl_log absl_raw_hash_set").chomp.split,
+                    *shell_output("pkg-config --cflags --libs absl_check absl_log absl_raw_hash_set").chomp.split,
                     "-o", "simple_sat_program"
     system "./simple_sat_program"
   end

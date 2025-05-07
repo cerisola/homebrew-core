@@ -1,19 +1,19 @@
 class Fbthrift < Formula
   desc "Facebook's branch of Apache Thrift, including a new C++ server"
   homepage "https://github.com/facebook/fbthrift"
-  url "https://github.com/facebook/fbthrift/archive/refs/tags/v2024.10.28.00.tar.gz"
-  sha256 "3180aacf5dcc715bae9ed1cc107ed589fa2934795ed9ba69585fa3eb97b5b57a"
+  url "https://github.com/facebook/fbthrift/archive/refs/tags/v2025.04.28.00.tar.gz"
+  sha256 "f88781be3be1417545e9c9772edc7f01ea7a2fcce860ea6a682c4d4650511d71"
   license "Apache-2.0"
   head "https://github.com/facebook/fbthrift.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "06cd3110c6dec108df5cd091ed1f3860e2c35ea4c46a7a5ee3962b56bf32d405"
-    sha256 cellar: :any,                 arm64_sonoma:  "2b16e7c2d20c46afc464255563168d312c9ba540b21eb57a7270bfd44fc96dc7"
-    sha256 cellar: :any,                 arm64_ventura: "84e934e0e96d1755f7bc41893f6f01f65093c5c2dcabbeb086da208f8f23d13f"
-    sha256 cellar: :any,                 sonoma:        "20affe8d79807ebdcc952fb4fd65912d4a2a3e5f4c74db6f21ce87f00fed4026"
-    sha256 cellar: :any,                 ventura:       "5b8eb65560355b6790ebbb0f1856ce3b6963761b5b64e18ab55cc7b9101e7e31"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b7e3f8a647ac68d2c633dd7f4a31d58d7aad48eff3d12ce1e7dacb55203c95f"
+    sha256 cellar: :any,                 arm64_sequoia: "fa9dd453baead792d99d50fb5f47b78b1ec3cf0f15cb3dc838c416dce70527ba"
+    sha256 cellar: :any,                 arm64_sonoma:  "430ef9f213f1af1a2d65e17f13000a9717d690ab3c8552dc736bb1f6b0dfd687"
+    sha256 cellar: :any,                 arm64_ventura: "f3760e506555b65bc5a7fcf963ecf29260f79c53ff566ece54404c75ed4c9d0c"
+    sha256 cellar: :any,                 sonoma:        "384a26583562c5910d2502fd9579c0e1dfda3464bf0d624281483290bd066f54"
+    sha256 cellar: :any,                 ventura:       "e1bbe4d99d930e21d773939f6d61858046aecf308d1f5e8a29b19e1e4902de2a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ce1abc5c78208a54f95323593c9a81e0602d730dcfebe23d150aac8e9f0715d3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c1cf7480dfe0b4eb7be9c6062bf504386212901d4aa0b2b55a7275b5e49b41f"
   end
 
   depends_on "bison" => :build # Needs Bison 3.1+
@@ -44,12 +44,8 @@ class Fbthrift < Formula
 
   fails_with :clang do
     build 1100
-    cause <<~EOS
-      error: 'asm goto' constructs are not supported yet
-    EOS
+    cause "error: 'asm goto' constructs are not supported yet"
   end
-
-  fails_with gcc: "5" # C++ 17
 
   def install
     # Work around build failure with Xcode 16
@@ -64,14 +60,22 @@ class Fbthrift < Formula
     # to include them, make sure `bin/thrift1` links with the dynamic libraries
     # instead of the static ones (e.g. `libcompiler_base`, `libcompiler_lib`, etc.)
     shared_args = ["-DBUILD_SHARED_LIBS=ON", "-DCMAKE_INSTALL_RPATH=#{rpath}", "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"]
-    shared_args << "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-undefined,dynamic_lookup -Wl,-dead_strip_dylibs" if OS.mac?
+    if OS.mac?
+      shared_args << "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,-undefined,dynamic_lookup -Wl,-dead_strip_dylibs"
+      shared_args << "-DCMAKE_EXE_LINKER_FLAGS=-Wl,-dead_strip_dylibs"
+    end
 
-    system "cmake", "-S", ".", "-B", "build/shared", *shared_args, *std_cmake_args
-    system "cmake", "--build", "build/shared"
-    system "cmake", "--install", "build/shared"
+    # We build in-source to avoid an error from thrift/lib/cpp2/test:
+    # Output path .../build/shared/thrift/lib/cpp2/test/../../../conformance/if is unusable or not a directory
+    system "cmake", "-S", ".", "-B", ".", *shared_args, *std_cmake_args
+    system "cmake", "--build", "."
+    system "cmake", "--install", "."
 
     elisp.install "thrift/contrib/thrift.el"
     (share/"vim/vimfiles/syntax").install "thrift/contrib/thrift.vim"
+
+    # Save a copy of FindxxHash.cmake to test with as it is used in FBThriftConfig.cmake
+    (libexec/"cmake").install "build/fbcode_builder/CMake/FindXxhash.cmake"
   end
 
   test do
@@ -84,7 +88,7 @@ class Fbthrift < Formula
     THRIFT
 
     system bin/"thrift1", "--gen", "mstch_cpp2", "example.thrift"
-    assert_predicate testpath/"gen-cpp2", :exist?
+    assert_path_exists testpath/"gen-cpp2"
     assert_predicate testpath/"gen-cpp2", :directory?
 
     # TODO: consider adding an actual test
@@ -97,13 +101,15 @@ class Fbthrift < Formula
       project(test LANGUAGES CXX)
 
       list(APPEND CMAKE_MODULE_PATH "#{Formula["fizz"].opt_libexec}/cmake")
+      list(APPEND CMAKE_MODULE_PATH "#{opt_libexec}/cmake")
       find_package(gflags REQUIRED)
       find_package(FBThrift CONFIG REQUIRED)
 
       add_executable(test test.cpp)
       target_link_libraries(test FBThrift::transport)
     CMAKE
-    system "cmake", ".", *std_cmake_args
-    system "cmake", "--build", "."
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
   end
 end

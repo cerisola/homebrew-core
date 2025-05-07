@@ -14,12 +14,13 @@ class Phodav < Formula
     sha256 sonoma:         "19bda4a63bf2f2778e6cb01121f7965c50ac94c839e933e9637a46155315bc32"
     sha256 ventura:        "4645f36c79e05c30cafcefba89de8be68e8af11049ed95c11876f0555200b59a"
     sha256 monterey:       "6b4b21ff80701f00e1b0bad840a6364cdb4b2a69e4d26b1762a0caadd03b3deb"
+    sha256 arm64_linux:    "7fe68e4d23624cc0deff0d327d9547fa9320761978f2a084d8e3a5beb86611ae"
     sha256 x86_64_linux:   "bf36f39b43b04e8d0dafba15e623f7fb0a7e8873dcd2286a1dc7d62587fa0938"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "glib"
   depends_on "libsoup"
@@ -37,7 +38,7 @@ class Phodav < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <libphodav/phodav.h>
       #include <glib.h>
       int main() {
@@ -58,10 +59,10 @@ class Phodav < Formula
         g_object_unref(phodav);
         return 0;
       }
-    EOS
+    CPP
 
     ENV.prepend_path "PKG_CONFIG_PATH", Formula["icu4c"].lib/"pkgconfig" if OS.mac?
-    flags = shell_output("pkg-config --libs --cflags libphodav-3.0").chomp.split
+    flags = shell_output("pkgconf --libs --cflags libphodav-3.0").chomp.split
     system ENV.cc, "test.cpp", "-o", "test", *flags
     system "./test"
   end

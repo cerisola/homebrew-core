@@ -1,29 +1,29 @@
 class Snowflake < Formula
   desc "Pluggable Transport using WebRTC, inspired by Flashproxy"
   homepage "https://www.torproject.org"
-  url "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/archive/v2.9.2/snowflake-v2.9.2.tar.gz"
-  sha256 "b539a069eb3996d20a63eef9af59b43adb740ea121c954edf13b2bb6102b7112"
+  url "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake/-/archive/v2.11.0/snowflake-v2.11.0.tar.gz"
+  sha256 "1362a8d7e848beea63bf4d7e6b5541df92f2859b83daaf4260afef131556ac57"
   license "BSD-3-Clause"
   head "https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/snowflake.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b63bb2c64d8b5a89200f1c1751b401215750c15cff5549f613212b44a8017ba4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ca4bc60a204d685d9f055fb76134cdbe2e5c1f1399e50227547f56caa3b85cdd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7a6b5141e343ba5f4a85c4f936ce19ff3d3e457db142a5b80d02053c24344d98"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "d9fdc390563164a85da485c593b98ad7c6d35c3ac5dfa4b19fa61f6109f6b7a2"
-    sha256 cellar: :any_skip_relocation, sonoma:         "1d7940dae0defa29dccdb11202b6d68344d6224f62670bb3ce88ebf67ea9a4e4"
-    sha256 cellar: :any_skip_relocation, ventura:        "87a1891c2221c92a2b67d759201714f3eb249c3989a180633fac1b5272ce3919"
-    sha256 cellar: :any_skip_relocation, monterey:       "401ac191227baece24a1813fa6e10d606d922d0ac2d09d7efe5bd375bdbaf8ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d8247de66b9316abc691f84bd22c523f856a2c04bf533a2e20e5f5936020d67a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bbfe22d4e22f7e8bc1f433a6d9ec4e1026c8ae55eb891c2ba2257ffd98f11bea"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "710d7b91f534072122a147135f59e3e8f8af0acebda38a920d94511c9c4566ba"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5bbd8ea59d3c04b72fd131bad9da3a15ce47c007cf20b4994f201fb85f4be8ea"
+    sha256 cellar: :any_skip_relocation, sonoma:        "664910374fec0499630a0c149725965d955385fc9f31f024d9b916d474b41d29"
+    sha256 cellar: :any_skip_relocation, ventura:       "1cbfef989c97ae01dc78d09692cb3157f8c7fa780bd576e9b23de4c159e0b5a2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cacc65f14ee6603e2ebcc0a107b814648554a2d14657ba69127116f22999e784"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(output: bin/"snowflake-broker"), "./broker"
-    system "go", "build", *std_go_args(output: bin/"snowflake-client"), "./client"
-    system "go", "build", *std_go_args(output: bin/"snowflake-proxy"), "./proxy"
-    system "go", "build", *std_go_args(output: bin/"snowflake-server"), "./server"
+    ldflags = "-s -w"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"snowflake-broker"), "./broker"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"snowflake-client"), "./client"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"snowflake-proxy"), "./proxy"
+    system "go", "build", *std_go_args(ldflags:, output: bin/"snowflake-server"), "./server"
+
     man1.install "doc/snowflake-client.1"
     man1.install "doc/snowflake-proxy.1"
   end

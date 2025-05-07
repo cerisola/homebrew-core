@@ -1,28 +1,45 @@
 class Tfel < Formula
   desc "Code generation tool dedicated to material knowledge for numerical mechanics"
   homepage "https://thelfer.github.io/tfel/web/index.html"
-  url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-4.2.1.tar.gz"
-  sha256 "14f27257014a992a4e511f35390e4b9a086f6a5ed74087f891f8c00306f1758f"
   license "GPL-1.0-or-later"
   revision 1
-  head "https://github.com/thelfer/tfel.git", using: :git, branch: "master"
+  head "https://github.com/thelfer/tfel.git", branch: "master"
+
+  stable do
+    url "https://github.com/thelfer/tfel/archive/refs/tags/TFEL-5.0.0.tar.gz"
+    sha256 "fe1ec39eba7f23571c2b0c773dab1cc274fee4512c5b2f2fc54b231da4502e87"
+
+    # Backport fix for https://github.com/thelfer/tfel/issues/703
+    patch do
+      url "https://github.com/thelfer/tfel/commit/c4c564ab09a7c13c87ef3628ed89d2abe1c2aa0d.patch?full_index=1"
+      sha256 "34b217330ef72b12d19b820a7edd994f0107e295f96c779dfe40a990528e1c3a"
+    end
+
+    # Backport fix for https://github.com/thelfer/tfel/issues/740
+    patch do
+      url "https://github.com/thelfer/tfel/commit/331f889bec18329d2a8770cf72be33218c39b3f7.patch?full_index=1"
+      sha256 "901c94fe0a48890e4b17d6cefd87dde34dead3563544162b3196aacda04eebc0"
+    end
+    patch do
+      url "https://github.com/thelfer/tfel/commit/2ac23026e15c716c8b5364aa572fb651457ad786.patch?full_index=1"
+      sha256 "8becb7f82848cb36dd2fc200bed676c95692c9a451ca12c661ef1374ba87bbf1"
+    end
+  end
 
   bottle do
-    sha256 arm64_sequoia:  "a1dbd6aedfae723113d626035fc3c0dd826006b409f4a0e02bbe844fc377ec43"
-    sha256 arm64_sonoma:   "2c83f17aafe4803c5dcb76e75a1f0e065ddeb0c2a98cdde5284307c762850b73"
-    sha256 arm64_ventura:  "e151a64d0af704275ff311cfef7d56d653d9ede613dc8f66b5ab44cf471d9afa"
-    sha256 arm64_monterey: "349346beb4bc75a8275d72fc334d5788cf722d28675018259b61edebc9bd40e1"
-    sha256 sonoma:         "8622ce53d1eba3091833e9d490ef783d28ff79a880cd7b067d3de70e3f6fcd00"
-    sha256 ventura:        "f67f8d672f2eed887c9fb27db78f61bb5dfa6ae5275b9de38543e77c5d01e92c"
-    sha256 monterey:       "b372fb99af0111007958b9bd88687e5cb9b67efb131888bd8b3ff55964974cb1"
-    sha256 x86_64_linux:   "2d188e271109fa6cac8ef90708b3f3d4a83f20ec2d56b5d0fd99d14f7bad14c9"
+    sha256 arm64_sequoia: "50d3bd7962505ed2bc6fb2557947d7ec078167ac5d5e6525bb1ec644ab69514b"
+    sha256 arm64_sonoma:  "348823d0f7433600de4005ec4bc423d18e46c1eabf43bf743eef83b9fc802bd4"
+    sha256 arm64_ventura: "6faecb90a644d46af6d4d8d0a2e1619b4abc21f479af6c81e532e3393c6b129c"
+    sha256 sonoma:        "f21cf45477369903801db72624265e799e8fe24a1d53231f61eb6bee33ee1516"
+    sha256 ventura:       "2fc7f26b7cfc67188891020563e4b96ddc8945b924532b1512199b3029e00076"
+    sha256 arm64_linux:   "a70c7ba818b14efbe76d4a02762fed0625f78bd8906d4978dd2f1d27c2bd5c3e"
+    sha256 x86_64_linux:  "5086c2c9498895965149d37772fb2a4ef7f06cbb1071d3d31291e678b42f9f1c"
   end
 
   depends_on "cmake" => :build
-  depends_on "gcc" => :build
+  depends_on "gcc" => :build # for gfortran
   depends_on "boost-python3"
-  depends_on "python@3.12"
-  fails_with gcc: "5"
+  depends_on "python@3.13"
 
   def install
     args = [
@@ -43,16 +60,20 @@ class Tfel < Formula
       "-Denable-diana-fea=ON",
       "-Denable-ansys=ON",
       "-Denable-europlexus=ON",
+      "-Denable-testing=OFF",
       "-Dpython-static-interpreter-workaround=ON",
-
     ]
+    # Avoid linkage to boost container and graph modules
+    # Issue ref: https://github.com/boostorg/boost/issues/985
+    args << "-DCMAKE_MODULE_LINKER_FLAGS=-Wl,-dead_strip_dylibs" if OS.mac?
+
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.mfront").write <<~EOS
+    (testpath/"test.mfront").write <<~MFRONT
       @Parser Implicit;
       @Behaviour Norton;
       @Algorithm NewtonRaphson_NumericalJacobian ;
@@ -72,8 +93,8 @@ class Tfel < Formula
         feel += dp*n-deto ;
         fp -= dt*A*pow(seq,m) ;
       }
-    EOS
+    MFRONT
     system bin/"mfront", "--obuild", "--interface=generic", "test.mfront"
-    assert_predicate testpath/"src"/shared_library("libBehaviour"), :exist?
+    assert_path_exists testpath/"src"/shared_library("libBehaviour")
   end
 end

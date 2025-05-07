@@ -1,10 +1,9 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.23.2.tar.bz2"
-  sha256 "9499e8b1f33cccb6815527a1bc16049d35a6198a6c5fae0185f2bd561bce5224"
+  url "https://www.gnupg.org/ftp/gcrypt/gpgme/gpgme-1.24.2.tar.bz2"
+  sha256 "e11b1a0e361777e9e55f48a03d89096e2abf08c63d84b7017cfe1dce06639581"
   license "LGPL-2.1-or-later"
-  revision 2
 
   livecheck do
     url "https://gnupg.org/ftp/gcrypt/gpgme/"
@@ -12,31 +11,24 @@ class Gpgme < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "3be0ed36949874bc0c6b0b5936750b498cc6d74ff5949bef213c1bbc252ecc7c"
-    sha256 cellar: :any,                 arm64_sonoma:   "5990f0751f5bce504beaaa9379e0bb082cea842010a6f94f11cfe0c99baba01b"
-    sha256 cellar: :any,                 arm64_ventura:  "4cf824bf4138deda8878af6ad5ea2e6af519a8d7793c0a168f724799d5f97e42"
-    sha256 cellar: :any,                 arm64_monterey: "5b94224d8226e2e49d3ea30bf5bd3d76672a5fd1fb59cdfbf160c35e6d2a4fa3"
-    sha256 cellar: :any,                 sonoma:         "acb0a393ab4537dd314676d8dbbbf846fc14726cba00c32b027e18f11a603db3"
-    sha256 cellar: :any,                 ventura:        "3ffd9fce9f2862c9a35562462356530c4bc46d23e1b23e58e36aede36348fb74"
-    sha256 cellar: :any,                 monterey:       "05b1e5854b7a8eef9edb2a45208bfbdacd28bb243fabc60f350cabcd0b26080d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "691a6fb7cf753251e8feafa30229cbba63a976820b2d33522ef413774788e6c0"
+    sha256 cellar: :any,                 arm64_sequoia: "f050cd4be93a9a506d374f44be63b13f0063bea568c7508c947be36cd4fcf510"
+    sha256 cellar: :any,                 arm64_sonoma:  "243da3ea18b40219a0e492c3134b227964de1d7f2509e0f4c1cb9f0732865293"
+    sha256 cellar: :any,                 arm64_ventura: "62377cb3e11c7a85073332bb74b41b95fefe78cb19e5b93d4f42d9907474da28"
+    sha256 cellar: :any,                 sonoma:        "a04dc7c0d5059dbf98dee9468fb4ea7f417c00b81fa1a4ae4050f95f60f9e7c9"
+    sha256 cellar: :any,                 ventura:       "37e0d6e8cb0e550287cb803d3ec681714946620e25fb33db1fb0d1d90c3307f0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0c9d0a35852fb8e4150565e90082733032e5827cc0d1ac2fa35b725553c47fdc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "baea5b8942625d34400cec21d2c90952b265847fd0bc01cb5294eea63eb6993b"
   end
 
   depends_on "python-setuptools" => :build
-  depends_on "python@3.12" => [:build, :test]
+  depends_on "python@3.13" => [:build, :test]
   depends_on "swig" => :build
   depends_on "gnupg"
   depends_on "libassuan"
   depends_on "libgpg-error"
 
   def python3
-    "python3.12"
-  end
-
-  # Backport fix for newer setuptools
-  patch do
-    url "https://git.gnupg.org/cgi-bin/gitweb.cgi?p=gpgme.git;a=patch;h=ecd0c86d62351d267bdc9566286c532a394c711b"
-    sha256 "69202c576f5f9980bc88bf9e963fd6199093c89ab8dc3be02ab6c460d65fe1b4"
+    "python3.13"
   end
 
   def install

@@ -1,8 +1,9 @@
 class Findent < Formula
   desc "Indent and beautify Fortran sources and generate dependency information"
   homepage "https://www.ratrabbit.nl/ratrabbit/findent/index.html"
-  url "https://downloads.sourceforge.net/project/findent/findent-4.3.3.tar.gz"
-  sha256 "cd91293a44144806e16fbfc677768cc5102cd20dfc92a7b9d242b639d856a16f"
+  url "https://downloads.sourceforge.net/project/findent/findent-4.3.5.tar.gz"
+  mirror "https://www.ratrabbit.nl/downloads/findent/findent-4.3.5.tar.gz"
+  sha256 "5b2745eb5ec631726c31556d5e217df9fffb9109fa9a8db72363ee5bfff2a748"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,14 +12,13 @@ class Findent < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "dc58685ac19b12f19c514b236cf1f6aa742f26985242441549443f929c26da01"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "811dbae48046410d7190b334697373e2b4cce6c5735edf68454ae83bbf020ce8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "9f869ace2c812eaa5dd944a363853bb7c925ce4a45d69a478b257b8f14e634d7"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "f7408059c20283084436de3228505c5e6ae38a647ee1b05ed2a1b6cc77fe9c61"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9c72cc218415dd6ef7c1eabd8d6d8eb999343c378ec7c6dd0cf5afab29c22d05"
-    sha256 cellar: :any_skip_relocation, ventura:        "243f9a41ae40641221ab2501aeec5ea73fe6a305b4d3509affefe314a848b72f"
-    sha256 cellar: :any_skip_relocation, monterey:       "64d4060095748ea621fdd52eae73c887d1591a460b890e52ed3b618dccaee82e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "44a1715537c947b585f778230f26ae8fa51785d449d82436dfa18ba05bc2906b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1793bef8942831b5e60fa3d4cbae7f8368c5dd3345b3bef9b3da94a1e1a2c71c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ecf338fbc73cc11b02f8ddf5d5dd5504d6a33f670df7da24d27edbb6b143c0e6"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "04b0a36ee5fa80db79ecea4eca1e5cdb4fc69ba12ef69617d983f29aac997c3c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "98b7b4b913ad6b8724d57e7749c212939ef616340fc294c86deb3dfca8b0b1a8"
+    sha256 cellar: :any_skip_relocation, ventura:       "302c1a59b42c8ce7599be13172d8f18b3f42ebd900c2185f1fe47c1c44375555"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "43836c1a6259b3fb7a38e665a414ce15b0d94208e5e7e5ee4043c326404fb26d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b4cee623064bdf989314da5db602c9e57e205fec3bd35e3c1a3f9d46b7c121f8"
   end
 
   def install
@@ -36,7 +36,7 @@ class Findent < Formula
 
     flags = File.open(testpath/"progfree.f.in", &:readline).sub(/ *! */, "").chomp
     system bin/"findent #{flags} < progfree.f.in > progfree.f.out.f90"
-    assert_predicate testpath/"progfree.f.out.f90", :exist?
+    assert_path_exists testpath/"progfree.f.out.f90"
     assert compare_file(testpath/"progfree.f.try.f.ref", testpath/"progfree.f.out.f90")
   end
 end

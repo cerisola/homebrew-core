@@ -14,8 +14,9 @@ class Cereal < Formula
   depends_on "cmake" => :build
 
   def install
-    system "cmake", ".", "-DJUST_INSTALL_CEREAL=ON", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", "-DJUST_INSTALL_CEREAL=ON", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -70,6 +71,6 @@ class Cereal < Formula
     CPP
     system ENV.cxx, "test.cpp", "-std=c++11", "-I#{include}", "-o", "test"
     system "./test"
-    assert_predicate testpath/"out.cereal", :exist?
+    assert_path_exists testpath/"out.cereal"
   end
 end

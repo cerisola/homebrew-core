@@ -3,18 +3,19 @@ class Mypy < Formula
 
   desc "Experimental optional static type checker for Python"
   homepage "https://www.mypy-lang.org/"
-  url "https://files.pythonhosted.org/packages/e8/21/7e9e523537991d145ab8a0a2fd98548d67646dc2aaaf6091c31ad883e7c1/mypy-1.13.0.tar.gz"
-  sha256 "0291a61b6fbf3e6673e3405cfcc0e7650bebc7939659fdca2702958038bd835e"
+  url "https://files.pythonhosted.org/packages/ce/43/d5e49a86afa64bd3839ea0d5b9c7103487007d728e1293f52525d6d5486a/mypy-1.15.0.tar.gz"
+  sha256 "404534629d51d3efea5c800ee7c42b72a6554d6c400e6a79eafe15d11341fd43"
   license "MIT"
   head "https://github.com/python/mypy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d4daf6c575d5229f983aa11ad964698b14c0235b87ba0549d1ab3ab09c97270e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "06d1439d72977c5845c6b7d28c391a7275033644e654039bd4a6572cf3fa27aa"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "e1266aaf5cefa93d1d5aa34fc4f81e96243f80c87f4ede8aaef5f4dd141f3b6c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "df56534191e938395fc79baad0c267f2d29ed96503554f6e7f34748f521e6195"
-    sha256 cellar: :any_skip_relocation, ventura:       "f3876f395b305e51a7e05f7cbf4092ba7e6417052ba9eedd0ad5bdeeae88847c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "104b93195373d511eb95162dec6048c7b662855639f60dbe57eb1c71bfce090a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "47a46cf281316caa47a3c03130a1dbb302bf9c4b744300d848ebb98e31b936f4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5ed30d04ea17719cff0a7a43dc8f2c038c3e776c1cadf97936203787bb63360d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "60f43861fad3cb704383a97d5ce98829b77a076afe2ba8c0129f7179f3590c6a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0e578864a81144771caffa814b3334c2fcedd2863a57ae170f02bc432743e6ce"
+    sha256 cellar: :any_skip_relocation, ventura:       "492cdd65beec15229107beca1198e90a9c560138f8c749ddefc5539f392c5ed4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f8765920d1c8270415ec11c3e121512cd97b497f1ba4277bae9a4fd053f91b87"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eceba777bfcaf012dcf14739c7899fbfcf08c9b01369a019f0e3d662760db1c0"
   end
 
   depends_on "python@3.13"
@@ -36,11 +37,11 @@ class Mypy < Formula
   end
 
   test do
-    (testpath/"broken.py").write <<~EOS
+    (testpath/"broken.py").write <<~PYTHON
       def p() -> None:
         print('hello')
       a = p()
-    EOS
+    PYTHON
     output = pipe_output("#{bin}/mypy broken.py 2>&1")
     assert_match '"p" does not return a value', output
 

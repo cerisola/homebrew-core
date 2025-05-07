@@ -13,7 +13,7 @@ class Portaudio < Formula
     regex(/href=.*?pa[._-]stable[._-]v?(\d+)(?:[._-]\d+)?\.t/i)
     strategy :page_match do |page, regex|
       # Modify filename version (190700) to match formula version (19.7.0)
-      page.scan(regex).map { |match| match&.first&.scan(/\d{2}/)&.map(&:to_i)&.join(".") }
+      page.scan(regex).map { |match| match[0].scan(/\d{2}/).map(&:to_i).join(".") }
     end
   end
 
@@ -30,10 +30,11 @@ class Portaudio < Formula
     sha256 cellar: :any,                 big_sur:        "f67d3a167142d0afa6ef446260075a7e1c29cf3d1246a95bac2f12732004398a"
     sha256 cellar: :any,                 catalina:       "9b0934f5a868dc0c3874ae6491d685cff6537923cc49d6abea18c1bf59cddaea"
     sha256 cellar: :any,                 mojave:         "e69bcb7966fae64dabb4866a9f791437b59ef1991112b2a6fb31ee94a76b9244"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "abab20444fd53b2503b0f48172fe84c6503cd6219d00a83b63af96e60d395557"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "01048cd3e5c934f5fb7b7cd11430833c69022a621fcc2d868159e07bbef1e3e4"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   on_linux do
     depends_on "alsa-lib"
@@ -41,9 +42,9 @@ class Portaudio < Formula
   end
 
   def install
-    system "./configure", *std_configure_args,
-                          "--enable-mac-universal=no",
-                          "--enable-cxx"
+    system "./configure", "--enable-mac-universal=no",
+                          "--enable-cxx",
+                          *std_configure_args
     system "make", "install"
 
     # Need 'pa_mac_core.h' to compile PyAudio
@@ -55,7 +56,7 @@ class Portaudio < Formula
       #include <stdio.h>
       #include "portaudio.h"
 
-      int main(){
+      int main() {
         printf("%s",Pa_GetVersionInfo()->versionText);
       }
     C
@@ -64,14 +65,14 @@ class Portaudio < Formula
       #include <iostream>
       #include "portaudiocpp/System.hxx"
 
-      int main(){
+      int main() {
         std::cout << portaudio::System::versionText();
       }
     CPP
 
-    system ENV.cc, testpath/"test.c", "-I#{include}", "-L#{lib}", "-lportaudio", "-o", "test"
-    system ENV.cxx, testpath/"test.cpp", "-I#{include}", "-L#{lib}", "-lportaudiocpp", "-o", "test_cpp"
-    assert_match stable.version.to_s, shell_output(testpath/"test")
-    assert_match stable.version.to_s, shell_output(testpath/"test_cpp")
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lportaudio", "-o", "test"
+    system ENV.cxx, "test.cpp", "-I#{include}", "-L#{lib}", "-lportaudiocpp", "-o", "test_cpp"
+    assert_match stable.version.to_s, shell_output("./test")
+    assert_match stable.version.to_s, shell_output("./test_cpp")
   end
 end

@@ -14,9 +14,11 @@ class Rathole < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "616f267223b7bc2142ec93df13af511a672fa8dd85ae1e114eb036a901a8623e"
     sha256 cellar: :any_skip_relocation, ventura:        "da508621aa73060eee88b3b1771c80aae6d593210575e15b4ed101b6dd60bd73"
     sha256 cellar: :any_skip_relocation, monterey:       "db9a05658116a968398b3f184a1e6bd63dc90ec3f7b56487d79d3210b6006846"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "104d1709ddbd8886b31e576ab1dcdc27b6c3a4705d203051da98257ba0fee777"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "418e67c95c4f95329a0564f4fe78c4c8ff23bda1be98eed056a9ef45fc558b39"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   on_linux do
@@ -30,10 +32,6 @@ class Rathole < Formula
   end
 
   def install
-    # Ensure that the `openssl` crate picks up the intended library.
-    # https://crates.io/crates/openssl#manual-configuration
-    ENV["OPENSSL_DIR"] = Formula["openssl@3"].opt_prefix if OS.linux?
-
     system "cargo", "install", *std_cargo_args
   end
 

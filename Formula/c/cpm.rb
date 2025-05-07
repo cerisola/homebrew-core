@@ -1,18 +1,19 @@
 class Cpm < Formula
   desc "Fast CPAN module installer"
   homepage "https://metacpan.org/pod/cpm"
-  url "https://cpan.metacpan.org/authors/id/S/SK/SKAJI/App-cpm-0.997018.tar.gz"
-  sha256 "78fbd96b047d0383b6a7f8895b193f0b38b0a2b550b92f18c07f752ea97c4efd"
+  url "https://cpan.metacpan.org/authors/id/S/SK/SKAJI/App-cpm-0.997023.tar.gz"
+  sha256 "5185cfba03bd48e9554663721172a387d66c81dc5e1a1f83b967aabd04614c95"
   license any_of: ["Artistic-1.0-Perl", "GPL-1.0-or-later"]
   head "https://github.com/skaji/cpm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "de2868bac7f13283019848d368eec6ad120c4e145864ab5574e1d18c208023ef"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de2868bac7f13283019848d368eec6ad120c4e145864ab5574e1d18c208023ef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "de2868bac7f13283019848d368eec6ad120c4e145864ab5574e1d18c208023ef"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5d860a43bdbea93671b9c962b17b0dda6e37c4e97d39d8dd2e7a1511c398bab6"
-    sha256 cellar: :any_skip_relocation, ventura:       "5d860a43bdbea93671b9c962b17b0dda6e37c4e97d39d8dd2e7a1511c398bab6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5d111b0e3f0aff4ad826fa8f351588e697f8b04cded7916930365f02cd270909"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f030e621df88f8368cea7a2e77756bedd0686ef8f58f8f416b3809e1ed90db23"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f030e621df88f8368cea7a2e77756bedd0686ef8f58f8f416b3809e1ed90db23"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f030e621df88f8368cea7a2e77756bedd0686ef8f58f8f416b3809e1ed90db23"
+    sha256 cellar: :any_skip_relocation, sonoma:        "77a6c6c7095fd5e4d44f318ac67a7e5f3a22560772ba4c996fcb73583a4aaeaf"
+    sha256 cellar: :any_skip_relocation, ventura:       "77a6c6c7095fd5e4d44f318ac67a7e5f3a22560772ba4c996fcb73583a4aaeaf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6382742191f0cc6f2f864036ae6b023c3123d82cb7e9498cbeea33f7a680ee32"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "edcb1755af01eac0735cdcbc9cf3d791a1258cb68fe9234814e6337407701cfa"
   end
 
   depends_on "perl"
@@ -40,8 +41,8 @@ class Cpm < Formula
   end
 
   resource "Capture::Tiny" do
-    url "https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-0.48.tar.gz"
-    sha256 "6c23113e87bad393308c90a207013e505f659274736638d8c79bac9c67cc3e19"
+    url "https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-0.50.tar.gz"
+    sha256 "ca6e8d7ce7471c2be54e1009f64c367d7ee233a2894cacf52ebe6f53b04e81e5"
   end
 
   resource "Class::Tiny" do
@@ -52,6 +53,11 @@ class Cpm < Formula
   resource "Command::Runner" do
     url "https://cpan.metacpan.org/authors/id/S/SK/SKAJI/Command-Runner-0.200.tar.gz"
     sha256 "5ad26d06111bfecd53c8f5bb5dea94bf2025f6c78e95f6d8012e4cfa89e29f26"
+  end
+
+  resource "Darwin::InitObjC" do
+    url "https://cpan.metacpan.org/authors/id/S/SK/SKAJI/Darwin-InitObjC-0.001.tar.gz"
+    sha256 "9a5f2887cb2fd427d64937743ffe3e748eab38b5b64906185fc243861e189f91"
   end
 
   resource "ExtUtils::Config" do
@@ -140,8 +146,8 @@ class Cpm < Formula
   end
 
   resource "URI" do
-    url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.29.tar.gz"
-    sha256 "a34b9f626c3ff1e20c0d4a23ec5c8b7ae1de1fb674ecefed7e46791388137372"
+    url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.31.tar.gz"
+    sha256 "b9c4d58b2614b8611ae03a95a6d60ed996f4b311ef3cd5a937b92f1825ecc564"
   end
 
   resource "Win32::ShellQuote" do
@@ -150,8 +156,8 @@ class Cpm < Formula
   end
 
   resource "YAML::PP" do
-    url "https://cpan.metacpan.org/authors/id/T/TI/TINITA/YAML-PP-v0.38.0.tar.gz"
-    sha256 "a819465c52f6a341049a3942742c08e04f2894b2a66482e43a7f407ce10b4ea0"
+    url "https://cpan.metacpan.org/authors/id/T/TI/TINITA/YAML-PP-v0.39.0.tar.gz"
+    sha256 "32f53c65781277dcbe50827b4cbf217eceeff264779e3a6c98c94229eb149f58"
   end
 
   resource "local::lib" do
@@ -166,6 +172,7 @@ class Cpm < Formula
       "Module::Build::Tiny",
       "Module::cpmfile",
       "Command::Runner",
+      "Darwin::InitObjC",
       "Parallel::Pipes",
     ]
 

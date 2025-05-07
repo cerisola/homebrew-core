@@ -1,13 +1,13 @@
 class ParquetCli < Formula
   desc "Apache Parquet command-line tools and utilities"
   homepage "https://parquet.apache.org/"
-  url "https://github.com/apache/parquet-java/archive/refs/tags/apache-parquet-1.14.3.tar.gz"
-  sha256 "fe1a8f22879e3670ef14b13c20754f31b90e8f95f92b7d528528e68350adfba7"
+  url "https://github.com/apache/parquet-java/archive/refs/tags/apache-parquet-1.15.2.tar.gz"
+  sha256 "2880d7f532bd53d6780ec82e9df8f34edc9acfd95eb725747bd8205909517641"
   license "Apache-2.0"
   head "https://github.com/apache/parquet-mr.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "4fcdce1b4936433d5914e3e7143f9e429e651d1139fed1610b73bfd5c1e7ba66"
+    sha256 cellar: :any_skip_relocation, all: "935468cd7393a349c49631272dc7d032ada87c9e2236771c46a4012cb2488c3b"
   end
 
   depends_on "maven" => :build

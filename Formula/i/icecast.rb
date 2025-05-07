@@ -1,15 +1,15 @@
 class Icecast < Formula
   desc "Streaming MP3 audio server"
   homepage "https://icecast.org/"
-  url "https://downloads.xiph.org/releases/icecast/icecast-2.4.4.tar.gz", using: :homebrew_curl
-  mirror "https://ftp.osuosl.org/pub/xiph/releases/icecast/icecast-2.4.4.tar.gz"
+  url "https://ftp.osuosl.org/pub/xiph/releases/icecast/icecast-2.4.4.tar.gz"
+  mirror "https://mirror.csclub.uwaterloo.ca/xiph/releases/icecast/icecast-2.4.4.tar.gz"
   sha256 "49b5979f9f614140b6a38046154203ee28218d8fc549888596a683ad604e4d44"
   license "GPL-2.0-only"
   revision 2
 
   livecheck do
     url "https://ftp.osuosl.org/pub/xiph/releases/icecast/?C=M&O=D"
-    regex(/href=.*?icecast[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(%r{href=(?:["']?|.*?/)icecast[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
   bottle do
@@ -22,10 +22,11 @@ class Icecast < Formula
     sha256 cellar: :any,                 ventura:        "670f11797d9920650b98eef03ce127985f07ff919f2780ba83c37c12865b93bd"
     sha256 cellar: :any,                 monterey:       "70dcce0432592b1fd218c86a3594b7d38fd664f6bfd0ddfa6ad11ca914cd216c"
     sha256 cellar: :any,                 big_sur:        "1eace833c381d2fc1989670bf8fdfa38d444177c1c855477ffc3c47b659b1340"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1c63fee692d5550f89e7c5f33a602c4d8fcdd9fb24fb35cf701bc69e6254cede"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0a5ea433670e7f6a02c9ff502c6d65c56d6ea5c5e65c3eac418d3da2cf05cac2"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libogg"
   depends_on "libvorbis"
@@ -38,13 +39,12 @@ class Icecast < Formula
   def install
     args = %W[
       --disable-silent-rules
+      --without-speex
+      --without-theora
       --sysconfdir=#{etc}
       --localstatedir=#{var}
     ]
-    # HACK: Avoid linking brewed `curl` as side effect of `using: :homebrew_curl`
-    args << "--with-curl-config=/usr/bin/curl-config" if OS.mac?
-
-    system "./configure", *std_configure_args, *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -60,9 +60,7 @@ class Icecast < Formula
     cp etc/"icecast.xml", testpath/"icecast.xml"
     inreplace testpath/"icecast.xml", "<port>8000</port>", "<port>#{port}</port>"
 
-    pid = fork do
-      exec "icecast", "-c", testpath/"icecast.xml", "2>", "/dev/null"
-    end
+    pid = spawn "icecast", "-c", testpath/"icecast.xml", err: "/dev/null"
     sleep 3
 
     begin

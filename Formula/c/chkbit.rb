@@ -1,20 +1,18 @@
 class Chkbit < Formula
   desc "Check your files for data corruption"
   homepage "https://github.com/laktak/chkbit"
-  url "https://github.com/laktak/chkbit/archive/refs/tags/v5.2.0.tar.gz"
-  sha256 "6f6f2660fa917dcd2becd2bf1eb07a55a97b000beded278e9a31729c2e1607d4"
+  url "https://github.com/laktak/chkbit/archive/refs/tags/v6.4.0.tar.gz"
+  sha256 "99a69e05172ed27f0cf60d4aa967bc3f00a34f49c0d6529f6df41242cab789f8"
   license "MIT"
   head "https://github.com/laktak/chkbit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9971349107aa967e19ba88e18173e1fb95afc6aaf418b74a771c258d504a8309"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ed01ab6fa1864b006275ac541bd53468f6d297631697b5ce4c4a0622c8d6e6ea"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "ed01ab6fa1864b006275ac541bd53468f6d297631697b5ce4c4a0622c8d6e6ea"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "ed01ab6fa1864b006275ac541bd53468f6d297631697b5ce4c4a0622c8d6e6ea"
-    sha256 cellar: :any_skip_relocation, sonoma:         "e56b64110591e002a3b7a9e15c3ad476084dd1ffd9d51d867b902034d68acfe5"
-    sha256 cellar: :any_skip_relocation, ventura:        "e56b64110591e002a3b7a9e15c3ad476084dd1ffd9d51d867b902034d68acfe5"
-    sha256 cellar: :any_skip_relocation, monterey:       "e56b64110591e002a3b7a9e15c3ad476084dd1ffd9d51d867b902034d68acfe5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "cc68cb3135ebd1d3962e8bb5e3baa6e5f6fa744d3336ff3b0ae920b6dcc0f122"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fa3de15f0dd07551bfcd3e36a3b228cf66332893fca929b4dd37869b03ab8f37"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fa3de15f0dd07551bfcd3e36a3b228cf66332893fca929b4dd37869b03ab8f37"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "fa3de15f0dd07551bfcd3e36a3b228cf66332893fca929b4dd37869b03ab8f37"
+    sha256 cellar: :any_skip_relocation, sonoma:        "45d20ff4444e1f13ebdd46bf0f85397c7c49abc79e9a54d99549bd960b0c5e85"
+    sha256 cellar: :any_skip_relocation, ventura:       "45d20ff4444e1f13ebdd46bf0f85397c7c49abc79e9a54d99549bd960b0c5e85"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1be986d6bf7eb3637f5d9afdf6ddc904cbd21d4c67af7e76df8bb4edcb4bf7d9"
   end
 
   depends_on "go" => :build
@@ -25,15 +23,8 @@ class Chkbit < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/chkbit --version").chomp
-
-    (testpath/"one.txt").write <<~EOS
-      testing
-      testing
-      testing
-    EOS
-
-    system bin/"chkbit", "-u", testpath
-    assert_predicate testpath/".chkbit", :exist?
+    assert_match version.to_s, shell_output("#{bin}/chkbit version").chomp
+    system bin/"chkbit", "init", "split", testpath
+    assert_path_exists testpath/".chkbit"
   end
 end

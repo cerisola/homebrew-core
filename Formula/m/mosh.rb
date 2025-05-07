@@ -4,15 +4,16 @@ class Mosh < Formula
   url "https://github.com/mobile-shell/mosh/releases/download/mosh-1.4.0/mosh-1.4.0.tar.gz"
   sha256 "872e4b134e5df29c8933dff12350785054d2fd2839b5ae6b5587b14db1465ddd"
   license "GPL-3.0-or-later"
-  revision 22
+  revision 26
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "33dc51bf37be8f249ba0004d5e647d689de56639bc8664a785390807c7be5164"
-    sha256 cellar: :any,                 arm64_sonoma:  "fb5f8f8cca6ae74b71ff12ed06fa0cd4676858341de6e96958e98fb07ed20c1e"
-    sha256 cellar: :any,                 arm64_ventura: "3287abf4aff9c41ee8e7f48a1c8f8af7e364379408893d7c8f925b680a326df4"
-    sha256 cellar: :any,                 sonoma:        "8f262559a1216d94d747d9f9c5dd247e4c5ae768dff7990d5e331c47c9126d2e"
-    sha256 cellar: :any,                 ventura:       "647a1fecda243e7b4ebd60b61a0097e8dfdd42b5a53c5a1a56172ca085f9e667"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9646daefdde7e41415c15e53aba506fa51eba1afec405a3e2ae3ad8e10b95d0"
+    sha256 cellar: :any,                 arm64_sequoia: "332e33cd2cc6b612830b92757cd74fa5371b24518d0cdca5c41da9f342c0fc81"
+    sha256 cellar: :any,                 arm64_sonoma:  "be86e68fe178fd4ec4997f320875438df088428f70e38f640a2c56ae5574d6c6"
+    sha256 cellar: :any,                 arm64_ventura: "c5eb7da2878edc09a82d6f30087bf0b025d2f1ac03a1de4a564bcc5d9d7ae24b"
+    sha256 cellar: :any,                 sonoma:        "d5ba6c67df6d29aa90f5596c9ae613d237e0c448e2ac78f5ee7868d65f7dc748"
+    sha256 cellar: :any,                 ventura:       "9a89c7a0008af27915b35b6e1fd8938ef2e7899484f2d19027836bd630f7f997"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "37c7642af2e149bf8c7a26c72431c8fbe96775bda22d53cd2f2a747cf4f429b9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a8ac06965b89d7cab36d8b3526d781efb09420c9cf6bee7f74b75e740dd93c3"
   end
 
   head do
@@ -22,7 +23,7 @@ class Mosh < Formula
     depends_on "automake" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "protobuf"
 
   uses_from_macos "ncurses"

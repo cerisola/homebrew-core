@@ -1,31 +1,27 @@
 class Mods < Formula
   desc "AI on the command-line"
   homepage "https://github.com/charmbracelet/mods"
-  url "https://github.com/charmbracelet/mods/archive/refs/tags/v1.6.0.tar.gz"
-  sha256 "885388ac0e55ecec92648b721baf5d392e33f146cf5b92f9f23f365d9746cc07"
+  url "https://github.com/charmbracelet/mods/archive/refs/tags/v1.7.0.tar.gz"
+  sha256 "44e15c13d70d74369467df4d18b0a5ad9d977b344e76a39898002a04712271ca"
   license "MIT"
+  head "https://github.com/charmbracelet/mods.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "29b3fa4adbd7ff68bf2cbb4389b32d5c72bdddd8813b675b1685a935669fdcee"
-    sha256 cellar: :any_skip_relocation, sonoma:         "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
-    sha256 cellar: :any_skip_relocation, ventura:        "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
-    sha256 cellar: :any_skip_relocation, monterey:       "6398c20e5b5db7b6470349b46af260956f0931ce86a639891c414fb091cee0b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "54cf1956b9d32d996c51b904839ba5fc81849d9c735cba1332c14d168c64946d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ef4507075257b543ce0352b27723e0b70310221b5af17ee5ad2e45e660d39fb8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ef4507075257b543ce0352b27723e0b70310221b5af17ee5ad2e45e660d39fb8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ef4507075257b543ce0352b27723e0b70310221b5af17ee5ad2e45e660d39fb8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6f172da97622950b4d688514b07d9bd7711b4e935bb77602bf642f96525ca8db"
+    sha256 cellar: :any_skip_relocation, ventura:       "6f172da97622950b4d688514b07d9bd7711b4e935bb77602bf642f96525ca8db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f7ce569623766cf59c6ab7df40eb76dd857055683aa1ad75dafc7b3482f0a92"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.Version=#{version}
-      -X main.CommitSHA=#{tap.user}
-      -X main.CommitDate=#{time.iso8601}
-    ]
+    ldflags = "-s -w -X main.Version=#{version} -X main.CommitSHA=#{tap.user} -X main.CommitDate=#{time.iso8601}"
     system "go", "build", *std_go_args(ldflags:)
+
+    generate_completions_from_executable(bin/"mods", "completion")
   end
 
   test do

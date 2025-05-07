@@ -1,6 +1,6 @@
 class Tart < Formula
   desc "macOS and Linux VMs on Apple Silicon to use in CI and other automations"
-  homepage "https://github.com/cirruslabs/tart"
+  homepage "https://tart.run/"
   # NOTE: 1.x uses non-open source license
   # https://tart.run/blog/2023/02/11/changing-tart-license/
   url "https://github.com/cirruslabs/tart/archive/refs/tags/0.38.0.tar.gz"
@@ -14,8 +14,10 @@ class Tart < Formula
   end
 
   # https://tart.run/blog/2023/02/11/changing-tart-license/
-  deprecate! date: "2024-09-16", because: "switched to a DFSG-incompatible license"
+  # Original deprecation date: 2024-09-16
+  disable! date: "2025-02-28", because: "switched to a DFSG-incompatible license"
 
+  depends_on maximum_macos: [:sonoma, :build]
   depends_on "rust" => :build
   depends_on xcode: ["14.1", :build]
   depends_on arch: :arm64

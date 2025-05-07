@@ -2,18 +2,28 @@ class Flagd < Formula
   desc "Feature flag daemon with a Unix philosophy"
   homepage "https://github.com/open-feature/flagd"
   url "https://github.com/open-feature/flagd.git",
-      tag:      "flagd/v0.11.4",
-      revision: "df54b6612448608df642fa6fe644388558fd0843"
+      tag:      "flagd/v0.12.3",
+      revision: "3f4690e55013680abe36a84156d52dffb190efd5"
   license "Apache-2.0"
   head "https://github.com/open-feature/flagd.git", branch: "main"
 
+  # The upstream repository contains tags like `core/v1.2.3`,
+  # `flagd-proxy/v1.2.3`, etc. but we're only interested in the `flagd/v1.2.3`
+  # tags. Upstream only appears to mark the `core/v1.2.3` releases as "latest"
+  # and there isn't usually a notable gap between tag and release, so we check
+  # the Git tags.
+  livecheck do
+    url :stable
+    regex(%r{^flagd/v?(\d+(?:[.-]\d+)+)$}i)
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9aad1403d2e3411555155203a3de9f5804c9bc4e523890b519b8ae9e7b96c080"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9aad1403d2e3411555155203a3de9f5804c9bc4e523890b519b8ae9e7b96c080"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9aad1403d2e3411555155203a3de9f5804c9bc4e523890b519b8ae9e7b96c080"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e89c25008ace122e2824ae632c2479d0584b9e2d530bc195daaea6a162b9fcad"
-    sha256 cellar: :any_skip_relocation, ventura:       "e89c25008ace122e2824ae632c2479d0584b9e2d530bc195daaea6a162b9fcad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f6774ba531af3a7dbb559e4fe5adefee8f4214829993ef4de62a711267a4fafc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dadb1601b41a5e537d6990d75c1189dd94e5a6eda9da929751e0f5bed4368656"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bc539c41ff9a15f0aef1d688e1f7b164cfe7f356f8f123b78af4961d9b51c9a8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "0ef17631fc833000515e34c22d7a65a5077d6251a2d500255547c32d316de59a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "de447ee90cebd5ba4b2c1c63256f70bc4891cfe5f882303ce82c8cc3c7297322"
+    sha256 cellar: :any_skip_relocation, ventura:       "d6c307245267dc5d558dff6612fff1aa906352ed9621ed64bd91dfd039c7316e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3e2741763f115b442fa855eebd6c2da0b2a542fed9d671a06e5227376d0706b"
   end
 
   depends_on "go" => :build
@@ -34,22 +44,19 @@ class Flagd < Formula
 
   test do
     port = free_port
+    json_url = "https://raw.githubusercontent.com/open-feature/flagd/main/config/samples/example_flags.json"
+    resolve_boolean_command = <<~BASH
+      curl \
+      --request POST \
+      --data '{"flagKey":"myBoolFlag","context":{}}' \
+      --header "Content-Type: application/json" \
+      localhost:#{port}/schema.v1.Service/ResolveBoolean
+    BASH
 
+    pid = spawn bin/"flagd", "start", "-f", json_url, "-p", port.to_s
     begin
-      pid = fork do
-        exec bin/"flagd", "start", "-f",
-            "https://raw.githubusercontent.com/open-feature/flagd/main/config/samples/example_flags.json",
-            "-p", port.to_s
-      end
       sleep 3
-
-      resolve_boolean_command = <<-BASH
-        curl -X POST "localhost:#{port}/schema.v1.Service/ResolveBoolean" -d '{"flagKey":"myBoolFlag","context":{}}' -H "Content-Type: application/json"
-      BASH
-
-      expected_output = /true/
-
-      assert_match expected_output, shell_output(resolve_boolean_command)
+      assert_match(/true/, shell_output(resolve_boolean_command))
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

@@ -1,23 +1,24 @@
 class Proj < Formula
   desc "Cartographic Projections Library"
   homepage "https://proj.org/"
-  url "https://github.com/OSGeo/PROJ/releases/download/9.5.0/proj-9.5.0.tar.gz"
-  sha256 "659af0d558f7c5618c322fde2d3392910806faee8684687959339021fa207d99"
+  url "https://github.com/OSGeo/PROJ/releases/download/9.6.0/proj-9.6.0.tar.gz"
+  sha256 "d8cae521c311c39513193657e75767f7cfbf2f91bd202fcd4a200028d3b57e14"
   license "MIT"
   head "https://github.com/OSGeo/proj.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "dcc7371d2a62f8035d599c5a8ff7bf410e54bb3b4fdace1b4acc4043149d8a22"
-    sha256 arm64_sonoma:  "2a1b74965d05b95ab482cabf2e7bc0d55cc9e196b215dc782ec4624a599ddbe0"
-    sha256 arm64_ventura: "ab237962dfbb7613195e70f58e7f82a94b2c3d4e1f9b034f8d7686a8fdea88a1"
-    sha256 sonoma:        "ff478dcefaaaa025e43f3718b53a57742f29d6a0e8e7ecd26d18e7f0c56bf06f"
-    sha256 ventura:       "9abf5ab1f71895f10698f6d26f88be8d6618c1d5388a7eadd5e8f59105d516b2"
-    sha256 x86_64_linux:  "aa9ddc1ba112d2022f99f71d2e905dbbad57987c5974af1bf9150bf21fdb7abe"
+    sha256 arm64_sequoia: "0261f2c43f7824430e3c60e5babb33aeb669aced7984ec4780d12dd392a59e2c"
+    sha256 arm64_sonoma:  "6d269647a386547eee11e8e093f94540c9f6beb262181ca897f8bf5b248a90da"
+    sha256 arm64_ventura: "074e44f24a5afb86a56562189c6355f9b409fd6740a5c04a4dc556f3600af078"
+    sha256 sonoma:        "e45bde228e370c95135aa3e8fa3a678ef3bf66e00de487819a784d917420fc40"
+    sha256 ventura:       "22297d1171aa46943b6761b2be9d40b9916c6f15479b678b13808661ce3c716c"
+    sha256 arm64_linux:   "5f93515c62af9522505323647c4aaa4b268ac2064c105db497c54ea999327a57"
+    sha256 x86_64_linux:  "7109cbe388e8dbbc74ffb1511b9dae09dec6ad05e43a59c6ba032171ff3b270a"
   end
 
   depends_on "cmake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libtiff"
 
   uses_from_macos "curl"
@@ -29,8 +30,8 @@ class Proj < Formula
 
   # The datum grid files are required to support datum shifting
   resource "proj-data" do
-    url "https://download.osgeo.org/proj/proj-data-1.19.zip"
-    sha256 "6a92707122f8b22d3bdbadb3a1792425217ee378cb4ffa0c49d2455653c5e17e"
+    url "https://download.osgeo.org/proj/proj-data-1.21.zip"
+    sha256 "6bc292cd5dddefed1972549876587a8d45add1bf05824b6ad48637053719de74"
   end
 
   def install

@@ -4,6 +4,7 @@ class Csvq < Formula
   url "https://github.com/mithrandie/csvq/archive/refs/tags/v1.18.1.tar.gz"
   sha256 "69f98d0d26c055cbe4ebfe2cedf79c744bebafac604ea55fb0081826b1ac7b74"
   license "MIT"
+  head "https://github.com/mithrandie/csvq.git", branch: "master"
 
   livecheck do
     url :stable
@@ -32,14 +33,14 @@ class Csvq < Formula
   test do
     system bin/"csvq", "--version"
 
-    (testpath/"test.csv").write <<~EOS
+    (testpath/"test.csv").write <<~CSV
       a,b,c
       1,2,3
-    EOS
-    expected = <<~EOS
+    CSV
+    expected = <<~CSV
       a,b
       1,2
-    EOS
+    CSV
     result = shell_output("#{bin}/csvq --format csv 'SELECT a, b FROM `test.csv`'")
     assert_equal expected, result
   end

@@ -14,12 +14,13 @@ class VapoursynthImwri < Formula
     sha256 cellar: :any, arm64_ventura: "8795d8f3142e89ca1785f5d83312ab82ae4c24dc0e92b54aae294dbca1d14d0c"
     sha256 cellar: :any, sonoma:        "6ffe0859ceae64e20741fb000a0319b456dd51d437e35e79f354eabcdface889"
     sha256 cellar: :any, ventura:       "92866496e81b76604e8f4fbd5cab2d6d94d2f83cb4521e731802445ebcbd86e6"
+    sha256               arm64_linux:   "f90a76a7b71b8d829a4f90c0969b2f7321f849f1ab9616f136cf943ffe198d10"
     sha256               x86_64_linux:  "099e77da73bbc6d8333e6067705d531ba193d3a496d8c99fc5287f7bec4f5ac2"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "imagemagick"
   depends_on "vapoursynth"
@@ -29,8 +30,6 @@ class VapoursynthImwri < Formula
     depends_on "libheif"
     depends_on "libtiff"
   end
-
-  fails_with gcc: "5"
 
   def install
     # Upstream build system wants to install directly into vapoursynth's libdir and does not respect

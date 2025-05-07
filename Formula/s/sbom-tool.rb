@@ -1,8 +1,8 @@
 class SbomTool < Formula
   desc "Scalable and enterprise ready tool to create SBOMs for any variety of artifacts"
   homepage "https://github.com/microsoft/sbom-tool"
-  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v3.0.1.tar.gz"
-  sha256 "90085ab1f134f83d43767e46d6952be42a62dbb0f5368e293437620a96458867"
+  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v3.1.0.tar.gz"
+  sha256 "3e31ffe0d7bfe26ecfc59772b8e828f08ac8c39a3ddfdc0a24d7d603afa7e45b"
   license "MIT"
   head "https://github.com/microsoft/sbom-tool.git", branch: "main"
 
@@ -15,33 +15,28 @@ class SbomTool < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd07cf8531b2d6120d052b498dd9e273b131e15f9cce5964996b083ec9b851ec"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "344c264ec814f20dead2e14aeb6888ed483d1003a8e91e4625b88ccc5e57b92d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fa834547524901e2f6d4f0e891e48547378da7c722fb93981a8c19004ae284d7"
-    sha256 cellar: :any_skip_relocation, sonoma:        "27d9f132d895097aa7454d9e3bc43adca410cab2c7088cbc184cf21174141c7a"
-    sha256 cellar: :any_skip_relocation, ventura:       "db0dcb0a4e6b7bfd6c131c9cfbd201403709d20561a2223931e75830aa5d893d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f7350a825d6b0e31ff02f6145487765ed899d95d1243f9d91d914b63b3102c59"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ff8fbdbfb4a321fc72980e047cf8326fa745ab20d22da59152c3239fd9e58e85"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c0d387409a55a1965c920dc52033028049ae4bedeb759b054a4e716074763000"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5022471bef61a6cf96c9172c925baf519ac0349f3a9d1e2ea9ebab8ffed1315d"
+    sha256 cellar: :any_skip_relocation, ventura:       "f4d9fc9f31e1bdbacc85656dd6811bb3dc77e7792cf27bd306f534721df57136"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a5a92f21640ecabfe329c5b39570ae95c343eb311471bec87fb63958b7bb5b0b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4c87d83bc21c734cb7cd9355da63ba7b4b592c8996a26629c391b37acdf42615"
   end
 
-  depends_on "dotnet"
+  depends_on "dotnet@8"
 
   uses_from_macos "zlib"
 
   def install
-    bin.mkdir
-
     ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "true"
 
-    dotnet = Formula["dotnet"]
-    os = OS.mac? ? "osx" : OS.kernel_name.downcase
-    arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
-
+    dotnet = Formula["dotnet@8"]
     args = %W[
       --configuration Release
       --framework net#{dotnet.version.major_minor}
-      --output #{libexec}
-      --runtime #{os}-#{arch}
       --no-self-contained
+      --output #{libexec}
+      --use-current-runtime
       -p:OFFICIAL_BUILD=true
       -p:MinVerVersionOverride=#{version}
       -p:PublishSingleFile=true
@@ -52,8 +47,7 @@ class SbomTool < Formula
     ]
 
     system "dotnet", "publish", "src/Microsoft.Sbom.Tool/Microsoft.Sbom.Tool.csproj", *args
-    (bin/"sbom-tool").write_env_script libexec/"Microsoft.Sbom.Tool",
-                                       DOTNET_ROOT: "${DOTNET_ROOT:-#{dotnet.opt_libexec}}"
+    (bin/"sbom-tool").write_env_script libexec/"Microsoft.Sbom.Tool", DOTNET_ROOT: dotnet.opt_libexec
   end
 
   test do

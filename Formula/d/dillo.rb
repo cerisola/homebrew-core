@@ -1,19 +1,18 @@
 class Dillo < Formula
   desc "Fast and small graphical web browser"
   homepage "https://dillo-browser.github.io/"
-  url "https://github.com/dillo-browser/dillo/releases/download/v3.1.1/dillo-3.1.1.tar.bz2"
-  sha256 "5b85adc2315cff1f6cc29c4fa7e285a964cc3adb7b4cd652349c178292a4fb9e"
+  url "https://github.com/dillo-browser/dillo/releases/download/v3.2.0/dillo-3.2.0.tar.bz2"
+  sha256 "1066ed42ea7fe0ce19e79becd029c651c15689922de8408e13e70bb5701931bf"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sequoia:  "f6d6810081fbf6d7fc7eee4364ea8ed8783390401f1725bb4d7735256f5d32e8"
-    sha256 arm64_sonoma:   "7659f9a43d50f1bbb57cbcf772e0678fd8450ce7e11449a99c1e6c2191c7ccdb"
-    sha256 arm64_ventura:  "988cd2898a45ab880b51f51803baccbae409468c18e329b3f3ee406fa783628c"
-    sha256 arm64_monterey: "d1870bc65b0e048eb642b1853f7b31526327160df24e6f9dda1a6c18976ba22c"
-    sha256 sonoma:         "b1a7d562d451d28fb2d2d16c894c070271dd4425bc33955d6dcb5c859466a482"
-    sha256 ventura:        "f7f73f1ce2a1c5ed69287182e8d870a366209dde19a76e49f547803468b16a95"
-    sha256 monterey:       "049ba3e72f9a0cf75e62f4ab6dfce2a11b383e06e253fe2d8a5c7223487cb97f"
-    sha256 x86_64_linux:   "fd6127a85c1bbabba2446009df8eb6bd91a9fc182b79cf6d259167fe23bfe69c"
+    sha256 arm64_sequoia: "0207d59785da8978150221c348a04269db1e6af49b16cea243aeaeb2d874592d"
+    sha256 arm64_sonoma:  "28b93f6b93b643299e98f8f9b543b55784ce83e16e624d460453b2741b4faa61"
+    sha256 arm64_ventura: "91e47bdc6957706b451ad79446f0807b46f7ad3bd52ed9e4b3e7fbf7f68e7656"
+    sha256 sonoma:        "eb64b7f51d5fd459bf3dc5ceffebc8f44a8cccf2e5288fd8bd2bc00e076c7d7a"
+    sha256 ventura:       "d67a1834f6bdb695b18602e11411bf5e6e723df7a2fe4cb513c392da4ec52561"
+    sha256 arm64_linux:   "c7726b387e90495e472ba084ea9c20fa14414b9f5a13f0ad2547d76dfdf94ef4"
+    sha256 x86_64_linux:  "b38cf02dc15d8362d04a62438d62eb0f6b7be342d83fd349f414b0c24f5f4989"
   end
 
   head do
@@ -23,7 +22,9 @@ class Dillo < Formula
     depends_on "automake" => :build
   end
 
-  depends_on "fltk"
+  # TODO: Switch to unversioned `fltk` when possible.
+  # https://github.com/dillo-browser/dillo/issues/246
+  depends_on "fltk@1.3"
   depends_on "jpeg-turbo"
   depends_on "libpng"
   depends_on "openssl@3"
@@ -46,7 +47,7 @@ class Dillo < Formula
 
   test do
     test_file = testpath/"test.html"
-    (testpath/"test.html").write <<~EOS
+    (testpath/"test.html").write <<~HTML
       <!DOCTYPE html>
       <html>
         <head>
@@ -56,7 +57,7 @@ class Dillo < Formula
             <h1>test</h1>
         </body>
       </html>
-    EOS
+    HTML
 
     # create bunch of dillo resource files
     (testpath/".dillo").mkpath
@@ -67,7 +68,7 @@ class Dillo < Formula
 
     begin
       PTY.spawn(bin/"dillo", test_file) do |_r, _w, pid|
-        sleep 2
+        sleep 15
         Process.kill("TERM", pid)
       end
     rescue Errno::EIO
@@ -76,6 +77,6 @@ class Dillo < Formula
 
     assert_match "DEFAULT DENY", (testpath/".dillo/cookiesrc").read
 
-    assert_match "Dillo version #{version}", shell_output("#{bin}/dillo --version")
+    assert_match version.to_s, shell_output("#{bin}/dillo --version")
   end
 end

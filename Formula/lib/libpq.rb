@@ -1,10 +1,10 @@
 class Libpq < Formula
   desc "Postgres C API library"
   homepage "https://www.postgresql.org/docs/current/libpq.html"
-  url "https://ftp.postgresql.org/pub/source/v17.0/postgresql-17.0.tar.bz2"
-  sha256 "7e276131c0fdd6b62588dbad9b3bb24b8c3498d5009328dba59af16e819109de"
+  url "https://ftp.postgresql.org/pub/source/v17.4/postgresql-17.4.tar.bz2"
+  sha256 "c4605b73fea11963406699f949b966e5d173a7ee0ccaef8938dec0ca8a995fe7"
   license "PostgreSQL"
-  revision 2
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -12,20 +12,21 @@ class Libpq < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "a7d324023a64b4c30827a296e90b013c6568985e0a2a0ca07267ddbb57ed6b64"
-    sha256 arm64_sonoma:  "2bd5ab7f788d564457ca517c3301444b0f000c326cb4e44a253077b2c5d0f8cb"
-    sha256 arm64_ventura: "2ddaa7ed1c71d98592877c034df221bd3d9fdfcb4b4fe1aee1f36a751693891a"
-    sha256 sonoma:        "6df62d3e1f4ed6e379acf636a7e2516fb06af0c07da39daa1cb669b125f56794"
-    sha256 ventura:       "da2f9440626b64ff20efa7844b0941b661b4cd15a8e9ce0be8e5fc14ae44a544"
-    sha256 x86_64_linux:  "8f8e4ead281acc6b88d933d2ed995211c016cf9050dba494e1103f0eb57d5afa"
+    sha256 arm64_sequoia: "d8ade9cb5deef5a893d1358e0501444d7d14a7dd216d1722b55cf8e1dbe765e3"
+    sha256 arm64_sonoma:  "edbf11d3ab9246ef639cbb56106e39dc696f49d6dc7be22075af3c60575888f9"
+    sha256 arm64_ventura: "e99ecda84fb5f0916f880c9c948f09b39c9d41e8753fd1fbc8bba6df69fac2ea"
+    sha256 sonoma:        "56e9a1b6989876211ac979f936f54aed74af06371f039b331f15c970d9924ec7"
+    sha256 ventura:       "020d0f1ad534770b2341a0bc0c836377a5e741fa1aa288a2c700e980d1f9ced1"
+    sha256 arm64_linux:   "b53f6a940943be15290dac3a7efe1985c4595e78263a2c81622dc74ebe232715"
+    sha256 x86_64_linux:  "85f0b26d9fca6e6edb0683ce4a39279cdbce9c447bcd278041c1bac9e8ef5af8"
   end
 
   keg_only "conflicts with postgres formula"
 
   depends_on "docbook" => :build
   depends_on "docbook-xsl" => :build
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
   depends_on "krb5"
@@ -43,6 +44,7 @@ class Libpq < Formula
 
   def install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+    ENV.runtime_cpu_detection
 
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",

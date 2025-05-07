@@ -1,18 +1,18 @@
 class D2 < Formula
   desc "Modern diagram scripting language that turns text to diagrams"
   homepage "https://d2lang.com/"
-  url "https://github.com/terrastruct/d2/archive/refs/tags/v0.6.7.tar.gz"
-  sha256 "2e66d0012202070dccda6b8fdd8f13cbbf316e23d97fa94327908e4e87b685e5"
+  url "https://github.com/terrastruct/d2/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "6e7e7c787755e61fc048cc0c2e939a330a3dad98ee0f3c1cd706f2c192416554"
   license "MPL-2.0"
   head "https://github.com/terrastruct/d2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1c4e1c0736cad71fe3a606a3c9f8a0995a450f63180258cdc1709f15d74e754f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1c4e1c0736cad71fe3a606a3c9f8a0995a450f63180258cdc1709f15d74e754f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1c4e1c0736cad71fe3a606a3c9f8a0995a450f63180258cdc1709f15d74e754f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "59498cd5019df052264e524cc6b34a70ffdf89faf6ff2bb1ed759c5a2680c509"
-    sha256 cellar: :any_skip_relocation, ventura:       "59498cd5019df052264e524cc6b34a70ffdf89faf6ff2bb1ed759c5a2680c509"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a265f42290d383fc9a88106dd1914c4bd6dfd92b6f9cbbe2db96091119274fb3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b263fd0a4c819aff3cf1f45401208ca46d0e0b9702de97565051ce7dca60162f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b263fd0a4c819aff3cf1f45401208ca46d0e0b9702de97565051ce7dca60162f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b263fd0a4c819aff3cf1f45401208ca46d0e0b9702de97565051ce7dca60162f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0bd702fe40271a6413415a26344a5f9386c62a12395f982c90f651a96cdaf4ce"
+    sha256 cellar: :any_skip_relocation, ventura:       "0bd702fe40271a6413415a26344a5f9386c62a12395f982c90f651a96cdaf4ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe4c5b7a9948a73d481f89c3606abe5f10fe93522f937d12275862c9ff51baee"
   end
 
   depends_on "go" => :build
@@ -30,7 +30,7 @@ class D2 < Formula
     EOS
 
     system bin/"d2", "test.d2"
-    assert_predicate testpath/"test.svg", :exist?
+    assert_path_exists testpath/"test.svg"
 
     assert_match "dagre is a directed graph layout library for JavaScript",
       shell_output("#{bin}/d2 layout dagre")

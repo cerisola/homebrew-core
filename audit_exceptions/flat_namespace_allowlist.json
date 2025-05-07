@@ -7,7 +7,6 @@
   "e2fsprogs",
   "gnuradio",
   "hdf5-mpi",
-  "lablgtk",
   "libvirt",
   "mpich",
   "omniorb",
@@ -19,7 +18,7 @@
   "soapysdr",
   "soci",
   "syslog-ng",
-  "tcl-tk",
+  "tcl-tk@8",
   "uhd",
   "xmlrpc-c",
   "xvid"

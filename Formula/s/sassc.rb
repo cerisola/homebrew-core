@@ -19,19 +19,19 @@ class Sassc < Formula
     sha256 cellar: :any,                 big_sur:        "fe3a719ec1b2b01385924b8cb3bbb758d006ff3dbd75b1c3691ce09a43d1ebcd"
     sha256 cellar: :any,                 catalina:       "0826a1c50657da448806febb03694bce523e60ac56e7dd0de7362fe4b41f2277"
     sha256 cellar: :any,                 mojave:         "6aa4de7c6d9b1b64beda27f0c06a6d8c9224616b74ae48ea8e706f166b374ce9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "074f6ea2972c1b7d50f9e3bbbfde7d8ca06d1c2e96474115bc33aca3b64a4cda"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4575b459543c822d40a074f73591b1865790aa8977e7dc12148c10c858d55203"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libsass"
 
   def install
-    system "autoreconf", "-fvi"
-    system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
-                          "--disable-dependency-tracking"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

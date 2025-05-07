@@ -19,17 +19,22 @@ class Libnids < Formula
     sha256 cellar: :any,                 catalina:       "0cd6c420a38ea61eb8abe96b6b2f754bddf1ca5583b3dbccfb1b268990426764"
     sha256 cellar: :any,                 mojave:         "175d04b2db4bc65923eed696272339f4533ea8277ec64f01ba6a2b9a6019c8d6"
     sha256 cellar: :any,                 high_sierra:    "e9e968ec057ae597b39c45ff1e804fde87f265c6783e62cb70e009ecc4aafd05"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "ce70446aaf3217c926bd5ec5df544ce4749a5a91553b3fcb2d111d6a5597727e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "53191548aacc1a482ec1bec888da8809da4c17b7b88e631b7c725acce36456e9"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glib"
   depends_on "libnet"
 
   uses_from_macos "libpcap"
+
+  on_macos do
+    depends_on "gettext"
+  end
 
   # Patch fixes -soname and .so shared library issues. Unreported.
   patch do
@@ -41,7 +46,7 @@ class Libnids < Formula
 
   def install
     # autoreconf the old 2005 era code for sanity.
-    system "autoreconf", "-ivf"
+    system "autoreconf", "--force", "--install", "--verbose"
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}",
                           "--enable-shared"
     system "make", "install"

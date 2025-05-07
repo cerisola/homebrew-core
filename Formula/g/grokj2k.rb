@@ -3,10 +3,9 @@ class Grokj2k < Formula
   homepage "https://github.com/GrokImageCompression/grok"
   # pull from git tag to get submodules
   url "https://github.com/GrokImageCompression/grok.git",
-      tag:      "v13.0.1",
-      revision: "4b1049297bfb93a0f2afbe598f4dab92545ee1ad"
+      tag:      "v14.3.0",
+      revision: "1542410d2ee31c881ef46f491d613d7cea76e75b"
   license "AGPL-3.0-or-later"
-  revision 1
   head "https://github.com/GrokImageCompression/grok.git", branch: "master"
 
   livecheck do
@@ -15,17 +14,19 @@ class Grokj2k < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "58dfe423810794c2595923d5d9e7abb452dcad85b40b9f4c98749f136a5a771d"
-    sha256 cellar: :any,                 arm64_sonoma:  "f21704c74f8dc06776204ad4c0a58542e98f1547b8d516ba20828d2ac3c57410"
-    sha256 cellar: :any,                 arm64_ventura: "de74ecf571e653a544424ea6d448e84e3ecd461100824e3d33d382dba4fafa8e"
-    sha256 cellar: :any,                 sonoma:        "975512767859e6ea6b65ee19596cd09375d10ec224dc0f3d7daebde8ab03d243"
-    sha256 cellar: :any,                 ventura:       "543cf0939cfe32eb7f35e5c5c26ba0bf85646c261580bba9fb9ce9a6b75ed172"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8c1c38b58a780f45247ca444fc92540cd0d3a66d95b3af14a789e23d8151f48a"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "5149d78f8c62ba15378406a5cf7069664610210b6217407a84f525b8d4f3a503"
+    sha256 cellar: :any,                 arm64_sonoma:  "77b72bff592cea45f9a58ac582c40936a40f43c5043a03f776c66ebcb243c4a8"
+    sha256 cellar: :any,                 arm64_ventura: "671bcbcd63e92dcec776dd40f283af775c20ac48b8db218df2bf434b1e2745bc"
+    sha256 cellar: :any,                 sonoma:        "9ced0cf80ece1940de03f7aa539c7ab8343cee8e180322bbd13746d715f47fb5"
+    sha256 cellar: :any,                 ventura:       "55af09dd82eabdd8ccdec7300c92598cc194f59d4f67c7f7dfd36abc99617c37"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "034279982c94fdf35fdd73e2e31f41a6a600494dbb722e070501013984970398"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "61435c3633d1ba62db43e0ade8388ed6fe95e4c6601ef6446223d1e9f2527cd4"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "exiftool"
   depends_on "jpeg-turbo"
   depends_on "libpng"
@@ -57,20 +58,17 @@ class Grokj2k < Formula
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
 
     # Fix: ExifTool Perl module not found
-    ENV.prepend_path "PERL5LIB", Formula["exiftool"].opt_libexec/"lib"
+    ENV.prepend_path "PERL5LIB", Formula["exiftool"].opt_libexec/"lib/perl5"
 
-    # Ensure we use Homebrew little-cms2
+    # Ensure we use Homebrew libraries
     %w[liblcms2 libpng libtiff libz].each { |l| rm_r(buildpath/"thirdparty"/l) }
-    inreplace "thirdparty/CMakeLists.txt" do |s|
-      s.gsub! "add_subdirectory(liblcms2)", ""
-      s.gsub! %r{(set\(LCMS_INCLUDE_DIRNAME) \$\{GROK_SOURCE_DIR\}/thirdparty/liblcms2/include},
-              "\\1 #{Formula["little-cms2"].opt_include}"
-    end
 
     perl = DevelopmentTools.locate("perl")
     perl_archlib = Utils.safe_popen_read(perl.to_s, "-MConfig", "-e", "print $Config{archlib}")
     args = %W[
       -DGRK_BUILD_DOC=ON
+      -DGRK_BUILD_JPEG=OFF
+      -DGRK_BUILD_LCMS2=OFF
       -DGRK_BUILD_LIBPNG=OFF
       -DGRK_BUILD_LIBTIFF=OFF
       -DPERL_EXECUTABLE=#{perl}
@@ -87,7 +85,7 @@ class Grokj2k < Formula
       ENV.append "LDFLAGS", "-Wl,-rpath,#{perl_archlib}/CORE"
     end
 
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     include.install_symlink "grok-#{version.major_minor}" => "grok"
@@ -97,8 +95,8 @@ class Grokj2k < Formula
 
   test do
     resource "homebrew-test_image" do
-      url "https://github.com/GrokImageCompression/grok-test-data/raw/43ce4cb/input/nonregression/pngsuite/basn0g01.png"
-      sha256 "c23c1848002082e128f533dc3c24a49fc57329293cc1468cc9dc36339b1abcac"
+      url "https://github.com/GrokImageCompression/grok-test-data/raw/43ce4cb/input/nonregression/basn6a08.tif"
+      sha256 "d0b9715d79b10b088333350855f9721e3557b38465b1354b0fa67f230f5679f3"
     end
 
     (testpath/"test.c").write <<~C
@@ -120,20 +118,18 @@ class Grokj2k < Formula
 
     # Test Exif metadata retrieval
     testpath.install resource("homebrew-test_image")
-    system bin/"grk_compress", "--in-file", "basn0g01.png",
-                                "--out-file", "test.jp2", "--out-fmt", "jp2",
-                                "--transfer-exif-tags"
+    system bin/"grk_compress", "--in-file", "basn6a08.tif",
+                               "--out-file", "test.jp2", "--out-fmt", "jp2",
+                               "--transfer-exif-tags"
     output = shell_output("#{Formula["exiftool"].bin}/exiftool test.jp2")
 
     expected_fields = [
-      "File Type                       : JP2",
-      "MIME Type                       : image/jp2",
-      "Major Brand                     : JPEG 2000 Image (.JP2)",
-      "Compatible Brands               : jp2",
-      "Image Height                    : 32",
-      "Image Width                     : 32",
-      "Bits Per Component              : 1 Bits, Unsigned",
-      "Compression                     : JPEG 2000",
+      "Exif Byte Order                 : Big-endian (Motorola, MM)",
+      "Orientation                     : Horizontal (normal)",
+      "X Resolution                    : 72",
+      "Y Resolution                    : 72",
+      "Resolution Unit                 : inches",
+      "Y Cb Cr Positioning             : Centered",
     ]
 
     expected_fields.each do |field|

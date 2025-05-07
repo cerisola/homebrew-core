@@ -4,20 +4,20 @@ class ScIm < Formula
   url "https://github.com/andmarti1424/sc-im/archive/refs/tags/v0.8.4.tar.gz"
   sha256 "ebb1f10006fe49f964a356494f96d86a4f06eb018659e3b9bde63b25c03abdf0"
   license "BSD-4-Clause"
+  revision 2
   head "https://github.com/andmarti1424/sc-im.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia:  "7c0d1853ada3fe9bec1a41a9c847f652151495eed510d541ae3b599bcc32e1ad"
-    sha256 arm64_sonoma:   "cbd1e873c3488d61e71d3d3f320f196be3b52a60b225a3cbd34bac86417fa867"
-    sha256 arm64_ventura:  "3f7989b3e41a89308b432e6f8f7ce85ef2665899f6c628db9b27f11da9496dcd"
-    sha256 arm64_monterey: "26e8c661c4ce9a3ef7f34f6050a7558eb6a9d6140aaa6620ce9ba71ebddffdd9"
-    sha256 sonoma:         "f8fd4583452db9f3c10bbd37358d6bb0f605d7902d148e7da38528a8ebb54b53"
-    sha256 ventura:        "cbfbccfcb5ca3ecc692e4f6140a1e989ba2ada089038ba865eeac10281bb7c76"
-    sha256 monterey:       "4e5aeef147a8a57070ca71919eaa2d07a55bd140c549278a87613f9735870d85"
-    sha256 x86_64_linux:   "a597c79ce61df47871de641099781406f41918f54aa7572f5ebd34ee8cffcd78"
+    sha256 arm64_sequoia: "585f98cda2324655c14dcd9d64acc8d07e1fd72aaf2680a6f770f59a4246f281"
+    sha256 arm64_sonoma:  "279bd5d4f6667722e3375d8538f84b54a131b2cb477477e95ac6b3d360df7ebb"
+    sha256 arm64_ventura: "81d1a05ef52307578a974ef1c729b03524b97ae9125d386918c737a48f8bd0a6"
+    sha256 sonoma:        "43dffed01d4f245375aad615bfc05593b62f2f54fe5b32b81e5181f1c9736b80"
+    sha256 ventura:       "5ceaed8adb32424c8484f4b8a24c87e90a269f3f3a3f1177934a88bfe7e4712c"
+    sha256 arm64_linux:   "4457a50b8a4ced2c0a2c66c4806c2f6bba4394ccc180fcab326e5dd8f042cce5"
+    sha256 x86_64_linux:  "c3927fa72b5ba98e83d749bfe3a31fab8bb45ca6c929019249e317638323a6a0"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libxls"
   depends_on "libxlsxwriter"
   depends_on "libxml2"

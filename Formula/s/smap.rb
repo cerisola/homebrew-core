@@ -28,12 +28,12 @@ class Smap < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/..."
+    system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/smap"
   end
 
   test do
     assert_match "scan report for google.com", shell_output("#{bin}/smap google.com p80,443")
     system bin/"smap", "google.com", "-oX", "output.xml"
-    assert_predicate testpath/"output.xml", :exist?
+    assert_path_exists testpath/"output.xml"
   end
 end

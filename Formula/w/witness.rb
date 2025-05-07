@@ -1,8 +1,8 @@
 class Witness < Formula
   desc "Automates, normalizes, and verifies software artifact provenance"
   homepage "https://witness.dev"
-  url "https://github.com/in-toto/witness/archive/refs/tags/v0.6.0.tar.gz"
-  sha256 "b339520c1665de3d5d1efa4a4c4f97cd8f0c3a152ff9ab9abca94e41e4c1924a"
+  url "https://github.com/in-toto/witness/archive/refs/tags/v0.9.1.tar.gz"
+  sha256 "af28bd620a90d76933f529ed72655841b04a617cf9abb61ff52fe0edc1fc23d7"
   license "Apache-2.0"
   head "https://github.com/in-toto/witness.git", branch: "main"
 
@@ -12,14 +12,12 @@ class Witness < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "28b5d385d73647959f52fff65d7577f0aad73018a11029634ea8a6d4876847c1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "747f88b6f93a91f6a1e0708183db400083568a3e51e2e673cb145f9eb688c8e8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "cdb367ca20cf86f1ab16b3190751d5aa8c57b38f8a73eed2a4cd49b6756f7410"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "a832ec6ec65212bd9789316aa2afd63bff2bb95821d0958cef2530c992696c0b"
-    sha256 cellar: :any_skip_relocation, sonoma:         "9d2afa770333213ceac92b86572f9ba221fc7173df510cda45c3ce77aa7d2458"
-    sha256 cellar: :any_skip_relocation, ventura:        "c78bf5c966f6d713b32cc8dd2ada9e06539285af3a8e8d599125ad3c08211f25"
-    sha256 cellar: :any_skip_relocation, monterey:       "2514a58f498470c8f65a0901ea30cc6169c44f1cab9436f3e87174999d0877f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "c2fb63072d2eda046ad0c4491d4140530da592a743502840cd2e8ab47aaac465"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9b5936f021ba12991c70aa67d9e43bfcea3ceb818ef3fc54e2838ff813179710"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4808c187ca99c721b7fcfcec59b7acb998af40b6f90ef0ed11e938a304c13568"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "122725c3b78c865e6e0f0bfa7a359f6cc86cf4338ff0f8b04ad50349ac5b2497"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ce469b91e24105696a60d9a6c66312077d4d90b54bd783957ab71e1775234d9d"
+    sha256 cellar: :any_skip_relocation, ventura:       "c6e0727c4a7cea0f168017986e8cce46d778158a50dce55dcb28131396dbd6be"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "23f5d88458746d2566874da6db9ada7f7eefbb4927b210f160f0bbdee571d903"
   end
 
   depends_on "go" => :build

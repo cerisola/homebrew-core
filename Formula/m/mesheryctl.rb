@@ -2,18 +2,21 @@ class Mesheryctl < Formula
   desc "Command-line utility for Meshery, the cloud native management plane"
   homepage "https://meshery.io"
   url "https://github.com/meshery/meshery.git",
-      tag:      "v0.7.132",
-      revision: "5023acbcf4d4149418749016bab67f854bda8c6b"
+      tag:      "v0.8.72",
+      revision: "1b9996e62a3b6eb0df41ca8f2d3b613cc87b1cec"
   license "Apache-2.0"
   head "https://github.com/meshery/meshery.git", branch: "master"
 
+  no_autobump! because: :bumped_by_upstream
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dc75e315f3651b668bcb69a8b324356d542a6139660dc96423e0742ee47ab78f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dc75e315f3651b668bcb69a8b324356d542a6139660dc96423e0742ee47ab78f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "dc75e315f3651b668bcb69a8b324356d542a6139660dc96423e0742ee47ab78f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "13517d6001d54a55bc83b4e8dba45677708a48c9b933910b08870b7608f88c28"
-    sha256 cellar: :any_skip_relocation, ventura:       "13517d6001d54a55bc83b4e8dba45677708a48c9b933910b08870b7608f88c28"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "412708f8a497ad87d28ed40a28825c00d9e6d05ac1d9569da8c0c685518ab68e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bd8146c1badf70040a7127bd029ee8cf302c11a38305c494e3a1b2deded3fbee"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bd8146c1badf70040a7127bd029ee8cf302c11a38305c494e3a1b2deded3fbee"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "bd8146c1badf70040a7127bd029ee8cf302c11a38305c494e3a1b2deded3fbee"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ee5b84ac93296f459a3997dc594e2fe8943f9cb696a8d2f43634b4ae22a732c2"
+    sha256 cellar: :any_skip_relocation, ventura:       "ee5b84ac93296f459a3997dc594e2fe8943f9cb696a8d2f43634b4ae22a732c2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "78e970f3ea0af59eaa44abed30e811b40ae7f08698699f29710bd921519df6e3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0411dd70f010826b7c56ec3e5f88f92489c7479767aa1c514a079df6dabd7c55"
   end
 
   depends_on "go" => :build

@@ -23,13 +23,14 @@ class Dvdauthor < Formula
     sha256 cellar: :any,                 monterey:       "7b32bfedcf0a84223d860c886930d507a26006e6f79646fe0746ec681f4228fa"
     sha256 cellar: :any,                 big_sur:        "0522363b372b042bb8a672ee3d245b8f0551f8dec40bdf791b4c6eb787e810aa"
     sha256 cellar: :any,                 catalina:       "d79a1513ecb8ba4433fd4a368aaec314416c3ca8c4ab8fcabac6ed1f523e0b14"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "be433be51e3fb32144acd38f8e6b623b41ae24f4fe2320eb29b8387fbb875213"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7837acd0fce47d23873d6b1f1df3ba1dd75985a60e0b5c33778435eeb3094c08"
   end
 
   # Dvdauthor will optionally detect ImageMagick or GraphicsMagick, too.
   # But we don't add either as deps because they are big.
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "freetype"
   depends_on "libdvdread"
   depends_on "libpng"
@@ -37,9 +38,7 @@ class Dvdauthor < Formula
   uses_from_macos "libxml2"
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make"
     ENV.deparallelize # Install isn't parallel-safe
     system "make", "install"

@@ -13,6 +13,8 @@ class Csvtomd < Formula
     sha256 cellar: :any_skip_relocation, all: "db9a5f1d08b328f96733905f1b05215a8fe89ff95834ebc873a94d3197e16477"
   end
 
+  deprecate! date: "2025-01-10", because: :repo_archived
+
   depends_on "python@3.13"
 
   # ValueError: invalid mode: 'rU'
@@ -23,15 +25,15 @@ class Csvtomd < Formula
   end
 
   test do
-    (testpath/"test.csv").write <<~EOS
+    (testpath/"test.csv").write <<~CSV
       column 1,column 2
       hello,world
-    EOS
-    markdown = <<~EOS.strip
+    CSV
+    markdown = <<~MARKDOWN.strip
       column 1  |  column 2
       ----------|----------
       hello     |  world
-    EOS
+    MARKDOWN
     assert_equal markdown, shell_output("#{bin}/csvtomd test.csv").strip
   end
 end

@@ -1,8 +1,8 @@
 class Rabbitmq < Formula
   desc "Messaging and streaming broker"
   homepage "https://www.rabbitmq.com"
-  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v4.0.3/rabbitmq-server-generic-unix-4.0.3.tar.xz"
-  sha256 "607ba3b4fd1fc133f3bada1b2225ff0527f99cc6eb32423ae73f6c9f5ee9bd13"
+  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v4.1.0/rabbitmq-server-generic-unix-4.1.0.tar.xz"
+  sha256 "9a9c6e1c6a36512e596bbea623caa0d25c80c2fae7092d030327301ddaee5aae"
   license "MPL-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class Rabbitmq < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "434ba5a58ea77a70af4f49ba2a2a0a80603c9d6f820e6dc8e30c87d53f2bd1f8"
+    sha256 cellar: :any_skip_relocation, all: "f98fbbeafb22fbe7eb1f188b689a4c16460e64046f60fe4c33eaa9181cd525c3"
   end
 
   depends_on "erlang"
@@ -57,8 +57,9 @@ class Rabbitmq < Formula
 
     sbin.install rabbitmqadmin
     (sbin/"rabbitmqadmin").chmod 0755
-    generate_completions_from_executable(sbin/"rabbitmqadmin", "--bash-completion", shells: [:bash],
-                                         base_name: "rabbitmqadmin", shell_parameter_format: :none)
+    generate_completions_from_executable(sbin/"rabbitmqadmin", "--bash-completion",
+                                         shells:                 [:bash],
+                                         shell_parameter_format: :none)
   end
 
   def caveats

@@ -1,8 +1,8 @@
 class Pixman < Formula
   desc "Low-level library for pixel manipulation"
   homepage "https://cairographics.org/"
-  url "https://cairographics.org/releases/pixman-0.42.2.tar.gz"
-  sha256 "ea1480efada2fd948bc75366f7c349e1c96d3297d09a3fe62626e38e234a625e"
+  url "https://cairographics.org/releases/pixman-0.46.0.tar.gz"
+  sha256 "02d9ff7b8458ef61731c3d355f854bbf461fd0a4d3563c51f1c1c7b00638050d"
   license "MIT"
 
   livecheck do
@@ -11,33 +11,23 @@ class Pixman < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia:  "f215e1e85be34c4b7ba664ee965ad4c76c6af611884b3af4cf7a3ae36e13351c"
-    sha256 cellar: :any,                 arm64_sonoma:   "d355a294d3f9152479c2c0905efbeb329aef9cb27b9ae12e2a4ea6a4f41f2174"
-    sha256 cellar: :any,                 arm64_ventura:  "e27867c503bd9cf858159261e053184d19ae00357dc89426810f80734aaaefd0"
-    sha256 cellar: :any,                 arm64_monterey: "5270c55dc707a887b832b47324b82a6e69657ebb7ecd72843080f1e54a5bfc8b"
-    sha256 cellar: :any,                 arm64_big_sur:  "999830935fa581f1598d56834060bbfd8dbe818513ab39a1a15b1b5e0ef2afd9"
-    sha256 cellar: :any,                 sonoma:         "73469a943a06d34ae520803be550773c148f93b51e1e4a4aaaf9d59e16a8509d"
-    sha256 cellar: :any,                 ventura:        "84c3bfc0a0e43b714fd064954885314b4ec2928571ba43c49760cacca50bd32c"
-    sha256 cellar: :any,                 monterey:       "2a61150890d26395ae8d8c0afd7423bdea2cfe3cbc7feea24a4450cdd0804fc5"
-    sha256 cellar: :any,                 big_sur:        "9c50d2fadad622cf5b80f24dffb5e5b2edfd0ff91927a2143ca27bbcd392a4c5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9cf9d788868c9609f6e3ea3798d93076c7b2b1b8ac7f63527f7e0bed89dc1957"
+    sha256 cellar: :any,                 arm64_sequoia: "6d08a20cf16a9f69e925000085b4062501df3c8838b25284a7a5733608fd944a"
+    sha256 cellar: :any,                 arm64_sonoma:  "bb33e3bd843674caaa950a8709d05642098e812eca15c31857a43433ed90ba25"
+    sha256 cellar: :any,                 arm64_ventura: "3d828f7c89d6c86df8e446f236491d601568b57b7a921c8638bc7b2a624c4d9d"
+    sha256 cellar: :any,                 sonoma:        "c2d900dfd371707c26fd4cb0cc39d1cacecfad46996c7221a7cc076f187d3d5f"
+    sha256 cellar: :any,                 ventura:       "ba2d352ce10d31e30df0f902a726e7b57937768844a75452f93cb7cc7b80649f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "41be5dc73da1641d3c1a717cf63080e5d905038afa6a0db9d672e5eb8a009595"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7db0ed1a87555ff2b1327d980ab335f6f1ee6c6008be640b16a3fe51b0b48ad2"
   end
 
-  depends_on "pkg-config" => :build
-
-  # Fix NEON intrinsic support build issue
-  # upstream PR ref, https://gitlab.freedesktop.org/pixman/pixman/-/merge_requests/71
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/46c7779/pixman/pixman-0.42.2.patch"
-    sha256 "391b56552ead4b3c6e75c0a482a6ab6a634ca250c00fb67b11899d16575f0686"
-  end
+  depends_on "meson" => :build
+  depends_on "ninja" => :build
+  depends_on "pkgconf" => :test
 
   def install
-    args = ["--disable-gtk", "--disable-silent-rules"]
-
-    system "./configure", *std_configure_args, *args
-    system "make", "install"
+    system "meson", "setup", "build", *std_meson_args
+    system "meson", "compile", "-C", "build", "--verbose"
+    system "meson", "install", "-C", "build"
   end
 
   test do
@@ -52,12 +42,9 @@ class Pixman < Formula
         return 0;
       }
     C
-    flags = %W[
-      -I#{include}/pixman-1
-      -L#{lib}
-      -lpixman-1
-    ]
-    system ENV.cc, "test.c", "-o", "test", *flags
+
+    pkgconf_flags = shell_output("pkgconf --cflags --libs pixman-1").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *pkgconf_flags
     system "./test"
   end
 end

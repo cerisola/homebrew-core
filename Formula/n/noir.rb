@@ -1,21 +1,24 @@
 class Noir < Formula
   desc "Attack surface detector that identifies endpoints by static analysis"
-  homepage "https://github.com/owasp-noir/noir"
-  url "https://github.com/owasp-noir/noir/archive/refs/tags/v0.18.1.tar.gz"
-  sha256 "cbe5b90996b3878c6127424e086387858cdcd2037170dbe060bae834811de755"
+  homepage "https://owasp.org/www-project-noir/"
+  url "https://github.com/owasp-noir/noir/archive/refs/tags/v0.21.0.tar.gz"
+  sha256 "6ec985a2e2ae3a37ed8f3126ec938ae74beecbaba80ab8e61d449ac65b08b8a2"
   license "MIT"
+  head "https://github.com/owasp-noir/noir.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia: "42ade1403dd5e04833e2918326a645d6a93d3dffe74e7489630533ce814261b7"
-    sha256 arm64_sonoma:  "c2b2d2fb8849b81720df081fd372a6e09b0140942487a87aaad3c4509c3620d2"
-    sha256 arm64_ventura: "951bf68a28ba4a36ffa3d7f8415a12d79ad4a438a081a601a3938e87b4766f7e"
-    sha256 sonoma:        "cb7a269e2959bddbfff7a653b06f5646e0c35478e271737d5a0fef87c95cbf6f"
-    sha256 ventura:       "5b6c3675e6ca638457bda64998e7ca8f14f58cba16bb7cb827338dd8214ad792"
-    sha256 x86_64_linux:  "9b1b0912a0738340ba696ca79cb7f531a2581ddf57126582248c6b8037665e89"
+    sha256 cellar: :any,                 arm64_sequoia: "81663c60a678b01581fd89a6223cc7e54cd8d48133f5e8ed731ff837de1f580e"
+    sha256 cellar: :any,                 arm64_sonoma:  "f69291a56d689be070db28f9e51562bac79ec90f4474081e79a8502248cbeab9"
+    sha256 cellar: :any,                 arm64_ventura: "c06bb74abc335932be17b35a7a1ac029831311e91e1bf1e819a51e958fe96a27"
+    sha256 cellar: :any,                 sonoma:        "bdc56a249561db5dc7b757b530c8983a1a8262cebf6988c5c3fe54ed2249e181"
+    sha256 cellar: :any,                 ventura:       "3bb07f4bfcce918e0a34d4aadf5fccfcc45a1c1bbd7a1c79f3341daa579ef1e8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "81111e451b97d17c907f375e2889e66fdccb503b218808625969b36f3fc433c0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9df939a35f28fa76a58224f3189fa645ab7372acd118118e97f64b531a5fa0b4"
   end
 
+  depends_on "crystal" => :build
+  depends_on "pkgconf" => :build
   depends_on "bdw-gc"
-  depends_on "crystal"
   depends_on "libevent"
   depends_on "libyaml"
   depends_on "openssl@3"
@@ -24,19 +27,27 @@ class Noir < Formula
   uses_from_macos "zlib"
 
   def install
-    system "shards", "install"
-    system "shards", "build", "--release", "--no-debug"
+    system "shards", "build", "--production", "--release", "--no-debug"
     bin.install "bin/noir"
 
-    generate_completions_from_executable(bin/"noir", shell_parameter_format: "--generate-completion=",
-                                                     shells:                 [:bash, :zsh, :fish])
+    generate_completions_from_executable(bin/"noir", "--generate-completion")
   end
 
   test do
     assert_match version.to_s, shell_output("#{bin}/noir --version")
 
-    system "git", "clone", "https://github.com/owasp-noir/noir.git"
-    output = shell_output("#{bin}/noir -b noir 2>&1")
+    (testpath/"api.py").write <<~PYTHON
+      from fastapi import FastAPI
+
+      app = FastAPI()
+
+      @app.get("/hello")
+      def hello():
+          return {"Hello": "World"}
+    PYTHON
+
+    output = shell_output("#{bin}/noir --no-color --base-path . 2>&1")
     assert_match "Generating Report.", output
+    assert_match "GET /hello", output
   end
 end

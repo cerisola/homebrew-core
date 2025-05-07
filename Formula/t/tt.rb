@@ -1,22 +1,23 @@
 class Tt < Formula
   desc "Command-line utility to manage Tarantool applications"
   homepage "https://github.com/tarantool/tt"
-  url "https://github.com/tarantool/tt/releases/download/v2.5.1/tt-2.5.1-complete.tar.gz"
-  sha256 "1668f7842dfbc158486a6fa6f2d0b96cfcacfdfe38d2356d18c74c01d39f6631"
+  url "https://github.com/tarantool/tt/releases/download/v2.9.1/tt-2.9.1-complete.tar.gz"
+  sha256 "c2db35772470cdfba8b2e1cba06391d848cfec3c50163e635be305aedd23c04a"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c5ac88f957377efdcafdc2a444f2f87434f60b2579817b44379da3c2a11cc29b"
-    sha256 cellar: :any,                 arm64_sonoma:  "a8a979f07948f545c2cea8511d1f869af7de6dc0a74f06028541309b31f7be6d"
-    sha256 cellar: :any,                 arm64_ventura: "51d4cf4016a5b94cbb5767b62a3a155b577dc880036cefedc2dea5d7a534883a"
-    sha256                               sonoma:        "76f2b6df86f033e64eb71cc6b606ca1b339a8b39b3b077e0062d1bc32c107467"
-    sha256                               ventura:       "6554678c3b83c011df6efbb35e1b4c2dd3a3718db87eb6422166f8cea92fd7a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7517f26fa7dfead01987fbb093e3b4bfe8e2869af74dba0c984b87deb18901ef"
+    sha256 cellar: :any,                 arm64_sequoia: "6d04aa04e9bed0b14ad572a06872d32e48c2df523e38221943908806d0ef0140"
+    sha256 cellar: :any,                 arm64_sonoma:  "b7bfef5b73cf784b28eea0ff9e2cadc4e4d66f3caa8518d85362f01de5d2a596"
+    sha256 cellar: :any,                 arm64_ventura: "17e36ad39cc6eff36ba4417a514e33b899b9d2cfac9beadb6256d21a9a827793"
+    sha256                               sonoma:        "eb3ed8f61cc6b844e6728ad12a202768352d1be5b46a0e4be684d54e8d145724"
+    sha256                               ventura:       "5f3bf271f86d10e3082cfaa3208e919ff1d60bd14966b9fb497d13c7c3007ebf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "49e0d720c0028f079bbdd709b9b2737bc821e768fb5144952c308cd997f56d89"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e685ed345c8e6fe62a1d357fdade38e242354eab0842ac0152723baaf74168c"
   end
 
   depends_on "go" => :build
   depends_on "mage" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "openssl@3"
 
   uses_from_macos "curl"

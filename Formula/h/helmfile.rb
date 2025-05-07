@@ -1,18 +1,20 @@
 class Helmfile < Formula
   desc "Deploy Kubernetes Helm Charts"
   homepage "https://github.com/helmfile/helmfile"
-  url "https://github.com/helmfile/helmfile/archive/refs/tags/v0.169.1.tar.gz"
-  sha256 "4f418481f1e8e7ced52d92160be2291b912514064ec696d92c358b5ead5bc232"
+  url "https://github.com/helmfile/helmfile/archive/refs/tags/v1.0.0.tar.gz"
+  sha256 "071a479c94356a4131a8def5d71844573115a2f0c8f03f47947c4f8981704ab5"
   license "MIT"
   version_scheme 1
+  head "https://github.com/helmfile/helmfile.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fc29d3d375c9c5f349b4ae1545bbed22ebca533f456e452856d784646e8ad88e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5730d4949e918ac5ea7d22fb192b803c494fa9ce8fe9e39c5cfe087ff9f50dd9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c22ab5981b677dcb5c0c8a86e2794decb07add235f8fba143bb8129bd80f73c9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "50915d0ebd48a78479b243884a4e20c0f0f3fec911886529461f56576acb7b13"
-    sha256 cellar: :any_skip_relocation, ventura:       "02e433e0ca6292b77b4bc1cd68b38fe3b139e77c7560c3fe4fc09c28aa0e995a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e839cf21e37c910c17819c13b6f0c6867741531b1c418d231875e6b7950685e7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6ae2ad6453bd74e0ceaa96d4c7a9f95493d862b0c340e8568159abe90ecc3d78"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2ef85545fa4d51d3c316883e36f3f487a30522ba1f8d7a632b4366cea1a5aef1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7b91cfa05287d8812d3b82de71b6dccac95bad5cb57ad1b99de785baf41c21a6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "68dc55aa7f6258de96d3f5698c2c950907a5e8822490634412a672da973b277c"
+    sha256 cellar: :any_skip_relocation, ventura:       "7e270a710f7253a3fb4e3af2a17fbb3070338be1d1b992ee6f0546cd642ee9fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e00846dd97268f9509df5d3dc272b58e07be57406382dcb04bc28e6d2e3b3e4d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "702a1e345b89765895f46b08511c6edb6736077fd2e3638fdb6c185da7d913ec"
   end
 
   depends_on "go" => :build
@@ -33,7 +35,7 @@ class Helmfile < Formula
   end
 
   test do
-    (testpath/"helmfile.yaml").write <<~EOS
+    (testpath/"helmfile.yaml").write <<~YAML
       repositories:
       - name: stable
         url: https://charts.helm.sh/stable
@@ -46,7 +48,7 @@ class Helmfile < Formula
           foo: bar
         chart: stable/vault    # the chart being installed to create this release, referenced by `repository/chart` syntax
         version: ~1.24.1       # the semver of the chart. range constraint is supported
-    EOS
+    YAML
     system Formula["helm"].opt_bin/"helm", "create", "foo"
     output = "Adding repo stable https://charts.helm.sh/stable"
     assert_match output, shell_output("#{bin}/helmfile -f helmfile.yaml repos 2>&1")

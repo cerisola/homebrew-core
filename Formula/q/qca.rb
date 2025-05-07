@@ -1,10 +1,10 @@
 class Qca < Formula
   desc "Qt Cryptographic Architecture (QCA)"
   homepage "https://userbase.kde.org/QCA"
-  url "https://download.kde.org/stable/qca/2.3.9/qca-2.3.9.tar.xz"
-  sha256 "c555d5298cdd7b6bafe2b1f96106f30cfa543a23d459d50c8a91eac33c476e4e"
+  url "https://download.kde.org/stable/qca/2.3.10/qca-2.3.10.tar.xz"
+  sha256 "1c5b722da93d559365719226bb121c726ec3c0dc4c67dea34f1e50e4e0d14a02"
   license "LGPL-2.1-or-later"
-  revision 2
+  revision 1
   head "https://invent.kde.org/libraries/qca.git", branch: "master"
 
   livecheck do
@@ -13,15 +13,15 @@ class Qca < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "59858882e2cb72f9c2134af4bd1120da6c4e52dc3189fb53e0425e4a64694036"
-    sha256 cellar: :any,                 arm64_ventura: "bb43e2e10d05e9016d497ed15b75be922e544a22a4a90e55ab690317482903ae"
-    sha256 cellar: :any,                 sonoma:        "9b63a708de5354bc493369a0bbfcbf5f169bd33dea43b069196928779b587fbb"
-    sha256 cellar: :any,                 ventura:       "b92299e9d40cc1b9f8a8f524cbbd505c04fa47139a9fcec7420b05b2d788197c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1bcb2162440491124f87314b0f06276a51fbbdc4fcc5efc0096409e258c2dfc"
+    sha256 cellar: :any,                 arm64_sonoma:  "7d36a3c7300b55b416b3ecc78c83652e607e08f5cf9e16237dd958c3986f4940"
+    sha256 cellar: :any,                 arm64_ventura: "ae332ff406dea6f7ec23a4bc6f3c00533b753a8a07de5bfaf8486a0da379b9c3"
+    sha256 cellar: :any,                 sonoma:        "8f7cc19fb5287ca7840c1723d8bdee5270841dd375913ae3c70c415725f1b8c4"
+    sha256 cellar: :any,                 ventura:       "e93c6f830c94b94dc72bacc2a1a6664aaa0ce313b624b6d9151a47182d89a867"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ce993e1748bf8e89e8963a8c745daa2ce149ca37f0158a2e7ebc4fac7c1e731d"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "botan"
   depends_on "ca-certificates"
   depends_on "gnupg"
@@ -42,8 +42,6 @@ class Qca < Formula
     build 1400
     cause "Requires C++20"
   end
-
-  fails_with gcc: "5"
 
   def install
     if OS.mac? && DevelopmentTools.clang_build_version <= 1400

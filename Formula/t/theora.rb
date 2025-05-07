@@ -4,8 +4,8 @@ class Theora < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2", using: :homebrew_curl
-    mirror "https://ftp.osuosl.org/pub/xiph/releases/theora/libtheora-1.1.1.tar.bz2"
+    url "https://ftp.osuosl.org/pub/xiph/releases/theora/libtheora-1.1.1.tar.bz2"
+    mirror "https://mirror.csclub.uwaterloo.ca/xiph/releases/theora/libtheora-1.1.1.tar.bz2"
     sha256 "b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc"
 
     # Fix -flat_namespace being used on Big Sur and later.
@@ -17,7 +17,7 @@ class Theora < Formula
 
   livecheck do
     url "https://ftp.osuosl.org/pub/xiph/releases/theora/?C=M&O=D"
-    regex(/href=.*?libtheora[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    regex(%r{href=(?:["']?|.*?/)libtheora[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
   bottle do
@@ -33,6 +33,7 @@ class Theora < Formula
     sha256 cellar: :any,                 big_sur:        "7ba57255df2c2f4563767031c6b9ead9a93883217644e9e64b5523e26d7b1088"
     sha256 cellar: :any,                 catalina:       "1fcbd50039f580bd85554af2d831c28f83613b5d26969f577f7fe87b3c55db67"
     sha256 cellar: :any,                 mojave:         "6fdb09d75fc6e64b266a185e711c2964e803d8f10c0d40ccb8d572c536c24d3a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "8235b8c9b7f4f086e49a8d9845002f10eef213f0d51d8b7b580d87edb19c7bc3"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4ac10b8e87b29874cd0e6d61de22b1123cbc7757f0eae7e5c195dd8c1ab70ef8"
   end
 
@@ -44,7 +45,7 @@ class Theora < Formula
   end
 
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libogg"
   depends_on "libvorbis"
 
@@ -52,9 +53,7 @@ class Theora < Formula
     cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
     system "./autogen.sh" if build.head?
 
-    args = %W[
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+    args = %w[
       --disable-oggtest
       --disable-vorbistest
       --disable-examples
@@ -62,7 +61,7 @@ class Theora < Formula
 
     args << "--disable-asm" if build.head?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 

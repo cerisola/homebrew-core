@@ -1,9 +1,8 @@
 class Hdf5 < Formula
   desc "File format designed to store large amounts of data"
   homepage "https://www.hdfgroup.org/solutions/hdf5/"
-  url "https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.3/hdf5-1.14.4-3.tar.gz"
-  version "1.14.4.3"
-  sha256 "019ac451d9e1cf89c0482ba2a06f07a46166caf23f60fea5ef3c37724a318e03"
+  url "https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/hdf5-1.14.6.tar.gz"
+  sha256 "e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b"
   license "BSD-3-Clause"
   version_scheme 1
 
@@ -16,32 +15,25 @@ class Hdf5 < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "3854f8260b7212ba4260e7a87a237601130046f13e8b652abc94bf088cabd2ed"
-    sha256 cellar: :any,                 arm64_sonoma:  "08e04fb1e3c98a790107802d6cabd95dd2158baafb4cdc44a4ac35e81df1bdb5"
-    sha256 cellar: :any,                 arm64_ventura: "c6ffe42943316ae68d90d0de32f7a149a12711c7f45891e9e36d5bad91d63bf5"
-    sha256 cellar: :any,                 sonoma:        "45f91f9d68a053b3c062f9ce7b1dac556e110bf26a2e8abb84d5a4274fa929c8"
-    sha256 cellar: :any,                 ventura:       "eca34a056cf666df2b93b9026ad1a76ccfc24c24b66f41e8949b02d678d3360c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a6fd5b8187cb81abdaf7108ecf539c453438ceb5f2b8f754d0eacee8c33e4fe2"
+    sha256 cellar: :any,                 arm64_sequoia: "2338b44eb0a44fbb3261862de8310f98f749caef3ae9387687b961e7f3b97d0f"
+    sha256 cellar: :any,                 arm64_sonoma:  "50b38bf19514ed01f14c9c2d94619945fcdc60c5deaf83ea1595916093f7977c"
+    sha256 cellar: :any,                 arm64_ventura: "3bbb75b9bb29386801e650f2406ecde85ec9d73460b0b1bd2629d457a7ba1672"
+    sha256 cellar: :any,                 sonoma:        "13a628da9dbe2b7528532731dabe50715bf0487ce069f040fac75f9eadd8b3b5"
+    sha256 cellar: :any,                 ventura:       "ee3258e58082872fac217ece616a82a76c945ba9f38362c710b77df833adbceb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8a5ab8ac6290a03e1e69dda1ff8363c8f2dfdfed2e7491e8d04d95987a3f98fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "526dee09cdfb1857f883931aa914cab567df80cf2cc95dfaa899d6fbee9f6619"
   end
 
   depends_on "cmake" => :build
   depends_on "gcc" # for gfortran
   depends_on "libaec"
-  depends_on "pkg-config"
+  depends_on "pkgconf"
 
   uses_from_macos "zlib"
 
   conflicts_with "hdf5-mpi", because: "hdf5-mpi is a variant of hdf5, one can only use one or the other"
 
-  # fix c++ regression, can be removed in next release
-  patch do
-    url "https://github.com/HDFGroup/hdf5/commit/ea76013648aac81cee941a7b7a86f21201d1debf.patch?full_index=1"
-    sha256 "c4413888131ddc372e2c6b19230c477f169e63c286efee3ddd6a7fe264eabacd"
-  end
-
   def install
-    ENV["libaec_DIR"] = Formula["libaec"].opt_prefix.to_s
     args = %w[
       -DHDF5_USE_GNU_DIRS:BOOL=ON
       -DHDF5_INSTALL_CMAKE_DIR=lib/cmake/hdf5

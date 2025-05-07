@@ -1,10 +1,9 @@
 class Yaz < Formula
   desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "https://www.indexdata.com/resources/software/yaz/"
-  url "https://ftp.indexdata.com/pub/yaz/yaz-5.34.2.tar.gz"
-  sha256 "ab45cf48036fc6da7493815c033b5db2b1e7a34632caed1a43e9cdef745b9618"
+  url "https://ftp.indexdata.com/pub/yaz/yaz-5.35.0.tar.gz"
+  sha256 "df8203c8afe852ee79a54f9e05afd111ba81ca85c1608181decdaf29a5ec536c"
   license "BSD-3-Clause"
-  revision 2
 
   # The latest version text is currently omitted from the homepage for this
   # software, so we have to check the related directory listing page.
@@ -14,12 +13,13 @@ class Yaz < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a8cd36bbbeec630fa947578396b92b8ad37c0ba907f457f6618cc37240b2fb66"
-    sha256 cellar: :any,                 arm64_sonoma:  "a2c3bf144a59efe29632027782e983de77e92f0aacade22b812c873433992dfc"
-    sha256 cellar: :any,                 arm64_ventura: "8f6a66d5ca7c55b904adf90e11ca423e038bf387d1591557c715b94bbea0a983"
-    sha256 cellar: :any,                 sonoma:        "c22b67c417f5ed789fe8e9b3785ebccdb49077d17ed9b158911472bc7734dbd5"
-    sha256 cellar: :any,                 ventura:       "b9b0851e6eb1a3141f1667b685b05b1379d17c74fd6e6bc0b19fb0c78352a012"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "57fc1bff0c4788bf37030172238c5be3f2c0d2a0f93025c1c63f45869e86d5af"
+    sha256 cellar: :any,                 arm64_sequoia: "0e71589d066e4b3f99d9f88417a0f203cc05e5414ef5e3b6878e9cf89bc060d3"
+    sha256 cellar: :any,                 arm64_sonoma:  "cc90db743cddb628a268e4133877d913ddf1ecdc0146bfb3c3f54f2f639456b1"
+    sha256 cellar: :any,                 arm64_ventura: "2bc3561b2d75041e55cb6d26048c43e2cc1738e19936e8fc7ae402c79114e8be"
+    sha256 cellar: :any,                 sonoma:        "8b9fcaa90447736fbb6c4e45920eb515649b4129c4ac7cd31d6fee77a76bf94a"
+    sha256 cellar: :any,                 ventura:       "c4917e7f098d5842a153c5bfb602084797eff57ea289722e802801cd6ed0a661"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1a456f36b6e32bf7d53eef00e8910fe9387b7ea727771c03706d674c5da6f4c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "94fc92f14b999d7375cfe90e508c8d22704ef71f351f4c8b87a5cd398c9c7e51"
   end
 
   head do
@@ -34,9 +34,9 @@ class Yaz < Formula
     uses_from_macos "tcl-tk" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "gnutls"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "readline" # Possible opportunistic linkage. TODO: Check if this can be removed.
 
   uses_from_macos "libxml2"
@@ -64,7 +64,6 @@ class Yaz < Formula
     end
     unless OS.mac?
       inreplace [bin/"yaz-config", lib/"pkgconfig/yaz.pc"] do |s|
-        s.gsub! Formula["libxml2"].prefix.realpath, Formula["libxml2"].opt_prefix
         s.gsub! Formula["libxslt"].prefix.realpath, Formula["libxslt"].opt_prefix
       end
     end
@@ -82,7 +81,7 @@ class Yaz < Formula
     # Test ICU support by running yaz-icu with the example icu_chain
     # from its man page.
     configfile = testpath/"icu-chain.xml"
-    configfile.write <<~EOS
+    configfile.write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <icu_chain locale="en">
         <transform rule="[:Control:] Any-Remove"/>
@@ -92,7 +91,7 @@ class Yaz < Formula
         <display/>
         <casemap rule="l"/>
       </icu_chain>
-    EOS
+    XML
 
     inputfile = testpath/"icu-test.txt"
     inputfile.write "yaz-ICU	xy!"

@@ -2,24 +2,30 @@ class CloudflareQuiche < Formula
   desc "Savoury implementation of the QUIC transport protocol and HTTP/3"
   homepage "https://docs.quic.tech/quiche/"
   url "https://github.com/cloudflare/quiche.git",
-      tag:      "0.22.0",
-      revision: "4ff56ec2566622980bbb0e0d7b9217254d97c4ba"
+      tag:      "0.24.2",
+      revision: "28cb72b7c6a1f134f4d2e2f36ed04a81e113a0a6"
   license "BSD-2-Clause"
   head "https://github.com/cloudflare/quiche.git", branch: "master"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "7f3cdeeb6ae9c59ef17151d9a55629b062f1d25e8589e7dfd67c2bc4d5d9e608"
-    sha256 cellar: :any,                 arm64_sonoma:   "edce91e6f01349436adc89ddb657619ee44b50dc4c0d2348a3a17938abdf948c"
-    sha256 cellar: :any,                 arm64_ventura:  "7c113bc0ac14fe5bfcbfecf79cf1d4cdb94c1efbb1ac31808347a252ccad7488"
-    sha256 cellar: :any,                 arm64_monterey: "6aff3a2f065cdb912aeca3cb46992ac119b02c56e0d51ce2c823bb2ca413b8d8"
-    sha256 cellar: :any,                 sonoma:         "876f91d5a1f9737a71767019e124f9337a1f52db81e4fa3d4ec4a27508733096"
-    sha256 cellar: :any,                 ventura:        "04b58c13fcbdec3306c12fa24175392d1ce85fd60e668dda649062194d76e49a"
-    sha256 cellar: :any,                 monterey:       "3433639f9423e5d994151f04802f9b33972e25a7f0d456730dc44a2d4de41789"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9242ad03216fa5dd05d2246674443884388ef7360276476ff0a1dd5383799df1"
+    sha256 cellar: :any,                 arm64_sequoia: "324c6c5f60ef9e19e18555a94b15d76645b0348e6222c81790b7a8033cf1c122"
+    sha256 cellar: :any,                 arm64_sonoma:  "ce46532106028067d8aac3979abf679093363c53c2f4ea4eed8a36efad2d556d"
+    sha256 cellar: :any,                 arm64_ventura: "b75d581d95be7fec1a274c2d9bc29068a6338d4359e6a5f772500aa99af1706b"
+    sha256 cellar: :any,                 sonoma:        "e9cfbcf26a86579bc0458d16e97f4349df02698a394bb58f416b3c71e24d8ca7"
+    sha256 cellar: :any,                 ventura:       "d365dedaf43b07242df7251495cfe241c0cb0b3791be130b26e6cf5c017329d1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0f3d1f486469db34a48a4054b4ae80641737551791990720eddd1e5c891fc1f8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f02d9c5eee232278edf74c2da0c8e828c5693f3aac1bc618d75945822e41d04"
   end
 
   depends_on "cmake" => :build
   depends_on "rust" => :build
+
+  uses_from_macos "llvm" => :build
 
   def install
     system "cargo", "install", *std_cargo_args(path: "apps")

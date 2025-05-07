@@ -1,8 +1,8 @@
 class Ack < Formula
   desc "Search tool like grep, but optimized for programmers"
   homepage "https://beyondgrep.com/"
-  url "https://beyondgrep.com/ack-v3.7.0"
-  sha256 "dd5a7c2df81ee15d97b6bf6b3ff84ad2529c98e1571817861c7d4fd8d48af908"
+  url "https://beyondgrep.com/ack-v3.8.1"
+  sha256 "ab0fe23f02bb602088a1ce41c0ed728bf4b00d57eb3e1b4e5d51e320cab253d3"
   license "Artistic-2.0"
 
   livecheck do
@@ -11,8 +11,7 @@ class Ack < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, all: "c4efb6f3e54c984d5f57c676313e1ebfe9bdf06c6602a68f5d74d3a3d3dfa1a0"
+    sha256 cellar: :any_skip_relocation, all: "5d4e0402d6f880fe439cc7721b712f263f63f36af3e98458903a078d2e936c31"
   end
 
   head do
@@ -54,7 +53,6 @@ class Ack < Formula
   end
 
   test do
-    assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -",
-                                          "foo\nfoo bar\nbaz")
+    assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -", "foo\nfoo bar\nbaz", 0)
   end
 end

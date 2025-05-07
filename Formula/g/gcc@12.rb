@@ -1,6 +1,7 @@
 class GccAT12 < Formula
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org/"
+  # TODO: Remove maximum_macos if Xcode 16 support is added to https://github.com/iains/gcc-12-branch
   url "https://ftp.gnu.org/gnu/gcc/gcc-12.4.0/gcc-12.4.0.tar.xz"
   mirror "https://ftpmirror.gnu.org/gcc/gcc-12.4.0/gcc-12.4.0.tar.xz"
   sha256 "704f652604ccbccb14bdabf3478c9511c89788b12cb3bbffded37341916a9175"
@@ -18,6 +19,7 @@ class GccAT12 < Formula
     sha256                               sonoma:         "de57cdd8fc489a7fb88f7af19a730af87a14418c7181e5ba03e20c40e4d65738"
     sha256                               ventura:        "cbaf8ac753711e7c39e90cc3abf3dee9847dea8908e5e575bd4065ffeef0c9b0"
     sha256                               monterey:       "436e51d082e7cfaa612458fdd2703f530abcd49730e7634ce659700fedb033e1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "b7650f4cbd3cbb0bd79ca6d895fe25e2314b498f096592f65288f525568cc0ee"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "50b8eb4f9125e36b9daad5dcd7cf470d6780d1ab2a1bad652793299fc6036770"
   end
 
@@ -25,6 +27,9 @@ class GccAT12 < Formula
   # out of the box on Xcode-only systems due to an incorrect sysroot.
   pour_bottle? only_if: :clt_installed
 
+  # https://github.com/iains/gcc-12-branch/issues/24
+  # https://github.com/iains/gcc-12-branch/issues/25
+  depends_on maximum_macos: [:ventura, :build] # Xcode < 16
   depends_on "gmp"
   depends_on "isl"
   depends_on "libmpc"
@@ -105,6 +110,7 @@ class GccAT12 < Formula
       # Change the default directory name for 64-bit libraries to `lib`
       # https://stackoverflow.com/a/54038769
       inreplace "gcc/config/i386/t-linux64", "m64=../lib64", "m64="
+      inreplace "gcc/config/aarch64/t-aarch64-linux", "lp64=../lib64", "lp64="
 
       make_args = %W[
         BOOT_CFLAGS=-I#{Formula["zlib"].opt_include}

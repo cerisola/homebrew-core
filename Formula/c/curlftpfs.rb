@@ -9,13 +9,14 @@ class Curlftpfs < Formula
 
   bottle do
     rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "97a66714ee7e858341e1605187e7e3990dbca8c065735aa24430e976d2899648"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "8a22354132db88625d88108d012df48264971d6afb561c6cbc348267d27b819e"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "curl"
   depends_on "glib"
   depends_on "libfuse@2"
@@ -23,9 +24,8 @@ class Curlftpfs < Formula
 
   def install
     ENV.append "CPPFLAGS", "-D__off_t=off_t"
-    system "autoreconf", "-fvi"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 end

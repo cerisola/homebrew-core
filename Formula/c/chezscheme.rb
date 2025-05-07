@@ -1,20 +1,18 @@
 class Chezscheme < Formula
   desc "Implementation of the Chez Scheme language"
   homepage "https://cisco.github.io/ChezScheme/"
-  url "https://github.com/cisco/ChezScheme/releases/download/v10.0.0/csv10.0.0.tar.gz"
-  sha256 "d37199012b5ed1985c4069d6a87ff18e5e1f5a2df27e402991faf45dc4f2232c"
+  url "https://github.com/cisco/ChezScheme/releases/download/v10.2.0/csv10.2.0.tar.gz"
+  sha256 "b795916d4cfed59240c5f44b1b507a8657efd28e62e72e134d03486e9f3e374a"
   license "Apache-2.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "383ef05d3d088270e9621611a269d5865c3486e3b64972f944d73bf4ae9c8908"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "ee1fd372ef45e033935538cfad0a6362790260ef7b5d2784b491756c16adccca"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "333374134b8b06bed7b86532b46a10ad15756254a6dcd345b3206b9535291b3b"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "12d715a0ca6280e1f526deaf4a0e8f74282280be3062763e64aa5bdbc360fc57"
-    sha256 cellar: :any_skip_relocation, sonoma:         "ad447774b81335d4b26e15fd4a9b1934cdfcf96b3d54359517396f98acf7a0db"
-    sha256 cellar: :any_skip_relocation, ventura:        "174810d0a11dc60f4137d336b71e2a633efd0fc36fb5271b3976b742568b4c97"
-    sha256 cellar: :any_skip_relocation, monterey:       "677d9122cb99611dea8e88fc116513d18e361e05433e8ed7171e87df37c873a7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "9f33bc7596361090dcbc3cd7eec1e226e9f8934b2da43684efef7763fbba2125"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fa0a0ef4b2e725411f40e15699d1cf6c98afd33553114c03290b5d448d386376"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "376de0a80c223e324d01d3fa9178e0109a51e9774eb0db7d24045e37646c2955"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c1ebe98f204674543ece35ceb221fefe2c6ea54da1a93823efc3efaa2fa9c39a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ccc44b15027ae267266b1621f54acfcba730a2ede1a69bc3432b2fcb85f4ee93"
+    sha256 cellar: :any_skip_relocation, ventura:       "3eaf4e4baf01394ebf43b74f722253ec4775bc801c3d1872a9577d1518467e70"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "62a4f91d4e71185b6ba659800c09cb543e1d88a905e30638a8c2e72ea769a4f6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0ef79b89094ed46426bcfffa39786d547523ebbe711f68eec3d6b935c4e53240"
   end
 
   depends_on "libx11" => :build
@@ -34,9 +32,9 @@ class Chezscheme < Formula
   end
 
   test do
-    (testpath/"hello.ss").write <<~EOS
+    (testpath/"hello.ss").write <<~SCHEME
       (display "Hello, World!") (newline)
-    EOS
+    SCHEME
 
     expected = <<~EOS
       Hello, World!

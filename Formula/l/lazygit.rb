@@ -1,8 +1,8 @@
 class Lazygit < Formula
   desc "Simple terminal UI for git commands"
   homepage "https://github.com/jesseduffield/lazygit/"
-  url "https://github.com/jesseduffield/lazygit/archive/refs/tags/v0.44.1.tar.gz"
-  sha256 "02b67d38e07ae89b0ddd3b4917bd0cfcdfb5e158ed771566d3eb81f97f78cc26"
+  url "https://github.com/jesseduffield/lazygit/archive/refs/tags/v0.50.0.tar.gz"
+  sha256 "4fec66f33609898dbceffc02a38375f5b965b68d0eaf3f5afbe1a44481a5c72b"
   license "MIT"
   head "https://github.com/jesseduffield/lazygit.git", branch: "master"
 
@@ -12,18 +12,18 @@ class Lazygit < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3bcf700102ecf5976c0c930f8c713f4309e632476a5f72d2c84e64abcae9bd73"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3bcf700102ecf5976c0c930f8c713f4309e632476a5f72d2c84e64abcae9bd73"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3bcf700102ecf5976c0c930f8c713f4309e632476a5f72d2c84e64abcae9bd73"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5fc269661eb5372083df26bfbe811a7242a70bd5a5a4dea0e2f442a529136961"
-    sha256 cellar: :any_skip_relocation, ventura:       "5fc269661eb5372083df26bfbe811a7242a70bd5a5a4dea0e2f442a529136961"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cf81243a38039594e8461d3a209f1bb49b1dff81fc2d871f28ed2b761b982d00"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b070dcf7835e4b889cf570379e5b4287f9593d3e8a0f6b6ed5098f167349574a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b070dcf7835e4b889cf570379e5b4287f9593d3e8a0f6b6ed5098f167349574a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "b070dcf7835e4b889cf570379e5b4287f9593d3e8a0f6b6ed5098f167349574a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "63bc6f8aebc85132c9ed24fab7e6f19ec0b95e9a7cbca1549837a12780f12cc5"
+    sha256 cellar: :any_skip_relocation, ventura:       "63bc6f8aebc85132c9ed24fab7e6f19ec0b95e9a7cbca1549837a12780f12cc5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ee9c1a96bdd15717d8cadb43b9c32247dd0db77b6493257a3699eafdb4c57541"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = "-X main.version=#{version} -X main.buildSource=homebrew"
+    ldflags = "-s -w -X main.version=#{version} -X main.buildSource=#{tap.user}"
     system "go", "build", "-mod=vendor", *std_go_args(ldflags:)
   end
 

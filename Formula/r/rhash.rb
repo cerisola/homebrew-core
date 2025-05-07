@@ -12,15 +12,24 @@ class Rhash < Formula
     sha256 arm64_ventura: "6a42309ef3de45c60cc5bb2ced37507797d0bd75e0fa4fd3f0aa13477e6c16bf"
     sha256 sonoma:        "e2c0137282fb8334dd1757707e1cecb91b443ee0d63a4d465a36b70993e23d4b"
     sha256 ventura:       "16f11306b675cc5b0d0455d735d2752d904f5848d787331cd97d04ffb3afc48c"
+    sha256 arm64_linux:   "9d0584df215a7dc9cbe3ed43439f82e51e01c967f930e07cca995601cf728370"
     sha256 x86_64_linux:  "c9cc7cc1aa66f97050f79712054f5689b08e5579657b4d3249f058d09b4169b1"
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "--disable-gettext"
+    # Exclude unrecognized options
+    args = std_configure_args.reject { |s| s["--disable-dependency-tracking"] } + %W[
+      --disable-lib-static
+      --disable-gettext
+      --sysconfdir=#{etc}
+    ]
+
+    system "./configure", *args
     system "make"
-    system "make", "install"
-    lib.install "librhash/#{shared_library("librhash")}"
-    system "make", "-C", "librhash", "install-lib-headers"
+    # Avoid race during installation.
+    ENV.deparallelize { system "make", "install" }
+    system "make", "install-lib-headers", "install-pkg-config"
+    lib.install_symlink (lib/shared_library("librhash", version.major.to_s).to_s) => shared_library("librhash")
   end
 
   test do

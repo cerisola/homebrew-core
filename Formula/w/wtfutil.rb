@@ -1,9 +1,8 @@
 class Wtfutil < Formula
   desc "Personal information dashboard for your terminal"
   homepage "https://wtfutil.com"
-  url "https://github.com/wtfutil/wtf.git",
-      tag:      "v0.43.0",
-      revision: "ea7f6ed1ce0e3a96c7ce7aa337bfdae9cfc27a93"
+  url "https://github.com/wtfutil/wtf/archive/refs/tags/v0.43.0.tar.gz"
+  sha256 "bb48e38e479b26e0b956b163e4804e99cd49545214090c2fdf99e54382b3d651"
   license "MPL-2.0"
   head "https://github.com/wtfutil/wtf.git", branch: "master"
 
@@ -17,23 +16,20 @@ class Wtfutil < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "1c66eb6d6b8c4a9b3167163371c1d774b9df6f1dd36155b380ee83e82ac8e13d"
     sha256 cellar: :any_skip_relocation, monterey:       "4183402aa957eead2c29e62f9e1d6afb0940568d6b387e360ae4e0fdcc61be35"
     sha256 cellar: :any_skip_relocation, big_sur:        "717dcf43f6c5d8f55c3f0aefd8e255ef91aab685a02b668ed27ce375e1bc404a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "7a68f406904f9637ea7e5db339604f6365e536504e1d2c33beace9d9f5036551"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c46aabfdfe08b790df12e07d83d93d0b1d10c4c963315979445ec220e2463372"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.version=#{version}
-      -X main.date=#{time.iso8601}
-    ].join(" ")
+    ldflags = "-s -w -X main.version=#{version} -X main.date=#{time.iso8601}"
     system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
     testconfig = testpath/"config.yml"
-    testconfig.write <<~EOS
+    testconfig.write <<~YAML
       wtf:
         colors:
           background: "red"
@@ -66,7 +62,7 @@ class Wtfutil < Formula
             normal: "*"
             selected: "_"
         term: "xterm-256color"
-    EOS
+    YAML
 
     begin
       pid = fork do

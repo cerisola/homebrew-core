@@ -18,10 +18,11 @@ class Gtkmm < Formula
     sha256 cellar: :any,                 sonoma:         "c4aeb2114cd8dc59900af9d10e65c026ff69f3ede03c18dbc1ea655f9f3fc612"
     sha256 cellar: :any,                 ventura:        "992c80fea122b473d7788fe6733423dc729282fcce37095b204d5363e08b701a"
     sha256 cellar: :any,                 monterey:       "dde66554a67d936733736fd0c92a372ea01f7fad3ff3407cd2ce516c1332de13"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "1ee8da8d884f6e6ef96f4088af2c27ed79d4d8067e527e3c57abd540006e9403"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "0b8ee9aae96d13469d2ca251d59582d5577122d69769f9038e62b1792c08c861"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "atkmm@2.28"
   depends_on "cairomm@1.14"
@@ -42,7 +43,7 @@ class Gtkmm < Formula
 
   def install
     ENV.cxx11
-    system "./configure", *std_configure_args.reject { |s| s["--disable-debug"] }
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 
@@ -56,8 +57,8 @@ class Gtkmm < Formula
       }
     CPP
 
-    pkg_config_flags = shell_output("pkg-config --cflags --libs gtkmm-2.4").chomp.split
-    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *pkg_config_flags
+    flags = shell_output("pkgconf --cflags --libs gtkmm-2.4").chomp.split
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

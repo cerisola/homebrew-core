@@ -1,34 +1,28 @@
 class Libxkbcommon < Formula
   desc "Keyboard handling library"
   homepage "https://xkbcommon.org/"
-  url "https://xkbcommon.org/download/libxkbcommon-1.7.0.tar.xz"
-  sha256 "65782f0a10a4b455af9c6baab7040e2f537520caa2ec2092805cdfd36863b247"
+  url "https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-1.9.2.tar.gz"
+  sha256 "8d68a8b45796f34f7cace357b9f89b8c92b158557274fef5889b03648b55fe59"
   license "MIT"
   head "https://github.com/xkbcommon/libxkbcommon.git", branch: "master"
 
-  livecheck do
-    url :homepage
-    regex(/href=.*?libxkbcommon[._-]v?(\d+(?:\.\d+)+)\.t/i)
-  end
-
   bottle do
-    sha256 arm64_sequoia:  "2d1173708252e2588f86db7f8668590d37e7abf293938dd569c009ffc7b6dab0"
-    sha256 arm64_sonoma:   "d4dc5666abb07f964a4ea2dcf8bed13d2a1a4ef8035c7001c3f176359d774fae"
-    sha256 arm64_ventura:  "99e8ee1df3f8a3247bc3904f5f5fe1184067b2cb3a826fabcbaef70cf3249219"
-    sha256 arm64_monterey: "bb99be852933c86dfd745e44ac46081140b1f21b9c02ad9fc31f663426384ebd"
-    sha256 sonoma:         "72b44058453e2b5d75b576a9403647f0dc0d76dfd2b0a6cddd31f2e2fac779c9"
-    sha256 ventura:        "83381d671ce4b07cf9232d06ec45e6e051d2090f8525a73f528544f3fa5b8e19"
-    sha256 monterey:       "6958c8a61b2a62205cb3eae70ef088e3d3d2675a74e57bf7c35f23e6b2ee378f"
-    sha256 x86_64_linux:   "3327f58e3610858e97b5675451c67ec2c7cadf16f34419292b4240186b5fa650"
+    sha256 arm64_sequoia: "f49797532088a07fba256d03de9f7f1bb56bbc571c0c04777222608c80eaabd6"
+    sha256 arm64_sonoma:  "e355311193b1a4c1ad4b3112a4131df9abac80ecf6b4474bacc3bc23afd99c25"
+    sha256 arm64_ventura: "5b397f4df5f72c49b68fc5f2119d3d405f969ac02e00ad53466775c11a5e5d99"
+    sha256 sonoma:        "63d1f21d7cb38cafc150e3b8fe2e9234d5697cf88d9b682372dc215f7ea39d0b"
+    sha256 ventura:       "90b9243fa1274b316a47b19e8893708a677ed2759eb6f46bba3d9bfbbfc9a929"
+    sha256 arm64_linux:   "c5c3d270eaccb9848a79b0b1f692008fa4eb51a4ac0510c6d7a636e42653db6a"
+    sha256 x86_64_linux:  "83b375e99a63ac7a4dcb2bbc75edbba81ae1dade7aae0491d5bdcb639bbcbb11"
   end
 
   depends_on "bison" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "libxcb"
-  depends_on "xkeyboardconfig"
+  depends_on "xkeyboard-config"
   depends_on "xorg-server"
 
   uses_from_macos "libxml2"

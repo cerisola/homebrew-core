@@ -1,20 +1,19 @@
 class Verovio < Formula
   desc "Command-line MEI music notation engraver"
   homepage "https://www.verovio.org"
-  url "https://github.com/rism-digital/verovio/archive/refs/tags/version-4.3.1.tar.gz"
-  sha256 "de488c6bfa0312412a746e3a59e2de21e81c0859372faa68f30a393b8c12de02"
+  url "https://github.com/rism-digital/verovio/archive/refs/tags/version-5.2.0.tar.gz"
+  sha256 "e1de4e0af9d8a19daaad0ac530764a418fa2b15920c5cf00d9c8c8b6d46d0790"
   license "LGPL-3.0-only"
   head "https://github.com/rism-digital/verovio.git", branch: "develop"
 
   bottle do
-    sha256 arm64_sequoia:  "2ff81de36045bc09bd06610f11bd977ac7ddbbcd99e5673b1558c45a84cc18db"
-    sha256 arm64_sonoma:   "8d62e9dd770ae6253e8b62e6071fd260a16f08629157aa9ab746b34f6a885890"
-    sha256 arm64_ventura:  "19865d303128dc729deb227669c1ca31c6083735faeb0ca78bfbfe26ebc7c087"
-    sha256 arm64_monterey: "1dc929d0d92e334942a582a1119ae23cd9cc8c77a4e7073fe82d3d018148be06"
-    sha256 sonoma:         "509d5bdd8a367008ecc4c46d83ff7dd7f86e22b932112c2b8773d59e23121a13"
-    sha256 ventura:        "4567d4c03fa42a832e87f8779e54c8416ce472002a47b3087900b62652c2d6e3"
-    sha256 monterey:       "5fcc95b371f6c45da66a8aa3fd3ca6c074e2fdb92bb620430006fe56c1494026"
-    sha256 x86_64_linux:   "d7020b43b3311e9a681aecb68f2aa3f8df53bab59dd99b31dcb708d2f613b4c0"
+    sha256 arm64_sequoia: "296ef951a1958de9cce7f46b31abb4b7b579401a24bca0c6d85ab211814a9246"
+    sha256 arm64_sonoma:  "787734091de62bfcc098d156b389a2665ee16d7c50518fb78ff8018280553f6f"
+    sha256 arm64_ventura: "12c070c7f0298fbcec73022fdf7b41066a4f4053f3fc47e23da286eca5836f77"
+    sha256 sonoma:        "ab5785deaab76ee197493865bcbb5e9180f9d0786225b82caad98a61b23ea8c5"
+    sha256 ventura:       "e12265bf1c0540bb659b25d26686a85db0a3996b95ef5058cbc8f66d4c16fc54"
+    sha256 arm64_linux:   "0edb045b79a9ebf9f10e138564f5bd7a6b9a00278131cdf9b8d08c8ebc24189c"
+    sha256 x86_64_linux:  "670d42e80e46cf1409d21b92e9af8bf07acec7720a3a1cdc9ce52225de4f6da2"
   end
 
   depends_on "cmake" => :build
@@ -35,6 +34,6 @@ class Verovio < Formula
     resource("homebrew-testdata").stage do
       shell_output("#{bin}/verovio Ahle_Jesu_meines_Herzens_Freud.mei -o #{testpath}/output.svg")
     end
-    assert_predicate testpath/"output.svg", :exist?
+    assert_path_exists testpath/"output.svg"
   end
 end

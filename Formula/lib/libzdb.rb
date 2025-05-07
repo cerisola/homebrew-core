@@ -1,10 +1,9 @@
 class Libzdb < Formula
   desc "Database connection pool library"
   homepage "https://tildeslash.com/libzdb/"
-  url "https://tildeslash.com/libzdb/dist/libzdb-3.2.3.tar.gz"
-  sha256 "a1957826fab7725484fc5b74780a6a7d0d8b7f5e2e54d26e106b399e0a86beb0"
+  url "https://tildeslash.com/libzdb/dist/libzdb-3.4.0.tar.gz"
+  sha256 "abd675719bcbdde430aa4ee13975b980d55d2abcb5cc228082a30320a6bb9f0f"
   license "GPL-3.0-only"
-  revision 5
 
   livecheck do
     url :homepage
@@ -12,27 +11,22 @@ class Libzdb < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "c97a8bf09b5b6149e9b00055c7a41bdc44d30d24dba89057d10c692c66775ac8"
-    sha256 cellar: :any,                 arm64_sonoma:  "0b8ddfd01835494761c61f79bbf0268ed9970eda906751f394345132ee8f1e99"
-    sha256 cellar: :any,                 arm64_ventura: "2a68a90b4ae8eaf45dce9319688be51e9cbbed3f8906492641b04d7b03db03b2"
-    sha256 cellar: :any,                 sonoma:        "a60352d7b1e4544558bb754abfa0d792f4b30dec3ef8e3d36243885fde8005c2"
-    sha256 cellar: :any,                 ventura:       "a1d91f504e85283dade237952dd3872e28d253065de94e63ee3dd1b1509dfab6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eac6ae172d51fd94fc04a71798011d683d07d46f0e52b5de22968289e74fd01a"
+    sha256 cellar: :any,                 arm64_sequoia: "c2cdc0ace2bf1ef0a9d2526c7ae60e9274b89554b0c102fbec55e3de814644fe"
+    sha256 cellar: :any,                 arm64_sonoma:  "64f246320a51ae3c3c964b5d43727117c86496dd00d3fa1502ffc5bd3b1dee2d"
+    sha256 cellar: :any,                 arm64_ventura: "726e589d4f8923d5637a0e2e783646b72c27fc67be1b9964751a84756eff31f0"
+    sha256 cellar: :any,                 sonoma:        "7edcecb1ca7c17d03534e6af574756ec864b4def522cb7e08eafe6b6644a726c"
+    sha256 cellar: :any,                 ventura:       "241ebf0e383ea2e76a0f50a7631732196b766c2db21a7a9777dbfb698b099661"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5298d25e7949700706d31195a5e6002340099bb67bda72a895f068cc5b8205a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a3c1a98b88d064a8046b123cd741283a5135edc37bac2567a650fdf561c9ed22"
   end
 
   depends_on "libpq"
   depends_on macos: :high_sierra # C++ 17 is required
-  depends_on "mysql-client"
+  depends_on "mariadb-connector-c"
   depends_on "sqlite"
 
-  patch :DATA # Fix build error my mysql-client 8.3.0 https://bitbucket.org/tildeslash/libzdb/issues/67/build-error-with-mysql-83
-
   def install
-    # Reduce linkage on macOS from `mysql-client`
-    ENV.append "LDFLAGS", "-Wl,-dead_strip_dylibs" if OS.mac?
-
-    system "./configure", "--disable-silent-rules", "--enable-sqliteunlock", *std_configure_args
+    system "./configure", "--disable-silent-rules", "--enable-protected", "--enable-sqliteunlock", *std_configure_args
     system "make", "install"
     (pkgshare/"test").install Dir["test/*.{c,cpp}"]
   end
@@ -45,22 +39,3 @@ class Libzdb < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/db/mysql/MysqlConnection.c b/src/db/mysql/MysqlConnection.c
-index 45ae896..7b6c1e3 100644
---- a/src/db/mysql/MysqlConnection.c
-+++ b/src/db/mysql/MysqlConnection.c
-@@ -96,8 +96,10 @@ static MYSQL *_doConnect(Connection_T delegator, char **error) {
-         // Options
-         if (IS(URL_getParameter(url, "compress"), "true"))
-                 clientFlags |= CLIENT_COMPRESS;
--        if (IS(URL_getParameter(url, "use-ssl"), "true"))
--                mysql_ssl_set(db, 0,0,0,0,0);
-+        if (IS(URL_getParameter(url, "use-ssl"), "true")) {
-+                enum mysql_ssl_mode ssl_mode = SSL_MODE_REQUIRED;
-+                mysql_options(db, MYSQL_OPT_SSL_MODE, &ssl_mode);
-+        }
- #if MYSQL_VERSION_ID < 80000
-         if (IS(URL_getParameter(url, "secure-auth"), "true"))
-                 mysql_options(db, MYSQL_SECURE_AUTH, (const char*)&yes);

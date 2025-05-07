@@ -1,20 +1,19 @@
 class Bibtexconv < Formula
   desc "BibTeX file converter"
   homepage "https://github.com/dreibh/bibtexconv"
-  url "https://github.com/dreibh/bibtexconv/archive/refs/tags/bibtexconv-1.3.6.tar.gz"
-  sha256 "09450e05693ac230b9f9b9a9486bb1ae5bb2f9aafd072d2b830b9f2d2d69382d"
+  url "https://github.com/dreibh/bibtexconv/archive/refs/tags/bibtexconv-2.0.1.tar.gz"
+  sha256 "b85d71000b5b41949adec1165138b68da2cd831da815ca64523dc9843b979c3c"
   license "GPL-3.0-or-later"
   head "https://github.com/dreibh/bibtexconv.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "4ca755d35d37097008ed3eb756b115aaa1251ed17c4ff073c62ac87fc4648b9c"
-    sha256 cellar: :any,                 arm64_sonoma:   "836e88ffc37dbb3193b6eb4a1cbc284dbe378944e440efa34757e89b5fc2deff"
-    sha256 cellar: :any,                 arm64_ventura:  "beccc84ee1c503d869596529b071b5f14d04e12a2a01b1c75fb43b59d939938b"
-    sha256 cellar: :any,                 arm64_monterey: "7bd84bec4c08c2e4b60288cca3de0ecd4442c9d71ea03a7892b1960757f46ccd"
-    sha256 cellar: :any,                 sonoma:         "b97e64f3767297d3d8595d1f37b1c8e0c79f8b179bc878a50b4f40a75260a0d2"
-    sha256 cellar: :any,                 ventura:        "648e71420b87d35737527d8feb4de06dc429467bf832b58c2696b060ed4f677d"
-    sha256 cellar: :any,                 monterey:       "aaeb22d4747969ea619d841c4b426a664b7a5c697eb70aab22848c82cdb16d03"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "827e1b69a16fe6a72b86a289cf2c2d261f767ecef353d7e6b7b672c9a9766774"
+    sha256 cellar: :any,                 arm64_sequoia: "7a646fda03a468c4cfb0b012f6df3f6cecd3740db220e79d45eb37c1709e67fa"
+    sha256 cellar: :any,                 arm64_sonoma:  "992439eb9d494474b58380fa04b19be22d7c0b2329b1e9455dfe0a924f49979a"
+    sha256 cellar: :any,                 arm64_ventura: "24d29ca3f88714d1ec8771a49e6d629d1b54d3f43b38ba15bb91267e7729483c"
+    sha256 cellar: :any,                 sonoma:        "b7cad797ef672b779b7f1beb0a7aacc88c8e8c962544bea829b53f36761fcaa8"
+    sha256 cellar: :any,                 ventura:       "b58be8c6d279e88679518486fe52f07b511c4ef82409032f8a035daef93ac65f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "72eb9653e3410802be1ac658103b7d0bbf2bcd68319af951afddc2b6de86ac4f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "855b81063a70f1bc3eea9758c1e789085b1f290de8c16e27747082160586cde2"
   end
 
   depends_on "bison" => :build
@@ -24,10 +23,17 @@ class Bibtexconv < Formula
   uses_from_macos "flex" => :build
   uses_from_macos "curl"
 
+  on_macos do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1500
+  end
+
   def install
-    system "cmake", *std_cmake_args,
+    ENV.llvm_clang if OS.mac? && DevelopmentTools.clang_build_version <= 1500
+
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args,
                     "-DCRYPTO_LIBRARY=#{Formula["openssl@3"].opt_lib}/#{shared_library("libcrypto")}"
-    system "make", "install"
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

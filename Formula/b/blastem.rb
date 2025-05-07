@@ -9,7 +9,15 @@ class Blastem < Formula
 
   livecheck do
     url "https://www.retrodev.com/repos/blastem/json-tags"
-    regex(/["']tag["']:\s*?["']v?(\d+(?:\.\d+)+)["']/i)
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :json do |json, regex|
+      json["tags"]&.map do |item|
+        match = item["tag"]&.match(regex)
+        next if match.blank?
+
+        match[1]
+      end
+    end
   end
 
   bottle do
@@ -21,7 +29,7 @@ class Blastem < Formula
 
   depends_on "imagemagick" => :build
   depends_on "pillow" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.13" => :build
   depends_on arch: :x86_64
   depends_on "glew"

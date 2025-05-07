@@ -1,8 +1,8 @@
 class HaskellStack < Formula
   desc "Cross-platform program for developing Haskell projects"
   homepage "https://haskellstack.org/"
-  url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.1.1.tar.gz"
-  sha256 "74ad174c55c98f56f5a5ef458f019da5903b19b4fa4857a7b2d4565d8bd0fbac"
+  url "https://github.com/commercialhaskell/stack/archive/refs/tags/v3.5.1.tar.gz"
+  sha256 "00de60eaefdba1aa289ed409a9cabe8d63f9f6d554018456ab7f78531b2c3629"
   license "BSD-3-Clause"
   head "https://github.com/commercialhaskell/stack.git", branch: "master"
 
@@ -12,17 +12,19 @@ class HaskellStack < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ebe17a5457cd6aa4667986e50da4c10a2d62e8fada679a826cd9aa6681661a82"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2b6576d6d8ac9f556b439115476020b4bca320dff2d3dea510a05296073d0192"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0306a15e9eac83d5824fe35bd4ac3d56a198f0d3a4afe0149429f1e7a1863fec"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3fd846a3e9489aea4e074b2c4880a8a442b46a2a9ce1025f0d4985cdb1addf68"
-    sha256 cellar: :any_skip_relocation, ventura:       "9c56477a47316be12a676dc6c9b3b733ffa6cba2dd6335fdc8b8f5af10ae31c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cc5821f3c34d5b38fc82a5d7a2aaef2d62082848134dd335d6fc7968736563d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bb81522eb7a165d7f1dc9650b1cc2bedacfb43cca1a08a0c960e5519a90f37a6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b25f2852beeca1d67c7771142af9b81d404f9a1dae8985caf4641f6be33b0746"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "58ed8f3b45ce0d96ef92ce596ee4aa8c898c2a004d3fa94ac5ac7aad3da10d7b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5492d567c98c075d1312897d0afb4645f44d500814bce73785729f86f95099d7"
+    sha256 cellar: :any_skip_relocation, ventura:       "27831d3d54f8b3b7ab1e59da20dedc67c8da46e85bb2c7379df0f1333af47a15"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9e6a57d5ccfc7082cde45e9b926a774c7f3d455d2c693fa0f758e881328d0d8a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dfbfa1acd47505570bbb0b1989c824af5bc0b280f2003bbb10df1f2e566cab4d"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@9.8" => :build
+  # https://github.com/commercialhaskell/stack/issues/6625#issuecomment-2228087359
+  # https://github.com/commercialhaskell/stack/blob/master/stack-ghc-9.10.1.yaml#L4-L5
+  depends_on "ghc@9.8" => :build # GHC 9.10+ blocked by Cabal 3.12+ API changes
 
   uses_from_macos "zlib"
 
@@ -37,30 +39,15 @@ class HaskellStack < Formula
     system "cabal", "v2-update"
     system "cabal", "v2-install", *std_cabal_v2_args
 
-    generate_completions_from_executable(bin/"stack", "--bash-completion-script", bin/"stack",
-                                         shells: [:bash], shell_parameter_format: :none)
-    generate_completions_from_executable(bin/"stack", "--fish-completion-script", bin/"stack",
-                                         shells: [:fish], shell_parameter_format: :none)
-    generate_completions_from_executable(bin/"stack", "--zsh-completion-script", bin/"stack",
-                                         shells: [:zsh], shell_parameter_format: :none)
-  end
-
-  def caveats
-    on_macos do
-      on_arm do
-        <<~EOS
-          All GHC versions before 9.2.1 requires LLVM Code Generator as a backend
-          on ARM. If you are using one of those GHC versions with `haskell-stack`,
-          then you may need to install a supported LLVM version and add its bin
-          directory to the PATH.
-        EOS
-      end
+    [:bash, :fish, :zsh].each do |shell|
+      generate_completions_from_executable(bin/"stack", "--#{shell}-completion-script", bin/"stack",
+                                           shells: [shell], shell_parameter_format: :none)
     end
   end
 
   test do
     system bin/"stack", "new", "test"
-    assert_predicate testpath/"test", :exist?
+    assert_path_exists testpath/"test"
     assert_match "# test", (testpath/"test/README.md").read
   end
 end

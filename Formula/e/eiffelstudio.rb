@@ -1,9 +1,9 @@
 class Eiffelstudio < Formula
   desc "Development environment for the Eiffel language"
   homepage "https://www.eiffel.com"
-  url "https://ftp.eiffel.com/pub/download/23.09/pp/PorterPackage_std_23.09_107341.tar"
-  version "23.09.107341"
-  sha256 "f92dad3226b81e695ba6deb752d7b8e84351f1dcab20e18492cc56a2b7d8d4b1"
+  url "https://ftp.eiffel.com/pub/download/24.05/pp/PorterPackage_24.05_rev_107822.tar"
+  version "24.05.107822"
+  sha256 "ca3f2f428568eea7823a1a8bd0d66713b5cadb051cada956a0d3b85a0022621c"
   license "GPL-2.0-only"
 
   livecheck do
@@ -15,15 +15,17 @@ class Eiffelstudio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2c5655afc34eec519316fc5fb3f9c725cbcf50d0bf4827102548bda6387cd12d"
-    sha256 cellar: :any,                 arm64_sonoma:  "0354eb4c3580064948257f7577b9c1a6de298148adcb599530973ab7fd546e71"
-    sha256 cellar: :any,                 arm64_ventura: "24da4037b60feac74beae6588fc4dd998abda669233090597a7d283286b1ab4c"
-    sha256 cellar: :any,                 sonoma:        "64e3fae2de6e0167f75255a50ce952182af971e1085261f08320a5497fc0f300"
-    sha256 cellar: :any,                 ventura:       "268a946d64769df550f47f3446dd068db381666bbcf7614e82f6c53edfc6df71"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea1bb6c9813e6f2b36b34f5046ed2893ae5ca1349903beefd648976c87f92883"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "439bf0adf57faebf0897400e531338efeb4e91e7b9a4470ba94932d3025d3cbb"
+    sha256 cellar: :any,                 arm64_sonoma:  "b42e40979b8e31a2ed84a32b024811b5d50aa97bca7c96ab53300e6de45c7bbb"
+    sha256 cellar: :any,                 arm64_ventura: "1f31d3cd0b9dbfe91cfacda4bced48918f29a6d861f23fe764d3f4d9333ab4cb"
+    sha256 cellar: :any,                 sonoma:        "88bf14ac5fd6270aef08d59b7e74d2d2650a56f2022b07d884901c62db9d7fe1"
+    sha256 cellar: :any,                 ventura:       "0f1a0494b436a30d3cb01c7b982be6e3770200fc3e70badb0c9ab94fcd4e6368"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "319253cc55f63693b4d879ef4b37ef84a80af596d2fe7eb6b9ed6adcb5ddef7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d47f2c53bb4b1ac77df03ba2504fdd788d10973bce17d2e5be256184b99bbed"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "cairo"
   depends_on "gdk-pixbuf"
   depends_on "glib"
@@ -40,23 +42,20 @@ class Eiffelstudio < Formula
   end
 
   def install
-    platform = "#{OS.mac? ? "macosx" : OS.kernel_name.downcase}-x86-64"
+    platform = if OS.mac?
+      "macosx-x86-64"
+    else
+      "#{OS.kernel_name.downcase}-#{Hardware::CPU.arch.to_s.tr("_", "-")}"
+    end
 
     # Apply workarounds
     ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
-    system "tar", "xf", "c.tar.bz2"
-    inreplace "C/CONFIGS/#{platform}" do |s|
-      if OS.mac?
-        # Fix flat namespace usage in C shared library.
-        s.gsub! "-flat_namespace -undefined suppress", "-undefined dynamic_lookup"
-      else
-        # Use ENV.cc to link shared objects instead of directly invoking ld.
-        # Reported upstream: https://support.eiffel.com/report_detail/19873.
-        s.gsub! "sharedlink='ld'", "sharedlink='#{ENV.cc}'"
-        s.gsub! "ldflags=\"-m elf_x86_64\"", "ldflags=''"
-      end
+    if OS.mac?
+      system "tar", "xf", "c.tar.bz2"
+      # Fix flat namespace usage in C shared library.
+      inreplace "C/CONFIGS/#{platform}", "-flat_namespace -undefined suppress", "-undefined dynamic_lookup"
+      system "tar", "cjf", "c.tar.bz2", "C"
     end
-    system "tar", "cjf", "c.tar.bz2", "C"
 
     system "./compile_exes", platform
     system "./make_images", platform

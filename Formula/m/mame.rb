@@ -1,9 +1,9 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/refs/tags/mame0271.tar.gz"
-  version "0.271"
-  sha256 "79960f4c57715b2d08c3eba12933d04dd91ad1d95b0c1059306a75bf07fd6027"
+  url "https://github.com/mamedev/mame/archive/refs/tags/mame0277.tar.gz"
+  version "0.277"
+  sha256 "60055b19fc96306927257c5ffc265ecebcbe5c944cf98113d4d78f6304556c67"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git", branch: "master"
 
@@ -19,17 +19,18 @@ class Mame < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4c06ec92104a1def0cc5fbf66be4fc05f716971ecaa7605329352838f42a1dee"
-    sha256 cellar: :any,                 arm64_sonoma:  "438c3eb0bcfa3854e63159c2df4b1f91f7ab9b85ba618d12adddcc4a3bb2e810"
-    sha256 cellar: :any,                 arm64_ventura: "03013bf23127e61c9b9ed0383c5755f7fe2d5013f1fc58250e06f0be38a3b8c7"
-    sha256 cellar: :any,                 sonoma:        "8ae26a6e52af24a80d89be9bc8190dfcd2d5f1518bce7cf70d6f56e0b5af2670"
-    sha256 cellar: :any,                 ventura:       "39423f7dd71ff42d89f0ee44389f157f85e1b4c87e682255eead6fb2a490f8ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "daa53875a6cb637119d6ef09ee23908d7a01acd2006b4ffd2cfd850e687b3a8b"
+    sha256 cellar: :any,                 arm64_sequoia: "653d10b5b1ff22f71204f1c651b3798f6ff39a57553cbb56dba162787679aab2"
+    sha256 cellar: :any,                 arm64_sonoma:  "f053646362da97c810b777ceeb429599e7d4c15f75c62148eb41252564883ff3"
+    sha256 cellar: :any,                 arm64_ventura: "cd80fb753be5faab9347d0cb72e4cfe79655a43e5e772b01a534fa7bb35261c1"
+    sha256 cellar: :any,                 sonoma:        "25b3818e85d82775288447ae80fbd9dbf119d2f70429241571f025ef8501e5a1"
+    sha256 cellar: :any,                 ventura:       "4e4fc9be40c34bff8c323be929ed7914c5f1ac9cbf3c3644b5f28f5f8d6f897b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "53e1a81217afa65b26f5fe11f0a24166535b707be78f4f1d3bce77eb2f8ae33c"
   end
 
-  depends_on "asio" => :build
+  # `asio`` v1.30.1 is bundled and it is not compatible with the `asio` formula
+  # Unless mame is updated to use the newer one, let's use the bundled one.
   depends_on "glm" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rapidjson" => :build
   depends_on "sphinx-doc" => :build
   depends_on "flac"
@@ -70,7 +71,7 @@ class Mame < Formula
                    "USE_LIBSDL=1",
                    "USE_SYSTEM_LIB_EXPAT=1",
                    "USE_SYSTEM_LIB_ZLIB=1",
-                   "USE_SYSTEM_LIB_ASIO=1",
+                   "USE_SYSTEM_LIB_ASIO=0", # Use bundled one for compatibility
                    "USE_SYSTEM_LIB_FLAC=1",
                    "USE_SYSTEM_LIB_GLM=1",
                    "USE_SYSTEM_LIB_JPEG=1",

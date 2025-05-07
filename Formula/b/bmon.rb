@@ -19,6 +19,7 @@ class Bmon < Formula
     sha256 cellar: :any,                 big_sur:        "c5a460a6ada9a74638176734db89e6e7fc6f8c171a8e580d06bb7b77b9432c1b"
     sha256 cellar: :any,                 catalina:       "0e5a38ac18b9a385c33eeedd7c64c649bad0a6160aada5725cf3c1b2557b74f8"
     sha256 cellar: :any,                 mojave:         "54c90f958df855b99cc0b6fa4cbabd4b135e7913b844d774e607fb6d14045dcf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "00927e3a0dbf34649e09b491181022e05e8fb8b5c4924cc2f2bd1951228e716c"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "4c35f5e85c98f864cb59ce589b03c05ce6dd37563a731d86c4491e8930449b8d"
   end
 
@@ -28,7 +29,7 @@ class Bmon < Formula
     depends_on "automake" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "confuse"
 
   uses_from_macos "ncurses"
@@ -43,9 +44,7 @@ class Bmon < Formula
     inreplace %w[src/in_proc.c src/out_curses.c], "__unused__", ""
 
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 

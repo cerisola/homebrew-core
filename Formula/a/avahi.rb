@@ -8,6 +8,7 @@ class Avahi < Formula
 
   bottle do
     rebuild 1
+    sha256 arm64_linux:  "4167489c0fe787b170d0646faab665700577fcc05ab10e3a0a556112df77d6fc"
     sha256 x86_64_linux: "c2a968c40c0683c2a1cb9e45bbe693434581f0b209e0215f9c610b17069001e8"
   end
 
@@ -18,7 +19,7 @@ class Avahi < Formula
   depends_on "libtool" => :build
   depends_on "m4" => :build
   depends_on "perl" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "xmltoman" => :build
 
   depends_on "dbus"
@@ -29,8 +30,7 @@ class Avahi < Formula
   depends_on :linux
 
   def install
-    system "./bootstrap.sh", *std_configure_args,
-                             "--disable-silent-rules",
+    system "./bootstrap.sh", "--disable-silent-rules",
                              "--sysconfdir=#{prefix}/etc",
                              "--localstatedir=#{prefix}/var",
                              "--disable-mono",
@@ -43,7 +43,8 @@ class Avahi < Formula
                              "--disable-libevent",
                              "--enable-compat-libdns_sd",
                              "--with-distro=none",
-                             "--with-systemdsystemunitdir=no"
+                             "--with-systemdsystemunitdir=no",
+                             *std_configure_args
     system "make", "install"
 
     # mDNSResponder compatibility

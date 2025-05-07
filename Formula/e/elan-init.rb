@@ -1,32 +1,27 @@
 class ElanInit < Formula
   desc "Lean Theorem Prover installer and version manager"
   homepage "https://github.com/leanprover/elan"
+  url "https://github.com/leanprover/elan/archive/refs/tags/v4.1.1.tar.gz"
+  sha256 "a4a99e2aafca4ce316ef8f88757fafbbf50d2a5912551086c5aaa522c9d976f4"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/leanprover/elan.git", branch: "master"
 
-  stable do
-    url "https://github.com/leanprover/elan/archive/refs/tags/v3.1.1.tar.gz"
-    sha256 "b3e3c7dc6cc23dd319725fccf58c898bf4920ff3440c97cb8f3a35fc0d5bbf5c"
-
-    # rust 1.80 build patch, upstream pr ref, https://github.com/leanprover/elan/pull/134
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/815affb24bff77daad4e99e31afed8de42a31312/elan-init/rust-1.80.patch"
-      sha256 "244420efc73ba1fb4908023047fbb1650f783c30e73aa1facb82645d80c7136f"
-    end
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "9414f2c97133007a99261abfea1cb188f953939c0b62b85700b56e8042679461"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "7aef59f7e264ecf7a2c856e2666e6aafd3ea7eace3eaf43437531490773e0102"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "b82859cd41243cd8d4acfc1d28862c32261c4a9f588da90422641dd8992f8bea"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "dda8aedbfe1d28aa4d97b3269cf17088d0efa0843661e548c70c6b7615813db8"
-    sha256 cellar: :any_skip_relocation, sonoma:         "5c6589bc32c581d6d3c614ea1b46ee3497d0859adae548ab2a732ecd1008dafa"
-    sha256 cellar: :any_skip_relocation, ventura:        "efb5e621bf215f9c7061d05ca9f9b1fb251a0c270ea1d323cd5991606e897d93"
-    sha256 cellar: :any_skip_relocation, monterey:       "bfcde921f1b585c26c5150a8cf258d6d5c752ce4d67cab58cafb742562de8e88"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "45ca6bf10c24f0d45e7a81dfe66d94ae87b25ea61b0d635bbcaf46e1d20f153d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "71de04c8408f37e34aab966a7b6d1439a81e4233d82c0ea4cd5cca8f57bb45e7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "70553de5241801a2e59c10c5a0304c68d365939f881448db83686a84ee6d2622"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2c5a97ac6e90f7f41b7aecf11d1ff1cbf6fcd6f5c4174e5e39947e4a642829da"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bed5a10adf475346b7cf8be6bf8c314ce136aaacbf938c9a2da4f77b56b3d9a4"
+    sha256 cellar: :any_skip_relocation, ventura:       "53256d38860f897809c90deffc2a06f3329f0f44b9eaa0c556e5cf8de3e75af2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9e00621364800d7384ee4e7a49a2ca120e62e8f30358106e374cac4ab11aa4f3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c1121213571c65b066dae69a6a228aa259bb0afbda3d56502464b19f4b29bde8"
   end
 
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "coreutils"
   depends_on "gmp"
@@ -34,10 +29,6 @@ class ElanInit < Formula
   uses_from_macos "bzip2"
   uses_from_macos "curl"
   uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "pkg-config" => :build
-  end
 
   conflicts_with "lean-cli", because: "both install `lean` binaries"
   conflicts_with "lean", because: "`lean` and `elan-init` install the same binaries"
@@ -51,7 +42,7 @@ class ElanInit < Formula
       bin.install_symlink "elan-init" => link
     end
 
-    generate_completions_from_executable(bin/"elan", "completions", base_name: "elan")
+    generate_completions_from_executable(bin/"elan", "completions")
   end
 
   test do

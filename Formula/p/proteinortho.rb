@@ -1,22 +1,23 @@
 class Proteinortho < Formula
   desc "Detecting orthologous genes within different species"
   homepage "https://gitlab.com/paulklemm_PHD/proteinortho"
-  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.3.2/proteinortho-v6.3.2.tar.gz"
-  sha256 "3b3c58e814ca10f77a25954b0bcddc479b9f61682f3dc5c93d85b07f109342a4"
+  url "https://gitlab.com/paulklemm_PHD/proteinortho/-/archive/v6.3.5/proteinortho-v6.3.5.tar.gz"
+  sha256 "1b477657c44eeba304d3ec6d5179733d4c2b3857ad92dcbfe151564790328ce0"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "6eb6089f3e60e2136f11ea8997536fd76ae83d94455c23ad88f439a0a47397c3"
-    sha256 cellar: :any,                 arm64_sonoma:   "a3966fa66db6edea9c7b12fb65213bec1e6641860b6d05ff28b74b7af9e13996"
-    sha256 cellar: :any,                 arm64_ventura:  "0edd33e29ad7d95644c83f9412329ce80356424ce61ee89c84004f6d746653d8"
-    sha256 cellar: :any,                 arm64_monterey: "b4b9d0a86d9e83e902f506ddd48633134727d9a0caacb03bb52751edf3e1084b"
-    sha256 cellar: :any,                 sonoma:         "b0adc4eba6090113da1c04f1ae1345e9527af6c9c7492b3eb567478aa12556d0"
-    sha256 cellar: :any,                 ventura:        "aa9c68bbc76c78b280c5c41df428f0113ee594f26201baaca97566c13fde2952"
-    sha256 cellar: :any,                 monterey:       "8f6e2d323da560d09c8a40938f497bf6f4059def847c16b53d3d87311a6c9ff6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e889a7d294a99c804f564e08afb6feef66c20098867405c063681c78fd50772"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "2356058c1df4e150a263dbfc0f732c7be1d0554c28962d2c3c1bbbff3234470e"
+    sha256 cellar: :any,                 arm64_sonoma:  "6563d591255724b9b4d51b183ee88e1896a88947cf27711b98c64b808e788e1d"
+    sha256 cellar: :any,                 arm64_ventura: "76bbfd627206c5a346c8b40207cc4c002dbc9a348317032a4eb3dcda98153f46"
+    sha256 cellar: :any,                 sonoma:        "9127cb17cb8e363c879b0ecf81c349f61120ef0e0206366defa07ce11e9cb39d"
+    sha256 cellar: :any,                 ventura:       "1eeab6b4ab460ca0e684f123b1b6e6a293cd005df2209835530d7d08393ac36f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ec96e52a4bea6125ac647b78c022e739b7f1f3bc66f33e3cf19349b8e84134dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bde04add25030aed32aac06465de994ca04e4410181a53deac825858df3df18c"
   end
 
   depends_on "diamond"
+  depends_on "libomp"
   depends_on "openblas"
 
   def install

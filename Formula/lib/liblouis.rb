@@ -1,18 +1,18 @@
 class Liblouis < Formula
   desc "Open-source braille translator and back-translator"
   homepage "https://liblouis.io"
-  url "https://github.com/liblouis/liblouis/releases/download/v3.31.0/liblouis-3.31.0.tar.gz"
-  sha256 "29286fe9edc9c7119941b0c847aa9587021f0e53f5623aa03ddfd5e285783af5"
+  url "https://github.com/liblouis/liblouis/releases/download/v3.33.0/liblouis-3.33.0.tar.gz"
+  sha256 "e2ad56d132d0cd63f08f3122391a0472adcc8c5d046d7cd81bcadf48a55deea4"
   license all_of: ["GPL-3.0-or-later", "LGPL-2.1-or-later"]
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "3334c91de4d4c79dd3c147e4bdb780dee0f111e2f0397645e44afe81684876ac"
-    sha256 arm64_sonoma:  "72fed129c3125d2898ac2471dd9aaf9ee88654c5da378127f13c14094483b921"
-    sha256 arm64_ventura: "bbe0152d21f0279017c7797f50943d67b75039ffc5ef99869385ff39526bd2e8"
-    sha256 sonoma:        "e55bf69d66314d7f3f56cc5fdd581dafdd5f9813f2fe80320dce7149b21fb099"
-    sha256 ventura:       "bcaccad9720ffdeb02583186c47cac4f5fa3cfdf2390b418e9ce7efc4427187f"
-    sha256 x86_64_linux:  "f2b089b561c43addb993a89897b184c7db5b296e13f86957f987db484a583215"
+    sha256 arm64_sequoia: "50f37b5fbdceca05fa294a6029c04b4b182b43718ffe353c300663bbc8c72632"
+    sha256 arm64_sonoma:  "c9f967c7b2d9b6b4b0f3642a9a31142092b2b9bd4d1293cfb56a983eabade6b7"
+    sha256 arm64_ventura: "76c0a6395652160429e77a41318c995211edc60918942999783526a624297a6d"
+    sha256 sonoma:        "c658092622f42c094e13ed9bb243ff9db4b931e3ba8ccf574b8dbb10b70b488a"
+    sha256 ventura:       "3b5486f4d87050ece459d29c197043ab55ca96f39ff9019ecedd7d531481a2c0"
+    sha256 arm64_linux:   "1a1b60e4245ffd2b5566d0b9c98d224e5f861c2fd2557904b9924288fe45714f"
+    sha256 x86_64_linux:  "cea6123b5927e70704757008f1314af7e0bf73cc83cc2d8fdd01b817036df110"
   end
 
   head do
@@ -24,7 +24,7 @@ class Liblouis < Formula
   end
 
   depends_on "help2man" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.13"
 
   uses_from_macos "m4"
@@ -46,10 +46,10 @@ class Liblouis < Formula
   test do
     assert_equal "⠼⠙⠃", pipe_output("#{bin}/lou_translate unicode.dis,en-us-g2.ctb", "42")
 
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       import louis
       print(louis.translateString(["unicode.dis", "en-us-g2.ctb"], "42"))
-    EOS
+    PYTHON
     assert_equal "⠼⠙⠃", shell_output("#{python3} test.py").chomp
   end
 end

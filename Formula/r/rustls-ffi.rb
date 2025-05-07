@@ -1,22 +1,23 @@
 class RustlsFfi < Formula
   desc "FFI bindings for the rustls TLS library"
   homepage "https://github.com/rustls/rustls-ffi"
-  url "https://github.com/rustls/rustls-ffi/archive/refs/tags/v0.14.0.tar.gz"
-  sha256 "cfdee5c1fe65de6293ecb3bd69bedce227fe502adfa4ce152617e25f1543c565"
+  url "https://github.com/rustls/rustls-ffi/archive/refs/tags/v0.15.0.tar.gz"
+  sha256 "db3939a58677e52f03603b332e00347b29aa57aa4012b5f8a7e779ba2934b18b"
   license any_of: ["Apache-2.0", "MIT", "ISC"]
   head "https://github.com/rustls/rustls-ffi.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "531c2456bfe61e46f1bf2647eff851866c69b34b8f1fcd8db2eb439ca6c09737"
-    sha256 cellar: :any,                 arm64_sonoma:  "d0a77beae50b1fca1e44056307cbab2b4757eedf644e74a9512afb05b1dc37ec"
-    sha256 cellar: :any,                 arm64_ventura: "f0818a23467caa26a92d2fe0a0fc853751603775b8b423eccde81079244cdd53"
-    sha256 cellar: :any,                 sonoma:        "627cb32f6c2de479e56318479c963158d5ad7ac7c5d2d42082af75d0a0f1440c"
-    sha256 cellar: :any,                 ventura:       "178341670cc268d0f2b2e3b5ec3c0fee6ab46638f56ab4d4be0c9cd1b79eaaf3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "690cd883130d8dc53a7bac47af9baf6514025d10cacc0a9e218e61728ca35bda"
+    sha256 cellar: :any,                 arm64_sequoia: "9dc82894121ecb234a72a281ad45a1f6c5f1640c38371f282f039ce9354cc08b"
+    sha256 cellar: :any,                 arm64_sonoma:  "6fc16fefdf0d16506468c26dcd82b6483ce80f1248786d0c3737c511fd862cf7"
+    sha256 cellar: :any,                 arm64_ventura: "5ae6641e5f808a9bc0bab0b64d0334bb62982986854337295c8842e6a20b7079"
+    sha256 cellar: :any,                 sonoma:        "40b6f9e829ba02d8d9b6873c95fc06d82f5a3baf05a11f950f32ef9c5a168a55"
+    sha256 cellar: :any,                 ventura:       "349b1818df27680dd698c0fd2477bb42082b478e5100b244a70251a5b9a31b8e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "beaa4376c2ffd27d3f86539496d84ba116335808e28a33c7a9b0ca677a13f155"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c686a5049eb5fc651ee74589a6ba72f05341a0389c539d6d80cc20000c152b1f"
   end
 
   depends_on "cargo-c" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
 
   def install

@@ -20,6 +20,7 @@ class Daemonize < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "bc501e9e4ba9fd11390fa9749a7b9a38a70353edaf75499bd969c45921d06bfe"
     sha256 cellar: :any_skip_relocation, sierra:         "d4d5109292158ef32eb73a37b9b6a037dcae620e234be945410ea927322bb998"
     sha256 cellar: :any_skip_relocation, el_capitan:     "5e05991cf0462e4fe32dd70354d2520a378831d2b1c0fc2cf0b4fbca8dc85489"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5f2837cbc66d881b57213af108138f2b18bc05a5ade76c9ae7ce5dc4ca515781"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "ccae89928e0e598a4b36e6077c509bb4a36020519b4aa49aa3bd58b42de2a3ce"
   end
 
@@ -34,17 +35,15 @@ class Daemonize < Formula
     dummy_script_file = testpath/"script.sh"
     output_file = testpath/"outputfile.txt"
     pid_file = testpath/"pidfile.txt"
-    dummy_script_file.write <<~EOS
+    dummy_script_file.write <<~SH
       #!/bin/sh
       echo "#{version}" >> "#{output_file}"
-    EOS
+    SH
     chmod 0700, dummy_script_file
     system "#{sbin}/daemonize", "-p", pid_file, dummy_script_file
-    assert_predicate pid_file, :exist?,
-      "The file containing the PID of the child process was not created."
+    assert_path_exists pid_file, "The file containing the PID of the child process was not created."
     sleep(4) # sleep while waiting for the dummy script to finish
-    assert_predicate output_file, :exist?,
-      "The file which should have been created by the child process doesn't exist."
+    assert_path_exists output_file, "The file which should have been created by the child process doesn't exist."
     assert_match version.to_s, output_file.read
   end
 end

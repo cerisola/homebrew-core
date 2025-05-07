@@ -1,8 +1,8 @@
 class Just < Formula
   desc "Handy way to save and run project-specific commands"
   homepage "https://github.com/casey/just"
-  url "https://github.com/casey/just/archive/refs/tags/1.36.0.tar.gz"
-  sha256 "bc2e2ff0268c2818659c524b21663564864b50ba102afb0a44fe73c08cf35ff0"
+  url "https://github.com/casey/just/archive/refs/tags/1.40.0.tar.gz"
+  sha256 "e0d48dcc7a086c5746b7f281a40e615c290cddf9c06134198c703dff2f62c1c4"
   license "CC0-1.0"
   head "https://github.com/casey/just.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Just < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "daffc9fddf61db76615594b339c75af67b27aa19ac493ec89caa63670814c59d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3a243c3fb66edb93ecce130aa181f0f043ce53fbbd62fad4c411ad44b4c13dab"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ee47cc8f1a754e2a9cb4d80bb994169c83e6b76a383ad7168a1140c2601d6bba"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cd70b7fd05413a03c6f8b261a50c2b568cd4704223a3b48d8ca7a240382179ad"
-    sha256 cellar: :any_skip_relocation, ventura:       "08f7732ffbf8b73dd3ac5e0890519ae804e50a9255eba867109e7b4e2cc1b59f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ec873dd83d4db996a8784104d849fc3ca8596bada10186af21c1a3a1b1043cf5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7a6b6b8404100d3132208479921a4ed09c8def48bde2b738c93ca8eaadd54830"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e51dd382131ac203f0031498dd5ebabe6fc54efeba7df046695beac6a716c145"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "df2df15534cc802e940b5afe8cf8aadfd6e3c92bae5d6efd1126a6c5a2143c88"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b7d5f3f11e49b4db8a2e5e716dfa932f891bbbb186c38dfd3e295f1f9b7deb15"
+    sha256 cellar: :any_skip_relocation, ventura:       "07a909e8ef87bd072a539a478dc9e29ae920e5883fe7a468ed415c573837f066"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7bf41ddbe82dba608da75e9f3c87c13dfac9f6e0fbfc524ee7e256e73eb9454f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "72485691bcbe738efc4a6c7928230bced747df97fdd6327dbeac65524dfccfcc"
   end
 
   depends_on "rust" => :build
@@ -35,7 +36,7 @@ class Just < Formula
         touch it-worked
     EOS
     system bin/"just"
-    assert_predicate testpath/"it-worked", :exist?
+    assert_path_exists testpath/"it-worked"
 
     assert_match version.to_s, shell_output("#{bin}/just --version")
   end

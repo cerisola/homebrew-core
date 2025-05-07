@@ -16,13 +16,15 @@ class Wally < Formula
     sha256 cellar: :any,                 ventura:        "e2b3d38a5a171f0942cf2931a434aabe6a6ca9014c39468918f4711a48b3ccb3"
     sha256 cellar: :any,                 monterey:       "aed7b3c520028f006b526682892ed3a94af7986f68fbd4b1adda297ffcb44bff"
     sha256 cellar: :any,                 big_sur:        "c552601bb3c6eb5495b40e5ac0312243731c47ec2478eb1adb8b0b57c595b228"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2378ee8d4ce4a0d0075124b85633b99554f08c8db12327a2487c91dfc802326a"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "66ffa7e6874e0908b42a519d4b67223b668c08e11d3dc5eef078c7e35671593c"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 
+  uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
   def install
@@ -43,6 +45,6 @@ class Wally < Formula
     TOML
 
     system bin/"wally", "install"
-    assert_predicate testpath/"wally.lock", :exist?
+    assert_path_exists testpath/"wally.lock"
   end
 end

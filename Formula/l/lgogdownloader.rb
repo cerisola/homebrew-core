@@ -1,10 +1,10 @@
 class Lgogdownloader < Formula
   desc "Unofficial downloader for GOG.com games"
   homepage "https://sites.google.com/site/gogdownloader/"
-  url "https://github.com/Sude-/lgogdownloader/releases/download/v3.15/lgogdownloader-3.15.tar.gz"
-  sha256 "9946558bb30b72cd5ed712e7fc425eef4b2a1fd22b5475d1a998720800cd25f0"
+  url "https://github.com/Sude-/lgogdownloader/releases/download/v3.17/lgogdownloader-3.17.tar.gz"
+  sha256 "fefda26206ebb1e2a6d734b76f6f07977da150064141f29ed1f90450daf4e69e"
   license "WTFPL"
-  revision 1
+  revision 2
   head "https://github.com/Sude-/lgogdownloader.git", branch: "master"
 
   livecheck do
@@ -13,17 +13,18 @@ class Lgogdownloader < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "03f042d94ea73b39316154a49ac111eb5620c55704cf2076ec2b068045c368b7"
-    sha256 cellar: :any,                 arm64_sonoma:  "c384eee02a5a785c86ff058fab34795c298fd9cdbbb6a375d59fb1f1f4d4e9c9"
-    sha256 cellar: :any,                 arm64_ventura: "3e0397e020434d2b8473e351c8c4d15622fc39f9fd345332dc26f9873545d7f0"
-    sha256 cellar: :any,                 sonoma:        "e29c38f06b3b2c8519d58f05438ee7c8a904545f02b02545aa4d774dd6a6715a"
-    sha256 cellar: :any,                 ventura:       "bf9b8bd9761c7bfaa1ba45262e387070996eabffc001613aa7c4bf63f15374a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a21d687adb294894e88d4f2c6173aaf6ec5b293baeb548d5698c94cc0c5b1cd8"
+    sha256 cellar: :any,                 arm64_sequoia: "7b0ed64cb9c6e0ed0b58186f7dc2e883bfbab2013ce18e48a41c99d521b01614"
+    sha256 cellar: :any,                 arm64_sonoma:  "573695e62f602647ce0a9a196e418a036b21b90a38a884a844f54b0189bacefe"
+    sha256 cellar: :any,                 arm64_ventura: "310a33ddbd791f1797a7ddab5e199c6702775bbd26beb1d0a7d1a3a38afe7283"
+    sha256 cellar: :any,                 sonoma:        "560c837b52fabc8f056c08116556430748f0ab1160e276d8d8a2140a923c83fc"
+    sha256 cellar: :any,                 ventura:       "20fbfa83ad0fc270fbda1c26563939a3f335ffcfa0d3e8a8c14e9068e8d30b3d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "db28c8aa73a8f1d3b9b32fe66a8808aba9fef32f2524d2688778c100794a482d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5461344b9818f2d8c394e7703612f9a29611a30f87158b0e486fd3a8d05d6297"
   end
 
   depends_on "cmake" => :build
   depends_on "help2man" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "htmlcxx"
   depends_on "jsoncpp"

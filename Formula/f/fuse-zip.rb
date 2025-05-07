@@ -8,10 +8,11 @@ class FuseZip < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "b9ea1815940249c680e5f6524a9da80d600f3dc8a1d40d89dec4b49de64b4d66"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "0e87dbeae5e24ded35705e704caf66faec39dc8971742ff43c7a45882ef6e349"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libfuse@2"
   depends_on "libzip"
   depends_on :linux # on macOS, requires closed-source macFUSE

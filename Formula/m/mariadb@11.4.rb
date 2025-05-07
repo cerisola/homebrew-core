@@ -1,9 +1,8 @@
 class MariadbAT114 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  # TODO: Build with `-DWITH_LIBFMT=system` when fmt >= 11
-  url "https://archive.mariadb.org/mariadb-11.4.3/source/mariadb-11.4.3.tar.gz"
-  sha256 "6f0017b9901bb1897de0eed21caef9ffa9d66ef559345a0d8a6f011308413ece"
+  url "https://archive.mariadb.org/mariadb-11.4.5/source/mariadb-11.4.5.tar.gz"
+  sha256 "ff6595f8c482f9921e39b97fa1122377a69f0dcbd92553c6b9032cbf0e9b5354"
   license "GPL-2.0-only"
 
   livecheck do
@@ -19,14 +18,13 @@ class MariadbAT114 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "436764c6528047f9a688608b096d05776e1544b45ba76d85e6c04f5d784c2983"
-    sha256 arm64_sonoma:   "532028a5077c4ed1e6dc822f42d555c38f92ef56435d4a7224ba00465c9efe25"
-    sha256 arm64_ventura:  "ab8932489394d589ff5b4dc4cdd5712a13879534d9d74ea35cbeadb083454bad"
-    sha256 arm64_monterey: "a0754ca4519b022e2e36e524791760c7c51dfdcb50abe6af12dd52ff2f5614ca"
-    sha256 sonoma:         "bcd6dd46688ada6ad8d07807279c734c04636457ed1590e9a41253ee22eeda71"
-    sha256 ventura:        "20729d547281558e46b55097fa4534d69106244e80cfc379d2c734c9761b21dc"
-    sha256 monterey:       "fef4724588dcde773feed1759d64f2b33f9d3aa575cf8117fb74253a0f0a1805"
-    sha256 x86_64_linux:   "7615e554fd3ef4733ff294c17f75e1874e5b470e457f92b5bec6a77075c05e10"
+    sha256 arm64_sequoia: "87a845829263889cd366220894d2dde7434e01c5c511210706f921a661d705d2"
+    sha256 arm64_sonoma:  "9b97d5578b40a74af45a00cd630c387c191ebca5adfb2e8a0c27040b2136942b"
+    sha256 arm64_ventura: "c8a51147722430cb5aa0cce6d30119812cc0d99ac46fe5acebaf8228a19820e7"
+    sha256 sonoma:        "f166a658a618d12aa5e6c32f30bb1436bb08a96481e1f6bb31d818d1ca275f37"
+    sha256 ventura:       "d69e4631108cb221d28f9209f0055e27949ed5c96e67ac9cbf5277eb3a407f64"
+    sha256 arm64_linux:   "9fdd60711b2f3adbbaad53d0c9d4608aff3fc417fc952b3e29f317275fdbe54b"
+    sha256 x86_64_linux:  "398d364ac0b0698a7efb9b0bcb4503895d51e48616a7e0d3ed21cf198b47f61f"
   end
 
   keg_only :versioned_formula
@@ -38,7 +36,7 @@ class MariadbAT114 < Formula
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "fmt" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "groonga"
   depends_on "lz4"
   depends_on "lzo"
@@ -63,9 +61,26 @@ class MariadbAT114 < Formula
     depends_on "linux-pam"
   end
 
-  fails_with gcc: "5"
+  # system libfmt patch, upstream pr ref, https://github.com/MariaDB/server/pull/3786
+  patch do
+    url "https://github.com/MariaDB/server/commit/b6a924b8478d2fab5d51245ff6719b365d7db7f4.patch?full_index=1"
+    sha256 "77b65b35cf0166b8bb576254ac289845db5a8e64e03b41f1bf4b2045ac1cd2d1"
+  end
+
+  # Backport fix for CMake 4.0
+  patch do
+    url "https://github.com/codership/wsrep-lib/commit/324b01e4315623ce026688dd9da1a5f921ce7084.patch?full_index=1"
+    sha256 "eaa0c3b648b712b3dbab3d37dfca7fef8a072908dc28f2ed383fbe8d217be421"
+    directory "wsrep-lib"
+  end
 
   def install
+    ENV.runtime_cpu_detection
+
+    # Backport fix for CMake 4.0
+    # https://github.com/MariaDB/server/commit/cacaaebf01939d387645fb850ceeec5392496171
+    inreplace "storage/mroonga/CMakeLists.txt", "cmake_minimum_required(VERSION 2.8.12)", ""
+
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
     # be overridden by calling --basedir= when calling.
@@ -87,6 +102,7 @@ class MariadbAT114 < Formula
       -DINSTALL_DOCDIR=share/doc/#{name}
       -DINSTALL_INFODIR=share/info
       -DINSTALL_MYSQLSHAREDIR=share/mysql
+      -DWITH_LIBFMT=system
       -DWITH_PCRE=system
       -DWITH_SSL=system
       -DWITH_ZLIB=system
@@ -141,12 +157,12 @@ class MariadbAT114 < Formula
     end
 
     # Install my.cnf that binds to 127.0.0.1 by default
-    (buildpath/"my.cnf").write <<~EOS
+    (buildpath/"my.cnf").write <<~INI
       # Default Homebrew MySQL server config
       [mysqld]
       # Only allow connections from localhost
       bind-address = 127.0.0.1
-    EOS
+    INI
     etc.install "my.cnf"
   end
 

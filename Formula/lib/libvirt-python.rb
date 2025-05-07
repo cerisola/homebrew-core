@@ -1,8 +1,8 @@
 class LibvirtPython < Formula
   desc "Libvirt virtualization API python binding"
   homepage "https://www.libvirt.org/"
-  url "https://download.libvirt.org/python/libvirt-python-10.9.0.tar.gz"
-  sha256 "44833fc6017fc88e43586a78c028a89fa1e1c1bae5089160c62356308ac9a37a"
+  url "https://download.libvirt.org/python/libvirt-python-11.3.0.tar.gz"
+  sha256 "4cd31e625e8fefbbe168faedb38cb7fa2da3fa7394326eed29dc46e7ca511979"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -11,15 +11,16 @@ class LibvirtPython < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "265ee75ccfc21afcbbe6d42833ee4a5e325a0c7d2a28554ed2f2c8153de646cd"
-    sha256 cellar: :any,                 arm64_sonoma:  "0280c0041fcc1803c3aaee9aa656ac8083f2ab12a262fdb2d06826ea0f2a2958"
-    sha256 cellar: :any,                 arm64_ventura: "b6a289ec7937206de11591a9378d194ba9d355cd3cbf41d72aa978b5eb8a2913"
-    sha256 cellar: :any,                 sonoma:        "62dd88bf8a1bb4c88f42c356e6e792aa7455b505e5a4d5d7a30455dd107d29e8"
-    sha256 cellar: :any,                 ventura:       "1bcbf2671d75df950d68f23419158d425f6859296780235e01e21b9c8f7386ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "083260eab1d2a1223373b8512eb0cdb79c33b70c9331908a75aa2c382473c4fa"
+    sha256 cellar: :any,                 arm64_sequoia: "4a9e95b87f0b37422b50ff3f409fc34292e8bab6c65682ab98a33c1ace46a6b2"
+    sha256 cellar: :any,                 arm64_sonoma:  "79b531d7a08b74ab2941c6b31be5750ba0741a288e925e558ff490a38b65a8d2"
+    sha256 cellar: :any,                 arm64_ventura: "92b57743196e81f9b57833038b6762d67779431a734acb7cf428468bc3c37443"
+    sha256 cellar: :any,                 sonoma:        "3c44d8f88bb438fcac11f1d0bef8e979290c803e004b1d08c1ac274882e985d9"
+    sha256 cellar: :any,                 ventura:       "5e12aa079214f02b71865823fbf04b629067abede419722d499bd7feee660456"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1ae1c68fe55d1f5dbe51dbe510af77f15140a4eeb03ad1f40905b73bc5007aeb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea1b1e019096bc81f21ca7e75a3200fd38e1c189be7b20820faedaa29c512620"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libvirt"
   depends_on "python@3.13"
 

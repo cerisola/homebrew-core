@@ -1,8 +1,8 @@
 class Lnav < Formula
   desc "Curses-based tool for viewing and analyzing log files"
   homepage "https://lnav.org/"
-  url "https://github.com/tstack/lnav/releases/download/v0.12.2/lnav-0.12.2.tar.gz"
-  sha256 "25356f8bb4febc6935d6e675d1803969f6eb44d9997eb8cd7dc9cbab56c65972"
+  url "https://github.com/tstack/lnav/releases/download/v0.12.4/lnav-0.12.4.tar.gz"
+  sha256 "e1e70c9e5a2fce21da80eec9b9c3adb09fd05e03986285098a9f2567c1eb4792"
   license "BSD-2-Clause"
 
   livecheck do
@@ -11,14 +11,13 @@ class Lnav < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "5b496dcf9673b71030d90616ecaf58257bcfc387c14bd6cbdd13ba0557f336f1"
-    sha256 cellar: :any,                 arm64_sonoma:   "80b8918f94160300cff29745767717b71af097c7d296948d90c44e69e45ba156"
-    sha256 cellar: :any,                 arm64_ventura:  "d1b3ffd05f8a7b4f3b49d0d14839eb13ba67fa52c5e7b85a5dd99ad554610627"
-    sha256 cellar: :any,                 arm64_monterey: "d0b50c12666431385fafaeebf06f20fa58bda84653abf2cb178a62bc0c86a40a"
-    sha256 cellar: :any,                 sonoma:         "7eedd1448358cb92f27634ab5d28710f45ec81c52505e90cb647e535c1666e56"
-    sha256 cellar: :any,                 ventura:        "10c576bef574f0c5677feb155b2cc01f28295fa7fadbe46d8b3a5c28bad83586"
-    sha256 cellar: :any,                 monterey:       "9501d57fead1c7f49bce092ce360dd177c60f454a2e5254f21d061fab221181d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "5ab0fd59e71d64c25540c4ab06b5d138b0e61a272be5b7474974ddc19ba6fbd9"
+    sha256 cellar: :any,                 arm64_sequoia: "e4c9cb81635f0fc220f9bca74d6ad1d3942744bc1f2251bb7e6475441a5a242e"
+    sha256 cellar: :any,                 arm64_sonoma:  "c5d123bf1eaf7d5600fdea80e7bd01951e0bb6d18138c49345ccdf53f67c2c59"
+    sha256 cellar: :any,                 arm64_ventura: "886782b7082477516598d6b9c7bec174f1edbcd3cd475a32a5cd16e2106a6414"
+    sha256 cellar: :any,                 sonoma:        "d37b40a1558c099d62eb51a11a85d03662b2112019204ed584463dd6026d82ce"
+    sha256 cellar: :any,                 ventura:       "7ba09f2325ae17889ec1f4e5798bb34d2db92b31d2d99874e52543b1240192c7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "dece4fd9feb77c9de00fa499d7d943f234fb3ac46c0adc4beabcd64458f6087e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7f808305b7e2f68c68823cc5623f399ef17e9daceaf258aa3fc36a175495db30"
   end
 
   head do
@@ -29,7 +28,9 @@ class Lnav < Formula
     depends_on "re2c" => :build
   end
 
+  depends_on "rust" => :build
   depends_on "libarchive"
+  depends_on "libunistring"
   depends_on "ncurses"
   depends_on "pcre2"
   depends_on "readline"
@@ -39,19 +40,19 @@ class Lnav < Formula
   uses_from_macos "curl"
   uses_from_macos "zlib"
 
-  fails_with gcc: "5"
-
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", *std_configure_args,
-                          "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
+    system "./configure", "--with-sqlite3=#{Formula["sqlite"].opt_prefix}",
                           "--with-readline=#{Formula["readline"].opt_prefix}",
                           "--with-libarchive=#{Formula["libarchive"].opt_prefix}",
-                          "--with-ncurses=#{Formula["ncurses"].opt_prefix}"
+                          "--with-ncurses=#{Formula["ncurses"].opt_prefix}",
+                          *std_configure_args
     system "make", "install", "V=1"
   end
 
   test do
     system bin/"lnav", "-V"
+
+    assert_match "col1", pipe_output("#{bin}/lnav -n -c ';from [{ col1=1 }] | take 1'", "foo")
   end
 end

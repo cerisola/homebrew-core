@@ -6,7 +6,6 @@ class VapoursynthSub < Formula
   license "MIT"
   revision 1
   version_scheme 1
-
   head "https://github.com/vapoursynth/subtext.git", branch: "master"
 
   bottle do
@@ -17,22 +16,23 @@ class VapoursynthSub < Formula
     sha256 cellar: :any,                 sonoma:         "395c38b3e3b818d6a80c0ea68b9045a13c9eddef5506176cb3586ce5d4859ffd"
     sha256 cellar: :any,                 ventura:        "ce5253289d282a21485141cf0e0fdf807121e83f340265e02e9e3631f18f679c"
     sha256 cellar: :any,                 monterey:       "a7445fbbfc200cc578a4d00ab7333989353fe0f2ccea4ed91f963ce97764828a"
+    sha256                               arm64_linux:    "5bf6134027bc5e0e8d33a20e39c3145b761fae00bdd2829217bedd63e8c7388e"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ebc9c1460d973e9f99019e07866d5422349101796a7a4267c83bc945bffceec"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "ffmpeg"
   depends_on "libass"
   depends_on "vapoursynth"
 
-  fails_with gcc: "5" # ffmpeg is compiled with GCC
-
   def install
-    # Work around Homebrew's keg directory structure by overriding `vapoursynth`
-    # pkg-config libdir to install instead into `vapoursynth-sub` libdir
-    ENV["PKG_CONFIG_VAPOURSYNTH_LIBDIR"] = lib.to_s
+    # Upstream build system wants to install directly into vapoursynth's libdir and does not respect
+    # prefix, but we want it in a Cellar location instead.
+    inreplace "meson.build",
+              "install_dir : join_paths(vapoursynth_dep.get_pkgconfig_variable('libdir'), 'vapoursynth')",
+              "install_dir : '#{lib}/vapoursynth'"
 
     system "meson", "setup", "build", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"

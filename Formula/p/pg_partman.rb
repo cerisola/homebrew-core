@@ -1,18 +1,18 @@
 class PgPartman < Formula
   desc "Partition management extension for PostgreSQL"
   homepage "https://github.com/pgpartman/pg_partman"
-  url "https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.1.0.tar.gz"
-  sha256 "3e3a27d7ff827295d5c55ef72f07a49062d6204b3cb0b9a048645d6db9f3cb9f"
+  url "https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.2.4.tar.gz"
+  sha256 "462464d83389ef20256b982960646a1572341c0beb09eeff32b4a69f04e31b76"
   license "PostgreSQL"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "995615e05892a4a62213fd7248beaef88fdd345b3a386b6378f93f28e42112de"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2c2e05b74290971c37bb8cd1af765a95e1b9f3241cdd73373a74b125619a74da"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f44f771ad70e19ef41072b2a1465ce0aa1019cd77c475d6a9583484c284eaa0b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1c474f3a11de006f0c84e159dc21971c5da027b0138f52d5f31689baad2afa53"
-    sha256 cellar: :any_skip_relocation, ventura:       "a9ce480d5188be5afa9ab08a75c12f2fc1f6993fa948d1350b2528c9d7687128"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "61a6d1327005efb276aa8487952bd916293aa83a33efc96307334faa2bbfa2d9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bc8d0101a41b8462c808e3b89ced8cf4c35abd2859da258810f45c7cc3d08eab"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fbb25523f90c489a1d3e960c72a5e25e2015203f076b422979105d4237548fa7"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "da418435f548516e2c08d7152618cba4944c05ea97e7a6caf885d392367d6b1f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4ff364c6122dd2f76874efa3993473d44c1875a9af05f87ac2b6162e0d3c3081"
+    sha256 cellar: :any_skip_relocation, ventura:       "d354534be1f5892af69af5ad223d00864f39f49a1a05a161a45c32440f51bb87"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "514b8f6796d0853c9dee95b01cae31d554351c999f1ebbc989553d0572fe833a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35d4cb1858223e0a1b0badd91bc8d83393da2fcd30d9609bef6285d8fe5fef3c"
   end
 
   depends_on "postgresql@14" => [:build, :test]

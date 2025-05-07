@@ -3,9 +3,10 @@ class Simgrid < Formula
 
   desc "Studies behavior of large-scale distributed systems"
   homepage "https://simgrid.org/"
-  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v3.36/simgrid-v3.36.tar.bz2"
-  sha256 "408289f3d9b2eb2fb9d4904348437a035c6befa4197028c617ab2ef6e8e1260f"
+  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v4.0/simgrid-v4.0.tar.bz2"
+  sha256 "37387a6b4ab230e37fb062d03af3d6bdb9cd0c76b2c3407ae1a344facc814a8f"
   license "LGPL-2.1-only"
+  revision 1
 
   livecheck do
     url :homepage
@@ -13,14 +14,13 @@ class Simgrid < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "c8cd8c9d34931a263eee8124c86441a7155d0c326f1d57d07bb23d7ffbe69480"
-    sha256 arm64_sonoma:   "cfb53c7c04538d063bcca99a645a68f316c5aa4216242605fd289ea965d90289"
-    sha256 arm64_ventura:  "0b80a356a9ab5eb95015c1efff95b9b8e4b12c74284329808b2f9573f07967ce"
-    sha256 arm64_monterey: "be80cac1b5d7186d57795220631d399bc36b8d63476337c17040ca2faff8fc33"
-    sha256 sonoma:         "c9838a28cbfe423b4395272c283ae8d4e380752bfaa7adb0019a1467e9683a8b"
-    sha256 ventura:        "b6e87e7233eb2eb3985efbeffc1f2297bfa65bb1fa18077afe5af11ceec4caa8"
-    sha256 monterey:       "58a03c6bf7ebdc3757122ba5a1c50d319828bca9992e76867539c042f43e90be"
-    sha256 x86_64_linux:   "6a0d24c2dc151ff567612f7540aa083ef681d94b8153928968f2a7456cf1a63f"
+    sha256 arm64_sequoia: "7729746a85f9411766323b3e08f526ac0b2a320dc1b43f2f1a047affd33b1834"
+    sha256 arm64_sonoma:  "e774550064c55be057b8a02be6c97fb4755bcc96ed518f48e86a2a06f110de6a"
+    sha256 arm64_ventura: "c1106a2364c23a426f092e8dba68de4ed5c49ffa9f79221098d6daf5131f167d"
+    sha256 sonoma:        "6113c9ce3f7b955d6fb7768a0fdd6550787547bd18cf625bdb70515229193b0a"
+    sha256 ventura:       "fd493ba61db4d913bed0de8db44da341e6744ae78f20d3458c2d27094971940a"
+    sha256 arm64_linux:   "759f64a8dbd6286b41e49af154aba2c9f4acd1b9ebff34dfddcf34e022b2356f"
+    sha256 x86_64_linux:  "ae6cc2a41a6adf416328e3208b6f15f41ff4f3b50e8cf5cd282abe4336604305"
   end
 
   depends_on "cmake" => :build
@@ -29,8 +29,6 @@ class Simgrid < Formula
   depends_on "graphviz"
 
   uses_from_macos "python", since: :catalina
-
-  fails_with gcc: "5"
 
   def install
     # Avoid superenv shim references

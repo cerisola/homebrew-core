@@ -2,17 +2,19 @@ class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
   url "https://github.com/duckdb/duckdb.git",
-      tag:      "v1.1.2",
-      revision: "f680b7d08f56183391b581077d4baf589e1cc8bd"
+      tag:      "v1.2.2",
+      revision: "7c039464e452ddc3330e2691d3fa6d305521d09b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3a5fc29e2c061fc7248dca65a98cfc36d7f7206a9755e44fd1c7d3b5cc67a88c"
-    sha256 cellar: :any,                 arm64_sonoma:  "f119f4590e58df6ab6590e37fb5298f8cb50d9f617561dc57dabefec4bab14e5"
-    sha256 cellar: :any,                 arm64_ventura: "faff759a58be0f6f6a324e6032695e5ba19c0e709e09f8b508032981ec987e9d"
-    sha256 cellar: :any,                 sonoma:        "bcbeee000919fd49469a608953f62285896baa599ee2ff77b8edf1d6d636e7dc"
-    sha256 cellar: :any,                 ventura:       "d4d528c017fc79267aa82960f7f03a6f2c98c9109aaa04d48568b1a8fc60cc99"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0f3f6f46995bab33a75109ed3b4fe75de52c60a82afec67a47454a3a67214ed5"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sequoia: "08f736ac15900c9419d502cd49a561b00654ca43c1fb537477dd902386b87905"
+    sha256 cellar: :any,                 arm64_sonoma:  "b2944c5b262da44b7c220ee8e088623341845ae625140c80f381b891d5b0cdd9"
+    sha256 cellar: :any,                 arm64_ventura: "b757097a4f3e3987d271e0af6087d7ebd56ad78c3f197e08bf66f5477ed89552"
+    sha256 cellar: :any,                 sonoma:        "c6a941d6bf421faaeaea61d0575aba122b98481a64d908855819481cc445abf1"
+    sha256 cellar: :any,                 ventura:       "4ca934eb3dc7d50b575aab4905cdfe5325c7974087a6e25a800d3c95e0190e13"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b7eebc76d2395b6b97c28cfe6574a9b4892fce2b55bb2bcc4aa1b21060dd8d75"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cc7d56badae2ff05853832413a614da1185060fa501a74b25b35511fa404c86e"
   end
 
   depends_on "cmake" => :build
@@ -32,15 +34,17 @@ class Duckdb < Formula
     # The cli tool was renamed (0.1.8 -> 0.1.9)
     # Create a symlink to not break compatibility
     bin.install_symlink bin/"duckdb" => "duckdb_cli"
+
+    rm lib.glob("*.a")
   end
 
   test do
     path = testpath/"weather.sql"
-    path.write <<~EOS
+    path.write <<~SQL
       CREATE TABLE weather (temp INTEGER);
       INSERT INTO weather (temp) VALUES (40), (45), (50);
       SELECT AVG(temp) FROM weather;
-    EOS
+    SQL
 
     expected_output = <<~EOS
       ┌─────────────┐

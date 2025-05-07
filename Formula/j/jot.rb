@@ -14,6 +14,7 @@ class Jot < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "75eb2d10462b9b9161c3a6830062fe83ec63907f53b2c1b1f42d11e44d532e62"
     sha256 cellar: :any_skip_relocation, ventura:        "4b7c7e29dff1a8057b628f43452439d02df492dee6e526269aca874f7158a883"
     sha256 cellar: :any_skip_relocation, monterey:       "a90a251a9a3a0644dd527374e199e13a70441b3a4020f0db95421b60995f4bb1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "85fbebdda3af0b8454bb99e24e6151c2eed317242fc23f0e5737f90b0c446467"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "f99f5f3de62fcb33cda952afcfabc511d11bc30614f0795d7d15808ea1b6c13b"
   end
 
@@ -30,9 +31,9 @@ class Jot < Formula
     system bin/"jt", "enter", "testvault"
 
     system bin/"jt", "note", "testnote"
-    assert_predicate testpath/"testvault/testnote.md", :exist?
+    assert_path_exists testpath/"testvault/testnote.md"
 
     system bin/"jt", "remove", "note", "testnote"
-    refute_predicate testpath/"testvault/testnote.md", :exist?
+    refute_path_exists testpath/"testvault/testnote.md"
   end
 end

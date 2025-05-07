@@ -1,18 +1,27 @@
 class Mold < Formula
   desc "Modern Linker"
   homepage "https://github.com/rui314/mold"
-  url "https://github.com/rui314/mold/archive/refs/tags/v2.34.1.tar.gz"
-  sha256 "a8cf638045b4a4b2697d0bcc77fd96eae93d54d57ad3021bf03b0333a727a59d"
+  url "https://github.com/rui314/mold/archive/refs/tags/v2.39.0.tar.gz"
+  sha256 "32a0917894b9bc9317ba5d6bdbcad8401513bcdfbbbcfc9de55423c46db8511c"
   license "MIT"
   head "https://github.com/rui314/mold.git", branch: "main"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0aa7ac1193cecac1c78b3545953d8bc7009faf324c25c1e02cc2d26598a7154d"
-    sha256 cellar: :any,                 arm64_sonoma:  "954b9c4ef7fbfe0a56fcb2cd39e50fc590335edbcb58d7a305a2b6d8ea84667f"
-    sha256 cellar: :any,                 arm64_ventura: "a8f194f72d412348873617439dce5050465abc1c8c35f9602ae777a48a2a5eac"
-    sha256 cellar: :any,                 sonoma:        "213b7a4bfd81052de322188a7630e564f5e5361863a0c91acf9f1625c40c044a"
-    sha256 cellar: :any,                 ventura:       "ae19f47d88d50bd5b237ad47bb67cb7389c9f27106b39469dda5f66503c9fe52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f2477939c35c0a9d9effd4644334a2f7444a6a0e0eb4d468b22e49fdb32ffeaa"
+    sha256 cellar: :any,                 arm64_sequoia: "10ab852e3dc9f47589bb4e8f734ee20c382e1e8d276d7c55134844ca175d6d8a"
+    sha256 cellar: :any,                 arm64_sonoma:  "e752be3fa9634ef2c38c936cf08cfa60a5686b25cc756bccd77fe246b4063e20"
+    sha256 cellar: :any,                 arm64_ventura: "34fd16594cbcb9eb9cc1a03ae42be22faddb4c80373b347da61de9343c1c5d5e"
+    sha256 cellar: :any,                 sonoma:        "114dd89def4ce67941c74d0ba22c20198d10e50075d7d2d8fb1b170689e1cac8"
+    sha256 cellar: :any,                 ventura:       "5dfe6777c1831f2918f18c524db64dc0e2c942a4c48ee83a81c55e1692b85b74"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "73ab21dcf4e8045013755deb6dc6ddb9ef2b95a4ed1b47bb1d4aab67d6dd729f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f3f6639e506ff3fca0a926fd47ce801a51bb6c5a6c12690500d83b5e9c002d0c"
   end
 
   depends_on "cmake" => :build
@@ -22,7 +31,7 @@ class Mold < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1200
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1500
   end
 
   on_linux do
@@ -30,7 +39,7 @@ class Mold < Formula
   end
 
   fails_with :clang do
-    build 1200
+    build 1500
     cause "Requires C++20"
   end
 
@@ -40,7 +49,7 @@ class Mold < Formula
   end
 
   def install
-    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1200)
+    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1500)
 
     # Avoid embedding libdir in the binary.
     # This helps make the bottle relocatable.
@@ -65,7 +74,6 @@ class Mold < Formula
   def caveats
     <<~EOS
       Support for Mach-O targets has been removed.
-      See https://github.com/bluewhalesystems/sold for macOS/iOS support.
     EOS
   end
 

@@ -16,13 +16,14 @@ class Graphene < Formula
     sha256 cellar: :any, monterey:       "65b24ac035b8b5550dc314648c4cc3b3e2416692efcc44186450e1e76e27e396"
     sha256 cellar: :any, big_sur:        "3452844382013a409b81446e2699d996c8520a33aabdf074ff812086132049db"
     sha256 cellar: :any, catalina:       "56447899077d278b0fe60d56832082400840e10a6c126575eafa477eb7e168f1"
+    sha256               arm64_linux:    "52e0d23dec6fe643e39b1c080895943d6b253eeb84727928ce249cdda221747e"
     sha256               x86_64_linux:   "978a8d282c1d1715f11bc6e701441b843a99c8520ac8108016b224932c6c03a5"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
 
   depends_on "glib"
 
@@ -46,7 +47,7 @@ class Graphene < Formula
       }
     C
 
-    pkg_config_cflags = shell_output("pkg-config --cflags --libs glib-2.0 graphene-1.0").chomp.split
-    system ENV.cc, "test.c", *pkg_config_cflags, "-o", "test"
+    flags = shell_output("pkgconf --cflags --libs glib-2.0 graphene-1.0").chomp.split
+    system ENV.cc, "test.c", *flags, "-o", "test"
   end
 end

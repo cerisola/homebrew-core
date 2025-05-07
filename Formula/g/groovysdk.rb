@@ -1,8 +1,8 @@
 class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
   homepage "https://www.groovy-lang.org/"
-  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-sdk-4.0.23.zip"
-  sha256 "3ebc981ae4ed3b89cc920119ce4cbefb1936594e09f2ad55a47d238638701645"
+  url "https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-sdk-4.0.26.zip"
+  sha256 "8fb9e2e14621ea93b1f4d56859a034bca2f28b0dad36a9f528fa23a3603fba6f"
   license "Apache-2.0"
 
   livecheck do
@@ -11,14 +11,13 @@ class Groovysdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "1e0f74ad33dda9d9efaa30523055b7b9f2e1b71fa78aa53079bd35d36429c8f5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "1e0f74ad33dda9d9efaa30523055b7b9f2e1b71fa78aa53079bd35d36429c8f5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "1e0f74ad33dda9d9efaa30523055b7b9f2e1b71fa78aa53079bd35d36429c8f5"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "1e0f74ad33dda9d9efaa30523055b7b9f2e1b71fa78aa53079bd35d36429c8f5"
-    sha256 cellar: :any_skip_relocation, sonoma:         "c4f7ab0a26faa7ce5848994bc7eb72696bef1df31319949eb3e9331938c28d9c"
-    sha256 cellar: :any_skip_relocation, ventura:        "c4f7ab0a26faa7ce5848994bc7eb72696bef1df31319949eb3e9331938c28d9c"
-    sha256 cellar: :any_skip_relocation, monterey:       "c4f7ab0a26faa7ce5848994bc7eb72696bef1df31319949eb3e9331938c28d9c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1e0f74ad33dda9d9efaa30523055b7b9f2e1b71fa78aa53079bd35d36429c8f5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4a9c17b629d23fde4101a454445cab31c9e49a4c02e94df28b8d692094552a09"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4a9c17b629d23fde4101a454445cab31c9e49a4c02e94df28b8d692094552a09"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "4a9c17b629d23fde4101a454445cab31c9e49a4c02e94df28b8d692094552a09"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ab654d4dc0713f847e624ba123156703e4fb60a85e1da7312e7a65186a71aa1b"
+    sha256 cellar: :any_skip_relocation, ventura:       "ab654d4dc0713f847e624ba123156703e4fb60a85e1da7312e7a65186a71aa1b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4a9c17b629d23fde4101a454445cab31c9e49a4c02e94df28b8d692094552a09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4a9c17b629d23fde4101a454445cab31c9e49a4c02e94df28b8d692094552a09"
   end
 
   depends_on "openjdk"

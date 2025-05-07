@@ -1,17 +1,18 @@
 class SnykCli < Formula
   desc "Scans and monitors projects for security vulnerabilities"
   homepage "https://snyk.io"
-  url "https://registry.npmjs.org/snyk/-/snyk-1.1294.0.tgz"
-  sha256 "d777267fecbb46e7237b3d6fff36a2068af0be862dc4fcb5fe3e37d1740078d4"
+  url "https://registry.npmjs.org/snyk/-/snyk-1.1296.2.tgz"
+  sha256 "9a9bdb1e44a7e5006925b77c3ef63827aface2cb3248684f9ec7e119b25c33cf"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b437b39b3ceb61f83ef2dcc5eb761edd745ab3d9d57895d05e30ce99e8779f19"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b437b39b3ceb61f83ef2dcc5eb761edd745ab3d9d57895d05e30ce99e8779f19"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b437b39b3ceb61f83ef2dcc5eb761edd745ab3d9d57895d05e30ce99e8779f19"
-    sha256 cellar: :any_skip_relocation, sonoma:        "79160cdce8682772a7799a46d0d65091352bb5cdc53b1caff6b3dab99ee1b527"
-    sha256 cellar: :any_skip_relocation, ventura:       "79160cdce8682772a7799a46d0d65091352bb5cdc53b1caff6b3dab99ee1b527"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3f1de69848e41f3899ca48273b2042b6585be7203515e86c60fda19e4e7f702"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c62dbe503cf495199acfa3323ac47a4a68ab0b0d940d5dabdb19affa17da26ae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c62dbe503cf495199acfa3323ac47a4a68ab0b0d940d5dabdb19affa17da26ae"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "c62dbe503cf495199acfa3323ac47a4a68ab0b0d940d5dabdb19affa17da26ae"
+    sha256 cellar: :any_skip_relocation, sonoma:        "707e91ecbaca87942042e7e2dee4e267525c87066bde87333105048ae27acd6d"
+    sha256 cellar: :any_skip_relocation, ventura:       "707e91ecbaca87942042e7e2dee4e267525c87066bde87333105048ae27acd6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0a772a090139f79f18c8a5692a3e206bce88b7b87f708bcec89252659c543983"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e567604edab9a1991df8ab0e75ee327ac240b86a5b2f122aeefa4d0df9a793c5"
   end
 
   depends_on "node"
@@ -19,6 +20,10 @@ class SnykCli < Formula
   def install
     system "npm", "install", *std_npm_args
     bin.install_symlink Dir["#{libexec}/bin/*"]
+
+    # Remove x86-64 ELF binaries on incompatible platforms
+    # TODO: Check if these should be built from source
+    rm(libexec.glob("lib/node_modules/snyk/dist/cli/*.node")) if !OS.linux? || !Hardware::CPU.intel?
   end
 
   test do

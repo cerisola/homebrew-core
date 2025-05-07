@@ -1,13 +1,13 @@
 class Meson < Formula
   desc "Fast and user friendly build system"
   homepage "https://mesonbuild.com/"
-  url "https://github.com/mesonbuild/meson/releases/download/1.6.0/meson-1.6.0.tar.gz"
-  sha256 "999b65f21c03541cf11365489c1fad22e2418bb0c3d50ca61139f2eec09d5496"
+  url "https://github.com/mesonbuild/meson/releases/download/1.8.0/meson-1.8.0.tar.gz"
+  sha256 "0a9b23311271519bd03dca12d7d8b0eab582c3a2c5da433d465b6e519dc88e2f"
   license "Apache-2.0"
   head "https://github.com/mesonbuild/meson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "77eb91483991e1b615c3fe1dcea843e43706ac3eb011b0556fcf70e3a3e097fb"
+    sha256 cellar: :any_skip_relocation, all: "ee511fa7d68ab46780ee6c812ee8ccfbfd85c40e7805eaa98ed382bfc2044ff8"
   end
 
   depends_on "ninja"
@@ -60,13 +60,13 @@ class Meson < Formula
         return 0;
       }
     C
-    (testpath/"meson.build").write <<~EOS
+    (testpath/"meson.build").write <<~MESON
       project('hello', 'c')
       executable('hello', 'helloworld.c')
-    EOS
+    MESON
 
     system bin/"meson", "setup", "build"
-    assert_predicate testpath/"build/build.ninja", :exist?
+    assert_path_exists testpath/"build/build.ninja"
 
     system bin/"meson", "compile", "-C", "build", "--verbose"
     assert_equal "hi", shell_output("build/hello").chomp

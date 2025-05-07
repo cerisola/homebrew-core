@@ -1,35 +1,31 @@
 class Slackdump < Formula
   desc "Export Slack data without admin privileges"
   homepage "https://github.com/rusq/slackdump"
-  url "https://github.com/rusq/slackdump/archive/refs/tags/v2.6.0.tar.gz"
-  sha256 "794866c8c72c89a4f5cab3917c4ed4eba00928841e17e6082213eb9a4ffe7df0"
+  url "https://github.com/rusq/slackdump/archive/refs/tags/v3.1.1.tar.gz"
+  sha256 "327e4672d5d7dc9b97acd9c7d1c2741de6bb11556a9311888a6aa48a7516fbb9"
   license "GPL-3.0-only"
   head "https://github.com/rusq/slackdump.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9bffd112bc0726b9b5496a7a75f807be85ebb1c221c096ec14464ba08c984388"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9bffd112bc0726b9b5496a7a75f807be85ebb1c221c096ec14464ba08c984388"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9bffd112bc0726b9b5496a7a75f807be85ebb1c221c096ec14464ba08c984388"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e5d75f6440152103e83f240ac04ccbcd512371c21dbb7aa869b74bd20a27363e"
-    sha256 cellar: :any_skip_relocation, ventura:       "e5d75f6440152103e83f240ac04ccbcd512371c21dbb7aa869b74bd20a27363e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdc3593e8dd9f95fb20e6f7444d512082bfe12326cd33352f27213e8d44ba9af"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cc9911c3f4f63fd250b6a6b61bfc84d1e2e48b66b2bf4c35be5fb0b032142654"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cc9911c3f4f63fd250b6a6b61bfc84d1e2e48b66b2bf4c35be5fb0b032142654"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "cc9911c3f4f63fd250b6a6b61bfc84d1e2e48b66b2bf4c35be5fb0b032142654"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a6eaa5881b31233ff61fca2b3e93a34823aa11be799487925cd74ed1301a8f2b"
+    sha256 cellar: :any_skip_relocation, ventura:       "a6eaa5881b31233ff61fca2b3e93a34823aa11be799487925cd74ed1301a8f2b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eacf5be4152076345fa85137a65c7487b82c42b7e9249d1dbf1760ba1c4a254d"
   end
 
   depends_on "go" => :build
 
   def install
-    ldflags = %W[
-      -s -w
-      -X main.version=#{version}
-      -X main.date=#{time.iso8601}
-      -X main.commit=Homebrew
-    ]
+    ldflags = "-s -w -X main.version=#{version} -X main.date=#{time.iso8601} -X main.commit=#{tap.user}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/slackdump"
   end
 
   test do
-    assert_match version.to_s, shell_output(bin/"slackdump -V")
+    assert_match version.to_s, shell_output("#{bin}/slackdump version")
 
-    assert_match "You have been logged out.", shell_output(bin/"slackdump -auth-reset 2>&1")
+    output = shell_output("#{bin}/slackdump workspace list 2>&1", 9)
+    assert_match "(User Error): no authenticated workspaces", output
   end
 end

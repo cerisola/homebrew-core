@@ -1,26 +1,24 @@
 class SpirvLlvmTranslator < Formula
   desc "Tool and a library for bi-directional translation between SPIR-V and LLVM IR"
   homepage "https://github.com/KhronosGroup/SPIRV-LLVM-Translator"
-  url "https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/refs/tags/v19.1.1.tar.gz"
-  sha256 "7f6f7a1af0eb40910ddf3a7647d2186c8c5dc5a47945afa935aeec56bacf4336"
+  url "https://github.com/KhronosGroup/SPIRV-LLVM-Translator/archive/refs/tags/v20.1.2.tar.gz"
+  sha256 "d1b4a55dc457edbd9cc50d23583d4bedda9479176efcd34b3e20166bc7a4a562"
   license "Apache-2.0" => { with: "LLVM-exception" }
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "62d76c96df71b0aa9f7257c036ff8d8342e13380433e1daa273e7d2454d0aff2"
-    sha256 cellar: :any,                 arm64_sonoma:  "4aad85a9f27af462b66cfcea86dffb97512d473f3cd9080cc9afeae2b67d0d86"
-    sha256 cellar: :any,                 arm64_ventura: "eb001b3a78850766e51973ab4ff11c2c17e4c7614c33c95158404f5b94a75662"
-    sha256 cellar: :any,                 sonoma:        "57b763cbe611d7337efcefddff2726dc20f310040671490cdb52fed6711dbd05"
-    sha256 cellar: :any,                 ventura:       "d202af3ab5a2eede7ab4b6f376548ff8fcbc7620684f06af7c4d7253a0fa56dc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3963067069c2ca89dc384241a9e01cc3edb91e558ea7684eb9cc67a3abf5fcf7"
+    sha256 cellar: :any,                 arm64_sequoia: "0d2d662b60a4779b1d54609ac46961178069b78d3b5e29dc392d83f0bb2f77be"
+    sha256 cellar: :any,                 arm64_sonoma:  "030ff2cf482f2e4e047be915ba875027ed903e2a1c076efac8b73f623c37a13e"
+    sha256 cellar: :any,                 arm64_ventura: "c249699bf1e4f4302d1785848ed3a6c14b82b42c4384cc08154ed39634c106ff"
+    sha256 cellar: :any,                 sonoma:        "b101621e10e8111828626a444a70081d5a4d7dbcc5eb530248a8f7eb8d3c285d"
+    sha256 cellar: :any,                 ventura:       "ad4ccd7cdeb3b8acf6833f025b52932eef992dab584010aa975429737d5aff33"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "71bfa085d672dd0050427be679576f5870d51402952033c05d07f65c205e94e5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "26e105772ab373a0810b545b4d6a3829845d67e8656456fc292e9bf9823aa371"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "spirv-headers" => :build
   depends_on "llvm"
-
-  # See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=56480
-  fails_with gcc: "5"
 
   def llvm
     deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }
@@ -49,6 +47,6 @@ class SpirvLlvmTranslator < Formula
     EOS
     system llvm.opt_bin/"llvm-as", "test.ll"
     system bin/"llvm-spirv", "test.bc"
-    assert_predicate testpath/"test.spv", :exist?
+    assert_path_exists testpath/"test.spv"
   end
 end

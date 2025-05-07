@@ -1,24 +1,24 @@
 class Scipy < Formula
   desc "Software for mathematics, science, and engineering"
   homepage "https://www.scipy.org"
-  url "https://files.pythonhosted.org/packages/62/11/4d44a1f274e002784e4dbdb81e0ea96d2de2d1045b2132d5af62cc31fd28/scipy-1.14.1.tar.gz"
-  sha256 "5a275584e726026a5699459aa72f828a610821006228e841b94275c4a7c08417"
+  url "https://files.pythonhosted.org/packages/b7/b9/31ba9cd990e626574baf93fbc1ac61cf9ed54faafd04c479117517661637/scipy-1.15.2.tar.gz"
+  sha256 "cd58a314d92838f7e6f755c8a2167ead4f27e1fd5c1251fd54289569ef3495ec"
   license "BSD-3-Clause"
-  revision 1
   head "https://github.com/scipy/scipy.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "25343b0b788c75c936bbbc32ff84330f05b31e495bb577a7399bd8f321d5cb60"
-    sha256 cellar: :any,                 arm64_sonoma:  "1e01d457a52a556d8e2205ea5165fa047535410cd9aab7613687a8e6e37fa74d"
-    sha256 cellar: :any,                 arm64_ventura: "7d9598ba10fbf054aa315858a1c6ea1487bdfb7dc72caf3876906c414e5a92be"
-    sha256 cellar: :any,                 sonoma:        "1af864a096e92b76016cb55ccacbdee0e633847e7f91ea3c8903acec49eebea0"
-    sha256 cellar: :any,                 ventura:       "aeb20853b99a9ecb395477f0025b4748f94018d02e9160c2250005cd44b9fa52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c8541dd700f2bd6fc5ee9e289ac286eed998b76823decdb18032f9fb17827ab0"
+    sha256 cellar: :any,                 arm64_sequoia: "6e721be4b8e3634837e8f61737a7904247a34da62b1a8ca77cb7145ad9a0b17e"
+    sha256 cellar: :any,                 arm64_sonoma:  "fa67300140d1d149b36483bd680b7d0036cba6d45db7714bbe8af73001e50079"
+    sha256 cellar: :any,                 arm64_ventura: "b74d9fcaef8750bb473bd4c21bc93c8fa57ad0fe2cc8f6087565744ca99a1586"
+    sha256 cellar: :any,                 sonoma:        "a40acc90b9484b6e321af4333440db6d1aeb8c758b5c85018d6a1eca43a43cee"
+    sha256 cellar: :any,                 ventura:       "273f1a5bb4735e7c1f62d323c7314e5a66ac7bed7440f6c3736dfff5d14259c8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a92f71a9aac723e2ef2d283b60c903fc5ed179c03958f9426a0f81ecc1fc9fe8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "12f9c5331e4c7ece19e2338b34a13ce87e0e6c1d9c1b838e0a3047ec82f4c370"
   end
 
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.12" => [:build, :test]
   depends_on "python@3.13" => [:build, :test]
   depends_on "gcc" # for gfortran
@@ -31,8 +31,6 @@ class Scipy < Formula
   end
 
   cxxstdlib_check :skip
-
-  fails_with gcc: "5"
 
   def pythons
     deps.map(&:to_formula)
@@ -51,10 +49,10 @@ class Scipy < Formula
   end
 
   test do
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       from scipy import special
       print(special.exp10(3))
-    EOS
+    PYTHON
     pythons.each do |python3|
       assert_equal "1000.0", shell_output("#{python3} test.py").chomp
     end

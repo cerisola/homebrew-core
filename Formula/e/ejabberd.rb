@@ -1,8 +1,8 @@
 class Ejabberd < Formula
   desc "XMPP application server"
   homepage "https://www.ejabberd.im"
-  url "https://github.com/processone/ejabberd/archive/refs/tags/24.10.tar.gz"
-  sha256 "e260de76fc75354cd302caf2281e5114fdd1120d4fa2f4d24ddb1785dc43e343"
+  url "https://github.com/processone/ejabberd/archive/refs/tags/25.04.tar.gz"
+  sha256 "54beae3e7729fdaab1d578a9d59046f31d8ce31c851ae5aca9532821ff22cb45"
   license "GPL-2.0-only"
   head "https://github.com/processone/ejabberd.git", branch: "master"
 
@@ -15,12 +15,13 @@ class Ejabberd < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0bbac950dfba118fdd659cc5e07683c2629b0270b6d90db2600c57b37923618d"
-    sha256 cellar: :any,                 arm64_sonoma:  "5ab452653cf526ab258a04fdc2fe199a101fabe2272b2e139da81215270c7eb0"
-    sha256 cellar: :any,                 arm64_ventura: "8fe998a22abc61616d3dd493807e5471d24bf8a2dac2f51be3b51a6c255216c9"
-    sha256 cellar: :any,                 sonoma:        "a363cd6e6f144c6cd32a6c73428d37d10de3858d098dd760a9fe959675b20d0e"
-    sha256 cellar: :any,                 ventura:       "bcb096e871949aa6e4048e4a0f768267d44bc42019b92883a70d067200d58c0e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "40f1d051e1064f0127bc8090ae538c39eb1bf6fce8bc2a4af87c2c5b57cd8439"
+    sha256 cellar: :any,                 arm64_sequoia: "7f8ce6f8fc4ad9a9431bc4a198f7baff60eb59cfc4bfa2f2ee2a879dba73b4c0"
+    sha256 cellar: :any,                 arm64_sonoma:  "e786ed069ccafd35dfe1a21efe81f8c8a2b97d512b060bbd9d72373cdd5e9f9e"
+    sha256 cellar: :any,                 arm64_ventura: "139bb7211f06a39509e9e5759357a31af3108d3d36b268ecb15f56b2489221ff"
+    sha256 cellar: :any,                 sonoma:        "223e4a75a87232241f464c28e48861e165c7e5f55dd9756c5a0b1926eb2130e4"
+    sha256 cellar: :any,                 ventura:       "97e0f7f141f0f3919d0545e0615be75309af3b48cdaf8963c804c3c896e715be"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e986568af2e69ca634a7feca4308a3fd9320ebd8e0e619d15d7b2239af63f271"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3149e4654d9a9013f4d13ae3e89f542ad2f82e105390e799c7ec0f0699fc0a3a"
   end
 
   depends_on "autoconf" => :build

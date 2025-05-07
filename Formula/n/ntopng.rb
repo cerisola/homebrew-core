@@ -2,6 +2,7 @@ class Ntopng < Formula
   desc "Next generation version of the original ntop"
   homepage "https://www.ntop.org/products/traffic-analysis/ntop/"
   license "GPL-3.0-only"
+  revision 2
 
   stable do
     url "https://github.com/ntop/ntopng/archive/refs/tags/6.2.tar.gz"
@@ -17,12 +18,13 @@ class Ntopng < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "bd1dc32c1fdffb0e1d9c23400d74c43ebf252e8d755b0a019ec87046e92e697d"
-    sha256 arm64_sonoma:  "64288684042c3564bfd3e382d15d661172a2f522e407787d82e6af6f33d309f8"
-    sha256 arm64_ventura: "aee5b881035ec900c44dd05416df622b7e9e3d3759dd3b7f9aa715f368492196"
-    sha256 sonoma:        "586aa879223843e30fc9136377aa7cd00f3edb16d015d28b14de084e58588d58"
-    sha256 ventura:       "7d636609619e74f65df6a7345ad2ea5dad6579cb3d66cb5ce96786abeb62818c"
-    sha256 x86_64_linux:  "dcf114d1ce761fb41239ff2c496edcaff98061cdc0ee28b11fc96a0737d024c5"
+    sha256 arm64_sequoia: "9f6d0f239b8dc0835e0698849377f502301bc4299936fb3d0aba624e11885604"
+    sha256 arm64_sonoma:  "be65c430079ebbe79ab62ce1ffce5aa7d084fc0b33bc7153b0e1b57bb240c3ad"
+    sha256 arm64_ventura: "a80a9b44e9aaa5852b96d308be805bc44099e83487d92f2cd28f6a88442c73f5"
+    sha256 sonoma:        "df1b923da4e9371ba304e9f72713c6672cc124bc803bde6402e93f9e654fdde0"
+    sha256 ventura:       "4da8a2ccd7d3c0092e1a95c73b36b8a01d8b1ed2dab9f64e004a57b37274c565"
+    sha256 arm64_linux:   "9328b2d8059fc248392e57bf053ac1d2c0ced06c1cb997ea93e2cf269936800b"
+    sha256 x86_64_linux:  "81e384a601f5d00d27a9ec914e9bd4b25266999afa15e4e11a9ad3109609a4b9"
   end
 
   head do
@@ -36,23 +38,23 @@ class Ntopng < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
+  depends_on "valkey" => :test
 
   depends_on "hiredis"
   depends_on "json-c"
   depends_on "libmaxminddb"
   depends_on "libsodium"
-  depends_on "mysql-client"
+  depends_on "mariadb-connector-c"
   depends_on "openssl@3"
-  depends_on "redis"
   depends_on "rrdtool"
   depends_on "sqlite"
   depends_on "zeromq"
-  depends_on "zlib"
 
   uses_from_macos "curl"
   uses_from_macos "expat"
   uses_from_macos "libpcap"
+  uses_from_macos "zlib"
 
   on_macos do
     depends_on "zstd"
@@ -61,8 +63,6 @@ class Ntopng < Formula
   on_linux do
     depends_on "libcap"
   end
-
-  fails_with gcc: "5"
 
   def install
     # Remove bundled libraries
@@ -85,19 +85,15 @@ class Ntopng < Formula
   end
 
   test do
-    redis_port = free_port
-    redis_bin = Formula["redis"].bin
-    fork do
-      exec redis_bin/"redis-server", "--port", redis_port.to_s
-    end
+    valkey_port = free_port
+    valkey_bin = Formula["valkey"].bin
+    spawn valkey_bin/"valkey-server", "--port", valkey_port.to_s
     sleep 10
 
     mkdir testpath/"ntopng"
-    fork do
-      exec bin/"ntopng", "-i", test_fixtures("test.pcap"), "-d", testpath/"ntopng", "-r", "localhost:#{redis_port}"
-    end
+    spawn bin/"ntopng", "-i", test_fixtures("test.pcap"), "-d", testpath/"ntopng", "-r", "localhost:#{valkey_port}"
     sleep 30
 
-    assert_match "list", shell_output("#{redis_bin}/redis-cli -p #{redis_port} TYPE ntopng.trace")
+    assert_match "list", shell_output("#{valkey_bin}/valkey-cli -p #{valkey_port} TYPE ntopng.trace")
   end
 end

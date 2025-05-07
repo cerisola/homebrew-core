@@ -1,8 +1,8 @@
 class Treefrog < Formula
   desc "High-speed C++ MVC Framework for Web Application"
   homepage "https://www.treefrogframework.org/"
-  url "https://github.com/treefrogframework/treefrog-framework/archive/refs/tags/v2.9.0.tar.gz"
-  sha256 "90cc96a883c09e42a73b6ca7a8ed262ba59c398966c32e984dd3f9d49feda2c2"
+  url "https://github.com/treefrogframework/treefrog-framework/archive/refs/tags/v2.11.0.tar.gz"
+  sha256 "67cbd3d2ee9810007feb97694c6eb1f7ddf9040210e69ca3adc7995c96f63df9"
   license "BSD-3-Clause"
   head "https://github.com/treefrogframework/treefrog-framework.git", branch: "master"
 
@@ -12,21 +12,18 @@ class Treefrog < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:  "a4653a846f4b9223f14887e6d9da5b3fd8e743fdfdef236d0f2e953c347a79ab"
-    sha256 arm64_ventura: "a3218c634e1b76e16154d467f62ca72ac88ba882320463035943b247c49d3a7f"
-    sha256 sonoma:        "6f58123d9af9dd89a79172b17defe9bd0c6a1c3ad32cd7101301f2a829dfff8f"
-    sha256 ventura:       "636ca70974a80bed833eea7c9b91cd66a887e01f7feaf26b4762339e20035df9"
-    sha256 x86_64_linux:  "0dadd26e6024a82c296e5faefa8576642ea0127aa69c22c868458ba55800eb3b"
+    sha256 arm64_sonoma:  "e42ddfe0fa827d1f960ad9ebf94515bdd1e6515c84fa3a466e309118870da58d"
+    sha256 arm64_ventura: "46ea6cafe756b381432a53c52cad8bd19f4066ad6ebb5af04ff6371cc0f7cfdf"
+    sha256 sonoma:        "dd238ea3df08da065ff476dbe01bd9620dedc69da885c4554b7eda53b6a63ab1"
+    sha256 ventura:       "4f29217b878dc7e40a20db0704a4273798dc429f72c86595baa882bd39eca03a"
+    sha256 x86_64_linux:  "5d9f3deacba06b0fee54e42f69653d224caad91c4feb04100982237401f8f5fe"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "glog"
   depends_on "lz4"
   depends_on "mongo-c-driver"
   depends_on "qt"
-
-  fails_with gcc: "5"
 
   def install
     rm_r("3rdparty")
@@ -44,12 +41,12 @@ class Treefrog < Formula
   test do
     ENV.delete "CPATH"
     system bin/"tspawn", "new", "hello"
-    assert_predicate testpath/"hello", :exist?
+    assert_path_exists testpath/"hello"
     cd "hello" do
-      assert_predicate Pathname.pwd/"hello.pro", :exist?
+      assert_path_exists Pathname.pwd/"hello.pro"
 
       system Formula["qt"].opt_bin/"qmake"
-      assert_predicate Pathname.pwd/"Makefile", :exist?
+      assert_path_exists Pathname.pwd/"Makefile"
       system "make"
       system bin/"treefrog", "-v"
     end

@@ -1,8 +1,8 @@
 class OpenlibertyWebprofile8 < Formula
   desc "Lightweight open framework for Java (Jakarta EE Web Profile 8)"
   homepage "https://openliberty.io"
-  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/24.0.0.10/openliberty-webProfile8-24.0.0.10.zip"
-  sha256 "c3ea55a3a2d375d4b2b5311f3ba20db29ab2e2afcdd4085e12c60c56310e5590"
+  url "https://public.dhe.ibm.com/ibmdl/export/pub/software/openliberty/runtime/release/25.0.0.4/openliberty-webProfile8-25.0.0.4.zip"
+  sha256 "5cf94fef3784c5ce95d8e9f3a9afe3eb4e5edde56d2ffc7f809bae4e066e1575"
   license "EPL-1.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class OpenlibertyWebprofile8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "cbd7ff0f6bf897607bf4305fc6c8f649422213cec52e5d19c51e6933d1e7962e"
+    sha256 cellar: :any_skip_relocation, all: "c2e255b45443b9f1e5ee80240536d591fa672cf8d106fec59346317a1fc2736e"
   end
 
   depends_on "openjdk"
@@ -36,12 +36,12 @@ class OpenlibertyWebprofile8 < Formula
 
     begin
       system bin/"openliberty-webprofile8", "start"
-      assert_predicate testpath/"servers/.pid/defaultServer.pid", :exist?
+      assert_path_exists testpath/"servers/.pid/defaultServer.pid"
     ensure
       system bin/"openliberty-webprofile8", "stop"
     end
 
-    refute_predicate testpath/"servers/.pid/defaultServer.pid", :exist?
+    refute_path_exists testpath/"servers/.pid/defaultServer.pid"
     assert_match "<feature>webProfile-8.0</feature>", (testpath/"servers/defaultServer/server.xml").read
   end
 end

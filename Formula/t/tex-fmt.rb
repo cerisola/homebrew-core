@@ -1,50 +1,54 @@
 class TexFmt < Formula
   desc "Extremely fast LaTeX formatter written in Rust"
-  homepage "https://github.com/WGUNDERWOOD/tex-fmt"
-  url "https://github.com/WGUNDERWOOD/tex-fmt/archive/refs/tags/v0.4.6.tar.gz"
-  sha256 "2b7c7f6759007fa0671b9e324b089f5fd70fe6ffdb63388152681217db44b2ae"
+  homepage "https://wgunderwood.github.io/tex-fmt/"
+  url "https://github.com/WGUNDERWOOD/tex-fmt/archive/refs/tags/v0.5.4.tar.gz"
+  sha256 "1a1bc787edb6b8f58feb6f0f5f33a6cac04ea583763f6807c6e319d6171b5d4b"
   license "MIT"
   head "https://github.com/WGUNDERWOOD/tex-fmt.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eb34c52677db7fb7550f8b1fb8f7929ce3ebe878ae7c40a908910b2dce0a22b5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b36a877d20a23d3dd125687249b2443b849e2cc861a4a6a252d54a46995e9555"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b8e0e09eec157e097b59f92a843dbaca6d5c4cc00c2276b807b512aa43df8ee5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1a42d1a3e86e57004e02099dc83cfe34cb7855025cf662b35b97ddac1ea29ab7"
-    sha256 cellar: :any_skip_relocation, ventura:       "02302e6fbe21bb550ac45a4d0bec1be3f4eff0b2427ccd907d9a48e88d55c733"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6e8bf49bdec450809a5ecebbae8a78f73c629dd77f8fd101757d3a52b2305a4a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8ba4991136e1b9c8cda2a7b6f32a0d4bd48e87b539b1d1cedefc5c48c7789b9f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7953296bbf44226be974cfa83a6c72be562890e0953fc2a778eb8a6cc32264e9"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "f54eebd133856d0df1a7c6a135d73c47bb4e26e80fa3d4290616fdd7f0a6fb1b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3beceb95230080b3b4cdd2e333418c7924e86ba3ef01284f85b2c43ed86cd319"
+    sha256 cellar: :any_skip_relocation, ventura:       "baf1ccee2323af100ca9f294fe532228fcf94d4f3f7ee4a36a37989f911e1829"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f09adcafa4191bfe2aacaaa2a3308cb366a13c4c191bf3a57e005a1eb050031a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1113e066dd4f7ea74133893d88f4534fa705e16f276ee197de414ac0e0e4cf8a"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    generate_completions_from_executable(bin/"tex-fmt", "--completion")
+    man1.install "man/tex-fmt.1"
   end
 
   test do
-    (testpath/"test.tex").write <<~EOS
-      \\documentclass{article}
-      \\title{tex-fmt Homebrew Test}
-      \\begin{document}
-      \\maketitle
-      \\begin{itemize}
-      \\item Hello
-      \\item World
-      \\end{itemize}
-      \\end{document}
-    EOS
+    (testpath/"test.tex").write <<~'TEX'
+      \documentclass{article}
+      \title{tex-fmt Homebrew Test}
+      \begin{document}
+      \maketitle
+      \begin{itemize}
+      \item Hello
+      \item World
+      \end{itemize}
+      \end{document}
+    TEX
 
-    assert_equal <<~EOS, shell_output("#{bin}/tex-fmt --print #{testpath}/test.tex").chomp
-      \\documentclass{article}
-      \\title{tex-fmt Homebrew Test}
-      \\begin{document}
-      \\maketitle
-      \\begin{itemize}
-        \\item Hello
-        \\item World
-      \\end{itemize}
-      \\end{document}
-    EOS
+    assert_equal <<~'TEX', shell_output("#{bin}/tex-fmt --print #{testpath}/test.tex")
+      \documentclass{article}
+      \title{tex-fmt Homebrew Test}
+      \begin{document}
+      \maketitle
+      \begin{itemize}
+        \item Hello
+        \item World
+      \end{itemize}
+      \end{document}
+    TEX
 
     assert_match version.to_s, shell_output("#{bin}/tex-fmt --version")
   end

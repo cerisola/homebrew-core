@@ -1,18 +1,19 @@
 class Appium < Formula
   desc "Automation for Apps"
   homepage "https://appium.io/"
-  url "https://registry.npmjs.org/appium/-/appium-2.12.1.tgz"
-  sha256 "9694fd321167180417b889fc1d54a0a6c953742d46e059f0094c5295c0b79228"
+  url "https://registry.npmjs.org/appium/-/appium-2.18.0.tgz"
+  sha256 "a71d89265478e46082d313314296e5285d3cf35a47ac5f189303f2341e882540"
   license "Apache-2.0"
   head "https://github.com/appium/appium.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "1f43243e99a64f798df3cbc53f30bb8773a3944ba3130aaa0b8f7b6d016df6cb"
-    sha256 cellar: :any,                 arm64_sonoma:  "1f43243e99a64f798df3cbc53f30bb8773a3944ba3130aaa0b8f7b6d016df6cb"
-    sha256 cellar: :any,                 arm64_ventura: "1f43243e99a64f798df3cbc53f30bb8773a3944ba3130aaa0b8f7b6d016df6cb"
-    sha256                               sonoma:        "860fcf90a5efd9346230b0f10de9712553e5f3c47369948ddcce1e94aab64b29"
-    sha256                               ventura:       "860fcf90a5efd9346230b0f10de9712553e5f3c47369948ddcce1e94aab64b29"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a4309b925b41eab6f35439ced5d2726fa0dfd281cb5c818f92ff1a62d398bded"
+    sha256 cellar: :any,                 arm64_sequoia: "d9f51b6873ea1f0a238086d1dce9618f0270c959ebb206bddcf64c4f4cea3b9a"
+    sha256 cellar: :any,                 arm64_sonoma:  "d9f51b6873ea1f0a238086d1dce9618f0270c959ebb206bddcf64c4f4cea3b9a"
+    sha256 cellar: :any,                 arm64_ventura: "d9f51b6873ea1f0a238086d1dce9618f0270c959ebb206bddcf64c4f4cea3b9a"
+    sha256                               sonoma:        "ada43312361db2dbe53846eb7043b5f74057bca45c685322d47cb86aa8aef605"
+    sha256                               ventura:       "ada43312361db2dbe53846eb7043b5f74057bca45c685322d47cb86aa8aef605"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "20406e44f2db15b318f348e9bbb4c5804db91ddf3e42ec05af3633256d64e405"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d8e036d97e585075cae1bd0f22829f244d8324a29768735ccade67183d1eadb6"
   end
 
   depends_on "node"

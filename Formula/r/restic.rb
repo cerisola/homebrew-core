@@ -1,18 +1,19 @@
 class Restic < Formula
   desc "Fast, efficient and secure backup program"
   homepage "https://restic.net/"
-  url "https://github.com/restic/restic/archive/refs/tags/v0.17.2.tar.gz"
-  sha256 "ac52843c40bc9b520bb8dbbbaeda6afec7a35c59753b8cbf11348dd734896ed1"
+  url "https://github.com/restic/restic/archive/refs/tags/v0.18.0.tar.gz"
+  sha256 "fc068d7fdd80dd6a968b57128d736b8c6147aa23bcba584c925eb73832f6523e"
   license "BSD-2-Clause"
   head "https://github.com/restic/restic.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a3009e4a833d5238bb51a1409d9478ae2833f7328330ca189b0a989e84a5ce34"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a3009e4a833d5238bb51a1409d9478ae2833f7328330ca189b0a989e84a5ce34"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a3009e4a833d5238bb51a1409d9478ae2833f7328330ca189b0a989e84a5ce34"
-    sha256 cellar: :any_skip_relocation, sonoma:        "01df0b8c186c74010c224c651fdbed0cf37e812ba583127a1267df41c5ec7673"
-    sha256 cellar: :any_skip_relocation, ventura:       "01df0b8c186c74010c224c651fdbed0cf37e812ba583127a1267df41c5ec7673"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ae3d8528225b381f3d74decf95d057cd65834360536dd4b2aa5732977ac9cfa6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2c5e5f38a7c321b978414f6539399447307087b8f62ec240196cd8e7f486fb89"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2c5e5f38a7c321b978414f6539399447307087b8f62ec240196cd8e7f486fb89"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2c5e5f38a7c321b978414f6539399447307087b8f62ec240196cd8e7f486fb89"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d8a80b0c01d0b542100e14c75ebcc7ea6d9690c9c113c3a043ea17559d20149e"
+    sha256 cellar: :any_skip_relocation, ventura:       "d8a80b0c01d0b542100e14c75ebcc7ea6d9690c9c113c3a043ea17559d20149e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "79c6bb25ad8711d2280bc48f9bccb44fc854a03335b664b696ad919c3a60cb53"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "70a15fea59111ab70cdbac9fa18b5528901a2dbdf4271f08d6438f9c0f6edc80"
   end
 
   depends_on "go" => :build

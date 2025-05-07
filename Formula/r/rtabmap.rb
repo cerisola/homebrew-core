@@ -1,11 +1,18 @@
 class Rtabmap < Formula
   desc "Visual and LiDAR SLAM library and standalone application"
   homepage "https://introlab.github.io/rtabmap"
-  url "https://github.com/introlab/rtabmap/archive/refs/tags/0.21.4.tar.gz"
-  sha256 "242f8da7c5d20f86a0399d6cfdd1a755e64e9117a9fa250ed591c12f38209157"
   license "BSD-3-Clause"
-  revision 6
+  revision 10
   head "https://github.com/introlab/rtabmap.git", branch: "master"
+
+  stable do
+    url "https://github.com/introlab/rtabmap/archive/refs/tags/0.21.4.tar.gz"
+    sha256 "242f8da7c5d20f86a0399d6cfdd1a755e64e9117a9fa250ed591c12f38209157"
+
+    # Backport support for newer PCL
+    # Ref: https://github.com/introlab/rtabmap/commit/cbd3995b600fc2acc4cb57b81f132288a6c91188
+    patch :DATA
+  end
 
   # Upstream doesn't create releases for all tagged versions, so we use the
   # `GithubLatest` strategy.
@@ -15,11 +22,11 @@ class Rtabmap < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:  "b682ea5e47fc3fc7764a1240cbd36193f4a655c29975673b8519b8ffa4df9484"
-    sha256                               arm64_ventura: "349c386c818cc77fe5336f82eb0312ceca90b83bc7816f851865d43ec4017e7b"
-    sha256                               sonoma:        "f22be6a88d44e3d78066bfb736ee07c4de3f672e97a00933802479b5e30a0327"
-    sha256                               ventura:       "550b122cb1824ec54671a218d4c4d9372c662b1ae06a6f6b7a5ab1e7d62b24f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "eb87b797666de147043bcc3f52b7ffa12280c5eb0ff34cf3c2c4721a172bc43b"
+    sha256                               arm64_sonoma:  "1d433bee617217b945cc97f14e98ef947b3966d804f884f047607fb51fb13852"
+    sha256                               arm64_ventura: "1e9747b0eb5689899563716f8956590a882545c2f0a9e73df82cd4148f1f198c"
+    sha256                               sonoma:        "99d65d4e03958e697247bf67bbce34cd78356c48e06c119883252ab0eabc9f6f"
+    sha256                               ventura:       "6d1567f28fac55c42410af8f0946efd7f5513a21c66bdce68a609f90918a47df"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "78f9cf656952b8ca809bd8f68b6903727b9957aedb88f592e680de09ddbbbf37"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -38,6 +45,7 @@ class Rtabmap < Formula
   on_macos do
     depends_on "boost"
     depends_on "flann"
+    depends_on "freetype"
     depends_on "glew"
     depends_on "libomp"
     depends_on "libpcap"
@@ -47,29 +55,25 @@ class Rtabmap < Formula
   end
 
   def install
-    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
-    # libunwind due to it being present in a library search path.
-    if DevelopmentTools.clang_build_version >= 1500
-      recursive_dependencies
-        .select { |d| d.name.match?(/^llvm(@\d+)?$/) }
-        .map { |llvm_dep| llvm_dep.to_formula.opt_lib }
-        .each { |llvm_lib| ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm_lib }
-    end
-
-    args = %W[
-      -DCMAKE_INSTALL_RPATH=#{rpath}
-    ]
-
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
     # Replace reference to OpenCV's Cellar path
     opencv = Formula["opencv"]
     inreplace lib.glob("rtabmap-*/RTABMap_coreTargets.cmake"), opencv.prefix.realpath, opencv.opt_prefix
+
+    return unless OS.mac?
+
+    # Remove SDK include paths from CMake config files to avoid requiring specific SDK version
+    sdk_include_regex = Regexp.escape("#{MacOS.sdk_for_formula(self).path}/usr/include")
+    inreplace lib.glob("rtabmap-*/RTABMap_{core,utilite}Targets.cmake"), /;#{sdk_include_regex}([;"])/, "\\1"
   end
 
   test do
+    # Check all references to SDK path were removed from CMake config files
+    prefix.glob("**/*.cmake") { |cmake| refute_match %r{/MacOSX[\d.]*\.sdk/}, cmake.read } if OS.mac?
+
     output = if OS.linux?
       # Linux CI cannot start windowed applications due to Qt plugin failures
       shell_output("#{bin}/rtabmap-console --version")
@@ -109,3 +113,18 @@ class Rtabmap < Formula
     assert_equal version.to_s, shell_output("./build/test").strip
   end
 end
+
+__END__
+diff --git a/corelib/src/CameraThread.cpp b/corelib/src/CameraThread.cpp
+index a18fc2c1..d1486b20 100644
+--- a/corelib/src/CameraThread.cpp
++++ b/corelib/src/CameraThread.cpp
+@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <rtabmap/utilite/ULogger.h>
+ #include <rtabmap/utilite/UStl.h>
+ 
+-#include <pcl/io/io.h>
++#include <pcl/common/io.h>
+ 
+ namespace rtabmap
+ {

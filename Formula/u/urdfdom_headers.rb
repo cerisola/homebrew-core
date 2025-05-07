@@ -18,16 +18,16 @@ class UrdfdomHeaders < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
 
   def install
-    ENV.cxx11
-    system "cmake", ".", *std_cmake_args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <urdf_model/pose.h>
       int main() {
         double quat[4];
@@ -35,7 +35,8 @@ class UrdfdomHeaders < Formula
         rot.getQuaternion(quat[0], quat[1], quat[2], quat[3]);
         return 0;
       }
-    EOS
+    CPP
+
     system ENV.cxx, shell_output("pkg-config --cflags urdfdom_headers").chomp, "test.cpp", "-std=c++11", "-o", "test"
     system "./test"
   end

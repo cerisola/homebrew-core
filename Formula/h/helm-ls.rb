@@ -1,26 +1,26 @@
 class HelmLs < Formula
   desc "Language server for Helm"
   homepage "https://github.com/mrjosh/helm-ls"
-  url "https://github.com/mrjosh/helm-ls/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "6cbbe74114e6a4b8cd0821e372190f67743bb0528ea364a969524c754ba00c22"
+  url "https://github.com/mrjosh/helm-ls/archive/refs/tags/v0.2.1.tar.gz"
+  sha256 "76e549acedafcd69b7bc596f8c8e3a956ea8d5ac7701000e5128b8ec256c0b3a"
   license "MIT"
   head "https://github.com/mrjosh/helm-ls.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "8036353a79e05dbf8cf9575683e8ebfe01f061c03d47494d9a8843c949ca297b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "fedd5ab71b9056b1e72dea7cf14793a3f031749abac67ceb8ea82562a14316ef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "6b97bb39daac8453d8f743d3d2157788c2a98d975c0eaa4f8d4bee296583b436"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "cff77a1eb4bfba6811d7c0874a48a12282f22ae041ae45030654b1b36dd1b2b9"
-    sha256 cellar: :any_skip_relocation, sonoma:         "18ec922131749e79ead6a293f7f24e46c40381843a6569bba092ccb392176652"
-    sha256 cellar: :any_skip_relocation, ventura:        "0a7c8137569c772d25e34d98f723519db292329706a8cb9042893a9888c6b8d9"
-    sha256 cellar: :any_skip_relocation, monterey:       "db62edea9ffe0fcfb5572030a136d163d3b8b8c2233da4bb1b8b9eb1a7c800f7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f4b8c65835838e2509815cba6b3895e940354df97ac376516b809d7dc1d01710"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "53bb03997b543932896560f42ce13531551f618832b1a7773bdb54ad6a81073e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a893874fa616f619ab909de66cba55168200fe6de3aae3e559c6fbb98a1f64f"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "19ed3ac44342a67beebbf851a340acb32ddb57427a0e7244dca136546e6f23ce"
+    sha256 cellar: :any_skip_relocation, sonoma:        "255c0e4b69864916a7147768dd9d2d548d2c27bb9d8033fda8dc92a72b2af6ce"
+    sha256 cellar: :any_skip_relocation, ventura:       "50f1c338d0bae3c40bacf2a6cd4f98c619c98a87754364ba9a2cbc79adc8350a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fa90469047d8a26ff7a72fdedf73d7afad79294fb6fc4c2dc6eed447628574da"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27d76e2694fc0a48bc321a22a50e8f9b67e91dc5168a17aed6598a9b764ffac5"
   end
 
   depends_on "go" => :build
 
   def install
     ldflags = %W[
+      -s -w
       -X main.Version=#{version}
       -X main.CompiledBy=#{tap.user}
       -X main.GitCommit=#{tap.user}

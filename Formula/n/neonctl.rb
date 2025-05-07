@@ -1,17 +1,18 @@
 class Neonctl < Formula
   desc "Neon CLI tool"
   homepage "https://neon.tech/docs/reference/neon-cli"
-  url "https://registry.npmjs.org/neonctl/-/neonctl-2.4.0.tgz"
-  sha256 "79b000d2e84b13b587a28b0a4f913c1dc528fe578b07c9db2530c45cabdc9451"
+  url "https://registry.npmjs.org/neonctl/-/neonctl-2.9.0.tgz"
+  sha256 "bf54dcf2563769587ac0194b4b6034ba97a17ec3ba56928ca7995e667a8f5e61"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a70b09c1ff128f315cd0208f2c7c740fb33de7f12bf3a79437416ffd54626c82"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a70b09c1ff128f315cd0208f2c7c740fb33de7f12bf3a79437416ffd54626c82"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a70b09c1ff128f315cd0208f2c7c740fb33de7f12bf3a79437416ffd54626c82"
-    sha256 cellar: :any_skip_relocation, sonoma:        "94aaaab627dcb23ded11d4b03d8816f71fcb864c0025aed3ed3ce8da2350e263"
-    sha256 cellar: :any_skip_relocation, ventura:       "94aaaab627dcb23ded11d4b03d8816f71fcb864c0025aed3ed3ce8da2350e263"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a70b09c1ff128f315cd0208f2c7c740fb33de7f12bf3a79437416ffd54626c82"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "491ea5e29bdaa5cd12b82f2412c11a5a8eb34baac66b8d145219b5403d595b0b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "491ea5e29bdaa5cd12b82f2412c11a5a8eb34baac66b8d145219b5403d595b0b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "491ea5e29bdaa5cd12b82f2412c11a5a8eb34baac66b8d145219b5403d595b0b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "59bfefb34b9f8003d242e2d1cc8dcb2886afb7e0401c09bd64c69010418fe6ea"
+    sha256 cellar: :any_skip_relocation, ventura:       "59bfefb34b9f8003d242e2d1cc8dcb2886afb7e0401c09bd64c69010418fe6ea"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b8521b047d9fa3f8f6979f2a3a49832efb00c3aee7984166a906b948e40c7be7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "491ea5e29bdaa5cd12b82f2412c11a5a8eb34baac66b8d145219b5403d595b0b"
   end
 
   depends_on "node"
@@ -21,7 +22,7 @@ class Neonctl < Formula
     bin.install_symlink Dir["#{libexec}/bin/*"]
 
     %w[neonctl neon].each do |cmd|
-      generate_completions_from_executable(bin/cmd, "completion", base_name: cmd, shells: [:bash, :zsh])
+      generate_completions_from_executable(bin/cmd, "completion", shells: [:bash, :zsh])
     end
   end
 

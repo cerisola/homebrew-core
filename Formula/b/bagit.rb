@@ -10,11 +10,6 @@ class Bagit < Formula
   version_scheme 1
   head "https://github.com/LibraryOfCongress/bagit-python.git", branch: "master"
 
-  livecheck do
-    url :stable
-    regex(%r{href=.*?/project/bagit/v?(\d+(?:\.\d+)+)/?["' >]}i)
-  end
-
   bottle do
     rebuild 3
     sha256 cellar: :any_skip_relocation, all: "c52968f9d307a0525271426a777174e9c488c3a062ea6756a68fbf671ab320d3"
@@ -35,8 +30,8 @@ class Bagit < Formula
 
   test do
     system bin/"bagit.py", "--source-organization", "Library of Congress", testpath.to_s
-    assert_predicate testpath/"bag-info.txt", :exist?
-    assert_predicate testpath/"bagit.txt", :exist?
+    assert_path_exists testpath/"bag-info.txt"
+    assert_path_exists testpath/"bagit.txt"
     assert_match "Bag-Software-Agent: bagit.py", File.read("bag-info.txt")
     assert_match "BagIt-Version: 0.97", File.read("bagit.txt")
 

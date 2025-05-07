@@ -3,18 +3,19 @@ class TranslateToolkit < Formula
 
   desc "Toolkit for localization engineers"
   homepage "https://toolkit.translatehouse.org/"
-  url "https://files.pythonhosted.org/packages/30/32/d5ec62e080b454554c06a3557aa0969e0036c28149da8a7ac53b7ee65800/translate_toolkit-3.14.1.tar.gz"
-  sha256 "2148c437c529d4eaf89c5a3bd5690376eabee97c3c39b7d4824001a7cf333e86"
+  url "https://files.pythonhosted.org/packages/f2/35/7264ad40d8ef95db2cdceadd808b479c5c289068bc2809db0ed265cc6f3c/translate_toolkit-3.15.2.tar.gz"
+  sha256 "8b9cf1a6ffd3eb10757c77496c414bc6a6eb400bf88f10914257672431fe22ae"
   license "GPL-2.0-or-later"
   head "https://github.com/translate/translate.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "eae6d2cc2e897a02a78f54f79edd72e731f9c3749fb3f52106e6ac0f5e1b82c6"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7c2a0cabbdbfbe74b43250fda9bb2092bdc1a309fd703c7daacc7560f90b376f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "867308913f6ccaf8f996da7f8867caeb766da397680b7f77b1877603ae16f76b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d0235351a0dfcacc2922c175d87d4d48d4efdc29cea0124632a14abb9abf5c26"
-    sha256 cellar: :any_skip_relocation, ventura:       "bcbd271c0b75bd0b16a06cac62ecd1de23eb26ec3a6729742a1cba57daa8cfa3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9d80ff8da916c4c7a4255109bb18d23f313badb512b86bffa9fee7f51b566bce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "93e680e798291f70223c2cb28fc21a33495d11b3305c9ebde4951bb768ccf737"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e3e59f754e39baa1b08b7be9a40fa0c5ed6d3318399570b20f0dee66cb36adb4"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "760dd04e4058d0ef441ce2694cb6a4bba2c5ebf4e46445009c53612ded9c4e4b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d27e73ebfce34346dab06dd92ab55b9e2f14c450403f63e68fbb93985af67d3d"
+    sha256 cellar: :any_skip_relocation, ventura:       "9a08b37359abd5147b52df44b390335f71820a2492906586ad668ad860e82ecf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "caeb90933eb921bb497ca9489cd429c59d41ee7acf53a371747a52e14b97fcd6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0bc8438508566659a1e37119762660ccd24b330794c26332dda4594695bf1160"
   end
 
   depends_on "python@3.13"
@@ -22,14 +23,14 @@ class TranslateToolkit < Formula
   uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
 
-  resource "lxml" do
-    url "https://files.pythonhosted.org/packages/e7/6b/20c3a4b24751377aaa6307eb230b66701024012c29dd374999cc92983269/lxml-5.3.0.tar.gz"
-    sha256 "4e109ca30d1edec1ac60cdbe341905dc3b8f55b16855e03a54aaf59e51ec8c6f"
+  resource "cwcwidth" do
+    url "https://files.pythonhosted.org/packages/23/76/03fc9fb3441a13e9208bb6103ebb7200eba7647d040008b8303a1c03e152/cwcwidth-0.1.10.tar.gz"
+    sha256 "7468760f72c1f4107be1b2b2854bc000401ea36a69daed36fb966a1e19a7a124"
   end
 
-  resource "wcwidth" do
-    url "https://files.pythonhosted.org/packages/6c/63/53559446a878410fc5a5974feb13d31d78d752eb18aeba59c7fef1af7598/wcwidth-0.2.13.tar.gz"
-    sha256 "72ea0c06399eb286d978fdedb6923a9eb47e1c486ce63e9b4e64fc18303972b5"
+  resource "lxml" do
+    url "https://files.pythonhosted.org/packages/76/3d/14e82fc7c8fb1b7761f7e748fd47e2ec8276d137b6acfe5a4bb73853e08f/lxml-5.4.0.tar.gz"
+    sha256 "d12832e1dbea4be280b22fd0ea7c9b87f0d8fc51ba06e92dc62d52f804f78ebd"
   end
 
   def install

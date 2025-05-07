@@ -4,6 +4,7 @@ class Clair < Formula
   url "https://github.com/quay/clair/archive/refs/tags/v4.8.0.tar.gz"
   sha256 "354cfddb1e4594fd5982fdf55096f8b0e19649bcc5024156170a409aabcf3081"
   license "Apache-2.0"
+  head "https://github.com/quay/clair.git", branch: "main"
 
   livecheck do
     url :stable
@@ -30,7 +31,7 @@ class Clair < Formula
   test do
     http_port = free_port
     db_port = free_port
-    (testpath/"config.yaml").write <<~EOS
+    (testpath/"config.yaml").write <<~YAML
       ---
       introspection_addr: "localhost:#{free_port}"
       http_listen_addr: "localhost:#{http_port}"
@@ -43,7 +44,7 @@ class Clair < Formula
         indexer_addr: "localhost:#{http_port}"
         matcher_addr: "localhost:#{http_port}"
         connstring: host=localhost port=#{db_port} user=clair dbname=clair sslmode=disable
-    EOS
+    YAML
 
     output = shell_output("#{bin}/clair -conf #{testpath}/config.yaml -mode combo 2>&1", 1)
     # requires a Postgres database

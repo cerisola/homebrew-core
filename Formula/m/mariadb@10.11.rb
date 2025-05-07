@@ -1,8 +1,8 @@
 class MariadbAT1011 < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "https://archive.mariadb.org/mariadb-10.11.9/source/mariadb-10.11.9.tar.gz"
-  sha256 "0a00180864cd016187c986faab8010de23a117b9a75f91d6456421f894e48d20"
+  url "https://archive.mariadb.org/mariadb-10.11.11/source/mariadb-10.11.11.tar.gz"
+  sha256 "6f29d4d7e40fc49af4a0fe608984509ef2d153df3cd8afe4359dce3ca0e27890"
   license "GPL-2.0-only"
 
   livecheck do
@@ -18,14 +18,13 @@ class MariadbAT1011 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "f06339ab2d71540a86ef40b48ed833ea4d21c69915d450ef73119f8ee308c76b"
-    sha256 arm64_sonoma:   "a91e3731617b5fb786e2f277f8540b8fe906a0184afdcfac0e73004d367dbbe9"
-    sha256 arm64_ventura:  "c33f83cc899ce36ad91d001ea7841552002d30877ea53995aeab2c320d81a5a1"
-    sha256 arm64_monterey: "c52303fa42f367259730cb5b1858526f8a5eaee275296e54e442230eb233383e"
-    sha256 sonoma:         "6045e2f4007f7231e5a6689eb79fa24150b2f036a91f60205f6d81d86f4de363"
-    sha256 ventura:        "d786a62f71446a40e7d723dcb725b2e69c4f300f4d72e020ae73fc64950c59a5"
-    sha256 monterey:       "fafc42273f7756b0b2e338ebfb98b3ccf3a725d05c93ccc74016b723031ed8a0"
-    sha256 x86_64_linux:   "279aa1ff5ed036afedef34daa2ee9e070e153ec33ecb2079b09979a0e6b091e9"
+    sha256 arm64_sequoia: "04470673c1f6cae250ca31e5882d5535b852d8b3a330db914522a301fed52d6d"
+    sha256 arm64_sonoma:  "58d4aa3ff13d2e6abe0be57014ea698e9d29bc73897e7d8f8b4627bd6ea5e375"
+    sha256 arm64_ventura: "a2e474fded76e08edfbc0722c14831f224a1bcad893b3cff74a7eb39a7b13e35"
+    sha256 sonoma:        "ac4da5f4380f31b36346cbd45fc17f188fc13ec2672552338b77c176f1206348"
+    sha256 ventura:       "6a001296b9e98e61e25e384177110927f1e8d9351fc81a143f6ce7af13830800"
+    sha256 arm64_linux:   "eb73d5c1531dec08a5b89d622bdfbfd6afa89bacdc89c30de57d885c27e58f18"
+    sha256 x86_64_linux:  "216605249b124d91406eb9b40ca31b6c5508b9a066ef9d791c087daa17c4f9ba"
   end
 
   keg_only :versioned_formula
@@ -38,7 +37,7 @@ class MariadbAT1011 < Formula
   depends_on "cmake" => :build
   depends_on "fmt" => :build
   depends_on "openjdk" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "groonga"
   depends_on "lz4"
@@ -61,10 +60,33 @@ class MariadbAT1011 < Formula
     depends_on "readline" # uses libedit on macOS
   end
 
-  fails_with gcc: "5"
+  # system libfmt patch, upstream pr ref, https://github.com/MariaDB/server/pull/3786
+  patch do
+    url "https://github.com/MariaDB/server/commit/b6a924b8478d2fab5d51245ff6719b365d7db7f4.patch?full_index=1"
+    sha256 "77b65b35cf0166b8bb576254ac289845db5a8e64e03b41f1bf4b2045ac1cd2d1"
+  end
+
+  # Backport fix for CMake 4.0
+  patch do
+    url "https://github.com/MariaDB/server/commit/2a5a12b227845e03575f1b1eb0f6366dccc3e026.patch?full_index=1"
+    sha256 "f3a4b5871141451edf3936bcad0861e3a38418c3a8c6a69dfeddb8d073ac3253"
+  end
+  patch do
+    url "https://github.com/codership/wsrep-lib/commit/324b01e4315623ce026688dd9da1a5f921ce7084.patch?full_index=1"
+    sha256 "eaa0c3b648b712b3dbab3d37dfca7fef8a072908dc28f2ed383fbe8d217be421"
+    directory "wsrep-lib"
+  end
 
   def install
+    ENV.runtime_cpu_detection
     ENV.cxx11
+
+    # Backport fix for CMake 4.0 in columnstore submodule
+    # https://github.com/mariadb-corporation/mariadb-columnstore-engine/commit/726cc3684b4de08934c2b14f347799fd8c3aac9a
+    # https://github.com/mariadb-corporation/mariadb-columnstore-engine/commit/7e17d8825409fb8cc0629bfd052ffac6e542b50e
+    inreplace "storage/columnstore/columnstore/CMakeLists.txt",
+              "CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)",
+              "CMAKE_MINIMUM_REQUIRED(VERSION 3.10)"
 
     # Set basedir and ldata so that mysql_install_db can find the server
     # without needing an explicit path to be set. This can still
@@ -141,12 +163,12 @@ class MariadbAT1011 < Formula
     end
 
     # Install my.cnf that binds to 127.0.0.1 by default
-    (buildpath/"my.cnf").write <<~EOS
+    (buildpath/"my.cnf").write <<~INI
       # Default Homebrew MySQL server config
       [mysqld]
       # Only allow connections from localhost
       bind-address = 127.0.0.1
-    EOS
+    INI
     etc.install "my.cnf"
   end
 

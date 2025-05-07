@@ -1,16 +1,15 @@
 class CassandraReaper < Formula
   desc "Management interface for Cassandra"
   homepage "https://cassandra-reaper.io/"
-  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.6.1/cassandra-reaper-3.6.1-release.tar.gz"
-  sha256 "8e5004692d031e2abe47c26c066d853fb1f841b23833edd66d58ff54bef82399"
+  url "https://github.com/thelastpickle/cassandra-reaper/releases/download/3.8.0/cassandra-reaper-3.8.0-release.tar.gz"
+  sha256 "5474d60e006a853c52d932f4acbbe0c602184b51bd0a8d177c83b4c807d31e3b"
   license "Apache-2.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "d3600523c5e7a0f11954710872d7a2b5d1ae39240779ccf37e6e762f683e5feb"
+    sha256 cellar: :any_skip_relocation, all: "a3b94b283a4b06b17c6c38dd31937863bd69b68e6396eb0f9a64b402ec9fef06"
   end
 
-  depends_on "openjdk@11"
+  depends_on "openjdk@11" # OpenJDK 17/21 issue: https://github.com/thelastpickle/cassandra-reaper/issues/1437
 
   def install
     inreplace Dir["resource/*.yaml"], " /var/log", " #{var}/log"

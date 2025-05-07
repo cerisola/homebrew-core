@@ -7,6 +7,7 @@ class RofsFiltered < Formula
 
   bottle do
     rebuild 3
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "01d57c6c071aacd6dc92a36f807b1e718f6178b8078f1d871d59941a7228670c"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "ae07e1e4a0daa79c067329aeafc4078dd7f74c793ccb1a2ade7c3dedf0f05ade"
   end
 
@@ -15,9 +16,12 @@ class RofsFiltered < Formula
   depends_on :linux # on macOS, requires closed-source macFUSE
 
   def install
-    mkdir "build" do
-      system "cmake", "..", "-DCMAKE_INSTALL_SYSCONFDIR=#{etc}", *std_cmake_args
-      system "make", "install"
-    end
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_SYSCONFDIR=#{etc}", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/rofs-filtered --version 2>&1")
   end
 end

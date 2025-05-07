@@ -1,10 +1,10 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "https://postgis.net/"
-  url "https://download.osgeo.org/postgis/source/postgis-3.5.0.tar.gz"
-  sha256 "ca698a22cc2b2b3467ac4e063b43a28413f3004ddd505bdccdd74c56a647f510"
+  url "https://download.osgeo.org/postgis/source/postgis-3.5.2.tar.gz"
+  sha256 "fb9f95d56e3aaef6a296473c76a3b99005ac41864d486c197cd478c9b14f791a"
   license "GPL-2.0-or-later"
-  revision 4
+  revision 1
 
   livecheck do
     url "https://download.osgeo.org/postgis/source/"
@@ -12,12 +12,12 @@ class Postgis < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "4dc929545f012b4937f0ef4b592f1cfc9fb24991c171f1cbebe24877afd29e02"
-    sha256 cellar: :any,                 arm64_sonoma:  "d379b2e5eb7ddb7bce39efcaf7ab781297fa6c64b449319c2b0725875662fced"
-    sha256 cellar: :any,                 arm64_ventura: "610276ab33190e16cfef39bf07ecd8f46c7482c7ccd6aed2a66b52c120f6cb44"
-    sha256 cellar: :any,                 sonoma:        "25faf3815f93d2f07c49718ab57d69070864dcada19cbbe00fd1932b600abc41"
-    sha256 cellar: :any,                 ventura:       "f6d81e6e78e7839a923cc3db07075fdb42bc84c7dae281bdc790b24906e3d4fd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "df0b4230995eae6cb8267930cbe3231f4b8d755d51a7c73179593e9bed0324b5"
+    sha256 cellar: :any,                 arm64_sequoia: "62af63f759ed25f9082c1a745cf477c1f76593eb085bc99ad0097419b4843d66"
+    sha256 cellar: :any,                 arm64_sonoma:  "3ff4281a0ba5513b5e7e3b24ddf876a7f4f8942eade6600a71f6faceda9b9290"
+    sha256 cellar: :any,                 arm64_ventura: "efeeb68577e73a5f2d904feb62ee197fa71e19598142a10103dde37a7b79ad10"
+    sha256 cellar: :any,                 sonoma:        "cc56361e4581279a3c0322ba5fd1a8450fdc8e373e0cb52b2c5d2d21b7d03658"
+    sha256 cellar: :any,                 ventura:       "075836df35f956b3215b14887fb1e73858f17081167ac1f0888531842eb3fd97"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "99d96c03aa912239f623da45b338848d82523c172d78aed4e67f837305048a03"
   end
 
   head do
@@ -28,13 +28,13 @@ class Postgis < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "postgresql@14" => [:build, :test]
   depends_on "postgresql@17" => [:build, :test]
 
   depends_on "gdal"
   depends_on "geos"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "json-c"
   depends_on "libpq"
   depends_on "libxml2"
@@ -50,19 +50,11 @@ class Postgis < Formula
   end
 
   def postgresqls
-    deps.map(&:to_formula).sort_by(&:version).filter { |f| f.name.start_with?("postgresql@") }
+    deps.filter_map { |dep| dep.to_formula if dep.name.start_with?("postgresql@") }
+        .sort_by(&:version)
   end
 
   def install
-    # Work around an Xcode 15 linker issue which causes linkage against LLVM's
-    # libunwind due to it being present in a library search path.
-    if DevelopmentTools.clang_build_version >= 1500
-      recursive_dependencies
-        .select { |d| d.name.match?(/^llvm(@\d+)?$/) }
-        .map { |llvm_dep| llvm_dep.to_formula.opt_lib }
-        .each { |llvm_lib| ENV.remove "HOMEBREW_LIBRARY_PATHS", llvm_lib }
-    end
-
     # C++17 is required.
     ENV.append "CXXFLAGS", "-std=c++17"
     # Avoid linking to libc++ on Linux due to indirect LLVM dependency

@@ -1,76 +1,56 @@
 class PerconaToolkit < Formula
   desc "Command-line tools for MySQL, MariaDB and system tasks"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/downloads/percona-toolkit/3.6.0/source/tarball/percona-toolkit-3.6.0.tar.gz"
-  sha256 "48c2a0f7cfc987e683f60e9c7a29b0ca189e2f4b503f6d01c5baca403c09eb8d"
+  url "https://www.percona.com/downloads/percona-toolkit/3.7.0/source/tarball/percona-toolkit-3.7.0.tar.gz"
+  sha256 "e79f53c3227ac31c858fad061d8a000162cb5ecf8b446b90b574adde9e9ab455"
   license any_of: ["GPL-2.0-only", "Artistic-1.0-Perl"]
-  revision 2
   head "lp:percona-toolkit", using: :bzr
 
   livecheck do
-    url "https://docs.percona.com/percona-toolkit/version.html"
-    regex(/Percona\s+Toolkit\s+v?(\d+(?:\.\d+)+)\s+released/im)
+    url "https://www.percona.com/products-api.php", post_form: {
+      version: "percona-toolkit",
+    }
+    regex(/value=["']?[^"' >]*?v?(\d+(?:[.-]\d+)+)[|"' >]/i)
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a1134b153a117ab438762c198f47170b24eb8b09aa4bc5eecfd0c5511dc6e8e4"
-    sha256 cellar: :any,                 arm64_sonoma:  "5f0de6236a3b694a6d6789fd33546ccbbf7fafd3926f6c428693c67bfba1c6de"
-    sha256 cellar: :any,                 arm64_ventura: "b2946e3784bab092642da4a5031e9ca0607accd6952584d026c5b00b46e2bee6"
-    sha256 cellar: :any,                 sonoma:        "6d42bf7568d502d97272e1ebbf7a3cf5c7b996b46d028310acdcf38ad0cb601a"
-    sha256 cellar: :any,                 ventura:       "7f01e906b9474648465bb533e93ed918b27f295e6ad00b056e0ce03b1687c829"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ebe3d5dc418029eb174269d47e4b2d7f74bff8581f11653b5de8b48a6514a00"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a37d5376a12782664896830ae588d515b1bbde0d4452156c9319e6b391a453ea"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a37d5376a12782664896830ae588d515b1bbde0d4452156c9319e6b391a453ea"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "5986cbc073b8a2f0cf7b6b53b1a2a7e1029e2f498d0471dd46189067884f8f1a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f3cbec25f4fa8beb974b310c074a90e6ef1eb58bcef0c1274f59217931983a93"
+    sha256 cellar: :any_skip_relocation, ventura:       "51e79707676df290463b16f92541773bd254a0b1014dac67b4c238db6cbfb6e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "40e8a0ed87eaa24b89d1b6c7c47bd3298281b8fa1ea653bd80761112cbf165d1"
   end
 
   depends_on "go" => :build
-  depends_on "mysql-client"
+  depends_on "perl-dbd-mysql"
 
   uses_from_macos "perl"
 
-  # Should be installed before DBD::mysql
-  resource "Devel::CheckLib" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz"
-    sha256 "869d38c258e646dcef676609f0dd7ca90f085f56cf6fd7001b019a5d5b831fca"
-  end
-
-  resource "DBI" do
-    url "https://cpan.metacpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz"
-    sha256 "8a2b993db560a2c373c174ee976a51027dd780ec766ae17620c20393d2e836fa"
-  end
-
-  resource "DBD::mysql" do
-    url "https://cpan.metacpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-5.008.tar.gz"
-    sha256 "a2324566883b6538823c263ec8d7849b326414482a108e7650edc0bed55bcd89"
-  end
-
   resource "JSON" do
-    url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz"
-    sha256 "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35"
+    on_linux do
+      url "https://cpan.metacpan.org/authors/id/I/IS/ISHIGAKI/JSON-4.10.tar.gz"
+      sha256 "df8b5143d9a7de99c47b55f1a170bd1f69f711935c186a6dc0ab56dd05758e35"
+    end
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", buildpath/"build_deps/lib/perl5"
+    ENV.prepend_path "PERL5LIB", Formula["perl-dbd-mysql"].opt_libexec/"lib/perl5"
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
-    build_only_deps = %w[Devel::CheckLib]
     resources.each do |r|
       r.stage do
-        install_base = if build_only_deps.include? r.name
-          buildpath/"build_deps"
-        else
-          libexec
-        end
-
-        make_args = []
-        make_args << "OTHERLDFLAGS=-Wl,-dead_strip_dylibs" if r.name == "DBD::mysql" && OS.mac?
-
-        system "perl", "Makefile.PL", "INSTALL_BASE=#{install_base}", "NO_PERLLOCAL=1", "NO_PACKLIST=1"
-        system "make", "install", *make_args
+        system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}",
+                                      "INSTALLMAN1DIR=none", "INSTALLMAN3DIR=none",
+                                      "NO_PERLLOCAL=1", "NO_PACKLIST=1"
+        system "make", "install"
       end
     end
 
     system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}", "INSTALLSITEMAN1DIR=#{man1}"
     system "make", "install"
-    bin.env_script_all_files(libexec/"bin", PERL5LIB: libexec/"lib/perl5")
+    bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
   end
 
   test do

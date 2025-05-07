@@ -1,8 +1,8 @@
 class Pinocchio < Formula
   desc "Efficient and fast C++ library implementing Rigid Body Dynamics algorithms"
   homepage "https://stack-of-tasks.github.io/pinocchio"
-  url "https://github.com/stack-of-tasks/pinocchio/releases/download/v3.2.0/pinocchio-3.2.0.tar.gz"
-  sha256 "b6a7e6f6f6e3f175dd7010aa998a018f88d712477caa6c41f6ae038310c2fd7d"
+  url "https://github.com/stack-of-tasks/pinocchio/releases/download/v3.6.0/pinocchio-3.6.0.tar.gz"
+  sha256 "3008e313e3d3321fa0a74d1c35a667c368953def040d74ca5a9b98f43ea50342"
   license "BSD-2-Clause"
   head "https://github.com/stack-of-tasks/pinocchio.git", branch: "master"
 
@@ -12,27 +12,26 @@ class Pinocchio < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "287fc7e57114de6aab36ba53ce86b4cff23ad61c446e0af0ddc54d99d2c28319"
-    sha256 cellar: :any,                 arm64_sonoma:   "e5aecd8d45644b8e8816b8976380b0d56a90d3c58fbaacffc25d38c313d2703e"
-    sha256 cellar: :any,                 arm64_ventura:  "98d4385db1a890c8efab927d13cfa7d43825a01f747a35f232867864be056dbd"
-    sha256 cellar: :any,                 arm64_monterey: "1521650db4d1d0b81fd049a48df5c6166c000229f6a399f1f3605d6c37a3310d"
-    sha256 cellar: :any,                 sonoma:         "3c6530280e7008d33b3077669d7e718a19463da9e1e48b2fc70cbaa277909261"
-    sha256 cellar: :any,                 ventura:        "458b37e151cc241998b1094a6c7416a041aa9a6160de8c7fa42ab142190cd0ea"
-    sha256 cellar: :any,                 monterey:       "da6b92220a00a51ba948bcb9d9e3848fc951910eb7eaa9a1527895beb29580a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "a09640f68ac89dba6af85f0a056058747643772a95388ab7cde28d9097db5332"
+    sha256                               arm64_sequoia: "b9f39e535b830d12e624b2367e4b86c1fa76d61404c945963f92fb03e09b70d8"
+    sha256                               arm64_sonoma:  "41cef46a824769a36b8e426d5e86b7cf03562085889f18daf08b5ac9b6c18e21"
+    sha256                               arm64_ventura: "f5046d2daf9dabb289e350f8cdfbc639838563e7beb9b4cd48f5a8b7f9f2fec2"
+    sha256 cellar: :any,                 sonoma:        "3c9a2bf916b020e7ffddb28b8028f4eb6db17ecce5edc8451e9f56ebe7cdbea7"
+    sha256 cellar: :any,                 ventura:       "80c34d1477a6c1dd6de9f8d1255e6461ae07a0e3979fcd0b066358c8f2fe8c6d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5a155e68165ee3752bf7e35dc7da46a02be231aff06c190f41358a2cefbef987"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2edcad83df0b003a0887f3ab833914e406913f031a073b3b5d79733f8edc7247"
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "boost"
   depends_on "boost-python3"
+  depends_on "coal"
   depends_on "console_bridge"
   depends_on "eigen"
   depends_on "eigenpy"
-  depends_on "hpp-fcl"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "urdfdom"
 
   on_macos do
@@ -40,7 +39,7 @@ class Pinocchio < Formula
   end
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
@@ -59,11 +58,11 @@ class Pinocchio < Formula
   end
 
   test do
-    system python3, "-c", <<~EOS
+    system python3, "-c", <<~PYTHON
       import pinocchio
       model = pinocchio.Model()
       data = model.createData()
       assert model.nv == 0 and model.nq == 0
-    EOS
+    PYTHON
   end
 end

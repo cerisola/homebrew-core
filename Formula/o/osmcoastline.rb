@@ -1,20 +1,18 @@
 class Osmcoastline < Formula
   desc "Extracts coastline data from OpenStreetMap planet file"
   homepage "https://osmcode.org/osmcoastline/"
-  url "https://github.com/osmcode/osmcoastline/archive/refs/tags/v2.4.0.tar.gz"
-  sha256 "2c1a28313ed19d6e2fb1cb01cde8f4f44ece378393993b0059f447c5fce11f50"
+  url "https://github.com/osmcode/osmcoastline/archive/refs/tags/v2.4.1.tar.gz"
+  sha256 "3a76ed8c8481e5499c8fedbba3b6af4f33f73bbbfc4e6154ea50fe48ae7054a9"
   license "GPL-3.0-or-later"
-  revision 6
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "217a446421753f6779411129b48f94d6f7ac323a9485428adc89ca27636b0e52"
-    sha256 cellar: :any,                 arm64_sonoma:   "a0f8361692aaed6d584672777d535d8bc0fce0e55538ece93d140d1b3fa5df80"
-    sha256 cellar: :any,                 arm64_ventura:  "e3bca51e41f0ef66d12b17b078cde994b9e3bd0735ba3c087eb03ff5ba6e8647"
-    sha256 cellar: :any,                 arm64_monterey: "e033d67ef3ecfc55b6fc8a00c30c4a235865ab94709ed92169d12ad67f7fb762"
-    sha256 cellar: :any,                 sonoma:         "54b87fc97bc9a3bd4937d05bd5c56899b32eb5d965cb9d518605656cb9e94ec2"
-    sha256 cellar: :any,                 ventura:        "37efc15a7cdb9db548e418553f7e8fd4c1cdc904b86112db01ed59a12717fbf3"
-    sha256 cellar: :any,                 monterey:       "d49649b9159889cdaa2ac3316ee6abf7c6f3e6ad218575ece8cef924eddb1d60"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "09ec7fa2e10d61afe24e05ecba6f66631fdf49d1b8e8e3855209a406f8ef340c"
+    sha256 cellar: :any,                 arm64_sequoia: "dc16d9bbd13a4f77009a7bb0c87a2461dbbf0f004a57676da70803435096cb00"
+    sha256 cellar: :any,                 arm64_sonoma:  "c89acfaeebd5e4661327ab2abb42ff5407365f251a052b97b80f3a4fddd266ac"
+    sha256 cellar: :any,                 arm64_ventura: "3c08b87fc5b15d8a778ed08c9d7cb0dcfa5935413e5a85a2a3170024118b3a78"
+    sha256 cellar: :any,                 sonoma:        "9323e20db733822fbeafb7a4042009e82a57f65e94c78855e647c9b0df01bc50"
+    sha256 cellar: :any,                 ventura:       "13ca3a9c33d469ed3a7e261ac9376d732db372f4fc7a20d06533fd3374356559"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "64a1fd8484e7c3354a892775b7e9d6a71c6f4f46dcbec82fa7f6babb3e5407d1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "44ab937e69ae5ff226d3528cacbf640b3f486e311d438c02f8e40cd9202a5e18"
   end
 
   depends_on "cmake" => :build
@@ -29,14 +27,6 @@ class Osmcoastline < Formula
   uses_from_macos "bzip2"
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
-
-  fails_with gcc: "5"
-
-  # To fix gdal-3.7.0
-  patch do
-    url "https://github.com/osmcode/osmcoastline/commit/67cc33161069f65e315acae952492ab5ee07af15.patch?full_index=1"
-    sha256 "31b89e33b22ccdfe289a5da67480f9791bdd4f410c6a7831f0c1e007c4258e68"
-  end
 
   def install
     # Work around an Xcode 15 linker issue which causes linkage against LLVM's

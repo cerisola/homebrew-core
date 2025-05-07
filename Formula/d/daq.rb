@@ -1,31 +1,32 @@
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
   homepage "https://www.snort.org/"
-  url "https://github.com/snort3/libdaq/archive/refs/tags/v3.0.17.tar.gz"
-  mirror "https://fossies.org/linux/misc/libdaq-3.0.17.tar.gz"
-  sha256 "2adfb70d07611743204db580c6603e2b16b9f5d1d32e5656f3c291995e3252a1"
+  url "https://github.com/snort3/libdaq/archive/refs/tags/v3.0.19.tar.gz"
+  mirror "https://fossies.org/linux/misc/libdaq-3.0.19.tar.gz"
+  sha256 "28d026de46f8206b1a74dd6bf7de10ca19d7a7c95a463744b9f79e51958e5889"
   license "GPL-2.0-only"
   head "https://github.com/snort3/libdaq.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ff282bb63d1ebd08c2acb847c883851ac3487f2488abb6b8fd3482da1801655a"
-    sha256 cellar: :any,                 arm64_sonoma:  "fc59e4bb69a94ad3acdb3d87854b02d5169f3502881c20b8a32ec56d58161a11"
-    sha256 cellar: :any,                 arm64_ventura: "8a7f4ff2d1e3bdf0d693924afe1d836b601d14459888b4ae2d59c159bcc33487"
-    sha256 cellar: :any,                 sonoma:        "09a56d487e4805fc5e297d34dcad3259ffbfce76f8a16e99b798a27270cab3a8"
-    sha256 cellar: :any,                 ventura:       "eefe2f055bfabeb5c9eb019956858c2d7274405f34892280d8e5988f287b344f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0245b7f5625ff425f49493e4d40e3af288880e6ec8a6d1d872522c1f81f124ae"
+    sha256 cellar: :any,                 arm64_sequoia: "de5fecd1ca4361de4a8435280165af94aab2dc93ef0e5596a1bf7ad5e52213ed"
+    sha256 cellar: :any,                 arm64_sonoma:  "95684f5dbb32aee8326a248018e22ccf2457e1d0d8c6513bf5886663588987e4"
+    sha256 cellar: :any,                 arm64_ventura: "c698259bece3eeaca5400f4834b6868f182545137c31ef3b55320ab72b7c3ec6"
+    sha256 cellar: :any,                 sonoma:        "97f451492598266dd1802c7ef01306793f3093e1199c432714240831956c0dc1"
+    sha256 cellar: :any,                 ventura:       "e36b53523a795b1b2d1b6c706760ca98021982e001c29efe44aecc67008f4f83"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6ceaab9f251d411b7bfa21784715a7c2eedd58511128f09b7d90ab15c645b30b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "274a26aa6ea3813c7551a43f8f9176293eb20ce87e813fb86d6ee4de08daf7d5"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   uses_from_macos "libpcap"
 
   def install
     system "./bootstrap"
-    system "./configure", *std_configure_args, "--disable-silent-rules"
+    system "./configure", "--disable-silent-rules", *std_configure_args
     system "make", "install"
   end
 

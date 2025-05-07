@@ -1,8 +1,8 @@
 class Bmake < Formula
   desc "Portable version of NetBSD make(1)"
   homepage "https://www.crufty.net/help/sjg/bmake.html"
-  url "https://www.crufty.net/ftp/pub/sjg/bmake-20240921.tar.gz"
-  sha256 "b346579e82d296d1a4da29dea8594e3ee596130b20786dec0f3899a3e11275c2"
+  url "https://www.crufty.net/ftp/pub/sjg/bmake-20250414.tar.gz"
+  sha256 "43258a0b819f3e362dd66c05b8212ea977606945f3887ba1b6ad612affabc9aa"
   license "BSD-3-Clause"
 
   livecheck do
@@ -11,12 +11,13 @@ class Bmake < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2c85dbe90351c8e8058ec94af33e389f5c71145dae4735f4e307c719292bb3a5"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8786570e597d05a1919c6f8e85a8697783a3eb5019878bee02378e707685c371"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "889ca47c405695cff31837b61892228d5e8278811cdaf427453eb25e95543024"
-    sha256                               sonoma:        "15a393bf9eab11a17f79a2b3011e9ad2ad700cc54fcbd8b7fcb76d56079dfd92"
-    sha256                               ventura:       "a5f8e58133ff960824383ac74cd38e05cd25daaeff84924a8a27c91ae4e5d8b2"
-    sha256                               x86_64_linux:  "4f896ff027fcf4ca3453c53bfe4673fce8904aa6a02eda0f09feede7faf0a57f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bcb77e6358390c80463b999d8979ceae3e69a3e5e3cf8d05a44a98a96d05f57a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "230aae790cc684473ea54bd90bd7933214a41de7b4ced82083b19da564470b58"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "170947e3fff8897d4dc593e4f9f7b14adc58cd1e0d926b711602c109f062a49d"
+    sha256                               sonoma:        "a0c140bba308f37cf40fe5fe83e9a377e71a084649a302cc8a494eb6876395c5"
+    sha256                               ventura:       "3963568a17f0874afc6b8681c17f670528bc69fa059704afc3259e2d52db7b88"
+    sha256                               arm64_linux:   "9efc697537e519aaf95d3207b689301142729ad7ca26c8a8e792eea15e535b1a"
+    sha256                               x86_64_linux:  "5aaa87b011f69dc54471377b0014bc8f2e9ffb4030d454862446d09dbe6262ee"
   end
 
   uses_from_macos "bc" => :build
@@ -31,15 +32,15 @@ class Bmake < Formula
   end
 
   test do
-    (testpath/"Makefile").write <<~EOS
+    (testpath/"Makefile").write <<~MAKE
       all: hello
 
       hello:
-      \t@echo 'Test successful.'
+      	@echo 'Test successful.'
 
       clean:
-      \trm -rf Makefile
-    EOS
+      	rm -rf Makefile
+    MAKE
     system bin/"bmake"
     system bin/"bmake", "clean"
   end

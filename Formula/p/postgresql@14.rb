@@ -1,10 +1,10 @@
 class PostgresqlAT14 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v14.13/postgresql-14.13.tar.bz2"
-  sha256 "59aa3c4b495ab26a9ec69f3ad0a0228c51f0fe6facf3634dfad4d1197d613a56"
+  url "https://ftp.postgresql.org/pub/source/v14.17/postgresql-14.17.tar.bz2"
+  sha256 "6ce0ccd6403bf7f0f2eddd333e2ee9ba02edfa977c66660ed9b4b1057e7630a1"
   license "PostgreSQL"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -12,19 +12,20 @@ class PostgresqlAT14 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "c1718c6a52e7af8f7a788225fbab94cf8fde46a5f0b2611756dfe01f8ca4835d"
-    sha256 arm64_sonoma:  "26b55f9137c6f503106a49659c753cfefc5c284f0ed16ef3bf4cc6e2c318ea48"
-    sha256 arm64_ventura: "3addca67130a3af596c1d20070dd78b09c85fe3c6417be0513de7f177f002bc1"
-    sha256 sonoma:        "bc885e75b856adbe14ad5a876d0caa2096418267b4e0142612abff688be52074"
-    sha256 ventura:       "73c7d10fc062a76107dc4d47f5af211648bb570fd125a5abc796262dc8405332"
-    sha256 x86_64_linux:  "47e44f202f5538f2531b3e63ed9494b0183f21935fd0f2b1f406b6b4e096e823"
+    sha256 arm64_sequoia: "88d837ae15b1d87e93770700c1616dcaf98ada1547f5d877bd701a9ba3632dfb"
+    sha256 arm64_sonoma:  "2a70ffcb5f8d18aa61c7c5974db741fdbb6c099feff27098e575c6c8953e9186"
+    sha256 arm64_ventura: "46fe2d7204221525795de6c47429f5faf6c4afb53633918e7e407e563f186a3b"
+    sha256 sonoma:        "a44badaa8944f58f4e2637e011af7247a18f4dd056e1c6b057f97b2d23ff3ad6"
+    sha256 ventura:       "590ce4ed9f348abc6ab012dd636f59041e472afb110ee5e64e99c68f680d5029"
+    sha256 arm64_linux:   "a2be9241e00df2b9c24f751007cc31e919a40e766ce9c8b1902b10123d26cdcb"
+    sha256 x86_64_linux:  "3debb0cd234c156ed0fd93695cdc54ee87041b8a10bd26f80502e661e27a76ed"
   end
 
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2026-11-12", because: :unsupported
 
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -46,6 +47,7 @@ class PostgresqlAT14 < Formula
   end
 
   def install
+    ENV.runtime_cpu_detection
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
 
@@ -94,7 +96,18 @@ class PostgresqlAT14 < Formula
     (var/"log").mkpath
     postgresql_datadir.mkpath
 
-    odeprecated old_postgres_data_dir, new_postgres_data_dir if old_postgres_data_dir.exist?
+    old_postgres_data_dir = var/"postgres"
+    if old_postgres_data_dir.exist?
+      opoo "The old PostgreSQL data directory (#{old_postgres_data_dir}) still exists!"
+      puts <<~EOS
+        Previous versions of postgresql shared the same data directory.
+
+        You can migrate to a versioned data directory by running:
+          mv -v "#{old_postgres_data_dir}" "#{postgresql_datadir}"
+
+        (Make sure PostgreSQL is stopped before executing this command)
+      EOS
+    end
 
     # Don't initialize database, it clashes when testing other PostgreSQL versions.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
@@ -103,11 +116,7 @@ class PostgresqlAT14 < Formula
   end
 
   def postgresql_datadir
-    if old_postgres_data_dir.exist?
-      old_postgres_data_dir
-    else
-      new_postgres_data_dir
-    end
+    var/name
   end
 
   def postgresql_log_path
@@ -118,46 +127,11 @@ class PostgresqlAT14 < Formula
     (postgresql_datadir/"PG_VERSION").exist?
   end
 
-  def new_postgres_data_dir
-    var/name
-  end
-
-  def old_postgres_data_dir
-    var/"postgres"
-  end
-
-  # Figure out what version of PostgreSQL the old data dir is
-  # using
-  def old_postgresql_datadir_version
-    pg_version = old_postgres_data_dir/"PG_VERSION"
-    pg_version.exist? && pg_version.read.chomp
-  end
-
   def caveats
-    caveats = ""
-
-    # Extract the version from the formula name
-    pg_formula_version = version.major.to_s
-    # ... and check it against the old data dir postgres version number
-    # to see if we need to print a warning re: data dir
-    if old_postgresql_datadir_version == pg_formula_version
-      caveats += <<~EOS
-        Previous versions of postgresql shared the same data directory.
-
-        You can migrate to a versioned data directory by running:
-          mv -v "#{old_postgres_data_dir}" "#{new_postgres_data_dir}"
-
-        (Make sure PostgreSQL is stopped before executing this command)
-
-      EOS
-    end
-
-    caveats += <<~EOS
+    <<~EOS
       This formula has created a default database cluster with:
         initdb --locale=C -E UTF-8 #{postgresql_datadir}
     EOS
-
-    caveats
   end
 
   service do

@@ -29,7 +29,7 @@ class Configen < Formula
   end
 
   test do
-    (testpath/"test.plist").write <<~EOS
+    (testpath/"test.plist").write <<~XML
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -40,13 +40,14 @@ class Configen < Formula
         <integer>2</integer>
       </dict>
       </plist>
-    EOS
+    XML
+
     (testpath/"test.map").write <<~EOS
       testURL : URL
       retryCount : Int
     EOS
     system bin/"configen", "-p", "test.plist", "-h", "test.map", "-n", "AppConfig", "-o", testpath
-    assert_predicate testpath/"AppConfig.swift", :exist?, "Failed to create config class!"
+    assert_path_exists testpath/"AppConfig.swift", "Failed to create config class!"
     assert_match "static let testURL: URL = URL(string: \"https://example.com/api\")", File.read("AppConfig.swift")
     assert_match "static let retryCount: Int = 2", File.read("AppConfig.swift")
   end

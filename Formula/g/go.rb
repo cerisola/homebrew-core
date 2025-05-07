@@ -1,9 +1,9 @@
 class Go < Formula
   desc "Open source programming language to build simple/reliable/efficient software"
   homepage "https://go.dev/"
-  url "https://go.dev/dl/go1.23.2.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.23.2.src.tar.gz"
-  sha256 "36930162a93df417d90bd22c6e14daff4705baac2b02418edda671cdfa9cd07f"
+  url "https://go.dev/dl/go1.24.3.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.24.3.src.tar.gz"
+  sha256 "229c08b600b1446798109fae1f569228102c8473caba8104b6418cb5bc032878"
   license "BSD-3-Clause"
   head "https://go.googlesource.com/go.git", branch: "master"
 
@@ -21,24 +21,25 @@ class Go < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
-    sha256 arm64_sonoma:  "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
-    sha256 arm64_ventura: "719329749bebde70f295cacf645c45ae155fda041bc92c50119997a0dd00e522"
-    sha256 sonoma:        "57c7e66ca7ea40cb376a54c278f763cba6a9f6cd737799c6f20ea025950293a9"
-    sha256 ventura:       "57c7e66ca7ea40cb376a54c278f763cba6a9f6cd737799c6f20ea025950293a9"
-    sha256 x86_64_linux:  "6de4daee05bd091a7c29aee73e93bde102c560392d5114e3e92b7d1fae0fbcf4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7333b18cd1ba62bb1bcc7b7e24fc1084fa1bbb77003d4ed647d539f530bcc2cf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7333b18cd1ba62bb1bcc7b7e24fc1084fa1bbb77003d4ed647d539f530bcc2cf"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "7333b18cd1ba62bb1bcc7b7e24fc1084fa1bbb77003d4ed647d539f530bcc2cf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "20ade196c57038f73f5ba7d29dcf4abcbe4bc56e238929a0efa0068de335a129"
+    sha256 cellar: :any_skip_relocation, ventura:       "20ade196c57038f73f5ba7d29dcf4abcbe4bc56e238929a0efa0068de335a129"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "503115ac69ffbcef21dff5d62154c8a505a164e9b821a1be4052e02bb9ce4bc7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "885e20364acb6df6c86e437a853ad0d649945e50542fd5bb914e2d8989e5fc27"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.
   resource "gobootstrap" do
     checksums = {
-      "darwin-arm64" => "6da3f76164b215053daf730a9b8f1d673dbbaa4c61031374a6744b75cb728641",
-      "darwin-amd64" => "754363489e2244e72cb49b4ec6ddfd6a2c60b0700f8c4876e11befb1913b11c5",
-      "linux-arm64"  => "2096507509a98782850d1f0669786c09727053e9fe3c92b03c0d96f48700282b",
-      "linux-amd64"  => "ff445e48af27f93f66bd949ae060d97991c83e11289009d311f25426258f9c44",
+      "darwin-arm64" => "416c35218edb9d20990b5d8fc87be655d8b39926f15524ea35c66ee70273050d",
+      "darwin-amd64" => "e7bbe07e96f0bd3df04225090fe1e7852ed33af37c43a23e16edbbb3b90a5b7c",
+      "linux-arm64"  => "fd017e647ec28525e86ae8203236e0653242722a7436929b1f775744e26278e7",
+      "linux-amd64"  => "4fa4f869b0f7fc6bb1eb2660e74657fbf04cdd290b5aef905585c86051b34d43",
     }
 
-    version "1.20.14"
+    version "1.22.12"
 
     on_arm do
       on_macos do
@@ -63,42 +64,28 @@ class Go < Formula
   end
 
   def install
-    inreplace "go.env", /^GOTOOLCHAIN=.*$/, "GOTOOLCHAIN=local"
-
+    libexec.install Dir["*"]
     (buildpath/"gobootstrap").install resource("gobootstrap")
     ENV["GOROOT_BOOTSTRAP"] = buildpath/"gobootstrap"
 
-    cd "src" do
-      ENV["GOROOT_FINAL"] = libexec
+    cd libexec/"src" do
       # Set portable defaults for CC/CXX to be used by cgo
       with_env(CC: "cc", CXX: "c++") { system "./make.bash" }
     end
 
-    rm_r("gobootstrap") # Bootstrap not required beyond compile.
-    libexec.install Dir["*"]
     bin.install_symlink Dir[libexec/"bin/go*"]
-
-    system bin/"go", "install", "std", "cmd"
 
     # Remove useless files.
     # Breaks patchelf because folder contains weird debug/test files
     rm_r(libexec/"src/debug/elf/testdata")
     # Binaries built for an incompatible architecture
     rm_r(libexec/"src/runtime/pprof/testdata")
-  end
-
-  def caveats
-    <<~EOS
-      Homebrew's Go toolchain is configured with
-        GOTOOLCHAIN=local
-      per Homebrew policy on tools that update themselves.
-    EOS
+    # Remove testdata with binaries for non-native architectures.
+    rm_r(libexec/"src/debug/dwarf/testdata")
   end
 
   test do
-    assert_equal "local", shell_output("#{bin}/go env GOTOOLCHAIN").strip
-
-    (testpath/"hello.go").write <<~EOS
+    (testpath/"hello.go").write <<~GO
       package main
 
       import "fmt"
@@ -106,7 +93,7 @@ class Go < Formula
       func main() {
           fmt.Println("Hello World")
       }
-    EOS
+    GO
 
     # Run go fmt check for no errors then run the program.
     # This is a a bare minimum of go working as it uses fmt, build, and run.
@@ -117,7 +104,7 @@ class Go < Formula
       system bin/"go", "build", "hello.go"
     end
 
-    (testpath/"hello_cgo.go").write <<~EOS
+    (testpath/"hello_cgo.go").write <<~GO
       package main
 
       /*
@@ -130,7 +117,7 @@ class Go < Formula
       func main() {
           C.hello()
       }
-    EOS
+    GO
 
     # Try running a sample using cgo without CC or CXX set to ensure that the
     # toolchain's default choice of compilers work

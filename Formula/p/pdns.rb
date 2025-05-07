@@ -1,9 +1,10 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-4.9.2.tar.bz2"
-  sha256 "f570640427041f4c5c5470d16eff951a7038c353ddc461b2750290ce99b2e3c2"
+  url "https://downloads.powerdns.com/releases/pdns-4.9.4.tar.bz2"
+  sha256 "cac466d7cb056434c60632e554be50543cb0cecd9d3b33bb5785c149b5979fc1"
   license "GPL-2.0-or-later"
+  revision 1
 
   # The first-party download page (https://www.powerdns.com/downloads) isn't
   # always updated for newer versions, so for now we have to check the
@@ -16,12 +17,13 @@ class Pdns < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "535cd7e7c65f70335ddf11a9b3987763d8c0ad95f27da2fa2bbefb3f7f609aad"
-    sha256 arm64_sonoma:  "8373819cddbb5ad653d70ad4b0d69f36faa074d6b46a5f70a6922311da8069d3"
-    sha256 arm64_ventura: "77b98a0f0c9638c1f593c30ccf792f11d9efc016001b96b31cbac5ff651135fd"
-    sha256 sonoma:        "a0a4db1bfd7e8ba3ec006bbcf750bb1da15573a4a6a2b54bd9427e4c6e9d05c1"
-    sha256 ventura:       "eec08612848bb1ee690b09ee227ddbe697c47ea9477d9aa938da251a408df04a"
-    sha256 x86_64_linux:  "e00dcb42455de9c473ebef4478be1796594b2da80f7a3cbc77feeb5bb417d12a"
+    sha256 arm64_sequoia: "8ac0677fcf305e7d82882bf52287abacc7060e57820303d26d9c2a5c7fa52cb5"
+    sha256 arm64_sonoma:  "d3bb37b574b2b59b00957e0fa77753f04d1e25d73e4a8e91ba3b29aadf517db4"
+    sha256 arm64_ventura: "265d162d41cefcf0ed6db36d1a34cc819fe2238226ba117f6ab634321c76f59c"
+    sha256 sonoma:        "752004f2e6c29770dc8fb5a802f099025e8ec6ab7db044249fb616ac94c13091"
+    sha256 ventura:       "b1b68d140946281177c242f5cc6ba7eef52d6218bf70ac7dcd58d7601718f725"
+    sha256 arm64_linux:   "5f0996791957179f409054cf8c3b5fd3be0b16600c553992a19099f28c00fe3a"
+    sha256 x86_64_linux:  "93a5f5858a20122977141b31485e73eeb5f810d67a24fc86c5911df5c83c1d54"
   end
 
   head do
@@ -33,15 +35,13 @@ class Pdns < Formula
     depends_on "ragel"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "lua"
   depends_on "openssl@3"
   depends_on "sqlite"
 
   uses_from_macos "curl"
-
-  fails_with gcc: "5" # for C++17
 
   def install
     args = %W[

@@ -1,18 +1,19 @@
 class NetlifyCli < Formula
   desc "Netlify command-line tool"
   homepage "https://www.netlify.com/docs/cli"
-  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-17.37.2.tgz"
-  sha256 "8782ba234ad41c72bfaebb44c3a7345e4149f1b9546e377215b879731970264f"
+  url "https://registry.npmjs.org/netlify-cli/-/netlify-cli-21.1.0.tgz"
+  sha256 "3f8acdc7b72510bed02e8210caf6029c8ac3f856b1b469b476b62fec489908d3"
   license "MIT"
   head "https://github.com/netlify/cli.git", branch: "main"
 
   bottle do
-    sha256                               arm64_sequoia: "dad31da3315a778200b90037321e8be2a0a9f19e1e7707c8395b5855f823f088"
-    sha256                               arm64_sonoma:  "3cedd418c66c8613136a6690d00570ce2c01c7a09cb646a74d13c1837f6aad8b"
-    sha256                               arm64_ventura: "f4e23e483fb471b12209545d8a726f559e41b0ebc0b7b5afdaa2afbb292d0f8e"
-    sha256                               sonoma:        "785614e128209f9e4128895c13ba8a35ca881c0780203b5be01434265cfe43cf"
-    sha256                               ventura:       "385ec2bbf9eed1d817855772dd097f029f7c5b759beb9f1d5a1c72919e86d743"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a34d9b4000358f60dfdd3a76eadebe5b5fa9be66cf30c7b567a641522d30a088"
+    sha256                               arm64_sequoia: "129946cd7871739a8c4b847b6bb46d13654ab7c38777080c8f1e226c7511348d"
+    sha256                               arm64_sonoma:  "91ce14ac348281efd13c47b9deaaf91be5098b2f8ab37ae106e2f84ef5e5b1e7"
+    sha256                               arm64_ventura: "56a79f977737f67eec987b17d3250f372126366ee637465ab8f9b562a663ec7e"
+    sha256                               sonoma:        "9dbdfcdd8a09bba86d3ed0f9a157c93824ac81a50ee4052412240441a2db460e"
+    sha256                               ventura:       "01fb73bcd8944bb7a7990ad580626bac6c67d835b812492af685faef91e8d094"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "676a5b2cb48626c917afa0cce72476658921257facb24ac8a6ba81abbb1dcded"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d29f8ec454339877b14da77b0525d73843f2791faf4bd668f65c8d33f85a4b1"
   end
 
   depends_on "node"

@@ -20,18 +20,18 @@ class Libwps < Formula
     sha256 cellar: :any,                 ventura:        "05d18e5787514170da6f2b7e2bb58f449bb4c282c9e35ff32ddf4b13747ee458"
     sha256 cellar: :any,                 monterey:       "6609484542bfcf5046702cf470e20da2dd99ef1597b6e60ca08858e5975afbe6"
     sha256 cellar: :any,                 big_sur:        "bf9c54ae1889bf3dcc90034d9b5a11bd14c452b69463343c3bd8f221031109d6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "66e66c4fe9ca468d38f275f3fafeb4c5fcdabffc65f7f09c4256f10454421a14"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "1947ed7197be31c9abf52b092a535de6d3d1416c9fef915661ba81da4cee37b6"
   end
 
   depends_on "boost" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "librevenge"
   depends_on "libwpd"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          # Installing Doxygen docs trips up make install
-                          "--prefix=#{prefix}", "--without-docs"
+    # Installing Doxygen docs trips up make install
+    system "./configure", "--without-docs", *std_configure_args
     system "make", "install"
   end
 

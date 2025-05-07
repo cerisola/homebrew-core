@@ -1,33 +1,34 @@
 class Rex < Formula
   desc "Command-line tool which executes commands on remote servers"
   homepage "https://www.rexify.org"
-  url "https://cpan.metacpan.org/authors/id/F/FE/FERKI/Rex-1.14.3.tar.gz"
-  sha256 "027d3042ef940b67590e5989e96f22ae1e67ba744895c5dd3db569c05137025c"
+  url "https://cpan.metacpan.org/authors/id/F/FE/FERKI/Rex-1.16.0.tar.gz"
+  sha256 "d6d9657d29527e15995c6de33d7bf1111da7860d420ac95385c1161daaea2479"
   license "Apache-2.0"
-  revision 2
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "49854aab380ff396dd1c568f7d1b7c07a20c45605d2bc4291547b78bcd7cbfa3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "49854aab380ff396dd1c568f7d1b7c07a20c45605d2bc4291547b78bcd7cbfa3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "28f9d5c2dccc713ef2932b7729b3f3db7d0fb531296baeafcb172f8edbd01cdb"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6aa08eababab26f1f6289fa0b9b2972ace6dc5ee1490a7051359b012ae17a1c7"
-    sha256 cellar: :any_skip_relocation, ventura:       "9519ba8a26e671d3f9641dc9c6a9a8f4c2a92bfd706dacdbdd26cd65f5db4109"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe7bfc1cc381d522463acac9e58df8a317390982c2281087b5a7448daeafa478"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8f00580cf78183073fc1f2377f7ab2aa231b6be9479b78a9d1c29a4aaa7c458a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f00580cf78183073fc1f2377f7ab2aa231b6be9479b78a9d1c29a4aaa7c458a"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "14c493b9b4c153b1a4f33e1b624d29527ea7f9aa950a64f994a958d1138cd277"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1ec0b657ca4df29ba4c341308588731d66c7b028ea536da079c1fed4663fa45d"
+    sha256 cellar: :any_skip_relocation, ventura:       "dc84e4db07cd881c8757c6b13f96463a0beadd8dd0200f02ec31baab975310ea"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "de2713e1304c25fa9969a881b6ee5f91a28c16383721ee2ad3700b60b94c8a36"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b27583c8426ff3a5d7eb06d61a2bcfca88283b51e6d83fbca5d1ebae4e09f5f3"
   end
 
-  uses_from_macos "perl", since: :big_sur
+  uses_from_macos "expat"
+  uses_from_macos "perl"
 
   on_system :linux, macos: :catalina_or_older do
     resource "Module::Build" do
       # AWS::Signature4 requires Module::Build v0.4205 and above, while standard
       # MacOS Perl installation has 0.4003
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-0.4232.tar.gz"
-      sha256 "67c82ee245d94ba06decfa25572ab75fdcd26a9009094289d8f45bc54041771b"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-0.4234.tar.gz"
+      sha256 "66aeac6127418be5e471ead3744648c766bd01482825c5b66652675f2bc86a8f"
     end
 
     resource "Clone" do
-      url "https://cpan.metacpan.org/authors/id/G/GA/GARU/Clone-0.46.tar.gz"
-      sha256 "aadeed5e4c8bd6bbdf68c0dd0066cb513e16ab9e5b4382dc4a0aafd55890697b"
+      url "https://cpan.metacpan.org/authors/id/A/AT/ATOOMIC/Clone-0.47.tar.gz"
+      sha256 "4c2c0cb9a483efbf970cb1a75b2ca75b0e18cb84bcb5c09624f86e26b09c211d"
     end
 
     resource "Clone::Choose" do
@@ -41,18 +42,18 @@ class Rex < Formula
     end
 
     resource "JSON::MaybeXS" do
-      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/JSON-MaybeXS-1.004005.tar.gz"
-      sha256 "f5b6bc19f579e66b7299f8748b8ac3e171936dc4e7fcb72a8a257a9bd482a331"
+      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/JSON-MaybeXS-1.004008.tar.gz"
+      sha256 "cd3937afa78831f80a2ad5abab6c51b9e82fca4c31e5856ea208d598db5dc867"
     end
 
     resource "Scalar::Util" do
-      url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.63.tar.gz"
-      sha256 "cafbdf212f6827dc9a0dd3b57b6ee50e860586d7198228a33262d55c559eb2a9"
+      url "https://cpan.metacpan.org/authors/id/P/PE/PEVANS/Scalar-List-Utils-1.68.tar.gz"
+      sha256 "23317e4346fe8747f0167eccd1881d6369aa71023f014cd6f846988843295906"
     end
 
     resource "YAML" do
-      url "https://cpan.metacpan.org/authors/id/T/TI/TINITA/YAML-1.30.tar.gz"
-      sha256 "5030a6d6cbffaf12583050bf552aa800d4646ca9678c187add649227f57479cd"
+      url "https://cpan.metacpan.org/authors/id/I/IN/INGY/YAML-1.31.tar.gz"
+      sha256 "a0ce30381657dce8e694df9a09e95d818d13beb03698fd2cf79d0c8d564a9b8e"
     end
 
     resource "File::ShareDir::Install" do
@@ -66,8 +67,8 @@ class Rex < Formula
     end
 
     resource "Digest::HMAC" do
-      url "https://cpan.metacpan.org/authors/id/A/AR/ARODLAND/Digest-HMAC-1.04.tar.gz"
-      sha256 "d6bc8156aa275c44d794b7c18f44cdac4a58140245c959e6b19b2c3838b08ed4"
+      url "https://cpan.metacpan.org/authors/id/A/AR/ARODLAND/Digest-HMAC-1.05.tar.gz"
+      sha256 "215cb59cba610745cfb2d4b3f8ef756d590e57e3ad7986a992e87c4969fcdc7a"
     end
 
     resource "Encode::Locale" do
@@ -86,38 +87,38 @@ class Rex < Formula
     end
 
     resource "HTML::Parser" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.81.tar.gz"
-      sha256 "c0910a5c8f92f8817edd06ccfd224ba1c2ebe8c10f551f032587a1fc83d62ff2"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTML-Parser-3.83.tar.gz"
+      sha256 "7278ce9791256132b26a71a5719451844704bb9674b58302c3486df43584f8c0"
     end
 
     resource "HTML::Tagset" do
-      url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/HTML-Tagset-3.20.tar.gz"
-      sha256 "adb17dac9e36cd011f5243881c9739417fd102fce760f8de4e9be4c7131108e2"
+      url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/HTML-Tagset-3.24.tar.gz"
+      sha256 "eb89e145a608ed1f8f141a57472ee5f69e67592a432dcd2e8b1dbb445f2b230b"
     end
 
     resource "HTTP::Cookies" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Cookies-6.10.tar.gz"
-      sha256 "e36f36633c5ce6b5e4b876ffcf74787cc5efe0736dd7f487bdd73c14f0bd7007"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Cookies-6.11.tar.gz"
+      sha256 "8c9a541a4a39f6c0c7e3d0b700b05dfdb830bd490a1b1942a7dedd1b50d9a8c8"
     end
 
     resource "ExtUtils::Config" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-Config-0.008.tar.gz"
-      sha256 "ae5104f634650dce8a79b7ed13fb59d67a39c213a6776cfdaa3ee749e62f1a8c"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-Config-0.010.tar.gz"
+      sha256 "82e7e4e90cbe380e152f5de6e3e403746982d502dd30197a123652e46610c66d"
     end
 
     resource "ExtUtils::Helpers" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-Helpers-0.026.tar.gz"
-      sha256 "de901b6790a4557cf4ec908149e035783b125bf115eb9640feb1bc1c24c33416"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-Helpers-0.028.tar.gz"
+      sha256 "c8574875cce073e7dc5345a7b06d502e52044d68894f9160203fcaab379514fe"
     end
 
     resource "ExtUtils::InstallPaths" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-InstallPaths-0.012.tar.gz"
-      sha256 "84735e3037bab1fdffa3c2508567ad412a785c91599db3c12593a50a1dd434ed"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/ExtUtils-InstallPaths-0.014.tar.gz"
+      sha256 "ae65d20cc3c7e14b3cd790915c84510f82dfb37a4c9b88aa74b2e843af417d01"
     end
 
     resource "Module::Build::Tiny" do
-      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-Tiny-0.046.tar.gz"
-      sha256 "be193027e2debb4c9926434aaf1aa46c9fc7bf4db83dcc347eb6e359ee878289"
+      url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-Tiny-0.051.tar.gz"
+      sha256 "74fdce35e8cd4d787bc2d4fc1d43a291b7bbced4e94dc5fc592bd81ca93a98e9"
     end
 
     resource "HTTP::Daemon" do
@@ -131,8 +132,8 @@ class Rex < Formula
     end
 
     resource "HTTP::Message" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-6.44.tar.gz"
-      sha256 "398b647bf45aa972f432ec0111f6617742ba32fc773c6612d21f64ab4eacbca1"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-7.00.tar.gz"
+      sha256 "5afa95eb6ed1c632e81656201a2738e2c1bc6cbfae2f6d82728e2bb0b519c1dc"
     end
 
     resource "HTTP::Negotiate" do
@@ -151,8 +152,8 @@ class Rex < Formula
     end
 
     resource "LWP::UserAgent" do
-      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-6.72.tar.gz"
-      sha256 "e9b8354fd5e20be207afe23ddd584fcd59bf82998dc077decf684ba1dae5a05d"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/libwww-perl-6.77.tar.gz"
+      sha256 "94a907d6b3ea8d966ef43deffd4fa31f5500142b4c00489bfd403860a5f060e4"
     end
 
     resource "LWP::MediaTypes" do
@@ -186,13 +187,13 @@ class Rex < Formula
     end
 
     resource "Try::Tiny" do
-      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.31.tar.gz"
-      sha256 "3300d31d8a4075b26d8f46ce864a1d913e0e8467ceeba6655d5d2b2e206c11be"
+      url "https://cpan.metacpan.org/authors/id/E/ET/ETHER/Try-Tiny-0.32.tar.gz"
+      sha256 "ef2d6cab0bad18e3ab1c4e6125cc5f695c7e459899f512451c8fa3ef83fa7fc0"
     end
 
     resource "URI" do
-      url "https://cpan.metacpan.org/authors/id/S/SI/SIMBABQUE/URI-5.19.tar.gz"
-      sha256 "8fed5f819905c8a8e18f4447034322d042c3536b43c13ac1f09ba92e1a50a394"
+      url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-5.31.tar.gz"
+      sha256 "b9c4d58b2614b8611ae03a95a6d60ed996f4b311ef3cd5a937b92f1825ecc564"
     end
 
     resource "WWW::RobotRules" do
@@ -206,8 +207,8 @@ class Rex < Formula
     end
 
     resource "XML::Parser" do
-      url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.46.tar.gz"
-      sha256 "d331332491c51cccfb4cb94ffc44f9cd73378e618498d4a37df9e043661c515d"
+      url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-2.47.tar.gz"
+      sha256 "ad4aae643ec784f489b956abe952432871a622d4e2b5c619e8855accbfc4d1d8"
     end
 
     resource "XML::Simple" do
@@ -266,8 +267,8 @@ class Rex < Formula
   test do
     assert_match "(R)?ex #{version}", shell_output("#{bin}/rex -v"), "rex -v is expected to print out Rex version"
     system bin/"rexify", "brewtest"
-    assert_predicate testpath/"brewtest/Rexfile", :exist?,
-                     "rexify is expected to create a new Rex project and pre-populate its Rexfile"
+    assert_path_exists testpath/"brewtest/Rexfile",
+"rexify is expected to create a new Rex project and pre-populate its Rexfile"
   end
 
   private

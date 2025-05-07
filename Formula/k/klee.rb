@@ -7,23 +7,22 @@ class Klee < Formula
   url "https://github.com/klee/klee/archive/refs/tags/v3.1.tar.gz"
   sha256 "ae3d97209fa480ce6498ffaa7eaa7ecbbe22748c739cb7b2389391d0d9c940f7"
   license "NCSA"
-  revision 1
+  revision 3
   head "https://github.com/klee/klee.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 arm64_sequoia: "a6967a77df0a0661daacd0bc911fe0f1f194e5d8369cf7a565b9108f1f473c80"
-    sha256 arm64_sonoma:  "d0c12a988845aa026dad2eef2a62cc212ab876d95806405303f512093d9c2a18"
-    sha256 arm64_ventura: "a89567738080c9c8e3b8cf8eb11c615314085222aae1ff41f69e3750fba31f5c"
-    sha256 sonoma:        "d237e0f4eb14448201cc5c187fa090b3fefd69775e482b34f50cadc6aac84940"
-    sha256 ventura:       "6d395c5e210e030e1384c1dcc701624975a19ff9eb0d7641192db475b3f8d03e"
-    sha256 x86_64_linux:  "2216514e11f7829337bf7d088dc81084c08192e33dc9f256bb519e034e89f224"
+    sha256 arm64_sequoia: "e2a3d0d091e212042fe67002619e8492943ded1a7a537f50aca3b3891fd04772"
+    sha256 arm64_sonoma:  "3dbb9323a1bb4b8a2e93a5e8481411b12146f478a510d38222422181114ea378"
+    sha256 arm64_ventura: "c9b259d8f13ea1f2bd9acfee2f297a061ab212f5bfba8f7baa21c017d2effd64"
+    sha256 sonoma:        "6d9597661c242a32b5234b83a7921e28cf76102ea4e4b3ed7750fe6cd5425301"
+    sha256 ventura:       "69469e30c7e470d11febd8e9f7041730c996e2f862a24df96833ebac250fa7fa"
+    sha256 x86_64_linux:  "8d98dfcd2d9ba563bf567d2af92b298367e09838affd7ccd04ed301ec863777d"
   end
 
   depends_on "cmake" => :build
 
   depends_on "gperftools"
-  depends_on "llvm@16"
+  depends_on "llvm@16" # LLVM 17+ issue: https://github.com/klee/klee/issues/1754
   depends_on "python@3.13"
   depends_on "sqlite"
   depends_on "stp"
@@ -34,10 +33,9 @@ class Klee < Formula
 
   on_macos do
     depends_on "cryptominisat"
+    depends_on "gmp"
     depends_on "minisat"
   end
-
-  fails_with gcc: "5"
 
   # klee needs a version of libc++ compiled with wllvm
   resource "libcxx" do
@@ -163,7 +161,7 @@ class Klee < Formula
       KLEE: done: generated tests = 3
     EOS
     assert_match expected_output, shell_output("#{bin}/klee get_sign.bc 2>&1")
-    assert_predicate testpath/"klee-out-0", :exist?
+    assert_path_exists testpath/"klee-out-0"
 
     assert_match "['get_sign.bc']", shell_output("#{bin}/ktest-tool klee-last/test000001.ktest")
 

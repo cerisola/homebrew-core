@@ -3,20 +3,19 @@ class Onionprobe < Formula
 
   desc "Test and monitoring tool for Tor Onion Services"
   homepage "https://tpo.pages.torproject.net/onion-services/onionprobe/"
-  url "https://files.pythonhosted.org/packages/aa/a7/881b66594477795314e4a5029f098eb78cf21c843b63bed8d3c7cfcf5fe4/onionprobe-1.2.0.tar.gz"
-  sha256 "65ef77047e2cb24de999dcfeeb759de04f6ec952612a5aa9225dc92488696dc5"
+  url "https://files.pythonhosted.org/packages/17/7c/e016a43640336dd392cd7abcac375341b499f95cf6ebc92ce5eda5e4845f/onionprobe-1.3.0.tar.gz"
+  sha256 "3024e0c737e38f4b9dce265d9e2bd7ef03879c46b2cd40c336a5161eb0affbd7"
   license "GPL-3.0-or-later"
-  revision 2
   head "https://gitlab.torproject.org/tpo/onion-services/onionprobe.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "3e82006a15ea00cd837933aaa31251ff103abfd778f8ebbbef9bce49ff4bde72"
-    sha256 cellar: :any,                 arm64_sonoma:  "cd6b2b66dfbc2a38791fa61a0f546844ad53e13d70e926424852ba60e3b98c12"
-    sha256 cellar: :any,                 arm64_ventura: "3a17b6ab40162a561db3a94e2ed8ee52368bf0f30e5e63fa90d17cabbfb8fc26"
-    sha256 cellar: :any,                 sonoma:        "5371c35e61dfae1384a4d370fd812e6dd9fd6a222b9ce31523a2c2281efbc338"
-    sha256 cellar: :any,                 ventura:       "cf1c2a0eb660c5af658a9193251bc33ae386538914cd45d96314a0978f0c0669"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "77527d81a1f281d219577cc01bcc4f31a87f67466cf743ad2decdfb9f74e1019"
+    sha256 cellar: :any,                 arm64_sequoia: "9222f214b1620a345e9cf321b087dcc34542a7a98c74ff46555c3a9b52dd1a30"
+    sha256 cellar: :any,                 arm64_sonoma:  "2b5d468661d595f8f431d6e7ea60d7b39354a914c0b4573c432d2d6d36477fe8"
+    sha256 cellar: :any,                 arm64_ventura: "0a14c6c6d81752053ab04199df5e67e1749939bc39fb6df43890ebd325f37d60"
+    sha256 cellar: :any,                 sonoma:        "3a77783777dce8d656a6003f0cb8efd4df8cf9a93d45579b563a631bcb4da4c2"
+    sha256 cellar: :any,                 ventura:       "8afcf6e56779767135cd9b45a7d968d22d6a98e409c9ff29a747a4feb88dcb1f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "69261fbf674c9daa3cdecab548a8d20de52e6dc1e71945cb9d10fa2beaa43a80"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "38203b9e39cfecb4d59d439bc6f8f79f1df32e78532cb42297f215b223a3669f"
   end
 
   depends_on "certifi"
@@ -26,8 +25,8 @@ class Onionprobe < Formula
   depends_on "tor"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
-    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
+    url "https://files.pythonhosted.org/packages/16/b0/572805e227f01586461c80e0fd25d65a2115599cc9dad142fee4b747c357/charset_normalizer-3.4.1.tar.gz"
+    sha256 "44251f18cd68a75b56585dd00dae26183e102cd5e0f9f1466e6df5da2ed64ea3"
   end
 
   resource "idna" do
@@ -36,8 +35,8 @@ class Onionprobe < Formula
   end
 
   resource "prometheus-client" do
-    url "https://files.pythonhosted.org/packages/e1/54/a369868ed7a7f1ea5163030f4fc07d85d22d7a1d270560dab675188fb612/prometheus_client-0.21.0.tar.gz"
-    sha256 "96c83c606b71ff2b0a433c98889d275f51ffec6c5e267de37c7a2b5c9aa9233e"
+    url "https://files.pythonhosted.org/packages/62/14/7d0f567991f3a9af8d1cd4f619040c93b68f09a02b6d0b6ab1b2d1ded5fe/prometheus_client-0.21.1.tar.gz"
+    sha256 "252505a722ac04b0456be05c05f75f45d760c2911ffc45f2a06bcaed9f3ae3fb"
   end
 
   resource "pysocks" do
@@ -61,8 +60,8 @@ class Onionprobe < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
-    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
+    url "https://files.pythonhosted.org/packages/aa/63/e53da845320b757bf29ef6a9062f5c669fe997973f966045cb019c3f4b66/urllib3-2.3.0.tar.gz"
+    sha256 "f8c5449b3cf0861679ce7e0503c7b44b5ec981bec0d1d3795a07f1ba96f0204d"
   end
 
   def install

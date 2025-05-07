@@ -1,24 +1,25 @@
 class Onefetch < Formula
   desc "Command-line Git information tool"
   homepage "https://onefetch.dev/"
-  url "https://github.com/o2sh/onefetch/archive/refs/tags/2.22.0.tar.gz"
-  sha256 "1741516c628bb70b432285aa78439c4acfeb5df19e48b8d85dba5f71336e190b"
+  url "https://github.com/o2sh/onefetch/archive/refs/tags/2.24.0.tar.gz"
+  sha256 "41f457c9a8145de94980bcae497d84a56cd75c1598a6a9eeb45984947bf4f1f8"
   license "MIT"
   head "https://github.com/o2sh/onefetch.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "32543d9359bf4d51a16bb0697ab1f9eef7922f9735e443b784cd980caaddfdb0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "413caa8752bdc098bde8f61cd443037367a1081e859260ec488d7396e780f820"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "87f7705ba92328a8cb550761a1f28a40bb5bb45b3cde81eb57ffe50e664f8c85"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7d7ec643430fe3b6253ffc108e7091a77dffd07b87099761b9101d334168f113"
-    sha256 cellar: :any_skip_relocation, ventura:       "7e842546e35a7ba31a3636c5bd7583d2b29c48443443a76d22bbec3312a0c4d6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d514014e3ddd400c50e57aecd7410e015a6bbc17eb93a16ec0e33ce8011ac63a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c79034fef2b28abfb613dab6543eef17e6af769c95757166f1f727d37d5a42e8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c710fccdd294242271b24039e0fa3061a31e5dbbf51284c76f5787cdafc576a8"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "9d5b20ed5411fe25cb11826d296747c450106ec05a39c75f4aaa4c02e4270413"
+    sha256 cellar: :any_skip_relocation, sonoma:        "abaf9ef77c37013d923120998bf635fef83a9306c49a4cef33e6d8b52abb5d8b"
+    sha256 cellar: :any_skip_relocation, ventura:       "282e6231286ee1202b43383ad6fb4c204fe7f74dd8cc8d105e11615f1c455118"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4aa3c84ab3e60e49ef85ba76bb5de32fdf3d9cc0deaf31e8457accdd740d6a98"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8b5b8a5b8b13919f6d912ac00b3ddeeddca5efe0b0a721deabfba8a024b57106"
   end
 
   # `cmake` is used to build `zlib`.
   # upstream issue, https://github.com/rust-lang/libz-sys/issues/147
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "zstd"
 

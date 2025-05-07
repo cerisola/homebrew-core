@@ -3,8 +3,9 @@ class Pyside < Formula
 
   desc "Official Python bindings for Qt"
   homepage "https://wiki.qt.io/Qt_for_Python"
-  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.7.3-src/pyside-setup-everywhere-src-6.7.3.tar.xz"
-  sha256 "a4c414be013d5051a2d10a9a1151e686488a3172c08a57461ea04b0a0ab74e09"
+  url "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.9.0-src/pyside-setup-everywhere-src-6.9.0.tar.xz"
+  mirror "https://cdimage.debian.org/mirror/qt.io/qtproject/official_releases/QtForPython/pyside6/PySide6-6.9.0-src/pyside-setup-everywhere-src-6.9.0.tar.xz"
+  sha256 "315b73bb7570d5b9e6793a8d3fafd1d2dd7f43d35eebb01d2b554ea206aad88e"
   # NOTE: We omit some licenses even though they are in SPDX-License-Identifier or LICENSES/ directory:
   # 1. LicenseRef-Qt-Commercial is removed from "OR" options as non-free
   # 2. GFDL-1.3-no-invariants-only is only used by not installed docs, e.g. sources/{pyside6,shiboken6}/doc
@@ -21,18 +22,20 @@ class Pyside < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:  "c68e9ffe44861c52ec2190a21ca5d50e6122bb8d91087c950ba23132d44a6c42"
-    sha256 cellar: :any, arm64_ventura: "ef11438a72f6dc75f50951241eeb5ef95a6011078b73bb0c3389f28fe35c8bb1"
-    sha256 cellar: :any, sonoma:        "08290c31434dc6f115eb7f53f92540a347b693b5d125aa2f8935358bff04adb0"
-    sha256 cellar: :any, ventura:       "ed319e06e865311c2a788b94528034cb1e59023fef6e621a84638f28915c095c"
+    sha256 cellar: :any,                 arm64_sonoma:  "01d53933c30b3bf63d7514a55b161bf8a411bf42b4ce04f55dc9b562559c873c"
+    sha256 cellar: :any,                 arm64_ventura: "8d483c1e6c26af22143c13459029df148587e3322dfeee4c31aaf35ff1c043fe"
+    sha256 cellar: :any,                 sonoma:        "6cc5f927b8f393383f632ebc637b902cd419618f8e3c4ebc2e77dc4362f7adad"
+    sha256 cellar: :any,                 ventura:       "7b570827012a0a43ee2371387db4958e89145ed16b7485a822e9ced04217d8b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "249bc3164d2967cc7c0087c4498ce4dca80f82d76fe3b8a9ed16dada2ea39c44"
   end
 
   depends_on "cmake" => :build
   depends_on "ninja" => :build
   depends_on "python-setuptools" => :build
   depends_on xcode: :build
+  depends_on "pkgconf" => :test
   depends_on "llvm"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "qt"
 
   uses_from_macos "libxml2"
@@ -42,18 +45,22 @@ class Pyside < Formula
     depends_on "mesa"
   end
 
-  fails_with gcc: "5"
-
   # Fix .../sources/pyside6/qtexampleicons/module.c:4:10: fatal error: 'Python.h' file not found
   # Upstream issue: https://bugreports.qt.io/browse/PYSIDE-2491
   patch :DATA
 
   def python3
-    "python3.12"
+    "python3.13"
   end
 
   def install
     ENV.append_path "PYTHONPATH", buildpath/"build/sources"
+    if OS.mac?
+      # Avoid detection of unwanted formulae. Should be handled in brew instead
+      ENV["CMAKE_PREFIX_PATH"] = ENV["CMAKE_PREFIX_PATH"].split(":")
+                                                         .reject { |p| p == HOMEBREW_PREFIX.to_s }
+                                                         .join(":")
+    end
 
     extra_include_dirs = [Formula["qt"].opt_include]
     extra_include_dirs << Formula["mesa"].opt_include if OS.linux?
@@ -63,13 +70,6 @@ class Pyside < Formula
               "${shiboken_include_dirs}",
               "${shiboken_include_dirs}:#{extra_include_dirs.join(":")}"
 
-    # Fix build failure on macOS because `CMAKE_BINARY_DIR` points to /tmp but
-    # `location` points to `/private/tmp`, which makes this conditional fail.
-    # Submitted upstream here: https://codereview.qt-project.org/c/pyside/pyside-setup/+/416706.
-    inreplace "sources/pyside6/PySide6/__init__.py.in",
-              "in_build = Path(\"@CMAKE_BINARY_DIR@\") in location.parents",
-              "in_build = Path(\"@CMAKE_BINARY_DIR@\").resolve() in location.parents"
-
     # Install python scripts into pkgshare rather than bin
     inreplace "sources/pyside-tools/CMakeLists.txt", "DESTINATION bin", "DESTINATION #{pkgshare}"
 
@@ -77,14 +77,14 @@ class Pyside < Formula
     inreplace "sources/shiboken6/ApiExtractor/CMakeLists.txt", "${CMAKE_CXX_COMPILER}", ENV.cxx
 
     system "cmake", "-S", ".", "-B", "build",
-                     "-DCMAKE_INSTALL_RPATH=#{lib}",
-                     "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_lib}",
-                     "-DPYTHON_EXECUTABLE=#{which(python3)}",
-                     "-DBUILD_TESTS=OFF",
-                     "-DNO_QT_TOOLS=yes",
-                     "-DFORCE_LIMITED_API=yes",
-                     *std_cmake_args
-
+                    "-DCMAKE_INSTALL_RPATH=#{lib}",
+                    "-DCMAKE_PREFIX_PATH=#{Formula["qt"].opt_lib}",
+                    "-DPYTHON_EXECUTABLE=#{which(python3)}",
+                    "-DBUILD_TESTS=OFF",
+                    "-DNO_QT_TOOLS=yes",
+                    # Limited API (maybe combined with keg relocation) breaks the Linux bottle
+                    "-DFORCE_LIMITED_API=#{OS.mac? ? "yes" : "no"}",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -103,7 +103,7 @@ class Pyside < Formula
       Widgets
       Xml
     ]
-    modules << "WebEngineCore" if OS.linux? || (DevelopmentTools.clang_build_version > 1200)
+    modules << "WebEngineCore" if OS.linux? || MacOS.version > :ventura
     modules.each { |mod| system python3, "-c", "import PySide6.Qt#{mod}" }
 
     pyincludes = shell_output("#{python3}-config --includes").chomp.split
@@ -117,7 +117,7 @@ class Pyside < Formula
       ]
     end
 
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <shiboken.h>
       int main()
       {
@@ -126,11 +126,9 @@ class Pyside < Formula
         assert(!module.isNull());
         return 0;
       }
-    EOS
-    system ENV.cxx, "-std=c++17", "test.cpp",
-                    "-I#{include}/shiboken6",
-                    "-L#{lib}", "-lshiboken6.abi3",
-                    *pyincludes, *pylib, "-o", "test"
+    CPP
+    shiboken_flags = shell_output("pkgconf --cflags --libs shiboken6").chomp.split
+    system ENV.cxx, "-std=c++17", "test.cpp", *shiboken_flags, *pyincludes, *pylib, "-o", "test"
     system "./test"
   end
 end

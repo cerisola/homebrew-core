@@ -1,18 +1,18 @@
 class Porter < Formula
   desc "App artifacts, tools, configs, and logic packaged as distributable installer"
   homepage "https://porter.sh"
-  url "https://github.com/getporter/porter/archive/refs/tags/v1.1.1.tar.gz"
-  sha256 "c31ffe99cdaee0abc0687b17da7c809bd35543e4861cfbdd1e774524db84167b"
+  url "https://github.com/getporter/porter/archive/refs/tags/v1.2.1.tar.gz"
+  sha256 "927c88d7342439594b4f416f6d18d116afd2418bc48876efedeb1cc8e4716fda"
   license "Apache-2.0"
   head "https://github.com/getporter/porter.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c3d907ecf54616e5d64d085c53ed5cdc47ac4b641146f26899225826c57c4d1b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c3d907ecf54616e5d64d085c53ed5cdc47ac4b641146f26899225826c57c4d1b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c3d907ecf54616e5d64d085c53ed5cdc47ac4b641146f26899225826c57c4d1b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "74f2adce1a3778289c719e4fa60c9da60286a0b27ebff36cd93eef7903112290"
-    sha256 cellar: :any_skip_relocation, ventura:       "74f2adce1a3778289c719e4fa60c9da60286a0b27ebff36cd93eef7903112290"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5baff9f321e3fd8f7c243ce26c98173c8876f1f47af8f8f6af6279ee1a169d9b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1bbb8d0fec75d619cb3157967dc5673647c69e2e2abddb4f6ce311ef12bbabfc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1bbb8d0fec75d619cb3157967dc5673647c69e2e2abddb4f6ce311ef12bbabfc"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1bbb8d0fec75d619cb3157967dc5673647c69e2e2abddb4f6ce311ef12bbabfc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f58637b322064fd390d0832cacc06c14eaad6c6d630b352344bd44bd43067f1e"
+    sha256 cellar: :any_skip_relocation, ventura:       "f58637b322064fd390d0832cacc06c14eaad6c6d630b352344bd44bd43067f1e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "01040892418ef902c033e9d4504661445774151d63e6f91417ba2a9c0cf4897d"
   end
 
   depends_on "go" => :build
@@ -32,6 +32,6 @@ class Porter < Formula
     assert_match "porter #{version}", shell_output("#{bin}/porter --version")
 
     system bin/"porter", "create"
-    assert_predicate testpath/"porter.yaml", :exist?
+    assert_path_exists testpath/"porter.yaml"
   end
 end

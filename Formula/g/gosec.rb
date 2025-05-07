@@ -1,28 +1,31 @@
 class Gosec < Formula
   desc "Golang security checker"
   homepage "https://securego.io/"
-  url "https://github.com/securego/gosec/archive/refs/tags/v2.21.4.tar.gz"
-  sha256 "fe3d78c52383164906d3cca5b22e693e22a146a4b89a8f60438fdaa833e32b3f"
+  url "https://github.com/securego/gosec/archive/refs/tags/v2.22.3.tar.gz"
+  sha256 "f9b9ac7e82e8bc66ea340d161ce4034575174dd8fd9688e0cde089f2f4e8b31d"
   license "Apache-2.0"
   head "https://github.com/securego/gosec.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5571a78eebcc2894002a97d6a0c61aa1e07e982720df4c1dc5696afa96b12de"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b5571a78eebcc2894002a97d6a0c61aa1e07e982720df4c1dc5696afa96b12de"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "b5571a78eebcc2894002a97d6a0c61aa1e07e982720df4c1dc5696afa96b12de"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e74361f658185b11b73634ccb6c243da37dfef808d38a924f4bd4728ebec728b"
-    sha256 cellar: :any_skip_relocation, ventura:       "e74361f658185b11b73634ccb6c243da37dfef808d38a924f4bd4728ebec728b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ddb2653a49926b73033c002e1b3fd9ec25d0a97d6df7e3ddc002d72fe422cabb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "363a2b962e17892d4673747d460a4a5a977ebf26f79d6a1646069db58ce082c3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "363a2b962e17892d4673747d460a4a5a977ebf26f79d6a1646069db58ce082c3"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "363a2b962e17892d4673747d460a4a5a977ebf26f79d6a1646069db58ce082c3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5a466435b0ffcbecc32e01e5bf211f1a60d84da89c16b0a7c3d18cc51c1308d9"
+    sha256 cellar: :any_skip_relocation, ventura:       "5a466435b0ffcbecc32e01e5bf211f1a60d84da89c16b0a7c3d18cc51c1308d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a3c391451f47ac8e992befdcc754908bafadf94db7987df80b027bbf7319738"
   end
 
   depends_on "go"
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-X main.version=v#{version}"), "./cmd/gosec"
+    ldflags = "-s -w -X main.Version=#{version} -X main.GitTag= -X main.BuildDate=#{time.iso8601}"
+    system "go", "build", *std_go_args(ldflags:), "./cmd/gosec"
   end
 
   test do
-    (testpath/"test.go").write <<~EOS
+    assert_match version.to_s, shell_output("#{bin}/gosec --version")
+
+    (testpath/"test.go").write <<~GO
       package main
 
       import "fmt"
@@ -33,7 +36,7 @@ class Gosec < Formula
 
           fmt.Println("Doing something with: ", username, password)
       }
-    EOS
+    GO
 
     output = shell_output("#{bin}/gosec ./...", 1)
     assert_match "G101 (CWE-798)", output

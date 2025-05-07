@@ -1,17 +1,18 @@
 class Xroar < Formula
   desc "Dragon and Tandy 8-bit computer emulator"
   homepage "https://www.6809.org.uk/xroar/"
-  url "https://www.6809.org.uk/xroar/dl/xroar-1.6.6.tar.gz"
-  sha256 "2f5f95f655beb41fecb65019f0a24a9c026527edf6d83bd1df55decdf1466494"
+  url "https://www.6809.org.uk/xroar/dl/xroar-1.8.2.tar.gz"
+  sha256 "34431cc352bad47f70570243644a96bce54e877a6f7e348208fcae259835ae31"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "8376dd921f441a7d43f4a10e4d0e9fc210070aa7a78d3038ae813e059ae50fb4"
-    sha256 cellar: :any,                 arm64_sonoma:  "c6530924e507efa90e32d05be08d9d1a62e572819367dc92707933650d020e7c"
-    sha256 cellar: :any,                 arm64_ventura: "30fee0f66459425d3ef2f05753972d84f4d91dfa6b118d6be9652df557e20f47"
-    sha256 cellar: :any,                 sonoma:        "9f29090adaf0bce38434be682ef4fb4929d9c2a933a3b4d30879019a06cef774"
-    sha256 cellar: :any,                 ventura:       "a570c72efb925b959c11ff3574ea37ec35e0ab40554cf391262df34303317098"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e112584204301dba8761f5b58b9c0b67e7245c9e785e4aba2e78cdc16277008"
+    sha256 cellar: :any,                 arm64_sequoia: "66d251d967c3745b9aa87eb67a82222fbc0fceec7f9610fc348226c86846b1d2"
+    sha256 cellar: :any,                 arm64_sonoma:  "04fc798fa46ba0d83518a8fe26bf80e77b19afff2c41a9d4b7b739a6c8e9ac00"
+    sha256 cellar: :any,                 arm64_ventura: "24372127bc5875450dca9f8508e7ae1ee523519f46e2503ddf584e833e213cab"
+    sha256 cellar: :any,                 sonoma:        "c0bf5c651a318a9a23f4f97e76f7e6e4205f4b7557a14f58e56993e65a97a7d1"
+    sha256 cellar: :any,                 ventura:       "6c32e3d2690b479ae90aaed59f9b035d458b78a0abffea17544a4a1115492cf2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5499a115ff0ca98c9e01b4e08b99088b07c761cc8bae761f5b7b8c58e616e2ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "baf6d0b2ca8c7764f489bf159b86d9c9f0acf473968e11dd68a4ee67f59d599e"
   end
 
   head do
@@ -36,6 +37,9 @@ class Xroar < Formula
   end
 
   def install
+    # Fix compile with newer Clang
+    ENV.append_to_cflags "-Wno-implicit-function-declaration" if DevelopmentTools.clang_build_version >= 1403
+
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-silent-rules", "--without-x", *std_configure_args
     system "make", "install"

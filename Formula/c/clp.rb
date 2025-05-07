@@ -18,10 +18,11 @@ class Clp < Formula
     sha256 cellar: :any,                 sonoma:         "73f92e5e65141f07f3b878b8fa5a212f70dadc4b9d19f803cf45e3a00edddd0c"
     sha256 cellar: :any,                 ventura:        "d6f0d8287373e84ba11e9db75999a442879a6802f24520616c4bf6b204d63ffc"
     sha256 cellar: :any,                 monterey:       "a1bca012e38bffd8377562a7fcf4ec3739dc57cd08fd7918f16e0a56a202eeca"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "2d629ba3d4e212476ae6e6c4172ccc97bf88acac38f1982de82aa07560da98a7"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "3de80fe042a6689294193c7efbb4d794ee37c3e1194dcdb311b740acb6ffba09"
   end
 
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "coinutils"
   depends_on "openblas"
   depends_on "osi"
@@ -38,17 +39,14 @@ class Clp < Formula
 
     args = [
       "--datadir=#{pkgshare}",
-      "--disable-debug",
-      "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--includedir=#{include}/clp",
-      "--prefix=#{prefix}",
       "--with-blas-incdir=#{Formula["openblas"].opt_include}",
       "--with-blas-lib=-L#{Formula["openblas"].opt_lib} -lopenblas",
       "--with-lapack-incdir=#{Formula["openblas"].opt_include}",
       "--with-lapack-lib=-L#{Formula["openblas"].opt_lib} -lopenblas",
     ]
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
@@ -65,7 +63,7 @@ class Clp < Formula
         return status;
       }
     CPP
-    pkg_config_flags = `pkg-config --cflags --libs clp`.chomp.split
+    pkg_config_flags = shell_output("pkg-config --cflags --libs clp").chomp.split
     system ENV.cxx, "test.cpp", *pkg_config_flags
     system "./a.out"
   end

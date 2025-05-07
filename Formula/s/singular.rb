@@ -1,9 +1,8 @@
 class Singular < Formula
   desc "Computer algebra system for polynomial computations"
   homepage "https://www.singular.uni-kl.de/"
-  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-4-0/singular-4.4.0p6.tar.gz"
-  version "4.4.0p6"
-  sha256 "23a7674d1cf734b436c26c145dc22cb51f71a14d61e6ca17084293ccd0148902"
+  url "https://www.singular.uni-kl.de/ftp/pub/Math/Singular/SOURCES/4-4-1/singular-4.4.1.tar.gz"
+  sha256 "6a4fbaaed05b89c35bff3b1c5e124344a088097f81affe129c9ae619b282b49b"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -37,12 +36,13 @@ class Singular < Formula
 
   bottle do
     rebuild 1
-    sha256 arm64_sequoia: "ac4346f71a06f0ae9ec36bdc498414d61cd9b6161f39ebfa4327817423f96e9e"
-    sha256 arm64_sonoma:  "4e18563cd04ba72fe3c22cc9a1146b21e02b14427adba5363bc5a9ca681604af"
-    sha256 arm64_ventura: "559b2f2a8d17deae3d3e47e1f0cfabf047e35c87232a7a59b1fb482a0b23e671"
-    sha256 sonoma:        "697102f51dc8667ddf7773a52ebae51f150cb15b248491c465ac653d9ce364a2"
-    sha256 ventura:       "7a114e9f033ff75acb94bf101359e68c63874b8698c85b71807fd82ac518fbe7"
-    sha256 x86_64_linux:  "1da41f69eaeba4d66f62b448514235837cfecc2193a433610bd18528eec35f3b"
+    sha256 arm64_sequoia: "896fbb9eef9f94af1eaf50f0b9aa74349fa09c4af793afb5750191528d8abd2a"
+    sha256 arm64_sonoma:  "f5af6764654d8eb0bc0d37ad92eb4604d89d0d6948b567207305a97b06131a9a"
+    sha256 arm64_ventura: "25dbec84237a3a91179bb8821cc467380db5e9a6afb0c527c1892df8e7cc953b"
+    sha256 sonoma:        "fa44347fa78090b4159d95f152c2c1b44e139543366733e8999a7b7550a0993d"
+    sha256 ventura:       "45495c62336592f855eb8ce7a6bfe65317d3ebb09ef283e7a44a7b514e43d2bc"
+    sha256 arm64_linux:   "1c40c1d54986a5fe26d7b9be4c6ad059b910afb0289c145e4373c895526d74c4"
+    sha256 x86_64_linux:  "6648ecbf457333344ef6c772f27c9dc60e54deff011f4c211ddb5b3a1fa9dcfd"
   end
 
   head do
@@ -53,6 +53,7 @@ class Singular < Formula
     depends_on "libtool" => :build
   end
 
+  depends_on "flint"
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ntl"

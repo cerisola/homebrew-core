@@ -21,42 +21,31 @@ class Dps8m < Formula
     sha256 cellar: :any_skip_relocation, ventura:        "81654fc8c297d212c51325ff99a85a4118b30448f1142a8996f3091159b8df0c"
     sha256 cellar: :any_skip_relocation, monterey:       "9a59be99e76eb327e76dbf8e29bd94b43037689a4287c53ef4d882fbfd0e626d"
     sha256 cellar: :any_skip_relocation, big_sur:        "ec9347f931db9539b6a17a5e3dd9559fd8d4eb0fd56aa7c26c8535c40d3a9c52"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "d6e3b67195b4a692bda0e617989bbe2a2864a0d0ad47381b3cee12344a38f34f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2607bb961e0b28e82e64392f258f472ccc84335785c703bad7de6b5ebeb1b236"
   end
 
   depends_on "libuv"
 
-  uses_from_macos "expect" => :test
-
   def install
-    # Reported 23 Jul 2017 "make doesn't create bin directory"
-    # See https://sourceforge.net/p/dps8m/mailman/message/35960505/
-    bin.mkpath
-
-    system "make"
-    bin.install %w[src/dps8/dps8 src/punutil/punutil src/prt2pdf/prt2pdf]
+    system "make", "install", "PREFIX=#{prefix}"
+    bin.install %w[src/punutil/punutil src/prt2pdf/prt2pdf]
   end
 
   test do
-    (testpath/"test.exp").write <<~EOS
-      spawn #{bin}/dps8 -t
-      set timeout 30
-      expect {
-        timeout { exit 1 }
-        ">"
-      }
-      set timeout 10
-      send "SH VE\r"
-      expect {
-        timeout { exit 2 }
-        "Version:"
-      }
-      send "q\r"
-      expect {
-        timeout { exit 3 }
-        eof
-      }
-    EOS
-    system("expect", "-f", "test.exp")
+    require "expect"
+    require "pty"
+    timeout = 10
+    PTY.spawn(bin/"dps8", "-t") do |r, w, pid|
+      refute_nil r.expect("sim>", timeout), "Expected sim>"
+      w.write "SH VE\r"
+      refute_nil r.expect("Version:", timeout), "Expected Version:"
+      w.write "q\r"
+      refute_nil r.expect("Goodbye", timeout), "Expected Goodbye"
+    ensure
+      r.close
+      w.close
+      Process.wait(pid)
+    end
   end
 end

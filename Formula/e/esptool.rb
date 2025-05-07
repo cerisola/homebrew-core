@@ -6,15 +6,17 @@ class Esptool < Formula
   url "https://files.pythonhosted.org/packages/5c/6b/3ce9bb7f36bdef3d6ae71646a1d3b7d59826a478f3ed8a783a93a2f8f537/esptool-4.8.1.tar.gz"
   sha256 "dc4ef26b659e1a8dcb019147c0ea6d94980b34de99fbe09121c7941c8b254531"
   license "GPL-2.0-or-later"
+  revision 1
 
   bottle do
     rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "435a28b10ab6dc8fadc387f29e9d100f66a595bbdb3fa1ca1e5eb5c2ed7c12df"
-    sha256 cellar: :any,                 arm64_sonoma:  "b743da34300c646e201c1abfec19a0a8a7dfcd2944e12ebea17a47a47428cf4f"
-    sha256 cellar: :any,                 arm64_ventura: "e4874eaefae3706401f4e3402e984fed85216f2b1ea6931e6555d08d4e9bc1d4"
-    sha256 cellar: :any,                 sonoma:        "507146f1cf6fbb9c674c13caff0030099309d412ce6905893907eee54c28c0c4"
-    sha256 cellar: :any,                 ventura:       "e553aab2cc885e47e3b38f31bcbb622ea03e970054201d97ebe47794d7241826"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "331a891fb3f0af73d6f29687914a5377ceebc1b06f0d7d5e181b6983f8cc143a"
+    sha256 cellar: :any,                 arm64_sequoia: "aad39de44889bb764d3fd6cca00df3348cdb04ff7f0076e6e367e5dea8bd8fd7"
+    sha256 cellar: :any,                 arm64_sonoma:  "90745c064cd63eb2a562a5f6d5059912539157c29f164495928122784e90a274"
+    sha256 cellar: :any,                 arm64_ventura: "eebafbba9715281b8d4a3bcb298f2bc38605cb8c4679ac3d4d9c5112fce82cc4"
+    sha256 cellar: :any,                 sonoma:        "2924d5ea64cf8dbc011a8c1124efc2b093bc984667a5b14366c690c6d4ae637b"
+    sha256 cellar: :any,                 ventura:       "acf99fe8d78ef16a6260ea395bfaa2eb67ebe2ea15e0e43a2deaa9af90cf9505"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f402b3940ce5f8d4cc13784f034fd15acca3fdf84db22c5e78286aac978e822b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f9a9f990ee858a111961f260c9d270e068f0b07f5dbbab15c72c12e40446564"
   end
 
   depends_on "cryptography"
@@ -22,8 +24,8 @@ class Esptool < Formula
   depends_on "python@3.13"
 
   resource "argcomplete" do
-    url "https://files.pythonhosted.org/packages/5f/39/27605e133e7f4bb0c8e48c9a6b87101515e3446003e0442761f6a02ac35e/argcomplete-3.5.1.tar.gz"
-    sha256 "eb1ee355aa2557bd3d0145de7b06b2a45b0ce461e1e7813f5d066039ab4177b4"
+    url "https://files.pythonhosted.org/packages/7f/03/581b1c29d88fffaa08abbced2e628c34dd92d32f1adaed7e42fc416938b0/argcomplete-3.5.2.tar.gz"
+    sha256 "23146ed7ac4403b70bd6026402468942ceba34a6732255b9edf5b7354f68a6bb"
   end
 
   resource "bitarray" do
@@ -71,6 +73,11 @@ class Esptool < Formula
     ENV["PYTHONPYCACHEPREFIX"] = buildpath/"pycache"
 
     virtualenv_install_with_resources
+
+    bin.each_child(false) do |script|
+      generate_completions_from_executable(libexec/"bin/register-python-argcomplete", script.to_s,
+                                           base_name: script.to_s, shell_parameter_format: :arg)
+    end
   end
 
   test do

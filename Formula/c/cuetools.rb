@@ -21,6 +21,7 @@ class Cuetools < Formula
     sha256 cellar: :any_skip_relocation, high_sierra:    "4393d6db857a9568a34de3a09ff049fbec9a55a95b029eacd24e35d6ce792074"
     sha256 cellar: :any_skip_relocation, sierra:         "9456e5957a78f993f5a8cef76aa583ac6a42a8298fb05bded243dbaf810f9a44"
     sha256 cellar: :any_skip_relocation, el_capitan:     "7f0effc75d64fca0f2695b5f7ddb4d8713cc83522d40dcd37842e83c120ac117"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "333e324eaa7d67aaacbc2eaad315abc19fdc6fe52dd20220cb7fef4f0b73859d"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "45fd4566e2ce0650ad162fb32f3a12f30523efeded3f6d30612cdd8efca73ffc"
   end
 
@@ -35,19 +36,19 @@ class Cuetools < Formula
   patch :DATA
 
   def install
-    system "autoreconf", "-i"
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "autoreconf", "--force", "--install", "--verbose"
+    system "./configure", "--mandir=#{man}", *std_configure_args
     system "make", "install"
   end
 
   test do
-    (testpath/"test.cue").write <<~EOS
+    (testpath/"test.cue").write <<~CUE
       FILE "sampleimage.bin" BINARY
         TRACK 01 MODE1/2352
           INDEX 01 00:00:00
-    EOS
+    CUE
     system bin/"cueconvert", testpath/"test.cue", testpath/"test.toc"
-    assert_predicate testpath/"test.toc", :exist?
+    assert_path_exists testpath/"test.toc"
   end
 end
 

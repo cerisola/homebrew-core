@@ -1,44 +1,25 @@
 class Mpd < Formula
   desc "Music Player Daemon"
-  homepage "https://github.com/MusicPlayerDaemon/MPD"
+  homepage "https://www.musicpd.org/"
+  url "https://github.com/MusicPlayerDaemon/MPD/archive/refs/tags/v0.24.3.tar.gz"
+  sha256 "80bb03c32cc2c85cb2e91711f96c6e25cba5546908b003d0254946397f42acf7"
   license "GPL-2.0-or-later"
-  revision 6
   head "https://github.com/MusicPlayerDaemon/MPD.git", branch: "master"
 
-  stable do
-    url "https://github.com/MusicPlayerDaemon/MPD/archive/refs/tags/v0.23.15.tar.gz"
-    sha256 "d2865d8f8ea79aa509b1465b99a2b8f3f449fe894521c97feadc2dca85a6ecd2"
-
-    # Compatibility with fmt 11
-    patch do
-      url "https://github.com/MusicPlayerDaemon/MPD/commit/3648475f871c33daa9e598c102a16e5a1a4d4dfc.patch?full_index=1"
-      sha256 "5733f66678b3842c8721c75501f6c25085808efc42881847af11696cc545848e"
-    end
-
-    # Fix missing include
-    patch do
-      url "https://github.com/MusicPlayerDaemon/MPD/commit/e380ae90ebb6325d1820b6f34e10bf3474710899.patch?full_index=1"
-      sha256 "661492a420adc11a3d8ca0c4bf15e771f56e2dcf1fd0042eb6ee4fb3a736bd12"
-    end
-
-    # Backport support for ICU 76+
-    # Ref: https://github.com/MusicPlayerDaemon/MPD/pull/2140
-    patch :DATA
-  end
-
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "8331fad50323d97217240e745b7023718b1514389693a69fcb1a2574e9e8c8c9"
-    sha256 cellar: :any, arm64_sonoma:  "f10b98cff481aa4a5f953a490c50c9a36bee49a5343a2a5c10a15bb26994c579"
-    sha256 cellar: :any, arm64_ventura: "ae555fc405b962ba4196d6acf4bb14cffd1b9103153038cea92f4cfaed34936f"
-    sha256 cellar: :any, sonoma:        "6216d61f9f25b1053c62b2eeb9eec0918db32b147fc3de0478cf95191b5c2be2"
-    sha256 cellar: :any, ventura:       "52fc3ccad0b75045b551ffc3e54fab067bbb915393dc7965e3261b48a00450b5"
-    sha256               x86_64_linux:  "3c9bfb4c2d78a0f206733f9ae9da65ffe160987b12aac875f3a68ee79883c813"
+    sha256 cellar: :any, arm64_sequoia: "a7d9949ec3f0f88c797180ee7019a1c44df2681978547e0bde2dcf8e68036201"
+    sha256 cellar: :any, arm64_sonoma:  "734d5549a13cc23d026f5e5d753a6620ab08e0d6096c8fc948d8ded1d3b455cd"
+    sha256 cellar: :any, arm64_ventura: "4438d702c743f05bba8be6e061defc3256b7c3fbbfa69c2f844c0c6cdc21d244"
+    sha256 cellar: :any, sonoma:        "94293b58505c532dd6e622125de61c0b64b591b7ce8acabf1ffb3647a1315652"
+    sha256 cellar: :any, ventura:       "bc99d04f570580fb5f47036deff8c7bbdd4fcebb86fa3b5d9e41d5713b95be70"
+    sha256               arm64_linux:   "2230b7523e4621a0e521c7c601dac2aa4d5a339471481b18a9a6ce450a847d66"
+    sha256               x86_64_linux:  "8606c8825eabbc1ff262131f95d715c87608f10d8eddcc3486512203db62230e"
   end
 
   depends_on "boost" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "chromaprint"
   depends_on "expat"
@@ -49,7 +30,7 @@ class Mpd < Formula
   depends_on "fmt"
   depends_on "game-music-emu"
   depends_on "glib"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "lame"
   depends_on "libao"
   depends_on "libgcrypt"
@@ -66,6 +47,7 @@ class Mpd < Formula
   depends_on "libvorbis"
   depends_on macos: :mojave # requires C++17 features unavailable in High Sierra
   depends_on "mpg123"
+  depends_on "nlohmann-json"
   depends_on "opus"
   depends_on "pcre2"
   depends_on "sqlite"
@@ -74,6 +56,14 @@ class Mpd < Formula
   uses_from_macos "bzip2"
   uses_from_macos "curl"
   uses_from_macos "zlib"
+
+  on_ventura :or_older do
+    depends_on "llvm"
+
+    fails_with :clang do
+      cause "Needs C++20 std::make_unique_for_overwrite"
+    end
+  end
 
   on_linux do
     depends_on "systemd" => :build
@@ -84,19 +74,19 @@ class Mpd < Formula
     depends_on "systemd"
   end
 
-  fails_with gcc: "5"
-
   def install
-    # mpd specifies -std=gnu++0x, but clang appears to try to build
-    # that against libstdc++ anyway, which won't work.
-    # The build is fine with G++.
-    ENV.libcxx
+    if OS.mac? && MacOS.version <= :ventura
+      ENV.llvm_clang
+      ENV.append "LDFLAGS", "-L#{Formula["llvm"].opt_lib}/unwind -lunwind"
+      # When using Homebrew's superenv shims, we need to use HOMEBREW_LIBRARY_PATHS
+      # rather than LDFLAGS for libc++ in order to correctly link to LLVM's libc++.
+      ENV.prepend_path "HOMEBREW_LIBRARY_PATHS", Formula["llvm"].opt_lib/"c++"
+    end
 
     args = %W[
       --sysconfdir=#{etc}
       -Dmad=disabled
       -Dmpcdec=disabled
-      -Dsoundcloud=disabled
       -Dao=enabled
       -Dbzip2=enabled
       -Dchromaprint=enabled
@@ -110,6 +100,7 @@ class Mpd < Formula
       -Dwavpack=enabled
       -Dgme=enabled
       -Dmikmod=enabled
+      -Dnlohmann_json=enabled
       -Dsystemd_system_unit_dir=#{lib}/systemd/system
       -Dsystemd_user_unit_dir=#{lib}/systemd/user
     ]
@@ -168,38 +159,3 @@ class Mpd < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/lib/icu/meson.build b/src/lib/icu/meson.build
-index 92f9e6b1f..3d52213a9 100644
---- a/src/lib/icu/meson.build
-+++ b/src/lib/icu/meson.build
-@@ -1,5 +1,7 @@
--icu_dep = dependency('icu-i18n', version: '>= 50', required: get_option('icu'))
--conf.set('HAVE_ICU', icu_dep.found())
-+icu_i18n_dep = dependency('icu-i18n', version: '>= 50', required: get_option('icu'))
-+icu_uc_dep = dependency('icu-uc', version: '>= 50', required: get_option('icu'))
-+have_icu = icu_i18n_dep.found() and icu_uc_dep.found()
-+conf.set('HAVE_ICU', have_icu)
- 
- icu_sources = [
-   'CaseFold.cxx',
-@@ -13,7 +15,7 @@ if is_windows
- endif
- 
- iconv_dep = []
--if icu_dep.found()
-+if have_icu
-   icu_sources += [
-     'Util.cxx',
-     'Init.cxx',
-@@ -44,7 +46,8 @@ icu = static_library(
-   icu_sources,
-   include_directories: inc,
-   dependencies: [
--    icu_dep,
-+    icu_i18n_dep,
-+    icu_uc_dep,
-     iconv_dep,
-     fmt_dep,
-   ],

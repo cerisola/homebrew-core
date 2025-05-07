@@ -13,24 +13,27 @@ class Tracy < Formula
     sha256 cellar: :any,                 sonoma:         "4f862af547f74f1859b5e717cd7368a6394b170db1f68ead37b23ddd5a1e1cfb"
     sha256 cellar: :any,                 ventura:        "b32e96ee1c8c76f0064509f450da12f54b2860c007a3651288e6fd2bb0d7cc0c"
     sha256 cellar: :any,                 monterey:       "1db13a28c85ccdd2ea30ca6f33b8a534b60610f513c3ae69ddc3d33e2ae8ab5a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "5e42b03f16a1d0f0ccc344b0426a3ec779eeb3bf37dd9491847873b379693eaa"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "aeef3daf639e9ed8491a9b7e0b11652809dd6d165410d9070fcf5f40f8883a85"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "capstone"
   depends_on "freetype"
-  depends_on "glfw"
+
+  on_macos do
+    depends_on "glfw"
+  end
 
   on_linux do
+    depends_on "wayland-protocols" => :build
     depends_on "dbus"
     depends_on "libxkbcommon"
     depends_on "mesa"
     depends_on "tbb"
     depends_on "wayland"
   end
-
-  fails_with gcc: "5" # C++17
 
   def install
     args = %w[CAPSTONE GLFW FREETYPE].map { |arg| "-DDOWNLOAD_#{arg}=OFF" }
@@ -55,9 +58,7 @@ class Tracy < Formula
     assert_match "Tracy Profiler #{version}", shell_output("#{bin}/tracy --help")
 
     port = free_port
-    pid = fork do
-      exec bin/"tracy", "-p", port.to_s
-    end
+    pid = spawn bin/"tracy", "-p", port.to_s
     sleep 1
   ensure
     Process.kill("TERM", pid)

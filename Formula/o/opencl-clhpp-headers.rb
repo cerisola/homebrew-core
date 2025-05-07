@@ -17,20 +17,18 @@ class OpenclClhppHeaders < Formula
   depends_on "opencl-headers"
 
   def install
-    system "cmake", "-DBUILD_TESTING=OFF",
+    system "cmake", "-S", ".", "-B", "build",
                     "-DBUILD_DOCS=OFF",
                     "-DBUILD_EXAMPLES=OFF",
-                    "-S", ".",
-                    "-B", "build",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
-    (testpath/"test.cpp").write <<~EOS
+    (testpath/"test.cpp").write <<~CPP
       #include <CL/opencl.hpp>
-    EOS
+    CPP
     system ENV.cxx, "-std=c++11", "test.cpp", "-c", "-I#{include}", "-I#{Formula["opencl-headers"].include}"
   end
 end

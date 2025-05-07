@@ -1,25 +1,26 @@
 class Lychee < Formula
   desc "Fast, async, resource-friendly link checker"
   homepage "https://lychee.cli.rs/"
-  url "https://github.com/lycheeverse/lychee/archive/refs/tags/lychee-v0.16.1.tar.gz"
-  sha256 "ee61627083c80459e0f6a48c11cd910711c86b744a294b6a00f7072dffa1b04b"
+  url "https://github.com/lycheeverse/lychee/archive/refs/tags/lychee-v0.18.1.tar.gz"
+  sha256 "f04f4cd3dc2ac190a5d28134362e9ea44409013ab372086dbe2c73792dc4b462"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/lycheeverse/lychee.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "49f4fb0ea2630a4462cd308fd07159871134b617d04ee4fe8b822f1b3ab833f1"
-    sha256 cellar: :any,                 arm64_sonoma:  "1232583501b21c4ee9315dd68a64a4d4bae16c10837981a1e8f0b6ea45f79399"
-    sha256 cellar: :any,                 arm64_ventura: "a1023e1168f68db6715051a1c16246fac45c009d9509b24e2f3990a4ac3134d2"
-    sha256 cellar: :any,                 sonoma:        "134df392c7219a9ef99e64d1263e483b6677d44f8180c9cb6ce4701e2936b9d1"
-    sha256 cellar: :any,                 ventura:       "cda14df0d4a466aa06feef91dc35f5fde6df916a7db24ea0bf7809dfa07b2fd3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d261886646d80ed00a9ba4d5f72154d5c104e40489b1b3c16f6c112bfe7908fd"
+    sha256 cellar: :any,                 arm64_sequoia: "cca5846ef8febbb417f1fcb9cd1d28dd43c1cefb2a565eaa791d2219a9bef958"
+    sha256 cellar: :any,                 arm64_sonoma:  "39793095082c16fe8e10a056f059ab0a4e8859cc9c65c9db3f79fc8bddc4f149"
+    sha256 cellar: :any,                 arm64_ventura: "94c85e54bdd71f1764c33c11a6ee4b9b19bba527bf59492e932aae02868a285d"
+    sha256 cellar: :any,                 sonoma:        "fb140a3ad491c505eefb9ce6b077d86b489cf6f1bc9d409aaf1a589a88d743b7"
+    sha256 cellar: :any,                 ventura:       "7a13344d2c35163a49407c26ba58e3c740b4c0951711c11e375d15407fc26a23"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b21cc1f26204144b8b40601878203f137b906eb561db96d52067862c2558935f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0e41b80889f77ca79c1865b7cd8f9d588d4f9d2954fd3da559f6a982dc87e60"
   end
 
   depends_on "rust" => :build
   depends_on "openssl@3"
 
   on_linux do
-    depends_on "pkg-config" => :build
+    depends_on "pkgconf" => :build
   end
 
   def install

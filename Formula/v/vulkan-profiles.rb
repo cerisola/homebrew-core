@@ -1,8 +1,8 @@
 class VulkanProfiles < Formula
   desc "Tools for Vulkan profiles"
   homepage "https://github.com/KhronosGroup/Vulkan-Profiles"
-  url "https://github.com/KhronosGroup/Vulkan-Profiles/archive/refs/tags/v1.3.300.tar.gz"
-  sha256 "f01daa1a6c705c8797ef3ae32d9ef83d2953369da3586a2f8c09c36f2db15f49"
+  url "https://github.com/KhronosGroup/Vulkan-Profiles/archive/refs/tags/v1.4.314.tar.gz"
+  sha256 "fc322eb254836a7b18dd999e6255dd501e1f85b94248efa80f20e06c88fa7a95"
   license "Apache-2.0"
   head "https://github.com/KhronosGroup/Vulkan-Profiles.git", branch: "main"
 
@@ -12,16 +12,17 @@ class VulkanProfiles < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "9a6bdd34f28576d7876ada88c9cb897dc7eecb48edf18baa2fbde088cb490d3a"
-    sha256 cellar: :any,                 arm64_sonoma:  "358820d83fb68f9f948b66ce602035fc17e3e246ca75a5c7a8852b59f4f15360"
-    sha256 cellar: :any,                 arm64_ventura: "f6c11e67bc1222cbf258e46f480ecb27d5bac82f8c4a3a0022005b2ca2f4d0c4"
-    sha256 cellar: :any,                 sonoma:        "1fd1a37d22d3d37531d820949838552bb0697955a7af07d384d6b95834490351"
-    sha256 cellar: :any,                 ventura:       "7e857c7a2430f607bc0ab851f123095ca373c84adb8ede93e3e2e615cd9b4b8d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b3284ee4c297720c69add0baf7cae9a70cd17f8e642398e59ef2c0e103d4d99f"
+    sha256 cellar: :any,                 arm64_sequoia: "a652b4a6f97acec46e61b4d1635d5713c31efe70c2e7bf7e0056f3c74151ad36"
+    sha256 cellar: :any,                 arm64_sonoma:  "c2566a55e959a89d415710c00586a707008be56a2ea0bdd5d9a1d250ec7e2d7d"
+    sha256 cellar: :any,                 arm64_ventura: "41ecf66f4660efc7f93f6bc8c9369fef5cea122486af53bedc89dfee7ede4ac6"
+    sha256 cellar: :any,                 sonoma:        "6e5173560c0c710d00587c5f68b13c4cb2a9974d81a5a4a2a53a62cd13da7b78"
+    sha256 cellar: :any,                 ventura:       "65a329a86926e362eb8ce8e99e46cc83d2bcfba8d26d49ac34ed2ed7c88eb837"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7055e83db2e90ce1e21461893925e05d26b7623126b59e01fedd9d3142a723dd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "48c3b2a2efedb867d755e98c5a674d703c7c550f40c161c75f4cb0ba798d8134"
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.13" => :build
   depends_on "vulkan-tools" => :test
   depends_on "jsoncpp"
@@ -69,7 +70,7 @@ class VulkanProfiles < Formula
     # FIXME: when GitHub Actions Intel Mac runners support the use of Metal,
     # remove this weakened version and conditional
     if OS.mac? && Hardware::CPU.intel?
-      assert_predicate share/"vulkan/explicit_layer.d/VkLayer_khronos_profiles.json", :exist?
+      assert_path_exists share/"vulkan/explicit_layer.d/VkLayer_khronos_profiles.json"
     else
       ENV.prepend_path "VK_LAYER_PATH", share/"vulkan/explicit_layer.d"
 

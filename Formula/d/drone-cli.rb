@@ -1,9 +1,8 @@
 class DroneCli < Formula
   desc "Command-line client for the Drone continuous integration server"
   homepage "https://drone.io"
-  url "https://github.com/harness/drone-cli.git",
-      tag:      "v1.8.0",
-      revision: "bb3f656485ac8c289fe85b9f62d59993ffabf6dc"
+  url "https://github.com/harness/drone-cli/archive/refs/tags/v1.8.0.tar.gz"
+  sha256 "715e1187b8ccace88111671999c296dbd91e7523e09b0ee22dfb328f1a1d831b"
   license "Apache-2.0"
   head "https://github.com/harness/drone-cli.git", branch: "master"
 
@@ -15,6 +14,7 @@ class DroneCli < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "bdb5c00c40d6176cd7f9dcf1d5d2e16bd73301687f8feca565f6ac7ab99b5651"
     sha256 cellar: :any_skip_relocation, ventura:        "bdb5c00c40d6176cd7f9dcf1d5d2e16bd73301687f8feca565f6ac7ab99b5651"
     sha256 cellar: :any_skip_relocation, monterey:       "bdb5c00c40d6176cd7f9dcf1d5d2e16bd73301687f8feca565f6ac7ab99b5651"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "e416b331781eb265b5d9c17160bbf733290c38927a64dbe173da68935572d00f"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c9f53894149db17b3bb43aeaf2b72cf81f4d9f564fe810b1e7ec241645a5be2e"
   end
 

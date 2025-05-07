@@ -2,8 +2,8 @@ class Openj9 < Formula
   desc "High performance, scalable, Java virtual machine"
   homepage "https://www.eclipse.org/openj9/"
   url "https://github.com/eclipse-openj9/openj9.git",
-      tag:      "openj9-0.45.0",
-      revision: "0863e24b1d3f1637a418c59435c514116444106c"
+      tag:      "openj9-0.48.0",
+      revision: "1d5831436ec378c7dd9f57415bec39d3f5817d57"
   license any_of: [
     "EPL-2.0",
     "Apache-2.0",
@@ -17,13 +17,14 @@ class Openj9 < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "6b2ff068feb251240a81896db502226cde740b0f649c7270a46bfc0f02efca68"
-    sha256 cellar: :any, arm64_sonoma:   "f3711d4ad441e50305a78958ef36d75fd0fb8077d7edc17dff6019e24e712c05"
-    sha256 cellar: :any, arm64_ventura:  "b6264f5110df71fe05f0ccf3891b1115075554d4208a8bde477abc4bd02c1e5b"
-    sha256 cellar: :any, arm64_monterey: "8f1ba8afb4421165fa50c03192a445515b92edf077fc03337775f0dddc456565"
-    sha256 cellar: :any, sonoma:         "bed60cb68b71351c4780378f1e98e70b146c49d237aabc82613c4a735403e680"
-    sha256 cellar: :any, ventura:        "8d51623586575d0b78c1c89507fbf0c8a24b4a5f6d3c407c62e27b1a42cc418d"
-    sha256 cellar: :any, monterey:       "e00e0214d619e27f1a4355dc24a60bd09a66b1ed783b05e19a7f0ad9b16e8c8d"
+    rebuild 1
+    sha256 cellar: :any, arm64_sequoia: "29f9ddebb6f36fd0b5bca683d6abee61bc77741f93c6c6e61ec8e990d4e667df"
+    sha256 cellar: :any, arm64_sonoma:  "438e8bcee5e83f44283299e7c303fa83f104d110fb366f4781cc36ba78eaa60f"
+    sha256 cellar: :any, arm64_ventura: "2ce146ac5d3dd24c2128a3a415ccd7cbde196fba5886a9cfe9b17456f23acef4"
+    sha256 cellar: :any, sonoma:        "556ef126e9179af15826e7eb1877b6733b951990808b4ae5b8875d3ca0927119"
+    sha256 cellar: :any, ventura:       "6ebb3a8c650f109ec0c0769e8d8da7217852fb26099908abd7446a81c0244132"
+    sha256               arm64_linux:   "bb9d01b54445f63cb3ae6d6fe095e08b9c3442bcc15f2dac9858cc34d951409b"
+    sha256               x86_64_linux:  "4a236476593a25dd692c85fc8ded426ddb7d5e63995b42e6c5aa8632a13934d2"
   end
 
   keg_only :shadowed_by_macos
@@ -32,8 +33,9 @@ class Openj9 < Formula
   depends_on "bash" => :build
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "fontconfig"
+  depends_on "freetype"
   depends_on "giflib"
   depends_on "harfbuzz"
   depends_on "jpeg-turbo"
@@ -78,21 +80,27 @@ class Openj9 < Formula
       end
     end
     on_linux do
-      url "https://github.com/AdoptOpenJDK/semeru22-binaries/releases/download/jdk-22.0.1%2B8_openj9-0.45.0/ibm-semeru-open-jdk_x64_linux_22.0.1_8_openj9-0.45.0.tar.gz"
-      sha256 "6e54d984bc0c058ffb7a604810dfffba210d79e12855e5c61e9295fedeff32db"
+      on_arm do
+        url "https://github.com/AdoptOpenJDK/semeru22-binaries/releases/download/jdk-22.0.1%2B8_openj9-0.45.0/ibm-semeru-open-jdk_aarch64_linux_22.0.1_8_openj9-0.45.0.tar.gz"
+        sha256 "feb2734b519990d730c577254df5a97f7110bb851994ce775977894a9fdc22c7"
+      end
+      on_intel do
+        url "https://github.com/AdoptOpenJDK/semeru22-binaries/releases/download/jdk-22.0.1%2B8_openj9-0.45.0/ibm-semeru-open-jdk_x64_linux_22.0.1_8_openj9-0.45.0.tar.gz"
+        sha256 "6e54d984bc0c058ffb7a604810dfffba210d79e12855e5c61e9295fedeff32db"
+      end
     end
   end
 
   resource "omr" do
     url "https://github.com/eclipse-openj9/openj9-omr.git",
-        tag:      "openj9-0.45.0",
-        revision: "254af5a0452934f62e3253c5565b183c682d3495"
+        tag:      "openj9-0.48.0",
+        revision: "d10a4d553a3cfbf35db0bcde9ebccb24cdf1189f"
   end
 
   resource "openj9-openjdk-jdk" do
     url "https://github.com/ibmruntimes/openj9-openjdk-jdk22.git",
-        tag:      "openj9-0.45.0",
-        revision: "980fc841b6b683f31a8fde962b63dbd9ca97bd6a"
+        tag:      "openj9-0.46.1",
+        revision: "b77827589c585158319340068dae8497b75322c6"
   end
 
   def install
@@ -113,6 +121,7 @@ class Openj9 < Formula
       --with-debug-level=release
       --with-jvm-variants=server
       --with-native-debug-symbols=none
+      --with-extra-ldflags=-Wl,-rpath,#{loader_path.gsub("$", "\\$$")},-rpath,#{loader_path.gsub("$", "\\$$")}/server
 
       --with-vendor-bug-url=#{tap.issues_url}
       --with-vendor-name=#{tap.user}
@@ -123,6 +132,7 @@ class Openj9 < Formula
       --without-version-opt
       --without-version-pre
 
+      --with-freetype=system
       --with-giflib=system
       --with-harfbuzz=system
       --with-lcms=system
@@ -134,8 +144,13 @@ class Openj9 < Formula
       --enable-full-docs=no
     ]
     config_args += if OS.mac?
+      # Allow unbundling `freetype` on macOS
+      inreplace "make/autoconf/lib-freetype.m4", '= "xmacosx"', '= ""'
+
       %W[
         --enable-dtrace
+        --with-freetype-include=#{Formula["freetype"].opt_include}
+        --with-freetype-lib=#{Formula["freetype"].opt_lib}
         --with-sysroot=#{MacOS.sdk_path}
       ]
     else
@@ -146,6 +161,7 @@ class Openj9 < Formula
         --with-x=#{HOMEBREW_PREFIX}
         --with-cups=#{Formula["cups"].opt_prefix}
         --with-fontconfig=#{Formula["fontconfig"].opt_prefix}
+        --with-stdc++lib=dynamic
       ]
     end
     # Ref: https://github.com/eclipse-openj9/openj9/issues/13767
@@ -153,6 +169,7 @@ class Openj9 < Formula
     config_args << "--with-noncompressedrefs" if OS.mac? && Hardware::CPU.arm?
 
     ENV["CMAKE_CONFIG_TYPE"] = "Release"
+    ENV["CMAKE_POLICY_VERSION_MINIMUM"] = "3.5"
 
     system "bash", "./configure", *config_args
     system "make", "all", "-j"
@@ -161,11 +178,11 @@ class Openj9 < Formula
     if OS.mac?
       libexec.install Dir["build/*/images/jdk-bundle/*"].first => "openj9.jdk"
       jdk /= "openj9.jdk/Contents/Home"
-      rm jdk/"lib/src.zip"
-      rm_r(Dir.glob(jdk/"**/*.dSYM"))
     else
-      libexec.install Dir["build/linux-x86_64-server-release/images/jdk/*"]
+      libexec.install Dir["build/linux-*-server-release/images/jdk/*"]
     end
+    rm jdk/"lib/src.zip"
+    rm_r(jdk.glob("**/*.{dSYM,debuginfo}"))
 
     bin.install_symlink Dir[jdk/"bin/*"]
     include.install_symlink Dir[jdk/"include/*.h"]
@@ -183,13 +200,13 @@ class Openj9 < Formula
   end
 
   test do
-    (testpath/"HelloWorld.java").write <<~EOS
+    (testpath/"HelloWorld.java").write <<~JAVA
       class HelloWorld {
         public static void main(String args[]) {
           System.out.println("Hello, world!");
         }
       }
-    EOS
+    JAVA
 
     system bin/"javac", "HelloWorld.java"
 

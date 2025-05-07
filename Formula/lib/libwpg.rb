@@ -20,16 +20,17 @@ class Libwpg < Formula
     sha256 cellar: :any,                 ventura:        "58f2f9eca5ef6a1c769dd67aa64f8b4d90740d1c0493791c6f06b3c2ab06a1d5"
     sha256 cellar: :any,                 monterey:       "24d4e25ee9c2468c18d9a578ef7a46499f4e46f1d85316ef57ce128adee16f63"
     sha256 cellar: :any,                 big_sur:        "c97eced8c226e67a62e503b0edf54f4114c0b3ef6213765eacdef6ae719938d1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "0d08712e0baa978acef8431b8d295d02f82a3d50c7396034df4a3e17be1551c8"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c079bc2c2fc9c98e967d13ffa15b47ab25efc59ba66f731ce3758d1265017368"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
+  depends_on "pkgconf" => :build
   depends_on "librevenge"
   depends_on "libwpd"
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", *std_configure_args
     system "make", "install"
   end
 

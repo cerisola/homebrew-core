@@ -1,19 +1,19 @@
 class Lcov < Formula
   desc "Graphical front-end for GCC's coverage testing tool (gcov)"
   homepage "https://github.com/linux-test-project/lcov"
-  url "https://github.com/linux-test-project/lcov/releases/download/v2.1/lcov-2.1.tar.gz"
-  sha256 "4d01d9f551a3f0e868ce84742fb60aac4407e3fc1622635a07e29d70e38f1faf"
+  url "https://github.com/linux-test-project/lcov/releases/download/v2.3.1/lcov-2.3.1.tar.gz"
+  sha256 "b3017679472d5fcca727254493d0eb44253c564c2c8384f86965ba9c90116704"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/linux-test-project/lcov.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ec536e1acc2859e6b7331a7255e1f9dbef7f33b2b58d3a05d025ba53e6bf970e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b21ec70ac07a10126bba513e5dec8d5d18994174095e7f9ffd320f75764ec46b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "619cefe44ba6a5cdd6ca40454812b84fa450d737c71650b47c66d7c2bc5a9187"
-    sha256 cellar: :any_skip_relocation, sonoma:        "39aeebaf504aca839fdb1b891a032edf75def114bdb7bd4bdab2d31999e44828"
-    sha256 cellar: :any_skip_relocation, ventura:       "5421df6695224035ada03c0f76ec6d66e96050e8596d5675533d9e4138cffce2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1ce465be7d825ae9b7b5c109a4e5868b5c3c7b5c76cf4d097588df15dd29556"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fcedc02edaf2f1741c7dba360cc56e57804bf0c004c42e4d6c52978cccdeb741"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e6384fc41ccaeec619e775f181d0ca1563b392a47a9f757ab823d612ed3f449b"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "1e6dc5a8c51db813d1c8384b244b889dba77bcace71887d3a59058fea5de0f39"
+    sha256 cellar: :any_skip_relocation, sonoma:        "09faa3e1fbcd6f505f10ef0b3c26ad1560dfb277f376083f9098fe4d058742af"
+    sha256 cellar: :any_skip_relocation, ventura:       "50ac9094176effcd564bbbe34000a9b96f60d6b55666dbe0350fdc26f3c094f0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5927d4b4e3665b83bfcec3f33325d96fc4987ce7dd35ba830c1d5e9970a4001b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b5a406c9e0e4dffd1a92e34b1c2aee555dcdcafeff8c2ccbdcdab88897399b1"
   end
 
   uses_from_macos "perl"

@@ -1,8 +1,8 @@
 class Dwarfutils < Formula
   desc "Dump and produce DWARF debug information in ELF objects"
   homepage "https://www.prevanders.net/dwarf.html"
-  url "https://www.prevanders.net/libdwarf-0.11.0.tar.xz"
-  sha256 "846071fb220ac1952f9f15ebbac6c7831ef50d0369b772c07a8a8139a42e07d2"
+  url "https://www.prevanders.net/libdwarf-0.12.0.tar.xz"
+  sha256 "444dc1c5176f04d3ebc50341552a8b2ea6c334f8f1868a023a740ace0e6eae9f"
   license all_of: ["BSD-2-Clause", "LGPL-2.1-or-later", "GPL-2.0-or-later"]
   version_scheme 1
 
@@ -12,13 +12,13 @@ class Dwarfutils < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "006a219229a3010e9ada7ffbe0aaaff557b7b0ed50e74ad59535545170da23d6"
-    sha256 arm64_sonoma:  "5a59b9a8502c5a66cd7106e7af4f64e20ea8e1bfacab1746a45e0db1c8a28fcb"
-    sha256 arm64_ventura: "5cfc8adbd5391bb3f2198b09389caabeab41e73633354bf62442d7965095d793"
-    sha256 sonoma:        "f4fa659ba9f7cb092b47afe653bf0698e0e83077ea74d4143a7efad5df58bc84"
-    sha256 ventura:       "1b9718e58bc84826f8669b5f2ca8d395dec7936cfcac096cc28ac4ae7acb7e26"
-    sha256 x86_64_linux:  "feb60defc574c40271d8b4afae3963aafb239112b0004ece1f1bd1a733c95cbb"
+    sha256 arm64_sequoia: "ec32537c7a568c917f5272456848661e30ce00ac9cf5fd4b68dc70d7316813c5"
+    sha256 arm64_sonoma:  "c6be302ac2ebf8ef550362c794b703564f4ce039830f7c644f83429f03bb9229"
+    sha256 arm64_ventura: "e96358f887b938d3f7253721e876c8ffa8941b1e32a31a8380d4df9cb4898e77"
+    sha256 sonoma:        "c42720cbd7837861122a08219b26c3c8cce385f694f8e2282d7a438c549c8b83"
+    sha256 ventura:       "467ea3e56e9a9f808469ec730d8894d59ec23f4b42e3a79cd48111c222fba34a"
+    sha256 arm64_linux:   "0b7aaef94c972dab147ee440a9655daca11d2f7b8c6c684e40827769800f0312"
+    sha256 x86_64_linux:  "5f9220def8c174b3b3635804e5694b525386f39f92acc189e4a45bc7316f761e"
   end
 
   head do
@@ -29,7 +29,7 @@ class Dwarfutils < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   uses_from_macos "zlib"
 

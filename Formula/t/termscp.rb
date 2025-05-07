@@ -1,31 +1,22 @@
 class Termscp < Formula
   desc "Feature rich terminal file transfer and explorer"
   homepage "https://termscp.veeso.dev/"
+  url "https://github.com/veeso/termscp/archive/refs/tags/v0.17.0.tar.gz"
+  sha256 "ada7bbf513104272687c703217f2cc45f834af979fa6bde1b7ab4ee059d67669"
   license "MIT"
   head "https://github.com/veeso/termscp.git", branch: "main"
 
-  stable do
-    url "https://github.com/veeso/termscp/archive/refs/tags/v0.16.0.tar.gz"
-    sha256 "58f3b4770c5d1c5d7998af88b6df8c6a53dee4409f2cf6ea676caccec79cdb7f"
-
-    # rust 1.82.0 build patch
-    patch do
-      url "https://github.com/veeso/termscp/commit/69f821baef21fac5ef4db237467a302b8ead22ea.patch?full_index=1"
-      sha256 "108dc7dec63d628e3eb5981de848040b048e7e2ddb476be825fc4e700fc3685c"
-    end
-  end
-
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "f6bc9491cfb183a0253284a59e8b23a8ead5b3a598699734602ca197f6149244"
-    sha256 cellar: :any,                 arm64_sonoma:  "3e75b416a5dd48ee508ba9623a0a3a9744a6b7fbaf87d110364c4c7f949e48a2"
-    sha256 cellar: :any,                 arm64_ventura: "96d45e7c37c819a6c16cce2797ffdaba58a93a30e20b6b5c3098794edd4fe08a"
-    sha256 cellar: :any,                 sonoma:        "b77dfff6692b0afae87b3c15d61b7ff539e6de83b3c633b929054991dc55d79f"
-    sha256 cellar: :any,                 ventura:       "434d855df167d306ba7207cc06bacf121721d47f375a9b6aaac1ac398c10727d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5680967d070271bbe21209c027e6b251bf029efda6e426f256e1e5179813c277"
+    sha256 cellar: :any,                 arm64_sequoia: "f1f6a863d2464e7be10654d7eff0d2922f24a101edeeadb52c9d1e016b1ac222"
+    sha256 cellar: :any,                 arm64_sonoma:  "1fe7c2905c834353f25532a2712d4101c56d94de88550607410ce158e42b9e41"
+    sha256 cellar: :any,                 arm64_ventura: "80643a20f1a6e4220a1a34c10bbc8ad9097c85d4ea26a43c0950aa8574ce03dc"
+    sha256 cellar: :any,                 sonoma:        "bb8a6aa8bc2c40059fddd9d0bf432d859c3be784ae7b1ba60126b342c56477c1"
+    sha256 cellar: :any,                 ventura:       "e3b7f899953f98ef98f4e1408ccb25e4d00770d6e21b82b89c00c98835250b51"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7a3def80676f3340189e3b2a41072bd4e43c3ce9144ef4b53a5f3b9a7cb6f1a7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b97ee5fc207ce372552809e310c18e8aad4b8c0fa15c76ca900681a372ae7aa"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 

@@ -1,11 +1,10 @@
 class Spidermonkey < Formula
   desc "JavaScript-C Engine"
   homepage "https://spidermonkey.dev"
-  url "https://archive.mozilla.org/pub/firefox/releases/128.4.0esr/source/firefox-128.4.0esr.source.tar.xz"
-  version "128.4.0"
-  sha256 "074014e1c26144e10707b12a271176a4b6b67021e91444b613edae38d188febc"
+  url "https://archive.mozilla.org/pub/firefox/releases/128.10.0esr/source/firefox-128.10.0esr.source.tar.xz"
+  version "128.10.0"
+  sha256 "2ed83e26e41a8b3e2c7c0d13448a84dbb9b7ed65ed46bc162d629b0c6b071caf"
   license "MPL-2.0"
-  revision 1
   head "https://hg.mozilla.org/mozilla-central", using: :hg
 
   # Spidermonkey versions use the same versions as Firefox, so we simply check
@@ -16,27 +15,26 @@ class Spidermonkey < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "61b7051e96d04b5b6ddacc8ee0800b243b4ea2453bd795c07980958f93f4d174"
-    sha256 cellar: :any, arm64_sonoma:  "88ab4784c34102c8fb93c8915cdcbd1ac7496460ffe84b5a30bea713d29be343"
-    sha256 cellar: :any, arm64_ventura: "ec7e958ab256a5962f4ba60c12b368dc8609d0f156ddf23657bb54612db09287"
-    sha256 cellar: :any, sonoma:        "88c0d75a9e74c2979b9e7afe93d4e615032508fa92c4ebd3b0ca26e2436b9f69"
-    sha256 cellar: :any, ventura:       "be20966c58859beea2f86f730aed999e4adb9222a2ff4350b94952e0adcd8c0e"
-    sha256               x86_64_linux:  "d0664eeb42fb30dceab87318b21513762cc47dda62a91b21e1870421fc08ad81"
+    sha256 cellar: :any, arm64_sequoia: "569c7777027b310d823bc5896f5d532e094a86d593b3ffc09314a5d22e9248a5"
+    sha256 cellar: :any, arm64_sonoma:  "665877581d3fa3427ea32155d064953973f4a2b09ab33388fbcb1ddc39c1a560"
+    sha256 cellar: :any, arm64_ventura: "2a2327b2632c6983d31d24aa0b3c459e76ee013e592899439f404fe518f04531"
+    sha256 cellar: :any, sonoma:        "f5189cd635d68aab759c592857a2943c2ce267424a773b76c4adca4804ccfd93"
+    sha256 cellar: :any, ventura:       "a840fa0921a3982e6e841fff50e1005d258f5629aaa019e769f23ca90d5bf2b5"
+    sha256               arm64_linux:   "56b07590e3d88ed4d294611fdfb4750116786054892ede06b0707425a664085e"
+    sha256               x86_64_linux:  "12aede2307a06ac46be308115ed889af04ce6d124472e13f7ef02008cbce7c52"
   end
 
   depends_on "cbindgen" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "python@3.13" => :build
   depends_on "rust" => :build
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "nspr"
   depends_on "readline"
 
   uses_from_macos "llvm" => :build # for llvm-objdump
   uses_from_macos "m4" => :build
   uses_from_macos "zlib"
-
-  conflicts_with "narwhal", because: "both install a js binary"
 
   # From python/mozbuild/mozbuild/test/configure/test_toolchain_configure.py
   fails_with :gcc do
@@ -56,6 +54,10 @@ class Spidermonkey < Formula
       sha256 "0f1cd5f80b4ae46e614efa74a409133e8a69fff38220314f881383ba0adb0f87"
     end
   end
+
+  # Fix to find linker on macos-15, abusing LD_PRINT_OPTIONS is not working
+  # Issue ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1964280
+  patch :DATA
 
   def install
     # Workaround for ICU 76+
@@ -116,3 +118,27 @@ class Spidermonkey < Formula
     assert_equal "hello", shell_output("#{bin}/js #{path}").strip
   end
 end
+
+__END__
+diff --git a/build/moz.configure/toolchain.configure b/build/moz.configure/toolchain.configure
+index 264027e..2e073a3 100644
+--- a/build/moz.configure/toolchain.configure
++++ b/build/moz.configure/toolchain.configure
+@@ -1906,7 +1906,16 @@ def select_linker_tmpl(host_or_target):
+                 kind = "ld64"
+ 
+             elif retcode != 0:
+-                return None
++                # macOS 15 fallback: try `-Wl,-v` if --version failed
++                if target.kernel == "Darwin":
++                    fallback_cmd = cmd_base + linker_flag + ["-Wl,-v"]
++                    retcode2, stdout2, stderr2 = get_cmd_output(*fallback_cmd, env=env)
++                    if retcode2 == 0 and "@(#)PROGRAM:ld" in stderr2:
++                        kind = "ld64"
++                    else:
++                        return None
++                else:
++                    return None
+ 
+             elif "mold" in stdout:
+                 kind = "mold"

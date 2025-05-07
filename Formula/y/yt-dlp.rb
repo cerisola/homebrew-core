@@ -3,17 +3,18 @@ class YtDlp < Formula
 
   desc "Feature-rich command-line audio/video downloader"
   homepage "https://github.com/yt-dlp/yt-dlp"
-  url "https://files.pythonhosted.org/packages/2f/79/acfe1c2bf64ed83e1b465e6550c0f5bc2214ea447a900b102f5ca6e4186e/yt_dlp-2024.10.22.tar.gz"
-  sha256 "47b82a1fd22411b5c95ef2f0a1ae1af4e6dfd736ea99fdb2a0ea41445abc62ba"
+  url "https://files.pythonhosted.org/packages/75/ca/1d1a33dec2107463f59bc4b448fcf43718d86a36b6150e8a0cfd1a96a893/yt_dlp-2025.4.30.tar.gz"
+  sha256 "d01367d0c3ae94e35cb1e2eccb7a7c70e181c4ca448f4ee2374f26489d263603"
   license "Unlicense"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a80da0ccb4ef7b822d425db9099e795ba00241e15cf45c91fe62a616889dac1f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bd8f8cb7a65d9801e3ca44b2dddb09a3986ca067d420986ecb7060ad816b0191"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "38a61fdb6070a33faed2d3be323bf5332559bc01828017254de16cebbe8d5335"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f9579fa9bd9bc78e3df7e92a4ad259ef7fef0b49aa533bc23d6def01b9c24b8d"
-    sha256 cellar: :any_skip_relocation, ventura:       "a3249d1c0069a7cb62432e2c034f1086485c44e99288ce0258ca576017e6ba09"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b8445d420e7e46dfa4c7e701033df42ac3572ef4f22c6aa1770ed71487e5f348"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ad6ad9f9a0c57ba1538b716e8ecba7dcdb9db371ce7f388651ea191495a20ca4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9b09a0f18107094f7525c36a6505f513cecf43b9a03c67ff6d28a5d51eb2f96d"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "35adcf1b9bc518301ba4f087fc2f16a22a28360053e585e23cc8383a3fc920f2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2d86ec40a7f0a90727f2c9deaca8f31ea604584e8c5603b708c194f3bc5db5fa"
+    sha256 cellar: :any_skip_relocation, ventura:       "719a96834e8195a8c4e87df1e06775a3a3ec099a9f0108b637b5618b7bc1fd21"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "884c092388edb9c8aded445c1de35f04958e7ce089a84ade98142d68f5d7f33c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4dff59123e1563ad58c8f00e15a7e557473716597c4d4195563cd295cae99779"
   end
 
   head do
@@ -35,8 +36,8 @@ class YtDlp < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/f2/4f/e1808dc01273379acc506d18f1504eb2d299bd4131743b9fc54d7be4df1e/charset_normalizer-3.4.0.tar.gz"
-    sha256 "223217c3d4f82c3ac5e29032b3f1c2eb0fb591b72161f86d93f5719079dae93e"
+    url "https://files.pythonhosted.org/packages/16/b0/572805e227f01586461c80e0fd25d65a2115599cc9dad142fee4b747c357/charset_normalizer-3.4.1.tar.gz"
+    sha256 "44251f18cd68a75b56585dd00dae26183e102cd5e0f9f1466e6df5da2ed64ea3"
   end
 
   resource "idna" do
@@ -50,8 +51,8 @@ class YtDlp < Formula
   end
 
   resource "pycryptodomex" do
-    url "https://files.pythonhosted.org/packages/11/dc/e66551683ade663b5f07d7b3bc46434bf703491dbd22ee12d1f979ca828f/pycryptodomex-3.21.0.tar.gz"
-    sha256 "222d0bd05381dd25c32dd6065c071ebf084212ab79bab4599ba9e6a3e0009e6c"
+    url "https://files.pythonhosted.org/packages/ba/d5/861a7daada160fcf6b0393fb741eeb0d0910b039ad7f0cd56c39afdd4a20/pycryptodomex-3.22.0.tar.gz"
+    sha256 "a1da61bacc22f93a91cbe690e3eb2022a03ab4123690ab16c46abb693a9df63d"
   end
 
   resource "requests" do
@@ -60,13 +61,13 @@ class YtDlp < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/ed/63/22ba4ebfe7430b76388e7cd448d5478814d3032121827c12a2cc287e2260/urllib3-2.2.3.tar.gz"
-    sha256 "e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9"
+    url "https://files.pythonhosted.org/packages/8a/78/16493d9c386d8e60e442a35feac5e00f0913c0f4b7c217c11e8ec2ff53e0/urllib3-2.4.0.tar.gz"
+    sha256 "414bc6535b787febd7567804cc015fee39daab8ad86268f1310a9250697de466"
   end
 
   resource "websockets" do
-    url "https://files.pythonhosted.org/packages/e2/73/9223dbc7be3dcaf2a7bbf756c351ec8da04b1fa573edaf545b95f6b0c7fd/websockets-13.1.tar.gz"
-    sha256 "a3b3366087c1bc0a2795111edcadddb8b3b59509d5db5d7ea3fdd69f954a8878"
+    url "https://files.pythonhosted.org/packages/21/e6/26d09fab466b7ca9c7737474c52be4f76a40301b08362eb2dbc19dcc16c1/websockets-15.0.1.tar.gz"
+    sha256 "82544de02076bafba038ce055ee6412d68da13ab47f0c60cab827346de828dee"
   end
 
   def install

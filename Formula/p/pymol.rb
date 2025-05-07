@@ -3,21 +3,18 @@ class Pymol < Formula
 
   desc "Molecular visualization system"
   homepage "https://pymol.org/"
-  url "https://github.com/schrodinger/pymol-open-source/archive/refs/tags/v3.0.0.tar.gz"
-  sha256 "45e800a02680cec62dff7a0f92283f4be7978c13a02934a43ac6bb01f67622cf"
+  url "https://github.com/schrodinger/pymol-open-source/archive/refs/tags/v3.1.0.tar.gz"
+  sha256 "54306d65060bd58ed8b3dab1a8af521aeb4fd417871f15f463ff05ccb4e121fe"
   license :cannot_represent
+  revision 1
   head "https://github.com/schrodinger/pymol-open-source.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia:  "74f27308354b79dd6fa37f983f45de35c1fe35331e3da135c8304279c2946902"
-    sha256 cellar: :any,                 arm64_sonoma:   "d903427e21c3999f8801d4ab41bc6840a36a7f08214b93a9ecb161e5e3530daf"
-    sha256 cellar: :any,                 arm64_ventura:  "176d90f7f194ad152a51f3294dae1be6fc21ed32ab9013e6222668412e111186"
-    sha256 cellar: :any,                 arm64_monterey: "a9e0d72ca12accc15f1492b44ae2cd9dbfdcc2ffb1219a1753b7a0041be20ef2"
-    sha256 cellar: :any,                 sonoma:         "b91f3f4f7d28396a36553f188490cbefbfad5698b4c738d83e9f4ef08869c3cd"
-    sha256 cellar: :any,                 ventura:        "25c91b0d4e9397f6cb5c5a8d4c9164415962190858e4fb4df5c97f44d980b323"
-    sha256 cellar: :any,                 monterey:       "a93c70898ff78ab423c6c0b11c49ff100f9c9c87305b5682be88f13baadc5a3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f9ddc563e11f73e16b179d3355f674456c470427397e07bf1f6d1144a0e96565"
+    sha256 cellar: :any,                 arm64_sonoma:  "13f683c319c06b8e30f2b961c56e16a079b364780de4d237a5b35c576ce7bcfb"
+    sha256 cellar: :any,                 arm64_ventura: "1fd72c9332cf93d45638faa9f2b39e8a1eb60694e6ef6c2466167ba3990fb935"
+    sha256 cellar: :any,                 sonoma:        "8af0422ae606f64c6f0736f19b50ad315513e36ab4d8cec860767b988ac70c4a"
+    sha256 cellar: :any,                 ventura:       "a6346a1171b662880f9f793835ce90420e32352b80e866a2a26a07dd2fc89879"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "af7204c635fb07c2cd01164d36765a20e9e297060cd94fb67d9d71d0a0509ddd"
   end
 
   depends_on "cmake" => :build
@@ -30,12 +27,13 @@ class Pymol < Formula
   depends_on "libpng"
   depends_on "netcdf"
   depends_on "numpy"
-  depends_on "pyqt@5"
-  depends_on "python@3.12"
+  depends_on "pyqt"
+  depends_on "python@3.13"
 
   uses_from_macos "libxml2"
 
   on_linux do
+    depends_on "patchelf" => :build
     depends_on "freeglut"
     depends_on "mesa"
   end
@@ -46,8 +44,8 @@ class Pymol < Formula
   end
 
   resource "msgpack" do
-    url "https://files.pythonhosted.org/packages/08/4c/17adf86a8fbb02c144c7569dc4919483c01a2ac270307e2d59e1ce394087/msgpack-1.0.8.tar.gz"
-    sha256 "95c02b0e27e706e48d0e5426d1710ca78e0f0628d6e89d5b5a5b91a5f12274f3"
+    url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
+    sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
   end
 
   resource "mmtf-python" do
@@ -60,14 +58,8 @@ class Pymol < Formula
     sha256 "3a59e6d33857733d0a8ff0c968140b8728f8e27aaa51306160ae6ab13cea26d3"
   end
 
-  # Drop distutils: https://github.com/schrodinger/pymol-open-source/pull/362
-  patch do
-    url "https://github.com/schrodinger/pymol-open-source/commit/4d81b4a8537421e9a1c4647934d1a16e24bc51dd.patch?full_index=1"
-    sha256 "ee5895ecd3bf731fc1ad714cc6cea17cb5dbb81cd4dab62e77554219fe7ae1ec"
-  end
-
   def python3
-    which("python3.12")
+    which("python3.13")
   end
 
   def install
@@ -77,20 +69,14 @@ class Pymol < Formula
       system "cmake", "--install", "build"
     end
 
-    venv = virtualenv_create(libexec, python3)
-    venv.pip_install resources.reject { |r| r.name == "mmtf-cpp" }
+    inreplace "setup.py" do |s|
+      s.gsub!(/ no_glut = True$/, " no_glut = False")
+      s.gsub!(/ use_msgpackc = "guess"$/, ' use_msgpackc = "c++11"')
+    end
 
-    site_packages = Language::Python.site_packages(python3)
-    ENV.prepend_path "PYTHONPATH", Formula["numpy"].opt_prefix/site_packages
-    ENV.append_path "PREFIX_PATH", buildpath/"mmtf"
-    ENV.append_path "PREFIX_PATH", Formula["freetype"].opt_prefix
-    ENV.append_path "PREFIX_PATH", Formula["libxml2"].opt_prefix if OS.linux?
-    ENV["PIP_CONFIG_SETTINGS"] = "--build-option=--glut --use-msgpackc=c++11"
-    # setup.py incorrectly handles --install-lib='' set by bdist_wheel
-    inreplace "setup.py", "self.install_libbase", "'#{venv.site_packages}'"
-    venv.pip_install_and_link buildpath
-
-    (prefix/site_packages/"homebrew-pymol.pth").write venv.site_packages
+    ENV["PREFIX_PATH"] = "#{buildpath}/mmtf:#{ENV["CMAKE_PREFIX_PATH"]}"
+    venv = virtualenv_install_with_resources without: "mmtf-cpp"
+    (prefix/Language::Python.site_packages(python3)/"homebrew-pymol.pth").write venv.site_packages
   end
 
   def caveats
@@ -98,15 +84,15 @@ class Pymol < Formula
   end
 
   test do
-    (testpath/"test.py").write <<~EOS
+    (testpath/"test.py").write <<~PYTHON
       from pymol import cmd
       cmd.fragment('ala')
       cmd.zoom()
       cmd.png("test.png", 200, 200)
-    EOS
+    PYTHON
 
     system bin/"pymol", "-cq", testpath/"test.py"
-    assert_predicate testpath/"test.png", :exist?, "Amino acid image should exist"
+    assert_path_exists testpath/"test.png", "Amino acid image should exist"
     system python3, "-c", "import pymol"
   end
 end

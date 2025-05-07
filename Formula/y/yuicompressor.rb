@@ -20,6 +20,7 @@ class Yuicompressor < Formula
     sha256 cellar: :any_skip_relocation, sonoma:         "a777992c7ffb05c413bcc9d2f7e6abafffc51af453be8300eb14944393b73c20"
     sha256 cellar: :any_skip_relocation, ventura:        "a777992c7ffb05c413bcc9d2f7e6abafffc51af453be8300eb14944393b73c20"
     sha256 cellar: :any_skip_relocation, monterey:       "a777992c7ffb05c413bcc9d2f7e6abafffc51af453be8300eb14944393b73c20"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "00fe50c269653c7a3766b3a2f71fa9c01da5464ffe226c4d1504288d3cbc1ad2"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "9ecbde7c5fb11f028b5bca5b4174f007370df1827ea1e83a603c89c522823855"
   end
 
@@ -32,13 +33,12 @@ class Yuicompressor < Formula
 
   test do
     path = testpath/"test.js"
-    path.write <<~EOS
+    path.write <<~JAVASCRIPT
       var i = 1;      // foo
       console.log(i); // bar
-    EOS
+    JAVASCRIPT
 
-    output = `#{bin}/yuicompressor --nomunge --preserve-semi #{path}`.strip
+    output = shell_output("#{bin}/yuicompressor --nomunge --preserve-semi #{path}").strip
     assert_equal "var i=1;console.log(i);", output
-    assert_equal 0, $CHILD_STATUS.exitstatus
   end
 end

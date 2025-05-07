@@ -1,10 +1,10 @@
 class Widelands < Formula
   desc "Free real-time strategy game like Settlers II"
   homepage "https://www.widelands.org/"
-  url "https://github.com/widelands/widelands/archive/refs/tags/v1.2.tar.gz"
-  sha256 "c6bed3717c541276fbed8a33adce230a2637297588c719268fcb963e076210e2"
+  url "https://github.com/widelands/widelands/archive/refs/tags/v1.2.1.tar.gz"
+  sha256 "799bfd32048ef20118c48e21f3fc843ae0451c42bb8bf2eabcb9b26bf6fe54b4"
   license "GPL-2.0-or-later"
-  revision 2
+  revision 1
   version_scheme 1
 
   livecheck do
@@ -13,22 +13,23 @@ class Widelands < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "ea622071da61757e744d812326cbc8b31a7a822f81090acc233ce28ba7c45684"
-    sha256 arm64_sonoma:  "2240e9f7aa02fa0d52cb15ccab35d09526b43b221d77870d96d11c2a8abdfd98"
-    sha256 arm64_ventura: "7098fe65d2ea70361f15f302bd7b2afe0307d6cc75fea5fc2eedd151eea61ce6"
-    sha256 sonoma:        "1fb275dfe64f2dedd8e92c5ae13383dab1b6b9ba9196f39a4a66833889332f60"
-    sha256 ventura:       "a3c929405dc321113ec2e9e459aa3c19b0ccc25ca61234c48c05888fca6caf78"
-    sha256 x86_64_linux:  "5188b857c4b567851bfc82ffc660662f66c925cd75a06b1442a1bdee02dfddfc"
+    sha256 arm64_sequoia: "4579bc3c41f00266fe1e3a50b4f23febf356ffe7e658becd1340a9c9fb9c2b9f"
+    sha256 arm64_sonoma:  "d795ec6cfe18efe730a1ee729d28ce329f03905c5e476fa56d01545bbc324d86"
+    sha256 arm64_ventura: "cc89f8628d9dbc446a7a5d4f65269eb2e720c4b0f69a922fc05f62532f8a2e04"
+    sha256 sonoma:        "f6572c7feb4e4713414d27692883553a637aadf95ed03958f27a10bf5d0625fd"
+    sha256 ventura:       "181a93b0acd13093356cf0d919a013dbe4ffc00019f8f3e6ae1772d5c5a24749"
+    sha256 arm64_linux:   "6dc0a351fdca77d0ad76a78519f0582a2d452dabef0d20569daa98a420101585"
+    sha256 x86_64_linux:  "f2d1782fc0592643d470a43c5f269bc3172e5faa05f9f83bf97e609cb6ef8e57"
   end
 
   depends_on "asio" => :build
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
 
   depends_on "glew"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "libpng"
   depends_on "lua"
   depends_on "minizip"

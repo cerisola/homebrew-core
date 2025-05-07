@@ -1,13 +1,13 @@
 class Tmuxinator < Formula
   desc "Manage complex tmux sessions easily"
   homepage "https://github.com/tmuxinator/tmuxinator"
-  url "https://github.com/tmuxinator/tmuxinator/archive/refs/tags/v3.3.2.tar.gz"
-  sha256 "8b5a8cc899f48772f2a8bace06ff463c57248ad9575a668326f1e60b7e9616f0"
+  url "https://github.com/tmuxinator/tmuxinator/archive/refs/tags/v3.3.4.tar.gz"
+  sha256 "a923c48127e0d63d0b5397f6297842ed51cf5a5762c348e1db0efd59506c58bd"
   license "MIT"
   head "https://github.com/tmuxinator/tmuxinator.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "320992e7a8f5a7c514fa4c3ac9adb271fa5097a75e09996fbd288c444848af8a"
+    sha256 cellar: :any_skip_relocation, all: "6d3d903bd93f7555c16d092f8bd85d972f4c726d2670340f53f8df3682b93934"
   end
 
   depends_on "ruby"
@@ -25,8 +25,8 @@ class Tmuxinator < Formula
   end
 
   resource "erubi" do
-    url "https://rubygems.org/downloads/erubi-1.12.0.gem"
-    sha256 "27bedb74dfb1e04ff60674975e182d8ca787f2224f2e8143268c7696f42e4723"
+    url "https://rubygems.org/downloads/erubi-1.13.1.gem"
+    sha256 "a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9"
   end
 
   def install

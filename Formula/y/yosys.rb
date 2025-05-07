@@ -1,25 +1,23 @@
 class Yosys < Formula
   desc "Framework for Verilog RTL synthesis"
   homepage "https://yosyshq.net/yosys/"
-  # pull from git tag to get submodules
-  url "https://github.com/YosysHQ/yosys.git",
-      tag:      "0.46",
-      revision: "e97731b9dda91fa5fa53ed87df7c34163ba59a41"
+  url "https://github.com/YosysHQ/yosys/releases/download/v0.53/yosys.tar.gz"
+  sha256 "126e93d82ceca9ece1cf973b395b46a1cc8105651a8ecf3de9afbe786cdeea58"
   license "ISC"
   head "https://github.com/YosysHQ/yosys.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "150eebb45764504b9a880dd687cebd53b03bcefcde9d95ae94aa2f0208cd02d4"
-    sha256 arm64_sonoma:  "4c8a43953c8c65268234ab6dd32faab5d77e1aafa02513601c665946599253f0"
-    sha256 arm64_ventura: "fd87846951f944ee26825d5b7c4b169134edf5eee47cd2dd799f62a37ef1f5ac"
-    sha256 sonoma:        "a4b36a3d497ac225130467786bb24aa33cfd2749026b3cdcfd1167bfa26b9c6f"
-    sha256 ventura:       "aeba8681e8a94da79198633b8805fdd277084131f839bffb29ba5cce882440f9"
-    sha256 x86_64_linux:  "0a2052e45f665a9dd64754613ed4466eaccdecdd37326ce2726105bc39e3d2cd"
+    sha256 arm64_sequoia: "b73197d7f42cdcd1fbee367d6f7fd3a155c8ad5d04bce3943a94eeaea107eee1"
+    sha256 arm64_sonoma:  "ce9e23d578942c0500492fce049d759d58b326cfe65e2459814d08189d77f781"
+    sha256 arm64_ventura: "0dad0c6a7aef5ad9ccc7f77e90d2de12bf5cb7e95602f36df4e1aa6191deff5c"
+    sha256 sonoma:        "f5b6cc4c7f020672c173cb00a0ebd7ce630856d4545213da77f7872cdf37315f"
+    sha256 ventura:       "fba2dfced224f204b7ca1adce942333c9bef7e293de1a93fa6f2917952a0eb53"
+    sha256 arm64_linux:   "b12298d0378ed7a6864051582c095f3e0ae0113afe179cc483d364a034502b67"
+    sha256 x86_64_linux:  "bb83f2fb27033d91a3140385090942b1894d2cdb3522dc638c928300cb6f6374"
   end
 
   depends_on "bison" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "readline"
 
   uses_from_macos "flex"
@@ -28,7 +26,12 @@ class Yosys < Formula
   uses_from_macos "tcl-tk"
   uses_from_macos "zlib"
 
+  on_linux do
+    depends_on "libtommath"
+  end
+
   def install
+    ENV.append "LINKFLAGS", "-L#{Formula["readline"].opt_lib}"
     system "make", "install", "PREFIX=#{prefix}", "PRETTY=0"
   end
 

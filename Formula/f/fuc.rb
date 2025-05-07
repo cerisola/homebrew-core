@@ -1,20 +1,19 @@
 class Fuc < Formula
   desc "Modern, performance focused unix commands"
   homepage "https://github.com/supercilex/fuc"
-  url "https://github.com/supercilex/fuc/archive/refs/tags/2.2.0.tar.gz"
-  sha256 "d0444f67311408ecbcc51a8df120e711c2736a3b82186f33e5df7b12a6b9fc88"
+  url "https://github.com/supercilex/fuc/archive/refs/tags/3.0.1.tar.gz"
+  sha256 "13a964e49ce2298cc30a592e0364388905281ed3b546030de598d6a69aad7935"
   license "Apache-2.0"
   head "https://github.com/supercilex/fuc.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "dcd1d2922b54e610b0307245102b426524c126e59cb7845168495567de4bdd53"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "265f6c4b3c90a69d2f4839c4b3223e938921d2c20cd06eeeb9dc738d10be302c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "766b2b0925f9f93750d977c09438af59e0e4faaa2840d6727d847d3968c6cc79"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9bfc07b522a722f500bb4a41a807b0d60d9703fa91d28744164162b7b099d9e7"
-    sha256 cellar: :any_skip_relocation, sonoma:         "75f4a615ae85a48bd6ff73c4962c866b83f435437ac3b4d0f32076560c01ac03"
-    sha256 cellar: :any_skip_relocation, ventura:        "416f1afd8d7468c5482f3828914d1346258f87f4c28dfb65030c397fc512a5de"
-    sha256 cellar: :any_skip_relocation, monterey:       "d4dfa350655fa9c2b05b5b2a0e53113e9b47d01b61b0178cba6f7efa6dd7d3f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "1f339a5f0293554b86e38603fda5bec910cdb1a0ebb4adf791946b978e91bef6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7e6b612e78c41e121889d1fca0c92dd5da7c60b3ea79cbe0eebebb0c24ef60f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b807f9bf0c43cd24274b3f01ff77effd5cb49299358468187cab4aa2dd6b6d42"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "ba60785ceb2ffff3cf7c98e866e8f92a06a326806feba585480b9bf949406a3c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8d47b1787da96027b648a26aa2294766bb57534f53d055ad2f58e5791cc57b6c"
+    sha256 cellar: :any_skip_relocation, ventura:       "0acf25893189799daee85b04cb93cd4d3a0e8979ffed2ade3b8d3589a721b35a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "176df6c08209d57df9420ebc47c55f76ca43bd6ce8e16bdfc675dd84b7b9d40f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "45c14c83d99d7057a36cf2b03ddba70424c63ed6590a56ed0fbcfc603c0374d1"
   end
 
   depends_on "rust" => :build

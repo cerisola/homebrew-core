@@ -1,15 +1,14 @@
 class Manticoresearch < Formula
   desc "Open source text search engine"
   homepage "https://manticoresearch.com"
-  url "https://github.com/manticoresoftware/manticoresearch/archive/refs/tags/6.3.6.tar.gz"
-  sha256 "d0409bde33f4fe89358ad7dbbad775e1499d4e61fed16d4fa84f9b29b89482d2"
+  url "https://github.com/manticoresoftware/manticoresearch/archive/refs/tags/9.3.8.tar.gz"
+  sha256 "7ba9e48a4e05a542f99e7b4ce5fe9e4cf1e0849c9e7c2b8a250a4250b93756a6"
   license all_of: [
     "GPL-3.0-or-later",
     "GPL-2.0-only", # wsrep
     { "GPL-2.0-only" => { with: "x11vnc-openssl-exception" } }, # galera
     { any_of: ["Unlicense", "MIT"] }, # uni-algo (our formula is too new)
   ]
-  revision 2
   version_scheme 1
   head "https://github.com/manticoresoftware/manticoresearch.git", branch: "master"
 
@@ -20,46 +19,44 @@ class Manticoresearch < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "b39705310475810e2b1b36ad2eb2a286d5a46f50005a643cb50b3729d979a58c"
-    sha256 arm64_sonoma:  "b1cf94ca6ad851b9bfcaa32014f7eb363d5de286226c280b74484d9754b77a42"
-    sha256 arm64_ventura: "27cce8ac45d7c3ac64d530f2223ff2aec3e7c845e53e73a0f9e833eed2c2d048"
-    sha256 sonoma:        "c7f0b07f128ae82e8100c29a05819ac0c2efd87d1941f46383305bf63e5e57b1"
-    sha256 ventura:       "01239133f7b0b84f4e2407712e48cfcc40c71e0729ba466b6945c741d56f788c"
-    sha256 x86_64_linux:  "e87aa1d3877a44aebcf61eab5c8f4a6542b36e7d8e3d8c5ed769b99c613ec87f"
+    sha256 arm64_sequoia: "68da25e6fcda39df344cc054a1d35a987ccfc2406d98003b9a3836eae3a89d85"
+    sha256 arm64_sonoma:  "4bd8b356cb25f5a706ad0dea2e97444dc6f64fe9e5d81d4037a12895e055afbc"
+    sha256 arm64_ventura: "896fee61ca17518e3cb6043fc542734082ab0af37e1126f6108e1cac6c16a118"
+    sha256 sonoma:        "4ffb69a612c2c76d90911e317de247db1d655142ae4e1dcea139fadef14a83c5"
+    sha256 ventura:       "5c8155bcae93df72a3751be294dc8f834a57daac4ce61949df9d1ec26f886d02"
+    sha256 arm64_linux:   "98bdc3869fc0f668f3355b0257bfbde384f1a0f55f4016cd41fcedc9d9b1d306"
+    sha256 x86_64_linux:  "971546f1772a271e3b4d7ff30d35fc55d8a1dff1fb15b1e88d9d043a17668b7a"
   end
 
-  depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "nlohmann-json" => :build
   depends_on "snowball" => :build # for libstemmer.a
 
-  # NOTE: `libpq`, `mysql-client`, `unixodbc` and `zstd` are dynamically loaded rather than linked
+  # NOTE: `libpq`, `mariadb-connector-c`, `unixodbc` and `zstd` are dynamically loaded rather than linked
+  depends_on "boost"
   depends_on "cctz"
-  depends_on "icu4c@76"
+  depends_on "icu4c@77"
   depends_on "libpq"
-  depends_on "mysql-client"
+  depends_on "mariadb-connector-c"
   depends_on "openssl@3"
   depends_on "re2"
   depends_on "unixodbc"
   depends_on "xxhash"
-  depends_on "zlib" # due to `mysql-client`
   depends_on "zstd"
 
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
+  uses_from_macos "expat"
   uses_from_macos "libxml2"
-
-  fails_with gcc: "5"
+  uses_from_macos "zlib"
 
   def install
-    # Work around error when building with GCC
-    # Issue ref: https://github.com/manticoresoftware/manticoresearch/issues/2393
-    ENV.append_to_cflags "-fpermissive" if OS.linux?
+    # Avoid statically linking to boost
+    inreplace "src/CMakeLists.txt", "set ( Boost_USE_STATIC_LIBS ON )", "set ( Boost_USE_STATIC_LIBS OFF )"
 
-    icu4c = deps.map(&:to_formula).find { |f| f.name.match?(/^icu4c@\d+$/) }
-    ENV["ICU_ROOT"] = icu4c.opt_prefix.to_s
+    ENV["ICU_ROOT"] = deps.find { |dep| dep.name.match?(/^icu4c(@\d+)?$/) }
+                          .to_formula.opt_prefix.to_s
     ENV["OPENSSL_ROOT_DIR"] = Formula["openssl@3"].opt_prefix.to_s
-    ENV["MYSQL_ROOT_DIR"] = Formula["mysql-client"].opt_prefix.to_s
     ENV["PostgreSQL_ROOT"] = Formula["libpq"].opt_prefix.to_s
 
     args = %W[
@@ -72,6 +69,7 @@ class Manticoresearch < Formula
       -DCMAKE_REQUIRE_FIND_PACKAGE_re2=ON
       -DCMAKE_REQUIRE_FIND_PACKAGE_stemmer=ON
       -DCMAKE_REQUIRE_FIND_PACKAGE_xxHash=ON
+      -DMYSQL_CONFIG_EXECUTABLE=#{Formula["mariadb-connector-c"].opt_bin}/mariadb_config
       -DRE2_LIBRARY=#{Formula["re2"].opt_lib/shared_library("libre2")}
       -DWITH_ICU_FORCE_STATIC=OFF
       -DWITH_RE2_FORCE_STATIC=OFF

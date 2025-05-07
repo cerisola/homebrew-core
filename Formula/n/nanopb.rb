@@ -4,9 +4,10 @@ class Nanopb < Formula
 
   desc "C library for encoding and decoding Protocol Buffer messages"
   homepage "https://jpa.kapsi.fi/nanopb/docs/index.html"
-  url "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.9.tar.gz"
-  sha256 "096a12331959590f5879f1039b2b6e32c887be58069e3bf1589aee949a420f51"
+  url "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.9.1.tar.gz"
+  sha256 "882cd8473ad932b24787e676a808e4fb29c12e086d20bcbfbacc66c183094b5c"
   license "Zlib"
+  revision 1
 
   livecheck do
     url "https://jpa.kapsi.fi/nanopb/download/"
@@ -14,13 +15,13 @@ class Nanopb < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "4dda74ced165d82abc82f13baeb15b9d3598560c09b81587f185ff9f869b9718"
-    sha256 cellar: :any,                 arm64_sonoma:  "324320a06e3f779104b027145321c2fc4bbbd879bceaf658f327e98e4f689a32"
-    sha256 cellar: :any,                 arm64_ventura: "295498441bcdf15eb3aa2e231465426e0980c825ba59927a0cda38de0b6e0df2"
-    sha256 cellar: :any,                 sonoma:        "3a2ea4468b72031cf014fe96b9f639328b4e4fcdacc8f8c3e6f94e93bafd4f8a"
-    sha256 cellar: :any,                 ventura:       "2aba3891f33fc2ea0bf95d9394d6dcb82335e2707fda6c266416ea3efa45146d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d387808781feaf19ad9514de2bba60e7833af33ea648cd9d40458d84ddaa55b6"
+    sha256 cellar: :any,                 arm64_sequoia: "2752728b93432f3038baf1265309816fa727ca0047be7e4741a5b2b66dcb2db4"
+    sha256 cellar: :any,                 arm64_sonoma:  "6a8a0983e5cef877a39983eee07a476e9ce6872ac35e8d20612ccc34c32ea87e"
+    sha256 cellar: :any,                 arm64_ventura: "a7acbc645e97667aa9924d1fb85a579cd6c4f628e79deabb467033a027db4de4"
+    sha256 cellar: :any,                 sonoma:        "d60addc61d0a2454f9118b4b8c727c59ba271b4aa04c758d2b242dbb5514dff5"
+    sha256 cellar: :any,                 ventura:       "39d4114c8a87b5bffac3e7dd7c230fb774ecd1c3c3b09d91e5bb9d631f43b5c4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4ad24fb383ea51833f9d0f785b5f5ad96694e167becdfd8fe209e1b6815a31fe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "efeceec89652aa4621f289e3b1918c83fb768f958792cf85cee62f3dd38b4471"
   end
 
   depends_on "cmake" => :build
@@ -28,13 +29,13 @@ class Nanopb < Formula
   depends_on "python@3.13"
 
   resource "protobuf" do
-    url "https://files.pythonhosted.org/packages/b1/a4/4579a61de526e19005ceeb93e478b61d77aa38c8a85ad958ff16a9906549/protobuf-5.28.2.tar.gz"
-    sha256 "59379674ff119717404f7454647913787034f03fe7049cbef1d74a97bb4593f0"
+    url "https://files.pythonhosted.org/packages/55/de/8216061897a67b2ffe302fd51aaa76bbf613001f01cd96e2416a4955dd2b/protobuf-6.30.1.tar.gz"
+    sha256 "535fb4e44d0236893d5cf1263a0f706f1160b689a7ab962e9da8a9ce4050b780"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/27/b8/f21073fde99492b33ca357876430822e4800cdf522011f18041351dfa74b/setuptools-75.1.0.tar.gz"
-    sha256 "d59a21b17a275fb872a9c3dae73963160ae079f1049ed956880cd7c09b120538"
+    url "https://files.pythonhosted.org/packages/81/ed/7101d53811fd359333583330ff976e5177c5e871ca8b909d1d6c30553aa3/setuptools-77.0.3.tar.gz"
+    sha256 "583b361c8da8de57403743e756609670de6fb2345920e36dc5c2d914c319c945"
   end
 
   def install
@@ -52,18 +53,19 @@ class Nanopb < Formula
   end
 
   test do
-    (testpath/"test.proto").write <<~EOS
+    (testpath/"test.proto").write <<~PROTO
       syntax = "proto2";
 
       message Test {
         required string test_field = 1;
       }
-    EOS
+    PROTO
 
-    system Formula["protobuf"].bin/"protoc",
-      "--proto_path=#{testpath}", "--plugin=#{bin}/protoc-gen-nanopb",
-      "--nanopb_out=#{testpath}", testpath/"test.proto"
-    system "grep", "Test", testpath/"test.pb.c"
-    system "grep", "Test", testpath/"test.pb.h"
+    system Formula["protobuf"].bin/"protoc", "--proto_path=#{testpath}",
+                                             "--plugin=#{bin}/protoc-gen-nanopb",
+                                             "--nanopb_out=#{testpath}",
+                                             testpath/"test.proto"
+    assert_match "Test", (testpath/"test.pb.c").read
+    assert_match "Test", (testpath/"test.pb.h").read
   end
 end

@@ -4,8 +4,8 @@ class Dpkg < Formula
   # Please use a mirror as the primary URL as the
   # dpkg site removes tarballs regularly which means we get issues
   # unnecessarily and older versions of the formula are broken.
-  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.22.11.tar.xz"
-  sha256 "f318eb949b8e7ecd802b17b1a7e7cf4b17094c9577e1060653e9b838cdd31d80"
+  url "https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.22.18.tar.xz"
+  sha256 "7135eb7960e38b2c77810d5aab8cabf5f690fed7475b7b0f2654fd91efbba0f6"
   license "GPL-2.0-only"
 
   livecheck do
@@ -14,16 +14,16 @@ class Dpkg < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "632c77820685109fab85a7a9005ea0ff31f9b233255ab4576a40dce0dc2d7e3b"
-    sha256 arm64_sonoma:  "c11f60eea8a970e8591cf8eef0d8e54271fd4d6aea50a32a38086de4c4b1c016"
-    sha256 arm64_ventura: "4e017baab049af69ae0b79ea18f06eb535d09ab37670b1742edec4379d8a1061"
-    sha256 sonoma:        "f6b46cbb8a54524252dd02ae1c887a81f872941fb29305c15e05d30076352324"
-    sha256 ventura:       "3e731ec82fe0a567a1737341d6800cd76786ba5c545b146a925f858f7c3db1c1"
-    sha256 x86_64_linux:  "919ea8d9f51c3016d23cd7885ed19b36de0cd9554d4b931b2fa4318969343170"
+    sha256 arm64_sequoia: "02a5d22a8a023ed282c0f17bd4a74995f05efac2ab8854f0c69a2967fcf2b815"
+    sha256 arm64_sonoma:  "7725a9161f2b53b79d4fb3edf4842b449318ca4655dff5cdb1e79ee016a23d15"
+    sha256 arm64_ventura: "3065fa9adcac2201fc5331d72c83400f51737ee7cd154f1f96a3d6d46d1fd39c"
+    sha256 sonoma:        "f4a435f42f76422d80718abd7e63e30a3993894378c42db768ce1ee0cbbf091e"
+    sha256 ventura:       "f0bee0a0f628335f89863681dad738435b0533bd91bfcaca6bfece593337ad3f"
+    sha256 arm64_linux:   "27140e671408c0bcd39fbae7d5142cde774ba89d0a1eb2079290c0847462539a"
+    sha256 x86_64_linux:  "32f0c19e331d35e0cabe6c939b45d978e12be53b01b72007b6eac0ead1390d93"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "po4a" => :build
   depends_on "gettext"
   depends_on "gnu-tar"
@@ -111,11 +111,11 @@ class Dpkg < Formula
 
     EOS
     system bin/"dpkg", "-b", testpath/"test", "test.deb"
-    assert_predicate testpath/"test.deb", :exist?
+    assert_path_exists testpath/"test.deb"
 
     rm_r("test")
     system bin/"dpkg", "-x", "test.deb", testpath
-    assert_predicate testpath/"data/homebrew.txt", :exist?
+    assert_path_exists testpath/"data/homebrew.txt"
   end
 end
 

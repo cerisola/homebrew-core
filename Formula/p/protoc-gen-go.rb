@@ -1,18 +1,19 @@
 class ProtocGenGo < Formula
   desc "Go support for Google's protocol buffers"
   homepage "https://github.com/protocolbuffers/protobuf-go"
-  url "https://github.com/protocolbuffers/protobuf-go/archive/refs/tags/v1.35.1.tar.gz"
-  sha256 "7cead1a711d682796b343931a9b54b3b07dd83456baeda6c069432235de45437"
+  url "https://github.com/protocolbuffers/protobuf-go/archive/refs/tags/v1.36.6.tar.gz"
+  sha256 "afa2b0e8f86d6da9d09c51ab4270d93c2888327220316982be9db345f523a6a1"
   license "BSD-3-Clause"
   head "https://github.com/protocolbuffers/protobuf-go.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d9c727b235e45e08019c4fb191b34fc1c65588c56c7f364dfb7a320e37da8099"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d9c727b235e45e08019c4fb191b34fc1c65588c56c7f364dfb7a320e37da8099"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d9c727b235e45e08019c4fb191b34fc1c65588c56c7f364dfb7a320e37da8099"
-    sha256 cellar: :any_skip_relocation, sonoma:        "537e33a1908fa39b19ea31ce0206f67216beec09981a6d346005c1746e50ed7b"
-    sha256 cellar: :any_skip_relocation, ventura:       "537e33a1908fa39b19ea31ce0206f67216beec09981a6d346005c1746e50ed7b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ecbb4a561e7a582aa91314657f165493a297cae55ccb2c7c5ba89357b3b90af9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24ad37f1f73d1474cfa3a1b6218b9800b4216f5ba530dcb842328474c2797524"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "24ad37f1f73d1474cfa3a1b6218b9800b4216f5ba530dcb842328474c2797524"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "24ad37f1f73d1474cfa3a1b6218b9800b4216f5ba530dcb842328474c2797524"
+    sha256 cellar: :any_skip_relocation, sonoma:        "27d05a9fb2bd374860fe55eef13ec0c0f42ec4341719e69b0eced035c04e494b"
+    sha256 cellar: :any_skip_relocation, ventura:       "27d05a9fb2bd374860fe55eef13ec0c0f42ec4341719e69b0eced035c04e494b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d5fb6bfcb3e2cf28ab4e97c2f41d215dac135638eaf4be1836ccceadff88adea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4be3e922fc3702067fda53a06bcad228ed713198afcda82079e6611e05cbea64"
   end
 
   depends_on "go" => :build
@@ -34,7 +35,7 @@ class ProtocGenGo < Formula
       }
     EOS
     system "protoc", "--go_out=.", "--go_opt=paths=source_relative", "proto3.proto"
-    assert_predicate testpath/"proto3.pb.go", :exist?
+    assert_path_exists testpath/"proto3.pb.go"
     refute_predicate (testpath/"proto3.pb.go").size, :zero?
   end
 end

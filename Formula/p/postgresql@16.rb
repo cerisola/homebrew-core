@@ -1,10 +1,10 @@
 class PostgresqlAT16 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v16.4/postgresql-16.4.tar.bz2"
-  sha256 "971766d645aa73e93b9ef4e3be44201b4f45b5477095b049125403f9f3386d6f"
+  url "https://ftp.postgresql.org/pub/source/v16.8/postgresql-16.8.tar.bz2"
+  sha256 "9468083a56ce0ee7d294601b74dad3dd9fc69d87aff61f0a9fb63c813ff7efd8"
   license "PostgreSQL"
-  revision 3
+  revision 1
 
   livecheck do
     url "https://ftp.postgresql.org/pub/source/"
@@ -12,12 +12,13 @@ class PostgresqlAT16 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "f6b3daecea776ee95900486220b01516ad1d1d3e73f112b528f66809e12f7513"
-    sha256 arm64_sonoma:  "128b27600cdccff2d3a9619cf2c7dcae3dbc2a08ad4e5a60a1aebe6f233397d4"
-    sha256 arm64_ventura: "c16e4721f049a812c17f45c793c9009986b2b4c7b9dff1b233b18b339dbb93e2"
-    sha256 sonoma:        "b340315b4dcc4bf09d129477845378c68b2487e1eefd5b82fccf63028928ee21"
-    sha256 ventura:       "7dc355140376228e97ffa19c9742455902caaf8e9cea72be38a1e5bac8487522"
-    sha256 x86_64_linux:  "35238c178e7d45f250807eb617665198a7e7776114ac702d2538491f9ad255f2"
+    sha256 arm64_sequoia: "118c4647b3b1bd8a1c7db80afe105e6f86816031ca911d64157487e0b260c7e7"
+    sha256 arm64_sonoma:  "91be6e232f5fd53345f69fd3882c648be85b0633b7a98b00982ae71220c78772"
+    sha256 arm64_ventura: "04a20a5b7ddf6b78991ff0845d3539a32de4480251f89a2c7b8dddf6db3b4c76"
+    sha256 sonoma:        "c2c48dcce111d410a11410fc7235b400203d6ff08bc538e8b55cf084b5dee3a3"
+    sha256 ventura:       "328699564084bf858fefb12d0748553b1da7ded27b9d99441f80a029ef495ddd"
+    sha256 arm64_linux:   "8d33b672d518a04727a7e0a32fe806f49cbac3de05c061e4984363884ebb7fef"
+    sha256 x86_64_linux:  "c8c0a6778b9786c1f8d3af09f49a368df4c77c8808dad64e2cd72b28c805f941"
   end
 
   keg_only :versioned_formula
@@ -26,8 +27,8 @@ class PostgresqlAT16 < Formula
   deprecate! date: "2028-11-09", because: :unsupported
 
   depends_on "gettext" => :build
-  depends_on "pkg-config" => :build
-  depends_on "icu4c@76"
+  depends_on "pkgconf" => :build
+  depends_on "icu4c@77"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -54,19 +55,20 @@ class PostgresqlAT16 < Formula
   end
 
   def install
+    ENV.runtime_cpu_detection
     ENV.delete "PKG_CONFIG_LIBDIR"
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
 
     # Fix 'libintl.h' file not found for extensions
+    # Update config to fix `error: could not find function 'gss_store_cred_into' required for GSSAPI`
     if OS.mac?
-      ENV.prepend "LDFLAGS", "-L#{Formula["gettext"].opt_lib}"
-      ENV.prepend "CPPFLAGS", "-I#{Formula["gettext"].opt_include}"
+      ENV.prepend "LDFLAGS", "-L#{Formula["gettext"].opt_lib} -L#{Formula["krb5"].opt_lib}"
+      ENV.prepend "CPPFLAGS", "-I#{Formula["gettext"].opt_include} -I#{Formula["krb5"].opt_include}"
     end
 
-    args = std_configure_args + %W[
+    args = %W[
       --datadir=#{opt_pkgshare}
-      --libdir=#{opt_lib}
       --includedir=#{opt_include}
       --sysconfdir=#{etc}
       --docdir=#{doc}
@@ -83,15 +85,15 @@ class PostgresqlAT16 < Formula
       --with-pam
       --with-perl
       --with-uuid=e2fs
-      --with-extra-version=\ (#{tap.user})
     ]
+    args << "--with-extra-version= (#{tap.user})" if tap
     args += %w[--with-bonjour --with-tcl] if OS.mac?
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
     args << "PG_SYSROOT=#{MacOS.sdk_path}" if OS.mac? && MacOS.sdk_root_needed?
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args(libdir: opt_lib)
 
     # Work around busted path magic in Makefile.global.in. This can't be specified
     # in ./configure, but needs to be set here otherwise install prefixes containing

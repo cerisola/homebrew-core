@@ -18,10 +18,11 @@ class TrezorAgent < Formula
     sha256 cellar: :any,                 arm64_ventura: "ee85d4ac6e1a6951e37cfa77ec7ff46eac91fb9cb0c858feb51dc0c5dba69db5"
     sha256 cellar: :any,                 sonoma:        "7aaad0a948426ba6ae82128e18501ebed5f2279c9e3d1f0dfd00f0fa38e79fb6"
     sha256 cellar: :any,                 ventura:       "ff6bd171a518ccbd6aaa4d6f8f6c1e0b9b14f843cebf10268c556fededd98984"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "700035e02dda5a8198db4d54383d8a2bbc2549df3273089fcd024c170d633a95"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea07ce42c9c3de33f2c307f30522d41a43809ad90096078f3d48657be95b1942"
   end
 
-  depends_on "pkg-config" => :build # for hidapi resource
+  depends_on "pkgconf" => :build # for hidapi resource
   depends_on "certifi"
   depends_on "cryptography"
   depends_on "hidapi"
@@ -118,6 +119,12 @@ class TrezorAgent < Formula
   resource "libagent" do
     url "https://files.pythonhosted.org/packages/33/9f/d80eb0568f617d4041fd83b8b301fdb817290503ee4c1546024df916454e/libagent-0.15.0.tar.gz"
     sha256 "c87caebdb932ed42bcd8a8cbe40ce3589587c71c3513ca79cadf7a040e24b4eb"
+
+    # Backport replacement of pkg_resources to fix issue seen on arm64 linux
+    patch do
+      url "https://github.com/romanz/trezor-agent/commit/68e39c14216f466c8710bf65ef133c744f8f92da.patch?full_index=1"
+      sha256 "a2b2279ba0eaf7a11d2a2e1f79155829bc8939942848b01602062f6c269b68b0"
+    end
   end
 
   resource "libusb1" do
@@ -188,16 +195,28 @@ class TrezorAgent < Formula
   resource "pyobjc-framework-cocoa" do
     url "https://files.pythonhosted.org/packages/a7/6c/b62e31e6e00f24e70b62f680e35a0d663ba14ff7601ae591b5d20e251161/pyobjc_framework_cocoa-10.3.1.tar.gz"
     sha256 "1cf20714daaa986b488fb62d69713049f635c9d41a60c8da97d835710445281a"
+
+    # Backport commit to avoid Xcode.app dependency. Remove in the next release
+    # https://github.com/ronaldoussoren/pyobjc/commit/864a21829c578f6479ac6401d191fb759215175e
+    patch :DATA
   end
 
   resource "pyobjc-framework-corebluetooth" do
     url "https://files.pythonhosted.org/packages/f7/69/89afd7747f42d2eb1e8f4b7f2ba2739d98ccf36f6b5c72474802962494de/pyobjc_framework_corebluetooth-10.3.1.tar.gz"
     sha256 "dc5d326ab5541b8b68e7e920aa8363851e779cb8c33842f6cfeef4674cc62f94"
+
+    # Backport commit to avoid Xcode.app dependency. Remove in the next release
+    # https://github.com/ronaldoussoren/pyobjc/commit/864a21829c578f6479ac6401d191fb759215175e
+    patch :DATA
   end
 
   resource "pyobjc-framework-libdispatch" do
     url "https://files.pythonhosted.org/packages/b7/37/1a7d9e5a04ab42aa8186f3493478c055601503ac7f8d58b8501d23db8b21/pyobjc_framework_libdispatch-10.3.1.tar.gz"
     sha256 "f5c3475498cb32f54d75e21952670e4a32c8517fb2db2e90869f634edc942446"
+
+    # Backport commit to avoid Xcode.app dependency. Remove in the next release
+    # https://github.com/ronaldoussoren/pyobjc/commit/864a21829c578f6479ac6401d191fb759215175e
+    patch :DATA
   end
 
   resource "pyserial" do
@@ -271,9 +290,9 @@ class TrezorAgent < Formula
   end
 
   def install
-    ENV["HIDAPI_SYSTEM_HIDAPI"] = "1"
-    ENV["SODIUM_INSTALL"] = "system"
     without = if OS.mac?
+      # Help `pyobjc-framework-cocoa` pick correct SDK after removing -isysroot from Python formula
+      ENV.append_to_cflags "-isysroot #{MacOS.sdk_path}"
       ["dbus-fast"]
     else
       resources.filter_map { |r| r.name if r.name.start_with?("pyobjc") }
@@ -289,3 +308,22 @@ class TrezorAgent < Formula
     system libexec/"bin/python", "-m", "pip", "check"
   end
 end
+
+__END__
+--- a/pyobjc_setup.py
++++ b/pyobjc_setup.py
+@@ -510,15 +510,6 @@ def Extension(*args, **kwds):
+             % (tuple(map(int, os_level.split(".")[:2])))
+         )
+
+-    # XCode 15 has a bug w.r.t. weak linking for older macOS versions,
+-    # fall back to older linker when using that compiler.
+-    # XXX: This should be in _fixup_compiler but doesn't work there...
+-    lines = subprocess.check_output(["xcodebuild", "-version"], text=True).splitlines()
+-    if lines[0].startswith("Xcode"):
+-        xcode_vers = int(lines[0].split()[-1].split(".")[0])
+-        if xcode_vers >= 15:
+-            ldflags.append("-Wl,-ld_classic")
+-
+     if os_level == "10.4":
+         cflags.append("-DNO_OBJC2_RUNTIME")

@@ -1,26 +1,33 @@
 class Pango < Formula
   desc "Framework for layout and rendering of i18n text"
-  homepage "https://pango.gnome.org"
-  url "https://download.gnome.org/sources/pango/1.54/pango-1.54.0.tar.xz"
-  sha256 "8a9eed75021ee734d7fc0fdf3a65c3bba51dfefe4ae51a9b414a60c70b2d1ed8"
+  homepage "https://www.gtk.org/docs/architecture/pango"
+  url "https://download.gnome.org/sources/pango/1.56/pango-1.56.3.tar.xz"
+  sha256 "2606252bc25cd8d24e1b7f7e92c3a272b37acd6734347b73b47a482834ba2491"
   license "LGPL-2.0-or-later"
   head "https://gitlab.gnome.org/GNOME/pango.git", branch: "main"
 
+  # Pango doesn't follow GNOME's "even-numbered minor is stable" version
+  # scheme but they do appear to use 90+ minor/patch versions, which may
+  # indicate unstable versions (e.g., 1.90, etc.).
+  livecheck do
+    url "https://download.gnome.org/sources/pango/cache.json"
+    regex(/pango[._-]v?(\d+(?:(?!\.9\d)\.\d+)+)\.t/i)
+  end
+
   bottle do
-    sha256 cellar: :any, arm64_sequoia:  "555a0ea1e85a5f5b5d26e4bfdc1f1c19a3d1108ba0801deed64d301a6d912c58"
-    sha256 cellar: :any, arm64_sonoma:   "c47cf2f24449280a2643d958e6f211a2db089f1c2cb3e9f27ef50f35701601ed"
-    sha256 cellar: :any, arm64_ventura:  "1a20935a0a5377fadbb6f02c6b9689d4d5e2a6e6d489e1d9e77b0684876046a6"
-    sha256 cellar: :any, arm64_monterey: "b79420edeeacdb59d0b1a131d3198f6dfcc8ec9dd3e6a4c6136271718e9ad41d"
-    sha256 cellar: :any, sonoma:         "2e8dc6924252fc6df5b73a0eae636f81a9cf872ac654ce08a7866f00f2169e5f"
-    sha256 cellar: :any, ventura:        "11d51f9281cd68d0b8718158df55bc28029e25956f1ad313cae99b31ae130dbb"
-    sha256 cellar: :any, monterey:       "03e0d179c3a4c47cf210c52073a2eee075013ee5617b026abc13aafc45f8ee22"
-    sha256               x86_64_linux:   "3cdf86a860b1e40093330d83b705cfdc326f2974332d65565e2ce8e15c9213b8"
+    sha256 cellar: :any, arm64_sequoia: "39c8338524e71bf6019b72a2bbebebc78c6935dfad75a76db43ff9a8815bfe6b"
+    sha256 cellar: :any, arm64_sonoma:  "10d76601d1eee9482d66a31d570c6704bb318eead6f83ec1404d6e520be581f2"
+    sha256 cellar: :any, arm64_ventura: "4d619b28828586db45c6eee3e82b1aca65596af17195a6b975c3b9fa7ccad963"
+    sha256 cellar: :any, sonoma:        "2e141cb0c33eb33fd2771efbac614b75dad3db4ed332ef84526e81e6a64b7d01"
+    sha256 cellar: :any, ventura:       "cbc5448e13f060afeb0aee80cba9fd228f4a8e199761c4a4114b39700e840c39"
+    sha256               arm64_linux:   "751a44f3853807b2ed64eaa5bfddf90cbd5bd4095a2d3e6c5939196355e219e8"
+    sha256               x86_64_linux:  "cdcdca05be1495b3afd63d5b1951040e359278ee8bfbcbb65e37128c844a3737"
   end
 
   depends_on "gobject-introspection" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
-  depends_on "pkg-config" => [:build, :test]
+  depends_on "pkgconf" => [:build, :test]
   depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
@@ -58,7 +65,7 @@ class Pango < Formula
       }
     C
 
-    flags = shell_output("pkg-config --cflags --libs pangocairo").chomp.split
+    flags = shell_output("pkgconf --cflags --libs pangocairo").chomp.split
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end

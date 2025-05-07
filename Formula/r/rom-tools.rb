@@ -1,9 +1,9 @@
 class RomTools < Formula
   desc "Tools for Multiple Arcade Machine Emulator"
-  homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/refs/tags/mame0271.tar.gz"
-  version "0.271"
-  sha256 "79960f4c57715b2d08c3eba12933d04dd91ad1d95b0c1059306a75bf07fd6027"
+  homepage "https://www.mamedev.org/"
+  url "https://github.com/mamedev/mame/archive/refs/tags/mame0277.tar.gz"
+  version "0.277"
+  sha256 "60055b19fc96306927257c5ffc265ecebcbe5c944cf98113d4d78f6304556c67"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git", branch: "master"
 
@@ -12,16 +12,16 @@ class RomTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b2eb83be31464686651a0bb20ef4972c0bd3dbf078398e80d34dd523c8e794f8"
-    sha256 cellar: :any,                 arm64_sonoma:  "f71cb382e8b12163ec8b6a11fda3144965f030fa73694fe7a58b743ed638b016"
-    sha256 cellar: :any,                 arm64_ventura: "4a1315f0d240806caf1893eb498eeb5e20552cb42dc826ed3b0e4636e96fa7e6"
-    sha256 cellar: :any,                 sonoma:        "ef52bb5e686b66e57b6add49d1bf6b2a2beaa9cb372cce6161dc2a6fb68d41bb"
-    sha256 cellar: :any,                 ventura:       "e41c45ccbc9339a555166f6a71c9e9d67478c950a9dc486adccee53798d5912d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e7b69f68717b8f183d79fed2730becdd2a4564aa91ffaceed8613f373e3f1936"
+    sha256 cellar: :any,                 arm64_sequoia: "bd78e16ae965b563b274495eeac4cb0361e68778874d5c5a9616ac4fb1c925d7"
+    sha256 cellar: :any,                 arm64_sonoma:  "42a638be8c1f2e9b67f9866af6d4fc6bd588978a833db96f999a6214fb4c0575"
+    sha256 cellar: :any,                 arm64_ventura: "42c3ff0e18501b365d26a7ae495ad1fbe55ee9413086a734be7255325d2f3fd6"
+    sha256 cellar: :any,                 sonoma:        "20ee2c9b36b8d0305535b160f9e579c0030c4f47a5d44c7ac8a81babd731091c"
+    sha256 cellar: :any,                 ventura:       "05bc9c5b586a1fecd3243ee3e305ff0dd37c1e01985e6962997aad0ae00bb423"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2023d41afb0306cdd7b8457ed3d537ac14fddc97b7525465808aaf248a4916b0"
   end
 
   depends_on "asio" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "flac"
   # Need C++ compiler and standard library support C++17.
   depends_on macos: :high_sierra

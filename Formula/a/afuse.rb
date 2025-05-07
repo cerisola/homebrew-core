@@ -7,12 +7,13 @@ class Afuse < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "22032cf3dd5fe4a2aa623d7bc1f542eebd796f749a63e62907bf1006b2f42d26"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "2d36270c3d62319e03cf6f11756308f5a1f1daef36cebb7ef19376a795002014"
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "libfuse@2"
   depends_on :linux # on macOS, requires closed-source macFUSE
 
@@ -23,6 +24,6 @@ class Afuse < Formula
   end
 
   test do
-    assert_match "FUSE library version", pipe_output("#{bin}/afuse --version 2>&1")
+    assert_match "FUSE library version", shell_output("#{bin}/afuse --version 2>&1", 1)
   end
 end

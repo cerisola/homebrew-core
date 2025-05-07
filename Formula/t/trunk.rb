@@ -1,21 +1,22 @@
 class Trunk < Formula
   desc "Build, bundle & ship your Rust WASM application to the web"
   homepage "https://trunkrs.dev/"
-  url "https://github.com/trunk-rs/trunk/archive/refs/tags/v0.21.2.tar.gz"
-  sha256 "de7180e8602bf43adfcee761c7c635d44aa5708876ec8f1c1c41d10f505d682d"
+  url "https://github.com/trunk-rs/trunk/archive/refs/tags/v0.21.13.tar.gz"
+  sha256 "4dda5470ab2e972041804f8a5028d784bb526dff3d5a0d574221979f20ed8ac3"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/trunk-rs/trunk.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f7a93782623889cac425129d02746b2083f0df4c7fd75d063dfa0f92ffb468d7"
-    sha256 cellar: :any,                 arm64_sonoma:  "e6fee5cdd2a95b1c6e9ccd1ee103b28ff71093ecee54c40fa7a62cd21a9da332"
-    sha256 cellar: :any,                 arm64_ventura: "8579266ffae9ba6083057e1291f19d9e5d0baab49e963f1e63e9320561c6732b"
-    sha256 cellar: :any,                 sonoma:        "60c43f9f4f43c04b2e94761ab994c5ca52f837944c40ec3b3ecb870e22181d51"
-    sha256 cellar: :any,                 ventura:       "f04352ff28ec0a7160f93e0717e44c9f1a2335d1dec0e74ca9b1a575221fc358"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "701f17ca1d2aadcd8cf35736d42cb4293692e156051f14c4efdc37869b19110d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b2a226efd21def510134c43735d5fadcc293766ef80f06bffc382f4e6be3c26d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a98a988a4d9148013532b3e0ea81b35e9ebfff33a821158b511557d7ad462345"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "efcbfb98571c2b77909fa02250caa52c818b71015e74bc753c2c8973441870cb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a0359ea6d7a606d9275cbe0615ef627a2bf50773509426549b7fbedf8008f675"
+    sha256 cellar: :any_skip_relocation, ventura:       "dff27d25af94d36a884664c332098036fec3a1ece878fec25dd87c6ccf208717"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d6a02fb451ca85699a0431d8a722b82bd4f626bb80f04f0ae21970d532df51d0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39456d7ea40391b5d796841f9001a7f115bf13d0051003ccf68fcf5113a5acf2"
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkgconf" => :build
   depends_on "rust" => :build
   depends_on "openssl@3"
 

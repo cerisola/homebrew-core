@@ -1,13 +1,13 @@
 class Astgen < Formula
   desc "Generate AST in json format for JS/TS"
   homepage "https://github.com/joernio/astgen"
-  url "https://github.com/joernio/astgen/archive/refs/tags/v3.16.0.tar.gz"
-  sha256 "3097f0db0d7dc223c851ed42e2692d2991f36f0e4446321f5f4ef22413af696c"
+  url "https://github.com/joernio/astgen/archive/refs/tags/v3.25.0.tar.gz"
+  sha256 "5ca3a55af9cfd04b1654c4dd90b4ae041d8c1c490bf65333a46090fecd29972c"
   license "Apache-2.0"
+  head "https://github.com/joernio/astgen.git", branch: "main"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "cca01b477e6e5b6406f09290be047f05dfef76226d17e004a42d2fcfb33b1ec2"
+    sha256 cellar: :any_skip_relocation, all: "43e54d726f4cb8c38336b62564d8dc64d55e440c1e73eeba8849fcd45921d346"
   end
 
   depends_on "node"
@@ -15,18 +15,21 @@ class Astgen < Formula
   uses_from_macos "zlib"
 
   def install
-    # Disable custom postinstall script
-    system "npm", "install", *std_npm_args, "--ignore-scripts"
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    # Install `devDependency` packages to compile the TypeScript files
+    system "npm", "install", *std_npm_args(prefix: false), "-D"
+    system "npm", "run", "build"
+
+    system "npm", "install", *std_npm_args
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do
-    (testpath/"main.js").write <<~EOS
+    (testpath/"main.js").write <<~JS
       console.log("Hello, world!");
-    EOS
+    JS
 
     assert_match "Converted AST", shell_output("#{bin}/astgen -t js -i . -o #{testpath}/out")
-    assert_match '"fullName": "main.js"', (testpath/"out/main.js.json").read
-    assert_match '"0": "Console"', (testpath/"out/main.js.typemap").read
+    assert_match "\"fullName\":\"#{testpath}/main.js\"", (testpath/"out/main.js.json").read
+    assert_match '"0":"Console"', (testpath/"out/main.js.typemap").read
   end
 end

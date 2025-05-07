@@ -1,8 +1,8 @@
 class Spack < Formula
   desc "Package manager that builds multiple versions and configurations of software"
   homepage "https://spack.io"
-  url "https://github.com/spack/spack/archive/refs/tags/v0.22.2.tar.gz"
-  sha256 "aef1a5ce16fe1a8bcced54c40012b19a0f4ade1cd9c5379aca081e96ec5b18ac"
+  url "https://github.com/spack/spack/archive/refs/tags/v0.23.1.tar.gz"
+  sha256 "32ca622c49448a3b4e398eb1397d8ff9a6aa987a248de621261e24e65f287593"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/spack/spack.git", branch: "develop"
 
@@ -12,18 +12,20 @@ class Spack < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "632ce5663f6b4868d4aef30a30420962adcd3ecba55805d225458e2f2ae341c9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "632ce5663f6b4868d4aef30a30420962adcd3ecba55805d225458e2f2ae341c9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "632ce5663f6b4868d4aef30a30420962adcd3ecba55805d225458e2f2ae341c9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b6739a45e0cfaa8da77918019d076cf39199ed08b7db5ed436e7eb60dc37b748"
-    sha256 cellar: :any_skip_relocation, ventura:       "b6739a45e0cfaa8da77918019d076cf39199ed08b7db5ed436e7eb60dc37b748"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4cf3d6110e4504286c7bb0df44f5544b80cea8df3c9de00bdd8ca93a961ac1f5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2684e22465a5d1dc2b6914046b3888ad551ba5e124854e3e67974330377e2bf1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2684e22465a5d1dc2b6914046b3888ad551ba5e124854e3e67974330377e2bf1"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "2684e22465a5d1dc2b6914046b3888ad551ba5e124854e3e67974330377e2bf1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7624a31a3821c80a4c33f0e54e36fff5aa8f4c93e7d20b7a063205017cf50008"
+    sha256 cellar: :any_skip_relocation, ventura:       "7624a31a3821c80a4c33f0e54e36fff5aa8f4c93e7d20b7a063205017cf50008"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "94d27af942c129148f0f6638e22a029dc7090833fd4df88a13268e0c6303b21b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e86a9198a69c530a065637ceba3eb6d5133833879c406967deac53743659692b"
   end
 
   uses_from_macos "python"
 
   def install
     rm Dir["bin/*.bat", "bin/*.ps1", "bin/haspywin.py"] # Remove Windows files.
+    rm "var/spack/repos/builtin/packages/patchelf/test/hello" # Remove pre-built test ELF
     prefix.install Dir["*"]
   end
 

@@ -13,11 +13,12 @@ class Libnet < Formula
     sha256 cellar: :any,                 sonoma:         "8e92431961fce081d8094362611f3550938938f3e8d7de7c369c691be9ef77c2"
     sha256 cellar: :any,                 ventura:        "c1f1f76069f4f73b50c02c7434e77f0eb22f16a92c2e7756101c41bd40ae989c"
     sha256 cellar: :any,                 monterey:       "4f2d247267535a9a8cd3eebf91891d3c0f555035533db9a40e32b03ca47c9e30"
+    sha256 cellar: :any_skip_relocation, arm64_linux:    "be160672c2f61d20fee38a54c6f7e308c73ee085f9d47ec91a27c210a93a6cea"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "c80410be8c65b37b135596873de64f7587068d32d0b8ba8ba91f4299f609e8ed"
   end
 
   depends_on "doxygen" => :build
-  depends_on "pkg-config" => :test
+  depends_on "pkgconf" => :test
 
   def install
     system "./configure", *std_configure_args
@@ -25,7 +26,6 @@ class Libnet < Formula
   end
 
   test do
-    flags = shell_output("pkg-config --libs --cflags libnet").chomp.split
     (testpath/"test.c").write <<~C
       #include <stdio.h>
       #include <stdint.h>
@@ -38,7 +38,8 @@ class Libnet < Formula
       }
     C
 
-    system ENV.cc, "test.c", *flags, "-o", "test"
+    flags = shell_output("pkgconf --libs --cflags libnet").chomp.split
+    system ENV.cc, "test.c", "-o", "test", *flags
     assert_match version.to_s, shell_output("./test")
   end
 end

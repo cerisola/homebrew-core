@@ -1,9 +1,9 @@
 class I386ElfGdb < Formula
   desc "GNU debugger for i386-elf cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-15.2.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-15.2.tar.xz"
-  sha256 "83350ccd35b5b5a0cba6b334c41294ea968158c573940904f00b92f76345314d"
+  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
+  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
+  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -12,23 +12,31 @@ class I386ElfGdb < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "be8a2a2f0f18a53349a0f6103a4ef0859768f7ab41e5c2c52d604b2429ed8039"
-    sha256 arm64_sonoma:  "6070a72caa2528c08bff3f308faa1bb181e106415a7fda814b88b3d9dc068943"
-    sha256 arm64_ventura: "516c2c1674652d852968a86967e603fecca37b0c011f9e41c3b53d1289964585"
-    sha256 sonoma:        "f42540c98d2ecd220c569272d1f0dce591f38fde394c70bf7b5ea513ea78144c"
-    sha256 ventura:       "c524423fa98380fcb953e7ef6bc539f1822dc1c36e9a6706997515877121f66c"
-    sha256 x86_64_linux:  "1167a22ec9850be75bf301911ceb7250f0964e491a92fd50d50d2896d517c783"
+    sha256 arm64_sequoia: "af939496c6245db5f2f812e196fb9e4b3623f15a2db5035716f392d6633ffe8c"
+    sha256 arm64_sonoma:  "951dac8073ae7de6fb7d74db8b7694a4bc323e02013f1ac541b1f03f45e8d319"
+    sha256 arm64_ventura: "b8c97775ea52dfbb3459fae62aa433402a2fb23a1d3b4553be7c206b38e63701"
+    sha256 sonoma:        "a7a43697ffade75a422458eb851588a15b042272729d9850339ae465069cd5cf"
+    sha256 ventura:       "c9d550dcb8ddb0db49e41f7a72339424e320ee23537ed52e8f66b2887185d889"
+    sha256 arm64_linux:   "2a7f9f61e3f2faac56dfd439e1488567643896454a98acf4d03fa7e201a6d57f"
+    sha256 x86_64_linux:  "3f2f5cd65a663532604928725a87b015fd9f596ae92b647a4ee6b4fb9c61fd97"
   end
 
   depends_on "i686-elf-gcc" => :test
   depends_on "gmp"
   depends_on "mpfr"
-  depends_on "python@3.12"
+  depends_on "python@3.13"
   depends_on "xz" # required for lzma support
 
-  uses_from_macos "expat"
+  uses_from_macos "expat", since: :sequoia # minimum macOS due to python
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
+
+  # Workaround for https://github.com/Homebrew/brew/issues/19315
+  on_sequoia :or_newer do
+    on_intel do
+      depends_on "expat"
+    end
+  end
 
   on_system :linux, macos: :ventura_or_newer do
     depends_on "texinfo" => :build
@@ -43,7 +51,7 @@ class I386ElfGdb < Formula
       --infodir=#{info}/#{target}
       --mandir=#{man}
       --with-lzma
-      --with-python=#{which("python3.12")}
+      --with-python=#{which("python3.13")}
       --with-system-zlib
       --disable-binutils
     ]
